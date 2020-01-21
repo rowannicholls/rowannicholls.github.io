@@ -1,0 +1,120 @@
+---
+title: '<font size="5">Introduction to R:</font><br>Packages and Libraries'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+---
+<font size="3">
+[⇦ Back](../../R.html)
+
+## Synopsis
+- A 'package' is the same as a 'library'
+- Increase the number of functions you can call by installing __*packages*__
+- Once installed, you still need to __*import*__ the library into your script
+
+## What are Packages and Libraries, and Why Do I Need Them?
+When you download and install R or RStudio you get access to what is known as __*base*__ R. It's very powerful and can do a lot of things but, as the name suggests, it's very basic. In order to add functionality and be able to use other functions you need to __*install packages*__ and __*import libraries*__.
+
+> **What's the difference between a library and a package?**  
+> Nothing. They are two names for the same thing. For some reason you *install* a package and *import* a library but I don't know why.
+
+## Install a Package
+Packages can be installed by running the `install.packages()` function. Specify the name of the package you want to install as a string and the repository you want to install it from by using the `repos` __*keyword argument*__:
+
+```{r message=FALSE, warning=FALSE}
+install.packages('BlandAltmanLeh', repos='http://cran.us.r-project.org')
+install.packages('dplyr', repos='http://cran.us.r-project.org')
+install.packages('ggplot2', repos='http://cran.us.r-project.org')
+install.packages('logging', repos='http://cran.us.r-project.org')
+install.packages('readr', repos='http://cran.us.r-project.org')
+install.packages('reticulate', repos='http://cran.us.r-project.org')
+install.packages('rmarkdown', repos='http://cran.us.r-project.org')
+install.packages('stringr', repos='http://cran.us.r-project.org')
+```
+
+The "cran" part of the repos URL refers to "CRAN", the Comprehensive R Archive Network where most R packages are stored online.
+
+> You only need to install a package once on your computer. After it's finished installing you can delete the `install.packages()` functions from your R script.
+
+You can find out where on your computer the packages are installed by running `.libPaths()` and see what packages you've installed with `print(as.data.frame(installed.packages()))`.
+
+## Import a Library
+When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.
+
+**Note:** it's best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:
+
+```{r message=FALSE}
+library(BlandAltmanLeh)
+library(dplyr)
+library(ggplot2)
+library(logging)
+library(readr)
+library(reticulate)
+library(rmarkdown)
+library(stringr)
+```
+
+You can now use the functionality that is included with the libraries you imported:
+
+```{r}
+# Import the 'dplyr' library
+library(dplyr)
+# As an example, you can now use the 'pipe' operator which puts a value into the front of the next pair of brackets:
+x = 49
+square_root = x %>%
+    sqrt()
+# This will be the square root of 49:
+square_root
+```
+
+## Call a Function From a Library
+You can call a function that comes from a particular library in one of two ways. Here's an example with the `str_length()` function, which comes from the 'stringr' library and finds the number of characters in a string. The first way is to just call the function as you would any other:
+
+```{r}
+# Import the library
+library(stringr)
+# Find the length of a string of text
+length = str_length('Hello, World')
+# Output to the console
+print(length)
+```
+
+While this is the simplest way of doing it, it can sometimes get confusing as to which function came from which library. This is especially true if you have imported a lot of them and are using all sorts of different functions all over the place. Consider using the alternative method, which involves using two colons to explicitly show which library the function came from:
+
+```{r}
+# Find the length of a string of text
+length = stringr::str_length('Hello, World')
+# Output to the console
+print(length)
+```
+
+## Alternative Methods of Importing Libraries
+If your script is going to be run on someone else's computer and you don't know if they will have a particular package installed, import it into your script with the `require()` function. If the package is installed, it will import it. If it isn't, it will first download and install it, then import it.
+
+```{r message=FALSE}
+require(BlandAltmanLeh)
+require(dplyr)
+require(ggplot2)
+require(logging)
+require(readr)
+require(reticulate)
+require(rmarkdown)
+require(stringr)
+```
+
+Sometimes, the messages that get printed to the console when a package is installed or imported get annoying. Suppress them with `suppressPackageStartupMessages()`:
+
+```{r}
+suppressPackageStartupMessages(require(dplyr))
+suppressPackageStartupMessages(library(logging))
+```
+
+## Summary
+- A 'package' is the same as a 'library'
+- Increase the number of functions you can call by installing __*packages*__
+- Once installed, you still need to __*import*__ the library into your script
+
+[⇦ Back](../../R.html)
+
+</font>

@@ -1,5 +1,5 @@
 ---
-title: 'R: Comments, Variables and Data Types'
+title: '<font size="5">Introduction to R:</font><br>Comments, Variables and Data Types'
 output:
     html_document:
         theme: paper
@@ -7,6 +7,18 @@ output:
 ---
 <font size="3">
 [⇦ Back](../../R.html)
+
+## Synopsis
+- You can add notes about your code in **comments**
+- There are a number of different types of data in R:
+    + **Numerics**, aka numbers
+    + **Characters**, aka text strings
+    + **Logicals**, aka Booleans, aka true/false
+    + **Nulls**, aka missing data
+- Data can be assigned to **variables** for easier use
+- A list of datapoints is called a **vector**
+- Actions can be performed using **functions**
+- Data can be **converted** to different types
 
 ## Comments
 If you're brand new to R and coding, the first thing to know about is __*comments*__.
@@ -29,7 +41,7 @@ You write a comment by starting your line with a hash "#":
 Don't underestimate the power of comments! Just because your code makes sense to you now when you're writing it doesn't mean you will remember what you were thinking 6 months down the line when you re-open it. Likewise, if someone else needs to use your code they will need to work out what it does; and almost impossible task if you don't explain yourself!
 
 ## Numerics
-As the name suggests, these are numbers. If you type a plain number R will output it to the *console*, which is shown here by the box starting with "[1]":
+As the name suggests, these are numbers. If you type a plain number R will output it to the __*console*__, which is shown here by the box starting with "[1]":
 
 ```{r}
 # This is just a number
@@ -41,7 +53,7 @@ As the name suggests, these are numbers. If you type a plain number R will outpu
 The `[1]` indicates that it is the first thing in the output.
 
 ## Variables
-A number is useless on its own. In order to use it you need to *assign* it to a *variable*:
+A number is useless on its own. In order to use it you need to __*assign*__ it to a __*variable*__:
 
 ```{r}
 # Assigning numbers to variables
@@ -49,9 +61,9 @@ x = 5
 y = 7
 ```
 
-Notice that when you assign a number to a variable it no longer gets outputted to the console. Variable assignment *suppresses* output!
+Notice that when you assign a number to a variable it no longer gets outputted to the console. Variable assignment __*suppresses*__ output!
 
-You can use these numbers by *calling* the variables:
+You can use these numbers by __*calling*__ the variables:
 
 ```{r}
 # You can use variables to do arithmetic by calling them
@@ -61,7 +73,7 @@ z = x + y
 x + y
 ```
 
-Here's something that often confuses beginner coders: the statement `x = x + 1`. In mathematics, it doesn't make any sense! There's no value of `x` that will satisfy the equation! However, in programming, this statement is not an equation but an *assignment*: you are giving a variable `x` a value that is equal to that of an existing variable, plus one:
+Here's something that often confuses beginner coders: the statement `x = x + 1`. In mathematics, it doesn't make any sense! There's no value of `x` that will satisfy the equation! However, in programming, this statement is not an equation but an __*assignment*__: you are giving a variable `x` a value that is equal to that of an existing variable, plus one:
 
 ```{r}
 # Give the variable 'x' a value of six
@@ -69,6 +81,17 @@ x = 6
 # Give the variable 'x' a value that is equal to the value of 'x', plus one
 x = x + 1
 # 'x' should now equal seven. Check that it does by calling it and outputting its value to the console:
+x
+```
+
+Often, instead of using the equals sign, R programmers will use a left-arrow when assigning values to variables (`<-`). This helps them avoid the confusion described above.
+
+```{r}
+# The left-arrow is the same as a single equals sign in R
+x <- 6
+# You may find this a less confusing notation
+x <- x + 1
+# Of course, the answer will be the same
 x
 ```
 
@@ -213,6 +236,18 @@ y = as.numeric(y)
 # Check that it is indeed now a double-precision numeric
 print(typeof(y))
 ```
+
+## Summary
+- You can add notes about your code in **comments**
+- There are a number of different types of data in R:
+    + **Numerics**, aka numbers
+    + **Characters**, aka text strings
+    + **Logicals**, aka Booleans, aka true/false
+    + **Nulls**, aka missing data
+- Data can be assigned to **variables** for easier use
+- A list of datapoints is called a **vector**
+- Actions can be performed using **functions**
+- Data can be **converted** to different types
 
 [⇦ Back](../../R.html)
 
