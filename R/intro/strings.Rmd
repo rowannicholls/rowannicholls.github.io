@@ -1,0 +1,114 @@
+---
+title: '<font size="5">Introduction to R:</font><br>Strings and Characters'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+---
+<font size="3">
+[⇦ Back](../../R.html)
+
+```{r message=FALSE}
+# Import packages
+library(R.utils)
+library(stringr)
+```
+
+## Concatenate Strings
+There are a number of different ways to do this, depending on the exact functionality you want:
+
+```{r}
+st = paste('Hello,', 'World')
+print(st)
+
+st = paste('Hello', 'World', sep=', ')
+print(st)
+
+st = paste('Hello,', 'World', collapse=NULL)
+print(st)
+
+cat('Hello,', 'World', sep=" ")
+```
+
+## Split Strings
+
+```{r}
+st = 'Split the words in a sentence.'
+st = strsplit(st, ' ')
+print(st)
+```
+
+## Search for a Character or Substring
+
+```{r}
+# Find the indices where certain characters are
+st = 'Hello, World'
+idx_o = unlist(gregexpr(pattern='o', st))
+print(idx_o)
+# Remove the text before a certain character
+sub_st = substr(st, start=idx_o[1], stop=nchar(st))
+print(sub_st)
+# Remove the text after a certain character
+sub_st = substr(st, start=1, stop=idx_o[1])
+print(sub_st)
+```
+
+## Lookup the Characters at Particuar Indices
+
+```{r}
+st = 'Hello World'
+st = substr(st, start=3, stop=4)
+print(st)
+```
+
+## Replace a Substring
+
+```{r}
+st = 'Hello, World'
+st = gsub('ello', 'i', st)
+print(st)
+```
+
+## Insert and Overwrite Characters
+
+```{r}
+st = 'Hello World'
+str_sub(st, 6, 6) = '_'
+str_sub(st, 8, 7) = 'O'
+print(st)
+```
+
+## Formatted Output
+
+```{r}
+x = 1
+printf('x = %.2f\n', x)
+
+# Print to console immediately
+st = 'Hello world'
+printf('Output text is: %s\n', st)
+# Write the value to a variable
+st = 'Hello world'
+st = sprintf('Output text is: %s', st)
+print(st[1])
+# Using formatted output with a data frame
+df = data.frame(
+    name = c('Alfa', 'Bravo', 'Charlie')
+)
+printf('Output text is: %s\n', df$name[1])
+```
+
+## Unicode and Emojii
+
+```{r}
+st = '\U00B5'  # mu
+print(st)
+st1 = '\U2705'  # white heavy check mark
+st2 = '\U274c'  # cross mark
+st3 = '\U0001f609'  # winking face
+utf8::utf8_print(c(st1, st2, st3))
+```
+
+[⇦ Back](../../R.html)
+
+</font>
