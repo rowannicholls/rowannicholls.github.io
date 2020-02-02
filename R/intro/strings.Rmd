@@ -15,19 +15,34 @@ library(stringr)
 ```
 
 ## Concatenate Strings
-There are a number of different ways to do this, depending on the exact functionality you want:
+There are a number of different ways to do this, depending on the exact functionality you want.
 
+`paste()` uses a space for separation by default:
 ```{r}
 st = paste('Hello,', 'World')
 print(st)
+```
 
+This default behaviour can be changed:
+```{r}
 st = paste('Hello', 'World', sep=', ')
 print(st)
 
 st = paste('Hello,', 'World', collapse=NULL)
 print(st)
+```
+
+`cat()` also uses a single space by default:
+```{r}
+cat('Hello,', 'World')
 
 cat('Hello,', 'World', sep=" ")
+```
+
+`paste0()` uses no space for separation by default:
+```{r}
+st = paste0('Hello,', 'World')
+print(st)
 ```
 
 ## Split Strings
