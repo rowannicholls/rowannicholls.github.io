@@ -39,6 +39,12 @@ cat('Hello,', 'World')
 cat('Hello,', 'World', sep=" ")
 ```
 
+`c()` is similar to `cat()` in that it also combines/concatenates objects, but `c()` turns them into *vectors*:
+```{r}
+st = c('Hello', 'World')
+print(st)
+```
+
 `paste0()` uses no space for separation by default:
 ```{r}
 st = paste0('Hello,', 'World')
