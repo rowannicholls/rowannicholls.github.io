@@ -1,0 +1,20 @@
+---
+title: attenu
+subtitle: The Joyner--Boore Attenuation Data
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/attenu
+
+```{r}
+head(attenu)
+require(graphics)
+## check the data class of the variables
+sapply(attenu, data.class)
+summary(attenu)
+pairs(attenu, main = "attenu data")
+coplot(accel ~ dist | as.factor(event), data = attenu, show.given = FALSE)
+coplot(log(accel) ~ log(dist) | as.factor(event),
+       data = attenu, panel = panel.smooth, show.given = FALSE)
+```

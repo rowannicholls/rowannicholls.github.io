@@ -1,0 +1,22 @@
+---
+title: morley
+subtitle: Michelson Speed Of Light Data
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/morley
+
+```{r}
+head(morley)
+require(stats); require(graphics)
+michelson <- transform(morley,
+                       Expt = factor(Expt), Run = factor(Run))
+xtabs(~ Expt + Run, data = michelson)  # 5 x 20 balanced (two-way)
+plot(Speed ~ Expt, data = michelson,
+     main = "Speed of Light Data", xlab = "Experiment No.")
+fm <- aov(Speed ~ Run + Expt, data = michelson)
+summary(fm)
+fm0 <- update(fm, . ~ . - Run)
+anova(fm0, fm)
+```

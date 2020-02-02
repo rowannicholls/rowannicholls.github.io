@@ -1,0 +1,15 @@
+---
+title: Harman23.cor
+subtitle: Harman Example 2.3
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/Harman23.cor
+
+```{r}
+Harman23.cor
+require(stats)
+(Harman23.FA <- factanal(factors = 1, covmat = Harman23.cor))
+for(factors in 2:4) print(update(Harman23.FA, factors = factors))
+```

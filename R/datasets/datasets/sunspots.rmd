@@ -1,0 +1,15 @@
+---
+title: sunspots
+subtitle: Monthly Sunspot Numbers, 1749--1983
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/sunspots
+
+```{r}
+head(sunspots)
+require(graphics)
+plot(sunspots, main = "sunspots data", xlab = "Year",
+     ylab = "Monthly sunspot numbers")
+```

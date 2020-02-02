@@ -1,0 +1,16 @@
+---
+title: co2
+subtitle: Mauna Loa Atmospheric CO2 Concentration
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/co2
+
+```{r}
+head(co2)
+require(graphics)
+plot(co2, ylab = expression("Atmospheric concentration of CO"[2]),
+     las = 1)
+title(main = "co2 data set")
+```

@@ -1,0 +1,22 @@
+---
+title: longley
+subtitle: Longley's Economic Regression Data
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/longley
+
+```{r}
+longley
+require(stats); require(graphics)
+## give the data set in the form it is used in S-PLUS:
+longley.x <- data.matrix(longley[, 1:6])
+longley.y <- longley[, "Employed"]
+pairs(longley, main = "longley data")
+summary(fm1 <- lm(Employed ~ ., data = longley))
+opar <- par(mfrow = c(2, 2), oma = c(0, 0, 1.1, 0),
+            mar = c(4.1, 4.1, 2.1, 1.1))
+plot(fm1)
+par(opar)
+```

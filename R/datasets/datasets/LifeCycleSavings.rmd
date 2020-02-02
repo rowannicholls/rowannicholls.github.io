@@ -1,0 +1,17 @@
+---
+title: LifeCycleSavings
+subtitle: Intercountry Life-Cycle Savings Data
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/LifeCycleSavings
+
+```{r}
+head(LifeCycleSavings)
+require(stats); require(graphics)
+pairs(LifeCycleSavings, panel = panel.smooth,
+      main = "LifeCycleSavings data")
+fm1 <- lm(sr ~ pop15 + pop75 + dpi + ddpi, data = LifeCycleSavings)
+summary(fm1)
+```

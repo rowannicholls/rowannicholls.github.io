@@ -1,0 +1,14 @@
+---
+title: airquality
+subtitle: New York Air Quality Measurements
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/airquality
+
+```{r}
+head(airquality)
+require(graphics)
+pairs(airquality, panel = panel.smooth, main = "airquality data")
+```

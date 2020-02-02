@@ -1,0 +1,15 @@
+---
+title: ToothGrowth
+subtitle: The Effect Of Vitamin C On Tooth Growth In Guinea Pigs
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/ToothGrowth
+
+```{r}
+head(ToothGrowth)
+require(graphics)
+coplot(len ~ dose | supp, data = ToothGrowth, panel = panel.smooth,
+       xlab = "ToothGrowth data: length vs dose, given type of supplement")
+```

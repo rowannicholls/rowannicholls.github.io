@@ -1,0 +1,17 @@
+---
+title: islands
+subtitle: Areas Of The World's Major Landmasses
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/islands
+
+```{r}
+islands
+require(graphics)
+dotchart(log(islands, 10),
+   main = "islands data: log10(area) (log10(sq. miles))")
+dotchart(log(islands[order(islands)], 10),
+   main = "islands data: log10(area) (log10(sq. miles))")
+```

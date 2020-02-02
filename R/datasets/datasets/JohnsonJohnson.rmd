@@ -1,0 +1,25 @@
+---
+title: JohnsonJohnson
+subtitle: Quarterly Earnings Per Johnson & Johnson Share
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/JohnsonJohnson
+
+```{r}
+JohnsonJohnson
+require(stats); require(graphics)
+JJ <- log10(JohnsonJohnson)
+plot(JJ)
+## This example gives a possible-non-convergence warning on some
+## platforms, but does seem to converge on x86 Linux and Windows.
+(fit <- StructTS(JJ, type = "BSM"))
+tsdiag(fit)
+sm <- tsSmooth(fit)
+plot(cbind(JJ, sm[, 1], sm[, 3]-0.5), plot.type = "single",
+     col = c("black", "green", "blue"))
+abline(h = -0.5, col = "grey60")
+
+monthplot(fit)
+```

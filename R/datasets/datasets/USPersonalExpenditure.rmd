@@ -1,0 +1,15 @@
+---
+title: USPersonalExpenditure
+subtitle: Personal Expenditure Data
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/USPersonalExpenditure
+
+```{r}
+USPersonalExpenditure
+require(stats) # for medpolish
+USPersonalExpenditure
+medpolish(log10(USPersonalExpenditure))
+```

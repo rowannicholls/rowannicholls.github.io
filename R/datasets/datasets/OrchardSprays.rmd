@@ -1,0 +1,14 @@
+---
+title: OrchardSprays
+subtitle: Potency Of Orchard Sprays
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/OrchardSprays
+
+```{r}
+OrchardSprays
+require(graphics)
+pairs(OrchardSprays, main = "OrchardSprays data")
+```

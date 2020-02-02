@@ -1,0 +1,15 @@
+---
+title: uspop
+subtitle: Populations Recorded By The US Census
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/uspop
+
+```{r}
+uspop
+require(graphics)
+plot(uspop, log = "y", main = "uspop data", xlab = "Year",
+     ylab = "U.S. Population (millions)")
+```

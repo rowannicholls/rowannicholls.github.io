@@ -1,0 +1,15 @@
+---
+title: volcano
+subtitle: Topographic Information On Auckland's Maunga Whau Volcano
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/volcano
+
+```{r}
+head(volcano)
+require(grDevices); require(graphics)
+filled.contour(volcano, color.palette = terrain.colors, asp = 1)
+title(main = "volcano data: filled contour map")
+```

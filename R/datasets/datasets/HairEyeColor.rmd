@@ -1,0 +1,19 @@
+---
+title: HairEyeColor
+subtitle: Hair And Eye Color Of Statistics Students
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/HairEyeColor
+
+```{r}
+HairEyeColor
+require(graphics)
+## Full mosaic
+mosaicplot(HairEyeColor)
+## Aggregate over sex (as in Snee's original data)
+x <- apply(HairEyeColor, c(1, 2), sum)
+x
+mosaicplot(x, main = "Relation between hair and eye color")
+```

@@ -1,0 +1,18 @@
+---
+title: presidents
+subtitle: Quarterly Approval Ratings of US Presidents
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/presidents
+
+```{r}
+presidents
+require(stats)
+require(graphics)
+plot(
+    presidents, las = 1, ylab = "Approval rating (%)",
+    main = "presidents data"
+)
+```

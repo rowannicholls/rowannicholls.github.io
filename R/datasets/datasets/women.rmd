@@ -1,0 +1,17 @@
+---
+title: women
+subtitle: Average Heights and Weights for American Women
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/women
+
+```{r}
+women
+require(graphics)
+plot(
+    women, xlab = "Height (in)", ylab = "Weight (lb)",
+    main = "women data: American women aged 30-39"
+)
+```

@@ -1,0 +1,15 @@
+---
+title: ChickWeight
+subtitle: Weight Versus Age Of Chicks On Different Diets
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/ChickWeight
+
+```{r}
+head(ChickWeight)
+require(graphics)
+coplot(weight ~ Time | Chick, data = ChickWeight,
+       type = "b", show.given = FALSE)
+```

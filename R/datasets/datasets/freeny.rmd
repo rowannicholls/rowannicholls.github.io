@@ -1,0 +1,24 @@
+---
+title: freeny
+subtitle: Freeny's Revenue Data
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/freeny
+
+```{r}
+head(freeny)
+head(freeny.x)
+head(freeny.y)
+require(stats); require(graphics)
+summary(freeny)
+pairs(freeny, main = "freeny data")
+# gives warning: freeny$y has class "ts"
+
+summary(fm1 <- lm(y ~ ., data = freeny))
+opar <- par(mfrow = c(2, 2), oma = c(0, 0, 1.1, 0),
+            mar = c(4.1, 4.1, 2.1, 1.1))
+plot(fm1)
+par(opar)
+```

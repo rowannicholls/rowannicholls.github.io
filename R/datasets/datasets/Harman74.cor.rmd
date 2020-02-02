@@ -1,0 +1,18 @@
+---
+title: Harman74.cor
+subtitle: Harman Example 7.4
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/Harman74.cor
+
+```{r}
+head(Harman74.cor)
+require(stats)
+(Harman74.FA <- factanal(factors = 1, covmat = Harman74.cor))
+for(factors in 2:5) print(update(Harman74.FA, factors = factors))
+Harman74.FA <- factanal(factors = 5, covmat = Harman74.cor,
+                        rotation = "promax")
+print(Harman74.FA$loadings, sort = TRUE)
+```

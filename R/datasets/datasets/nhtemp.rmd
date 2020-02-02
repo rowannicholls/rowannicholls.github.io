@@ -1,0 +1,15 @@
+---
+title: nhtemp
+subtitle: Average Yearly Temperatures In New Haven
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/nhtemp
+
+```{r}
+nhtemp
+require(stats); require(graphics)
+plot(nhtemp, main = "nhtemp data",
+  ylab = "Mean annual temperature in New Haven, CT (deg. F)")
+```

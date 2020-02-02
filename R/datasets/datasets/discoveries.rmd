@@ -1,0 +1,16 @@
+---
+title: discoveries
+subtitle: Yearly Numbers Of Important Discoveries
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/discoveries
+
+```{r}
+discoveries
+require(graphics)
+plot(discoveries, ylab = "Number of important discoveries",
+     las = 1)
+title(main = "discoveries data set")
+```

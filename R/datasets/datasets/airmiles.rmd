@@ -1,0 +1,15 @@
+---
+title: airmiles
+subtitle: Passenger Miles On Commercial US Airlines, 1937--1960
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/airmiles
+
+```{r}
+airmiles
+require(graphics)
+plot(airmiles, main = "airmiles data",
+     xlab = "Passenger-miles flown by U.S. commercial airlines", col = 4)
+```

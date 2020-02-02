@@ -1,0 +1,19 @@
+---
+title: pressure
+subtitle: Vapor Pressure Of Mercury As A Function Of Temperature
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/pressure
+
+```{r}
+pressure
+require(graphics)
+plot(pressure, xlab = "Temperature (deg C)",
+     ylab = "Pressure (mm of Hg)",
+     main = "pressure data: Vapor Pressure of Mercury")
+plot(pressure, xlab = "Temperature (deg C)",  log = "y",
+     ylab = "Pressure (mm of Hg)",
+     main = "pressure data: Vapor Pressure of Mercury")
+```

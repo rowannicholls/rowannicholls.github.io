@@ -1,0 +1,18 @@
+---
+title: PlantGrowth
+subtitle: Results From An Experiment On Plant Growth
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/PlantGrowth
+
+```{r}
+PlantGrowth
+## One factor ANOVA example from Dobson's book, cf. Table 7.4:
+require(stats); require(graphics)
+boxplot(weight ~ group, data = PlantGrowth, main = "PlantGrowth data",
+        ylab = "Dried weight of plants", col = "lightgray",
+        notch = TRUE, varwidth = TRUE)
+anova(lm(weight ~ group, data = PlantGrowth))
+```

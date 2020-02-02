@@ -1,0 +1,22 @@
+---
+title: precip
+subtitle: Annual Precipitation In US Cities
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/precip
+
+```{r}
+precip
+require(graphics)
+dotchart(precip[order(precip)], main = "precip data")
+title(sub = "Average annual precipitation (in.)")
+
+## Old ("wrong") version of dataset (just name change):
+precip.O <- local({
+   p <- precip; names(p)[names(p) == "Cincinnati"] <- "Cincinati" ; p })
+stopifnot(all(precip == precip.O),
+	  match("Cincinnati", names(precip)) == 46,
+	  identical(names(precip)[-46], names(precip.O)[-46]))
+```

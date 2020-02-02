@@ -1,0 +1,21 @@
+---
+title: UKLungDeaths
+subtitle: Monthly Deaths From Lung Diseases In The UK
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/UKLungDeaths
+
+```{r}
+fdeaths
+ldeaths
+mdeaths
+require(stats); require(graphics) # for time
+plot(ldeaths)
+plot(mdeaths, fdeaths)
+## Better labels:
+yr <- floor(tt <- time(mdeaths))
+plot(mdeaths, fdeaths,
+     xy.labels = paste(month.abb[12*(tt - yr)], yr-1900, sep = "'"))
+```

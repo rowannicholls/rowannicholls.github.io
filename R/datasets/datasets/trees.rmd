@@ -1,0 +1,21 @@
+---
+title: trees
+subtitle: Diameter, Height And Volume For Black Cherry Trees
+output: html_document
+---
+
+#### *A pre-loaded example dataset in R*
+Main page: https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/trees
+
+```{r}
+trees
+require(stats); require(graphics)
+pairs(trees, panel = panel.smooth, main = "trees data")
+plot(Volume ~ Girth, data = trees, log = "xy")
+coplot(log(Volume) ~ log(Girth) | Height, data = trees,
+       panel = panel.smooth)
+summary(fm1 <- lm(log(Volume) ~ log(Girth), data = trees))
+summary(fm2 <- update(fm1, ~ . + log(Height), data = trees))
+step(fm2)
+## i.e., Volume ~= c * Height * Girth^2  seems reasonable
+```
