@@ -1,0 +1,87 @@
+---
+title: '<font size="5">Introduction to R:</font><br>Vectors'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+---
+<font size="3">
+[⇦ Back](../../R.html)
+
+```{r, echo=FALSE}
+# Import packages
+library(plyr)
+```
+
+Vectors are lists of data, eg a list of numbers or a list of strings.
+
+## Create a Vector
+
+The function that creates a vector is `c()`, where 'c' is short for 'concatenate'. You already met this function in [the page on characters and strings](strings.html).
+```{r}
+# A vector of strings:
+x = c('Alfa', 'Bravo', 'Charlie')
+# A vector of numbers:
+x = c(1, 2, 3)
+# A vector of both:
+x = c('Alfa', 'Bravo', 3, 4)
+```
+
+You can also use the `vector()` function, which creates an empty vector of a certain type and length. In this example, it creates a vector of four integers (which, currently do not exist):
+```{r}
+x = vector('integer', 4)
+```
+
+## Indexing a Vector
+
+To see what is located at a certain point in the vector, use square brackets to index it. For example, to see the second element of `x = c('Alfa', 'Bravo', 'Charlie', 'Delta')`:
+```{r, echo=FALSE}
+x = c('Alfa', 'Bravo', 'Charlie', 'Delta')
+```
+
+```{r}
+print(x[2])
+```
+
+To see all elements from the second to the fourth:
+```{r}
+print(x[2:4])
+```
+
+## Overwriting an Element
+
+You can overwrite a value in a vector by indexing its position and setting it equal to something else:
+```{r}
+x[1] = 'ALFA'
+print(x)
+```
+
+You can also use the `mapvalues()` function from the `plyr` package to specify exactly what values you want to overwrite:
+```{r}
+x = plyr::mapvalues(
+    x,
+    c('Bravo', 'Charlie'),
+    c('BRAVO', 'CHARLIE')
+)
+print(x)
+```
+
+## Appending to a Vector
+
+To add an element to a vector, simple index one position after the last. For example, if a vector has four elements we need to index position five and set it equal to something:
+```{r}
+x[5] = 'Echo'
+print(x)
+```
+
+Be careful though because if you get the element number wrong you will overwrite something instead of appending. A way to guarantee that you will always index the correct position is by using the `length()` function to get the number of elements in the vector. The length also happens to be the position of the last element, so by indexing one more than this value you will always be appending to the vector:
+```{r}
+x[length(x) + 1] = 'Foxtrot'
+print(x)
+```
+
+This trick ensures you are always *appending* not *overwriting*, no matter what vector you are using.
+
+[⇦ Back](../../R.html)
+
+</font>

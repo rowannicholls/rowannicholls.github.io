@@ -15,83 +15,108 @@ library(stringr)
 ```
 
 ## Concatenate Strings
-There are a number of different ways to do this, depending on the exact functionality you want.
+There are a number of different ways to do this, depending on the exact functionality you want:
+
+### `paste()`
 
 `paste()` uses a space for separation by default:
 ```{r}
-st = paste('Hello,', 'World')
+st = paste('Hello', 'World')
 print(st)
 ```
 
-This default behaviour can be changed:
+This default behaviour can be changed using the `sep` keyword argument, eg you can have a comma and a space:
 ```{r}
 st = paste('Hello', 'World', sep=', ')
 print(st)
-
-st = paste('Hello,', 'World', collapse=NULL)
-print(st)
 ```
 
-`cat()` also uses a single space by default:
+This function returns a *character vector*. This means that you can assign it to a variable for later use, like how I assigned it to the variable `st` in the above examples.
+
+### `cat()`
+
+`cat()` performs the same function as `paste()` and also uses a single space by default. This can also be changed through the use of the `sep` keyword argument.
 ```{r}
-cat('Hello,', 'World')
-
-cat('Hello,', 'World', sep=" ")
+cat('Hello', 'World')
 ```
 
-`c()` is similar to `cat()` in that it also combines/concatenates objects, but `c()` turns them into *vectors*:
+The difference between `paste()` and `cat()` is that `cat()` does not return a value, it only prints it to the console. This means that it cannot be saved to a variable like this:
+```{r, results='hide'}
+a = cat('Hello', 'World')
+```
+
+The code below prints `NULL` because nothing was returned by the `cat()` function to the variable `a`!
+```{r}
+print(a)
+```
+
+### `c()`
+
+`c()` is similar to `paste()` in that it also combines/concatenates objects and allows you to assign them to variables, but `c()` turns them into *vectors*:
 ```{r}
 st = c('Hello', 'World')
 print(st)
 ```
 
+### `paste0()`
+
 `paste0()` uses no space for separation by default:
 ```{r}
-st = paste0('Hello,', 'World')
+st = paste0('Hello', 'World')
 print(st)
 ```
 
 ## Split Strings
 
+Use `strsplit()`:
 ```{r}
 st = 'Split the words in a sentence.'
 st = strsplit(st, ' ')
 print(st)
 ```
 
-## Search for a Character or Substring
+## Search for a Character or Sub-string
 
+Find the indices where certain characters are:
 ```{r}
-# Find the indices where certain characters are
-st = 'Hello, World'
+st = 'Hello World'
 idx_o = unlist(gregexpr(pattern='o', st))
 print(idx_o)
-# Remove the text before a certain character
-sub_st = substr(st, start=idx_o[1], stop=nchar(st))
-print(sub_st)
-# Remove the text after a certain character
-sub_st = substr(st, start=1, stop=idx_o[1])
-print(sub_st)
 ```
 
-## Lookup the Characters at Particuar Indices
+## Lookup the Characters at Particular Indices
 
+Use `substr()`:
 ```{r}
 st = 'Hello World'
 st = substr(st, start=3, stop=4)
 print(st)
 ```
 
-## Replace a Substring
-
+Remove the text before a certain character:
 ```{r}
-st = 'Hello, World'
+sub_st = substr(st, start=idx_o[1], stop=nchar(st))
+print(sub_st)
+```
+
+Remove the text after a certain character:
+```{r}
+sub_st = substr(st, start=1, stop=idx_o[1])
+print(sub_st)
+```
+
+## Replace a Sub-string
+
+Use `gsub()`:
+```{r}
+st = 'Hello World'
 st = gsub('ello', 'i', st)
 print(st)
 ```
 
-## Insert and Overwrite Characters
+## Overwrite Characters
 
+Use `str_sub()`:
 ```{r}
 st = 'Hello World'
 str_sub(st, 6, 6) = '_'
@@ -100,30 +125,66 @@ print(st)
 ```
 
 ## Formatted Output
+If you want to print a variable as part of a string using a specific format, use the `printf()` function along with the `%` character to indicate where you want the variable to be inserted. You also need to have a letter after the `%` to indicate what type of format to use.
 
+### Number formats
+
+When working with numbers, use the `f` for 'floating-point' in conjunction with `%`:
 ```{r}
 x = 1
-printf('x = %.2f\n', x)
+printf('x = %f', x)
+```
 
-# Print to console immediately
+Use a decimal point and a number to set the number of decimal places you see:
+```{r}
+x = 1
+printf('x = %.2f', x)
+```
+
+Use a number before the decimal point to set the 'width' of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:
+```{r}
+x = 1
+printf('x = %8.2f', x)
+```
+
+### String formats
+Instead of the `f`, use an `s` together with the `%`.
+
+You can print to the console immediately:
+```{r}
 st = 'Hello world'
-printf('Output text is: %s\n', st)
-# Write the value to a variable
+printf('Output text is: %s', st)
+```
+
+...or you can write the value to a variable and print it to the console at a later stage by using the `sprintf()` function:
+```{r}
 st = 'Hello world'
 st = sprintf('Output text is: %s', st)
 print(st[1])
-# Using formatted output with a data frame
+```
+
+### Using formatted output with a data frame
+
+If you extract a single string from any vector or dataframe, it will be treated in the same way by the `printf()` function:
+```{r}
 df = data.frame(
     name = c('Alfa', 'Bravo', 'Charlie')
 )
-printf('Output text is: %s\n', df$name[1])
+printf('Output text is: %s', df$name[1])
 ```
 
 ## Unicode and Emojii
 
+Unicode characters can be called by using `\U` and referencing their unicode number. Some can then simply be printed:
 ```{r}
-st = '\U00B5'  # mu
-print(st)
+st1 = '\U03BC'  # mu
+st2 = '\U03B5'  # epsilon
+st3 = '\U03C9'  # omega
+print(c(st1, st2, st3))
+```
+
+Others (eg emojis) cannot be printed this easily and need the special `utf8_print()` function from the `utf8` library:
+```{r}
 st1 = '\U2705'  # white heavy check mark
 st2 = '\U274c'  # cross mark
 st3 = '\U0001f609'  # winking face
