@@ -4,11 +4,12 @@ output:
     html_document:
         theme: paper
         highlight: textmate
+        number_sections: true
 ---
 <font size="3">
 [⇦ Back](../../R.html)
 
-## Synopsis
+# Synopsis
 - You can add notes about your code in **comments**
 - There are a number of different types of data in R:
     + **Numerics**, aka numbers
@@ -20,7 +21,7 @@ output:
 - Actions can be performed using **functions**
 - Data can be **converted** to different types
 
-## Comments
+# Comments
 If you're brand new to R and coding, the first thing to know about is __*comments*__.
 
 These are lines in your program that do absolutely nothing - they are ignored when your program is run. But they are **very** useful for making notes for yourself and, especially, for others who will have to read your code.
@@ -40,7 +41,7 @@ You write a comment by starting your line with a hash "#":
 
 Don't underestimate the power of comments! Just because your code makes sense to you now when you're writing it doesn't mean you will remember what you were thinking 6 months down the line when you re-open it. Likewise, if someone else needs to use your code they will need to work out what it does; and almost impossible task if you don't explain yourself!
 
-## Numerics
+# Numerics
 As the name suggests, these are numbers. If you type a plain number R will output it to the __*console*__, which is shown here by the box starting with "[1]":
 
 ```{r}
@@ -52,7 +53,7 @@ As the name suggests, these are numbers. If you type a plain number R will outpu
 
 The `[1]` indicates that it is the first thing in the output.
 
-## Variables
+# Variables
 A number is useless on its own. In order to use it you need to __*assign*__ it to a __*variable*__:
 
 ```{r}
@@ -120,7 +121,7 @@ final_answer = 100
 height_cm = 170
 ```
 
-## Characters (aka Strings)
+# Characters (aka Strings)
 Characters are strings of letters, and as such they will often be referred to as 'strings'. You write a string by using single or double quotation marks:
 
 ```{r}
@@ -138,7 +139,7 @@ x = '5'
 # x + 2
 ```
 
-## Logicals (aka Booleans)
+# Logicals (aka Booleans)
 These are TRUE and FALSE:
 
 ```{r}
@@ -146,7 +147,7 @@ passed_test = TRUE
 largest_prime_number = FALSE
 ```
 
-## Nulls
+# Nulls
 Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing these become useful when you're dealing with missing data.
 
 In R, you have three null characters:
@@ -161,7 +162,7 @@ not_available = NA
 null_character = NULL
 ```
 
-## Built-In Functions
+# Built-In Functions
 Functions are bits of code that can be used again and again just by *calling* the function's name. You can tell that a function is being used because it will have round brackets - ().
 
 The first function you should know about is the `print()` function. This function takes a string and outputs it to the console:
@@ -190,7 +191,7 @@ print(typeof(NA))
 print(typeof(NULL))
 ```
 
-## Vectors
+# Vectors
 A very common built-in function in R is the *concatenate* function, shortened to `c()` because it is used so often. This concatenates (joins) all the arguments that are passed to it into one element. This element, made up of many numbers and strings in order, is called a *vector*.
 
 ```{r}
@@ -219,7 +220,7 @@ print(x)
 print(typeof(x))
 ```
 
-## Type Conversion
+# Type Conversion
 The last functions we will learn about on this page are the `as.character()` and `as.numeric()` functions. These convert numerics to characters and characters to numerics, respectively:
 
 ```{r}
@@ -237,7 +238,7 @@ y = as.numeric(y)
 print(typeof(y))
 ```
 
-## Summary
+# Summary
 - You can add notes about your code in **comments**
 - There are a number of different types of data in R:
     + **Numerics**, aka numbers

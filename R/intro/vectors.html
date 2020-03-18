@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -145,6 +144,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -183,8 +183,8 @@ summary {
 
 <p><font size="3"> <a href="../../R.html">⇦ Back</a></p>
 <p>Vectors are lists of data, eg a list of numbers or a list of strings.</p>
-<div id="create-a-vector" class="section level2">
-<h2>Create a Vector</h2>
+<div id="creating-a-vector" class="section level1">
+<h1><span class="header-section-number">1</span> Creating a Vector</h1>
 <p>The function that creates a vector is <code>c()</code>, where ‘c’ is short for ‘concatenate’. You already met this function in <a href="strings.html">the page on characters and strings</a>.</p>
 <pre class="r"><code># A vector of strings:
 x = c('Alfa', 'Bravo', 'Charlie')
@@ -195,8 +195,8 @@ x = c('Alfa', 'Bravo', 3, 4)</code></pre>
 <p>You can also use the <code>vector()</code> function, which creates an empty vector of a certain type and length. In this example, it creates a vector of four integers (which, currently do not exist):</p>
 <pre class="r"><code>x = vector('integer', 4)</code></pre>
 </div>
-<div id="indexing-a-vector" class="section level2">
-<h2>Indexing a Vector</h2>
+<div id="indexing-a-vector" class="section level1">
+<h1><span class="header-section-number">2</span> Indexing a Vector</h1>
 <p>To see what is located at a certain point in the vector, use square brackets to index it. For example, to see the second element of <code>x = c('Alfa', 'Bravo', 'Charlie', 'Delta')</code>:</p>
 <pre class="r"><code>print(x[2])</code></pre>
 <pre><code>## [1] &quot;Bravo&quot;</code></pre>
@@ -204,8 +204,8 @@ x = c('Alfa', 'Bravo', 3, 4)</code></pre>
 <pre class="r"><code>print(x[2:4])</code></pre>
 <pre><code>## [1] &quot;Bravo&quot;   &quot;Charlie&quot; &quot;Delta&quot;</code></pre>
 </div>
-<div id="overwriting-an-element" class="section level2">
-<h2>Overwriting an Element</h2>
+<div id="overwriting-an-element" class="section level1">
+<h1><span class="header-section-number">3</span> Overwriting an Element</h1>
 <p>You can overwrite a value in a vector by indexing its position and setting it equal to something else:</p>
 <pre class="r"><code>x[1] = 'ALFA'
 print(x)</code></pre>
@@ -219,8 +219,8 @@ print(x)</code></pre>
 print(x)</code></pre>
 <pre><code>## [1] &quot;ALFA&quot;    &quot;BRAVO&quot;   &quot;CHARLIE&quot; &quot;Delta&quot;</code></pre>
 </div>
-<div id="appending-to-a-vector" class="section level2">
-<h2>Appending to a Vector</h2>
+<div id="appending-to-a-vector" class="section level1">
+<h1><span class="header-section-number">4</span> Appending to a Vector</h1>
 <p>To add an element to a vector, simple index one position after the last. For example, if a vector has four elements we need to index position five and set it equal to something:</p>
 <pre class="r"><code>x[5] = 'Echo'
 print(x)</code></pre>

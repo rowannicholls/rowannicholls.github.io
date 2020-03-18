@@ -182,8 +182,8 @@ summary {
 
 
 <p><font size="3"> <a href="../../R.html">⇦ Back</a></p>
-<div id="synopsis" class="section level2">
-<h2>Synopsis</h2>
+<div id="synopsis" class="section level1">
+<h1><span class="header-section-number">1</span> Synopsis</h1>
 <ul>
 <li>You can add notes about your code in <strong>comments</strong></li>
 <li>There are a number of different types of data in R:
@@ -199,8 +199,8 @@ summary {
 <li>Data can be <strong>converted</strong> to different types</li>
 </ul>
 </div>
-<div id="comments" class="section level2">
-<h2>Comments</h2>
+<div id="comments" class="section level1">
+<h1><span class="header-section-number">2</span> Comments</h1>
 <p>If you’re brand new to R and coding, the first thing to know about is <strong><em>comments</em></strong>.</p>
 <p>These are lines in your program that do absolutely nothing - they are ignored when your program is run. But they are <strong>very</strong> useful for making notes for yourself and, especially, for others who will have to read your code.</p>
 <p>You write a comment by starting your line with a hash “#”:</p>
@@ -216,8 +216,8 @@ summary {
 </blockquote>
 <p>Don’t underestimate the power of comments! Just because your code makes sense to you now when you’re writing it doesn’t mean you will remember what you were thinking 6 months down the line when you re-open it. Likewise, if someone else needs to use your code they will need to work out what it does; and almost impossible task if you don’t explain yourself!</p>
 </div>
-<div id="numerics" class="section level2">
-<h2>Numerics</h2>
+<div id="numerics" class="section level1">
+<h1><span class="header-section-number">3</span> Numerics</h1>
 <p>As the name suggests, these are numbers. If you type a plain number R will output it to the <strong><em>console</em></strong>, which is shown here by the box starting with “[1]”:</p>
 <pre class="r"><code># This is just a number
 27.03</code></pre>
@@ -227,8 +227,8 @@ summary {
 <pre><code>## [1] 12</code></pre>
 <p>The <code>[1]</code> indicates that it is the first thing in the output.</p>
 </div>
-<div id="variables" class="section level2">
-<h2>Variables</h2>
+<div id="variables" class="section level1">
+<h1><span class="header-section-number">4</span> Variables</h1>
 <p>A number is useless on its own. In order to use it you need to <strong><em>assign</em></strong> it to a <strong><em>variable</em></strong>:</p>
 <pre class="r"><code># Assigning numbers to variables
 x = 5
@@ -279,8 +279,8 @@ final_answer = 100
 # A person's height in centimetres
 height_cm = 170</code></pre>
 </div>
-<div id="characters-aka-strings" class="section level2">
-<h2>Characters (aka Strings)</h2>
+<div id="characters-aka-strings" class="section level1">
+<h1><span class="header-section-number">5</span> Characters (aka Strings)</h1>
 <p>Characters are strings of letters, and as such they will often be referred to as ‘strings’. You write a string by using single or double quotation marks:</p>
 <pre class="r"><code># This is a string, representing text
 my_string = &quot;Hello, World!&quot;
@@ -291,14 +291,14 @@ x = '5'
 # If you try to run the following code, you will get an error:
 # x + 2</code></pre>
 </div>
-<div id="logicals-aka-booleans" class="section level2">
-<h2>Logicals (aka Booleans)</h2>
+<div id="logicals-aka-booleans" class="section level1">
+<h1><span class="header-section-number">6</span> Logicals (aka Booleans)</h1>
 <p>These are TRUE and FALSE:</p>
 <pre class="r"><code>passed_test = TRUE
 largest_prime_number = FALSE</code></pre>
 </div>
-<div id="nulls" class="section level2">
-<h2>Nulls</h2>
+<div id="nulls" class="section level1">
+<h1><span class="header-section-number">7</span> Nulls</h1>
 <p>Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing these become useful when you’re dealing with missing data.</p>
 <p>In R, you have three null characters:</p>
 <ul>
@@ -310,8 +310,8 @@ largest_prime_number = FALSE</code></pre>
 not_available = NA
 null_character = NULL</code></pre>
 </div>
-<div id="built-in-functions" class="section level2">
-<h2>Built-In Functions</h2>
+<div id="built-in-functions" class="section level1">
+<h1><span class="header-section-number">8</span> Built-In Functions</h1>
 <p>Functions are bits of code that can be used again and again just by <em>calling</em> the function’s name. You can tell that a function is being used because it will have round brackets - ().</p>
 <p>The first function you should know about is the <code>print()</code> function. This function takes a string and outputs it to the console:</p>
 <pre class="r"><code>print('Hello, World!')</code></pre>
@@ -338,8 +338,8 @@ print(typeof(NA))</code></pre>
 print(typeof(NULL))</code></pre>
 <pre><code>## [1] &quot;NULL&quot;</code></pre>
 </div>
-<div id="vectors" class="section level2">
-<h2>Vectors</h2>
+<div id="vectors" class="section level1">
+<h1><span class="header-section-number">9</span> Vectors</h1>
 <p>A very common built-in function in R is the <em>concatenate</em> function, shortened to <code>c()</code> because it is used so often. This concatenates (joins) all the arguments that are passed to it into one element. This element, made up of many numbers and strings in order, is called a <em>vector</em>.</p>
 <pre class="r"><code># A vector of numerics 
 x = c(4, 5, 6, 7, 8)
@@ -360,8 +360,8 @@ print(x)</code></pre>
 <pre class="r"><code>print(typeof(x))</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 </div>
-<div id="type-conversion" class="section level2">
-<h2>Type Conversion</h2>
+<div id="type-conversion" class="section level1">
+<h1><span class="header-section-number">10</span> Type Conversion</h1>
 <p>The last functions we will learn about on this page are the <code>as.character()</code> and <code>as.numeric()</code> functions. These convert numerics to characters and characters to numerics, respectively:</p>
 <pre class="r"><code># Start with a number
 x = 15
@@ -378,8 +378,8 @@ y = as.numeric(y)
 print(typeof(y))</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
 </div>
-<div id="summary" class="section level2">
-<h2>Summary</h2>
+<div id="summary" class="section level1">
+<h1><span class="header-section-number">11</span> Summary</h1>
 <ul>
 <li>You can add notes about your code in <strong>comments</strong></li>
 <li>There are a number of different types of data in R:

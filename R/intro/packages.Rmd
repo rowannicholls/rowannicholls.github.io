@@ -4,22 +4,23 @@ output:
     html_document:
         theme: paper
         highlight: textmate
+        number_sections: true
 ---
 <font size="3">
 [⇦ Back](../../R.html)
 
-## Synopsis
+# Synopsis
 - A 'package' is the same as a 'library'
 - Increase the number of functions you can call by installing __*packages*__
 - Once installed, you still need to __*import*__ the library into your script
 
-## What are Packages and Libraries, and Why Do I Need Them?
+# What are Packages and Libraries, and Why Do I Need Them?
 When you download and install R or RStudio you get access to what is known as __*base*__ R. It's very powerful and can do a lot of things but, as the name suggests, it's very basic. In order to add functionality and be able to use other functions you need to __*install packages*__ and __*import libraries*__.
 
 > **What's the difference between a library and a package?**  
 > Nothing. They are two names for the same thing. For some reason you *install* a package and *import* a library but I don't know why.
 
-## Install a Package
+# Install a Package
 Packages can be installed by running the `install.packages()` function. Specify the name of the package you want to install as a string and the repository you want to install it from by using the `repos` __*keyword argument*__:
 
 ```{r message=FALSE, warning=FALSE}
@@ -41,7 +42,7 @@ The "cran" part of the repos URL refers to "CRAN", the Comprehensive R Archive N
 
 You can find out where on your computer the packages are installed by running `.libPaths()` and see what packages you've installed with `print(as.data.frame(installed.packages()))`.
 
-## Import a Library
+# Import a Library
 When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.
 
 **Note:** it's best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:
@@ -72,7 +73,7 @@ square_root = x %>%
 square_root
 ```
 
-## Call a Function From a Library
+# Call a Function From a Library
 You can call a function that comes from a particular library in one of two ways. Here's an example with the `str_length()` function, which comes from the 'stringr' library and finds the number of characters in a string. The first way is to just call the function as you would any other:
 
 ```{r}
@@ -93,7 +94,7 @@ length = stringr::str_length('Hello, World')
 print(length)
 ```
 
-## Alternative Methods of Importing Libraries
+# Alternative Methods of Importing Libraries
 If your script is going to be run on someone else's computer and you don't know if they will have a particular package installed, import it into your script with the `require()` function. If the package is installed, it will import it. If it isn't, it will first download and install it, then import it.
 
 ```{r message=FALSE}
@@ -116,7 +117,7 @@ suppressPackageStartupMessages(require(dplyr))
 suppressPackageStartupMessages(library(logging))
 ```
 
-## Summary
+# Summary
 - A 'package' is the same as a 'library'
 - Increase the number of functions you can call by installing __*packages*__
 - Once installed, you still need to __*import*__ the library into your script

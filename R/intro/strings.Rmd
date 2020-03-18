@@ -4,6 +4,7 @@ output:
     html_document:
         theme: paper
         highlight: textmate
+        number_sections: true
 ---
 <font size="3">
 [⇦ Back](../../R.html)
@@ -14,10 +15,10 @@ library(R.utils)
 library(stringr)
 ```
 
-## Concatenate Strings
+# Concatenate Strings
 There are a number of different ways to do this, depending on the exact functionality you want:
 
-### `paste()`
+## `paste()`
 
 `paste()` uses a space for separation by default:
 ```{r}
@@ -33,7 +34,7 @@ print(st)
 
 This function returns a *character vector*. This means that you can assign it to a variable for later use, like how I assigned it to the variable `st` in the above examples.
 
-### `cat()`
+## `cat()`
 
 `cat()` performs the same function as `paste()` and also uses a single space by default. This can also be changed through the use of the `sep` keyword argument.
 ```{r}
@@ -50,7 +51,7 @@ The code below prints `NULL` because nothing was returned by the `cat()` functio
 print(a)
 ```
 
-### `c()`
+## `c()`
 
 `c()` is similar to `paste()` in that it also combines/concatenates objects and allows you to assign them to variables, but `c()` turns them into *vectors*:
 ```{r}
@@ -58,7 +59,7 @@ st = c('Hello', 'World')
 print(st)
 ```
 
-### `paste0()`
+## `paste0()`
 
 `paste0()` uses no space for separation by default:
 ```{r}
@@ -66,7 +67,7 @@ st = paste0('Hello', 'World')
 print(st)
 ```
 
-## Split Strings
+# Split Strings
 
 Use `strsplit()`:
 ```{r}
@@ -75,7 +76,7 @@ st = strsplit(st, ' ')
 print(st)
 ```
 
-## Search for a Character or Sub-string
+# Search for a Character or Sub-string
 
 Find the indices where certain characters are:
 ```{r}
@@ -83,8 +84,9 @@ st = 'Hello World'
 idx_o = unlist(gregexpr(pattern='o', st))
 print(idx_o)
 ```
+In this example the letter "o" can be found at both position 5 and 8 in the string "Hello World".
 
-## Lookup the Characters at Particular Indices
+# Lookup the Characters at Particular Indices
 
 Use `substr()`:
 ```{r}
@@ -105,7 +107,7 @@ sub_st = substr(st, start=1, stop=idx_o[1])
 print(sub_st)
 ```
 
-## Replace a Sub-string
+# Replace a Sub-string
 
 Use `gsub()`:
 ```{r}
@@ -114,7 +116,7 @@ st = gsub('ello', 'i', st)
 print(st)
 ```
 
-## Overwrite Characters
+# Overwrite Characters
 
 Use `str_sub()`:
 ```{r}
@@ -124,10 +126,22 @@ str_sub(st, 8, 7) = 'O'
 print(st)
 ```
 
-## Formatted Output
+# Change the Case
+
+A string can be UPPERCASE, lowercase, Sentence case or Title Case:
+```{r}
+st = 'The quick, brown Fox jumped over the lazy Dog'
+print(str_to_upper(st))
+print(str_to_lower(st))
+print(str_to_sentence(st))
+print(str_to_title(st))
+```
+These functions come from the `stringr` library.
+
+# Formatted Output
 If you want to print a variable as part of a string using a specific format, use the `printf()` function along with the `%` character to indicate where you want the variable to be inserted. You also need to have a letter after the `%` to indicate what type of format to use.
 
-### Number formats
+## Number formats
 
 When working with numbers, use the `f` for 'floating-point' in conjunction with `%`:
 ```{r}
@@ -147,7 +161,7 @@ x = 1
 printf('x = %8.2f', x)
 ```
 
-### String formats
+## String formats
 Instead of the `f`, use an `s` together with the `%`.
 
 You can print to the console immediately:
@@ -163,7 +177,7 @@ st = sprintf('Output text is: %s', st)
 print(st[1])
 ```
 
-### Using formatted output with a data frame
+## Using formatted output with a dataframe
 
 If you extract a single string from any vector or dataframe, it will be treated in the same way by the `printf()` function:
 ```{r}
@@ -173,7 +187,7 @@ df = data.frame(
 printf('Output text is: %s', df$name[1])
 ```
 
-## Unicode and Emojii
+# Unicode and Emojii
 
 Unicode characters can be called by using `\U` and referencing their unicode number. Some can then simply be printed:
 ```{r}

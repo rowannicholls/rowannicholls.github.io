@@ -4,11 +4,12 @@ output:
     html_document:
         theme: paper
         highlight: textmate
+        number_sections: true
 ---
 <font size="3">
 [⇦ Back](../../R.html)
 
-## Booleans
+# Booleans
 
 A Boolean is something that is either true or false. In R, the values TRUE and FALSE must be typed with capital letters:
 ```{r}
@@ -16,7 +17,7 @@ y = TRUE
 n = FALSE
 ```
 
-### Equality
+## Equality
 
 You can also create a Boolean by testing equality. To do this, use two equal signs: `==`
 ```{r}
@@ -24,14 +25,25 @@ You can also create a Boolean by testing equality. To do this, use two equal sig
 1 == 1
 ```
 
-Remember, a single equals sign is used to assign a value to a variable. So you can test equality using `==`, generate a Boolean, then assign this Boolean to a variable using `=`:
+Remember that a SINGLE equals sign is used to assign a value to a variable while a DOUBLE equals sign is used to test for equality:
 ```{r}
-# Is 1 equal to 1?
+# Assign a value of 1 to a
+a = 1
+# Assign a value of 1 to b
+b = 1
+# Does a equal b?
+a == b
+```
+
+This means that you can test equality using `==`, generate a Boolean, then assign this Boolean to a variable using `=`:
+```{r}
+# The statement "(1 == 1)" evaluates to "TRUE" and then we assign that result to the variable "bool"
 bool = (1 == 1)
+# Is 1 equal to 1?
 print(bool)
 ```
 
-In addition to equality (`==`) you can test if two things are not equal using `!=`. In R, the exclamation mark means 'not':
+In addition to equality (`==`) you can test if two things are NOT equal using `!=`. In R, the exclamation mark means 'not':
 ```{r}
 # Is 1 not equal to 1?
 bool = (1 != 1)
@@ -41,7 +53,7 @@ bool = (1 != 2)
 print(bool)
 ```
 
-### Inequality
+## Inequality
 You can use `>` and `<` to test if something is greater than or less than something else. Use `>=` to test if something is greater than *or equal to* something else and `<=` to test 'less than or equal to':
 ```{r}
 # Is 1 less than 2?
@@ -52,7 +64,7 @@ capacity = 100
 print(attendance <= capacity)
 ```
 
-### 'And' and 'Or'
+## 'And' and 'Or'
 
 You can combine conditionals using 'and' and 'or' statements.
 
@@ -80,7 +92,7 @@ print((attendance > capacity) | (tickets_sold != attendance))
 
 Notice that the same question is being asked as in the 'and' statement example, but this time in a different way.
 
-### Strings
+## Strings
 
 Strings are handled similarly to numbers:
 ```{r}
@@ -89,8 +101,9 @@ person1 = 'WINSTON CHURCHILL'
 person2 = 'Winston Churchill'
 print(tolower(person1) == tolower(person2))
 ```
+Notice the function `tolower()` that was used above to convert both strings to lowercase before making the comparison. Strings are case sensitive, so if we hadn't used that function the result would have been `FALSE`.
 
-You can also test if a string contains a certain sub-string using `grepl()`:
+You can also test if a string contains a certain sub-string or character using `grepl()`:
 ```{r}
 st = 'Hello World'
 print(grepl('Hello', st))
@@ -98,9 +111,9 @@ print(grepl('Hello', st))
 
 'grepl' stands for 'global regular expression print - logical', in case you were wondering.
 
-## If/Else Statements
+# If/Else Statements
 
-### If Statements
+## If Statements
 
 An 'if' statement is a chunk of code that will execute if a condition is true (and which will not execute if the condition is false). In order to write an if statement you need to:
 
@@ -113,7 +126,7 @@ if (1 == 1) {
 }
 ```
 
-### Else Statements
+## Else Statements
 
 An 'else' statement is a chunk of code that will execute if the 'if' statement does not execute:
 ```{r}
@@ -125,7 +138,7 @@ if (height >= 180) {
 }
 ```
 
-### Else If Statements
+## Else If Statements
 An 'else if' statement is like a second 'if' statement. It is a chunk of code that will execute if the first 'if' statement does not evaluate to true but the second one does:
 ```{r}
 height = 170
@@ -137,6 +150,23 @@ if (height >= 180) {
 	print('This person is short')
 }
 ```
+
+## Strings
+
+Besides the `grepl()` function mentioned above, another way to check if a string contains a sub-string is to use the `gregexpr()` (global regular expression) function. This returns the index of a sub-string or `-1` if it cannot find it:
+```{r}
+st = 'Hello World'
+# Search for the letter "x" in the string "Hello World"
+idx_x = unlist(gregexpr(pattern='x', st))
+# If the letter "x" is found, print a message that says that it has been found.
+# If the letter "x" is not found, print the opposite message.
+if (idx_x == -1) {
+    print('The string does NOT contain the letter x')
+} else {
+    print('The string DOES contain the letter x')
+}
+```
+As expected, the letter "x" was not found in "Hello World".
 
 ## Using If Statements to Check Your Code
 
