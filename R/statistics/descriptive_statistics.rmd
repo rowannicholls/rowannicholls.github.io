@@ -1,0 +1,158 @@
+---
+title: '<font size="5">Statistics in R:</font><br>Descriptive Statistics'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: false
+---
+<font size="3">
+[⇦ Back](../../R.html)
+
+```{r, echo=FALSE}
+# install.packages('knitr', repos='http://cran.us.r-project.org')
+library(knitr)
+# install.packages('kableExtra', repos='http://cran.us.r-project.org')
+library(kableExtra)
+```
+
+__Descriptive statistics__ do exactly what they say on the box: they _describe_ the data you are working with. They are also known as _summary statistics_.
+
+Take a look at the following dataset:
+```{r results='hold'}
+data = data.frame(
+    x=c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5),
+    y=c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
+)
+kable_input = kable(data)
+kable_styling(
+    kable_input, full_width=F, position='float_left',
+    bootstrap_options=c('responsive', 'hover', 'striped', 'condensed')
+)
+par(pin=c(3, 3))
+plot(
+    data$x, data$y, main='Scatter plot of the data on the left',
+    xlim=c(1, 15), ylim=c(1, 15)
+)
+```
+
+<br>Examples of "summary data" that you might be interested in include mean, median, minimum, maximum and quartiles. These can all be calculated by calling the `summary()` function:
+```{r}
+summary(data)
+```
+
+If we plot a line of best fit we might also be interested in its gradient and y-intercept. The coefficient of determination (R^2^) of this linear regression might also be relevant. All of these can be calculated with the linear model function `lm()`:
+```{r results='hold'}
+lm(data$y ~ data$x)
+summary(lm(data$y ~ data$x))$r.squared
+```
+
+```{r, echo=F}
+data = data.frame(
+    x=c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5),
+    y=c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
+)
+kable_input = kable(data)
+kable_styling(
+    kable_input, full_width=F, position='float_left',
+    bootstrap_options=c('responsive', 'hover', 'striped', 'condensed')
+)
+par(pin=c(3, 3))
+plot(
+    data$x, data$y, main='The same plot as above, now with a line of best fit',
+    xlim=c(1, 15), ylim=c(1, 15)
+)
+abline(lm(data$y ~ data$x), col='black')
+```
+
+# Anscombe's quartet
+Be careful when looking at descriptive statistics because they can hide a lot of information about a dataset. This is well demonstrated by something called "[Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)" which is a series of four datasets (of which the dataset above is one) that all have very similar descriptive statistics despite being vastly different. Have a look below:
+
+```{r results='hold', fig.height=15, fig.width=15}
+anscombes_quartet = list(
+    I=list(
+        c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5),
+        c(8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68)
+    ),
+    II=list(
+        c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5),
+        c(9.14, 8.14, 8.74, 8.77, 9.26, 8.1, 6.13, 3.1, 9.13, 7.26, 4.74)
+    ),
+    III=list(
+        c(10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5),
+        c(7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73)
+    ),
+    IV=list(
+        c(8, 8, 8, 8, 8, 8, 8, 19, 8, 8, 8),
+        c(6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.5, 5.56, 7.91, 6.89)
+    )
+)
+par(pin=c(6, 6), mfrow=c(2, 2))
+for (i in 1:4) {
+    dataset = anscombes_quartet[[i]]
+    x = dataset[[1]]
+    y = dataset[[2]]
+    plot(
+        x, y, main=sprintf('Dataset %s', i), xlim=c(1, 19), ylim=c(1, 19),
+        xlab='', ylab=''
+    )
+    abline(lm(data$y ~ data$x), col='black')
+}
+```
+
+These are quite clearly four very different scatter plots, yet their descriptive statistics are surprisingly similar:
+```{r, eval=F}
+for (i in 1:4) {
+    dataset = anscombes_quartet[[i]]
+    x = dataset[[1]]
+    y = dataset[[2]]
+    print(sprintf('Mean of x: %s', mean(x)))
+    print(sprintf('Sample variance of x: %s', var(x)))
+    print(sprintf('Mean of y: %.2f', mean(y)))
+    print(sprintf('Sample variance of y: %.2f', var(y)))
+    print(sprintf('Correlation between x and y: %.3f', cor(x, y)))
+    linear_model <- lm(y ~ x)
+    print(
+        sprintf(
+            'Linear regression line: y = %.2f + %.3fx',
+            coef(linear_model)['(Intercept)'],
+            coef(linear_model)['x']
+        )
+    )
+    print(
+        sprintf(
+            'Coefficient of determination: %.2f',
+            summary(linear_model)$r.squared
+        )
+    )
+    cat('\n')
+}
+```
+
+```{r, echo=F}
+data = data.frame(
+    Property=c(
+        'Mean of x', 'Sample variance of x: $\\sigma ^{2}$',
+        'Mean of y', 'Sample variance of y: $\\sigma ^{2}$',
+        'Correlation btwn x and y', 'Linear regression line',
+        'Coefficient of determination of the linear regression: $R^{2}$'
+    ),
+    Value=c(
+        '9', '11', '7.50', '4.125', '0.816', 'y = 3.00 + 0.500x', '0.67'
+    ),
+    Accuracy=c(
+        'exact', 'exact', 'to 2 decimal places', '±0.003',
+        'to 3 decimal places', 'to 2 and 3 decimal places, respectively',
+        'to 2 decimal places'
+    )
+)
+kable_input = kable(data)
+kable_styling(
+    kable_input, full_width=T,
+    bootstrap_options=c('responsive', 'hover', 'striped', 'condensed')
+)
+```
+
+[⇦ Back](../../R.html)
+
+</font>
