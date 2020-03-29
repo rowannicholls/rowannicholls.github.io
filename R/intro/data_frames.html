@@ -223,7 +223,6 @@ summary {
 <li><a href="#creating-new-columns-from-existing-columns"><span class="toc-section-number">9</span> Creating New Columns From Existing Columns</a><ul>
 <li><a href="#concatenate-strings"><span class="toc-section-number">9.1</span> Concatenate Strings</a></li>
 <li><a href="#perform-calculations"><span class="toc-section-number">9.2</span> Perform Calculations</a></li>
-<li><a href="#make-multiple-edits-at-once"><span class="toc-section-number">9.3</span> Make Multiple Edits at Once</a></li>
 </ul></li>
 <li><a href="#iterate-over-a-column"><span class="toc-section-number">10</span> Iterate over a Column</a><ul>
 <li><a href="#iterate-over-two-columns"><span class="toc-section-number">10.1</span> Iterate over Two Columns</a></li>
@@ -782,11 +781,11 @@ print(bool)</code></pre>
 bool = (spotify$Label == 'Universal')
 print(bool)</code></pre>
 <pre><code>##  [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
-<p>Instead of searching through the data in a column you can also search through the names of the columns to see if the one you are looking for has been created yet. For example, has a column been created that contains the number of weeks a song was number one?</p>
+<p>Instead of searching through the data in a column you can also search through the names of the columns to see if the one you are looking for has been created yet. For example, has a column been created that contains the number of weeks a song was at number one for?</p>
 <pre class="r"><code># Is there a column with a certain name?
-bool = 'Weeks' %in% colnames(spotify)
+bool = 'Weeks.at.no1' %in% colnames(spotify)
 print(bool)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="finding" class="section level2">
 <h2><span class="header-section-number">6.2</span> Finding</h2>
@@ -815,8 +814,8 @@ print(idx)</code></pre>
 <pre class="r"><code>library(dplyr)
 df = filter(spotify, Artist == 'Ed Sheeran')
 df = filter(spotify, Artist == 'Ed Sheeran' &amp; Streams.Millions &gt;= 1500)
-df = filter(spotify, Artist == 'Ed Sheeran' | Label == 'Sony')
-df = filter(spotify, xor(Artist == 'Ed Sheeran', Streams.Millions &gt;= 1500))</code></pre>
+df = filter(spotify, Artist == 'Ed Sheeran' | Streams.Millions &gt;= 1500)
+df = filter(spotify, xor(Artist == 'Post Malone', Featuring == 'Swae Lee'))</code></pre>
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
 </div>
 </div>
@@ -877,18 +876,18 @@ print(names(df))</code></pre>
 <div id="concatenate-strings" class="section level2">
 <h2><span class="header-section-number">9.1</span> Concatenate Strings</h2>
 <pre class="r"><code>spotify['Song and Artist'] = paste(spotify$Song, 'by', spotify$Artist)
-print(spotify['Song and Artist'])</code></pre>
-<pre><code>##                         Song and Artist
-## 1            Shape of You by Ed Sheeran
-## 2               Rockstar by Post Malone
-## 3                    One Dance by Drake
-## 4            Closer by The Chainsmokers
-## 5       Thinking Out Loud by Ed Sheeran
-## 6                   God's Plan by Drake
-## 7              Havana by Camila Cabello
-## 8              Sunflower by Post Malone
-## 9                 Perfect by Ed Sheeran
-## 10 Say You Won't Let Go by James Arthur</code></pre>
+print(spotify[c('Song', 'Artist', 'Song and Artist')])</code></pre>
+<pre><code>##                    Song           Artist                      Song and Artist
+## 1          Shape of You       Ed Sheeran           Shape of You by Ed Sheeran
+## 2              Rockstar      Post Malone              Rockstar by Post Malone
+## 3             One Dance            Drake                   One Dance by Drake
+## 4                Closer The Chainsmokers           Closer by The Chainsmokers
+## 5     Thinking Out Loud       Ed Sheeran      Thinking Out Loud by Ed Sheeran
+## 6            God's Plan            Drake                  God's Plan by Drake
+## 7                Havana   Camila Cabello             Havana by Camila Cabello
+## 8             Sunflower      Post Malone             Sunflower by Post Malone
+## 9               Perfect       Ed Sheeran                Perfect by Ed Sheeran
+## 10 Say You Won't Let Go     James Arthur Say You Won't Let Go by James Arthur</code></pre>
 </div>
 <div id="perform-calculations" class="section level2">
 <h2><span class="header-section-number">9.2</span> Perform Calculations</h2>
@@ -906,13 +905,6 @@ print(df[c('Song', 'Artist', 'Weeks.at.no1', 'Days.at.no1')])</code></pre>
 ## 8             Sunflower      Post Malone            2          14
 ## 9               Perfect       Ed Sheeran           NA          NA
 ## 10 Say You Won't Let Go     James Arthur           NA          NA</code></pre>
-</div>
-<div id="make-multiple-edits-at-once" class="section level2">
-<h2><span class="header-section-number">9.3</span> Make Multiple Edits at Once</h2>
-<p>The <code>transmute()</code> function allows us to do things like rename columns and create new ones in one step instead of multiple:</p>
-<pre class="r"><code>df = mutate(
-    spotify, Days.at.no1=Weeks.at.no1 * 7, 'Song Name'=Song
-)</code></pre>
 </div>
 </div>
 <div id="iterate-over-a-column" class="section level1">

@@ -293,10 +293,10 @@ bool = (spotify$Label == 'Universal')
 print(bool)
 ```
 
-Instead of searching through the data in a column you can also search through the names of the columns to see if the one you are looking for has been created yet. For example, has a column been created that contains the number of weeks a song was number one?
+Instead of searching through the data in a column you can also search through the names of the columns to see if the one you are looking for has been created yet. For example, has a column been created that contains the number of weeks a song was at number one for?
 ```{r}
 # Is there a column with a certain name?
-bool = 'Weeks' %in% colnames(spotify)
+bool = 'Weeks.at.no1' %in% colnames(spotify)
 print(bool)
 ```
 
@@ -339,8 +339,8 @@ You can do the exact same as above with the `filter()` function:
 library(dplyr)
 df = filter(spotify, Artist == 'Ed Sheeran')
 df = filter(spotify, Artist == 'Ed Sheeran' & Streams.Millions >= 1500)
-df = filter(spotify, Artist == 'Ed Sheeran' | Label == 'Sony')
-df = filter(spotify, xor(Artist == 'Ed Sheeran', Streams.Millions >= 1500))
+df = filter(spotify, Artist == 'Ed Sheeran' | Streams.Millions >= 1500)
+df = filter(spotify, xor(Artist == 'Post Malone', Featuring == 'Swae Lee'))
 ```
 
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
@@ -403,7 +403,7 @@ Concatenate Strings
 -------------------
 ```{r}
 spotify['Song and Artist'] = paste(spotify$Song, 'by', spotify$Artist)
-print(spotify['Song and Artist'])
+print(spotify[c('Song', 'Artist', 'Song and Artist')])
 ```
 
 Perform Calculations
@@ -412,15 +412,6 @@ To estimate the number of days each song was at number one for, multiple the num
 ```{r}
 df = mutate(spotify, Days.at.no1=Weeks.at.no1 * 7)
 print(df[c('Song', 'Artist', 'Weeks.at.no1', 'Days.at.no1')])
-```
-
-Make Multiple Edits at Once
----------------------------
-The `transmute()` function allows us to do things like rename columns and create new ones in one step instead of multiple:
-```{r}
-df = mutate(
-    spotify, Days.at.no1=Weeks.at.no1 * 7, 'Song Name'=Song
-)
 ```
 
 Iterate over a Column
