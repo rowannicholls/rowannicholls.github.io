@@ -24,7 +24,8 @@ suppressPackageStartupMessages(require(knitr))
 options(width=120)
 ```
 
-# What's a Data Frame?
+What's a Data Frame?
+====================
 Data frames are the most important data type in R. The power that R has as a programming language and its usefulness in statistics and data analysis comes from that fact that it has these. They allow calculations to be rapidly performed on data that is tabular in nature, ie data that can be represented as rows and columns (like Excel, but more powerful). The reason this is possible is because:
 
 > **_A data frame just is a fancy table_**
@@ -61,8 +62,8 @@ kable_styling(kable_input, bootstrap_options=c('striped', 'hover', 'condensed'))
 
 Each row and column has a name (the 'row heading' or the 'column heading') and a number (the 'index'). So the words 'One Dance' are in the 'Song' column which is also known as column 2 (ie the column's heading is 'Song' and the column's index is 2) and they are in row 3. By default, the rows' names are the same as their indices. You can use either the name or the index when referring to a specific row/column.
 
-# Quick Info About a Data Frame
-
+Quick Info About a Data Frame
+=============================
 Often data frames can be very large, so you don't want to (or maybe you can't) view the entire thing at once. Use `head()` to just see the first few rows and `tail()` to just see the last few:
 ```{r}
 head(spotify)
@@ -81,9 +82,11 @@ There are various other functions that can give you an overview of the data that
 | `describeBy(df)` | Descriptive statistics |
 | `summary(df)`    | Results of various model fitting functions |
 
-# Columns in a Data Frame
+Columns in a Data Frame
+=======================
 
-## Add Columns
+Add Columns
+-----------
 Append a vector as a new column using `cbind()`. In this case we're appending the name of the album each song came from:
 ```{r}
 df = cbind(
@@ -94,8 +97,8 @@ df = cbind(
 )
 ```
 
-## Delete Columns
-
+Delete Columns
+--------------
 We can remove columns in a few different ways:
 ```{r}
 # Delete a specific column using its name
@@ -110,24 +113,8 @@ df = spotify[!names(spotify) %in% c('Rank', 'Song', 'Artist')]
 df = spotify[-c(1, 3:6, 12)]
 ```
 
-## Select Certain Columns
-This is essentially the same as deleting columns, but this time you are choosing which columns to keep instead of which ones to get rid of.
-```{r}
-# Select columns by name using the subset() function
-df = subset(spotify, select=c('Rank', 'Song', 'Artist'))
-# Select columns by name using the select() function
-df = select(spotify, c('Rank', 'Song', 'Artist'))
-# Select columns by name using indexing
-df = spotify[c('Rank', 'Song', 'Artist')]
-# Select columns by index
-df = spotify[c(1:3)]
-# Select columns by matching names to a list
-df = spotify[names(spotify) %in% c('Rank', 'Song', 'Artist')]
-# Select a single column by using the dollar sign notation
-df = spotify$Song
-```
-
-## Rename Columns
+Rename Columns
+--------------
 First let's remind ourselves of what the column names are:
 ```{r}
 print(colnames(spotify))
@@ -157,9 +144,11 @@ Check out the new names:
 print(colnames(df))
 ```
 
-# Rows in a Data Frame
+Rows in a Data Frame
+====================
 
-## Add Rows
+Add Rows
+--------
 To add a new row (or rows) create a new data frame which has the same column headings as your current data frame and include the new information you want to add:
 ```{r}
 new_row = data.frame(
@@ -179,7 +168,8 @@ Use `rbind()` to do the actual appending:
 df = rbind(spotify, new_row)
 ```
 
-## Delete Rows
+Delete Rows
+-----------
 ```{r}
 # Delete multiple rows by index
 df = spotify[-c(2, 4, 6), ]
@@ -189,25 +179,73 @@ df = spotify[-1, ]
 
 Note how the above notation works:
 
-* The square brackets indicate that you are indexing (subsetting) the data frame
+* The square brackets indicate that you are indexing (extracting a subset of) the data frame
 * The minus sign before the `c()` indicates that you are 'subtracting' (deleting) the named columns
 * The lack of any column names after the comma indicates *all* columns are relevant to this operation, ie you want to delete the values in this row from all columns
 
-## Select Certain Rows
-```{r}
-# Select certain rows by index
-df = spotify[c(2, 4, 6), ]
-```
-
-## Rename Rows
+Rename Rows
+-----------
 ```{r}
 # Change the row names to be sequential numbers
 rownames(df) = NULL
 rownames(df) = 1:nrow(df)
 ```
 
-# Single Value Lookup
+Cleaning
+========
+Data cleaning is done to handle incomplete or partially incorrect datasets:
 
+* An incomplete dataset will have NULL values in some places
+* A partially incorrect dataset might have misspelled column headings or values
+
+Remove Rows with Missing Data
+-----------------------------
+To remove all songs in the data frame that do not have a featuring artist (ie their value in the "Featuring" column is `<NA>`):
+```{r}
+df = spotify[!(rowSums(is.na(spotify['Featuring']))),]
+print(df)
+```
+
+Standardise Column Headings
+---------------------------
+If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It's good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:
+```{r}
+names(df) = gsub('\\.', '_', names(df))
+print(names(df))
+```
+The columns "Streams.Millions" and "Release.Date" have been changed to "Streams_Millions" and "Release_Date".
+
+Indexing (aka Selecting)
+========================
+If you know exactly which row(s) and column(s) you want, you can _index_ a data frame in order to _select_ only that portion of the whole object.
+
+Select Certain Columns
+----------------------
+This is essentially the same as deleting columns, but this time you are choosing which columns to keep instead of which ones to get rid of.
+```{r}
+# Select columns by name using the subset() function
+df = subset(spotify, select=c('Rank', 'Song', 'Artist'))
+# Select columns by name using the select() function
+df = select(spotify, c('Rank', 'Song', 'Artist'))
+# Select columns by name using indexing
+df = spotify[c('Rank', 'Song', 'Artist')]
+# Select columns by index
+df = spotify[c(1:3)]
+# Select columns by matching names to a list
+df = spotify[names(spotify) %in% c('Rank', 'Song', 'Artist')]
+# Select a single column by using the dollar sign notation
+df = spotify$Song
+```
+
+Select Certain Rows
+-------------------
+```{r}
+# Select certain rows by index
+df = spotify[c(2, 4, 6), ]
+```
+
+Select a Single Cell
+--------------------
 Looking up a value in a particular cell in the table is essentially a combination of the above: selecting a certain column and a certain row and seeing what is at their intersection.
 ```{r}
 # Select a single cell
@@ -224,31 +262,53 @@ print(df)
 
 See how only the name of the song is printed. Also note that a slightly different method of indexing was used in that second example: the doller sign `$` is used to select an entire column before the square brackets are used to select a single element of that column.
 
-# Cleaning
-Data cleaning is done to handle incomplete or partially incorrect datasets:
+Searching, Finding, Filtering
+=============================
+While indexing/selecting is something you do when you know exactly which row(s) and column(s) you want, sometimes you do NOT know exact what you want. Instead, you first need to search through the data frame to find the information you are looking for. Then you can subset the data frame to filter out any information you don't want:
 
-* An incomplete dataset will have NULL values in some places
-* A partially incorrect dataset might have misspelled column headings or values
+* 'Search' the data frame to see if the data you are looking for exists
+    - The result will be a boolean (ie TRUE/FALSE): the data was either found or it wasn't
+* 'Find' the data if it does exist
+    - The result will be the location of the data
+* 'Filter' the data frame so that it only contains what you want
+    - The result will be a new data frame, smaller than the original one, containing only the data you want
 
-## Remove Rows with Missing Data
-To remove all songs in the data frame that do not have a featuring artist (ie their value in the "Featuring" column is `<NA>`):
+Searching
+---------
+Does a column contain a certain value? For example, is there a song by The Chainsmokers in the Spotify top 10?
 ```{r}
-df = spotify[!(rowSums(is.na(spotify['Featuring']))),]
-print(df)
+# Does a column contain a certain value?
+bool = 'The Chainsmokers' %in% spotify$'Artist'
+print(bool)
 ```
 
-## Standardise Column Headings
-If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It's good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:
+You can also search an entire column at once, ie search each row. For example, for each artist in the top 10, are they female?
 ```{r}
-names(df) = gsub('\\.', '_', names(df))
-print(names(df))
+# Does the rows contain a certain value?
+bool = (spotify$Gender == 'Female')
+print(bool)
 ```
-The columns "Streams.Millions" and "Release.Date" have been changed to "Streams_Millions" and "Release_Date".
 
-# Filtering
+Instead of searching through the data in a column you can also search through the names of the columns to see if the one you are looking for has been created yet. For example, has a column been created that contains the number of weeks a song was number one?
+```{r}
+# Is there a column with a certain name?
+bool = 'Weeks' %in% colnames(spotify)
+print(bool)
+```
+
+Finding
+-------
+'Finding' is similar to 'searching' except you get the locations of the matches, not just whether or not they exist. For example, what position in the top 10 is Camila Cabello's song 'Havana'?
+```{r}
+idx = match('Havana', spotify$'Song')
+print(idx)
+```
+
+Filtering
+---------
 Filtering removes all rows whose values do not meet certain criteria.
 
-## Using `subset()`
+### Filter Using `subset()`
 You can filter out rows that do not meet a single condition, eg if I am only interested in Ed Sheeran (which I am <3):
 ```{r}
 df = subset(spotify, Artist == 'Ed Sheeran')
@@ -269,7 +329,7 @@ Or you can keep all rows that meet one condition or another condition BUT NOT BO
 df = subset(spotify, xor(Artist == 'Post Malone', Featuring == 'Swae Lee'))
 ```
 
-## Using `filter()` from the `dplyr` library
+### Filter Using `filter()` from the `dplyr` library
 You can do the exact same as above with the `filter()` function:
 ```{r}
 library(dplyr)
@@ -279,25 +339,7 @@ df = filter(spotify, Artist == 'Ed Sheeran' | Gender == 'Female')
 df = filter(spotify, xor(Artist == 'Ed Sheeran', Streams.Millions >= 1500))
 ```
 
-# Search
-
-Searching is similar to filtering except instead of returning the rows that match a certain condition you return the locations of the matches.
-```{r}
-idx = match('Havana', spotify$'Song')
-```
-
-Sometimes you don't even want the locations of the value(s) you are looking for, you just want to know if they exist in the data frame or not. For example, is there a song by The Chainsmokers in the top 10?
-```{r}
-# Does a column contain a certain values?
-bool = 'The Chainsmokers' %in% spotify$'Artist'
-print(bool)
-```
-
-You can also search the column names to see if the one you are looking for has been created yet:
-```{r}
-# Is there a column with a certain name?
-bool = 'Weeks' %in% colnames(spotify)
-```
+<!-- Lookup: find a value in one column and return the value in a corresponding column -->
 
 # Sorting
 This section is pretty self-explanatory.
@@ -421,7 +463,7 @@ kable_styling(
     - Each row and column has a **name** and an **index**
     - The columns are actually **vectors**
 * Information can be added and deleted
-* Data frames can be **indexed**, **cleaned**, **filtered** (aka subsetted), **searched**, **sorted**, etc
+* Data frames can be **indexed**, **cleaned**, **searched**, **filtered**, **sorted**, etc
 * Mathematical and programmatic operations can be performed on whole columns at a time
 * All this versatility makes data frames the **most important data type** in R
 
