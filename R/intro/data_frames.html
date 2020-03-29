@@ -250,8 +250,8 @@ summary {
         'Ed Sheeran', 'Post Malone', 'Drake', 'The Chainsmokers', 'Ed Sheeran',
         'Drake', 'Camila Cabello', 'Post Malone', 'Ed Sheeran', 'James Arthur'
     ),
-    Gender=c('Male', 'Male', 'Male', 'Male', 'Male', 'Male', 'Female', 'Male', 'Male', 'Male'),
     Featuring=c(NA, '21 Savage', 'Wizkid, Kyla', 'Halsey', NA, NA, 'Young Thug', 'Swae Lee', NA, NA),
+    Label=c('Warner', 'Universal', 'Universal', 'Sony', 'Warner', 'Universal', 'Sony', 'Universal', 'Warner', 'Sony'),
     Streams.Millions=c(2449, 1851, 1824, 1734, 1504, 1495, 1407, 1400, 1366, 1360),
     Release.Date=c(
         '06/01/2017', '15/09/2017', '05/04/2016', '29/07/2016', '20/06/2014',
@@ -259,9 +259,7 @@ summary {
     ),
     Weeks.at.no1=c(14, 17, 14, 11, 2, 11, 1, 2, NA, NA)
 )</code></pre>
-<p>As you can see above, seven vectors were created using the <code>c()</code> function and each was given a name. This creates a data frame that looks like this:</p>
-<pre class="r"><code>kable_input = kable(spotify)
-kable_styling(kable_input, bootstrap_options=c('striped', 'hover', 'condensed'))</code></pre>
+As you can see above, eight vectors were created using the <code>c()</code> function and each was given a name. This creates a data frame that looks like this:
 <table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -275,10 +273,10 @@ Song
 Artist
 </th>
 <th style="text-align:left;">
-Gender
+Featuring
 </th>
 <th style="text-align:left;">
-Featuring
+Label
 </th>
 <th style="text-align:right;">
 Streams.Millions
@@ -303,10 +301,10 @@ Shape of You
 Ed Sheeran
 </td>
 <td style="text-align:left;">
-Male
+NA
 </td>
 <td style="text-align:left;">
-NA
+Warner
 </td>
 <td style="text-align:right;">
 2449
@@ -329,10 +327,10 @@ Rockstar
 Post Malone
 </td>
 <td style="text-align:left;">
-Male
+21 Savage
 </td>
 <td style="text-align:left;">
-21 Savage
+Universal
 </td>
 <td style="text-align:right;">
 1851
@@ -355,10 +353,10 @@ One Dance
 Drake
 </td>
 <td style="text-align:left;">
-Male
+Wizkid, Kyla
 </td>
 <td style="text-align:left;">
-Wizkid, Kyla
+Universal
 </td>
 <td style="text-align:right;">
 1824
@@ -381,10 +379,10 @@ Closer
 The Chainsmokers
 </td>
 <td style="text-align:left;">
-Male
+Halsey
 </td>
 <td style="text-align:left;">
-Halsey
+Sony
 </td>
 <td style="text-align:right;">
 1734
@@ -407,10 +405,10 @@ Thinking Out Loud
 Ed Sheeran
 </td>
 <td style="text-align:left;">
-Male
+NA
 </td>
 <td style="text-align:left;">
-NA
+Warner
 </td>
 <td style="text-align:right;">
 1504
@@ -433,10 +431,10 @@ God’s Plan
 Drake
 </td>
 <td style="text-align:left;">
-Male
+NA
 </td>
 <td style="text-align:left;">
-NA
+Universal
 </td>
 <td style="text-align:right;">
 1495
@@ -459,10 +457,10 @@ Havana
 Camila Cabello
 </td>
 <td style="text-align:left;">
-Female
+Young Thug
 </td>
 <td style="text-align:left;">
-Young Thug
+Sony
 </td>
 <td style="text-align:right;">
 1407
@@ -485,10 +483,10 @@ Sunflower
 Post Malone
 </td>
 <td style="text-align:left;">
-Male
+Swae Lee
 </td>
 <td style="text-align:left;">
-Swae Lee
+Universal
 </td>
 <td style="text-align:right;">
 1400
@@ -511,10 +509,10 @@ Perfect
 Ed Sheeran
 </td>
 <td style="text-align:left;">
-Male
+NA
 </td>
 <td style="text-align:left;">
-NA
+Warner
 </td>
 <td style="text-align:right;">
 1366
@@ -537,10 +535,10 @@ Say You Won’t Let Go
 James Arthur
 </td>
 <td style="text-align:left;">
-Male
+NA
 </td>
 <td style="text-align:left;">
-NA
+Sony
 </td>
 <td style="text-align:right;">
 1360
@@ -560,13 +558,13 @@ NA
 <h1><span class="header-section-number">2</span> Quick Info About a Data Frame</h1>
 <p>Often data frames can be very large, so you don’t want to (or maybe you can’t) view the entire thing at once. Use <code>head()</code> to just see the first few rows and <code>tail()</code> to just see the last few:</p>
 <pre class="r"><code>head(spotify)</code></pre>
-<pre><code>##   Rank              Song           Artist Gender    Featuring Streams.Millions Release.Date Weeks.at.no1
-## 1    1      Shape of You       Ed Sheeran   Male         &lt;NA&gt;             2449   06/01/2017           14
-## 2    2          Rockstar      Post Malone   Male    21 Savage             1851   15/09/2017           17
-## 3    3         One Dance            Drake   Male Wizkid, Kyla             1824   05/04/2016           14
-## 4    4            Closer The Chainsmokers   Male       Halsey             1734   29/07/2016           11
-## 5    5 Thinking Out Loud       Ed Sheeran   Male         &lt;NA&gt;             1504   20/06/2014            2
-## 6    6        God's Plan            Drake   Male         &lt;NA&gt;             1495   19/01/2018           11</code></pre>
+<pre><code>##   Rank              Song           Artist    Featuring     Label Streams.Millions Release.Date Weeks.at.no1
+## 1    1      Shape of You       Ed Sheeran         &lt;NA&gt;    Warner             2449   06/01/2017           14
+## 2    2          Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
+## 3    3         One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
+## 4    4            Closer The Chainsmokers       Halsey      Sony             1734   29/07/2016           11
+## 5    5 Thinking Out Loud       Ed Sheeran         &lt;NA&gt;    Warner             1504   20/06/2014            2
+## 6    6        God's Plan            Drake         &lt;NA&gt; Universal             1495   19/01/2018           11</code></pre>
 <p>You can specify exactly how many rows you see with these functions, eg <code>head(spotify, 15)</code>.</p>
 <p>There are various other functions that can give you an overview of the data that is in a data frame, which may or may not be useful depending on what type of data you have:</p>
 <table>
@@ -634,7 +632,7 @@ df = spotify[-c(1, 3:6, 12)]</code></pre>
 <h2><span class="header-section-number">3.3</span> Rename Columns</h2>
 <p>First let’s remind ourselves of what the column names are:</p>
 <pre class="r"><code>print(colnames(spotify))</code></pre>
-<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Gender&quot;           &quot;Featuring&quot;        &quot;Streams.Millions&quot;
+<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Featuring&quot;        &quot;Label&quot;            &quot;Streams.Millions&quot;
 ## [7] &quot;Release.Date&quot;     &quot;Weeks.at.no1&quot;</code></pre>
 <div id="rename-using-the-current-name" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> Rename Using the Current Name</h3>
@@ -653,7 +651,7 @@ df = rename(df, 'ft' = 'Featuring')</code></pre>
 colnames(df)[idx] = 'Millions.of.Streams'</code></pre>
 <p>Check out the new names:</p>
 <pre class="r"><code>print(colnames(df))</code></pre>
-<pre><code>## [1] &quot;Rank&quot;                &quot;Song Name&quot;           &quot;Artist Name&quot;         &quot;Male/Female&quot;         &quot;ft&quot;                 
+<pre><code>## [1] &quot;Rank&quot;                &quot;Song Name&quot;           &quot;Artist Name&quot;         &quot;Male/Female&quot;         &quot;Label&quot;              
 ## [6] &quot;Millions.of.Streams&quot; &quot;Release.Date&quot;        &quot;Weeks.at.no1&quot;</code></pre>
 </div>
 </div>
@@ -667,8 +665,8 @@ colnames(df)[idx] = 'Millions.of.Streams'</code></pre>
     Rank=11,
     Song='Love Yourself',
     Artist='Justin Bieber',
-    Gender='Male',
     Featuring=NA,
+    Label='Universal',
     Streams.Millions=1357,
     Release.Date='09/11/2015',
     Weeks.at.no1=3
@@ -708,19 +706,19 @@ rownames(df) = 1:nrow(df)</code></pre>
 <p>To remove all songs in the data frame that do not have a featuring artist (ie their value in the “Featuring” column is <code>&lt;NA&gt;</code>):</p>
 <pre class="r"><code>df = spotify[!(rowSums(is.na(spotify['Featuring']))),]
 print(df)</code></pre>
-<pre><code>##   Rank      Song           Artist Gender    Featuring Streams.Millions Release.Date Weeks.at.no1
-## 2    2  Rockstar      Post Malone   Male    21 Savage             1851   15/09/2017           17
-## 3    3 One Dance            Drake   Male Wizkid, Kyla             1824   05/04/2016           14
-## 4    4    Closer The Chainsmokers   Male       Halsey             1734   29/07/2016           11
-## 7    7    Havana   Camila Cabello Female   Young Thug             1407   03/08/2017            1
-## 8    8 Sunflower      Post Malone   Male     Swae Lee             1400   18/10/2018            2</code></pre>
+<pre><code>##   Rank      Song           Artist    Featuring     Label Streams.Millions Release.Date Weeks.at.no1
+## 2    2  Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
+## 3    3 One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
+## 4    4    Closer The Chainsmokers       Halsey      Sony             1734   29/07/2016           11
+## 7    7    Havana   Camila Cabello   Young Thug      Sony             1407   03/08/2017            1
+## 8    8 Sunflower      Post Malone     Swae Lee Universal             1400   18/10/2018            2</code></pre>
 </div>
 <div id="standardise-column-headings" class="section level2">
 <h2><span class="header-section-number">5.2</span> Standardise Column Headings</h2>
 <p>If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It’s good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:</p>
 <pre class="r"><code>names(df) = gsub('\\.', '_', names(df))
 print(names(df))</code></pre>
-<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Gender&quot;           &quot;Featuring&quot;        &quot;Streams_Millions&quot;
+<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Featuring&quot;        &quot;Label&quot;            &quot;Streams_Millions&quot;
 ## [7] &quot;Release_Date&quot;     &quot;Weeks_at_no1&quot;</code></pre>
 <p>The columns “Streams.Millions” and “Release.Date” have been changed to “Streams_Millions” and “Release_Date”.</p>
 </div>
@@ -789,11 +787,11 @@ print(df)</code></pre>
 bool = 'The Chainsmokers' %in% spotify$'Artist'
 print(bool)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>You can also search an entire column at once, ie search each row. For example, for each artist in the top 10, are they female?</p>
+<p>You can also search an entire column at once, ie search each row. For example, for each artist in the top 10, are they signed to a Universal Music Group label?</p>
 <pre class="r"><code># Does the rows contain a certain value?
-bool = (spotify$Gender == 'Female')
+bool = (spotify$Label == 'Universal')
 print(bool)</code></pre>
-<pre><code>##  [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE FALSE FALSE FALSE</code></pre>
+<pre><code>##  [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
 <p>Instead of searching through the data in a column you can also search through the names of the columns to see if the one you are looking for has been created yet. For example, has a column been created that contains the number of weeks a song was number one?</p>
 <pre class="r"><code># Is there a column with a certain name?
 bool = 'Weeks' %in% colnames(spotify)
@@ -827,7 +825,7 @@ print(idx)</code></pre>
 <pre class="r"><code>library(dplyr)
 df = filter(spotify, Artist == 'Ed Sheeran')
 df = filter(spotify, Artist == 'Ed Sheeran' &amp; Streams.Millions &gt;= 1500)
-df = filter(spotify, Artist == 'Ed Sheeran' | Gender == 'Female')
+df = filter(spotify, Artist == 'Ed Sheeran' | Label == 'Sony')
 df = filter(spotify, xor(Artist == 'Ed Sheeran', Streams.Millions &gt;= 1500))</code></pre>
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
 </div>

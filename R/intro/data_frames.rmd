@@ -43,8 +43,8 @@ spotify = data.frame(
         'Ed Sheeran', 'Post Malone', 'Drake', 'The Chainsmokers', 'Ed Sheeran',
         'Drake', 'Camila Cabello', 'Post Malone', 'Ed Sheeran', 'James Arthur'
     ),
-    Gender=c('Male', 'Male', 'Male', 'Male', 'Male', 'Male', 'Female', 'Male', 'Male', 'Male'),
     Featuring=c(NA, '21 Savage', 'Wizkid, Kyla', 'Halsey', NA, NA, 'Young Thug', 'Swae Lee', NA, NA),
+    Label=c('Warner', 'Universal', 'Universal', 'Sony', 'Warner', 'Universal', 'Sony', 'Universal', 'Warner', 'Sony'),
     Streams.Millions=c(2449, 1851, 1824, 1734, 1504, 1495, 1407, 1400, 1366, 1360),
     Release.Date=c(
         '06/01/2017', '15/09/2017', '05/04/2016', '29/07/2016', '20/06/2014',
@@ -54,8 +54,8 @@ spotify = data.frame(
 )
 ```
 
-As you can see above, seven vectors were created using the `c()` function and each was given a name. This creates a data frame that looks like this:
-```{r}
+As you can see above, eight vectors were created using the `c()` function and each was given a name. This creates a data frame that looks like this:
+```{r, echo=FALSE}
 kable_input = kable(spotify)
 kable_styling(kable_input, bootstrap_options=c('striped', 'hover', 'condensed'))
 ```
@@ -155,8 +155,8 @@ new_row = data.frame(
     Rank=11,
     Song='Love Yourself',
     Artist='Justin Bieber',
-    Gender='Male',
     Featuring=NA,
+    Label='Universal',
     Streams.Millions=1357,
     Release.Date='09/11/2015',
     Weeks.at.no1=3
@@ -282,10 +282,10 @@ bool = 'The Chainsmokers' %in% spotify$'Artist'
 print(bool)
 ```
 
-You can also search an entire column at once, ie search each row. For example, for each artist in the top 10, are they female?
+You can also search an entire column at once, ie search each row. For example, for each artist in the top 10, are they signed to a Universal Music Group label?
 ```{r}
 # Does the rows contain a certain value?
-bool = (spotify$Gender == 'Female')
+bool = (spotify$Label == 'Universal')
 print(bool)
 ```
 
@@ -335,7 +335,7 @@ You can do the exact same as above with the `filter()` function:
 library(dplyr)
 df = filter(spotify, Artist == 'Ed Sheeran')
 df = filter(spotify, Artist == 'Ed Sheeran' & Streams.Millions >= 1500)
-df = filter(spotify, Artist == 'Ed Sheeran' | Gender == 'Female')
+df = filter(spotify, Artist == 'Ed Sheeran' | Label == 'Sony')
 df = filter(spotify, xor(Artist == 'Ed Sheeran', Streams.Millions >= 1500))
 ```
 
