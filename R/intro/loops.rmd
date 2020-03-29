@@ -1,0 +1,149 @@
+---
+title: '<font size="5">Introduction to R:</font><br>For and While Loops'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+[⇦ Back](../../R.html)
+
+```{r, echo=FALSE}
+# install.packages('kableExtra', repos='http://cran.us.r-project.org')
+suppressPackageStartupMessages(require(kableExtra))
+
+options(width=120)
+```
+
+Why Use Loops?
+==============
+As an example, let's use the Motor Trend car road test dataset (which is one of the datasets that comes pre-loaded in R). The first six rows look like this:
+
+```{r, echo=FALSE}
+mtcars = head(mtcars)
+kable_input = kable(mtcars)
+kable_styling(kable_input, bootstrap_options=c('striped', 'hover', 'condensed'))
+```
+
+If you have data in a data frame (which the above data is) or in a vector (and each column in the above data frame is a vector) then you can perform operations on an entire column in one go. For example, we can convert the weight of the cars in the above dataset (this information is stored in the "wt" column) from 'thousands of pounds' into 'thousands of kilograms' by dividing by 2.205 like this:
+
+```{r}
+df = mtcars$wt / 2.205
+print(df)
+```
+
+Notice that we could perform this operation on all of the rows in this column in one go. This is useful for simple tasks like dividing by 2.205 which can be written in one line, but it gets much more complicated if you want to do multiple things. Thankfully, it is possible to iterate through the rows; look at the data row-by-row and decide what to do with each.
+
+For Loops
+=========
+A 'for loop' will repeat the same operations a given number of times. You can tell the programme to perform the same action FOR a certain number of repetitions. The syntax is as follows:
+
+```{r}
+for (i in 1:3) {
+    print(i)
+}
+```
+
+Note that you start with the word `for`, followed by an expression in round brackets then one or more functions between curly brackets. This tells the programme:
+
+- For each number in the range 1 to 3
+- Assign that number to the variable 'i'
+- Then print that variable
+
+Hence the output of this script is the numbers '1', '2' and '3' in order.
+
+Vectors
+-------
+This works for vectors as well:
+
+```{r}
+for (i in c('one', 'two', 'three')) {
+    print(i)
+}
+```
+
+Data Frames
+-----------
+Given the same 'mtcars' data frame as above, we can iterate over each column directly:
+
+```{r}
+for (column in mtcars) {
+    print(column)
+}
+```
+
+Sometimes it makes more sense to iterate over the _number_ of columns. This allows us to use the index of each column to access the corresponding information in a different object. For example, if we want to print each column's _heading_ and also print each column's _contents_ we need to tell the script to print the ith column heading and then to print the ith column's contents for each i from 1 to the number of columns in the data frame:
+
+```{r}
+for (i in 1:length(mtcars)) {
+    print(colnames(mtcars)[i])
+    print(mtcars[[i]])
+}
+```
+
+While Loops
+===========
+A 'while loop' will continue performing a set of operations until a condition is met. Let's imagine you have a jug that is 1 litre in size and you are pouring 150 ml glasses of water into it. You want to continue doing this as many times as you can without letting the jug overflow. Let's set up the scenario:
+
+```{r}
+water_in_jug = 0
+capacity = 1000
+glass_size = 150
+number_of_pours = 0
+```
+
+You start with 0 ml of water in the jug. The capacity of the jug is 1000 ml. The size of the glass you are pouring in is 150 ml. You start having poured this glass into the jug 0 times. Now start pouring:
+
+```{r}
+while (water_in_jug < capacity) {
+    water_in_jug = water_in_jug + 150
+    number_of_pours = number_of_pours + 1
+}
+print(number_of_pours)
+print(water_in_jug)
+```
+
+Whoopsie! You poured 7 glasses worth of water into the jug and caused it to overflow by 50 ml! Think about how you would modify the code to stop it from pouring too much.
+
+Using a While Loop as a For Loop
+================================
+Let's continue using the above example. Now that we know that 6 pours is the most we can perform before the jug overflows, we could use a for loop and set it to run exactly six times:
+
+```{r}
+for (i in 1:6) {
+    water_in_jug = i * glass_size
+    number_of_pours = i
+}
+print(number_of_pours)
+print(water_in_jug)
+```
+
+Hurray! No overflow!
+
+However, we could also use a while loop and set it to run exactly six times:
+
+```{r}
+water_in_jug = 0
+capacity = 1000
+glass_size = 150
+number_of_pours = 0
+while (number_of_pours < 6) {
+    water_in_jug = water_in_jug + 150
+    number_of_pours = number_of_pours + 1
+}
+print(number_of_pours)
+print(water_in_jug)
+```
+
+The opposite (using a for loop as a while loop) isn't really possible; how could you set up a for loop to run until a condition is met? You don't know beforehand how many times the loop needs to run for!
+
+Summary
+=======
+- Loops can be used to do the __same thing multiple times__
+- There are __for loops__ which repeat the same thing a set number of times
+- There are also __while loops__ which repeat the same thing until a condition is met
+
+[⇦ Back](../../R.html)
+</font>
