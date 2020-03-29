@@ -123,17 +123,22 @@ print(colnames(spotify))
 ### Rename Using the Current Name
 Now use the `rename()` function. The format to remember with this is `'New' = 'Old'`:
 ```{r}
+# Rename the 'Artist' column to 'Artist Name'
 df = rename(spotify, 'Artist Name' = 'Artist')
+# Rename the 'Song' column to 'Song Name'
 df = rename(df, 'Song Name' = 'Song')
+# Rename the 'Featuring' column to 'ft'
 df = rename(df, 'ft' = 'Featuring')
 ```
 
 ### Rename Using the Index
+Column 5 is called "Label" but really it contains the name of the music group that owns that artist's record label. So let's change the name of column 5 to "Group":
 ```{r}
-colnames(df)[4] = 'Male/Female'
+colnames(df)[5] = 'Group'
 ```
 
 ### Rename Using the Current Name from the Index
+Let's rename the column called "Streams.Millions" to "Millions.of.Streams". Let's do this by first looking up the index of the column that's called "Streams.Millions" (it is column 6) and then renaming column 6 to "Millions.of.Streams".
 ```{r}
 idx = which(names(df) == 'Streams.Millions')
 colnames(df)[idx] = 'Millions.of.Streams'
@@ -191,62 +196,61 @@ rownames(df) = NULL
 rownames(df) = 1:nrow(df)
 ```
 
-Cleaning
-========
-Data cleaning is done to handle incomplete or partially incorrect datasets:
-
-* An incomplete dataset will have NULL values in some places
-* A partially incorrect dataset might have misspelled column headings or values
-
-Remove Rows with Missing Data
------------------------------
-To remove all songs in the data frame that do not have a featuring artist (ie their value in the "Featuring" column is `<NA>`):
-```{r}
-df = spotify[!(rowSums(is.na(spotify['Featuring']))),]
-print(df)
-```
-
-Standardise Column Headings
----------------------------
-If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It's good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:
-```{r}
-names(df) = gsub('\\.', '_', names(df))
-print(names(df))
-```
-The columns "Streams.Millions" and "Release.Date" have been changed to "Streams_Millions" and "Release_Date".
-
 Indexing (aka Selecting)
 ========================
-If you know exactly which row(s) and column(s) you want, you can _index_ a data frame in order to _select_ only that portion of the whole object.
+If you know exactly which row(s) and column(s) you want, you can _index_ a data frame in order to _select_ only that portion of the whole object. This can be done in one of three ways:
+
+- Using a function
+- Using square bracket notation: `[ ]`
+- Using dollar sign notation: `$`
 
 Select Certain Columns
 ----------------------
-This is essentially the same as deleting columns, but this time you are choosing which columns to keep instead of which ones to get rid of.
+This is essentially the same process as deleting columns, but this time you are choosing which columns to _keep_ instead of which ones to get rid of. Again, this can be done using a function:
 ```{r}
 # Select columns by name using the subset() function
 df = subset(spotify, select=c('Rank', 'Song', 'Artist'))
 # Select columns by name using the select() function
 df = select(spotify, c('Rank', 'Song', 'Artist'))
+```
+
+...or by using square bracket notation:
+
+```{r}
 # Select columns by name using indexing
 df = spotify[c('Rank', 'Song', 'Artist')]
 # Select columns by index
 df = spotify[c(1:3)]
 # Select columns by matching names to a list
 df = spotify[names(spotify) %in% c('Rank', 'Song', 'Artist')]
+```
+
+...or by using dollar sign notation:
+
+```{r}
 # Select a single column by using the dollar sign notation
 df = spotify$Song
 ```
 
+Dollar sign notation can only be used to select COLUMNS. To select rows, see below:
+
 Select Certain Rows
 -------------------
+When you use square brackets to index a data frame, R first selects the columns you asked for and then selects the rows. Thus, if you only provide one piece of information, R assumes you are asking for columns. So this code: `spotify[c(1:3)]` will select COLUMNS 1, 2 and 3 because you only provided one vector. If you want to select ROWS 1, 2 and 3, you need to provide two pieces of information: the columns that you want (in this case, all of them) and the rows that you want (1, 2 and 3) in the format `spotify[<rows>, <columns>]`:
+
 ```{r}
 # Select certain rows by index
-df = spotify[c(2, 4, 6), ]
+df = spotify[c(1, 2, 3), ]
 ```
+
+Notice that, because we wanted all the columns, we left the `<columns>` portion of the indexing blank. But we still needed to include the blank portion because otherwise R would have assumed we were asking for columns! In summary:
+
+- `spotify[c(1:3)]` selects COLUMNS 1 to 3
+- `spotify[c(1:3),]` selects ROWS 1 to 3
 
 Select a Single Cell
 --------------------
-Looking up a value in a particular cell in the table is essentially a combination of the above: selecting a certain column and a certain row and seeing what is at their intersection.
+Looking up a value in a particular cell in the table is essentially a combination of the above: selecting a certain column and a certain row and seeing what is at their intersection. Again, the format to use is `spotify[<rows>, <columns>]`:
 ```{r}
 # Select a single cell
 df = spotify[4, 'Song']
@@ -341,37 +345,77 @@ df = filter(spotify, xor(Artist == 'Ed Sheeran', Streams.Millions >= 1500))
 
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
 
-# Sorting
+Cleaning
+========
+Data cleaning is done to handle incomplete or partially incorrect datasets:
+
+* An incomplete dataset will have NULL values in some places
+* A partially incorrect dataset might have misspelled column headings or values
+
+Remove Rows with Missing Data
+-----------------------------
+To remove all songs in the data frame that do not have a featuring artist (ie their value in the "Featuring" column is `<NA>`):
+
+- Take the column called "Featuring" from the spotify data frame: `spotify['Featuring']`.
+- Ask the question "Is the value equal to `<NA>`" for each row in that column. This is done by the `is.na()` function.
+- We want to find the rows that do NOT contain a null, but the function `is.na()` tells us which ones DO contain a null. So we need to inverse the question. This is done with the 'not' operator, which is an exclamation mark: `!()`
+- Select only the rows from the spotify data frame that passed this logical test (ie those that do not contain a null) but include all columns: `spotify[<rows>, <columns>]`
+- Assign the output to a new data frame `df`
+
+```{r}
+df = spotify[!(is.na(spotify['Featuring'])),]
+print(df)
+```
+
+As you can see, 5 of the top 10 most-streamed songs on Spotify have a featuring artist.
+
+Standardise Column Headings
+---------------------------
+If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It's good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:
+```{r}
+names(df) = gsub('\\.', '_', names(df))
+print(names(df))
+```
+The columns "Streams.Millions" and "Release.Date" have been changed to "Streams_Millions" and "Release_Date".
+
+Sorting
+=======
 This section is pretty self-explanatory.
 
-## Ascending Order
+Ascending Order
+---------------
 First sort alphabetically by artist name, then in order of number of streams:
 ```{r}
 df = arrange(spotify, Artist, Streams.Millions)
 ```
 
-## Descending Order
+Descending Order
+----------------
 Sort into reverse alphabetical order:
 ```{r}
 df = arrange(spotify, desc(Artist))
 ```
 
-# Creating New Columns From Existing Columns
+Creating New Columns From Existing Columns
+==========================================
 
-## Concatenate Strings
+Concatenate Strings
+-------------------
 ```{r}
 spotify['Song and Artist'] = paste(spotify$Song, 'by', spotify$Artist)
 print(spotify['Song and Artist'])
 ```
 
-## Perform Calculations
+Perform Calculations
+--------------------
 To estimate the number of days each song was at number one for, multiple the number of weeks it was at number one by 7:
 ```{r}
 df = mutate(spotify, Days.at.no1=Weeks.at.no1 * 7)
 print(df[c('Song', 'Artist', 'Weeks.at.no1', 'Days.at.no1')])
 ```
 
-## Make Multiple Edits at Once
+Make Multiple Edits at Once
+---------------------------
 The `transmute()` function allows us to do things like rename columns and create new ones in one step instead of multiple:
 ```{r}
 df = mutate(
@@ -379,7 +423,8 @@ df = mutate(
 )
 ```
 
-# Iterate over a Column
+Iterate over a Column
+=====================
 
 Sometimes, instead of performing an operation on an entire column you want to go row-by-row and do something different in each. For this we can iterate over all values in order. For example, if we want to get the average number of streams for each artist:
 ```{r}
@@ -417,7 +462,8 @@ kable_styling(
 )
 ```
 
-## Iterate over Two Columns
+Iterate over Two Columns
+------------------------
 ```{r}
 # Initialise new vectors to contain the output
 groups = vector()
@@ -457,7 +503,8 @@ kable_styling(
 )
 ```
 
-# Summary
+Summary
+=======
 * Data frames hold **tabular data**
     - The have **rows** and **columns**
     - Each row and column has a **name** and an **index**

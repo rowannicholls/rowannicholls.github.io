@@ -199,22 +199,22 @@ summary {
 <li><a href="#delete-rows"><span class="toc-section-number">4.2</span> Delete Rows</a></li>
 <li><a href="#rename-rows"><span class="toc-section-number">4.3</span> Rename Rows</a></li>
 </ul></li>
-<li><a href="#cleaning"><span class="toc-section-number">5</span> Cleaning</a><ul>
-<li><a href="#remove-rows-with-missing-data"><span class="toc-section-number">5.1</span> Remove Rows with Missing Data</a></li>
-<li><a href="#standardise-column-headings"><span class="toc-section-number">5.2</span> Standardise Column Headings</a></li>
+<li><a href="#indexing-aka-selecting"><span class="toc-section-number">5</span> Indexing (aka Selecting)</a><ul>
+<li><a href="#select-certain-columns"><span class="toc-section-number">5.1</span> Select Certain Columns</a></li>
+<li><a href="#select-certain-rows"><span class="toc-section-number">5.2</span> Select Certain Rows</a></li>
+<li><a href="#select-a-single-cell"><span class="toc-section-number">5.3</span> Select a Single Cell</a></li>
 </ul></li>
-<li><a href="#indexing-aka-selecting"><span class="toc-section-number">6</span> Indexing (aka Selecting)</a><ul>
-<li><a href="#select-certain-columns"><span class="toc-section-number">6.1</span> Select Certain Columns</a></li>
-<li><a href="#select-certain-rows"><span class="toc-section-number">6.2</span> Select Certain Rows</a></li>
-<li><a href="#select-a-single-cell"><span class="toc-section-number">6.3</span> Select a Single Cell</a></li>
+<li><a href="#searching-finding-filtering"><span class="toc-section-number">6</span> Searching, Finding, Filtering</a><ul>
+<li><a href="#searching"><span class="toc-section-number">6.1</span> Searching</a></li>
+<li><a href="#finding"><span class="toc-section-number">6.2</span> Finding</a></li>
+<li><a href="#filtering"><span class="toc-section-number">6.3</span> Filtering</a><ul>
+<li><a href="#filter-using-subset"><span class="toc-section-number">6.3.1</span> Filter Using <code>subset()</code></a></li>
+<li><a href="#filter-using-filter-from-the-dplyr-library"><span class="toc-section-number">6.3.2</span> Filter Using <code>filter()</code> from the <code>dplyr</code> library</a></li>
 </ul></li>
-<li><a href="#searching-finding-filtering"><span class="toc-section-number">7</span> Searching, Finding, Filtering</a><ul>
-<li><a href="#searching"><span class="toc-section-number">7.1</span> Searching</a></li>
-<li><a href="#finding"><span class="toc-section-number">7.2</span> Finding</a></li>
-<li><a href="#filtering"><span class="toc-section-number">7.3</span> Filtering</a><ul>
-<li><a href="#filter-using-subset"><span class="toc-section-number">7.3.1</span> Filter Using <code>subset()</code></a></li>
-<li><a href="#filter-using-filter-from-the-dplyr-library"><span class="toc-section-number">7.3.2</span> Filter Using <code>filter()</code> from the <code>dplyr</code> library</a></li>
 </ul></li>
+<li><a href="#cleaning"><span class="toc-section-number">7</span> Cleaning</a><ul>
+<li><a href="#remove-rows-with-missing-data"><span class="toc-section-number">7.1</span> Remove Rows with Missing Data</a></li>
+<li><a href="#standardise-column-headings"><span class="toc-section-number">7.2</span> Standardise Column Headings</a></li>
 </ul></li>
 <li><a href="#sorting"><span class="toc-section-number">8</span> Sorting</a><ul>
 <li><a href="#ascending-order"><span class="toc-section-number">8.1</span> Ascending Order</a></li>
@@ -637,21 +637,26 @@ df = spotify[-c(1, 3:6, 12)]</code></pre>
 <div id="rename-using-the-current-name" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> Rename Using the Current Name</h3>
 <p>Now use the <code>rename()</code> function. The format to remember with this is <code>'New' = 'Old'</code>:</p>
-<pre class="r"><code>df = rename(spotify, 'Artist Name' = 'Artist')
+<pre class="r"><code># Rename the 'Artist' column to 'Artist Name'
+df = rename(spotify, 'Artist Name' = 'Artist')
+# Rename the 'Song' column to 'Song Name'
 df = rename(df, 'Song Name' = 'Song')
+# Rename the 'Featuring' column to 'ft'
 df = rename(df, 'ft' = 'Featuring')</code></pre>
 </div>
 <div id="rename-using-the-index" class="section level3">
 <h3><span class="header-section-number">3.3.2</span> Rename Using the Index</h3>
-<pre class="r"><code>colnames(df)[4] = 'Male/Female'</code></pre>
+<p>Column 5 is called “Label” but really it contains the name of the music group that owns that artist’s record label. So let’s change the name of column 5 to “Group”:</p>
+<pre class="r"><code>colnames(df)[5] = 'Group'</code></pre>
 </div>
 <div id="rename-using-the-current-name-from-the-index" class="section level3">
 <h3><span class="header-section-number">3.3.3</span> Rename Using the Current Name from the Index</h3>
+<p>Let’s rename the column called “Streams.Millions” to “Millions.of.Streams”. Let’s do this by first looking up the index of the column that’s called “Streams.Millions” (it is column 6) and then renaming column 6 to “Millions.of.Streams”.</p>
 <pre class="r"><code>idx = which(names(df) == 'Streams.Millions')
 colnames(df)[idx] = 'Millions.of.Streams'</code></pre>
 <p>Check out the new names:</p>
 <pre class="r"><code>print(colnames(df))</code></pre>
-<pre><code>## [1] &quot;Rank&quot;                &quot;Song Name&quot;           &quot;Artist Name&quot;         &quot;Male/Female&quot;         &quot;Label&quot;              
+<pre><code>## [1] &quot;Rank&quot;                &quot;Song Name&quot;           &quot;Artist Name&quot;         &quot;ft&quot;                  &quot;Group&quot;              
 ## [6] &quot;Millions.of.Streams&quot; &quot;Release.Date&quot;        &quot;Weeks.at.no1&quot;</code></pre>
 </div>
 </div>
@@ -694,62 +699,47 @@ rownames(df) = NULL
 rownames(df) = 1:nrow(df)</code></pre>
 </div>
 </div>
-<div id="cleaning" class="section level1">
-<h1><span class="header-section-number">5</span> Cleaning</h1>
-<p>Data cleaning is done to handle incomplete or partially incorrect datasets:</p>
-<ul>
-<li>An incomplete dataset will have NULL values in some places</li>
-<li>A partially incorrect dataset might have misspelled column headings or values</li>
-</ul>
-<div id="remove-rows-with-missing-data" class="section level2">
-<h2><span class="header-section-number">5.1</span> Remove Rows with Missing Data</h2>
-<p>To remove all songs in the data frame that do not have a featuring artist (ie their value in the “Featuring” column is <code>&lt;NA&gt;</code>):</p>
-<pre class="r"><code>df = spotify[!(rowSums(is.na(spotify['Featuring']))),]
-print(df)</code></pre>
-<pre><code>##   Rank      Song           Artist    Featuring     Label Streams.Millions Release.Date Weeks.at.no1
-## 2    2  Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
-## 3    3 One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
-## 4    4    Closer The Chainsmokers       Halsey      Sony             1734   29/07/2016           11
-## 7    7    Havana   Camila Cabello   Young Thug      Sony             1407   03/08/2017            1
-## 8    8 Sunflower      Post Malone     Swae Lee Universal             1400   18/10/2018            2</code></pre>
-</div>
-<div id="standardise-column-headings" class="section level2">
-<h2><span class="header-section-number">5.2</span> Standardise Column Headings</h2>
-<p>If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It’s good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:</p>
-<pre class="r"><code>names(df) = gsub('\\.', '_', names(df))
-print(names(df))</code></pre>
-<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Featuring&quot;        &quot;Label&quot;            &quot;Streams_Millions&quot;
-## [7] &quot;Release_Date&quot;     &quot;Weeks_at_no1&quot;</code></pre>
-<p>The columns “Streams.Millions” and “Release.Date” have been changed to “Streams_Millions” and “Release_Date”.</p>
-</div>
-</div>
 <div id="indexing-aka-selecting" class="section level1">
-<h1><span class="header-section-number">6</span> Indexing (aka Selecting)</h1>
-<p>If you know exactly which row(s) and column(s) you want, you can <em>index</em> a data frame in order to <em>select</em> only that portion of the whole object.</p>
+<h1><span class="header-section-number">5</span> Indexing (aka Selecting)</h1>
+<p>If you know exactly which row(s) and column(s) you want, you can <em>index</em> a data frame in order to <em>select</em> only that portion of the whole object. This can be done in one of three ways:</p>
+<ul>
+<li>Using a function</li>
+<li>Using square bracket notation: <code>[ ]</code></li>
+<li>Using dollar sign notation: <code>$</code></li>
+</ul>
 <div id="select-certain-columns" class="section level2">
-<h2><span class="header-section-number">6.1</span> Select Certain Columns</h2>
-<p>This is essentially the same as deleting columns, but this time you are choosing which columns to keep instead of which ones to get rid of.</p>
+<h2><span class="header-section-number">5.1</span> Select Certain Columns</h2>
+<p>This is essentially the same process as deleting columns, but this time you are choosing which columns to <em>keep</em> instead of which ones to get rid of. Again, this can be done using a function:</p>
 <pre class="r"><code># Select columns by name using the subset() function
 df = subset(spotify, select=c('Rank', 'Song', 'Artist'))
 # Select columns by name using the select() function
-df = select(spotify, c('Rank', 'Song', 'Artist'))
-# Select columns by name using indexing
+df = select(spotify, c('Rank', 'Song', 'Artist'))</code></pre>
+<p>…or by using square bracket notation:</p>
+<pre class="r"><code># Select columns by name using indexing
 df = spotify[c('Rank', 'Song', 'Artist')]
 # Select columns by index
 df = spotify[c(1:3)]
 # Select columns by matching names to a list
-df = spotify[names(spotify) %in% c('Rank', 'Song', 'Artist')]
-# Select a single column by using the dollar sign notation
+df = spotify[names(spotify) %in% c('Rank', 'Song', 'Artist')]</code></pre>
+<p>…or by using dollar sign notation:</p>
+<pre class="r"><code># Select a single column by using the dollar sign notation
 df = spotify$Song</code></pre>
+<p>Dollar sign notation can only be used to select COLUMNS. To select rows, see below:</p>
 </div>
 <div id="select-certain-rows" class="section level2">
-<h2><span class="header-section-number">6.2</span> Select Certain Rows</h2>
+<h2><span class="header-section-number">5.2</span> Select Certain Rows</h2>
+<p>When you use square brackets to index a data frame, R first selects the columns you asked for and then selects the rows. Thus, if you only provide one piece of information, R assumes you are asking for columns. So this code: <code>spotify[c(1:3)]</code> will select COLUMNS 1, 2 and 3 because you only provided one vector. If you want to select ROWS 1, 2 and 3, you need to provide two pieces of information: the columns that you want (in this case, all of them) and the rows that you want (1, 2 and 3) in the format <code>spotify[&lt;rows&gt;, &lt;columns&gt;]</code>:</p>
 <pre class="r"><code># Select certain rows by index
-df = spotify[c(2, 4, 6), ]</code></pre>
+df = spotify[c(1, 2, 3), ]</code></pre>
+<p>Notice that, because we wanted all the columns, we left the <code>&lt;columns&gt;</code> portion of the indexing blank. But we still needed to include the blank portion because otherwise R would have assumed we were asking for columns! In summary:</p>
+<ul>
+<li><code>spotify[c(1:3)]</code> selects COLUMNS 1 to 3</li>
+<li><code>spotify[c(1:3),]</code> selects ROWS 1 to 3</li>
+</ul>
 </div>
 <div id="select-a-single-cell" class="section level2">
-<h2><span class="header-section-number">6.3</span> Select a Single Cell</h2>
-<p>Looking up a value in a particular cell in the table is essentially a combination of the above: selecting a certain column and a certain row and seeing what is at their intersection.</p>
+<h2><span class="header-section-number">5.3</span> Select a Single Cell</h2>
+<p>Looking up a value in a particular cell in the table is essentially a combination of the above: selecting a certain column and a certain row and seeing what is at their intersection. Again, the format to use is <code>spotify[&lt;rows&gt;, &lt;columns&gt;]</code>:</p>
 <pre class="r"><code># Select a single cell
 df = spotify[4, 'Song']
 print(df)</code></pre>
@@ -764,7 +754,7 @@ print(df)</code></pre>
 </div>
 </div>
 <div id="searching-finding-filtering" class="section level1">
-<h1><span class="header-section-number">7</span> Searching, Finding, Filtering</h1>
+<h1><span class="header-section-number">6</span> Searching, Finding, Filtering</h1>
 <p>While indexing/selecting is something you do when you know exactly which row(s) and column(s) you want, sometimes you do NOT know exact what you want. Instead, you first need to search through the data frame to find the information you are looking for. Then you can subset the data frame to filter out any information you don’t want:</p>
 <ul>
 <li>‘Search’ the data frame to see if the data you are looking for exists
@@ -781,7 +771,7 @@ print(df)</code></pre>
 </ul></li>
 </ul>
 <div id="searching" class="section level2">
-<h2><span class="header-section-number">7.1</span> Searching</h2>
+<h2><span class="header-section-number">6.1</span> Searching</h2>
 <p>Does a column contain a certain value? For example, is there a song by The Chainsmokers in the Spotify top 10?</p>
 <pre class="r"><code># Does a column contain a certain value?
 bool = 'The Chainsmokers' %in% spotify$'Artist'
@@ -799,17 +789,17 @@ print(bool)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 </div>
 <div id="finding" class="section level2">
-<h2><span class="header-section-number">7.2</span> Finding</h2>
+<h2><span class="header-section-number">6.2</span> Finding</h2>
 <p>‘Finding’ is similar to ‘searching’ except you get the locations of the matches, not just whether or not they exist. For example, what position in the top 10 is Camila Cabello’s song ‘Havana’?</p>
 <pre class="r"><code>idx = match('Havana', spotify$'Song')
 print(idx)</code></pre>
 <pre><code>## [1] 7</code></pre>
 </div>
 <div id="filtering" class="section level2">
-<h2><span class="header-section-number">7.3</span> Filtering</h2>
+<h2><span class="header-section-number">6.3</span> Filtering</h2>
 <p>Filtering removes all rows whose values do not meet certain criteria.</p>
 <div id="filter-using-subset" class="section level3">
-<h3><span class="header-section-number">7.3.1</span> Filter Using <code>subset()</code></h3>
+<h3><span class="header-section-number">6.3.1</span> Filter Using <code>subset()</code></h3>
 <p>You can filter out rows that do not meet a single condition, eg if I am only interested in Ed Sheeran (which I am &lt;3):</p>
 <pre class="r"><code>df = subset(spotify, Artist == 'Ed Sheeran')</code></pre>
 <p>Or you can filter out rows that do not meet multiple conditions, eg if I am only interested in Ed’s most popular songs:</p>
@@ -820,7 +810,7 @@ print(idx)</code></pre>
 <pre class="r"><code>df = subset(spotify, xor(Artist == 'Post Malone', Featuring == 'Swae Lee'))</code></pre>
 </div>
 <div id="filter-using-filter-from-the-dplyr-library" class="section level3">
-<h3><span class="header-section-number">7.3.2</span> Filter Using <code>filter()</code> from the <code>dplyr</code> library</h3>
+<h3><span class="header-section-number">6.3.2</span> Filter Using <code>filter()</code> from the <code>dplyr</code> library</h3>
 <p>You can do the exact same as above with the <code>filter()</code> function:</p>
 <pre class="r"><code>library(dplyr)
 df = filter(spotify, Artist == 'Ed Sheeran')
@@ -829,6 +819,43 @@ df = filter(spotify, Artist == 'Ed Sheeran' | Label == 'Sony')
 df = filter(spotify, xor(Artist == 'Ed Sheeran', Streams.Millions &gt;= 1500))</code></pre>
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
 </div>
+</div>
+</div>
+<div id="cleaning" class="section level1">
+<h1><span class="header-section-number">7</span> Cleaning</h1>
+<p>Data cleaning is done to handle incomplete or partially incorrect datasets:</p>
+<ul>
+<li>An incomplete dataset will have NULL values in some places</li>
+<li>A partially incorrect dataset might have misspelled column headings or values</li>
+</ul>
+<div id="remove-rows-with-missing-data" class="section level2">
+<h2><span class="header-section-number">7.1</span> Remove Rows with Missing Data</h2>
+<p>To remove all songs in the data frame that do not have a featuring artist (ie their value in the “Featuring” column is <code>&lt;NA&gt;</code>):</p>
+<ul>
+<li>Take the column called “Featuring” from the spotify data frame: <code>spotify['Featuring']</code>.</li>
+<li>Ask the question “Is the value equal to <code>&lt;NA&gt;</code>” for each row in that column. This is done by the <code>is.na()</code> function.</li>
+<li>We want to find the rows that do NOT contain a null, but the function <code>is.na()</code> tells us which ones DO contain a null. So we need to inverse the question. This is done with the ‘not’ operator, which is an exclamation mark: <code>!()</code></li>
+<li>Select only the rows from the spotify data frame that passed this logical test (ie those that do not contain a null) but include all columns: <code>spotify[&lt;rows&gt;, &lt;columns&gt;]</code></li>
+<li>Assign the output to a new data frame <code>df</code></li>
+</ul>
+<pre class="r"><code>df = spotify[!(is.na(spotify['Featuring'])),]
+print(df)</code></pre>
+<pre><code>##   Rank      Song           Artist    Featuring     Label Streams.Millions Release.Date Weeks.at.no1
+## 2    2  Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
+## 3    3 One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
+## 4    4    Closer The Chainsmokers       Halsey      Sony             1734   29/07/2016           11
+## 7    7    Havana   Camila Cabello   Young Thug      Sony             1407   03/08/2017            1
+## 8    8 Sunflower      Post Malone     Swae Lee Universal             1400   18/10/2018            2</code></pre>
+<p>As you can see, 5 of the top 10 most-streamed songs on Spotify have a featuring artist.</p>
+</div>
+<div id="standardise-column-headings" class="section level2">
+<h2><span class="header-section-number">7.2</span> Standardise Column Headings</h2>
+<p>If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It’s good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:</p>
+<pre class="r"><code>names(df) = gsub('\\.', '_', names(df))
+print(names(df))</code></pre>
+<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Featuring&quot;        &quot;Label&quot;            &quot;Streams_Millions&quot;
+## [7] &quot;Release_Date&quot;     &quot;Weeks_at_no1&quot;</code></pre>
+<p>The columns “Streams.Millions” and “Release.Date” have been changed to “Streams_Millions” and “Release_Date”.</p>
 </div>
 </div>
 <div id="sorting" class="section level1">
