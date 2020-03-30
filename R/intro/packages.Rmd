@@ -25,6 +25,7 @@ Packages can be installed by running the `install.packages()` function. Specify 
 
 ```{r message=FALSE, warning=FALSE}
 install.packages('BlandAltmanLeh', repos='http://cran.us.r-project.org')
+install.packages('chron', repos='http://cran.us.r-project.org')
 install.packages('DescTools', repos='http://cran.us.r-project.org')
 install.packages('dplyr', repos='http://cran.us.r-project.org')
 install.packages('ggplot2', repos='http://cran.us.r-project.org')
@@ -50,6 +51,7 @@ When you want to use functionality that is part of a particular package, you nee
 
 ```{r message=FALSE}
 library(BlandAltmanLeh)
+library(chron)
 library(DescTools)
 library(dplyr)
 library(ggplot2)
@@ -101,6 +103,7 @@ If your script is going to be run on someone else's computer and you don't know 
 
 ```{r message=FALSE}
 require(BlandAltmanLeh)
+require(chron)
 require(DescTools)
 require(dplyr)
 require(ggplot2)

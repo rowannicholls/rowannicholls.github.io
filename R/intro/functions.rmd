@@ -1,0 +1,120 @@
+---
+title: '<font size="5">Introduction to R:</font><br>Custom Functions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+[⇦ Back](../../R.html)
+
+Built-In vs Package vs Custom Functions
+=======================================
+
+Built-In Functions
+------------------
+When you download and open R for the first time you have access to all of the functions in the _base_ library. These include all the ones you use most often. A complete list can be found on [this](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html) page.
+
+Here are some of the functions included in base R:
+```{r, results='hide'}
+# Replace all instances of a substring in a string
+gsub('2', 'to', '2 be or not 2 be')
+# Replace the first instance of a substring in a string
+sub('quest', 'question', 'that is the quest')
+# Create a file path by adding in "/" on macOS and Linux and "\" on Windows between the words
+file.path('Desktop', 'New Folder', 'Memes')
+# List the files in a folder
+list.files('.')
+# Create a vector
+c(12, 18, 15, 13)
+# Take the mean (average) of the given numbers
+mean(c(12, 18, 15, 13))
+```
+
+You can do a lot with the functions in base R, but often you need to do something that's more complicated. For these occasions, you'll need to use functions from a _library_ or package.
+
+Packages' Functions
+-------------------
+Let's say you want to do some statistics using a Normal distribution and plot a graph. Base R doesn't include anything to generate Normal data and, while it does have the `plot()` function, it can be quite limited. We can do a lot more if we import the `stats` and `ggplot` packages:
+
+```{r}
+library(stats)
+library(ggplot2)
+```
+
+These give us access to hundreds of new functions, including `dnorm()` (which produces the density of a Normal distribution at given points) and `ggplot()` (which produces nice graphs):
+
+```{r}
+x = seq(-4, 4, by=0.05)
+df = data.frame(
+    x=x,
+    y=stats::dnorm(x, mean=0, sd=1)
+)
+ggplot2::ggplot(df) + ggplot2::geom_point(aes(x, y))
+```
+
+Notice that in the code that generated this graph I explicitly showed which package each function came from using the double colon notation `::`. I used `stats::dnorm()` to show that `dnorm()` comes from the `stats` library and likewise with `ggplot2::ggplot()` and `ggplot2::geom_point()` from `ggplot2`. It's actually not necessary to do this - R can guess which library each function comes from - but sometimes it's useful to remind the person reading your code what libraries you are using (especially when using more obscure packages).
+
+Custom Functions
+----------------
+Take a look at the following code which records the amount of time it took four people to run 5 km and converts these into speed in km/hr:
+
+```{r, message=FALSE, results='hold'}
+library(chron)
+
+distance = 5  # km
+runner_1 = '00:18:47'
+runner_2 = '00:19:03'
+runner_3 = '00:19:20'
+runner_4 = '00:19:54'
+
+speed_runner_1 = as.numeric(distance / times(runner_1) / 24)
+speed_runner_2 = as.numeric(distance / times(runner_2) / 24)
+speed_runner_3 = as.numeric(distance / times(runner_3) / 24)
+speed_runner_4 = as.numeric(distance / times(runner_4) / 24)
+
+sprintf('Runner 1 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_1, speed_runner_1)
+sprintf('Runner 2 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_2, speed_runner_2)
+sprintf('Runner 3 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_3, speed_runner_3)
+sprintf('Runner 4 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_4, speed_runner_4)
+```
+
+Although the code works fine there is an awful lot of repetition! There is a principle in programming called DRY: don't repeat yourself. In general, if you find yourself copy-pasting code from within your own script or performing the same calculation more that twice you should consider moving it to it's own function:
+
+```{r}
+time_to_speed = function(i, time, distance) {
+    speed = as.numeric(distance / times(time) / 24)
+    msg = sprintf('Runner %s ran %s km in %s at a speed of %5.2f km/hr', i, distance, time, speed)
+    print(msg)
+}
+
+distance = 5  # km
+times = c('00:18:47', '00:19:03', '00:19:20', '00:19:54')
+for (i in 1:length(times)) {
+    time_to_speed(i, times[i], distance)
+}
+```
+
+You have the same output with no repetition. This is the power of a function. Note how it has been created:
+
+- The function is assigned to the name `time_to_speed` which hints at the fact that you are converting time into speed
+- The word `function` is used
+- Round brackets are used to list the _arguments_ or inputs to the function, in this case:
+    - `i`: which number runner it is
+    - `time`: that runner's time as a string in hr:min:sec format
+    - `distance`: the length of the race in km
+- The steps performed by the function are detailed between curly brackets
+
+You could clean the code up even further by moving the function into a separate file and importing it as if it were a library.
+
+Summary
+=======
+- Functions are units of code that perform a specific task, such as a statistical test, the plotting of a graph or the conversion of time into speed
+- Many functions are included in __base R__, many more are available through importing __libraries__ and even more are possible when __created by the user__.
+- Advantages of using functions are that you __avoid the repetition of your own code__ and you can __use someone else's code__ without having to re-invent it.
+- The cleanest code will have functions in __separate files__ and then import them into the main script.
+
+[⇦ Back](../../R.html)
+</font>
