@@ -1,0 +1,32 @@
+---
+title: '<font size="5">Graphs in R using plot():</font><br>Symbol Colours in Scatter Plots'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+[⇦ Back](../../R.html)
+
+There are 657 colours that can be referred to by name when choosing a colour for a plot:
+
+```{r}
+print(colors())
+```
+
+Here's what they all look like:
+
+```{r, results='hold', out.width='100%'}
+x = anscombe$x1
+y = anscombe$y1
+par(mfrow=c(2, 3))
+for (colour in colors()) {
+    plot(x, y, pch=16, ylab='', xlab='', col=colour, main=sprintf('col = %s', colour))
+}
+```
+
+[⇦ Back](../../R.html)
+
+</font>
