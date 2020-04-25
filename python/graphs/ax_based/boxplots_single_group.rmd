@@ -217,7 +217,7 @@ for i in range(len(data.T)):
 
 Change the Background
 =====================
-A background can help make the plot look more professional and also aid in interpretation if gridlines are used.
+A background can help make the plot look more professional and gridlines can aid in interpretation.
 
 - A background colour is set with `ax.set_facecolor()`. A specific colour can be set (eg 'red', 'blue', etc) while a number between 0 and 1 in string format (eg '0.9') will invoke a shade of grey ('0' being black, '1' being white)
 - Show the major axis gridlines using `plt.grid(True)`
