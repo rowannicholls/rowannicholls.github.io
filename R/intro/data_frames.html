@@ -210,6 +210,7 @@ summary {
 <li><a href="#filtering"><span class="toc-section-number">6.3</span> Filtering</a><ul>
 <li><a href="#filter-using-subset"><span class="toc-section-number">6.3.1</span> Filter Using <code>subset()</code></a></li>
 <li><a href="#filter-using-filter-from-the-dplyr-library"><span class="toc-section-number">6.3.2</span> Filter Using <code>filter()</code> from the <code>dplyr</code> library</a></li>
+<li><a href="#find-the-proportion-of-rows-that-meet-a-criteria"><span class="toc-section-number">6.3.3</span> Find the Proportion of Rows That Meet a Criteria</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#cleaning"><span class="toc-section-number">7</span> Cleaning</a><ul>
@@ -232,6 +233,7 @@ summary {
 </div>
 
 <p><font size="3"></p>
+<p><a href="../../R.html">⇦ Back</a></p>
 <div id="whats-a-data-frame" class="section level1">
 <h1><span class="header-section-number">1</span> What’s a Data Frame?</h1>
 <p>Data frames are the most important data type in R. The power that R has as a programming language and its usefulness in statistics and data analysis comes from that fact that it has these. They allow calculations to be rapidly performed on data that is tabular in nature, ie data that can be represented as rows and columns (like Excel, but more powerful). The reason this is possible is because:</p>
@@ -817,6 +819,16 @@ df = filter(spotify, Artist == 'Ed Sheeran' &amp; Streams.Millions &gt;= 1500)
 df = filter(spotify, Artist == 'Ed Sheeran' | Streams.Millions &gt;= 1500)
 df = filter(spotify, xor(Artist == 'Post Malone', Featuring == 'Swae Lee'))</code></pre>
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
+</div>
+<div id="find-the-proportion-of-rows-that-meet-a-criteria" class="section level3">
+<h3><span class="header-section-number">6.3.3</span> Find the Proportion of Rows That Meet a Criteria</h3>
+<p>What proportion of the top 10 songs have over 1 700 million streams?</p>
+<pre class="r"><code>df = subset(spotify, Streams.Millions &gt;= 1700)
+proportion = nrow(df) / nrow(spotify)
+percentage = nrow(df) / nrow(spotify) * 100
+printf('Number of songs with over 1 700 million streams: %s (%3.1f or %3.1f%%)', nrow(df), proportion, percentage)</code></pre>
+<pre><code>## Number of songs with over 1 700 million streams: 4 (0.4 or 40.0%)</code></pre>
+<p>Note that the <code>printf()</code> function that was used above comes from the R.utils library.</p>
 </div>
 </div>
 </div>

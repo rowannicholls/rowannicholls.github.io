@@ -1,0 +1,124 @@
+---
+title: '<font size="5">Introduction to Bash:</font><br>Working with Strings'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+> This page has been tested on both macOS Catalina and Ubuntu 18.04
+
+[⇦ Back](../../bash.html)
+
+Concatenating
+=============
+Joining two strings is a simple case of calling them one after another:
+
+```{bash, comment=NA}
+a=Hello
+b=World
+# REMEBER TO USE DOUBLE QUOTATION MARKS WHEN THERE IS A SPACE
+c="$a, $b"
+echo $c
+```
+
+This is useful for things like units:
+
+```{bash, comment=NA}
+value=100
+units=ms
+output=$value$units
+echo $output
+```
+
+and URLS:
+
+```{bash, comment=NA}
+website_name='facebook'
+url="www.$website_name.com"
+echo $url
+```
+
+and filepaths:
+
+```{bash, comment=NA}
+folder_name='Documents'
+filepath="/Users/yourname/$folder_name/filename.sh"
+echo $filepath
+```
+
+A shortcut for concatenation is to use addition (`+=`):
+
+```{bash, comment=NA}
+a="Hello"
+a+=" World"
+echo "${a}"
+```
+
+Indexing
+========
+A string is indexed using the format `${string:position}` or `${string:position:length}`. Strings use *zero-based indexing* which means that the first character is actually referred to as the 0th character.
+
+This means that, if given the following string:
+
+```{bash, comment=NA}
+str="0123456789"
+```
+
+You can extract one character by specifying its position and a length of 1:
+
+```{bash, comment=NA, eval=FALSE}
+echo "${str:0:1}"
+echo "${str:1:1}"
+echo "${str:2:1}"
+```
+
+```{bash, comment=NA, echo=FALSE}
+str="0123456789"
+echo "${str:0:1}"
+echo "${str:1:1}"
+echo "${str:2:1}"
+```
+
+You can extract all characters from a certain position onwards by leaving "length" blank:
+
+```{bash, comment=NA, eval=FALSE}
+echo "${str:4}"
+```
+
+```{bash, comment=NA, echo=FALSE}
+str="0123456789"
+echo "${str:4}"
+```
+
+You can also index from the right-hand side of the string using a minus sign, although you need to include round brackets or a space:
+
+```{bash, comment=NA, eval=FALSE}
+echo "${str:(-4)}"
+echo "${str: -4}"
+```
+
+```{bash, comment=NA, echo=FALSE}
+str="0123456789"
+echo "${str:(-4)}"
+echo "${str: -4}"
+```
+
+Searching
+=========
+Does a string contain a given substring?
+
+```{bash, comment=NA}
+str='Hello, World'
+if [[ $str == *"World"* ]]
+then
+  echo 'String does contain "World"'
+fi
+```
+
+[⇦ Back](../../bash.html)
+
+</font>

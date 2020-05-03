@@ -1,0 +1,142 @@
+---
+title: '<font size="5">Introduction to Bash:</font><br>Maths and Arithmetic'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+> This page has been tested on both macOS Catalina and Ubuntu 18.04
+
+[⇦ Back](../../bash.html)
+
+Integer Arithmetic
+==================
+
+expr
+----
+
+All the usual mathematical operations are possible in Bash using the `expr` (*expression*) command:
+
+```{bash, comment=NA}
+# ADDITION
+expr 1 + 2
+# SUBTRACTION
+expr 1 - 2
+# MULTIPLICATION
+expr 1 \* 2
+# DIVISION
+expr 2 / 1
+```
+
+Multiplication needs to have a backslash before the `*`. This is because the asterisk on it's own is a **wildcard** in Bash, ie it means 'everything' as opposed to 'multiplication'. The backslash tells Bash that you want to **escape** that behaviour and treat the asterisk as a multiplication symbol.
+
+Note also that division poses a problem because fractions aren't something that can be immediately handled:
+
+```{bash, eval=FALSE, comment=NA}
+# THIS CAUSES AN ERROR
+expr 1 / 2
+```
+
+The output of a calculation can be assigned to a variable as per normal:
+
+```{bash, comment=NA}
+answer=$(expr 7 + 11)
+echo $answer
+echo $(expr $answer + 6)
+new_answer=$(expr $answer + 18)
+echo $new_answer
+```
+
+let
+---
+
+Another option is to use the `let` command and the 'arithmetic-assignment' double symbols ("+=", "-=", "\=" and "\*=":
+
+```{bash, comment=NA}
+answer=11
+# ADDITION
+let answer+=4
+echo $answer
+# SUBTRACTION
+let answer-=3
+echo $answer
+# MULTIPLICATION
+let answer\*=2
+echo $answer
+# DIVISION
+let answer/=3
+echo $answer
+```
+
+Arithmetic Expansion
+--------------------
+Next, you can use double brackets to perform **arithmetic expansion**:
+
+```{bash, comment=NA}
+answer=6
+# ADDITION
+echo $((answer + 2))
+# SUBTRACTION
+echo $((answer - 2))
+# MULTIPLICATION
+echo $((answer * 2))  # NOTE THAT WE DO NOT NEED THE ESCAPING BACKSLASH!
+# DIVISION
+echo $((answer / 2))
+```
+
+Equivalently, you can use single square brackets:
+
+```{bash, comment=NA}
+answer=6
+# ADDITION
+echo $[answer + 2]
+# SUBTRACTION
+echo $[answer - 2]
+# MULTIPLICATION
+echo $[answer * 2]  # NOTE THAT WE DO NOT NEED THE ESCAPING BACKSLASH!
+# DIVISION
+echo $[answer / 2]
+```
+
+This method also lets you do C-style incrementation
+
+```{bash, comment=NA}
+answer=6
+# PRINT TO CONSOLE THEN ADD 1
+echo $[answer++]
+echo $answer
+# ADD ONE THEN PRINT TO CONSOLE
+echo $[++answer]
+```
+
+Floating-Point Arithmetic
+=========================
+You can't do maths with decimal fractions in Bash! At least not out-of-the-box. You have to use a tool called `bc`.
+
+Pipe to Standard Out
+--------------------
+The first option is to write the calculation as a string, echo it to the console and then send it to the `bc` programme. This sending is done using a pipe symbol (`|`) which is why it's known as 'piping'. Piping is only possible when you have sent something to the console (more precisely, you have to send it to the 'standard output', or STDOUT, which just so happens to be the console) which is why we first need the `echo` command.
+
+```{bash, comment=NA}
+# WRITE AS A STRING, USE ECHO TO SEND TO STDOUT, PIPE STDOUT TO bc
+echo "5.12 + 12.1 - 16.2 * 2.7 / 1.4" | bc
+```
+
+Once again, we didn't need to use a backslash before the multiplication symbol.
+
+Triple Arrow
+------------
+We can also use a triple arrow:
+
+```{bash, comment=NA}
+# WRITE AS A STRING, SEND TO bc
+bc <<< "5.12 + 12.1 - 16.2 * 2.7 / 1.4"
+```
+
+[⇦ Back](../../bash.html)
+
+</font>

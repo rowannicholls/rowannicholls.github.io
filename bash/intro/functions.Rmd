@@ -1,0 +1,160 @@
+---
+title: '<font size="5">Introduction to Bash:</font><br>Creating a Function'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+> This page has been tested on both macOS Catalina and Ubuntu 18.04
+
+[⇦ Back](../../bash.html)
+
+Functions are a way to *re-use code*. If you ever find yourself copying-and-pasting the same chunk of code more than twice, consider putting it inside a function and using that instead. These are essentially mini-scripts within a script.
+
+Defining a Function
+===================
+Here's the format of a function in Bash:
+
+```{bash, comment=NA}
+my_function () {
+    # WRITE YOUR CODE HERE
+    echo "Hello, World"
+}
+
+# CALL YOUR FUNCTION LIKE THIS
+my_function
+```
+
+Notice the elements that make up a function:
+
+- The name of the function (in this case `my_function`) appears first
+- This is followed by two round brackets
+- These are followed by two curly brackets with the commands you want to execute between them
+- Finally, the function is *called* (ie run or executed) by simply writing the function's name. Note that a function's call can only be done after its definition, ie if we had called `my_function` BEFORE we had defined what it does with the brackets it would not have worked.
+
+Another format is like this:
+
+```{bash, comment=NA}
+function my_function {
+    # WRITE YOUR CODE HERE
+    echo "Hello, World"
+}
+
+# CALL YOUR FUNCTION LIKE THIS
+my_function
+```
+
+There's no difference between these two format, it's just personal preference as to which you use.
+
+The advantage of a function is that you can call it as many times as you want without having to re-write the code each time:
+
+```{bash, comment=NA, eval=FALSE}
+my_function
+my_function
+my_function
+```
+
+```{bash, comment=NA, echo=FALSE}
+function my_function {
+    # WRITE YOUR CODE HERE
+    echo "Hello, World"
+}
+
+# CALL YOUR FUNCTION LIKE THIS
+my_function
+my_function
+my_function
+```
+
+Note that it's much more useful if your functions have descriptive titles that reveal what they do, as opposed to generic ones:
+
+```{bash, comment=NA, eval=FALSE}
+# THIS IS NOT A GOOD NAME FOR A FUNCTION
+my_function
+# THIS IS MUCH BETTER AS IT TELLS YOU WHAT IT DOES
+print_hello_world
+```
+
+Passing Arguments to a Function
+===============================
+The real power of functions is that they can be used to process data. In order to do this, they first need to be given some data and, secondly, they need to be able to do something with it:
+
+- Giving some data to a function is achieved by *passing* arguments to it. This is done when the function is called, by writing the data in question after the function's name. So, for example, if we run `my_function Hello World` the words "Hello" and "World" will be passed to the function called "my_function".
+- Now that the function has been passed the two pieces of data "Hello" and "World" it needs to be able to do something with them. In order to do this it gives names to the data that is passed to it: `$1` is the name it gives to the first argument passed to it, `$2` is the name for the second argument and so on.
+
+Here's what it looks like in practice:
+
+```{bash, comment=NA}
+function my_function {
+    # WRITE YOUR CODE HERE
+    echo $1
+    echo $2
+}
+
+# CALL YOUR FUNCTION LIKE THIS
+my_function Hello World
+```
+
+Returning Values
+================
+A 'return' is the output of a function. It's what the function returns to the rest of the script. It is created by the `return` command and can be accessed in the main script by the `$?` variable:
+
+```{bash, comment=NA}
+function my_function {
+    echo $1
+    echo $2
+    return 10
+}
+
+my_function Hello World
+echo "What did you return? I returned the number $?"
+```
+
+Note that a return can only be a number. In general, returns in Bash are more commonly referred to as 'exit codes' and are mostly only useful for telling a user what happened during a function. For example, you might make your function return an 'error code' if something goes wrong: if a user tries to divide by 0 you might return the number 1, for example, which the user could then look up to see the meaning of and thus work out what went wrong. Usually, an exit code of 0 means that there were no errors.
+
+Global vs Local Variables
+=========================
+- A **global** variable can be used anywhere in a script
+- A **local** variable can only be used inside the function where it was created
+
+Global variables are useful for making your script simpler: you can define a variable in one place and then use it anywhere. Local variables are useful when you want to avoid overwriting your other variables: if you only want to use a variable in one place in your script then only define it inside that one function to avoid confusion.
+
+Global variables are created in the way we are used to creating variables:
+
+```{bash, comment=NA}
+# THIS VARIABLE IS GLOBAL, SO IT CAN BE ACCESSED INSIDE FUNCTIONS
+my_message="Hello, World"
+
+function my_function {
+    echo $my_message
+}
+
+my_function
+```
+
+Local variables are create using the `local` command:
+
+```{bash, comment=NA}
+# THIS VARIABLE IS GLOBAL
+my_message="Hello, World"
+
+function my_function {
+    # THIS VARIABLE IS LOCAL
+    local my_message="Goodbye, World"
+    echo "Message inside function: $my_message"
+}
+
+my_function
+
+echo "Message outside function: $my_message"
+```
+
+In this script we were able to create a variable called "my_message" inside the function that did not overwrite the variable "my_message" that had been created outside the function.
+
+[⇦ Back](../../bash.html)
+
+</font>

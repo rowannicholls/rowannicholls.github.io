@@ -1,0 +1,267 @@
+---
+title: '<font size="5">Introduction to Bash:</font><br>Booleans and If Statements'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+> This page has been tested on both macOS Catalina and Ubuntu 18.04
+
+[⇦ Back](../../bash.html)
+
+Booleans
+========
+A 'Boolean' is either "true" or "false":
+
+```{bash, comment=NA}
+y=true
+n=false
+echo $y $n
+```
+
+In Bash, another common way to work with binary true/false statements is by using "1" for true and "0" for false (although these are not proper Booleans):
+
+```{bash, comment=NA}
+y=1
+n=0
+echo $y $n
+```
+
+'If' Statements
+===============
+An 'if statement' is a **statement** that will evaluate to either "true" or "false" and then execute a set of commands **if** that statement was true.
+
+An if statement:
+
+- Starts with the word 'if' and ends with the word 'fi' (which is 'if' backwards)
+- Uses the word 'then' to indicate that the commands are starting, in other words the logic is "**if** this is true **then** do this"
+
+This is what the format looks like:
+
+```{bash, comment=NA}
+if true
+then
+    echo "The statement was true"
+fi
+```
+
+Similarly, using a variable:
+
+```{bash, comment=NA}
+bool=false
+if $bool
+then
+    echo "The statement was true"
+fi
+```
+
+Because the statement was false, the line "The statement was true" was not echoed.
+
+If you use numbers ('1' and '0') instead of Booleans ('true' and 'false') you first need to *evaluate* them. This is because 1 and 0 are not 'proper' Booleans (they are numbers), but they can be made into proper Booleans by evaluating them. This is done by using square brackets:
+
+```{bash, comment=NA}
+if [ 1 ]
+then
+    echo "The statement evaluated as true"
+fi
+```
+
+Square brackets can be thought of as meaning 'test whether this statement is true'. They aren't necessary if the statement is literally the Boolean value 'true' or 'false' (as in the first two examples) because Bash has the answer already, but they are necessary if the statement is a number.
+
+'Else' Statements
+-----------------
+An 'else statement' indicates that a series of commands should be run if an 'if statement' is **not** true:
+
+```{bash, comment=NA}
+if false
+then
+    echo "The statement was true"
+else
+    echo "The statement was false"
+fi
+```
+
+Notice the logic that is being used here: "**if** the statement is true **then** do x, **else** do y".
+
+'Else If' Statements
+--------------------
+You can continue to chain statements together using the 'else if' (`elif`) command. The logic is:
+
+- **If** the first statement is true, **then** do this
+- **Else, if** the second statement is true, **then** do this
+- **Else**, do this
+
+```{bash, comment=NA}
+if false
+then
+    echo "The first statement was true (I don't know if the second was true or not)"
+elif false
+then
+    echo "The first statement was false but the second statement was true"
+else
+    echo "Neither the first nor the second statement was true"
+fi
+```
+
+Tests
+=====
+
+Equality
+--------
+An if statement can be used to test if two things are equal using two equal signs `==`. Remember that a single equals sign is used for assigning a value to a variable.
+
+> Single equals sign is for assignment (`my_variable="Hello, World"`)  
+> Double equals sign is for testing equality (`1 == 1`)
+
+Remember that when you use a statement that needs to be evaluated (as opposed to a simple Boolean like 'true' or 'false') you need to use square brackets:
+
+```{bash, comment=NA}
+if [ 1 == 1 ]
+then
+    echo "The statement was true, which means that 1 is equal to 1"
+fi
+```
+
+Inequality
+----------
+Three types of inequality can be tested for: something can be 'not equal to', 'greater than' or 'less than' something else.
+
+Whether or not something is 'not equal to' something else is tested with `!=`. In Bash, the exclamation mark means 'not' so `!=` means 'not equal'.
+
+```{bash, comment=NA}
+if [ 1 != 2 ]
+then
+    echo "The statement was true, which means that 1 is not equal to 2"
+fi
+```
+
+Notice that using both a not-equal-to test and an else statement is like using a double negative; they cancel each other out and it becomes a test for equality:
+
+```{bash, comment=NA}
+if [ 1 != 1 ]
+then
+    echo "The statement was true, which means that 1 is not equal to 1"
+else
+    echo "The statement was false, which means that 1 is not not equal to 1"
+fi
+```
+
+Testing if one number is **g**reater **t**han another number is done by using the '**gt**' argument:
+
+```{bash, comment=NA}
+age=10
+if [ $age -gt 18 ]
+then
+    echo "The person is over 18"
+else
+    echo "The person is 18 or younger"
+fi
+```
+
+Similarly, testing if something is **l**ess **t**han something else is done by using the '**lt**' argument:
+
+```{bash, comment=NA}
+age=30
+if [ $age -lt 18 ]
+then
+    echo "The person is 18 or younger"
+else
+    echo "The person is over 18"
+fi
+```
+
+A full set of the inequalities you can test for using arguments like this is as follows:
+
+- `-eq` (equal to)
+- `-ne` (not equal to)
+- `-lt` (less than)
+- `-le` (less than or equal to)
+- `-gt` (greater than)
+- `-ge` (greater than or equal to)
+
+You can also use greater than/less than symbols directly if you use double round brackets:
+
+```{bash, comment=NA}
+age=30
+if (( $age > 18 ))
+then
+    echo "The person is over 18"
+else
+    echo "The person is 18 or younger"
+fi
+```
+
+Chaining Statements
+===================
+You can combine statements to make more complicated tests and pin down exactly the conditions you want to test for.
+
+'And' and 'Or'
+--------------
+If you require two statements to both be true you can use an 'and' operation which is *two* ampersands (`&&`), reminiscent of how the test for equality was two equal signs. As an example, if you want to test if someone is over 18 **and** under 65 you can use the following:
+
+```{bash, comment=NA}
+age=30
+if [ $age -gt 18 ] && [ $age -lt 65 ]
+then
+    echo "The person is over 18 and under 65"
+else
+    echo "The person is 18 (or younger) or 65 (or older)"
+fi
+```
+
+If you require one *or* two statements to be true you can use the 'or' operation, which is two pipes (`||`):
+
+```{bash, comment=NA}
+age=30
+if [ $age -lt 18 ] || [ $age -gt 65 ]
+then
+    echo "The person is 18 (or younger) or 65 (or older)"
+else
+    echo "The person is over 18 and under 65"
+fi
+```
+
+Nested Statements
+-----------------
+We can get more complicated by having if statements inside of if statements:
+
+```{bash, comment=NA}
+age=15
+if [ $age -lt 18 ] || [ $age -gt 65 ]
+then
+    # THE PERSON IS 18 OR YOUNGER OR 65 OR OLDER
+    if [ $age -lt 18 ]
+    then
+        echo "The person is 18 or younger"
+    else
+        echo "The person is 65 or older"
+    fi
+else
+    echo "The person is over 18 and under 65"
+fi
+```
+
+Strings
+=======
+Up until now we've only been testing numbers and Booleans, but we can test strings as well in a similar fashion:
+
+```{bash, comment=NA}
+name="Bob"
+if [ $name == "Anne" ]
+then
+    echo "The person's name is Anne"
+elif [ $name != "Bob" ]
+then
+    echo "The person's name is not Bob"
+else
+    echo "The person's name is Bob"
+fi
+```
+
+[⇦ Back](../../bash.html)
+
+</font>

@@ -1,0 +1,220 @@
+---
+title: '<font size="5">Introduction to Bash:</font><br>Arrays and Loops'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+> This page has been tested on both macOS Catalina and Ubuntu 18.04
+
+[⇦ Back](../../bash.html)
+
+Arrays and Lists
+================
+'Arrays' and 'lists' are data types in Bash, just like strings, numbers, nulls and Booleans. Fundamentally, they are both *collections of elements* separated by spaces. Arrays are created using round brackets and lists with quotation marks:
+
+```{bash, comment=NA}
+# ARRAYS
+numbers=(2 4 6 8 10)
+strings=(
+    string1
+    string2
+    "string 3 with spaces"
+    string4
+)
+booleans=(true false false true)
+different_data_types=(2 string2 false)
+
+# LISTS
+numbers='2 4 6 8 10'
+strings='
+    string1
+    string2
+    "string 3 with spaces"
+    string4
+'
+booleans='true false false true'
+different_data_types='2 string2 false'
+```
+
+The difference between them is that arrays are collections of definite, separate elements while lists are actually just strings where the spaces can be used to separate each word into different elements if they are used in the right way.
+
+Indexing Arrays
+---------------
+If we try to use an array as if it were a normal variable, only the first element is accessible:
+
+```{bash, comment=NA}
+numbers=(2 4 6 8 10)
+echo $numbers
+```
+
+If we want to access a specific element, we can *index* the array. This means we specify exactly which element we are interested in by writing its position in square brackets after the variable's name. For instance, if we want the element in the second position in the array we can use `[2]`:
+
+```{bash, comment=NA}
+numbers=(2 4 6 8 10)
+echo ${numbers[2]}
+```
+
+Remember that Bash uses *zero-indexing*, so the first element is in position zero and the number 6 is actually at index 2, not 3! Notice also that you need to include the curly brackets when making this call; if you leave them out Bash will look for a variable called "numbers[2]" instead of a variable called "numbers".
+
+To use all of the elements, index the variable with the 'at' symbol (`@`):
+
+```{bash, comment=NA}
+numbers=(2 4 6 8 10)
+echo ${numbers[@]}
+```
+
+If you want to use all of the elements individually, which is particularly useful if you want to do different things with each of them, you need to *iterate* over them in a loop (see below).
+
+Indexing Lists
+--------------
+Because lists are just strings, they are indexed in the same way as regular stings. The downside to this is that the individual characters (including the spaces) count as separate elements.
+
+```{bash, comment=NA}
+list='Alfa Bravo Charlie Delta'
+echo ${list:7:10}
+```
+
+For Loops
+=========
+A 'for loop' takes each element in an array/list in turn and does something with it. To make one, we need the following things:
+
+- An array or list
+- The word "for", followed by the name of your 'iterator'. This is the variable name that each element of the array/list will be assigned to in turn.
+- The word "in", followed by a call to the array/list
+    - For an array, remember to include the dollar sign, curly brackets and 'at' symbol indexing
+    - For a list, you only need the dollar sign
+- The word "do" to indicate the start of the commands that need to be run and the word "done" to indicate when the loop has finished
+
+The logic is: **for** each element **x<sub>i</sub>** **in** the collection of elements **X**, **do** this. Continue iterating over each element until you are **done**. 
+
+Numbers
+-------
+```{bash, comment=NA}
+# ARRAY
+numbers=(2 4 6 8 10)
+for number in ${numbers[@]}
+do
+    echo $number
+done
+```
+
+```{bash, comment=NA}
+# LIST
+list='2 4 6 8 10'
+for element in $list
+do 
+    echo "$element"
+done
+```
+
+Strings
+-------
+```{bash, comment=NA}
+# ARRAY
+strings=(Alfa Bravo Charlie Delta)
+for string in ${strings[@]}
+do
+    echo "$string"
+done
+```
+
+```{bash, comment=NA}
+# LIST
+list='Alfa Bravo Charlie Delta'
+for element in $list
+do 
+    echo "$element"
+done
+```
+
+Run a Given Number of Times
+---------------------------
+Often it's useful to repeat a set of commands a specific number of times. This can be achieved using a for loop and an array created directly using curly brackets. For example, to run a set of commands four times:
+
+```{bash, comment=NA}
+for i in {1..4}
+do
+    echo $i
+done
+```
+
+While Loops
+===========
+Instead of running a loop **for** a certain number of times, we can run it **until** something happens. In the example below, we want to find all the square numbers that are smaller than 100 so we do the following:
+
+- Start with 1
+- Square the number
+- Test if it is less than 100 or not
+- If it is still less than 100, we echo it to the console
+- After that is done, we increment the base number by 1 (to 2) and repeat the loop
+
+The loop will repeat **while** the square number is less than 100. Once it grows larger than 100 the loop will stop.
+
+```{bash, comment=NA}
+# WHAT ARE THE SQUARE NUMBERS SMALLER THAN 100?
+i=1
+while [ $(($i**2)) -lt 100 ]
+do
+    echo $(($i**2))
+    i=$[$i+1]  # INCREMENT THE LOOP COUNTER
+done
+```
+
+The test for deciding if you want to use a *for loop* or a *while loop* is whether you know exactly how many times you will need to run it.
+
+Oops, I Put My Computer into an Infinite Loop!
+----------------------------------------------
+If you run a while loop using a statement that will always be true it will run forever and your script will never stop!
+
+```{bash, comment=NA, eval=FALSE}
+while true
+do
+    echo "This will repeat for all eternity!"
+done
+```
+
+Stop this madness by pressing $#Ctrl$+$#C$.
+
+Break Out of a While Loop
+-------------------------
+Another way to break out of a *while loop* is to use the `break` command once a certain point is reached. As the name suggests, this command breaks you out of a loop and carries on with the rest of the script. In this example, we have a *while loop* that will ostensibly run forever because we have set it to run `while true`, however, once the square number reaches 100 it will break out and the script will halt:
+
+```{bash, comment=NA}
+# WHAT ARE THE SQUARE NUMBERS SMALLER THAN 100?
+i=1
+while true
+do
+    if [ $(($i**2)) -gt 99 ]
+    then
+        break
+    fi
+    echo $(($i**2))
+    i=$[$i+1]  # INCREMENT THE LOOP COUNTER
+done
+```
+
+Using a While Loop like a For Loop
+----------------------------------
+The previous example showed us a way to use a *while loop* as if it were a *for loop*, ie to have it run a specific number of times. Here's an example that will run exactly four times:
+
+```{bash, comment=NA}
+i=1
+while true
+do
+    echo $i
+    if [ $i == 4 ]
+    then
+        break
+    fi
+    i=$[$i+1]  # INCREMENT THE LOOP COUNTER
+done
+```
+
+[⇦ Back](../../bash.html)
+
+</font>

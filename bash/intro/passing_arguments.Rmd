@@ -1,0 +1,198 @@
+---
+title: '<font size="5">Introduction to Bash:</font><br>Passing Arguments to a Bash Script'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+> This page has been tested on both macOS Catalina and Ubuntu 18.04
+
+[⇦ Back](../../bash.html)
+
+Positional Arguments
+====================
+Passing arguments is a way to set the value of variables inside a script from outside the script. For example, if we have a script called "passing_arguments.sh" as follows:
+
+```{bash, results='hide'}
+echo "Hello"
+echo $1
+```
+
+Running this from the terminal in the normal way with `bash passing_arguments.sh` will produce:
+
+```
+Hello
+  
+```
+
+Whereas running it with `bash passing_arguments.sh "World"` will produce:
+
+```
+Hello
+World
+```
+
+The argument "World" has been passed into the script, where it has been assigned to the variable "1" because it is the first such argument. If there had been more than one argument, the others would have been assigned to the variables 2, 3, 4, etc, hence why these are called "positional arguments." The line `echo $1` then echoes the variable (the dollar sign tells the script that a variable name is following) called "1".
+
+If this script is run from another script with `source passing_arguments.sh "World"` it will behave in the same way.
+
+Keyword Arguments
+=================
+Often, we want to make it easier for the person using our code to understand what each argument they are passing in does. For this reason, we can use a 'keyword argument' format:
+
+```{bash, results='hide'}
+firstname="$2"
+echo "My first name is $firstname"
+```
+
+Running this script with `bash passing_arguments.sh --firstname Bob` will produce `My first name is Bob`. Essentially, what you are doing here is throwing away the first argument (`--firstname`) and assigning the second one to the variable `firstname`. It's inefficient but it makes more sense for the user. We can extend this further by doing this:
+
+```{bash, results='hide'}
+if [[ $1 =~ ^(-f|--firstname) ]]
+then
+    firstname="$2"
+fi
+echo "My first name is $firstname"
+```
+
+Now we can use either the 'short' keyword `-f` with one dash or the 'long' keyword `--firstname` with two dashes:
+
+- `bash passing_arguments.sh -f Bob`
+- `bash passing_arguments.sh --firstname Bob`
+
+Both will produce `My first name is Bob`. This makes things even easier for our user and is more efficient. However, we can go even further:
+
+```{bash, results='hide'}
+while [[ "$#" -gt 0 ]]
+do case $1 in
+    -f|--firstname) firstname="$2"
+    shift;;
+    -s|--secondname) secondname="$2"
+esac
+shift
+done
+echo "My name is $firstname $secondname"
+```
+
+We've done two things here:
+
+- Firstly, we've added a second keyword argument that functions in the same way as the first. Running the following:
+    - `bash passing_arguments.sh --firstname Bob --secondname Smith` or
+    - `bash passing_arguments.sh -f Bob -s Smith` will both produce:  
+    `My name is Bob Smith`
+
+- Secondly, we've added a while loop to handle the passing of the arguments. This is important because it means the order no longer matters; we can pass in any order! So running the following:
+    - `bash passing_arguments.sh --secondname Smith --firstname Bob` or
+    - `bash passing_arguments.sh -s Smith -f Bob` will both produce:  
+    `My name is Bob Smith`
+
+Lastly, we will add an 'option argument'. This is one that doesn't take a value, it is either 'on' or 'off':
+
+```{bash, results='hide'}
+while [[ "$#" -gt 0 ]]
+do case $1 in
+    -f|--firstname) firstname="$2"
+    shift;;
+    -s|--secondname) secondname="$2"
+    shift;;
+    -a|--age) age=20;;
+    *) echo "Unknown parameter passed: $1"
+    exit 1;;
+esac
+shift
+done
+echo "My name is $firstname $secondname, age $age"
+```
+
+Now, running `bash passing_arguments.sh -s Smith -f Bob -a` will produce:
+
+    My name is Bob Smith, age 20
+
+whereas running `bash passing_arguments.sh -s Smith -f Bob ` will produce:
+
+    My name is Bob Smith
+
+and, as before, the order doesn't matter nor does the use of long- or short-keywords.
+
+We've also added a failsafe: the line `*) echo "Unknown parameter passed: $1"` will run if a keyword argument other than those we want is passed. This helps the user avoid making a typo.
+
+Checking Whether an Argument has been Passed
+============================================
+If an argument is necessary for a script to run or if there is a preferred value for it then it might be best to initialise it with a default value. The user can then choose to overwrite it if they want, or just let it run as is. The following code does this by assigning values to our variables, then checking to see if the user specified any values in the arguments:
+
+```{bash, results='hide'}
+firstname="Adam"
+secondname="& Eve"
+while [[ "$#" -gt 0 ]]
+do case $1 in
+    -f|--firstname) firstname="$2"
+    shift;;
+    -s|--secondname) secondname="$2"
+    shift;;
+    *) echo "Unknown parameter passed: $1"
+    exit 1;;
+esac
+shift
+done
+echo "My name is $firstname $secondname"
+```
+
+Running this in 'default mode' with `bash passing_arguments.sh` produces:
+
+    My name is Adam & Eve
+
+whereas running it in 'custom mode' with `bash passing_arguments.sh -f Bob -s Smith` produces
+
+    My name is Bob Smith
+
+This is useful if you are creating a program that has various pieces of functionality: you can have it run in 'test mode' if the user runs it without arguments, giving them an idea of how it works and what they would want to tweak via the use of arguments:
+
+```{bash, comment=NA}
+if [ -z "$1" ]
+then
+    echo "Running in test mode"
+    firstname="Adam"
+    secondname="& Eve"
+else
+    while [[ "$#" -gt 0 ]]
+    do case $1 in
+        -f|--firstname) firstname="$2"
+        shift;;
+        -s|--secondname) secondname="$2"
+        shift;;
+        *) echo "Unknown parameter passed: $1"
+        exit 1;;
+    esac
+    shift
+    done
+fi
+echo "My name is $firstname $secondname"
+```
+
+User Input Arguments
+====================
+Finally, the ultimate way to allow the user to specify what value they want to assign to a variable is to ask them! The following script will display a prompt in the terminal asking the user to enter their name:
+
+```{bash, eval=FALSE}
+read -p 'Enter your first name ' firstname
+read -p 'Enter your second name ' secondname
+echo "Your name is $firstname $secondname"
+```
+
+This will cause the following to display in the terminal:
+
+    Enter your first name 
+
+The user will then be able to type their name and press enter, after which this will display:
+
+    Enter your second name 
+
+After responding and pressing enter their name will display.
+
+[⇦ Back](../../bash.html)
+
+</font>

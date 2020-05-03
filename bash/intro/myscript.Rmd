@@ -1,0 +1,74 @@
+---
+title: '<font size="5">Introduction to Bash:</font><br>Creating and Running a Bash Script'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+> This page has been tested on both macOS Catalina and Ubuntu 18.04
+
+[⇦ Back](../../bash.html)
+
+__*Bash*__ is the default language used to run commands on the Terminal.
+
+- The __*Terminal*__ is the default command-line interpreter (CLI) for macOS and most Linux computers, including Ubuntu
+- Bash is a __*command language*__ which means that it is useful for running other programmes and, therefore, for tasks such as _automation_ and _batch processing_
+    - This is where it differs from higher-level languages such as Python, R and MATLAB: while those languages are useful for _creating_ scripts that function as standalone programmes, Bash is useful for _running_ those scripts when there are many of them and when the results of one need to be communicated to another
+- This means that, if you want to start writing advanced sets of scripts on a macOS or Linux machine, chances are you'll want to learn the basics of Bash
+- In addition to being a language, Bash is a _shell_. A 'shell' is any user interface that can be used to run an operating system's functions. A shell can use a CLI (which is what Bash does when it runs on the Terminal) or a graphical user interface (GUI).
+
+Bash stands for "Bourne-again shell", a double pun that derives both from the name of its inventor (Stephen Bourne) and the fact that it is a 'born-again' version of an older shell.
+
+Creating a Bash Script
+======================
+- Option 1:
+    - Open up the Terminal
+        - On macOS, use $#Cmd$+$#Space$ to open spotlight search then start typing 'Terminal'. Hit $#Enter$ when it pops up.
+        - On Ubuntu, use $#Ctrl$+$#Alt$+$#T$
+    - Change directory into the folder you want the Bash script to be in using `cd`
+        + `cd` stands for 'change directory'
+        + Once you've typed `cd` followed by a space into the terminal, use $#Tab$ to auto-complete the name of the folder you want to change into
+        + Run `echo $PWD` to check your **P**resent **W**orking **D**irectory, ie what folder you are currently in, and `ls` to **l**i**s**t the files in your present working directory
+    - Create the script with `touch myscript.sh`
+- Option 2:
+    + Open up a text editor such as Sublime Text, TextEdit (pre-installed on macOS) or gedit/Text Editor (pre-installed on Ubuntu)
+    + Save the file as `myscript.sh`
+
+> __*Note 1:*__ while there is a convention to use the `.sh` extension for Bash scripts, it is not strictly necessary and can be omitted. It can be useful, however: if you are using an IDE such as Sublime Text to edit and run the script it will let it know what type of file it is, helping with syntax highlighting and automatic building. It can also help you control what happens when the file is double-clicked (see below).
+
+> __*Note 2:*__ while it is possible to have spaces in your script's name, doing so will makes it more difficult to run and may create problems (see below). This is thus inadvisable.
+
+Once the file `myscript.sh` is created, open it and paste in the following:
+```{bash, results='hide'}
+# THIS IS MY FIRST BASH SCRIPT
+echo "Hello, World"
+```
+This is a simple script that will display the words "Hello, World". The first line is a comment: it does nothing and will not be run because it is not part of the programme, but it is useful to have because it serves as a note to yourself. The second line displays ('echoes') the words between the quotation marks.
+
+Running a Bash Script
+=====================
+There are a number of ways to do this (if the script runs successfully, you will see the words "Hello, World" because that is what your programme 'myscript' does!):
+
+- **Option 1:** open the terminal and cd into the folder where your script is located. Run it with `bash myscript.sh`. This tells your computer to use the `bash` programme to execute the `myscript.sh` script. Similarly, if your script is in a different folder to the one your terminal is currently pointing at, you can run it with `bash name_of_folder/myscript.sh` as long as there is no space in the name of the folder (see below).
+- **Option 2:** make the script 'executable' by running `chmod +x myscript.sh` on the terminal. This gives your computer permission to run it directly and so it can run with `/.myscript.sh`, which saves a few keystrokes.
+    + In order for this method to work you need to have a 'shebang'. A shebang is a statement on the first line of a script that tells the computer which programme to run it with. In this case, you should need to have `#!/bin/bash` on line 1 of myscript.sh, which indicates that you intend to use the 'bash' program located in your 'bin' folder
+    + In practice, your script will often work even without a shebang because your computer can usually guess that it needs to use Bash. However, this is prone to change: sometimes a script without a shebang will suddenly stop working and it will take you ages to work out why. This is why it's always safer to use one when a script is meant to be run directly.
+- **Option 3:** move myscript.sh into one of the folders in your PATH (to see what these folders are, run `echo $PATH`). It can now be run from the terminal with `myscript.sh`
+    + Note that the convention is to not have the `.sh` extension when you are using this method
+- **Option 4:** if the default programme for a shell script file to open with is set to be the Terminal, the script can be run immediately by double-clicking it
+    - On macOS, once it has been made executable (`chmod +x myscript.sh`) right click the file → Open With → Other... → at the "Enable" dropdown menu change "Recommended Applications" to "All Applications" → look for the "Utilities" folder → select "Terminal". Now you can double-click the file to run it.
+    - On Ubuntu, right-click → Properties → Permissions → check "Allow executing file as program"
+- **Option 5:** your script can be run from another script (the other script can 'call' it or 'source' it)
+    + Often a large project will have a "MAIN.sh" script that calls all the sub-scripts that make up the programme in order. This is a neat way to keep the project organised and for it to be possible to run the entire thing just by running one master script.
+    + A script can be run from another script using the `source` command, eg having `source myscript.sh` in a different script file inside the same folder as myscript. Running that script will cause "Hello, World" to be displayed.
+    + Convention states that scripts that are sourced by other scripts should NOT have a shebang at the top.
+
+> __*Note:*__ If there is a space in your script's name or in the name of the folder then it's still possible to run it by using quotation marks: `bash "my script.sh"` or `"./my folder/my script.sh"`, etc. However, this is not recommended. If you have spaces in folder- and filenames it may break other programmes that try to run your script or just generally make your life harder than necessary.
+
+[⇦ Back](../../bash.html)
+
+</font>
