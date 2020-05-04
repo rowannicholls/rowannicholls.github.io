@@ -1,0 +1,104 @@
+---
+title: '<font size="5">Graphs in R using plot():</font><br>Symbols, Line Types and Colours'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+Symbols
+=======
+
+By default, there are 26 symbols that can be used for the data points of a scatter plot. These are set using the `pch` keyword argument and are numbered from 0 to 25, for example:  
+`plot(x, y, pch=0)`  
+will plot with squares while  
+`plot(x, y, pch=1)`  
+will plot with circles, and so on.
+
+```{r, out.width='100%'}
+num_symbols = 26
+nrows = 13
+ncols = 2
+# SET THE MARGINS OF THE PLOTTING AREA
+par(mar=c(0, 0, 0, 0))
+# PLOT
+x = c()
+y = c()
+for (i in 0:25) {
+    x = c(x, ceiling((i + 1) / nrows))
+    y = c(y, nrows - (i %% nrows))
+}
+plot(x, y, pch=0:25, axes=FALSE, xlim=c(0.75, ncols + 0.75))
+name=c(
+    'square', 'circle', 'triangle point up', 'plus', 'cross', 'diamond',
+    'triangle point down', 'square cross', 'star', 'diamond plus',
+    'circle plus', 'triangles up and down', 'square plus', 'circle cross',
+    'square and triangle down', 'filled square', 'filled circle',
+    'filled triangle point-up', 'filled diamond', 'solid circle',
+    'bullet (smaller circle)', 'filled circle blue', 'filled square blue',
+    'filled diamond blue', 'filled triangle point-up',
+    'filled triangle point dwn'
+)
+text(x + 0.1, y, name, adj=0)
+text(x - 0.1, y, 0:25)
+```
+
+Line Types
+==========
+The style of line that is plotted can be controlled with the `lty` keyword argument (**l**ine **ty**pe), for example:  
+`plot(x, y, lty='dashed', type='l')`  
+will plot a dashed line. Note that the `type` keyword argument needs to be set to `l` for a line to be plotted (only the points will be plotted by default - ie a scatter plot instead of a line plot). The lines types that can be plotted are as follows:
+
+```{r, message=FALSE}
+library(ggpubr)
+show_line_types()
+```
+
+Colours
+=======
+There are 657 colours that can be referred to by name when choosing a colour for a plot. These are set using the `col` keyword argument, for example:  
+`plot(x, y, col='red')`  
+will plot in red. The complete list is below:
+
+```{r, out.width='100%', fig.height=50, fig.width=15}
+num_colours = 657
+nrows = 110
+ncols = 6
+# SET THE MARGINS OF THE PLOTTING AREA
+par(mar=c(0, 0, 0, 0))
+# PLOT
+plot(
+    seq(1.5, 3.5, by=2), seq(1.5, 3.5, by=2),
+    xlim=c(0, ncols * 2), ylim=c(0, nrows),
+    xlab=NULL, ylab=NULL, xaxt='n', yaxt='n', axes=FALSE, ann=FALSE
+)
+xleft = rep(seq(1, ncols * 2 - 1, by=2), nrows)[1:num_colours]
+ybottom = c()
+for (i in nrows:1 - 1) {
+    ybottom = c(ybottom, rep(i, ncols))
+}
+ybottom = ybottom[1:num_colours]
+xright = rep(seq(1.5, ncols * 2 - 0.5, by=2), nrows)[1:num_colours]
+ytop = c()
+for (i in nrows:1) {
+    ytop = c(ytop, rep(i, ncols))
+}
+ytop = ytop[1:num_colours]
+rect(xleft, ybottom, xright, ytop, col=colors()[1:num_colours])
+xtext = rep(seq(0.25, ncols * 2 - 1.75, by=2), nrows)[1:num_colours]
+ytext = c()
+for (i in nrows:1 - 0.5) {
+    ytext = c(ytext, rep(i, ncols))
+}
+ytext = ytext[1:num_colours]
+text(xtext, ytext, colors()[1:num_colours], cex=1.2, font=2)
+```
+
+[⇦ Back](../../R.html)
+
+</font>

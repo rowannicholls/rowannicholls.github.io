@@ -99,7 +99,7 @@ plot(
 )
 ```
 
-For a full list of what symbols can be used, click [here](scatterplot_symbols.html).
+For a full list of what symbols can be used, click [here](symbols_linetypes_colours.html).
 
 # Plot Colours
 Change the colour of the plot symbols using the `col` keyword argument:
@@ -114,7 +114,7 @@ plot(
 
 There are three different ways of specifying which colour you want to use:
 
-- Type out the colour's name, eg `col='blue'` will make the symbols blue. There are 657 colours that can be specified by name in this way, see them all [here](scatterplot_colours.html).
+- Type out the colour's name, eg `col='blue'` will make the symbols blue. There are 657 colours that can be specified by name in this way, see them all [here](symbols_linetypes_colours.html).
 - Use the RGB value of the colour you want by using the format `col='#RRGGBB'`. Each pair RR, GG, BB is a hexadecimal number (from 00 to FF) that specifies how much red, green and blue is in the colour of your plot symbol, respectively. For example, '‎#002147' would make your plot Oxford Blue.
 - Use a colour from a defined palette of colours. If you are creating a plot that has multiple colours in it then using palettes is a good idea: instead of wasting time finding colours that go well together you can just use a palette and cycle through the colours in that. The default colour palette is black, red, green3, blue, cyan, magenta, yellow, gray (in that order) although there are many others and you can load any one that you want. If you specify a symbol colour by using a number, eg `col=5`, it will look up the 5th colour of whatever palette you have loaded and use that (so if you are using the default palette this will be cyan).
 
