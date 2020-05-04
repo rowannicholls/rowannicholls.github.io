@@ -40,10 +40,8 @@ bp = ax.boxplot(
     labels=list(data)
 )
 # AXIS DETAILS
-ax.set_title('Long Jump Finals')
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-plt.tick_params(axis='x', which='major', labelsize=8)
+ax.set(xlabel='Olympics', ylabel='Distance [m]', title='Long Jump Finals')
+ax.tick_params(axis='x', which='major', labelsize=8)
 plt.show()
 ```
 
@@ -86,8 +84,10 @@ for i, data in enumerate(datasets):
         positions=[x_pos[i] + j * 1 for j in range(len(data.T))]
     )
 # TITLES
-ax.set_title('Long Jump Finals at the Last Four Olympic Games')
-ax.set_ylabel('Distance [m]')
+ax.set(
+    title='Long Jump Finals at the Last Four Olympic Games',
+    ylabel='Distance [m]'
+)
 # REMOVE THE MAJOR X-AXIS TICKMARKS
 ax.tick_params(axis='x', bottom=False)
 # POSITIONS OF THE X-AXIS LABELS
@@ -165,8 +165,10 @@ for i, data in enumerate(datasets):
     # MAKE THE MEDIAN LINES MORE VISIBLE
     plt.setp(bp['medians'], color='black')
 # AXIS DETAILS
-ax.set_title('Long Jump Finals at the Last Four Olympic Games')
-ax.set_ylabel('Distance [m]')
+ax.set(
+    title='Long Jump Finals at the Last Four Olympic Games',
+    ylabel='Distance [m]'
+)
 ax.tick_params(axis='x', bottom=False)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0]))) + 1)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0])) + 1) + 0.5, minor=True)
@@ -218,8 +220,10 @@ for i, data in enumerate(datasets):
     # MAKE THE MEDIAN LINES MORE VISIBLE
     plt.setp(bp['medians'], color='black')
 # AXIS DETAILS
-ax.set_title('Long Jump Finals at the Last Four Olympic Games')
-ax.set_ylabel('Distance [m]')
+ax.set(
+    title='Long Jump Finals at the Last Four Olympic Games',
+    ylabel='Distance [m]'
+)
 ax.tick_params(axis='x', bottom=False)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0]))) + 1)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0])) + 1) + 0.5, minor=True)
@@ -294,8 +298,10 @@ for i, data in enumerate(datasets):
         )
 
 # AXIS DETAILS
-ax.set_title('Long Jump Finals at the Last Two Olympic Games')
-ax.set_ylabel('Distance [m]')
+ax.set(
+    title='Long Jump Finals at the Last Two Olympic Games',
+    ylabel='Distance [m]'
+)
 ax.tick_params(axis='x', bottom=False)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0]))) + 1)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0])) + 1) + 0.5, minor=True)
@@ -360,8 +366,10 @@ for i, data in enumerate(datasets):
         )
 
 # AXIS DETAILS
-ax.set_title('Long Jump Finals at the Last Two Olympic Games')
-ax.set_ylabel('Distance [m]')
+ax.set(
+    title='Long Jump Finals at the Last Two Olympic Games',
+    ylabel='Distance [m]'
+)
 ax.tick_params(axis='x', bottom=False)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0]))) + 1)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0])) + 1) + 0.5, minor=True)
@@ -435,8 +443,10 @@ for i, data in enumerate(datasets):
         )
 
 # AXIS DETAILS
-ax.set_title('Long Jump Finals at the Last Two Olympic Games')
-ax.set_ylabel('Distance [m]')
+ax.set(
+    title='Long Jump Finals at the Last Two Olympic Games',
+    ylabel='Distance [m]'
+)
 ax.tick_params(axis='x', bottom=False)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0]))) + 1)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0])) + 1) + 0.5, minor=True)
@@ -533,8 +543,10 @@ for i, data in enumerate(datasets):
             horizontalalignment='center', size='xx-small'
         )
 # AXIS DETAILS
-ax.set_title("Men's Finals at the Last Two Olympic Games")
-ax.set_ylabel('Distance [m]')
+ax.set(
+    title="Men's Finals at the Last Two Olympic Games",
+    ylabel='Distance [m]'
+)
 ax.set_xlabel('Event')
 ax.tick_params(axis='x', bottom=False)
 xticks = ax.set_xticks(np.arange(len(list(datasets[0]))) + 1)
@@ -694,8 +706,7 @@ def plot_boxplots(datasets, colours, groups, ax, title):
                 horizontalalignment='center', size='x-small'
             )
     # AXIS DETAILS
-    ax.set_title(title)
-    ax.set_ylabel('Distance [m]')
+    ax.set(title=title, ylabel='Distance [m]')
     ax.tick_params(axis='x', bottom=False)
     ax.set_xticks(np.arange(len(list(datasets[0]))) + 1)
     ax.set_xticks(np.arange(len(list(datasets[0])) + 1) + 0.5, minor=True)
