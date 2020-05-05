@@ -1,0 +1,37 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>Two Variables: Continuous Bivariate Distribution'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Bins in 2D
+```{r, message=FALSE}
+p = ggplot(diamonds, aes(carat, price))
+p = p + geom_bin2d(binwidth=c(0.25, 500))
+print(p)
+```
+
+### Density in 2D
+```{r, message=FALSE}
+p = ggplot(diamonds, aes(carat, price))
+p = p + geom_density2d()
+print(p)
+```
+
+### Hexagons
+```{r, message=FALSE}
+p = ggplot(diamonds, aes(carat, price))
+p = p + geom_hex()
+print(p)
+```
+
+</font>

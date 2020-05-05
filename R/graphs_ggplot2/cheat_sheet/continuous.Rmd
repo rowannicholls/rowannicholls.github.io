@@ -1,0 +1,58 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>One Variable: Continuous'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Area Plot
+```{r, message=FALSE}
+p = ggplot(mpg, aes(hwy))
+p = p + geom_area(stat='bin')
+print(p)
+```
+
+### Density Plot
+```{r, message=FALSE}
+p = ggplot(mpg, aes(hwy))
+p = p + geom_density()
+print(p)
+```
+
+### Dot Plot
+```{r, message=FALSE}
+p = ggplot(mpg, aes(hwy))
+p = p + geom_dotplot()
+print(p)
+```
+
+### Frequency Plot
+```{r, message=FALSE}
+p = ggplot(mpg, aes(hwy))
+p = p + geom_freqpoly()
+print(p)
+```
+
+### Histogram
+```{r, message=FALSE}
+p = ggplot(mpg, aes(hwy))
+p = p + geom_histogram()
+print(p)
+```
+
+### Q-Q Plot
+```{r, message=FALSE}
+p = ggplot(mpg)
+p = p + geom_qq(aes(sample=hwy))
+print(p)
+```
+
+</font>

@@ -1,0 +1,27 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>Two Variables: Maps'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Map Plot
+```{r, message=FALSE}
+data = data.frame(murder=USArrests$Murder, state=tolower(rownames(USArrests)))
+map = map_data('state')
+p = ggplot(data, aes(fill=murder))
+p = p + geom_map(aes(map_id=state), map=map)
+p = p + expand_limits(x=map$long, y=map$lat)
+p = p + ylim(22, 53)
+print(p)
+```
+
+</font>

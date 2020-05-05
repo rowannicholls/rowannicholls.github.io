@@ -1,0 +1,100 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>Scales'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Manual Fill
+```{r, message=FALSE}
+p = ggplot(mpg, aes(fl))
+p = p + geom_bar(aes(fill=fl))
+p = p + scale_fill_manual(
+    values=c('skyblue', 'royalblue', 'blue', 'navy'),
+    limits=c('d', 'e', 'p', 'r'),
+    breaks=c('d', 'e', 'p', 'r'),
+    name='fuel',
+    labels=c('D', 'E', 'P', 'R')
+)
+print(p)
+```
+
+### Continuous Fill
+```{r, message=FALSE}
+p = ggplot(faithfuld, aes(waiting, eruptions, fill=density))
+p = p + geom_tile()
+p = p + scale_fill_continuous(low='blue', high='red')
+print(p)
+```
+
+### Specified Colours
+```{r, message=FALSE}
+df = data.frame(
+    'x'=1:4,
+    'y'=1:4,
+    'col'=c('red', 'green', 'blue', 'black')
+)
+p = ggplot(df, aes(x, y, colour=col))
+p = p + geom_point()
+p = p + scale_colour_identity()
+print(p)
+```
+
+### Log 10 Axis
+```{r, message=FALSE}
+df = data.frame(
+    'x'=1:10,
+    'y'=exp(1:10)
+)
+p = ggplot(df, aes(x, y))
+p = p + geom_point()
+p = p + scale_y_log10()
+print(p)
+```
+
+### Square Root Axis
+```{r, message=FALSE}
+df = data.frame(
+    'x'=1:10,
+    'y'=(1:10)^2
+)
+p = ggplot(df, aes(x, y))
+p = p + geom_point()
+p = p + scale_y_sqrt()
+print(p)
+```
+
+### Reverse Axis
+```{r, message=FALSE}
+p = ggplot(mpg, aes(cty, hwy))
+p = p + geom_point()
+p = p + scale_x_reverse()
+print(p)
+```
+
+### Custom Symbols
+```{r, message=FALSE}
+p = ggplot(mpg, aes(cty, hwy))
+p = p + geom_point(aes(shape=fl, size=cyl))
+p = p + scale_shape() + scale_size()
+p = p + scale_shape_manual(values=c(0:25))
+print(p)
+```
+
+### Custom Size
+```{r, message=FALSE}
+p = ggplot(mpg, aes(cty, hwy))
+p = p + geom_point(aes(shape=fl, size=cyl))
+p = p + scale_radius() + scale_size_area()
+print(p)
+```
+
+</font>

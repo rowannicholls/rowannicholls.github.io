@@ -1,0 +1,30 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>Polygons'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Polygon
+```{r}
+p = ggplot(economics, aes(date, unemploy))
+p = p + geom_polygon()
+print(p)
+```
+
+### Rectangle
+```{r}
+p = ggplot(seals, aes(x = long, y = lat))
+p = p + geom_rect(aes(xmin=long, ymin=lat, xmax=long + 1, ymax=lat + 1))
+print(p)
+```
+
+</font>

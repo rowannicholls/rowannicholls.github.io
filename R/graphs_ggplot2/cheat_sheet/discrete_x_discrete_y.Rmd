@@ -1,0 +1,23 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>Two Variables: Discrete x, Discrete y'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Counts
+```{r, message=FALSE}
+p = ggplot(diamonds, aes(cut, color))
+p = p + geom_count()
+print(p)
+```
+
+</font>

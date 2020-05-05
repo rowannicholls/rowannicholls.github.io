@@ -1,0 +1,35 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>Basics'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Empty Axes
+```{r}
+p = ggplot(data=mpg, aes(x=cty, y=hwy))
+print(p)
+```
+
+### A Quick Example
+```{r}
+p = qplot(x=cty, y=hwy, data=mpg, geom='point')
+print(p)
+```
+
+### Blank Axes
+```{r}
+p = ggplot(economics, aes(date, unemploy))
+p = p + geom_blank()
+print(p)
+```
+
+</font>

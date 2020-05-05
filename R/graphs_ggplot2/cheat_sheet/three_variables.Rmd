@@ -1,0 +1,40 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>Three Variables'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Contour Map
+```{r, message=FALSE}
+seals$z = with(seals, sqrt(delta_long^2 + delta_lat^2))
+p = ggplot(seals, aes(long, lat))
+p = p + geom_contour(aes(z=z))
+print(p)
+```
+
+### Raster Map
+```{r, message=FALSE}
+seals$z = with(seals, sqrt(delta_long^2 + delta_lat^2))
+p = ggplot(seals, aes(long, lat))
+p = p + geom_raster(aes(fill=z))
+print(p)
+```
+
+### Tile Map
+```{r, message=FALSE}
+seals$z = with(seals, sqrt(delta_long^2 + delta_lat^2))
+p = ggplot(seals, aes(long, lat))
+p = p + geom_tile(aes(fill=z))
+print(p)
+```
+
+</font>

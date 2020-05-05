@@ -1,0 +1,23 @@
+---
+title: '<font size="5">ggplot2 Cheat Sheet:</font><br>One Variable: Discrete'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3"> 
+
+```{r}
+library(ggplot2)
+```
+
+### Bar Chart
+```{r, message=FALSE}
+p = ggplot(mpg, aes(fl))
+p = p + geom_bar()
+print(p)
+```
+
+</font>
