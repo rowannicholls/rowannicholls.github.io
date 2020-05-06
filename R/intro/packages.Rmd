@@ -24,7 +24,7 @@ When you download and install R or RStudio you get access to what is known as __
 # Install a Package
 Packages can be installed by running the `install.packages()` function. Specify the name of the package you want to install as a string and the repository you want to install it from by using the `repos` __*keyword argument*__:
 
-```{r message=FALSE, warning=FALSE}
+```{r message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 install.packages('BlandAltmanLeh', repos='http://cran.us.r-project.org')
 install.packages('chron', repos='http://cran.us.r-project.org')
 install.packages('DescTools', repos='http://cran.us.r-project.org')
