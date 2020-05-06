@@ -17,13 +17,13 @@ setwd(dirname(parent.frame(2)$ofile))
 
 # PACKAGES
 # ========
-# For this tutorial you will need the 'titanic', 'knitr', 'ggplot2' and pROC packages.
+# For this tutorial you will need the 'titanic', 'knitr', 'ggplot2' and 'pROC' packages.
 # 
 # The data will come from 'titanic'; see its documentation here: https://www.rdocumentation.org/packages/titanic/versions/0.1.0
 # 
 # Install a Package
 # -----------------
-# When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.
+# When you want to use functionality that is part of a particular package, you need to import the package as a library in the script:
 # 
 # ### RStudio
 # - Packages → Install → search & install

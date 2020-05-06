@@ -36,13 +36,13 @@ setwd(dirname(parent.frame(2)$ofile))
 
 Packages
 ========
-For this tutorial you will need the 'titanic', 'knitr', 'ggplot2' and pROC packages.
+For this tutorial you will need the 'titanic', 'knitr', 'ggplot2' and 'pROC' packages.
 
 The data will come from 'titanic'; see its documentation here: https://www.rdocumentation.org/packages/titanic/versions/0.1.0
 
 Install Packages
 ----------------
-When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.
+When you want to use functionality that is part of a particular package, you need to import the package as a library in the script:
 
 ### RStudio
 - Packages → Install → search & install
@@ -73,15 +73,29 @@ When previewing the data, don't look at all of it at once because you don't know
 
 Print to Console
 ----------------
-```{r}
+```{r, eval=FALSE}
 print(head(titanic_train))
+```
+
+```{r, echo=FALSE}
+options(width=200)
+to_print = titanic_train[20:25, ]
+rownames(to_print) = NULL
+print(to_print)
 ```
 
 Print Using Kable
 -----------------
 Kable is a table generator which comes from the knitr package. It can automatically convert tables to HTML, Latex or Markdown format, making it easy to add them to a report or a webpage.
-```{r}
+```{r, eval=FALSE}
 print(kable(head(titanic_train)))
+```
+
+```{r, echo=FALSE}
+options(width=200)
+to_print = titanic_train[20:25, ]
+rownames(to_print) = NULL
+print(kable(to_print[, -match(c('SibSp', 'Parch'), names(to_print))]))
 ```
 
 Export the Data
@@ -138,19 +152,33 @@ print(idx)
 Filter
 ------
 Let's look at only the passengers in third class:
-```{r}
+```{r, eval=FALSE}
 subset = subset(df, Pclass == '3')
 print(head(subset))
 ```
 
+```{r, echo=FALSE}
+options(width=200)
+to_print = subset(df, Pclass == '3')[33:38, ]
+rownames(to_print) = NULL
+print(to_print[, -match(c('Parch'), names(to_print))])
+```
+
 Now only the passengers between the ages of 20 and 30:
-```{r}
+```{r, eval=FALSE}
 subset = subset(df, Age >= 20 & Age < 30)
 print(head(subset))
 ```
 
+```{r, echo=FALSE}
+options(width=200)
+to_print = subset(df, Age >= 20 & Age < 30)[16:21, ]
+rownames(to_print) = NULL
+print(to_print[, -match(c('Parch'), names(to_print))])
+```
+
 How much was the cheapest, most expensive, average and median ticket?
-```{r}
+```{r, results='hold'}
 min = min(df$Fare)
 max = max(df$Fare)
 mean = mean(df$Fare)
@@ -167,7 +195,9 @@ Let's ask the following question: were those people who paid more for their tick
 ```{r}
 boxplot(Fare~Survived, data=df)
 ```
+
 The `boxplot()` function will create the graph for us, and the arguments we specified will tell it what to do:
+
 - The `data` keyword argument was set equal to `df` as that is the dataset we want to use
 - The two columns within the `df` data frame that we want to use are `Fare` on the y-axis and `Survived` on the x-axis. R uses the tilde symbol (~) - which means 'proportional to' in statistics - to specify which variable is being set proportional to another in the plot. Notice that the argument was `Fare~Survived`, ie the dependant variable was named first.
 
@@ -181,6 +211,7 @@ p = p + ggtitle("Were the Titanic's passengers more likely to survive if they ha
 p = p + xlab('')
 print(p)
 ```
+
 As you can see, this is more complicated but it arguably produces a nicer figure.
 
 Statistical Significance
@@ -227,7 +258,7 @@ print(nrow(df))
 ```
 
 Some of our 'positive' predictions (that the passenger survived) came true while some were false. Some of our 'negative' predictions (that the passenger died) came true while some were false. Extract the number of true positives, false positives, false negatives and true negatives from the confusion matrix (hint: this will require 2-dimensional indexing because a confusion matrix has two dimensions):
-```{r}
+```{r, results='hold'}
 TP = cm[1, 1]
 FP = cm[1, 2]
 FN = cm[2, 1]
@@ -239,11 +270,13 @@ print(TN)
 ```
 
 We have all the information we need to calculate the four most important results of a confusion matrix investigation:
+
 - Sensitivity: how good is our test at predicting who survived?
 - Specificity: how good is our prediction at picking up who died?
 - Positive predictive value: if our test predicted that a passenger survived, how much value does that information have to us?
 - Negative predictive value: if our test predicted that a passenger died, how much value does that information have to us?
-```{r}
+
+```{r, results='hold'}
 sens = TP / (TP + FN)
 spec = TN / (TN + FP)
 PPV = TP / (TP + FP)
@@ -258,7 +291,7 @@ Unfortunately these values aren't very good! Maybe it's because the cut-off we c
 Receiver Operating Characteristic Curve
 =======================================
 A ROC curve illustrates how the diagnostic accuracy (ie the sensitivity and specificity) of a binary classification test (eg predicting whether a passenger survived or died) changes as it threshold changes. Fortunately for us, there is a function that can do most of the work for us (hint: this function calculates the receiver operating characteristic):
-```{r}
+```{r, message=FALSE}
 r = roc(Survived~Fare, data=df)
 ```
 
@@ -269,7 +302,7 @@ print(head(r$thresholds))
 
 Plot Using Base R
 -----------------
-```{r}
+```{r, fig.height=5, fig.width=5}
 plot(r, type='S')
 ```
 
@@ -282,7 +315,7 @@ ci_u = round(ci[3], 2)
 ```
 
 Add this information to the graph:
-```{r}
+```{r, fig.height=5, fig.width=5}
 plot(r, type='S')
 legend_text = paste0("AUC = ", round(auc, 2), " (95% CI = ", ci_l, " - ", ci_u, ")")
 legend('bottomright', legend=legend_text, pch=15)
@@ -290,7 +323,7 @@ legend('bottomright', legend=legend_text, pch=15)
 
 Plot Using ggplot2
 ------------------
-```{r}
+```{r, fig.height=5, fig.width=5, message=FALSE}
 p = ggroc(r)
 p = p + ggtitle('Receiver Operating Characteristic Curve')
 p = p + geom_segment(aes(x=1, xend=0, y=0, yend=1), color='grey', linetype='dashed')
