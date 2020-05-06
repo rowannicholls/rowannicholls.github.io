@@ -454,7 +454,7 @@ print(test$p.value)</code></pre>
 <div id="categorisation" class="section level1">
 <h1><span class="header-section-number">9</span> Categorisation</h1>
 <p>Now let’s ask a slightly different question: can a passenger’s fare price be used to predict where or not they survived?</p>
-<p>Let’s create a predictive test. Recall that the median ticket price paid by passengers was £14.45 (we calculated that using <code>mean(df$Fare)</code>), so let’s use that as a cut-off and make the follow predictions:</p>
+<p>Let’s create a predictive test. Recall that the median ticket price paid by passengers was £14.45 (we calculated that using <code>median(df$Fare)</code>), so let’s use that as a cut-off and make the follow predictions:</p>
 <ul>
 <li>Any passenger who paid more than £14.45 survived</li>
 <li>Any passenger who paid less than (or equal to) £14.45 died Is this prediction any good? Let’s investigate. Create a new column called <code>Prediction</code> that predicts whether each passenger survived or died - ie it categorises them into ‘predicted to survive’ and ‘predicted to die’ groups (hint: if the fare was larger than 14.45, the prediction is that they lived, else it’s that they died):</li>
@@ -531,7 +531,7 @@ print(sens)</code></pre>
 ci = ci.auc(r)
 ci_l = round(ci[1], 2)
 ci_u = round(ci[3], 2)</code></pre>
-<p>Add this information to the graph</p>
+<p>Add this information to the graph:</p>
 <pre class="r"><code>plot(r, type='S')
 legend_text = paste0(&quot;AUC = &quot;, round(auc, 2), &quot; (95% CI = &quot;, ci_l, &quot; - &quot;, ci_u, &quot;)&quot;)
 legend('bottomright', legend=legend_text, pch=15)</code></pre>

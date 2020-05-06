@@ -157,7 +157,7 @@ df$Survived = relevel(df$Survived, ref='Lived')
 
 # DIAGNOSTIC ACCURACY
 # ===================
-#  We can investigate the accuracy of our test by creating a confusion matrix (https://en.wikipedia.org/wiki/Confusion_matrix) (hint: this is a table that compares a test with a 'ground truth' reference):
+# We can investigate the accuracy of our test by creating a confusion matrix (https://en.wikipedia.org/wiki/Confusion_matrix) (hint: this is a table that compares a test with a 'ground truth' reference):
 cm = table(test=df$Prediction, ref=df$Survived)
 print(cm)
 print(nrow(df))
@@ -205,7 +205,7 @@ ci = ci.auc(r)
 ci_l = round(ci[1], 2)
 ci_u = round(ci[3], 2)
 # 
-# Add this information to the graph
+# Add this information to the graph:
 legend_text = paste0("AUC = ", round(auc, 2), " (95% CI = ", ci_l, " - ", ci_u, ")")
 legend('bottomright', legend=legend_text, pch=15)
 # 

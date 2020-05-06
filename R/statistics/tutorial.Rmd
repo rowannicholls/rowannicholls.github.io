@@ -198,7 +198,7 @@ Categorisation
 ==============
 Now let's ask a slightly different question: can a passenger's fare price be used to predict where or not they survived?
 
-Let's create a predictive test. Recall that the median ticket price paid by passengers was £14.45 (we calculated that using `mean(df$Fare)`), so let's use that as a cut-off and make the follow predictions:
+Let's create a predictive test. Recall that the median ticket price paid by passengers was £14.45 (we calculated that using `median(df$Fare)`), so let's use that as a cut-off and make the follow predictions:
 
 - Any passenger who paid more than £14.45 survived
 - Any passenger who paid less than (or equal to) £14.45 died
@@ -219,7 +219,7 @@ df$Survived = relevel(df$Survived, ref='Lived')
 
 Diagnostic Accuracy
 ===================
- We can investigate the accuracy of our test by creating a confusion matrix (https://en.wikipedia.org/wiki/Confusion_matrix) (hint: this is a table that compares a test with a 'ground truth' reference):
+We can investigate the accuracy of our test by creating a confusion matrix (https://en.wikipedia.org/wiki/Confusion_matrix) (hint: this is a table that compares a test with a 'ground truth' reference):
 ```{r}
 cm = table(test=df$Prediction, ref=df$Survived)
 print(cm)
@@ -281,7 +281,7 @@ ci_l = round(ci[1], 2)
 ci_u = round(ci[3], 2)
 ```
 
-Add this information to the graph
+Add this information to the graph:
 ```{r}
 plot(r, type='S')
 legend_text = paste0("AUC = ", round(auc, 2), " (95% CI = ", ci_l, " - ", ci_u, ")")

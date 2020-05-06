@@ -142,7 +142,7 @@ library(pROC)
 # ==============
 # Now let's ask a slightly different question: can a passenger's fare price be used to predict where or not they survived?
 # 
-# Let's create a predictive test. Recall that the median ticket price paid by passengers was £14.45 (we calculated that using `mean(df$Fare)`), so let's use that as a cut-off and make the follow predictions:
+# Let's create a predictive test. Recall that the median ticket price paid by passengers was £14.45 (we calculated that using `median(df$Fare)`), so let's use that as a cut-off and make the follow predictions:
 # - Any passenger who paid more than £14.45 survived
 # - Any passenger who paid less than (or equal to) £14.45 died
 # Is this prediction any good? Let's investigate. Create a new column called `Prediction` that predicts whether each passenger survived or died - ie it categorises them into 'predicted to survive' and 'predicted to die' groups (hint: if the fare was larger than 14.45, the prediction is that they lived, else it's that they died):
@@ -157,7 +157,7 @@ library(pROC)
 
 # DIAGNOSTIC ACCURACY
 # ===================
-#  We can investigate the accuracy of our test by creating a confusion matrix (https://en.wikipedia.org/wiki/Confusion_matrix) (hint: this is a table that compares a test with a 'ground truth' reference):
+# We can investigate the accuracy of our test by creating a confusion matrix (https://en.wikipedia.org/wiki/Confusion_matrix) (hint: this is a table that compares a test with a 'ground truth' reference):
 
 
 
@@ -205,7 +205,7 @@ library(pROC)
 
 
 # 
-# Add this information to the graph
+# Add this information to the graph:
 
 
 # 
