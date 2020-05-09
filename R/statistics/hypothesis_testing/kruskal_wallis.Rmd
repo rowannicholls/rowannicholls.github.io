@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Statistics in R:</font><br>Friedman Rank Sum Test'
+title: '<font size="5">Statistics in R:</font><br>Kruskal-Wallis Rank Sum Test'
 output:
     html_document:
         theme: paper
@@ -10,46 +10,22 @@ output:
 
 [⇦ Back](../../../R.html)
 
-This example comes from [the RDocumentation site](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/friedman.test) for `friedman.test()`. It uses data from Hollander & Wolfe's (1973) "Nonparametric statistical methods", p 140ff, documenting a comparison of three methods ("round out", "narrow angle" and "wide angle") for rounding first base in baseball:
+This example uses the ['chickwts'](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts) built-in dataset which documents the weight of 71 chickens which had been fed different diets.
 
-> For each of 22 players and the three methods tested, the average time of two runs from a point on the first base line 35 ft from home plate to a point 15 ft short of second base is recorded.
+> An experiment was conducted to measure and compare the effectiveness of various feed supplements on the growth rate of chickens. Newly-hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types.
 
-Here's the raw data:
+Here's an idea of what the data looks like:
 
 ```{r}
-rounding_times = matrix(
-    c(
-        5.40, 5.50, 5.55,
-        5.85, 5.70, 5.75,
-        5.20, 5.60, 5.50,
-        5.55, 5.50, 5.40,
-        5.90, 5.85, 5.70,
-        5.45, 5.55, 5.60,
-        5.40, 5.40, 5.35,
-        5.45, 5.50, 5.35,
-        5.25, 5.15, 5.00,
-        5.85, 5.80, 5.70,
-        5.25, 5.20, 5.10,
-        5.65, 5.55, 5.45,
-        5.60, 5.35, 5.45,
-        5.05, 5.00, 4.95,
-        5.50, 5.50, 5.40,
-        5.45, 5.55, 5.50,
-        5.55, 5.55, 5.35,
-        5.45, 5.50, 5.55,
-        5.50, 5.45, 5.25,
-        5.65, 5.60, 5.40,
-        5.70, 5.65, 5.55,
-        6.30, 6.30, 6.25
-    ),
-    nrow = 22,
-    byrow = TRUE,
-    dimnames = list(
-        1 : 22,
-        c('Round Out', 'Narrow Angle', 'Wide Angle')
-    )
-)
-print(head(rounding_times))
+print(head(chickwts, 15))
+```
+
+Let's see what the six groups (type of feed given to the chickens) are:
+
+```{r}
+for (feed_type in unique(chickwts$feed)) {
+    print(feed_type)
+}
 ```
 
 Which Statistical Test Should Be Used?
@@ -72,8 +48,6 @@ DiagrammeR::grViz(
                                     'Mann-Whitney U test'
                                 TGNonindependent [label='Non-independent groups']
                                     'Wilcoxon signed-rank test'
-                                MGIndependent [label='Independent groups']
-                                    'Kruskal-Wallis one-way ANOVA'
                             MGParametric [label='Parametric']
                                 'ANOVA'
 
@@ -84,10 +58,12 @@ DiagrammeR::grViz(
                     'Means'
                         'More than two groups'
                             MGNonparametric [label='Nonparametric']
-                                MGNonindependent [label='Non-independent groups']
-                                    'Friedman two-way ANOVA'
+                                MGIndependent [label='Independent groups']
+                                    'Kruskal-Wallis one-way ANOVA'
 
         node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                MGNonindependent [label='Non-independent groups']
+                                    'Friedman two-way ANOVA'
                         'Variances'
                     'Relationships'
                         RIndependent [label='Independent groups']
@@ -151,46 +127,50 @@ DiagrammeR::grViz(
 )
 ```
 
-- The (alternative) **hypothesis** is that there is a difference in speed between the three methods 
-- The variable being measured is time, which is **continuous**
-- The hypothesis is that the participants will record a **different** time if they use each of the three methods
-- Specifically, the hypothesis is that the **mean** time taken when using each method will be different
-- There are **more than two groups** (there are three)
+- The (alternative) **hypothesis** is that there is a difference in growth rate between chickens fed different diets
+- The variable being measured is weight (mass), which is **continuous**
+- The hypothesis is that the chickens will weigh a **different** amount if they were fed a different diet
+- Specifically, the hypothesis is that the **mean** weight will be different depending on which diet was used
+- There are **more than two groups** (there are six)
 - We cannot assume that the data is Normally distributed, so a **nonparametric** test should be used
-- If one participant is a naturally fast runner then all three of their times should be lower than another participant's. Thus the measurements are **not-independent**.
+- If one chicken grows particularly fast, it will not affect the growth rate of any of the other chickens. Thus the measurements are **independent**.
 
-Using the above flowchart we see that we should use Friedman two-way ANOVA.
+Using the above flowchart we see that we should use Kruskal-Wallis one-way ANOVA.
 
-Performing the Friedman Test
-============================
-The Friedman test is performed using the `friedman.test()` function:
+Performing the Kruskal-Wallis Test
+==================================
+The Kruskal-Wallis test is performed using the `kruskal.test()` function ([more info](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/kruskal.test)):
+
+- The independent variable is 'feed' and the dependent variable is 'weight'
+- When using an entire data frame as the input, the `kruskal.test()` function used the 'tilde' notation. This format requires that the dependent variable be specified first, followed by a tilde ("~", which means 'proportional to' in statistics), followed by the independent variable: `weight ~ feed`
+- The data frame being used ('chickwts') is indicated using the 'data' keyword argument
 
 ```{r}
-friedman.test(rounding_times)
+kruskal.test(weight ~ feed, data=chickwts)
 ```
 
-As we can see from the output the p-value was 0.003805, which is strong evidence in favour of the alternative hypothesis (which is that the methods are not equivalent with respect to speed). The individual values that have been returned can be accessed by setting a variable equal to `friedman.test()` and then indexing it:
+As we can see from the output the p-value was 5.113e-07, which is strong evidence in favour of the alternative hypothesis (which is that chicks grow at different rates when fed these different diets). The individual values that have been returned can be accessed by setting a variable equal to `kruskal.test()` and then indexing it:
 
 ```{r, results='hold'}
-f = friedman.test(rounding_times)
+k = kruskal.test(weight ~ feed, data=chickwts)
 
-# GET THE VALUE OF FRIEDMAN'S CHI-SQUARED STATISTIC
-chi_squared = f$statistic
+# GET THE KRUSKAL-WALLIS RANK SUM STATISTIC
+chi_squared = k$statistic
 # GET THE DEGREES OF FREEDOM OF THE APPROXIMATE CHI-SQUARED DISTRIBUTION OF THE TEST STATISTIC
-df = f$parameter
+df = k$parameter
 # GET THE P-VALUE OF THE TEST
-p = f$p.value
-# GET THE CHARACTER STRING "Friedman rank sum test"
-method = f$method
+p = k$p.value
+# GET THE CHARACTER STRING "Kruskal-Wallis rank sum test"
+name_of_test = k$method
 # GET A CHARACTER STRING GIVING THE NAMES OF THE DATA
-name = f$data.name
+comparison = k$data.name
 
 # PRINT THEM ALL
 print(chi_squared)
 print(df)
 print(p)
-print(method)
-print(name)
+print(name_of_test)
+print(comparison)
 ```
 
 [⇦ Back](../../../R.html)
