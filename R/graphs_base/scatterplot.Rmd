@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Graphs in R using plot():</font><br>Scatter Plots'
+title: '<font size="5">Graphs in Base R:</font><br>Scatter Plots'
 output:
     html_document:
         theme: paper
@@ -11,8 +11,11 @@ output:
 
 [⇦ Back](../../R.html)
 
-# How Do I Create a Scatter Plot?
+How Do I Create a Scatter Plot?
+===============================
 
+Using Vetors
+------------
 The easiest way to create a scatter plot in R is by using the `plot()` function:
 
 ```{r}
@@ -23,7 +26,8 @@ plot(x, y)
 
 As you can see above, the x-data is a vector of numbers and the y-data is also a vector of numbers.
 
-## Using Data Frames
+Using Data Frames
+-----------------
 If you are coding in R you will mostly be working with __data frames__. Remember that data frames are essentially tables where the _columns are vectors_, so two columns of a data frames can be plotted against each other very easily! Let's use one of the pre-loaded data frames that comes packaged with R; the Anscombe dataset:
 
 ```{r}
@@ -49,7 +53,8 @@ plot(anscombe$x4, anscombe$y4)
 
 The Anscombe Quartet is an interesting dataset to use because it consists of four plots that have [near-identical descriptive statistics](../statistics/descriptive_statistics.html), despite looking very different when graphed.
 
-# Axis Titles
+Axis Titles
+===========
 The function `plot()` can take __keyword arguments__, some of which are:
 
 - `main` which sets the main title of the graph
@@ -66,7 +71,8 @@ plot(
 )
 ```
 
-# Axis Options
+Axis Options
+============
 The limits of the x- and y-axis can be changed with the `xlim` and `ylim` keyword arguments. Decide what you want the max and min values of the axes to be and specify these as vectors:
 
 ```{r}
@@ -89,7 +95,8 @@ plot(
 )
 ```
 
-# Plot Symbols
+Plot Symbols
+============
 The symbol that is used for the plot points can be changed using the `pch` (<b>p</b>oint <b>ch</b>aracter) keyword argument. There are 26 symbols that can be used this way. For example, if we want to use squares for the plot instead of circles we can do that by setting `pch` to zero:
 
 ```{r}
@@ -102,7 +109,8 @@ plot(
 
 For a full list of what symbols can be used, click [here](symbols_linetypes_colours.html).
 
-# Plot Colours
+Plot Colours
+============
 Change the colour of the plot symbols using the `col` keyword argument:
 
 ```{r}
@@ -119,7 +127,8 @@ There are three different ways of specifying which colour you want to use:
 - Use the RGB value of the colour you want by using the format `col='#RRGGBB'`. Each pair RR, GG, BB is a hexadecimal number (from 00 to FF) that specifies how much red, green and blue is in the colour of your plot symbol, respectively. For example, '‎#002147' would make your plot Oxford Blue.
 - Use a colour from a defined palette of colours. If you are creating a plot that has multiple colours in it then using palettes is a good idea: instead of wasting time finding colours that go well together you can just use a palette and cycle through the colours in that. The default colour palette is black, red, green3, blue, cyan, magenta, yellow, gray (in that order) although there are many others and you can load any one that you want. If you specify a symbol colour by using a number, eg `col=5`, it will look up the 5th colour of whatever palette you have loaded and use that (so if you are using the default palette this will be cyan).
 
-# Multiple Plots on the Same Axes
+Multiple Plots on the Same Axes
+===============================
 In order to plot multiple sets of data on the same axes, use the `points()` function for the additional datasets:
 
 ```{r}
@@ -139,7 +148,8 @@ points(anscombe$x4, anscombe$y4, pch=3, col=4)
 
 This is where the usefulness of having different plot symbols and different plot colours becomes apparent. If all four of these datasets were plotted with the same colour and had the same symbol, it would be impossible to tell them apart!
 
-## Legends
+Legends
+-------
 With all these datasets being plotted, we'd better use a legend to identify them:
 
 ```{r}
@@ -164,7 +174,8 @@ legend(
 )
 ```
 
-# Add a Regression Line
+Add a Regression Line
+=====================
 To add a 'line of best fit', use the `lm()` (<b>l</b>inear <b>m</b>odel) function then the `abline()` function (which plots a straight <b>line</b> between <b>a</b> and <b>b</b>). Note that the `lm()` function uses the tilde notation (`lm(y ~ x)`) and so the y-variable must go on the left of the tilde and the x-variable on the right. This is the opposite of the `plot(x, y)` format which requires that the x-variable comes first.
 
 ```{r}
@@ -196,7 +207,8 @@ legend(
 
 Notice that all four lines of best fit are exactly the same! We can only see one straight line because the other three are hidden underneath it. This is what is so interesting about the Anscombe Quartet of datasets that we used; despite the fact that they look so different when plotted the statistics that describe them are almost identical!
 
-# More Options
+More Options
+============
 There are many more options that can be tweaked in order to customise your plot and have it look exactly how you want it. Here are some of them:
 
 - Using the `par()` function to set general graphical <b>par</b>ameters:
@@ -206,7 +218,8 @@ There are many more options that can be tweaked in order to customise your plot 
 	+ `plot(x, y, frame=FALSE)` will remove the border around the graph
 	+ `plot(x, y, asp=2)` will set the aspect ratio of the plot to, in this case 2:1 (height:width)
 
-# Save Plot
+Save Plot
+=========
 Finally, save your plot to your computer as an image using `png('Name of Plot.png')`.
 
 [⇦ Back](../../R.html)

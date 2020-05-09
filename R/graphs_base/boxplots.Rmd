@@ -1,0 +1,132 @@
+---
+title: '<font size="5">Graphs in Base R:</font><br>Boxplots (aka Box-and-Whisker Plots)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+Create a Boxplot
+================
+Boxplots are useful for visualising the spread of data points within a group and the difference (or lack thereof) between groups.
+
+Using Vectors
+-------------
+The most versatile way of creating a boxplot is to use one vector for each box you wish to make and then calling the `boxplot()` function. Axis titles and labels can then be specified using the 'main', 'xlab', 'ylab' and 'names' keyword arguments:
+
+```{r}
+Athens.2004 = c(8.59, 8.47, 8.32, 8.31, 8.25, 8.24, 8.23, 8.21)
+Beijing.2008 = c(8.34, 8.24, 8.20, 8.19, 8.19, 8.16, 8.07, 8.00)
+London.2012 = c(8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93)
+Rio.2016 = c(8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05)
+
+boxplot(
+    Athens.2004, Beijing.2008, London.2012, Rio.2016,
+    main="Men's Long Jump Finals",
+    xlab='Olympic Games', ylab='Distance [m]',
+    names=c('Athens 2004', 'Beijing 2008', 'London 2012', 'Rio 2016')
+)
+
+```
+
+The advantage of this method is that not all vectors have to be the same length. The disadvantage is that often data in R will be stored in a data frame, not in vectors. Here's how to do it using a data frame:
+
+Using a Data Frame in 'Wide' Format
+-----------------------------------
+'Wide' format refers to when each group is in its own column:
+
+```{r}
+data = data.frame(
+    'Athens 2004'=c(8.59, 8.47, 8.32, 8.31, 8.25, 8.24, 8.23, 8.21),
+    'Beijing 2008'=c(8.34, 8.24, 8.20, 8.19, 8.19, 8.16, 8.07, 8.00),
+    'London 2012'=c(8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93),
+    'Rio 2016'=c(8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05)
+)
+print(data)
+```
+
+In these cases, a boxplot can be created by calling each column separately:
+
+```{r}
+boxplot(
+    data$Athens.2004, data$Beijing.2008,
+    data$London.2012, data$Rio.2016,
+    main="Men's Long Jump Finals",
+    xlab='Olympic Games', ylab='Distance [m]',
+    names=c('Athens 2004', 'Beijing 2008', 'London 2012', 'Rio 2016')
+)
+```
+
+Note that, because each column in a data frame is a vector, this is fundamentally the same method as the first example. This only difference is that, when using a data frame like this, all vectors will necessarily be the same length (unless there is missing data) because all columns in a data frame must be the same length.
+
+Using a Data Frame in 'Long' Format
+-----------------------------------
+'Long' format refers to when each *variable* is in its own column (as opposed to the previous example when each *group* was in its own column):
+
+```{r, echo=FALSE}
+library('tidyr')
+gathercols = c(
+    'Athens.2004', 'Beijing.2008', 'London.2012', 'Rio.2016'
+)
+data = gather(
+    data, 'Olympics', 'Distance', all_of(gathercols), factor_key=TRUE
+)
+print(data)
+```
+
+This time we need to use a slightly different format. We still call the `boxplot()` function but this time use the 'tilde' notation (`<independent variable> ~ <dependent variable>`) and call the data frame using the 'data' keyword argument:
+
+```{r}
+boxplot(Distance ~ Olympics, data=data, main="Men's Long Jump Finals")
+```
+
+Note that this was slightly more efficient because R could take the axis labels from the variable names; we only needed to specify the plot's main title.
+
+Box Colours
+===========
+Change the fill colour of the boxes using the `col` keyword argument. If you specify:
+
+- One colour (eg `col='red'`) then all boxes will be that colour
+- Two colours (using a vector, eg `col=c('red', 'blue')`) then the boxes will alternate from one colour to the other
+- Three colours (eg `col=c('red', 'blue', 'green')`) then the first three boxes will be the given colours and the fourth will be in the first colour
+- Four colours then the boxes will appear in those colours, in order
+
+...and so on for the number of boxes and colours you have.
+
+```{r}
+boxplot(
+    Distance ~ Olympics, data=data, main="Men's Long Jump Finals",
+    col=c('lightsalmon', 'cadetblue')
+)
+```
+
+There are three different ways of specifying which colours you want to use:
+
+- Type out the colour's name, eg `col='blue'` will make the symbols blue. There are 657 colours that can be specified by name in this way, see them all [here](symbols_linetypes_colours.html).
+- Use the RGB value of the colour you want by using the format `col='#RRGGBB'`. Each pair RR, GG, BB is a hexadecimal number (from 00 to FF) that specifies how much red, green and blue is in the colour of your plot symbol, respectively. For example, '‎#002147' would make your plot Oxford Blue.
+- Use a colour from a defined palette of colours. If you are creating a plot that has multiple colours in it then using palettes is a good idea: instead of wasting time finding colours that go well together you can just use a palette and cycle through the colours in that. The default colour palette is black, red, green3, blue, cyan, magenta, yellow, gray (in that order) although there are many others and you can load any one that you want. If you specify a symbol colour by using a number, eg `col=5`, it will look up the 5th colour of whatever palette you have loaded and use that (so if you are using the default palette this will be cyan).
+
+More Options
+============
+There are many more options that can be tweaked in order to customise your plot and have it look exactly how you want it. Here are some of them:
+
+- Using the `par()` function to set general graphical <b>par</b>ameters:
+    + `par(pin=c(width, height))` will set the dimensions of the plot in inches (so divide by 25.4 to convert to centimetres, eg `par(pin=c(20 / 25.4, 15 / 25.4))` will create a graph 20 cm wide and 15 cm high)
+    + `par(plt=c(xstart, xend, ystart, yend))` will set the dimensions of the graph inside of the plot area (ie it will change the amount of white space around the plot). It does this using fractions of the figure region, so `par(plt=c(0.2, 0.98, 0.2, 0.85))` will have the plot area start 20% of the way in from the left-hand side of the image and run until 98% of the way to the right-hand side of the image and, similarly, it will start 20% of the way up from the bottom and end 85% of the way up to the top of the image.
+- Using additional keyword arguments inside `boxplot()`:
+    + `boxplot(..., frame=FALSE)` will remove the border around the graph
+    + `boxplot(..., asp=2)` will set the aspect ratio of the plot to, in this case 2:1 (height:width)
+
+
+Save Plot
+=========
+Finally, save your plot to your computer as an image using `png('Name of Plot.png')`.
+
+[⇦ Back](../../R.html)
+
+</font>
