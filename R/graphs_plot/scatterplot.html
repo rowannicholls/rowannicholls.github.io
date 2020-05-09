@@ -339,13 +339,13 @@ legend(
 </div>
 <div id="add-a-regression-line" class="section level1">
 <h1><span class="header-section-number">7</span> Add a Regression Line</h1>
-<p>To add a ‘line of best fit’, use the <code>lm()</code> (<b>l</b>inear <b>m</b>odel) function then the <code>abline()</code> function (which plots a straight <b>line</b> between <b>a</b> and <b>b</b>). Note that the <code>lm()</code> function uses the tilde notation (<code>lm(y ~ x)</code>) and so the y-variable must go on the left of the tilde and the x-variable on the right. This is the opposite of the <code>plot(x, y)</code> format.</p>
+<p>To add a ‘line of best fit’, use the <code>lm()</code> (<b>l</b>inear <b>m</b>odel) function then the <code>abline()</code> function (which plots a straight <b>line</b> between <b>a</b> and <b>b</b>). Note that the <code>lm()</code> function uses the tilde notation (<code>lm(y ~ x)</code>) and so the y-variable must go on the left of the tilde and the x-variable on the right. This is the opposite of the <code>plot(x, y)</code> format which requires that the x-variable comes first.</p>
 <pre class="r"><code># The first dataset is plotted using plot()
 plot(
     anscombe$x1, anscombe$y1,
     main=&quot;Anscombe's Quartet: All Datasets&quot;,
     pch=0, col=1,
-    xlab='x-values',ylab='y-values',
+    xlab='x-values', ylab='y-values',
     xlim=c(0, 20), ylim=c(0, 13),
 )
 # The additional datasets are plotted using points()

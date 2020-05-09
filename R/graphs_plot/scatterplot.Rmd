@@ -165,7 +165,7 @@ legend(
 ```
 
 # Add a Regression Line
-To add a 'line of best fit', use the `lm()` (<b>l</b>inear <b>m</b>odel) function then the `abline()` function (which plots a straight <b>line</b> between <b>a</b> and <b>b</b>). Note that the `lm()` function uses the tilde notation (`lm(y ~ x)`) and so the y-variable must go on the left of the tilde and the x-variable on the right. This is the opposite of the `plot(x, y)` format.
+To add a 'line of best fit', use the `lm()` (<b>l</b>inear <b>m</b>odel) function then the `abline()` function (which plots a straight <b>line</b> between <b>a</b> and <b>b</b>). Note that the `lm()` function uses the tilde notation (`lm(y ~ x)`) and so the y-variable must go on the left of the tilde and the x-variable on the right. This is the opposite of the `plot(x, y)` format which requires that the x-variable comes first.
 
 ```{r}
 # The first dataset is plotted using plot()
