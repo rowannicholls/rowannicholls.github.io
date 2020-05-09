@@ -1,0 +1,214 @@
+---
+title: '<font size="5">Statistics in R:</font><br>Friedman Rank Sum Test'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: false
+---
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+This example comes from [the RDocumentation site](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/friedman.test) for `friedman.test()`. It uses data from Hollander & Wolfe's (1973) "Nonparametric statistical methods", p 140ff, documenting a comparison of three methods ("round out", "narrow angle" and "wide angle") for rounding first base in baseball:
+
+> For each of 18 players and the three methods tested, the average time of two runs from a point on the first base line 35 ft from home plate to a point 15 ft short of second base is recorded.
+
+Here's the raw data:
+
+```{r}
+rounding_times = matrix(
+    c(
+        5.40, 5.50, 5.55,
+        5.85, 5.70, 5.75,
+        5.20, 5.60, 5.50,
+        5.55, 5.50, 5.40,
+        5.90, 5.85, 5.70,
+        5.45, 5.55, 5.60,
+        5.40, 5.40, 5.35,
+        5.45, 5.50, 5.35,
+        5.25, 5.15, 5.00,
+        5.85, 5.80, 5.70,
+        5.25, 5.20, 5.10,
+        5.65, 5.55, 5.45,
+        5.60, 5.35, 5.45,
+        5.05, 5.00, 4.95,
+        5.50, 5.50, 5.40,
+        5.45, 5.55, 5.50,
+        5.55, 5.55, 5.35,
+        5.45, 5.50, 5.55,
+        5.50, 5.45, 5.25,
+        5.65, 5.60, 5.40,
+        5.70, 5.65, 5.55,
+        6.30, 6.30, 6.25
+    ),
+    nrow = 22,
+    byrow = TRUE,
+    dimnames = list(
+        1 : 22,
+        c('Round Out', 'Narrow Angle', 'Wide Angle')
+    )
+)
+print(head(rounding_times))
+```
+
+Which Statistical Test Should Be Used?
+======================================
+
+```{r, echo=FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                        'Two groups'
+                            TGParametric [label='Parametric']
+                                'One-sample t-test'
+                                'Paired t-test'
+                                'Unpaired t-test'
+                            TGNonparametric [label='Nonparametric']
+                                TGIndependent [label='Independent groups']
+                                    'Mann-Whitney U test'
+                                TGNonindependent [label='Non-independent groups']
+                                    'Wilcoxon signed-rank test'
+                                MGIndependent [label='Independent groups']
+                                    'Kruskal-Wallis one-way ANOVA'
+                            MGParametric [label='Parametric']
+                                'ANOVA'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]
+            'Hypothesis'
+                'Continuous data'
+                    'Differences'
+                    'Means'
+                        'More than two groups'
+                            MGNonparametric [label='Nonparametric']
+                                MGNonindependent [label='Non-independent groups']
+                                    'Friedman two-way ANOVA'
+
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                        'Variances'
+                    'Relationships'
+                        RIndependent [label='Independent groups']
+                            'Regression analysis'
+                                'Multiple Linear Regression'
+                        RNonindependent [label='Non-independent groups']
+                            'Correlation analysis'
+                                RParametric [label='Parametric']
+                                    'Pearson product-moment r correlation'
+                                RNonparametric [label='Nonparametric']
+                                    'Spearman Rank Correlation'
+                'Discrete, categorical data'
+                    'Chi-squared goodness-of-fit test'
+                    'Chi-squared independence test'
+
+        {
+            rank = same;
+            TGIndependent 'Mann-Whitney U test'
+            TGNonindependent 'Wilcoxon signed-rank test'
+            MGIndependent 'Kruskal-Wallis one-way ANOVA'
+            MGNonindependent 'Friedman two-way ANOVA'
+        }
+
+        'Hypothesis' -> 'Continuous data';
+            'Continuous data' -> 'Differences'
+                'Differences' -> 'Means'
+                    'Means' -> 'Two groups'
+                        'Two groups' -> TGParametric
+                            TGParametric -> 'One-sample t-test'
+                            TGParametric -> 'Paired t-test'
+                            TGParametric -> 'Unpaired t-test'
+                        'Two groups' -> TGNonparametric
+                            TGNonparametric -> TGIndependent
+                                TGIndependent -> 'Mann-Whitney U test'
+                            TGNonparametric -> TGNonindependent
+                                TGNonindependent -> 'Wilcoxon signed-rank test'
+                    'Means' -> 'More than two groups'
+                        'More than two groups' -> MGParametric
+                            MGParametric -> 'ANOVA'
+                        'More than two groups' -> MGNonparametric
+                            MGNonparametric -> MGIndependent
+                                MGIndependent -> 'Kruskal-Wallis one-way ANOVA'
+                            MGNonparametric -> MGNonindependent
+                                MGNonindependent -> 'Friedman two-way ANOVA'
+                'Differences' -> 'Variances'
+            'Continuous data' -> 'Relationships'
+                'Relationships' -> RIndependent
+                    RIndependent -> 'Regression analysis'
+                        'Regression analysis' -> 'Multiple Linear Regression'
+                'Relationships' -> RNonindependent
+                    RNonindependent -> 'Correlation analysis'
+                        'Correlation analysis' -> RParametric
+                            RParametric -> 'Pearson product-moment r correlation'
+                        'Correlation analysis' -> RNonparametric
+                            RNonparametric -> 'Spearman Rank Correlation'
+        'Hypothesis' -> 'Discrete, categorical data'
+            'Discrete, categorical data' -> 'Chi-squared goodness-of-fit test'
+            'Discrete, categorical data' -> 'Chi-squared independence test'
+    }",
+    height=400, width=900
+)
+```
+
+- The (alternative) **hypothesis** is that there is a difference in speed between the three methods 
+- The variable being measured is time, which is **continuous**
+- The hypothesis is that the participants will record a **different** time if they use each of the three methods
+- Specifically, the hypothesis is that the **mean** time taken when using each method will be different
+- There are **more than two groups** (there are three)
+- We cannot assume that the data is Normally distributed, so a **nonparametric** test should be used
+- If one participant is a naturally fast runner then all three of their times should be lower than another participant's. Thus the measurements are **not-independent**.
+
+Using the above flowchart, we see that we should use Friedman two-way ANOVA.
+
+Performing the Friedman Test
+============================
+The Friedman test is performed using the `friedman.test()` function:
+
+```{r}
+friedman.test(rounding_times)
+```
+
+As we can see from the output the p-value was 0.003805, which is strong evidence in favour of the alternative hypothesis (which is that the methods are not equivalent with respect to speed). The individual values that have been returned can be accessed by setting a variable equal to `friedman.test()` and then indexing it:
+
+```{r, results='hold'}
+f = friedman.test(rounding_times)
+
+# GET THE VALUE OF FRIEDMAN'S CHI-SQUARED STATISTIC
+chi_squared = f$statistic
+# GET THE DEGREES OF FREEDOM OF THE APPROXIMATE CHI-SQUARED DISTRIBUTION OF THE TEST STATISTIC
+df = f$parameter
+# GET THE P-VALUE OF THE TEST
+p = f$p.value
+# GET THE CHARACTER STRING "Friedman rank sum test"
+method = f$method
+# GET A CHARACTER STRING GIVING THE NAMES OF THE DATA
+name = f$data.name
+
+# PRINT THEM ALL
+print(chi_squared)
+print(df)
+print(p)
+print(method)
+print(name)
+```
+
+Using Vectors Instead of a Data Frame
+=====================================
+The above test was done using the entire data frame `rounding_times` as the input to the function. To instead do it with vectors is a simple case of calling the 
+
+```{r}
+
+wb <- aggregate(warpbreaks$breaks,
+                by = list(w = warpbreaks$wool,
+                          t = warpbreaks$tension),
+                FUN = mean)
+wb
+friedman.test(wb$x, wb$w, wb$t)
+friedman.test(x ~ w | t, data = wb)
+
+```
+
+[⇦ Back](../../../R.html)
+
+</font>
