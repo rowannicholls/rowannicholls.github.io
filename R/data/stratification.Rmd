@@ -1,0 +1,156 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Data Stratification'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+An important step in data analysis is grouping measurements together into categories. This could be, for example, classifying results as having passed/failed a certain standard or stratifying patients into high-/medium-/low-risk groups with regards to some disease.
+
+Raw Data
+========
+We'll use the pre-loaded dataset ['iris'](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/iris). Collected by Edgar Anderson, it details the measurements of 150 iris flowers' petals and sepals:
+
+> This famous (Fisher's or Anderson's) iris data set gives the measurements in centimeters of the variables sepal length and width and petal length and width, respectively, for 50 flowers from each of 3 species of iris. The species are Iris setosa, versicolor, and virginica.
+
+For this page, however, we will only use the Iris setosa species:
+
+<center>
+![](iris_setosa.jpeg "An Iris setosa flower")
+
+*An Iris setosa flower*
+</center>
+
+```{r}
+iris_setosa = subset(iris, Species == 'setosa')
+print(head(iris_setosa, 15))
+plot(
+    iris_setosa$Sepal.Length, iris_setosa$Petal.Length,
+    main='The Sepal and Petal Lengths of 50 Iris Flowers',
+    xlab='Sepal Length [cm]', ylab='Petal Length [cm]'
+)
+```
+
+Classification Using One Variable
+=================================
+
+Classification into Two Groups
+------------------------------
+We can classify the flowers as 'small' or 'large' fairly easily, using the `ifelse()` function. The classification is stored in a new column:
+
+```{r}
+iris_setosa$Size = ifelse(iris_setosa$Petal.Length > 1.45, 'large', 'small')
+print(head(iris_setosa, 15))
+plot(
+    iris_setosa$Sepal.Length, iris_setosa$Petal.Length,
+    main='The Sepal and Petal Lengths of 50 Iris Flowers',
+    xlab='Sepal Length [cm]', ylab='Petal Length [cm]',
+)
+points(Petal.Length ~ Sepal.Length, subset(iris_setosa, Size == 'small'), pch=4)
+abline(h=1.45, col='red', lty='dashed')
+text(5.78, 1.0, 'Small', col='red')
+text(5.78, 1.9, 'Large', col='red')
+```
+
+Classification into Three+ Groups
+---------------------------------
+This can either be done using nested `ifelse()` functions (as is done below) or using if statements (see under "Classification Using Two Variables"):
+
+```{r}
+iris_setosa$Size = ifelse(
+    iris_setosa$Petal.Length > 1.65, 'large',
+    ifelse(
+        iris_setosa$Petal.Length > 1.35, 'medium', 'small'
+    )
+)
+print(head(iris_setosa, 15))
+plot(
+    iris_setosa$Sepal.Length, iris_setosa$Petal.Length,
+    main='The Sepal and Petal Lengths of 50 Iris Flowers',
+    xlab='Sepal Length [cm]', ylab='Petal Length [cm]',
+)
+points(Petal.Length ~ Sepal.Length, subset(iris_setosa, Size == 'small'), pch=4)
+points(Petal.Length ~ Sepal.Length, subset(iris_setosa, Size == 'medium'), pch=20)
+abline(h=1.65, col='red', lty='dashed')
+abline(h=1.35, col='red', lty='dashed')
+text(5.78, 1.3, 'Small', col='red')
+text(5.78, 1.6, 'Medium', col='red')
+text(5.78, 1.9, 'Large', col='red')
+```
+
+Classification Using Two Variables
+==================================
+
+Classification into Two Groups
+------------------------------
+A more complicated classification of the flowers as 'small' or 'large' could be done by looking at both petal and sepal size:
+
+```{r}
+iris_setosa$Size = ifelse(
+    iris_setosa$Petal.Length > 1.35 & iris_setosa$Sepal.Length > 4.95,
+    'large', 'small'
+)
+print(head(iris_setosa, 15))
+# CREATE THE SCATTER PLOT
+plot(
+    iris_setosa$Sepal.Length, iris_setosa$Petal.Length,
+    main='The Sepal and Petal Lengths of 50 Iris Flowers',
+    xlab='Sepal Length [cm]', ylab='Petal Length [cm]',
+)
+points(Petal.Length ~ Sepal.Length, subset(iris_setosa, Size == 'small'), pch=4)
+# PLOT THE DASHED LINES
+segments(4.95, 1.35, 4.95, 2, col='red', lty='dashed')
+segments(4.95, 1.35, 6, 1.35, col='red', lty='dashed')
+# ADD THE TEXT
+text(5.78, 1.0, 'Small', col='red')
+text(5.78, 1.9, 'Large', col='red')
+```
+
+Classification into Three+ Groups
+---------------------------------
+Again, this could be done using nested `ifelse()` functions, but multiple 'if statements' in a loop is arguably cleared:
+
+```{r}
+iris_setosa$Size = ''  # CLEAR THE SIZE COLUMN
+for (i in 1:nrow(iris_setosa)) {
+    if (
+        (iris_setosa[i, 'Sepal.Length'] > 5.05) & (iris_setosa[i, 'Petal.Length'] > 1.55)
+    ) {
+        iris_setosa[i, 'Size'] = 'large'
+    } else if (
+        (iris_setosa[i, 'Sepal.Length'] > 4.65) & (iris_setosa[i, 'Petal.Length'] > 1.25)
+    ) {
+        iris_setosa[i, 'Size'] = 'medium'
+    } else {
+        iris_setosa[i, 'Size'] = 'small'
+    }
+}
+print(head(iris_setosa, 15))
+# CREATE THE SCATTER PLOT
+plot(
+    iris_setosa$Sepal.Length, iris_setosa$Petal.Length,
+    main='The Sepal and Petal Lengths of 50 Iris Flowers',
+    xlab='Sepal Length [cm]', ylab='Petal Length [cm]',
+)
+points(Petal.Length ~ Sepal.Length, subset(iris_setosa, Size == 'small'), pch=4)
+points(Petal.Length ~ Sepal.Length, subset(iris_setosa, Size == 'medium'), pch=20)
+# PLOT THE DASHED LINES
+segments(5.05, 1.55, 5.05, 2, col='red', lty='dashed')
+segments(5.05, 1.55, 6, 1.55, col='red', lty='dashed')
+segments(4.65, 1.25, 4.65, 2, col='red', lty='dashed')
+segments(4.65, 1.25, 6, 1.25, col='red', lty='dashed')
+# ADD THE TEXT
+text(5.78, 1.0, 'Small', col='red')
+text(5.78, 1.45, 'Medium', col='red')
+text(5.78, 1.9, 'Large', col='red')
+```
+
+[⇦ Back](../../R.html)
+
+</font>
