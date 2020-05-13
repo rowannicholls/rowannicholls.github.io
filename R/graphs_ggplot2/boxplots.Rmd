@@ -1,0 +1,249 @@
+---
+title: '<font size="5">Graphs in R using ggplot2:</font><br>Box Plots (aka Box-and-Whisker Plots)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+If you're going to use ggplot2, the first thing to do is load the library:
+
+```{r, message=FALSE, results='hide'}
+library(ggplot2)
+```
+
+Create a Simple Box Plot
+========================
+
+Using a Pre-Installed Dataset
+-----------------------------
+This example uses the `chickwts` dataset; a record of the weights of 71 chicks which had been fed one of 6 different diets:
+
+```{r}
+p = ggplot(chickwts, aes(feed, weight))
+p = p + geom_boxplot()
+print(p)
+```
+
+Using a Dataset from a Package
+------------------------------
+Here the training dataset from the Titanic package is used, with a small amount of editing:
+
+```{r}
+library(titanic)
+
+# REPLACE "0" AND "1" WITH "DIED" AND "SURVIVED"
+titanic_train$'Survived'[titanic_train$'Survived' %in% 0] = 'Died'
+titanic_train$'Survived'[titanic_train$'Survived' %in% 1] = 'Survived'
+
+# PLOT
+p = ggplot(titanic_train, aes(Survived, Fare))
+p = p + geom_boxplot()
+p = p + xlab('')  # REMOVE THE X-AXIS LABEL
+print(p)
+```
+
+Using a Data Frame in 'Long' Format
+-----------------------------------
+Take a look at the following dataset (which shows the results of the long jump finals at the last four Olympic Games):
+
+```{r}
+# RAW DATA
+athens = data.frame(
+    'olympics' = rep('Athens 2004', 8),
+    'long_jump_men' = c(8.59, 8.47, 8.32, 8.31, 8.25, 8.24, 8.23, 8.21),
+    'long_jump_women'  = c(7.07, 7.05, 7.05, 6.96, 6.85, 6.83, 6.80, 6.73)
+)
+beijing = data.frame(
+    'olympics' = rep('Beijing 2008', 8),
+    'long_jump_men' = c(8.34, 8.24, 8.20, 8.19, 8.19, 8.16, 8.07, 8.00),
+    'long_jump_women'  = c(7.04, 7.03, 6.91, 6.79, 6.76, 6.70, 6.64, 6.58)
+)
+london = data.frame(
+    'olympics' = rep('London 2012', 8),
+    'long_jump_men' = c(8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93),
+    'long_jump_women'  = c(7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67)
+)
+rio = data.frame(
+    'olympics' = rep('Rio 2016', 8),
+    'long_jump_men' = c(8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05),
+    'long_jump_women' = c(7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69)
+)
+df = rbind(athens, beijing, london, rio)
+```
+
+This data is in 'long' format because the groups (ie which Olympics each data point comes from) are not separated out but are instead all listed in a column ('olympics'):
+
+```{r}
+print(head(df, 15))
+```
+
+This data can be plotted as follows:
+
+```{r}
+# PLOT
+p = ggplot(df, aes(x=olympics, y=long_jump_men))
+p = p + geom_boxplot()
+p = p + ggtitle("Men's Long Jump Finals")  # PLOT TITLE
+p = p + ylab('Distance [m]')  # Y-AXIS LABEL
+p = p + xlab('Olympics')  # X-AXIS LABEL
+print(p)
+```
+
+Using a Data Frame in 'Wide' Format
+-----------------------------------
+Compare the above dataset with this one (which contains the same information):
+
+```{r}
+# RAW DATA
+long_jump_men = data.frame(
+    'Athens 2004' = c(8.59, 8.47, 8.32, 8.31, 8.25, 8.24, 8.23, 8.21),
+    'Beijing 2008' = c(8.34, 8.24, 8.20, 8.19, 8.19, 8.16, 8.07, 8.00),
+    'London 2012' = c(8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93),
+    'Rio 2016' = c(8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05)
+)
+long_jump_women = data.frame(
+    'Athens 2004' = c(7.07, 7.05, 7.05, 6.96, 6.85, 6.83, 6.80, 6.73),
+    'Beijing 2008'  = c(7.04, 7.03, 6.91, 6.79, 6.76, 6.70, 6.64, 6.58),
+    'London 2012'  = c(7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67),
+    'Rio 2016' = c(7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69)
+)
+```
+
+This data is in 'wide' format because the groups (ie which Olympics each data point comes from) each have their own column:
+
+```{r}
+print(head(long_jump_women, 8))
+```
+
+Unfortunately, ggplot2 cannot work with wide-format data so you first need to convert it to long-format with the `gather()` function from the `tidyr()` package:
+
+```{r}
+library(tidyr)
+
+long_jump_women = gather(long_jump_women, 'Olympics', 'Distance')
+
+# PLOT
+p = ggplot(long_jump_women, aes(x=Olympics, y=Distance))
+p = p + geom_boxplot()
+p = p + ggtitle("Women's Long Jump Finals")  # PLOT TITLE
+p = p + ylab('Distance [m]')  # Y-AXIS LABEL
+p = p + xlab('Olympics')  # X-AXIS LABEL
+print(p)
+```
+
+Using Vectors
+-------------
+Rather than a data frame (which is essentially a table with columns) the data to be plotted can start out as vectors (which are essentially lists of numbers):
+
+```{r}
+# RAW DATA
+Athens.2004 = c(8.59, 8.47, 8.32, 8.31, 8.25, 8.24, 8.23, 8.21)
+Beijing.2008 = c(8.34, 8.24, 8.20, 8.19, 8.19, 8.16, 8.07, 8.00)
+London.2012 = c(8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93)
+Rio.2016 = c(8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05)
+print(Athens.2004)
+```
+
+Much like before, ggplot2 cannot plot individual vectors. So you first need to combine them into a data frame in wide-format then convert that into long-format:
+
+```{r}
+long_jump_men = data.frame(
+    'Athens 2004' = Athens.2004,
+    'Beijing 2008' = Beijing.2008,
+    'London 2012' = London.2012,
+    'Rio 2016' = Rio.2016
+)
+long_jump_men = gather(long_jump_men, 'Olympics', 'Distance')
+# PLOT
+p = ggplot(long_jump_men, aes(x=Olympics, y=Distance))
+p = p + geom_boxplot()
+p = p + ggtitle("Men's Long Jump Finals")  # PLOT TITLE
+p = p + ylab('Distance [m]')  # Y-AXIS LABEL
+p = p + xlab('Olympics')  # X-AXIS LABEL
+print(p)
+```
+
+Vectors provide more versatility than a data frame because not all vectors have to be the same length (although they just all happen to be the same length in this example) and vectors can be used in many functions that entire data frames cannot. On the other hand, when data is imported from or exported to a spreadsheet, it will usually be in the data frame format. Here's a quick comparison of the data formats:
+
+| Format | Pro                 | Con                                     |
+|--------|---------------------|-----------------------------------------|
+| Long   | All data in one data frame | Verbose |
+| Wide   | All data in one data frame, compact | Only works when there is the same number of data points in each group |
+| Vectors | Versatile | Cannot be as easily imported from or exported to a spreadsheet |
+
+Add Colour and a Legend
+=======================
+The quickest way to add colour and a legend is to use the `fill` keyword argument in the aesthetic (`aes()`) function:
+
+```{r}
+p = ggplot(long_jump_women, aes(x=Olympics, y=Distance, fill=Olympics))
+p = p + geom_boxplot()
+p = p + ggtitle("Women's Long Jump Finals")  # PLOT TITLE
+p = p + ylab('Distance [m]')  # Y-AXIS LABEL
+p = p + xlab('')  # X-AXIS LABEL
+print(p)
+```
+
+Notice that we also removed the x-axis label now that we have it in the legend.
+
+Edit what colours are used with the `scale_fill_manual()` function:
+
+```{r}
+p = ggplot(long_jump_men, aes(x=Olympics, y=Distance, fill=Olympics))
+p = p + geom_boxplot()
+p = p + scale_fill_manual(values=c('cadetblue2', 'tomato', 'khaki1', 'darkseagreen3'))
+p = p + labs(title="Men's Long Jump Finals", x='', y='Distance [m]', fill='Olympic Games')
+print(p)
+```
+
+We also renamed the title of the legend (from "Olympics" to "Olympic Games"). This was done with the `labs()` function. As it happens, this function can actually be used to set *all* of the plot's titles, so the `ggtitle()`, `ylab()` and `xlab()` functions were done away with and replaced by this one function.
+
+Annotate Text - Sample Size & Sample Mean
+=========================================
+It's often useful to include descriptive statistics right in a figure, and this can be done by writing custom functions as follows:
+
+```{r}
+# FUNCTIONS
+sample_size = function(x) {
+    # SAMPLE SIZE LABELS
+    return(data.frame(y=median(x) * 1.003, label=paste0('n = ', length(x))))
+}
+sample_mean = function(x) {
+    # SAMPLE MEAN LABELS
+    return(data.frame(
+        y=median(x) * 0.997,
+        label=paste0('\U00B5 = ', round(mean(x), 2))
+    ))
+}
+```
+
+The code to create the plots then needs to incorporate the `stat_summary()` function:
+
+```{r}
+p = ggplot(long_jump_women, aes(x=Olympics, y=Distance, fill=Olympics))
+p = p + geom_boxplot()
+p = p + scale_fill_manual(values=c('cadetblue2', 'tomato', 'khaki1', 'darkseagreen3'))
+p = p + labs(title="Women's Long Jump Finals", x='', y='Distance [m]', fill='Olympic Games')
+p = p + stat_summary(fun.data=sample_size, geom='text', fun=median)
+p = p + stat_summary(fun.data=sample_mean, geom='text', fun=mean, colour='black')
+print(p)
+```
+
+Save Plot
+=========
+Finally, save your plot to your computer as an image using one of the following (depending on what format you want the image to be in):
+
+- `png('Name of Plot.png')`
+- `pdf('Name of Plot.pdf')`
+
+Regardless of which of the above you choose, it must come __*before*__ you start plotting the graph (ie before you call `ggplot()`).
+
+[⇦ Back](../../R.html)
+
+</font>
