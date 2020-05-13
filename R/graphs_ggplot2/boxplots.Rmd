@@ -22,7 +22,7 @@ Create a Simple Box Plot
 
 Using a Pre-Installed Dataset
 -----------------------------
-This example uses the `chickwts` dataset; a record of the weights of 71 chicks which had been fed one of 6 different diets:
+This example uses the `chickwts` dataset; a record of the weights of 71 chicks which had been fed one of 6 different diets for their first six weeks:
 
 ```{r}
 p = ggplot(chickwts, aes(feed, weight))
@@ -223,6 +223,8 @@ sample_mean = function(x) {
 }
 ```
 
+Note that the symbol for 'mean' is the greek letter 'mu' (μ). We can't print strange symbols like this in R so we need to use its Unicode encoding (which is "00B5"). Take a look at the function definition for `sample_mean()` above: the label that it is returning uses `\U00B5` - the `\U` invokes Unicode and `00B5` renders "μ".
+
 The code to create the plots then needs to incorporate the `stat_summary()` function:
 
 ```{r}
@@ -232,6 +234,16 @@ p = p + scale_fill_manual(values=c('cadetblue2', 'tomato', 'khaki1', 'darkseagre
 p = p + labs(title="Women's Long Jump Finals", x='', y='Distance [m]', fill='Olympic Games')
 p = p + stat_summary(fun.data=sample_size, geom='text', fun=median)
 p = p + stat_summary(fun.data=sample_mean, geom='text', fun=mean, colour='black')
+print(p)
+```
+
+Typesetting in Axis Labels
+==========================
+If we had a dataset where the units of one of the variables was "m<sup>3</sup>" and its symbol was "_V_" or something we might want to start using more advanced typesetting options in our axis labels. This can be achieved with the tilde symbol (~) and the `bquote()` function for writing in superscript and the `italic()` function for writing in italics:
+
+```{r}
+p = ggplot(trees, aes(x=Height, y=Volume))
+p = p + ylab(bquote(paste('Volume,', italic('V') ~(m^3))))
 print(p)
 ```
 
