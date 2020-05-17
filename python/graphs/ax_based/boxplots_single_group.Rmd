@@ -253,8 +253,8 @@ y_pos = y_lim[0] - 0.025 * y_range
 for i in range(len(data)):
     k = i % 2
     ax.text(
-        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$',
-        horizontalalignment='center', size='x-small'
+        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+        horizontalalignment='center', size='small'
     )
 ```
 
@@ -297,8 +297,114 @@ y_pos = y_lim[0] - 0.025 * y_range
 for i in range(len(data)):
     k = i % 2
     ax.text(
-        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$',
-        horizontalalignment='center', size='x-small'
+        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+        horizontalalignment='center', size='small'
+    )
+```
+
+Show Median Values AND Sample Sizes
+-----------------------------------
+As you start adding more annotations to the plot area you quickly begin to run out of space. As a result, it sometimes makes more sense to add theses labels *above* the boxes instead of below them:
+
+```{python, eval=FALSE}
+#
+# PLOT
+#
+ax = plt.axes()
+bp = ax.boxplot(
+    data, sym='', whis='range', widths=0.4, labels=labels,
+    patch_artist=True
+)
+# AXIS DETAILS
+ax.set_title("Men's Long Jump Finals")
+ax.set_ylabel('Distance [m]')
+ax.set_xlabel('Olympics')
+ax.tick_params(axis='x', bottom=False)
+xticks = ax.set_xticks(np.arange(len(data) + 1) + 0.5, minor=True)
+# SET THE FILL COLOUR
+plt.setp(bp['boxes'], facecolor='C0')
+# SET THE COLOUR OF THE MEDIAN LINES
+plt.setp(bp['medians'], color='black')
+# GET THE SAMPLES' MEDIANS AND SIZES
+medians = [bp['medians'][i].get_ydata()[0] for i in range(len(data))]
+medians = [str(round(s, 2)) for s in medians]
+sample_sizes = [data.T.shape[0] for i in range(len(data))]
+sample_sizes = [f'{s:,}' for s in sample_sizes]
+# GET THE X-POSITIONS FOR THE LABELS
+x_pos = np.arange(len(data)) + 1
+# GET THE Y-AXIS LIMITS AND RANGE
+y_lim = ax.get_ylim()
+y_range = y_lim[1] - y_lim[0]
+# INCREASE THE HEIGHT OF THE PLOT BY 10% TO FIT THE LABELS
+ax.set_ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
+# SET THE Y-POSITIONS FOR THE MEDIAN LABELS
+y_pos = y_lim[1] + 0.03 * y_range
+# CREATE THE ANNOTATIONS FOR THE MEDIANS
+for i in range(len(data)):
+    k = i % 2
+    ax.text(
+        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+        horizontalalignment='center', size='small'
+    )
+# SET THE Y-POSITIONS FOR THE SAMPLE SIZE LABELS
+y_pos = y_lim[1] - 0.01 * y_range
+# CREATE THE ANNOTATIONS FOR THE SAMPLE SIZES
+for i in range(len(data)):
+    k = i % 2
+    ax.text(
+        x_pos[i], y_pos, r'$n =' + fr' {sample_sizes[i]}$',
+        horizontalalignment='center', size='small'
+    )
+```
+
+```{python, results='hide', echo=FALSE}
+#
+# PLOT
+#
+ax = plt.axes()
+bp = ax.boxplot(
+    data, sym='', whis='range', widths=0.4, labels=labels,
+    patch_artist=True
+)
+# AXIS DETAILS
+ax.set_title("Men's Long Jump Finals")
+ax.set_ylabel('Distance [m]')
+ax.set_xlabel('Olympics')
+ax.tick_params(axis='x', bottom=False)
+xticks = ax.set_xticks(np.arange(len(data) + 1) + 0.5, minor=True)
+# SET THE FILL COLOUR
+plt.setp(bp['boxes'], facecolor='C0')
+# SET THE COLOUR OF THE MEDIAN LINES
+plt.setp(bp['medians'], color='black')
+# GET THE SAMPLES' MEDIANS AND SIZES
+medians = [bp['medians'][i].get_ydata()[0] for i in range(len(data))]
+medians = [str(round(s, 2)) for s in medians]
+sample_sizes = [data.T.shape[0] for i in range(len(data))]
+sample_sizes = [f'{s:,}' for s in sample_sizes]
+# GET THE X-POSITIONS FOR THE LABELS
+x_pos = np.arange(len(data)) + 1
+# GET THE Y-AXIS LIMITS AND RANGE
+y_lim = ax.get_ylim()
+y_range = y_lim[1] - y_lim[0]
+# INCREASE THE HEIGHT OF THE PLOT BY 10% TO FIT THE LABELS
+ax.set_ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
+# SET THE Y-POSITIONS FOR THE MEDIAN LABELS
+y_pos = y_lim[1] + 0.03 * y_range
+# CREATE THE ANNOTATIONS FOR THE MEDIANS
+for i in range(len(data)):
+    k = i % 2
+    ax.text(
+        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+        horizontalalignment='center', size='small'
+    )
+# SET THE Y-POSITIONS FOR THE SAMPLE SIZE LABELS
+y_pos = y_lim[1] - 0.01 * y_range
+# CREATE THE ANNOTATIONS FOR THE SAMPLE SIZES
+for i in range(len(data)):
+    k = i % 2
+    ax.text(
+        x_pos[i], y_pos, r'$n =' + fr' {sample_sizes[i]}$',
+        horizontalalignment='center', size='small'
     )
 ```
 
@@ -350,8 +456,8 @@ y_pos = y_lim[0] - 0.025 * y_range
 for i in range(len(data)):
     k = i % 2
     ax.text(
-        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$',
-        horizontalalignment='center', size='x-small'
+        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+        horizontalalignment='center', size='small'
     )
 ```
 
@@ -395,8 +501,8 @@ y_pos = y_lim[0] - 0.025 * y_range
 for i in range(len(data)):
     k = i % 2
     ax.text(
-        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$',
-        horizontalalignment='center', size='x-small'
+        x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+        horizontalalignment='center', size='small'
     )
 ```
 
@@ -506,8 +612,8 @@ def plot_boxplots(data, labels, ax, title):
     for i in range(len(data)):
         k = i % 2
         ax.text(
-            x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$',
-            horizontalalignment='center', size='x-small'
+            x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+            horizontalalignment='center', size='small'
         )
 
 
@@ -558,8 +664,8 @@ def plot_boxplots(data, labels, ax, title):
     for i in range(len(data)):
         k = i % 2
         ax.text(
-            x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$',
-            horizontalalignment='center', size='x-small'
+            x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
+            horizontalalignment='center', size='small'
         )
 
 
