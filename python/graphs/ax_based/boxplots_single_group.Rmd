@@ -338,7 +338,7 @@ y_range = y_lim[1] - y_lim[0]
 # INCREASE THE HEIGHT OF THE PLOT BY 10% TO FIT THE LABELS
 ax.set_ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
 # SET THE Y-POSITIONS FOR THE MEDIAN LABELS
-y_pos = y_lim[1] + 0.03 * y_range
+y_pos = y_lim[1] + 0.04 * y_range
 # CREATE THE ANNOTATIONS FOR THE MEDIANS
 for i in range(len(data)):
     k = i % 2
@@ -347,7 +347,7 @@ for i in range(len(data)):
         horizontalalignment='center', size='small'
     )
 # SET THE Y-POSITIONS FOR THE SAMPLE SIZE LABELS
-y_pos = y_lim[1] - 0.01 * y_range
+y_pos = y_lim[1]
 # CREATE THE ANNOTATIONS FOR THE SAMPLE SIZES
 for i in range(len(data)):
     k = i % 2
@@ -389,7 +389,7 @@ y_range = y_lim[1] - y_lim[0]
 # INCREASE THE HEIGHT OF THE PLOT BY 10% TO FIT THE LABELS
 ax.set_ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
 # SET THE Y-POSITIONS FOR THE MEDIAN LABELS
-y_pos = y_lim[1] + 0.03 * y_range
+y_pos = y_lim[1] + 0.04 * y_range
 # CREATE THE ANNOTATIONS FOR THE MEDIANS
 for i in range(len(data)):
     k = i % 2
@@ -398,7 +398,7 @@ for i in range(len(data)):
         horizontalalignment='center', size='small'
     )
 # SET THE Y-POSITIONS FOR THE SAMPLE SIZE LABELS
-y_pos = y_lim[1] - 0.01 * y_range
+y_pos = y_lim[1]
 # CREATE THE ANNOTATIONS FOR THE SAMPLE SIZES
 for i in range(len(data)):
     k = i % 2
