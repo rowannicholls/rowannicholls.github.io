@@ -1,0 +1,301 @@
+---
+title: '<font size="5">Graphs in R using ggplot2:</font><br>Bar Plots (Single Factor)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+Initial Steps
+=============
+If you're going to be using ggplot2, the first thing you need to do is load the library:
+
+```{r, message=FALSE, results='hide'}
+library(ggplot2)
+```
+
+Next, remember that when you are using ggplot2 you *always need to have your data in __long format__*. Take a look at the dataset below which contains the results of a sleep experiment (it shows the number of extra hours of sleep - compared to a control group - that 10 participants experienced after taking medicine "1" vs after taking medicine "2"):
+
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+</style>
+
+```{r, echo=FALSE}
+library(tidyr)
+wide = spread(sleep, group, extra)
+```
+
+<div class='col2'>
+
+> The data below is in *__wide__* format and needs to be augmented before it can be used with ggplot2:
+
+```{r}
+print(wide)
+```
+
+Wide-format data can be converted to long-format with the below code:
+
+```{r}
+# USE gather() FROM tidyr TO CONVERT
+# FROM WIDE TO LONG FORMAT
+library(tidyr)
+long = gather(wide, group, extra, c('1', '2'))
+```
+<br>
+
+> The data below is in *__long__* format and is suitable for plotting with ggplot2:
+
+```{r}
+print(long)
+```
+
+</div>
+
+Plotting
+========
+
+Plotting the Frequencies of Values in a Data Frame
+--------------------------------------------------
+The following dataset contains the diameter, height and volume of 31 black cherry trees (only the first 6 of which are shown here):
+
+```{r}
+print(head(trees))
+```
+
+When a bar plot is created with ggplot2 using its *default settings* it will count the number of occurrences of a number in a column and use that for the height of the bars:
+
+```{r}
+p = ggplot(trees, aes(Height))
+p = p + geom_bar()
+print(p)
+```
+
+Notice that there was no argument passed to the `geom_bar()` function; there was nothing between its brackets and so the default settings were used. Therefore, it counted the number of trees of each height (because "Height" was the column that was passed to the `aes()` function) and plotted those as the bars. We can see that there were 5 trees of height 80 ft.
+
+Plotting the Values in a Data Frame
+-----------------------------------
+The below dataset shows the death rates in Virginia in 1940:
+
+```{r}
+print(VADeaths)
+```
+
+Let's only plot one of the columns - Urban Female - and have one bar for each age group:
+
+- The `aes()` function takes the x-variable and the y-variable of the plot in that order, so we want to pass it `rownames(VADeaths)` in the x-position because the row names of the data frame (ie the age groups) will form the x-labels of our bars
+- The column name that will go in the y-position of the `aes()` function is "Urban Female" as that will give use the height of each bar
+- This time, in contrast to the first example, we want the height of each bar to be the *actual value* in the data frame (ie the actual death rate). This is done by passing the 'identity' option to the `stat` keyword argument of the `geom_bar()` function:
+
+```{r}
+# CONVERT THE ARRAY TO A DATA FRAME
+VADeaths = as.data.frame(VADeaths)
+
+p = ggplot(VADeaths, aes(rownames(VADeaths), `Urban Female`))
+p = p + geom_bar(stat='identity')
+print(p)
+```
+
+Notice that the column we wanted to plot ("Urban Female") had a space in its name. We therefore had to use grave accents when specifying it in the `aes()` function.
+
+Plotting the Mean of Values in a Data Frame
+-------------------------------------------
+The next dataset contains the weight of 71 chicks, measured six weeks after hatching, that were each fed on one of six different diets (first 15 data points shown):
+
+```{r}
+print(head(chickwts, 15))
+```
+
+To plot the *mean* result of each group, we need to use the "summary" option of the `stat` keyword argument:
+
+```{r, message=FALSE}
+p = ggplot(chickwts, aes(feed, weight))
+p = p + geom_bar(stat='summary')
+print(p)
+```
+
+Formatting
+==========
+Let's make the plot look a little better:
+
+Titles and Labels
+-----------------
+
+```{r, message=FALSE}
+# CHANGE THE DATA FRAME'S LEVELS' NAMES TO EDIT THE BARS' LABELS
+levels(chickwts$feed)[levels(chickwts$feed) == 'casein'] = 'Casein'
+levels(chickwts$feed)[levels(chickwts$feed) == 'horsebean'] = 'Horsebean'
+levels(chickwts$feed)[levels(chickwts$feed) == 'linseed'] = 'Linseed'
+levels(chickwts$feed)[levels(chickwts$feed) == 'meatmeal'] = 'Meatmeal'
+levels(chickwts$feed)[levels(chickwts$feed) == 'soybean'] = 'Soybean'
+levels(chickwts$feed)[levels(chickwts$feed) == 'sunflower'] = 'Sunflower'
+
+p = ggplot(chickwts, aes(feed, weight))
+p = p + geom_bar(stat='summary')
+# REMOVE THE MAIN X-AXIS LABEL
+p = p + xlab('')
+# ADD MAIN TITLE AND Y-AXIS LABEL
+p = p + labs(title='Chicken Weights By Feed Type', y='Weight [g]')
+print(p)
+```
+
+Distinguish Groups (Colour and Legend)
+--------------------------------------
+
+```{r, message=FALSE}
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + xlab('')
+p = p + labs(title='Chicken Weights By Feed Type', y='Weight [g]')
+print(p)
+```
+
+### Edit the Legend
+Change the legend's title using the "fill" keyword argument in the `labs()` function:
+
+```{r, message=FALSE}
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+### Remove the Legend
+The legend is placed automatically when you use the "fill" keyword argument to colour the bars. Remove it by changing its position to "none":
+
+```{r, message=FALSE}
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+p = p + theme(legend.position = "none")
+print(p)
+```
+
+### Edit the Colours
+
+```{r, message=FALSE}
+blue = '#00B7EB'
+pink = '#EE2A7B'
+yellow = '#FFD100'
+green = '#5BBF21'
+
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + scale_fill_manual(values=c(blue, yellow, pink, green, 'red', 'orange'))
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+### Use a Colour Palette
+**Viridis:**
+
+```{r, message=FALSE}
+# IMPORT THE LIBRARY THAT CONTAINS THE PALETTE
+library(viridis)
+
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + scale_fill_viridis(discrete=TRUE)
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+**Ggsci:**
+
+```{r, message=FALSE}
+# IMPORT THE LIBRARY THAT CONTAINS THE PALETTE
+library(ggsci)
+
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + scale_fill_lancet()
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+**RColorBrewer:**
+
+```{r, message=FALSE}
+# IMPORT THE LIBRARY THAT CONTAINS THE PALETTE
+library(RColorBrewer)
+
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + scale_fill_brewer(palette='Purples')
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+Show Individual Points
+----------------------
+Add in the `geom_point()` function:
+
+```{r, message=FALSE}
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary')
+p = p + geom_point()
+p = p + scale_fill_grey(start=0.8, end=0.2) 
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+Outline the Bars
+----------------
+Use the "col" keyword argument in the `geom_bar()` function:
+
+```{r, message=FALSE}
+p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='summary', col='black')
+p = p + scale_fill_grey(start=0.8, end=0.2) 
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+Show Error Bars
+---------------
+Two changes need to happen here:
+
+- `summarySE()` from the "Rmisc" package can be used to generate the summary statistics for each group
+- The mean of each group is generated by the above function and so that can be plotted directly. The option being passed to `stat` thus needs to change from "summary" to "identity".
+
+```{r, message=FALSE}
+library(Rmisc)
+chickwts_summ = summarySE(chickwts, measurevar='weight', groupvars='feed')
+print(chickwts_summ)
+
+p = ggplot(chickwts_summ, aes(feed, weight, fill=as.factor(feed)))
+p = p + geom_bar(stat='identity')
+p = p + geom_errorbar(aes(ymin=weight - se, ymax=weight + se), width=0.25)
+p = p + scale_fill_grey(start=0.8, end=0.2) 
+p = p + xlab('')
+p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+print(p)
+```
+
+Save Plot
+=========
+Finally, use `ggsave('File Name.png')` to save the plot to your computer.
+
+Next: Multiple Factors
+======================
+For bar plots that make use of multiple factors, see [here](barplots_multiple_factors.html).
+
+[⇦ Back](../../R.html)
+
+</font>
