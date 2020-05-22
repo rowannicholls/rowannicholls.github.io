@@ -205,6 +205,7 @@ Nothing. They are two names for the same thing. For some reason you <em>install<
 <pre class="r"><code>install.packages('BlandAltmanLeh', repos='http://cran.us.r-project.org')
 install.packages('chron', repos='http://cran.us.r-project.org')
 install.packages('DescTools', repos='http://cran.us.r-project.org')
+install.packages('DiagrammeR', repos='http://cran.us.r-project.org')
 install.packages('dplyr', repos='http://cran.us.r-project.org')
 install.packages('ggplot2', repos='http://cran.us.r-project.org')
 install.packages('logging', repos='http://cran.us.r-project.org')
@@ -220,6 +221,11 @@ install.packages('stringr', repos='http://cran.us.r-project.org')</code></pre>
 <p>You only need to install a package once on your computer. After it’s finished installing you can delete the <code>install.packages()</code> functions from your R script.</p>
 </blockquote>
 <p>You can find out where on your computer the packages are installed by running <code>.libPaths()</code> and see what packages you’ve installed with <code>print(as.data.frame(installed.packages()))</code>.</p>
+<div id="updating-r" class="section level2">
+<h2><span class="header-section-number">3.1</span> Updating R</h2>
+<p>Sometimes you can only download a package if it’s compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you’re on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:</p>
+<pre class="bash"><code>R --version</code></pre>
+</div>
 </div>
 <div id="import-a-library" class="section level1">
 <h1><span class="header-section-number">4</span> Import a Library</h1>
@@ -228,6 +234,7 @@ install.packages('stringr', repos='http://cran.us.r-project.org')</code></pre>
 <pre class="r"><code>library(BlandAltmanLeh)
 library(chron)
 library(DescTools)
+library(DiagrammeR)
 library(dplyr)
 library(ggplot2)
 library(logging)
@@ -272,6 +279,7 @@ print(length)</code></pre>
 <pre class="r"><code>require(BlandAltmanLeh)
 require(chron)
 require(DescTools)
+require(DiagrammeR)
 require(dplyr)
 require(ggplot2)
 require(logging)

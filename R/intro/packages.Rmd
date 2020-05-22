@@ -24,10 +24,15 @@ When you download and install R or RStudio you get access to what is known as __
 # Install a Package
 Packages can be installed by running the `install.packages()` function. Specify the name of the package you want to install as a string and the repository you want to install it from by using the `repos` __*keyword argument*__:
 
+```{r, echo=FALSE}
+
+```
+
 ```{r message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 install.packages('BlandAltmanLeh', repos='http://cran.us.r-project.org')
 install.packages('chron', repos='http://cran.us.r-project.org')
 install.packages('DescTools', repos='http://cran.us.r-project.org')
+install.packages('DiagrammeR', repos='http://cran.us.r-project.org')
 install.packages('dplyr', repos='http://cran.us.r-project.org')
 install.packages('ggplot2', repos='http://cran.us.r-project.org')
 install.packages('logging', repos='http://cran.us.r-project.org')
@@ -46,6 +51,14 @@ The "cran" part of the repos URL refers to "CRAN", the Comprehensive R Archive N
 
 You can find out where on your computer the packages are installed by running `.libPaths()` and see what packages you've installed with `print(as.data.frame(installed.packages()))`.
 
+Updating R
+----------
+Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:
+
+```{bash, eval=FALSE}
+R --version
+```
+
 # Import a Library
 When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.
 
@@ -55,6 +68,7 @@ When you want to use functionality that is part of a particular package, you nee
 library(BlandAltmanLeh)
 library(chron)
 library(DescTools)
+library(DiagrammeR)
 library(dplyr)
 library(ggplot2)
 library(logging)
@@ -108,6 +122,7 @@ If your script is going to be run on someone else's computer and you don't know 
 require(BlandAltmanLeh)
 require(chron)
 require(DescTools)
+require(DiagrammeR)
 require(dplyr)
 require(ggplot2)
 require(logging)
