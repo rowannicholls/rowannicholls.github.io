@@ -1,0 +1,100 @@
+---
+title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Wine recognition dataset'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+For more info, see here:  
+https://scikit-learn.org/stable/datasets/index.html#wine-recognition-dataset
+
+The **wine recognition dataset** is loaded using `load_wine()`. This
+returns a 'Bunch' object with the following keys:
+
+| Key | Description |
+|-----|-------------------------------------------------------------|
+| `DESCR` | Description of the dataset |
+| `feature_names` | Names of the 13 groups of data |
+| `data` | The 178 data points in each of the 13 groups of data, formatted as a 150x13 array |
+| `target_names` | Names of the target data (ie the 3 wine cultivators) |
+| `target` | Which group each data point is in (0, 1 or 2) |
+
+```{python}
+from sklearn.datasets import load_wine
+
+# Load the dataset
+wine = load_wine()
+
+# Show the dataset's keys
+print(list(wine))
+```
+
+```{python}
+# Description of the dataset
+print(wine['DESCR'])
+```
+
+```{python}
+# Names of the 13 groups of data
+print(wine['feature_names'])
+```
+
+```{python}
+# The 178 data points in each of the 13 groups of data, formatted as a 150x13 array
+print(wine['data'][:2])
+```
+
+```{python}
+# Names of the target data (ie the 3 wine cultivators)
+print(wine['target_names'])
+```
+
+```{python}
+# Which group each data point is in (0, 1 or 2)
+print(wine['target'])
+```
+
+The groups of data can be plotted against each other or against the target
+group as follows:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# PLOT
+plt.scatter(wine['data'][:, 0], wine['data'][:, 9], c=wine['target'])
+plt.title('Wine recognition dataset')
+plt.xlabel(wine['feature_names'][0])
+plt.ylabel(wine['feature_names'][9])
+plt.show()
+```
+
+The data is much easier to work with if it is converted to a data frame:
+
+```{python}
+import pandas as pd
+
+# CONVERT TO DATA FRAME
+wine_df = pd.DataFrame(wine['data'], columns=wine['feature_names'])
+wine_df['Cultivator'] = wine['target']
+
+# PLOT
+plt.scatter(
+    wine_df['hue'], wine_df['malic_acid'],
+    c=wine_df['Cultivator']
+)
+plt.title('Wine recognition dataset')
+plt.xlabel('hue')
+plt.ylabel('malic_acid')
+plt.show()
+```
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+</font>

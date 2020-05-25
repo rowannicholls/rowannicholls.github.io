@@ -1,0 +1,104 @@
+---
+title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Diabetes dataset'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+For more info, see here:  
+https://scikit-learn.org/stable/datasets/index.html#diabetes-dataset
+
+The **diabetes dataset** is loaded using `load_diabetes()`. This
+returns a 'Bunch' object with the following keys:
+
+| Key | Description |
+|-----|-------------------------------------------------------------|
+| `DESCR` | Description of the dataset |
+| `data_filename` | Location of the CSV file containing the data being imported |
+| `target_filename` | Location of the CSV file containing the target data being imported |
+| `feature_names` | Names of the 10 groups of data |
+| `data` | The 442 data points in each of the 10 groups of data, formatted as a 442x10 array |
+| `target` | The target data, namely a quantitative measure of disease progression one year after baseline |
+
+```{python}
+from sklearn.datasets import load_diabetes
+
+# Load the dataset
+diabetes = load_diabetes()
+
+# Show the dataset's keys
+print(list(diabetes))
+```
+
+```{python}
+# Description of the dataset
+print(diabetes['DESCR'])
+```
+
+```{python}
+# Location of the CSV file containing the data being imported
+print(diabetes['data_filename'])
+```
+
+```{python}
+# Location of the CSV file containing the target data being imported
+print(diabetes['target_filename'])
+```
+
+```{python}
+# Names of the 10 groups of data
+print(diabetes['feature_names'])
+```
+
+```{python}
+# The 442 data points in each of the 10 groups of data, formatted as a 442x10 array
+print(diabetes['data'])
+```
+
+```{python}
+# The target data, namely a quantitative measure of disease progression one year after baseline
+print(diabetes['target'][:20])
+```
+
+The groups of data can be plotted against each other or against the target
+group as follows:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# PLOT
+plt.scatter(diabetes['data'][:, 6], diabetes['target'])
+plt.title('Diabetes dataset')
+x = diabetes['feature_names'][6]
+plt.xlabel(x + ' (hdl, high-density lipoproteins)')
+plt.ylabel('Disease progression one year after baseline')
+plt.show()
+```
+
+The data is much easier to work with if it is converted to a data frame:
+
+```{python}
+import pandas as pd
+
+# CONVERT TO DATA FRAME
+diabetes_df = pd.DataFrame(diabetes['data'], columns=diabetes['feature_names'])
+diabetes_df['Y'] = diabetes['target']
+
+# PLOT
+plt.scatter(diabetes_df['bp'], diabetes_df['Y'])
+plt.title('Diabetes dataset')
+plt.xlabel('bp (average blood pressure)')
+plt.ylabel('Disease progression one year after baseline')
+plt.show()
+```
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+</font>

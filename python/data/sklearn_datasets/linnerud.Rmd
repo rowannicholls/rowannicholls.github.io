@@ -1,0 +1,110 @@
+---
+title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Linnerrud dataset'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+For more info, see here:  
+https://scikit-learn.org/stable/datasets/index.html#linnerrud-dataset
+
+The **Linnerrud dataset** is loaded using `load_linnerud()`. This
+returns a 'Bunch' object with the following keys:
+
+| Key | Description |
+|-----|-------------------------------------------------------------|
+| `DESCR` | Description of the dataset |
+| `data_filename` | Location of the CSV file containing the data being imported |
+| `target_filename` | Location of the CSV file containing the target data being imported |
+| `feature_names` | Names of the 3 exercises (Chins, Situps, Jumps) |
+| `data` | The 20 data points for each of the 3 exercises, formatted as a 20x3 array |
+| `target_names` | Names of the 3 physiological variables (Weight, Waist and Pulse) |
+| `target` | The target data, namely the physiological measurements |
+
+```{python}
+from sklearn.datasets import load_linnerud
+
+# Load the dataset
+linnerud = load_linnerud()
+
+# Show the dataset's keys
+print(list(linnerud))
+```
+
+```{python}
+# Description of the dataset
+print(linnerud['DESCR'])
+```
+
+```{python}
+# Location of the CSV file containing the data being imported
+print(linnerud['data_filename'])
+```
+
+```{python}
+# Location of the CSV file containing the target data being imported
+print(linnerud['target_filename'])
+```
+
+```{python}
+# Names of the 3 exercises (Chins, Situps, Jumps)
+print(linnerud['feature_names'])
+```
+
+```{python}
+# The 20 data points for each of the 3 exercises, formatted as a 20x3 array
+print(linnerud['data'])
+```
+
+```{python}
+# Names of the 3 physiological variables (Weight, Waist and Pulse)
+print(linnerud['target_names'])
+```
+
+```{python}
+# The target data, namely the physiological measurements
+print(linnerud['target'])
+```
+
+The groups of data can be plotted against each other or against the target
+group as follows:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# PLOT
+plt.scatter(linnerud['data'][:, 0], linnerud['target'][:, 0])
+plt.title('Linnerrud dataset')
+plt.xlabel(linnerud['feature_names'][0])
+plt.ylabel(linnerud['target_names'][0])
+plt.show()
+```
+
+The data is much easier to work with if it is converted to a data frame:
+
+```{python}
+import pandas as pd
+
+# CONVERT TO DATA FRAME
+df_1 = pd.DataFrame(linnerud['data'], columns=linnerud['feature_names'])
+df_2 = pd.DataFrame(linnerud['target'], columns=linnerud['target_names'])
+linnerud_df = pd.concat([df_1, df_2], axis=1)
+
+# PLOT
+plt.scatter(linnerud_df['Waist'], linnerud_df['Situps'])
+plt.title('Linnerrud dataset')
+plt.xlabel('Waist')
+plt.ylabel('Situps')
+plt.show()
+```
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+</font>

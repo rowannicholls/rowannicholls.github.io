@@ -1,0 +1,98 @@
+---
+title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Boston house prices dataset'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+For more info, see here:  
+https://scikit-learn.org/stable/datasets/index.html#boston-house-prices-dataset
+
+The **Boston house prices dataset** is loaded using `load_boston()`. This
+returns a 'Bunch' object with the following keys:
+
+| Key | Description |
+|-----|-------------------------------------------------------------|
+| `DESCR` | Description of the dataset |
+| `filename` | Location of the CSV file being imported |
+| `feature_names` | Names of the 13 groups of data |
+| `data` | The 506 data points in each of the 13 groups of data, formatted as a 506x13 array |
+| `target` | The target data, namely "MEDV" (Median value of owner-occupied homes in $1000’s) |
+
+```{python}
+from sklearn.datasets import load_boston
+
+# Load the dataset
+boston = load_boston()
+
+# Show the dataset's keys
+print(list(boston))
+```
+
+```{python}
+# Description of the dataset
+print(boston['DESCR'])
+```
+
+```{python}
+# Location of the CSV file being imported
+print(boston['filename'])
+```
+
+```{python}
+# Names of the 13 groups of data
+print(boston['feature_names'])
+```
+
+```{python}
+# The 506 data points in each of the 13 groups of data, formatted as a 506x13 array
+print(boston['data'])
+```
+
+```{python}
+# The target data, namely "MEDV" (Median value of owner-occupied homes in $1000’s)
+print(boston['target'][:20])
+```
+
+The groups of data can be plotted against one another or against the target
+group as follows:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# PLOT
+plt.scatter(boston['data'][:, 6], boston['target'])
+plt.title('Boston house prices dataset')
+x = boston['feature_names'][6]
+plt.xlabel(x + ' (proportion of owner-occupied units built prior to 1940)')
+plt.ylabel("MEDV (Median value of owner-occupied homes in $1000's)")
+plt.show()
+```
+
+The data is much easier to work with if it is converted to a data frame:
+
+```{python}
+import pandas as pd
+
+# CONVERT TO DATA FRAME
+boston_df = pd.DataFrame(boston['data'], columns=boston['feature_names'])
+boston_df['MEDV'] = boston['target']
+
+# PLOT
+plt.scatter(boston_df['RM'], boston_df['MEDV'])
+plt.title('Boston house prices dataset')
+plt.xlabel('RM (average number of rooms per dwelling)')
+plt.ylabel("MEDV (Median value of owner-occupied homes in $1000's)")
+plt.show('boston_df.png')
+```
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+</font>

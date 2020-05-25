@@ -1,0 +1,106 @@
+---
+title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Iris plants dataset'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+For more info, see here:  
+https://scikit-learn.org/stable/datasets/index.html#iris-plants-dataset
+
+The **iris plants dataset** is loaded using `load_iris()`. This
+returns a 'Bunch' object with the following keys:
+
+| Key | Description |
+|-----|-------------------------------------------------------------|
+| `DESCR` | Description of the dataset |
+| `filename` | Location of the CSV file containing the data being imported |
+| `feature_names` | Names of the 4 groups of data |
+| `data` | The 150 data points in each of the 4 groups of data, formatted as a 150x4 array |
+| `target_names` | Names of the target data (ie the 3 species of flower) |
+| `target` | Which group each data point is in (0, 1 or 2) |
+
+```{python}
+from sklearn.datasets import load_iris
+
+# Load the dataset
+iris = load_iris()
+
+# Show the dataset's keys
+print(list(iris))
+```
+
+```{python}
+# Description of the dataset
+print(iris['DESCR'])
+```
+
+```{python}
+# Location of the CSV file containing the data being imported
+print(iris['filename'])
+```
+
+```{python}
+# Names of the 4 groups of data
+print(iris['feature_names'])
+```
+
+```{python}
+# The 150 data points in each of the 4 groups of data, formatted as a 150x4 array
+print(iris['data'][:10])
+```
+
+```{python}
+# Names of the target data (ie the 3 species of flower)
+print(iris['target_names'])
+```
+
+```{python}
+# Which group each data point is in (0, 1 or 2)
+print(iris['target'])
+```
+
+The groups of data can be plotted against each other or against the target
+group as follows:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# PLOT
+plt.scatter(iris['data'][:, 1], iris['data'][:, 3], c=iris['target'])
+plt.title('Iris plants dataset')
+plt.xlabel(iris['feature_names'][1])
+plt.ylabel(iris['feature_names'][3])
+plt.show()
+```
+
+The data is much easier to work with if it is converted to a data frame:
+
+```{python}
+import pandas as pd
+
+# CONVERT TO DATA FRAME
+iris_df = pd.DataFrame(iris['data'], columns=iris['feature_names'])
+iris_df['Species'] = iris['target']
+
+# PLOT
+plt.scatter(
+    iris_df['sepal length (cm)'], iris_df['petal length (cm)'],
+    c=iris_df['Species']
+)
+plt.title('Iris plants dataset')
+plt.xlabel('sepal length (cm)')
+plt.ylabel('petal length (cm)')
+plt.show()
+```
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+</font>

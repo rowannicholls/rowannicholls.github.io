@@ -1,0 +1,111 @@
+---
+title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Optical recognition of handwritten digits dataset'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+For more info, see here:  
+https://scikit-learn.org/stable/datasets/index.html#optical-recognition-of-handwritten-digits-dataset
+
+The **optical recognition of handwritten digits dataset** is loaded using `load_digits()`. This returns a 'Bunch' object with the following keys:
+
+| Key | Description |
+|-----|-------------------------------------------------------------|
+| `DESCR` | Description of the dataset |
+| `images` | 1797 8x8 images represented as 8x8 arrays of integers from 0 to 16 |
+| `data` | 1797 8x8 images represented as 1x64 arrays of integers from 0 to 16 |
+| `target_names` | Names of the target data (ie the numerals from 0 to 9) |
+| `target` | The target data (ie the 1797 numerals that are shown in the images) |
+
+```{python}
+from sklearn.datasets import load_digits
+
+# Load the dataset
+digits = load_digits()
+
+# Show the dataset's keys
+print(list(digits))
+```
+
+```{python}
+# Description of the dataset
+print(digits['DESCR'])
+```
+
+```{python}
+# Two of the 1797 8x8 images represented as 8x8 arrays of integers from 0 to 16
+print(digits['images'][:2])
+```
+
+```{python}
+# Two of the 1797 8x8 images represented as 1x64 arrays of integers from 0 to 16
+print(digits['data'][:2])
+```
+
+```{python}
+# Names of the target data (ie the numerals from 0 to 9)
+print(digits['target_names'])
+```
+
+```{python}
+# The target data (ie the 1797 numerals that are shown in the images)
+print(digits['target'])
+```
+
+The arrays of numbers representing the images of the handwritten digits can be viewed - as images - as follows:
+
+```{python}
+import matplotlib.pyplot as plt
+
+imgplot = plt.imshow(digits['images'][1])
+plt.show()
+```
+
+```{python}
+# What digit is being displayed?
+print(digits['target'][1])
+```
+
+```{python}
+imgplot = plt.imshow(digits['images'][150])
+plt.show()
+```
+
+```{python}
+# What digit is being displayed?
+print(digits['target'][150])
+```
+
+If the array is coming from the `data` column, it first needs to be re-shaped into an 8x8 configuration:
+
+```{python}
+imgplot = plt.imshow(digits['data'][2].reshape((8, 8)))
+plt.show()
+```
+
+```{python}
+# What digit is being displayed?
+print(digits['target'][2])
+```
+
+```{python}
+imgplot = plt.imshow(digits['data'][100].reshape((8, 8)))
+plt.show()
+```
+
+```{python}
+# What digit is being displayed?
+print(digits['target'][100])
+```
+
+<a href="../../python.html" target="_blank">⇦ Back</a>
+
+</font>
