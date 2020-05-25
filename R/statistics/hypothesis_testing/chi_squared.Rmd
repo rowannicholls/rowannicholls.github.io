@@ -59,6 +59,7 @@ DiagrammeR::grViz(
                 'Discrete, categorical data'
                     'Chi-squared goodness-of-fit test'
                     'Chi-squared independence test'
+                    'Chi-squared homogeneity test'
 
         {
             rank = same;
@@ -103,6 +104,7 @@ DiagrammeR::grViz(
         'Hypothesis' -> 'Discrete, categorical data'
             'Discrete, categorical data' -> 'Chi-squared goodness-of-fit test'
             'Discrete, categorical data' -> 'Chi-squared independence test'
+            'Discrete, categorical data' -> 'Chi-squared homogeneity test'
     }",
     height=400, width=900
 )
@@ -116,7 +118,7 @@ There are three main chi-squared tests:
 - Independence
 - Homogeneity
 
-In R, all three are performed using the same function (`chisq.test()`) from the base package. For more info about this function, see https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/chisq.test
+In R, all three are performed using the same function (`chisq.test()`) from the base programme (ie you don't need to install any packages). For more info about this function, see [its documentation](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/chisq.test).
 
 Goodness-of-Fit Test
 ====================
