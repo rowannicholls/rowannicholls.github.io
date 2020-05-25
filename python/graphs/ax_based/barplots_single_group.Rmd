@@ -1,0 +1,453 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Bar Plots with One Group of Data'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+The Basics
+==========
+A bar plot is created on a set of axes in Python by using the `ax.bar()` function from Matplotlib. The first argument passed to this function is the x-positions of the bars and the second argument is the heights:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+x_positions = [0, 1, 2]
+heights = [6, 12, 9]
+
+ax = plt.axes()
+ax.bar(x_positions, heights)
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+x_positions = [0, 1, 2]
+heights = [6, 12, 9]
+
+ax = plt.axes()
+ax.bar(x_positions, heights)
+plt.show()
+plt.close()
+```
+
+Plot Title, Axis Labels, Bar Widths
+-----------------------------------
+Titles and labels are added using `set_title()`, `set_xlabel()` and `set_ylabel()` while the width of the bars is defined by the third argument in the `ax.bar()` function:
+
+```{python, eval=FALSE}
+x_positions = [0, 1, 2]
+heights = [6, 12, 9]
+width = 0.5
+
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('How bar plots work in Matplotlib')
+ax.set_xlabel('The first argument of the ax.bar() function')
+ax.set_ylabel('The second argument of the ax.bar() function')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+x_positions = [0, 1, 2]
+heights = [6, 12, 9]
+width = 0.5
+
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('How bar plots work in Matplotlib')
+ax.set_xlabel('The first argument of the ax.bar() function')
+ax.set_ylabel('The second argument of the ax.bar() function')
+plt.show()
+plt.close()
+```
+
+Automatically Get the X-Positions
+---------------------------------
+This is exactly the same example as the previous one, except this time Numpy's `arange()` function is being used to automatically generate the `[0, 1, 2]` x-positions using the length of the `heights` variable (which happens to be the number of bars that are going to be plotted):
+
+```{python, eval=FALSE}
+import numpy as np
+
+heights = [6, 12, 9]
+x_positions = np.arange(len(heights))
+width = 0.5
+
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('How bar plots work in Matplotlib')
+ax.set_xlabel('The first argument of the ax.bar() function')
+ax.set_ylabel('The second argument of the ax.bar() function')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+import numpy as np
+
+heights = [6, 12, 9]
+x_positions = np.arange(len(heights))
+width = 0.5
+
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('How bar plots work in Matplotlib')
+ax.set_xlabel('The first argument of the ax.bar() function')
+ax.set_ylabel('The second argument of the ax.bar() function')
+plt.show()
+plt.close()
+```
+
+Plotting a Dataset
+==================
+It's not often that you will have your data in the perfect format with the x-positions and heights in their own variables already. Most times, you will need to do some level of data manipulation before you can plot. Here's an example using the iris dataset from the scikit-learn package (see [here](https://rowannicholls.github.io/python/data/sklearn_datasets.html) for more info on these toy datasets):
+
+```{python}
+from sklearn.datasets import load_iris
+
+# Load the dataset
+iris = load_iris()
+```
+
+This dataset contains data from three different species of the iris flower:
+
+```{python}
+print(iris['target_names'])
+```
+
+For this example we only want one of these three groups, so extract the data from the 'versicolor' species only:
+
+```{python}
+# Get the number corresponding to the versicolor species
+species = np.where(iris['target_names'] == 'versicolor')
+# Lookup this number in the 'target' column
+idx = [i for i, v in enumerate(iris['target']) if v == species]
+# Filter to get only the rows with this number
+data = iris['data'][idx]
+```
+
+The information in this array is divided into four columns: sepal length, sepal width, petal length and petal width. The first 10 rows (of 50) are below:
+
+```{python}
+print(data[:10])
+```
+
+Extract only the petal lengths (the third column, ie the one at index 2):
+
+```{python}
+# Extract the 'petal length (cm)' data
+petal_length = data[:, 2]
+print(petal_length)
+```
+
+Now that we have the data we want, there are two ways to plot it:
+
+Plotting Values
+---------------
+The first way is to do what we've done before: plot the numbers as they are:
+
+```{python, eval=FALSE}
+# Extract the data
+heights = petal_length
+x_positions = np.arange(len(heights))
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights)
+ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
+ax.set_xlabel('')
+ax.set_ylabel('Length (cm)')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Extract the data
+heights = petal_length
+x_positions = np.arange(len(heights))
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights)
+ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
+ax.set_xlabel('')
+ax.set_ylabel('Length (cm)')
+plt.show()
+plt.close()
+```
+
+This code has worked as expected, but it's probably not the graph that we want. It would be much more useful to have a bar plot of the *number* of petals of each length. For that we need to plot the *counts*, ie the number of occurrences of each petal length:
+
+Plotting Counts (aka Histograms)
+--------------------------------
+The number of times each value appears in the 'petal length' dataset can be counted with the `unique()` function from Numpy using the `return_counts` option:
+
+```{python, eval=FALSE}
+# Find the unique values in the dataset and count their occurrences
+uniq, cnts = np.unique(petal_length, return_counts=1)
+
+# Plotting counts (creating a histogram with smallest bin width)
+x_positions = uniq
+heights = cnts
+width = 0.1
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
+ax.set_xlabel('Length (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Find the unique values in the dataset and count their occurrences
+uniq, cnts = np.unique(petal_length, return_counts=1)
+
+# Plotting counts (creating a histogram with smallest bin width)
+x_positions = uniq
+heights = cnts
+width = 0.1
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+Data Types
+==========
+The first examples used **lists** while the last examples (the ones that used the iris dataset) used **arrays**. It makes no difference; the `ax.bar()` function treats them both the same. It also treats Pandas data frames and series the same, as shown in this example where the iris dataset is first converted into a data frame before being plotted:
+
+```{python, eval=FALSE}
+import pandas as pd
+
+# Load the data set
+iris = load_iris()
+# Convert the array to a data frame
+iris_df = pd.DataFrame(iris['data'], columns=iris['feature_names'])
+# Add the species data as a column to the data frame
+iris_df['Species'] = iris['target']
+# Get the value that corresponds to the versicolor species
+species = np.where(iris['target_names'] == 'versicolor')
+# Convert tuple to integer
+species = species[0][0]
+# Filter to only have data from the versicolor plant
+data = iris_df[iris_df['Species'] == species]
+# Count the number of occurrences of each petal length
+uniq, cnts = np.unique(data['petal length (cm)'], return_counts=1)
+
+# Consolidate the data you want to plot
+x_positions = uniq
+heights = cnts
+width = 0.1
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('Bar plot using a Pandas data frame')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+import pandas as pd
+
+# Load the data set
+iris = load_iris()
+# Convert the array to a data frame
+iris_df = pd.DataFrame(iris['data'], columns=iris['feature_names'])
+# Add the species data as a column to the data frame
+iris_df['Species'] = iris['target']
+# Get the value that corresponds to the versicolor species
+species = np.where(iris['target_names'] == 'versicolor')
+# Convert tuple to integer
+species = species[0][0]
+# Filter to only have data from the versicolor plant
+data = iris_df[iris_df['Species'] == species]
+# Count the number of occurrences of each petal length
+uniq, cnts = np.unique(data['petal length (cm)'], return_counts=1)
+
+# Consolidate the data you want to plot
+x_positions = uniq
+heights = cnts
+width = 0.1
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('Bar plot using a Pandas data frame')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+Using Latex and Annotations
+===========================
+It's possible to use Latex for the text in the plot, which brings with it the ability to use Greek letters, equations, Unicode symbols and the like. See [here](https://rowannicholls.github.io/python/graphs/latex_in_labels.html) for more info.
+
+```{python, eval=FALSE}
+# Settings
+x = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title(r'Using \LaTeX')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel(r'Count (\textSigma)')
+plt.annotate(r'We can create equations if we want:', (3, 6))
+plt.annotate(r'$\Sigma = \frac{x}{2}$', (3, 5.5))
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide', dpi=300}
+# Settings
+x = 5  # Want figure to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title(r'Using \LaTeX')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel(r'Count (\textSigma)')
+plt.annotate(r'We can create equations if we want:', (3, 6))
+plt.annotate(r'$\Sigma = \frac{x}{2}$', (3, 5.5))
+plt.show()
+plt.close()
+```
+
+Using Colours
+=============
+Colours are specified using the `color` or `c` keyword argument. Colours needs to be provided in a list and, if the number of bars is larger than the number of provided colours, it will wrap around (for example, if there are five bars and only three colours are provided, the fourth and fifth bars will have the same colours as the first and second, respectively).
+
+Defined Colours
+---------------
+
+```{python, eval=FALSE}
+# Defined colours
+colours = ['red', 'green']
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width, color=colours)
+ax.set_title('Customising the Colours')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide', dpi=300}
+# Defined colours
+colours = ['red', 'green']
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width, color=colours)
+ax.set_title('Customising the Colours')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+Colour Palette
+--------------
+
+```{python, eval=FALSE}
+# Colour Palette
+ax = plt.axes()
+ax.bar(x_positions, heights, width, color=['C0', 'C1', 'C2'])
+ax.set_title('Customising the Colours')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide', dpi=300}
+# Colour Palette
+ax = plt.axes()
+ax.bar(x_positions, heights, width, color=['C0', 'C1', 'C2'])
+ax.set_title('Customising the Colours')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+Custom Colours
+--------------
+
+```{python, eval=FALSE}
+# Custom Colours
+pink = '#FB4188'
+green = '#87C94A'
+blue = '#39C2F3'
+yellow = '#FADB39'
+lgrey = '#798287'
+dgrey = '#43454C'
+colours = [pink, green, blue, yellow, lgrey, dgrey]
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width, color=colours)
+ax.set_title('Customising the Colours')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide', dpi=300}
+# perspectum_pink = #fb4188
+
+# Custom Colours
+pink = '#FB4188'
+green = '#87C94A'
+blue = '#39C2F3'
+yellow = '#FADB39'
+lgrey = '#798287'
+dgrey = '#43454C'
+colours = [pink, green, blue, yellow, lgrey, dgrey]
+
+# Plot
+ax = plt.axes()
+ax.bar(x_positions, heights, width, color=colours)
+ax.set_title('Customising the Colours')
+ax.set_xlabel('Petal Lengths (cm)')
+ax.set_ylabel('Count')
+plt.show()
+plt.close()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
