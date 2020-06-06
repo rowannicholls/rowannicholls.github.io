@@ -1,0 +1,424 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Getting Started'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Which OS are you using? {.tabset}
+=======================
+
+Ubuntu
+------
+The following works for Ubuntu 16.04 to 18.04.
+
+### Installing and Setting up
+- There is no need to install Python on Ubuntu: it comes already installed. In fact, multiple versions of Python come pre-installed (these multiple installations can be found in the /usr/bin/ folder)
+- However, the version of Python that Ubuntu uses by default is version 2 (usually 2.7) even though it has Python 3 installed. This is not good; Python 2 is no longer supported so everyone should be using Python 3. Check which version you are using from the terminal with:
+
+    ```{bash, eval=FALSE}
+    python --version
+    ```
+
+- If this tells you that you are using Python 2 you should change this by running the following from a terminal\*:
+
+    ```{bash, eval=FALSE}
+    sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 30
+    ```
+
+    - You will be prompted to enter your computer password. This is needed because you are using the `sudo` (super doer) command which allows you to change your computer's settings
+    - The `update-alternatives` command changes the symbolic links that determine what your commands do. In this case you are changing `python` to link to `python3` instead of the default (which is `python2`).
+    - The `30` at the end means that you are giving `python3` a priority of 30 over `python2`
+- Check that this has worked by running `python --version` again and seeing if this returns a Python 3 version number
+
+\*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your ".bashrc" file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using `sudo` or from within RMarkdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above. Test that you've done it correctly by running `bash -c "python --version"` - this invokes bash directly (and thus bypasses the .bashrc file) and should print a version 3 version number.
+
+**Note:** you can still run Python 2 should you need it. This is done by explicitly using the `python2` command, or the `python2.7` command if you specifically need version 2.7. In general, you can run a specific version of Python by running `pythonx.x` from the terminal.
+
+<!-- - If this tells you that you are using Python 2, you should set up an "alias". This will trick your computer into thinking that `python` is another name for `python3`, as opposed to the default behaviour which is for it to think that `python` means `python2`
+    - This alias needs to be created in a file called ".bashrc" which is your terminal's 'settings file'. "bash" is the name of the language your terminal uses, "rc" stands for "run commands" because this file contains the commands that bash runs whenever it opens (ie whenever you open a terminal) and the dot at the start of the filename turns it into a hidden file.
+    - Your .bashrc file is located in your Home folder. Navigate here in Files and press ctrl+H to cause hidden files to be shown. Find and open .bashrc (in a text editor like gedit) and add the following to the bottom to create the alias:
+
+```
+# the terminal command "python" should open python3, not python2
+alias python=python3
+```
+    - Save and exit
+    - This exact same thing can be done from the terminal with the following command:
+
+```{bash, eval=FALSE}
+echo "alias python=python3" >> ~/.bashrc
+```
+    - In order for this change to take effect you need to close your terminal and open it again (or you can run `source ~/.bashrc` to force a refresh)
+    - Check your Python version again (`python --version`). Is should be one of the Python 3 versions -->
+
+### Updating Python
+From the terminal:
+
+```{bash, eval=FALSE}
+sudo apt-get install python3.8
+```
+
+This will download Python 3.8. Replace the 3.8 with whatever version number you want, but you do have to do it manually (there's no command that automatically downloads the latest version). If you use `sudo apt-get install python` it will update your Python 2 (because, remember, that is the default version in Ubuntu) and, similarly, `sudo apt-get install python3` will try to update your Python 3.6. Next, you should make your `python` command point to version 3.8 and this can be done with a command similar to the one used above:
+
+```{bash, eval=FALSE}
+sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 38
+```
+
+Check what your order of priorities for your Python versions are with:
+
+```{bash, eval=FALSE}
+sudo update-alternatives --config python
+sudo update-alternatives --config python3
+```
+
+### Using Python from the Command-Line
+- If you open a terminal and run `python` you will open Python in that terminal. You can enter individual Python commands directly in at the `>>>` prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running `exit()`.
+- If you have a script file (one with the ".py" extension) you can run it from the terminal by changing into the directory where the folder is located (using the "cd" command to **c**hange **d**irectory) and running `python <filename>` with the ".py" extension included. In fact, you don't actually need to change directory into the one where the script is located, you can just run `python <path_to_file>/<filename>` and it will work.
+
+### Installing Packages
+- The best option is to use the standard Python package manager, "pip" (aka pip3 for Python 3):
+    ```{bash, eval=FALSE}
+    sudo apt-get install python3-pip
+    ```
+    - Once this is done you can install most packages as follows:
+    ```{bash, eval=FALSE}
+    sudo pip3 install <package_name>
+    ```
+    - To upgrade pip:
+    ```{bash, eval=FALSE}
+    pip3 install --upgrade pip
+    ```
+- To install a bunch of the most common packages in one go:
+    - Go into "permanent sudo" mode:
+    ```{bash, eval=FALSE}
+    sudo su
+    ```
+    - Then run the following in the terminal:
+    ```{bash, eval=FALSE}
+    # Mathematics & arrays
+    pip3 install numpy
+    # Scientific & technical computing
+    pip3 install scipy
+    # Plotting
+    pip3 install matplotlib
+    # Data manipulation and analysis
+    pip3 install pandas
+    # Symbolic computation
+    pip3 install sympy
+    # Testing
+    pip3 install nose
+    # Spreadsheet integration
+    pip3 install xlwt
+    pip3 install xlrd
+    pip3 install openpyxl
+    # Using serial ports for microprocessors
+    pip3 install pyserial
+    # Image processing
+    pip3 install scikit-image
+    # Pass arguments from the terminal
+    pip3 install argparse
+    # Print to terminal in colour
+    # print(colored('hello', 'red'), colored('world', 'green'))
+    pip3 install termcolor
+    # end
+    ```
+    - Check that it has worked by opening Python in the terminal:
+    ```{bash, eval=FALSE}
+    python
+    ```
+    - Then running:
+    ```{python, eval=FALSE}
+    import numpy
+    import scipy
+    import matplotlib
+    import pandas
+    import sympy
+    import nose
+    import xlwt
+    import xlrd
+    import serial
+    import skimage
+    import argparse
+    import termcolor
+    ```
+    There should be no errors.
+
+[⇦ Back](../../python.html)
+
+macOS
+-----
+The following works for macOS Sierra, Mojave and Catalina.
+
+### Installing and Setting up
+- While it is true that macOS comes with Python pre-installed on it (located in /usr/bin/), *it is not recommended to use the pre-installed version*. This is because it is out-of-date and, because some background macOS programmes rely on this out-of-date version in order to work, it is not recommended to update it.
+- A common solution to the above problem is to use "aliases" inserted into your terminal's 'settings' files (either .bash_profile or .zshrc). This is no longer recommended either: these run commands are specific to a terminal instance and do not apply in situations where these setting folders are bypassed (eg when running from R Markdown which invokes `bash -c python`, not `python`)
+- Instead, the best solution is to use the **pyenv** version manager:
+    - Install Homebrew from [here](https://brew.sh/). This is a package manager for macOS analogous to apt-get in Ubuntu.
+    - Next, install pyenv from Homebrew:
+    ```{bash, eval=FALSE}
+    brew install pyenv
+    ```
+    - Use pyenv to install the latest version of Python (which, at the time of writing, is 3.8.2):
+    ```{bash, eval=FALSE}
+    pyenv install 3.8.2
+    ```
+    + This gets installed to ~/.pyenv/versions/
+    - Set this Python version to be the default:
+    ```{bash, eval=FALSE}
+    pyenv global 3.8.2
+    ```
+    - Confirm it has worked by checking that the following returns the version number you expect:
+    ```{bash, eval=FALSE}
+    pyenv version
+    ```
+    - Append the following to your terminal's run commands (ie add these lines to the bottom of either ~/.bash_profile or ~/.zshrc, depending on which version of macOS you have)
+    ```
+    if command -v pyenv 1>/dev/null 2>&1; then
+        eval "$(pyenv init -)"
+    fi
+    ```
+        - The following commands will do this automatically for you:
+        ```{bash, eval=FALSE}
+        echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.zshrc
+        echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash_profile
+        ```
+    - If you have previously added aliases to your .bash_profile or .zshrc file(s) you will need to remove these/comment them out
+    - Reset the current shell to let the changes take effect:
+    ```{bash, eval=FALSE}
+    exec $0
+    ```
+    - Confirm it has worked by checking that the following returns `/Users/<username>/.pyenv/shims/python`, indicating that the Python programme being used is the one located in the .pyenv folder:
+    ```{bash, eval=FALSE}
+    which python
+    ```
+    - Also check that the following both return the version number you expect:
+    ```{bash, eval=FALSE}
+    python --version
+    bash -c "python --version"
+    ```
+    - Finally, check that your Python package manger, pip, is being called from the .pyenv folder and corresponds to the version of Python you expect:
+    ```{bash, eval=FALSE}
+    pip --version
+    ```
+- Note that you will have to follow a similar process for each Python version you want to install, but once you have you will be able to choose which one to use relatively easily and they will not interfere with one another. When you want to update your Python, you will have to do it 'manually' with the above process (ie there is no single command you can use to just update to and start using the latest version).
+
+### Using Python from the Command-Line
+- If you open a terminal and run `python` you will open Python in that terminal. You can enter individual Python commands directly in at the `>>>` prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running `exit()`.
+- If you have a script file (one with the ".py" extension) you can run it from the terminal by changing into the directory where the folder is located (using the "cd" command to **c**hange **d**irectory) and running `python <filename>` with the ".py" extension included. In fact, you don't actually need to change directory into the one where the script is located, you can just run `python <path_to_file>/<filename>` and it will work.
+
+### Installing Packages
+- As mentioned, you should use the standard Python package manager, "pip", which was installed alongside Python by pyenv. This enables you to install packages with:
+```{bash, eval=FALSE}
+pip install <package_name>
+```
+- To install a bunch of the most common packages in one go, run the following in the terminal:
+```{bash, eval=FALSE}
+# Mathematics & arrays
+pip install numpy
+# Scientific & technical computing
+pip install scipy
+# Plotting
+pip install matplotlib
+# Data manipulation and analysis
+pip install pandas
+# Symbolic computation
+pip install sympy
+# Testing
+pip install nose
+# Spreadsheet integration
+pip install xlwt
+pip install xlrd
+pip install openpyxl
+# Using serial ports for microprocessors
+pip install pyserial
+# Image processing
+pip install scikit-image
+# Linux distribution information
+pip install distro
+# Pass arguments from the terminal
+pip install argparse
+# Print to terminal in colour
+# print(colored('hello', 'red'), colored('world', 'green'))
+pip install termcolor
+# end
+```
+- Check that it has worked by opening Python in the terminal:
+```{bash, eval=FALSE}
+python
+```
+- Then running:
+```{python, eval=FALSE}
+import numpy
+import scipy
+import matplotlib
+import pandas
+import sympy
+import nose
+import xlwt
+import xlrd
+import openpyxl
+import serial
+import skimage
+import distro
+import argparse
+import termcolor
+```
+There should be no errors.
+
+[⇦ Back](../../python.html)
+
+Windows
+-------
+The following works for Windows 7, 8 and 10.
+
+### Installing and Setting up
+- Download Python from [the Python website](https://www.python.org/downloads/)
+- During installation, select "add Python to PATH"
+
+### Updating Python
+The easiest way to update is just to install the latest version (again, from the Python website). You can have multiple versions of Python installed side-by-side without them interfering with each other.
+
+### Using Python from the Command-Line
+- Check that you have your "PATH" variable correct:
+    - Windows 7: Start > right-click on "Computer" > Properties > Advanced system settings > Environment Variables > edit the top one (path)
+    - Windows 10: Control Panel > System and Security > System - Advanced stystem settings > Environment Variables > edit the top one (path)
+- Append the following (with your username in place of "`<username>`")
+```
+;C:/Users/<username>/AppData/Local/Programs/Python/Python36-32/
+```
+- Open Command Prompt (if it is already open, close it and open it again) and run:
+```
+python
+```
+- Python should open in the Command Prompt, showing you version and help information
+    - Exit Python with `exit()`
+- Run a Python script (a file with the ".py" extension) using `python <filename>` if the file is in the same folder as the one your Command Prompt is currently in or `python <path_to_file>/<filename>` if it is in a different folder.
+
+### Installing Packages
+- For most packages, use Python's standard package manager "pip". pip should come already installed with Python; double check this by running the following two separate commands from Command Prompt:
+    ```
+    python
+    import pip
+    ```
+    - If nothing happens (no errors appear), then all is good
+    - 'pip2' is the version of pip for Python 2, 'pip3' is for Python 3 and 'pip' uses whichever version of Python is installed
+    - Now that you are sure you have pip, you can use it directly from a new Command Prompt (or from the same Command Prompt after exiting Python with `exit()`) to install packages with:
+    ```
+    python -m pip install --user <package_name>
+    ```
+- When installing packages, rather install them one-by-one as opposed to all at once. This is because pip sometimes installs multiple packages at once but not sequentially, and so if something fails you don't know what caused what.
+- Install most of the common packages with the following commands:
+```
+python -m pip install --user numpy
+python -m pip install --user scipy
+python -m pip install --user setuptools
+python -m pip install --user python-dateutil
+python -m pip install --user matplotlib
+python -m pip install --user ipython
+python -m pip install --user jupyter
+python -m pip install --user pandas
+python -m pip install --user sympy
+python -m pip install --user nose
+python -m pip install --user opencv-python
+python -m pip install --user openpyxl
+python -m pip install --user xlwt
+python -m pip install --user xlrd
+python -m pip install --user odfpy
+python -m pip install --user Pillow
+python -m pip install --user pygame
+python -m pip install --user pyglet
+python -m pip install --user moviepy
+python -m pip install --user unidecode
+python -m pip install --user httplib2
+python -m pip install --user apiclient
+python -m pip install --user sklearn
+```
+- You can upgrade pip with:
+```
+python -m pip install --upgrade pip
+```
+
+[⇦ Back](../../python.html)
+
+Fedora
+------
+This works for Fedora 22.
+
+### Installing and Setting up
+- There is no need to install Python on Fedora: it comes already installed. In fact, multiple versions of Python come pre-installed (these multiple installations can be found in the /usr/bin/ folder)
+- However, the version of Python that Fedora uses by default is version 2 (usually 2.7) even though it has Python 3 installed. This is not good; Python 2 is no longer supported so everyone should be using Python 3. Check which version you are using from the terminal with:
+
+    ```{bash, eval=FALSE}
+    python --version
+    ```
+
+- If this tells you that you are using Python 2 you should change this by running the following from a terminal\*:
+
+    ```{bash, eval=FALSE}
+    sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 30
+    ```
+
+    - You will be prompted to enter your computer password. This is needed because you are using the `sudo` (super doer) command which allows you to change your computer's settings
+    - The `update-alternatives` command changes the symbolic links that determine what your commands do. In this case you are changing `python` to link to `python3` instead of the default (which is `python2`).
+    - The `30` at the end means that you are giving `python3` a priority of 30 over `python2`
+- Check that this has worked by running `python --version` again and seeing if this returns a Python 3 version number
+
+\*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your ".bashrc" file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using `sudo` or from within RMarkdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above.
+
+**Note:** you can still run Python 2 should you need it. This is done by explicitly using the `python2` command, or the `python2.7` command if you specifically need version 2.7. In general, you can run a specific version of Python by running `pythonx.x` from the terminal.
+
+### Using Python from the Command-Line
+- If you open a terminal and run `python` you will open Python in that terminal. You can enter individual Python commands directly in at the `>>>` prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running `exit()`.
+- If you have a script file (one with the ".py" extension) you can run it from the terminal by changing into the directory where the folder is located (using the "cd" command to **c**hange **d**irectory) and running `python <filename>` with the ".py" extension included. In fact, you don't actually need to change directory into the one where the script is located, you can just run `python <path_to_file>/<filename>` and it will work.
+
+### Installing Packages
+- The best option is to use the standard Python package manager, "pip" (aka pip3 for Python 3):
+```
+sudo dnf install python3-pip
+```
+- Update pip with:
+```
+sudo pip3 install --update pip
+```
+- Most of the common packages can be installed with:
+```
+sudo pip3 install numpy
+sudo pip3 install scipy
+sudo pip3 install matplotlib
+sudo pip3 install ipython
+sudo pip3 install jupyter
+sudo pip3 install pandas
+sudo pip3 install sympy
+sudo pip3 install nose
+sudo pip3 install xlwt
+sudo pip3 install xlrd
+sudo pip3 install pygame
+sudo pip3 install pyyaml
+sudo pip3 install pyserial
+sudo pip3 install scikit-image
+sudo pip3 install gpxpy
+sudo pip3 install argparse
+sudo pip3 install imageio
+sudo pip3 install sklearn
+```
+- If it says that pip3 is not a recognised command, reinstalling it might work:
+```
+sudo dnf reinstall python3-pip
+```
+
+<!-- Tips for Python Code
+---------------------
+- Dictionaries must be in form value['iterator']
+- List the inputs (iterators), then initilaise the results dictionaries
+ -->
+
+[⇦ Back](../../python.html)
+
+</font>

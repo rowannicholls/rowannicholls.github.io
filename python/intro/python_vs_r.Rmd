@@ -1,0 +1,367 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Python vs R'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+I'm a little biased (I've been programming in Python for about four years compared to only one in R) but I **much** prefer Python. Why?
+
+In a single, generalised, oversimplified sentence:
+
+> R is useful for doing *statistics*. Python is useful for doing *anything*.
+
+Here are my thoughts:
+
+Python
+======
+
+More Google-able
+----------------
+If I want to do *x* and I Google "python x" I find that I get more - and better - results than when I Google "r code x" or whatever. I guess this is a consequence of Python just being a more popular language than R\*.
+
+\*Note: some people would have listed the fact that Python is more popular than R as an advantage for Python in its own right. I don't agree with that; just because it's more popular doesn't make it better. However, the fact that it's popular means that there are more easily-available resources (be them formal resources like textbooks or informal ones like StackOverflow comments), which *does* make it better.
+
+Better Documentation
+--------------------
+This may seem similar to the above point but, in practice, it makes a huge difference in addition to Python being more Google-able so I made it a separate item. And that is, simply, that the documentation websites like docs.python.org (for the Standard Library), matplotlib.org (for Matplotlib) and pandas.pydata.org (for Pandas) are just that much more clear and insightful than rdocumentation.org (for R in general), ggplot2.tidyverse.org (for ggplot2), etc. Googling a specific function, eg "python plot()" vs "r plot()", will take you to a better resource faster.
+
+Specifically, the parameters and returns (Python) are a lot clearer to understand from the documentation than the arguments and values (R). The examples tend to be clearer as well. Compare the documentation for the simple function `mean()` in [Python's numpy](https://numpy.org/doc/stable/reference/generated/numpy.mean.html) vs [base R](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/mean).
+
+More Applications
+-----------------
+When I wanted to explore APIs for websites such as Google Sheets, Spotify and Facebook I knew I would be able to do this with Python before even looking. Sure enough, I found libraries to do this (more than one, in fact). When I wanted a command-line password manager I knew that these would have been created for Python. When I wanted to automate video analysis I knew that I would be able to use Python. When I learnt about Shiny apps in R I knew that there would be an equivalent way to do this in Python, all before even looking. If someone wants to *do* something they will use Python, so if you want to do something there's a good chance you'll be able to use Python.
+
+More helpful error messages
+---------------------------
+This is self-explanatory: the output in a Python console when an error occurs is more helpful than the equivalent in R. You know that you will get the exact line number where the error occurred, a 'traceback' to work out what caused what and an error type (IndexError, KeyError, SyntaxError, etc).
+
+Less forgiving
+--------------
+This may sound counter-intuitive: why is being *less* forgiving a good thing? The answer is that it's because if you're doing the wrong thing it's *better for the code to not run* and tell you that there's an error as opposed to it running but giving you the wrong answer. It's much harder to fix an error - and to pick it up in the first place - if your code is working!
+
+As the 'Zen of Python' says, "Errors should never pass silently".
+
+**Example: type coercion:** if I want to combine two strings in Python, they both need to be strings. The following Python code will produce an error because I'm trying to combine a string and an int:
+
+```{python, eval=FALSE}
+# Python
+print('Hello ' + 5)
+```
+
+Additionally, it will tell me the exact line on which the error occurred, the type of error (TypeError) and give me a short explanation ("must be str, not int"). In R, on the other hand, the following will work fine because the numerical is 'coerced' (converted) to a string:
+
+```{r}
+# R
+print(paste('Hello', 5))
+```
+
+In reality, if I'm trying to use a number as a string I'm probably doing the wrong thing and would prefer to be told!
+
+Strings are strings, ints are ints, variables are variables
+-----------------------------------------------------------
+This is related to the above example: using a number as a string should produce an error and so on. But, more than that, Python has the advantage of always requiring the user to be consistent:
+
+- Use apostrophes for strings
+- Don't use apostrophes for numbers or variables
+- Don't use apostrophes and include brackets as needed for functions/tuples/dictionaries/lists/arrays, etc
+- Use full stops for methods
+
+R, on the other hand, allows a combination of the above.
+
+**Example: indexing a dataframe:** when indexing a data frame in R using a *numerical*, there are *two* correct ways to do it and a *third* which is incorrect but runs anyway:
+
+```{r, eval=TRUE, results='hide'}
+# R
+print(head(iris[1]))  # Works
+print(head(iris[[1]]))  # Works, but in a different way to the above
+print(head(iris$`1`))  # Works, but returns NULL
+# print(head(iris$1))  # Produces an error
+```
+
+Note that the second option is an example of *chained indexing* which, in Python, is done by chaining indexes but, in R, is confusingly **not** done by chaining indexes.
+
+When indexing using a *string*, there are *four* options if there is **no** space in the column name:
+
+```{r, eval=TRUE, results='hide'}
+print(head(iris$Sepal.Length))  # Works
+print(head(iris$`Sepal.Length`))  # Works, in the same way as the above
+print(head(iris[['Sepal.Length']]))  # Works, in the same way as the above
+print(head(iris['Sepal.Length']))  # Works, but in a different way to the above
+```
+
+...but *three* options if there **is** a space in the column name:
+
+```{r, eval=TRUE, message=FALSE, results='hide'}
+library(dplyr)
+
+# Rename a column to include a space in its name
+iris2 = rename(iris, 'Sepal Length' = 'Sepal.Length')
+
+# print(head(iris2$Sepal Length))  # Produces an error
+print(head(iris2$`Sepal Length`))  # Works
+print(head(iris2[['Sepal Length']]))  # Works, in the same way as the above
+print(head(iris2['Sepal Length']))  # Works, but in a different way to the above
+```
+
+...and *two* options if you are using a *variable*:
+
+```{r, eval=TRUE, message=FALSE, results='hide'}
+x = 'Sepal.Length'
+print(head(iris[x]))  # Works
+print(head(iris[[x]]))  # Works, but in a different way to the above
+```
+
+**Example: spaces in column headings:** in Python this is no problem as headings are all strings and are consistently treated as such. In R, you *can* have spaces in column headings but if you do then it's not possible to reference the object in a function:
+
+```{r, eval=TRUE}
+library(ggplot2)
+
+# Without a space in the column heading
+p = ggplot(iris, aes(x=Petal.Width, y=Petal.Length))  # Works as expected
+p = p + geom_point()
+print(p)
+
+# Rename a column to include a space in its name
+iris2 = rename(iris, 'Petal Length' = 'Petal.Length')
+
+# With a space in the column heading
+p = ggplot(iris2, aes(x=Petal.Width, y='Petal Length'))  # Doesn't work as expected, but still runs
+p = p + geom_point()
+print(p)
+
+# With a space in the column heading
+p = ggplot(iris2, aes(x=Petal.Width, y=`Petal Length`))  # Works as expected
+p = p + geom_point()
+print(p)
+```
+
+The problem of spaces in column headings in R is also relevant to the next point:
+
+Consistent string handling
+--------------------------
+This is technically a subset of the above point, but I haven't finished moaning about it.
+
+The fact that Python treats strings in a consistent manner means:
+
++ No grave accents
++ No replacing spaces in names with full stops
+
+Which is less confusing. Here's an example of spaces being replaced with full stops ("Column 1" becomes "Column.1"):
+
+```{r}
+df = data.frame('Column 1'=c(1, 2), value=c('Value 1', 'Value 2'))
+print(df)
+```
+
+However, this doesn't happen when the data frame is created from a tibble! So it's not like a data frame CAN'T have spaces in its column headings, it's just a choice. A choice that's made for the user, without telling them:
+
+```{r}
+library(dplyr)
+
+t = tibble('Column 1'=c(1, 2), value=c('Value 1', 'Value 2'))
+t = as.data.frame(t)
+print(t)
+```
+
+So if a user is working with a data frame, it's not immediately clear if the spaces they are expecting in the column headings have been converted to full stops or not. Additionally, if the user gets it wrong the code will often still run! So their error is often difficult to pick up.
+
+In the following example, the user has not realised that the data frame was created from a tibble (which is reasonable as it is not immediately clear) and so indexes it as if it was created directly:
+
+```{r, message=FALSE, results='hide'}
+print(t$Column.1)
+print(t$`Column.1`)
+print(t[['Column.1']])
+# print(t['Column.1'])  # Produces an error
+```
+
+Only the fourth line does not work.
+
+String Manipulation
+-------------------
+Strings are easier to use in Python. I find this to be true in general but especially for the following five reasons:
+
+- The `.format()` method. While R and Python can both use the "%-notation" inherited from C (eg the line `print('My name is %s', name)` will work in both R and Python) Python can also call the *format method* on strings, which R has no equivalent for.
+- f-strings. Not only does Python have the format method but it has an improved version of it in the form of f-strings (which have pretty much rendered the format method obsolete).
+- r-strings. String literals in Python allow for more control.
+- u-strings. Incorporating unicode is just that much easier in Python.
+- Integration with Latex. I have found this useful in three ways:
+    - Using r-strings to print my results as Latex code to a .tex file
+    - Importing a .tex file which serves as a 'template' and filling in my results
+    - Using Latex code to improve graphs' axes and labels
+
+Dictionaries
+------------
+This object type in Python is extremely useful and although [it IS possible to re-create this functionality in R](../../R/intro/dictionaries.html) it is clumsy. The ability to use strings as keys also leverages the fact that strings have more usability in Python compared to R (see "string manipulation" and "consistent string handling" above).
+
+List comprehensions
+-------------------
+Similar to dictionaries, the ability to use list comprehensions is a major advantage of Python. They save on complicated nested loops and if statements.
+
+Enumerate
+---------
+When iterating through a data frame or list in Python the `enumerate()` function returns both the contents you are after AND the index. There is no simple equivalent in Python.
+
+Exception handling
+------------------
+Again, while this is possible in R it is much easier in Python. This is probably due to the fact that one of the major use cases for Python is production code. In these instances you need to be able to prepare for errors that might occur, have your code respond in a useful way and also see exactly what, where and when something went wrong. As a result, exception handling is commonplace in Python scripts.
+
+Multiple function returns
+-------------------------
+In Python I can do this:
+
+```{python}
+def calculate_age(birth_year, current_year):
+    age = birth_year - current_year
+    if age >= 65:
+        over_65 = True
+    else:
+        over_65 = False
+    return age, over_65
+
+age, over_65 = calculate_age(2000, 2020)
+```
+
+In other words, a function can calculate two (or more) things and return them as two (or more) objects. In R, you can only return one thing, which means you need to package everything up as a list, return it, then unpackage it all again in order to use it:
+
+```{r}
+calculate_age = function(birth_year, current_year) {
+    age = birth_year - current_year
+    if (age >= 65) {
+        over_65 = TRUE
+    } else {
+        over_65 = FALSE
+    }
+    # Package the output up
+    output = list(age, over_65)
+    return(output)
+}
+
+output = calculate_age(2000, 2020)
+
+# Unpackage the output
+age = output[1]
+over_65 = output[2]
+```
+
+Technically, you do have a few more options in R but the basic principle remains the same.
+
+Pre-installed on macOS and Linux
+--------------------------------
+Your Python code can  be run by anyone who has a macOS or Linux machine, although you might need to send some instructions on how to install packages and run programmes from the terminal using the default Python installation, depending on their level of computer literacy. Although it's not a flawless process, it has one less barrier to it than the same in R.
+
+Run from the command line with arguments
+----------------------------------------
+Again, while this is also possible with R it's uncommon and less user-friendly. Most R users, even experienced ones, are unfamiliar with running the `Rscript` command and with passing in arguments. Being able to run from the command line is useful as it allows you to escape the 'box' that RStudio creates whereby R code is only run in RStudio (and is useless outside of it).
+
+Easier to import scripts as functions and create external functions
+-------------------------------------------------------------------
+Again, although this is possible in R the fact that Python is often used in production code means that it's more often seen (and thus has become more streamlined over the years) in Python. Things like only importing the functions you need (`from x import y`), calling external scripts and creating packages.
+
+More well-established IDEs
+--------------------------
+If you ask a Python programmer what they programme in they might say Jupyter, Sublime Text, Atom, PyCharm, VSCode, Vim, Emacs, IDLE, Notepad++, etc. R programmers will say RStudio. While this has its advantages - only having one main IDE makes starting-up easier for beginners and helps when asking people for help or finding resources on settings because everyone has experience with the same thing - it limits choice. Ask a Python programmer if they have an opinion about which IDE is best: chances are they will (and often it'll be a strong one!) because they would have tried a couple and come up with their own list of what works for them and why.
+
+Plotting? Use Matplotlib
+------------------------
+Matplotlib can handle everything needed to plot a graph in Python, no matter how complicated. R, on the other hand, can create plots both in base R and in ggplot2, which are not at all similar. And even though there are two frameworks for plotting in R as opposed to only one it doesn't add much functionality: it's possible to make plots that look like they were made in ggplot2 in base R and vice versa.
+
+More intuitive syntax
+---------------------
+There are a number of things that make Python code simpler and more readable:
+
+- Forced use of whitespace
+- No %>% pipe symbol
+- No confusion over whether to index with $, [] or [[]]
+- No functions such as those in ggplot2 which can use tilde notation (eg `ggplot(y~x)`) OR 'standard' positional parameter notation (`ggplot(x, y)`), which require the independent and dependent variables to be in opposite orders
+
+No automatic console output
+---------------------------
+Stop trying to do things for me! If I want console output I will use `print()` and if I don't I won't. More importantly, automatically displaying results in the console is counter-productive and encourages bad habits because the output of a function is *not actually the final product that a programmer is looking for*.
+
+**Example: the Wilcoxon Rank Sum Test:** the following statistical test automatically prints text to the console:
+
+```{r}
+wilcox.test(c(1, 2, 3, 4))
+``` 
+
+But this is not actually what we want. Are we supposed to copy-paste this text from the console to somewhere else? Rather, we probably want to extract the p-value and use it:
+
+```{r}
+p = wilcox.test(c(1, 2, 3, 4))$p.value
+print(p)
+``` 
+
+PEP8 and linters
+----------------
+As the 'Zen of Python' says: "Beautiful is better than ugly" and "Readability counts". If someone can understand what code is doing just by quickly glancing through it, then it's better code. This is a core pillar of Python and is made easier by the PEP8 style guide and the various linters that check the style of your code for bad formatting.
+
+R
+===
+I'm biased, but I'm not completely unreasonable. I'll concede that R has some advantages over Python:
+
+No "function or method?" confusion
+----------------------------------
+If I want to calculate the minimum of some numbers in Python do I use a function or a method? Turns out that the answer is usually a function, unless it's a pandas data frame or series in which case it's a method. There's no clear rule for what should be used when.
+
+The Mann-Whitney U test is slightly more accurate
+-------------------------------------------------
+In Python we have:
+
+```{python}
+from scipy import stats
+
+x = [65.2, 67.1, 69.4, 78.2, 74, 80.3]
+y = [59.4, 72.1, 68, 66.2, 58.5]
+u, p = stats.mannwhitneyu(x, y, alternative='two-sided')
+print(p)  # 0.12069080052744556
+```
+
+In R we have:
+
+```{r}
+x = c(65.2, 67.1, 69.4, 78.2, 74, 80.3)
+y = c(59.4, 72.1, 68, 66.2, 58.5)
+p = wilcox.test(x, y)$p.value
+print(p)  # 0.1255411
+```
+
+It turns out that R's `wilcox.test()` is the more accurate one.
+
+Concordance coefficient is already a function
+---------------------------------------------
+In R, we can calculate the concordance correlation coefficient using the `CCC()` function from the DescTools library. In Python, this function has not yet been implemented (although it is available as source code [here](https://github.com/stylianos-kampakis/supervisedPCA-Python/blob/master/Untitled.py)).
+
+Backwards compatibility
+-----------------------
+Python 3 code won't work in Python 2, and often code in later versions of Python 3 won't work in earlier versions of Python 3. Upgrading can thus often lead to things breaking. R is better at avoiding this.
+
+Example datasets in the base library
+------------------------------------
+Datasets such as `iris`, `mtcars` and `chickwts` come pre-installed in R and are used frequently in examples as a result. This is very useful for demonstrating functionality. Equivalent datasets exist in some Python packages, but the fact that they are not standard means that they are not nearly as universal.
+
+RStudio as a default IDE makes it easier to teach
+-------------------------------------------------
+One of the biggest difficulties in getting a new starter up-and-running in Python is the installation of the right version and of the right packages. If a class is being taught then this problem multiplies. R can avoid this because everyone simply downloads RStudio and away you go.
+
+Neutral
+=======
+Some points that apply to both languages are:
+
+Power over which version and install you use
+--------------------------------------------
+This is considered both an advantage and an disadvantage of Python. While it's more complicated to navigate python2 vs python3 vs python3.6 vs python3.8, etc it does mean that you can be explicit in which version you are using and where your packages are installed. As a result, things like virtual environments and requirements.txt files are ubiquitous in Python as people seek to make dependency handling as simple as possible. While problems related to what version of R someone is using (or what versions of packages they are using) occur less frequently in R they are clumsier to solve when they do.
+
+Package management is a mess in both
+------------------------------------
+When R is upgraded to a new major version number the package upgrade functions often do not work as expected. By far the simplest thing to do is to un-install and re-install all your packages each time. Python, on the other hand, tries to solve package management with bundled installations such as Anaconda which, while well-intentioned, end up just creating a new place for Python and its packages to be installed, thereby doubling the problem!
+
+[⇦ Back](../../python.html)
+
+</font>
