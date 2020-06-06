@@ -622,7 +622,8 @@ NA
 df$Weeks = NULL
 # Delete multiple columns by listing their names using the subset() function
 df = subset(spotify, select=-c(Rank, Song, Artist))
-# Delete multiple columns by listing their names using the select() function
+# Delete multiple columns by listing their names using the select() function from the dplyr package
+library(dplyr)
 df = select(spotify, -c('Rank', 'Song', 'Artist'))
 # Delete multiple columns by listing their names using indexing
 df = spotify[!names(spotify) %in% c('Rank', 'Song', 'Artist')]
@@ -637,7 +638,7 @@ df = spotify[-c(1, 3:6, 12)]</code></pre>
 ## [7] &quot;Release.Date&quot;     &quot;Weeks.at.no1&quot;</code></pre>
 <div id="rename-using-the-current-name" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> Rename Using the Current Name</h3>
-<p>Now use the <code>rename()</code> function. The format to remember with this is <code>'New' = 'Old'</code>:</p>
+<p>Now use the <code>rename()</code> function from the <code>dplyr</code> package. The format to remember with this is <code>'New' = 'Old'</code>:</p>
 <pre class="r"><code># Rename the 'Artist' column to 'Artist Name'
 df = rename(spotify, 'Artist Name' = 'Artist')
 # Rename the 'Song' column to 'Song Name'
@@ -713,7 +714,7 @@ rownames(df) = 1:nrow(df)</code></pre>
 <p>This is essentially the same process as deleting columns, but this time you are choosing which columns to <em>keep</em> instead of which ones to get rid of. Again, this can be done using a function:</p>
 <pre class="r"><code># Select columns by name using the subset() function
 df = subset(spotify, select=c('Rank', 'Song', 'Artist'))
-# Select columns by name using the select() function
+# Select columns by name using the select() function from the dplyr package
 df = select(spotify, c('Rank', 'Song', 'Artist'))</code></pre>
 <p>…or by using square bracket notation:</p>
 <pre class="r"><code># Select columns by name using indexing

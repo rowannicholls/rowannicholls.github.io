@@ -12,8 +12,6 @@ output:
 [⇦ Back](../../R.html)
 
 ```{r, echo=FALSE}
-# install.packages('dplyr', repos='http://cran.us.r-project.org')
-suppressPackageStartupMessages(require(dplyr))
 # install.packages('readr', repos='http://cran.us.r-project.org')
 suppressPackageStartupMessages(require(readr))
 # install.packages('psych', repos='http://cran.us.r-project.org')
@@ -102,12 +100,13 @@ df = cbind(
 Delete Columns
 --------------
 We can remove columns in a few different ways:
-```{r}
+```{r, message=FALSE}
 # Delete a specific column using its name
 df$Weeks = NULL
 # Delete multiple columns by listing their names using the subset() function
 df = subset(spotify, select=-c(Rank, Song, Artist))
-# Delete multiple columns by listing their names using the select() function
+# Delete multiple columns by listing their names using the select() function from the dplyr package
+library(dplyr)
 df = select(spotify, -c('Rank', 'Song', 'Artist'))
 # Delete multiple columns by listing their names using indexing
 df = spotify[!names(spotify) %in% c('Rank', 'Song', 'Artist')]
@@ -123,7 +122,7 @@ print(colnames(spotify))
 ```
 
 ### Rename Using the Current Name
-Now use the `rename()` function. The format to remember with this is `'New' = 'Old'`:
+Now use the `rename()` function from the `dplyr` package. The format to remember with this is `'New' = 'Old'`:
 ```{r}
 # Rename the 'Artist' column to 'Artist Name'
 df = rename(spotify, 'Artist Name' = 'Artist')
@@ -212,7 +211,7 @@ This is essentially the same process as deleting columns, but this time you are 
 ```{r}
 # Select columns by name using the subset() function
 df = subset(spotify, select=c('Rank', 'Song', 'Artist'))
-# Select columns by name using the select() function
+# Select columns by name using the select() function from the dplyr package
 df = select(spotify, c('Rank', 'Song', 'Artist'))
 ```
 

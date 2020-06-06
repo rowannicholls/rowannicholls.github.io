@@ -204,7 +204,6 @@ Nothing. They are two names for the same thing. For some reason you <em>install<
 <p>Packages can be installed by running the <code>install.packages()</code> function. Specify the name of the package you want to install as a string and the repository you want to install it from by using the <code>repos</code> <strong><em>keyword argument</em></strong>:</p>
 <pre class="r"><code>install.packages('BlandAltmanLeh', repos='http://cran.us.r-project.org')
 install.packages('chron', repos='http://cran.us.r-project.org')
-install.packages('DescTools', repos='http://cran.us.r-project.org')
 install.packages('DiagrammeR', repos='http://cran.us.r-project.org')
 install.packages('dplyr', repos='http://cran.us.r-project.org')
 install.packages('ggplot2', repos='http://cran.us.r-project.org')
@@ -215,7 +214,9 @@ install.packages('R.utils', repos='http://cran.us.r-project.org')
 install.packages('readr', repos='http://cran.us.r-project.org')
 install.packages('reticulate', repos='http://cran.us.r-project.org')
 install.packages('rmarkdown', repos='http://cran.us.r-project.org')
-install.packages('stringr', repos='http://cran.us.r-project.org')</code></pre>
+install.packages('stringi', repos='http://cran.us.r-project.org')
+install.packages('stringr', repos='http://cran.us.r-project.org')
+install.packages('utf8', repos='http://cran.us.r-project.org')</code></pre>
 <p>The “cran” part of the repos URL refers to “CRAN”, the Comprehensive R Archive Network where most R packages are stored online.</p>
 <blockquote>
 <p>You only need to install a package once on your computer. After it’s finished installing you can delete the <code>install.packages()</code> functions from your R script.</p>
@@ -225,26 +226,26 @@ install.packages('stringr', repos='http://cran.us.r-project.org')</code></pre>
 <h2><span class="header-section-number">3.1</span> Updating R</h2>
 <p>Sometimes you can only download a package if it’s compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you’re on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:</p>
 <pre class="bash"><code>R --version</code></pre>
+<p>If you are using Ubuntu and aren’t using RStudio, update R by first opening <code>/etc/apt/sources.list</code> and adding whichever of the following lines corresponds to your Ubuntu version:</p>
+<pre class="bash"><code># 18.04
+deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
+# 16.04
+deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran40/
+# 14.04
+deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran40/</code></pre>
+<p>The above are relevant for R version 4.0. Change the <code>...-cran40/</code> part to whatever version numbers you are interested in. Then run the following:</p>
+<pre class="bash"><code>sudo apt-get update
+sudo apt-get install r-base r-base-dev
+# To update any R libraries installed via APT:
+sudo apt-get upgrade</code></pre>
+<p>If you are moving to a new major version (eg from 3.5 to 4.0) then not all packages will work, even if you attempt to update them. The easiest thing to do is to delete all of them (ie delete all folders inside the /usr/local/lib/R/site-library folder) and re-install them from scratch.</p>
 </div>
 </div>
 <div id="import-a-library" class="section level1">
 <h1><span class="header-section-number">4</span> Import a Library</h1>
 <p>When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.</p>
 <p><strong>Note:</strong> it’s best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:</p>
-<pre class="r"><code>library(BlandAltmanLeh)
-library(chron)
-library(DescTools)
-library(DiagrammeR)
-library(dplyr)
-library(ggplot2)
-library(logging)
-library(matrixStats)
-library(Rmisc)
-library(R.utils)
-library(readr)
-library(reticulate)
-library(rmarkdown)
-library(stringr)</code></pre>
+<pre class="r"><code>library(dplyr)</code></pre>
 <p>You can now use the functionality that is included with the libraries you imported:</p>
 <pre class="r"><code># Import the 'dplyr' library
 library(dplyr)
@@ -276,22 +277,10 @@ print(length)</code></pre>
 <div id="alternative-methods-of-importing-libraries" class="section level1">
 <h1><span class="header-section-number">6</span> Alternative Methods of Importing Libraries</h1>
 <p>If your script is going to be run on someone else’s computer and you don’t know if they will have a particular package installed, import it into your script with the <code>require()</code> function. If the package is installed, it will import it. If it isn’t, it will first download and install it, then import it.</p>
-<pre class="r"><code>require(BlandAltmanLeh)
-require(chron)
-require(DescTools)
-require(DiagrammeR)
-require(dplyr)
-require(ggplot2)
-require(logging)
-require(matrixStats)
-require(Rmisc)
-require(R.utils)
-require(readr)
-require(reticulate)
-require(rmarkdown)
-require(stringr)</code></pre>
+<pre class="r"><code>require(ggplot2)
+require(logging)</code></pre>
 <p>Sometimes, the messages that get printed to the console when a package is installed or imported get annoying. Suppress them with <code>suppressPackageStartupMessages()</code>:</p>
-<pre class="r"><code>suppressPackageStartupMessages(require(dplyr))
+<pre class="r"><code>suppressPackageStartupMessages(require(ggplot2))
 suppressPackageStartupMessages(library(logging))</code></pre>
 </div>
 <div id="summary" class="section level1">

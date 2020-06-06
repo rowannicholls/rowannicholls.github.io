@@ -345,7 +345,7 @@ plt.close()
 
 Using Colours
 =============
-Colours are specified using the `color` or `c` keyword argument. Colours needs to be provided in a list and, if the number of bars is larger than the number of provided colours, it will wrap around (for example, if there are five bars and only three colours are provided, the fourth and fifth bars will have the same colours as the first and second, respectively).
+Colours are specified using the `color` keyword argument. Colours needs to be provided in a list and, if the number of bars is larger than the number of provided colours, it will wrap around (for example, if there are five bars and only three colours are provided, the fourth and fifth bars will have the same colours as the first and second, respectively).
 
 Defined Colours
 ---------------
@@ -427,8 +427,6 @@ plt.close()
 ```
 
 ```{python, echo=FALSE, results='hide', dpi=300}
-# perspectum_pink = #fb4188
-
 # Custom Colours
 pink = '#FB4188'
 green = '#87C94A'
@@ -447,6 +445,10 @@ ax.set_ylabel('Count')
 plt.show()
 plt.close()
 ```
+
+Save Plot
+=========
+Finally, use `plt.savefig('name_of_plot.png')` to save the plot to your computer.
 
 [⇦ Back](../../../python.html)
 
