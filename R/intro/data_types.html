@@ -195,16 +195,16 @@ summary {
 <li><strong>Nulls</strong>, aka missing data</li>
 </ul></li>
 <li>Data can be assigned to <strong>variables</strong> for easier use</li>
-<li>A list of datapoints is called a <strong>vector</strong></li>
+<li>A list of data points is called a <strong>vector</strong></li>
 <li>Actions can be performed using <strong>functions</strong></li>
 <li>Data can be <strong>converted</strong> to different types</li>
 </ul>
 </div>
 <div id="comments" class="section level1">
 <h1><span class="header-section-number">2</span> Comments</h1>
-<p>If you’re brand new to R and coding, the first thing to know about is <strong><em>comments</em></strong>.</p>
+<p>If you're brand new to R and coding, the first thing to know about is <strong><em>comments</em></strong>.</p>
 <p>These are lines in your program that do absolutely nothing - they are ignored when your program is run. But they are <strong>very</strong> useful for making notes for yourself and, especially, for others who will have to read your code.</p>
-<p>You write a comment by starting your line with a hash “#”:</p>
+<p>You write a comment by starting your line with a hash &quot;#&quot;:</p>
 <pre class="r"><code># This is a comment.
 # It will be ignored by your program.
 # But you can use it to write notes that explain what you are doing.</code></pre>
@@ -215,11 +215,11 @@ summary {
 <li>Mac: Cmd+Shift+C</li>
 </ul>
 </blockquote>
-<p>Don’t underestimate the power of comments! Just because your code makes sense to you now when you’re writing it doesn’t mean you will remember what you were thinking 6 months down the line when you re-open it. Likewise, if someone else needs to use your code they will need to work out what it does; and almost impossible task if you don’t explain yourself!</p>
+<p>Don't underestimate the power of comments! Just because your code makes sense to you now while you're writing it doesn't mean it always will. It's surprisingly common for someone to re-open a piece of code they haven't worked on for a considerable amount of time only to have completely forgotten what their thought process was, so use your comments as notes to yourself! Similarly, if someone else needs to use your code for something they will need to work out what it does; an almost impossible task if you don't explain yourself...</p>
 </div>
 <div id="numerics" class="section level1">
 <h1><span class="header-section-number">3</span> Numerics</h1>
-<p>As the name suggests, these are numbers. If you type a plain number R will output it to the <strong><em>console</em></strong>, which is shown here by the box starting with “[1]”:</p>
+<p>As the name suggests, these are numbers. If you type a plain number R will output it to the <strong><em>console</em></strong>, which is shown here by the box starting with &quot;[1]&quot;:</p>
 <pre class="r"><code># This is just a number
 27.03</code></pre>
 <pre><code>## [1] 27.03</code></pre>
@@ -242,7 +242,7 @@ z = x + y
 # If you don't assign the answer to a variable, it will output to the console:
 x + y</code></pre>
 <pre><code>## [1] 12</code></pre>
-<p>Here’s something that often confuses beginner coders: the statement <code>x = x + 1</code>. In mathematics, it doesn’t make any sense! There’s no value of <code>x</code> that will satisfy the equation! However, in programming, this statement is not an equation but an <strong><em>assignment</em></strong>: you are giving a variable <code>x</code> a value that is equal to that of an existing variable, plus one:</p>
+<p>Here's something that often confuses beginner coders: the statement <code>x = x + 1</code>. In mathematics, it doesn't make any sense! There's no value of <code>x</code> that will satisfy the equation! However, in programming, this statement is not an equation but an <strong><em>assignment</em></strong>: you are giving a variable <code>x</code> a value that is equal to that of an existing variable, plus one:</p>
 <pre class="r"><code># Give the variable 'x' a value of six
 x = 6
 # Give the variable 'x' a value that is equal to the value of 'x', plus one
@@ -269,20 +269,20 @@ x</code></pre>
 <li>Words should be separated with underscores</li>
 <li>If the number has a unit, show it in the variable name</li>
 </ul>
-<p>These are GOOD examples of variable names:</p>
+<p>The following are GOOD examples of variable names:</p>
 <pre class="r"><code># Lowercase
 people = 34
 # Some things, especially acronyms, are only ever written in uppercase in
 # English. So it wouldn't make sense to code them in lowercase.
 BMI = 22
-# Underscores to separate words
+# Use underscores to separate words
 final_answer = 100
 # A person's height in centimetres
 height_cm = 170</code></pre>
 </div>
 <div id="characters-aka-strings" class="section level1">
 <h1><span class="header-section-number">5</span> Characters (aka Strings)</h1>
-<p>Characters are strings of letters, and as such they will often be referred to as ‘strings’. You write a string by using single or double quotation marks:</p>
+<p>Characters are strings of letters, and as such they will often be referred to as 'strings'. You write a string by using single or double quotation marks:</p>
 <pre class="r"><code># This is a string, representing text
 my_string = &quot;Hello, World!&quot;
 my_string = 'Hello, World!'</code></pre>
@@ -297,14 +297,16 @@ x = '5'
 <p>These are TRUE and FALSE:</p>
 <pre class="r"><code>passed_test = TRUE
 largest_prime_number = FALSE</code></pre>
+<p>Note that the values &quot;TRUE&quot; and &quot;FALSE&quot; above are not strings because we have not used quotation marks. They are treated as their own object type by R.</p>
+<p>Booleans become useful when we start to use &quot;if statements&quot; later on. Essentially, they are used to test things: we can ask R <strong>if</strong> something is true or not.</p>
 </div>
 <div id="nulls" class="section level1">
 <h1><span class="header-section-number">7</span> Nulls</h1>
-<p>Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing these become useful when you’re dealing with missing data.</p>
+<p>Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing it becomes useful when you're dealing with missing data.</p>
 <p>In R, you have three null characters:</p>
 <ul>
-<li><code>NaN</code> - “not a number”. This is treated as a number/numeric.</li>
-<li><code>NA</code> - “not available”. This is treated as a logical (so you have TRUE, FALSE and NA as the three types of logicals).</li>
+<li><code>NaN</code> - &quot;not a number&quot;. This is treated as a number/numeric.</li>
+<li><code>NA</code> - &quot;not available&quot;. This is treated as a logical (so you have TRUE, FALSE and NA as the three types of logicals).</li>
 <li><code>NULL</code>. This is treated as a data type of its own.</li>
 </ul>
 <pre class="r"><code>not_a_number = NaN
@@ -313,12 +315,12 @@ null_character = NULL</code></pre>
 </div>
 <div id="built-in-functions" class="section level1">
 <h1><span class="header-section-number">8</span> Built-In Functions</h1>
-<p>Functions are bits of code that can be used again and again just by <em>calling</em> the function’s name. You can tell that a function is being used because it will have round brackets - ().</p>
+<p>Functions are bits of code that can be used again and again just by <em>calling</em> the function's name. You can tell that a function is being used because it will have round brackets - ().</p>
 <p>The first function you should know about is the <code>print()</code> function. This function takes a string and outputs it to the console:</p>
 <pre class="r"><code>print('Hello, World!')</code></pre>
 <pre><code>## [1] &quot;Hello, World!&quot;</code></pre>
 <p>See what happened there? We <em>called</em> the function <code>print()</code> by using its name and round brackets. Then we told it what to print - the string <code>'Hello, World!'</code>. This string is the <em>argument</em> of the function. You <em>pass</em> an <em>argument</em> to a function.</p>
-<p>Let’s look at a different function, <code>typeof()</code>. This can take any piece of data as an argument and will <em>return</em> (ie output) the type of data that the argument is. We can then print that answer to the console with the <code>print()</code> function. Take a look:</p>
+<p>Let's look at a different function, <code>typeof()</code>. This can take any piece of data as an argument and will <em>return</em> (ie output) the type of data that the argument is. We can then print that answer to the console with the <code>print()</code> function. Take a look:</p>
 <pre class="r"><code># The type of a number depends on how it is stored in the computer's memory. A
 # &quot;double&quot; means it is stored as a double-precision value.
 print(typeof(7))</code></pre>
