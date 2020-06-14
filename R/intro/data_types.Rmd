@@ -46,7 +46,7 @@ Don't underestimate the power of comments! Just because your code makes sense to
 
 Numerics
 ========
-As the name suggests, these are numbers. If you type a plain number R will output it to the __*console*__, which is shown here by the box starting with "[1]":
+As the name suggests, these are numbers. If you type a plain number R will output it to the __*console*__, which is shown here by the box starting with "## [1] ":
 
 ```{r}
 # This is just a number
@@ -57,49 +57,77 @@ As the name suggests, these are numbers. If you type a plain number R will outpu
 
 The `[1]` indicates that it is the first thing in the output.
 
-# Variables
+Variables
+=========
 A number is useless on its own. In order to use it you need to __*assign*__ it to a __*variable*__:
 
 ```{r}
 # Assigning numbers to variables
-x = 5
-y = 7
+x <- 5
+y <- 7
 ```
 
-Notice that when you assign a number to a variable it no longer gets outputted to the console. Variable assignment __*suppresses*__ output!
+In the above code snippet, the number "5" is being assigned to the variable "x" and the number "7" is being assigned to the variable "y". The arrow notation "<-" tells you that whatever is on the right is being assigned to the variable on the left. Note that it can only work one way: you can only have a left-pointing arrow, never a right-pointing one.
+
+Notice that when you assign a number to a variable it no longer gets outputted to the console; there was no output with "## [1] " below the above snippet. Variable assignment __*suppresses*__ output!
 
 You can use these numbers by __*calling*__ the variables:
 
 ```{r}
 # You can use variables to do arithmetic by calling them
-# If you assign the answer to a third variable (z), the output will be suppressed:
-z = x + y
+# If you assign the answer to a third variable (z), the output will be
+# suppressed:
+z <- x + y
 # If you don't assign the answer to a variable, it will output to the console:
 x + y
 ```
 
-Here's something that often confuses beginner coders: the statement `x = x + 1`. In mathematics, it doesn't make any sense! There's no value of `x` that will satisfy the equation! However, in programming, this statement is not an equation but an __*assignment*__: you are giving a variable `x` a value that is equal to that of an existing variable, plus one:
+The Equals Sign
+---------------
+Sometimes, instead of using the arrow notation, R programmers will use an equals sign when assigning values to variables (`=`). This is 100% equivalent to using the leftwards arrow, so it makes no difference. However, some people who are used to coding in other languages such as Python are more used to the equals sign, so you will often see it.
 
-```{r}
-# Give the variable 'x' a value of six
+```{python, eval = FALSE}
+# The equals sign is the same as the leftwards arrow in R
 x = 6
-# Give the variable 'x' a value that is equal to the value of 'x', plus one
+# You may find this to be a better notation
 x = x + 1
-# 'x' should now equal seven. Check that it does by calling it and outputting its value to the console:
+# Of course, the answer will be the same
 x
 ```
 
-Often, instead of using the equals sign, R programmers will use a left-arrow when assigning values to variables (`<-`). This helps them avoid the confusion described above.
-
-```{r}
-# The left-arrow is the same as a single equals sign in R
+```{r, echo = FALSE}
+# The equals sign is the same as the leftwards arrow in R
 x <- 6
-# You may find this a less confusing notation
+# You may find this to be a better notation
 x <- x + 1
 # Of course, the answer will be the same
 x
 ```
 
+Here's something that often confuses beginner coders: the statement `x = x + 1`. In mathematics, this statement doesn't make any sense! There's no value of `x` that will satisfy the equation! However, in programming, this statement is not an equation but an __*assignment*__: you are giving a variable `x` a value that is equal to that of an existing variable, plus one. Take a look at the above snippet again:
+
+```{python, eval = FALSE}
+# Give the variable 'x' a value of six
+x = 6
+# Give the variable 'x' a value that is equal to the value of 'x', plus one
+x = x + 1
+# 'x' should now equal seven. Check that it does by calling it and outputting
+# its value to the console:
+x
+```
+
+```{r, echo = FALSE}
+# Give the variable 'x' a value of six
+x <- 6
+# Give the variable 'x' a value that is equal to the value of 'x', plus one
+x <- x + 1
+# 'x' should now equal seven. Check that it does by calling it and outputting
+# its value to the console:
+x
+```
+
+Variable Names
+--------------
 **Note:** there are rules that have to be followed when making variable names:
 
 * They may not start with a number
@@ -115,47 +143,46 @@ The following are GOOD examples of variable names:
 
 ```{r}
 # Lowercase
-people = 34
-# Some things, especially acronyms, are only ever written in uppercase in
-# English. So it wouldn't make sense to code them in lowercase.
-BMI = 22
+people <- 34
 # Use underscores to separate words
-final_answer = 100
+final_answer <- 100
 # A person's height in centimetres
-height_cm = 170
+height_cm <- 170
 ```
 
-# Characters (aka Strings)
+Characters (aka Strings)
+========================
 Characters are strings of letters, and as such they will often be referred to as 'strings'. You write a string by using single or double quotation marks:
 
 ```{r}
 # This is a string, representing text
-my_string = "Hello, World!"
-my_string = 'Hello, World!'
+my_string <- "Hello, World!"
 ```
 
 **Note:** a number can be written as a character, but if you do this it will be interpreted by your program as text, not as a number! This is something that confuses many beginner coders:
 
-```{r}
+```{r, eval = FALSE}
 # This is a string, so you will not be able to use it to do maths!
-x = '5'
+x <- "5"
 # If you try to run the following code, you will get an error:
-# x + 2
+x + 2
 ```
 
-# Logicals (aka Booleans)
+Logicals (aka Booleans)
+=======================
 These are TRUE and FALSE:
 
 ```{r}
-passed_test = TRUE
-largest_prime_number = FALSE
+passed_test <- TRUE
+largest_prime_number <- FALSE
 ```
 
 Note that the values "TRUE" and "FALSE" above are not strings because we have not used quotation marks. They are treated as their own object type by R.
 
 Booleans become useful when we start to use "if statements" later on. Essentially, they are used to test things: we can ask R **if** something is true or not.
 
-# Nulls
+Nulls
+=====
 Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing it becomes useful when you're dealing with missing data.
 
 In R, you have three null characters:
@@ -165,30 +192,31 @@ In R, you have three null characters:
 - `NULL`. This is treated as a data type of its own.
 
 ```{r}
-not_a_number = NaN
-not_available = NA
-null_character = NULL
+not_a_number <- NaN
+not_available <- NA
+null_character <- NULL
 ```
 
-# Built-In Functions
-Functions are bits of code that can be used again and again just by *calling* the function's name. You can tell that a function is being used because it will have round brackets - ().
+Built-In Functions
+==================
+Functions are bits of code that can be used again and again just by *calling* the function's name. You can tell that a function is being used because it will have (round brackets).
 
 The first function you should know about is the `print()` function. This function takes a string and outputs it to the console:
 
 ```{r}
-print('Hello, World!')
+print("Hello, World!")
 ```
 
 See what happened there? We *called* the function `print()` by using its name and round brackets. Then we told it what to print - the string `'Hello, World!'`. This string is the *argument* of the function. You *pass* an *argument* to a function.
 
 Let's look at a different function, `typeof()`. This can take any piece of data as an argument and will *return* (ie output) the type of data that the argument is. We can then print that answer to the console with the `print()` function. Take a look:
 
-```{r}
+```{r, results = "hold"}
 # The type of a number depends on how it is stored in the computer's memory. A
 # "double" means it is stored as a double-precision value.
 print(typeof(7))
 # As mentioned earlier, a string is made up of characters
-print(typeof('Hello, World!'))
+print(typeof("Hello, World!"))
 # A logical
 print(typeof(TRUE))
 # A numeric null, stored as a double-precision value
@@ -199,23 +227,24 @@ print(typeof(NA))
 print(typeof(NULL))
 ```
 
-# Vectors
+Vectors
+=======
 A very common built-in function in R is the *concatenate* function, shortened to `c()` because it is used so often. This concatenates (joins) all the arguments that are passed to it into one element. This element, made up of many numbers and strings in order, is called a *vector*.
 
 ```{r}
-# A vector of numerics 
-x = c(4, 5, 6, 7, 8)
+# A vector of numerics
+x <- c(4, 5, 6, 7, 8)
 # A vector of strings
-y = c('One', 'Two', 'Three')
+y <- c("One", "Two", "Three")
 # A vector of logicals
-z = c(TRUE, FALSE, TRUE, TRUE, FALSE)
+z <- c(TRUE, FALSE, TRUE, TRUE, FALSE)
 ```
 
 The `typeof()` function returns the data type of the components of the vector:
 
 ```{r}
-# A vector of numerics 
-x = c(4, 5, 6, 7, 8)
+# A vector of numerics
+x <- c(4, 5, 6, 7, 8)
 print(typeof(x))
 ```
 
@@ -223,30 +252,32 @@ print(typeof(x))
 
 ```{r}
 # A mixed vector
-x = c(1, 'Two', TRUE)
+x <- c(1, "Two", TRUE)
 print(x)
 print(typeof(x))
 ```
 
-# Type Conversion
+Type Conversion
+===============
 The last functions we will learn about on this page are the `as.character()` and `as.numeric()` functions. These convert numerics to characters and characters to numerics, respectively:
 
 ```{r}
 # Start with a number
-x = 15
+x <- 15
 # Convert it to a character
-x = as.character(x)
+x <- as.character(x)
 # Check that it is indeed now a character
 print(typeof(x))
 # Now take a character that is the text version of a number
-y = '15'
+y <- "15"
 # Convert it to a numeric
-y = as.numeric(y)
+y <- as.numeric(y)
 # Check that it is indeed now a double-precision numeric
 print(typeof(y))
 ```
 
-# Summary
+Summary
+=======
 - You can add notes about your code in **comments**
 - There are a number of different types of data in R:
     + **Numerics**, aka numbers

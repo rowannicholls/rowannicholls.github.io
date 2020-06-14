@@ -219,7 +219,7 @@ summary {
 </div>
 <div id="numerics" class="section level1">
 <h1><span class="header-section-number">3</span> Numerics</h1>
-<p>As the name suggests, these are numbers. If you type a plain number R will output it to the <strong><em>console</em></strong>, which is shown here by the box starting with &quot;[1]&quot;:</p>
+<p>As the name suggests, these are numbers. If you type a plain number R will output it to the <strong><em>console</em></strong>, which is shown here by the box starting with &quot;## [1] &quot;:</p>
 <pre class="r"><code># This is just a number
 27.03</code></pre>
 <pre><code>## [1] 27.03</code></pre>
@@ -232,32 +232,40 @@ summary {
 <h1><span class="header-section-number">4</span> Variables</h1>
 <p>A number is useless on its own. In order to use it you need to <strong><em>assign</em></strong> it to a <strong><em>variable</em></strong>:</p>
 <pre class="r"><code># Assigning numbers to variables
-x = 5
-y = 7</code></pre>
-<p>Notice that when you assign a number to a variable it no longer gets outputted to the console. Variable assignment <strong><em>suppresses</em></strong> output!</p>
+x &lt;- 5
+y &lt;- 7</code></pre>
+<p>In the above code snippet, the number &quot;5&quot; is being assigned to the variable &quot;x&quot; and the number &quot;7&quot; is being assigned to the variable &quot;y&quot;. The arrow notation &quot;&lt;-&quot; tells you that whatever is on the right is being assigned to the variable on the left. Note that it can only work one way: you can only have a left-pointing arrow, never a right-pointing one.</p>
+<p>Notice that when you assign a number to a variable it no longer gets outputted to the console; there was no output with &quot;## [1] &quot; below the above snippet. Variable assignment <strong><em>suppresses</em></strong> output!</p>
 <p>You can use these numbers by <strong><em>calling</em></strong> the variables:</p>
 <pre class="r"><code># You can use variables to do arithmetic by calling them
-# If you assign the answer to a third variable (z), the output will be suppressed:
-z = x + y
+# If you assign the answer to a third variable (z), the output will be
+# suppressed:
+z &lt;- x + y
 # If you don't assign the answer to a variable, it will output to the console:
 x + y</code></pre>
 <pre><code>## [1] 12</code></pre>
-<p>Here's something that often confuses beginner coders: the statement <code>x = x + 1</code>. In mathematics, it doesn't make any sense! There's no value of <code>x</code> that will satisfy the equation! However, in programming, this statement is not an equation but an <strong><em>assignment</em></strong>: you are giving a variable <code>x</code> a value that is equal to that of an existing variable, plus one:</p>
-<pre class="r"><code># Give the variable 'x' a value of six
+<div id="the-equals-sign" class="section level2">
+<h2><span class="header-section-number">4.1</span> The Equals Sign</h2>
+<p>Sometimes, instead of using the arrow notation, R programmers will use an equals sign when assigning values to variables (<code>=</code>). This is 100% equivalent to using the leftwards arrow, so it makes no difference. However, some people who are used to coding in other languages such as Python are more used to the equals sign, so you will often see it.</p>
+<pre class="python"><code># The equals sign is the same as the leftwards arrow in R
 x = 6
-# Give the variable 'x' a value that is equal to the value of 'x', plus one
+# You may find this to be a better notation
 x = x + 1
-# 'x' should now equal seven. Check that it does by calling it and outputting its value to the console:
-x</code></pre>
-<pre><code>## [1] 7</code></pre>
-<p>Often, instead of using the equals sign, R programmers will use a left-arrow when assigning values to variables (<code>&lt;-</code>). This helps them avoid the confusion described above.</p>
-<pre class="r"><code># The left-arrow is the same as a single equals sign in R
-x &lt;- 6
-# You may find this a less confusing notation
-x &lt;- x + 1
 # Of course, the answer will be the same
 x</code></pre>
 <pre><code>## [1] 7</code></pre>
+<p>Here's something that often confuses beginner coders: the statement <code>x = x + 1</code>. In mathematics, this statement doesn't make any sense! There's no value of <code>x</code> that will satisfy the equation! However, in programming, this statement is not an equation but an <strong><em>assignment</em></strong>: you are giving a variable <code>x</code> a value that is equal to that of an existing variable, plus one. Take a look at the above snippet again:</p>
+<pre class="python"><code># Give the variable 'x' a value of six
+x = 6
+# Give the variable 'x' a value that is equal to the value of 'x', plus one
+x = x + 1
+# 'x' should now equal seven. Check that it does by calling it and outputting
+# its value to the console:
+x</code></pre>
+<pre><code>## [1] 7</code></pre>
+</div>
+<div id="variable-names" class="section level2">
+<h2><span class="header-section-number">4.2</span> Variable Names</h2>
 <p><strong>Note:</strong> there are rules that have to be followed when making variable names:</p>
 <ul>
 <li>They may not start with a number</li>
@@ -271,32 +279,29 @@ x</code></pre>
 </ul>
 <p>The following are GOOD examples of variable names:</p>
 <pre class="r"><code># Lowercase
-people = 34
-# Some things, especially acronyms, are only ever written in uppercase in
-# English. So it wouldn't make sense to code them in lowercase.
-BMI = 22
+people &lt;- 34
 # Use underscores to separate words
-final_answer = 100
+final_answer &lt;- 100
 # A person's height in centimetres
-height_cm = 170</code></pre>
+height_cm &lt;- 170</code></pre>
+</div>
 </div>
 <div id="characters-aka-strings" class="section level1">
 <h1><span class="header-section-number">5</span> Characters (aka Strings)</h1>
 <p>Characters are strings of letters, and as such they will often be referred to as 'strings'. You write a string by using single or double quotation marks:</p>
 <pre class="r"><code># This is a string, representing text
-my_string = &quot;Hello, World!&quot;
-my_string = 'Hello, World!'</code></pre>
+my_string &lt;- &quot;Hello, World!&quot;</code></pre>
 <p><strong>Note:</strong> a number can be written as a character, but if you do this it will be interpreted by your program as text, not as a number! This is something that confuses many beginner coders:</p>
 <pre class="r"><code># This is a string, so you will not be able to use it to do maths!
-x = '5'
+x &lt;- &quot;5&quot;
 # If you try to run the following code, you will get an error:
-# x + 2</code></pre>
+x + 2</code></pre>
 </div>
 <div id="logicals-aka-booleans" class="section level1">
 <h1><span class="header-section-number">6</span> Logicals (aka Booleans)</h1>
 <p>These are TRUE and FALSE:</p>
-<pre class="r"><code>passed_test = TRUE
-largest_prime_number = FALSE</code></pre>
+<pre class="r"><code>passed_test &lt;- TRUE
+largest_prime_number &lt;- FALSE</code></pre>
 <p>Note that the values &quot;TRUE&quot; and &quot;FALSE&quot; above are not strings because we have not used quotation marks. They are treated as their own object type by R.</p>
 <p>Booleans become useful when we start to use &quot;if statements&quot; later on. Essentially, they are used to test things: we can ask R <strong>if</strong> something is true or not.</p>
 </div>
@@ -309,55 +314,55 @@ largest_prime_number = FALSE</code></pre>
 <li><code>NA</code> - &quot;not available&quot;. This is treated as a logical (so you have TRUE, FALSE and NA as the three types of logicals).</li>
 <li><code>NULL</code>. This is treated as a data type of its own.</li>
 </ul>
-<pre class="r"><code>not_a_number = NaN
-not_available = NA
-null_character = NULL</code></pre>
+<pre class="r"><code>not_a_number &lt;- NaN
+not_available &lt;- NA
+null_character &lt;- NULL</code></pre>
 </div>
 <div id="built-in-functions" class="section level1">
 <h1><span class="header-section-number">8</span> Built-In Functions</h1>
-<p>Functions are bits of code that can be used again and again just by <em>calling</em> the function's name. You can tell that a function is being used because it will have round brackets - ().</p>
+<p>Functions are bits of code that can be used again and again just by <em>calling</em> the function's name. You can tell that a function is being used because it will have (round brackets).</p>
 <p>The first function you should know about is the <code>print()</code> function. This function takes a string and outputs it to the console:</p>
-<pre class="r"><code>print('Hello, World!')</code></pre>
+<pre class="r"><code>print(&quot;Hello, World!&quot;)</code></pre>
 <pre><code>## [1] &quot;Hello, World!&quot;</code></pre>
 <p>See what happened there? We <em>called</em> the function <code>print()</code> by using its name and round brackets. Then we told it what to print - the string <code>'Hello, World!'</code>. This string is the <em>argument</em> of the function. You <em>pass</em> an <em>argument</em> to a function.</p>
 <p>Let's look at a different function, <code>typeof()</code>. This can take any piece of data as an argument and will <em>return</em> (ie output) the type of data that the argument is. We can then print that answer to the console with the <code>print()</code> function. Take a look:</p>
 <pre class="r"><code># The type of a number depends on how it is stored in the computer's memory. A
 # &quot;double&quot; means it is stored as a double-precision value.
-print(typeof(7))</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
-<pre class="r"><code># As mentioned earlier, a string is made up of characters
-print(typeof('Hello, World!'))</code></pre>
-<pre><code>## [1] &quot;character&quot;</code></pre>
-<pre class="r"><code># A logical
-print(typeof(TRUE))</code></pre>
-<pre><code>## [1] &quot;logical&quot;</code></pre>
-<pre class="r"><code># A numeric null, stored as a double-precision value
-print(typeof(NaN))</code></pre>
-<pre><code>## [1] &quot;double&quot;</code></pre>
-<pre class="r"><code># A logical null
-print(typeof(NA))</code></pre>
-<pre><code>## [1] &quot;logical&quot;</code></pre>
-<pre class="r"><code># A pure null
+print(typeof(7))
+# As mentioned earlier, a string is made up of characters
+print(typeof(&quot;Hello, World!&quot;))
+# A logical
+print(typeof(TRUE))
+# A numeric null, stored as a double-precision value
+print(typeof(NaN))
+# A logical null
+print(typeof(NA))
+# A pure null
 print(typeof(NULL))</code></pre>
-<pre><code>## [1] &quot;NULL&quot;</code></pre>
+<pre><code>## [1] &quot;double&quot;
+## [1] &quot;character&quot;
+## [1] &quot;logical&quot;
+## [1] &quot;double&quot;
+## [1] &quot;logical&quot;
+## [1] &quot;NULL&quot;</code></pre>
 </div>
 <div id="vectors" class="section level1">
 <h1><span class="header-section-number">9</span> Vectors</h1>
 <p>A very common built-in function in R is the <em>concatenate</em> function, shortened to <code>c()</code> because it is used so often. This concatenates (joins) all the arguments that are passed to it into one element. This element, made up of many numbers and strings in order, is called a <em>vector</em>.</p>
-<pre class="r"><code># A vector of numerics 
-x = c(4, 5, 6, 7, 8)
+<pre class="r"><code># A vector of numerics
+x &lt;- c(4, 5, 6, 7, 8)
 # A vector of strings
-y = c('One', 'Two', 'Three')
+y &lt;- c(&quot;One&quot;, &quot;Two&quot;, &quot;Three&quot;)
 # A vector of logicals
-z = c(TRUE, FALSE, TRUE, TRUE, FALSE)</code></pre>
+z &lt;- c(TRUE, FALSE, TRUE, TRUE, FALSE)</code></pre>
 <p>The <code>typeof()</code> function returns the data type of the components of the vector:</p>
-<pre class="r"><code># A vector of numerics 
-x = c(4, 5, 6, 7, 8)
+<pre class="r"><code># A vector of numerics
+x &lt;- c(4, 5, 6, 7, 8)
 print(typeof(x))</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
 <p><strong>Note:</strong> if you concatenate elements with different data types together into the same vector, they will all be <em>coerced</em> into characters:</p>
 <pre class="r"><code># A mixed vector
-x = c(1, 'Two', TRUE)
+x &lt;- c(1, &quot;Two&quot;, TRUE)
 print(x)</code></pre>
 <pre><code>## [1] &quot;1&quot;    &quot;Two&quot;  &quot;TRUE&quot;</code></pre>
 <pre class="r"><code>print(typeof(x))</code></pre>
@@ -367,16 +372,16 @@ print(x)</code></pre>
 <h1><span class="header-section-number">10</span> Type Conversion</h1>
 <p>The last functions we will learn about on this page are the <code>as.character()</code> and <code>as.numeric()</code> functions. These convert numerics to characters and characters to numerics, respectively:</p>
 <pre class="r"><code># Start with a number
-x = 15
+x &lt;- 15
 # Convert it to a character
-x = as.character(x)
+x &lt;- as.character(x)
 # Check that it is indeed now a character
 print(typeof(x))</code></pre>
 <pre><code>## [1] &quot;character&quot;</code></pre>
 <pre class="r"><code># Now take a character that is the text version of a number
-y = '15'
+y &lt;- &quot;15&quot;
 # Convert it to a numeric
-y = as.numeric(y)
+y &lt;- as.numeric(y)
 # Check that it is indeed now a double-precision numeric
 print(typeof(y))</code></pre>
 <pre><code>## [1] &quot;double&quot;</code></pre>
