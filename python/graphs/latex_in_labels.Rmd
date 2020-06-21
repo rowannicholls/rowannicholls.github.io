@@ -14,7 +14,7 @@ In order to access the power of Latex when creating text as part of a graph you 
 - `text.usetex` which needs to be set to `True`
 - `font.family` which needs to be changed to `serif` to use Latex's classic Computer Modern font
 
-Lastly, we need to append the letter `r` to the strings that contain Latex. This lets Python know to treat the Latex commands as functions, not as literal text.
+Also, we need to append the letter `r` to the strings that contain Latex. This lets Python know to treat the Latex commands as functions, not as literal text.
 
 Here's what it looks like:
 
@@ -73,6 +73,45 @@ plt.vlines(np.sqrt(mean_y), ymin=0, ymax=mean_y, linestyles='dashed')
 plt.hlines(mean_y, xmin=0, xmax=np.sqrt(mean_y), linestyles='dashed')
 plt.text(10, mean_y + 150, fr'Mean resistance, \textsigma\ = {np.mean(y)}\textOmega')
 plt.text(70, 7000, r'$R = t^2$')
+```
+
+Troubleshooting
+===============
+
+Style Files
+-----------
+If you get an error such as:
+```
+! LaTeX Error: File `textgreek.sty' not found.
+```
+It means that you are missing the Latex style file that was mentioned in the error and should manually install it:
+
+- Go to [CTAN](https://www.ctan.org/), search for and download the required pacakge (in this example it's "textgreek")
+- It will either download as a `.sty` file or as a `.zip` file. If the latter, unzip it and run Latex on the `.ins` and `.dtx` files (eg by opening the folder in a terminal and running `latex textgreek.ins`) which will create the `.sty` file.
+    - Follow any advice printed to the terminal, eg with how to run the `.dtx` file
+- Move the `.sty` file to an appropriate directory, eg `/usr/share/texmf/tex/latex` on Ubuntu
+- Update the ls-R file in this source tree. Because the folder you moved the `.sty` file to might not be searched by default, the ls-R file must be updated to make the system aware of the new package.
+
+On Ubuntu, the last two points can be done from the terminal with:
+
+```{bash, eval=FALSE}
+sudo cp <package>.sty /usr/share/texmf/tex/latex
+sudo cp textgreek.sty /usr/share/texmf/tex/latex
+sudo mktexlsr
+```
+
+Language Elements
+-----------------
+If you get something like:
+
+```
+! Package textgreek Error: Cannot find the file lgrenc.def.
+```
+
+This is a Debian error with the textgreek package. Fix it with:
+
+```{bash, eval=FALSE}
+sudo apt install texlive-lang-greek
 ```
 
 [⇦ Back](../../python.html)

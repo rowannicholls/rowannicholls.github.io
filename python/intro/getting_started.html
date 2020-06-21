@@ -197,13 +197,13 @@ summary {
 <li><p>If this tells you that you are using Python 2 you should change this by running the following from a terminal*:</p>
 <pre class="bash"><code>sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 30</code></pre>
 <ul>
-<li>You will be prompted to enter your computer password. This is needed because you are using the <code>sudo</code> (super doer) command which allows you to change your computer’s settings</li>
+<li>You will be prompted to enter your computer password. This is needed because you are using the <code>sudo</code> (super doer) command which allows you to change your computer's settings</li>
 <li>The <code>update-alternatives</code> command changes the symbolic links that determine what your commands do. In this case you are changing <code>python</code> to link to <code>python3</code> instead of the default (which is <code>python2</code>).</li>
 <li>The <code>30</code> at the end means that you are giving <code>python3</code> a priority of 30 over <code>python2</code></li>
 </ul></li>
 <li><p>Check that this has worked by running <code>python --version</code> again and seeing if this returns a Python 3 version number</p></li>
 </ul>
-<p>*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your “.bashrc” file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using <code>sudo</code> or from within RMarkdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above. Test that you’ve done it correctly by running <code>bash -c &quot;python --version&quot;</code> - this invokes bash directly (and thus bypasses the .bashrc file) and should print a version 3 version number.</p>
+<p>*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your &quot;.bashrc&quot; file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using <code>sudo</code> or from within R Markdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above. Test that you've done it correctly by running <code>bash -c &quot;python --version&quot;</code> - this invokes bash directly (and thus bypasses the .bashrc file) and should print a version 3 version number.</p>
 <p><strong>Note:</strong> you can still run Python 2 should you need it. This is done by explicitly using the <code>python2</code> command, or the <code>python2.7</code> command if you specifically need version 2.7. In general, you can run a specific version of Python by running <code>pythonx.x</code> from the terminal.</p>
 <!-- - If this tells you that you are using Python 2, you should set up an "alias". This will trick your computer into thinking that `python` is another name for `python3`, as opposed to the default behaviour which is for it to think that `python` means `python2`
     - This alias needs to be created in a file called ".bashrc" which is your terminal's 'settings file'. "bash" is the name of the language your terminal uses, "rc" stands for "run commands" because this file contains the commands that bash runs whenever it opens (ie whenever you open a terminal) and the dot at the start of the filename turns it into a hidden file.
@@ -227,7 +227,7 @@ echo "alias python=python3" >> ~/.bashrc
 <h3>Updating Python</h3>
 <p>From the terminal:</p>
 <pre class="bash"><code>sudo apt-get install python3.8</code></pre>
-<p>This will download Python 3.8. Replace the 3.8 with whatever version number you want, but you do have to do it manually (there’s no command that automatically downloads the latest version). If you use <code>sudo apt-get install python</code> it will update your Python 2 (because, remember, that is the default version in Ubuntu) and, similarly, <code>sudo apt-get install python3</code> will try to update your Python 3.6. Next, you should make your <code>python</code> command point to version 3.8 and this can be done with a command similar to the one used above:</p>
+<p>This will download Python 3.8. Replace the 3.8 with whatever version number you want, but you do have to do it manually (there's no command that automatically downloads the latest version). If you use <code>sudo apt-get install python</code> it will update your Python 2 (because, remember, that is the default version in Ubuntu) and, similarly, <code>sudo apt-get install python3</code> will try to update your Python 3.6. Next, you should make your <code>python</code> command point to version 3.8 and this can be done with a command similar to the one used above:</p>
 <pre class="bash"><code>sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 38</code></pre>
 <p>Check what your order of priorities for your Python versions are with:</p>
 <pre class="bash"><code>sudo update-alternatives --config python
@@ -236,14 +236,14 @@ sudo update-alternatives --config python3</code></pre>
 <div id="using-python-from-the-command-line" class="section level3">
 <h3>Using Python from the Command-Line</h3>
 <ul>
-<li>If you open a terminal and run <code>python</code> you will open Python in that terminal. You can enter individual Python commands directly in at the <code>&gt;&gt;&gt;</code> prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn’t save the commands you are using to a script file that you can edit, but it’s possible. Exit by running <code>exit()</code>.</li>
-<li>If you have a script file (one with the “.py” extension) you can run it from the terminal by changing into the directory where the folder is located (using the “cd” command to <strong>c</strong>hange <strong>d</strong>irectory) and running <code>python &lt;filename&gt;</code> with the “.py” extension included. In fact, you don’t actually need to change directory into the one where the script is located, you can just run <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> and it will work.</li>
+<li>If you open a terminal and run <code>python</code> you will open Python in that terminal. You can enter individual Python commands directly in at the <code>&gt;&gt;&gt;</code> prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running <code>exit()</code>.</li>
+<li>If you have a script file (one with the &quot;.py&quot; extension) you can run it from the terminal by changing into the directory where the folder is located (using the &quot;cd&quot; command to <strong>c</strong>hange <strong>d</strong>irectory) and running <code>python &lt;filename&gt;</code> with the &quot;.py&quot; extension included. In fact, you don't actually need to change directory into the one where the script is located, you can just run <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> and it will work.</li>
 </ul>
 </div>
 <div id="installing-packages" class="section level3">
 <h3>Installing Packages</h3>
 <ul>
-<li><p>The best option is to use the standard Python package manager, “pip” (aka pip3 for Python 3):</p>
+<li><p>The best option is to use the standard Python package manager, &quot;pip&quot; (aka pip3 for Python 3):</p>
 <pre class="bash"><code>sudo apt-get install python3-pip</code></pre>
 <ul>
 <li>Once this is done you can install most packages as follows:</li>
@@ -255,7 +255,7 @@ sudo update-alternatives --config python3</code></pre>
 <pre class="bash"><code>pip3 install --upgrade pip</code></pre></li>
 <li>To install a bunch of the most common packages in one go:
 <ul>
-<li>Go into “permanent sudo” mode:</li>
+<li>Go into &quot;permanent sudo&quot; mode:</li>
 </ul>
 <pre class="bash"><code>sudo su</code></pre>
 <ul>
@@ -318,7 +318,7 @@ import termcolor</code></pre>
 <h3>Installing and Setting up</h3>
 <ul>
 <li>While it is true that macOS comes with Python pre-installed on it (located in /usr/bin/), <em>it is not recommended to use the pre-installed version</em>. This is because it is out-of-date and, because some background macOS programmes rely on this out-of-date version in order to work, it is not recommended to update it.</li>
-<li>A common solution to the above problem is to use “aliases” inserted into your terminal’s ‘settings’ files (either .bash_profile or .zshrc). This is no longer recommended either: these run commands are specific to a terminal instance and do not apply in situations where these setting folders are bypassed (eg when running from R Markdown which invokes <code>bash -c python</code>, not <code>python</code>)</li>
+<li>A common solution to the above problem is to use &quot;aliases&quot; inserted into your terminal's 'settings' files (either .bash_profile or .zshrc). This is no longer recommended either: these run commands are specific to a terminal instance and do not apply in situations where these setting folders are bypassed (eg when running from R Markdown which invokes <code>bash -c python</code>, not <code>python</code>)</li>
 <li>Instead, the best solution is to use the <strong>pyenv</strong> version manager:
 <ul>
 <li>Install Homebrew from <a href="https://brew.sh/">here</a>. This is a package manager for macOS analogous to apt-get in Ubuntu.</li>
@@ -339,7 +339,7 @@ import termcolor</code></pre>
 </ul>
 <pre class="bash"><code>pyenv version</code></pre>
 <ul>
-<li><p>Append the following to your terminal’s run commands (ie add these lines to the bottom of either ~/.bash_profile or ~/.zshrc, depending on which version of macOS you have)</p>
+<li><p>Append the following to your terminal's run commands (ie add these lines to the bottom of either ~/.bash_profile or ~/.zshrc, depending on which version of macOS you have)</p>
 <pre><code>if command -v pyenv 1&gt;/dev/null 2&gt;&amp;1; then
 eval &quot;$(pyenv init -)&quot;
 fi</code></pre>
@@ -365,20 +365,20 @@ bash -c &quot;python --version&quot;</code></pre>
 <li>Finally, check that your Python package manger, pip, is being called from the .pyenv folder and corresponds to the version of Python you expect:</li>
 </ul>
 <pre class="bash"><code>pip --version</code></pre></li>
-<li>Note that you will have to follow a similar process for each Python version you want to install, but once you have you will be able to choose which one to use relatively easily and they will not interfere with one another. When you want to update your Python, you will have to do it ‘manually’ with the above process (ie there is no single command you can use to just update to and start using the latest version).</li>
+<li>Note that you will have to follow a similar process for each Python version you want to install, but once you have you will be able to choose which one to use relatively easily and they will not interfere with one another. When you want to update your Python, you will have to do it 'manually' with the above process (ie there is no single command you can use to just update to and start using the latest version).</li>
 </ul>
 </div>
 <div id="using-python-from-the-command-line-1" class="section level3">
 <h3>Using Python from the Command-Line</h3>
 <ul>
-<li>If you open a terminal and run <code>python</code> you will open Python in that terminal. You can enter individual Python commands directly in at the <code>&gt;&gt;&gt;</code> prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn’t save the commands you are using to a script file that you can edit, but it’s possible. Exit by running <code>exit()</code>.</li>
-<li>If you have a script file (one with the “.py” extension) you can run it from the terminal by changing into the directory where the folder is located (using the “cd” command to <strong>c</strong>hange <strong>d</strong>irectory) and running <code>python &lt;filename&gt;</code> with the “.py” extension included. In fact, you don’t actually need to change directory into the one where the script is located, you can just run <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> and it will work.</li>
+<li>If you open a terminal and run <code>python</code> you will open Python in that terminal. You can enter individual Python commands directly in at the <code>&gt;&gt;&gt;</code> prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running <code>exit()</code>.</li>
+<li>If you have a script file (one with the &quot;.py&quot; extension) you can run it from the terminal by changing into the directory where the folder is located (using the &quot;cd&quot; command to <strong>c</strong>hange <strong>d</strong>irectory) and running <code>python &lt;filename&gt;</code> with the &quot;.py&quot; extension included. In fact, you don't actually need to change directory into the one where the script is located, you can just run <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> and it will work.</li>
 </ul>
 </div>
 <div id="installing-packages-1" class="section level3">
 <h3>Installing Packages</h3>
 <ul>
-<li>As mentioned, you should use the standard Python package manager, “pip”, which was installed alongside Python by pyenv. This enables you to install packages with:</li>
+<li>As mentioned, you should use the standard Python package manager, &quot;pip&quot;, which was installed alongside Python by pyenv. This enables you to install packages with:</li>
 </ul>
 <pre class="bash"><code>pip install &lt;package_name&gt;</code></pre>
 <ul>
@@ -444,7 +444,7 @@ import termcolor</code></pre>
 <h3>Installing and Setting up</h3>
 <ul>
 <li>Download Python from <a href="https://www.python.org/downloads/">the Python website</a></li>
-<li>During installation, select “add Python to PATH”</li>
+<li>During installation, select &quot;add Python to PATH&quot;</li>
 </ul>
 </div>
 <div id="updating-python-1" class="section level3">
@@ -454,12 +454,12 @@ import termcolor</code></pre>
 <div id="using-python-from-the-command-line-2" class="section level3">
 <h3>Using Python from the Command-Line</h3>
 <ul>
-<li>Check that you have your “PATH” variable correct:
+<li>Check that you have your &quot;PATH&quot; variable correct:
 <ul>
-<li>Windows 7: Start &gt; right-click on “Computer” &gt; Properties &gt; Advanced system settings &gt; Environment Variables &gt; edit the top one (path)</li>
+<li>Windows 7: Start &gt; right-click on &quot;Computer&quot; &gt; Properties &gt; Advanced system settings &gt; Environment Variables &gt; edit the top one (path)</li>
 <li>Windows 10: Control Panel &gt; System and Security &gt; System - Advanced stystem settings &gt; Environment Variables &gt; edit the top one (path)</li>
 </ul></li>
-<li><p>Append the following (with your username in place of “<code>&lt;username&gt;</code>”)</p>
+<li><p>Append the following (with your username in place of &quot;<code>&lt;username&gt;</code>&quot;)</p>
 <pre><code>;C:/Users/&lt;username&gt;/AppData/Local/Programs/Python/Python36-32/</code></pre></li>
 <li><p>Open Command Prompt (if it is already open, close it and open it again) and run:</p>
 <pre><code>python</code></pre></li>
@@ -467,22 +467,22 @@ import termcolor</code></pre>
 <ul>
 <li>Exit Python with <code>exit()</code></li>
 </ul></li>
-<li><p>Run a Python script (a file with the “.py” extension) using <code>python &lt;filename&gt;</code> if the file is in the same folder as the one your Command Prompt is currently in or <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> if it is in a different folder.</p></li>
+<li><p>Run a Python script (a file with the &quot;.py&quot; extension) using <code>python &lt;filename&gt;</code> if the file is in the same folder as the one your Command Prompt is currently in or <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> if it is in a different folder.</p></li>
 </ul>
 </div>
 <div id="installing-packages-2" class="section level3">
 <h3>Installing Packages</h3>
 <ul>
-<li><p>For most packages, use Python’s standard package manager “pip”. pip should come already installed with Python; double check this by running the following two separate commands from Command Prompt:</p>
+<li><p>For most packages, use Python's standard package manager &quot;pip&quot;. pip should come already installed with Python; double check this by running the following two separate commands from Command Prompt:</p>
 <pre><code>python
 import pip</code></pre>
 <ul>
 <li>If nothing happens (no errors appear), then all is good</li>
-<li>‘pip2’ is the version of pip for Python 2, ‘pip3’ is for Python 3 and ‘pip’ uses whichever version of Python is installed</li>
+<li>'pip2' is the version of pip for Python 2, 'pip3' is for Python 3 and 'pip' uses whichever version of Python is installed</li>
 <li><p>Now that you are sure you have pip, you can use it directly from a new Command Prompt (or from the same Command Prompt after exiting Python with <code>exit()</code>) to install packages with:</p>
 <pre><code>python -m pip install --user &lt;package_name&gt;</code></pre></li>
 </ul></li>
-<li>When installing packages, rather install them one-by-one as opposed to all at once. This is because pip sometimes installs multiple packages at once but not sequentially, and so if something fails you don’t know what caused what.</li>
+<li>When installing packages, rather install them one-by-one as opposed to all at once. This is because pip sometimes installs multiple packages at once but not sequentially, and so if something fails you don't know what caused what.</li>
 <li><p>Install most of the common packages with the following commands:</p>
 <pre><code>python -m pip install --user numpy
 python -m pip install --user scipy
@@ -525,26 +525,26 @@ python -m pip install --user sklearn</code></pre></li>
 <li><p>If this tells you that you are using Python 2 you should change this by running the following from a terminal*:</p>
 <pre class="bash"><code>sudo update-alternatives --install /usr/bin/python python /usr/bin/python3 30</code></pre>
 <ul>
-<li>You will be prompted to enter your computer password. This is needed because you are using the <code>sudo</code> (super doer) command which allows you to change your computer’s settings</li>
+<li>You will be prompted to enter your computer password. This is needed because you are using the <code>sudo</code> (super doer) command which allows you to change your computer's settings</li>
 <li>The <code>update-alternatives</code> command changes the symbolic links that determine what your commands do. In this case you are changing <code>python</code> to link to <code>python3</code> instead of the default (which is <code>python2</code>).</li>
 <li>The <code>30</code> at the end means that you are giving <code>python3</code> a priority of 30 over <code>python2</code></li>
 </ul></li>
 <li><p>Check that this has worked by running <code>python --version</code> again and seeing if this returns a Python 3 version number</p></li>
 </ul>
-<p>*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your “.bashrc” file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using <code>sudo</code> or from within RMarkdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above.</p>
+<p>*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your &quot;.bashrc&quot; file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using <code>sudo</code> or from within RMarkdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above.</p>
 <p><strong>Note:</strong> you can still run Python 2 should you need it. This is done by explicitly using the <code>python2</code> command, or the <code>python2.7</code> command if you specifically need version 2.7. In general, you can run a specific version of Python by running <code>pythonx.x</code> from the terminal.</p>
 </div>
 <div id="using-python-from-the-command-line-3" class="section level3">
 <h3>Using Python from the Command-Line</h3>
 <ul>
-<li>If you open a terminal and run <code>python</code> you will open Python in that terminal. You can enter individual Python commands directly in at the <code>&gt;&gt;&gt;</code> prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn’t save the commands you are using to a script file that you can edit, but it’s possible. Exit by running <code>exit()</code>.</li>
-<li>If you have a script file (one with the “.py” extension) you can run it from the terminal by changing into the directory where the folder is located (using the “cd” command to <strong>c</strong>hange <strong>d</strong>irectory) and running <code>python &lt;filename&gt;</code> with the “.py” extension included. In fact, you don’t actually need to change directory into the one where the script is located, you can just run <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> and it will work.</li>
+<li>If you open a terminal and run <code>python</code> you will open Python in that terminal. You can enter individual Python commands directly in at the <code>&gt;&gt;&gt;</code> prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running <code>exit()</code>.</li>
+<li>If you have a script file (one with the &quot;.py&quot; extension) you can run it from the terminal by changing into the directory where the folder is located (using the &quot;cd&quot; command to <strong>c</strong>hange <strong>d</strong>irectory) and running <code>python &lt;filename&gt;</code> with the &quot;.py&quot; extension included. In fact, you don't actually need to change directory into the one where the script is located, you can just run <code>python &lt;path_to_file&gt;/&lt;filename&gt;</code> and it will work.</li>
 </ul>
 </div>
 <div id="installing-packages-3" class="section level3">
 <h3>Installing Packages</h3>
 <ul>
-<li><p>The best option is to use the standard Python package manager, “pip” (aka pip3 for Python 3):</p>
+<li><p>The best option is to use the standard Python package manager, &quot;pip&quot; (aka pip3 for Python 3):</p>
 <pre><code>sudo dnf install python3-pip</code></pre></li>
 <li><p>Update pip with:</p>
 <pre><code>sudo pip3 install --update pip</code></pre></li>

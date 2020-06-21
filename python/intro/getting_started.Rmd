@@ -37,7 +37,7 @@ The following works for Ubuntu 16.04 to 18.04.
     - The `30` at the end means that you are giving `python3` a priority of 30 over `python2`
 - Check that this has worked by running `python --version` again and seeing if this returns a Python 3 version number
 
-\*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your ".bashrc" file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using `sudo` or from within RMarkdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above. Test that you've done it correctly by running `bash -c "python --version"` - this invokes bash directly (and thus bypasses the .bashrc file) and should print a version 3 version number.
+\*Elsewhere on the internet you will see advice saying to solve this exact same problem by editing your ".bashrc" file and adding an alias. That solution will work for most but not all situations, eg it will not work if you run Python using `sudo` or from within R Markdown. The reason for this is that these bypass the .bashrc file, hence why I recommend the solution above. Test that you've done it correctly by running `bash -c "python --version"` - this invokes bash directly (and thus bypasses the .bashrc file) and should print a version 3 version number.
 
 **Note:** you can still run Python 2 should you need it. This is done by explicitly using the `python2` command, or the `python2.7` command if you specifically need version 2.7. In general, you can run a specific version of Python by running `pythonx.x` from the terminal.
 
