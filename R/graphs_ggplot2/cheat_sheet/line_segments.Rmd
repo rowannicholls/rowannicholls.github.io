@@ -15,92 +15,100 @@ library(ggplot2)
 
 ### Vertical Lines
 ```{r}
-p = ggplot(mtcars, aes(x=wt, y=qsec))
-p = p + geom_point()
-p = p + geom_vline(xintercept=4.1, color='blue')
-p = p + geom_vline(xintercept=5.2, color='blue')
+p <- ggplot(mtcars, aes(x = wt, y = qsec))
+p <- p + geom_point()
+p <- p + geom_vline(xintercept = 4.1, color = "blue")
+p <- p + geom_vline(xintercept = 5.2, color = "blue")
 print(p)
 ```
 
 ### Horizontal Lines
 ```{r}
-p = ggplot(mtcars, aes(x=wt, y=qsec))
-p = p + geom_point()
-p = p + geom_hline(yintercept=22.8, color='blue')
-p = p + geom_hline(yintercept=20.3, color='blue')
+p <- ggplot(mtcars, aes(x = wt, y = qsec))
+p <- p + geom_point()
+p <- p + geom_hline(yintercept = 22.8, color = "blue")
+p <- p + geom_hline(yintercept = 20.3, color = "blue")
 print(p)
 ```
 
 ### Line Segment
 ```{r}
-p = ggplot(mtcars, aes(x=wt, y=mpg))
-p = p + geom_point()
-p = p + geom_segment(
-    aes(x=wt[1], y=mpg[1], xend=wt[5], yend=mpg[5]), color='blue'
+p <- ggplot(mtcars, aes(x = wt, y = mpg))
+p <- p + geom_point()
+p <- p + geom_segment(
+    aes(x = wt[1], y = mpg[1], xend = wt[5], yend = mpg[5]), color = "blue"
 )
 print(p)
 ```
 
 ### Curve
 ```{r}
-p = ggplot(mtcars, aes(x=wt, y=mpg))
-p = p + geom_point()
-p = p + geom_curve(
-    aes(x=wt[1], y=mpg[1], xend=wt[5], yend=mpg[5]),
-    color='blue'
+p <- ggplot(mtcars, aes(x = wt, y = mpg))
+p <- p + geom_point()
+p <- p + geom_curve(
+    aes(x = wt[1], y = mpg[1], xend = wt[5], yend = mpg[5]),
+    color = "blue"
 )
 print(p)
 ```
 
 ### Line from A to B
 ```{r}
-coefs = coefficients(lm(hwy ~ cty, data=mpg))
-p = ggplot(mpg, aes(x=cty, y=hwy))
-p = p + geom_point()
-p = p + geom_abline(
-    aes(intercept=coefs['(Intercept)'], slope=coefs['cty']), color='blue'
+coefs <- coefficients(lm(hwy ~ cty, data = mpg))
+p <- ggplot(mpg, aes(x = cty, y = hwy))
+p <- p + geom_point()
+p <- p + geom_abline(
+    aes(intercept = coefs["(Intercept)"], slope = coefs["cty"]), color = "blue"
 )
 print(p)
 ```
 
 ### Spoke Plot aka a Vector Plot
 ```{r}
-df = expand.grid(x=1:10, y=1:10)
-df$angle = runif(100, 0, 2*pi)
-df$speed = runif(100, 0, sqrt(0.1 * df$x))
-p = ggplot(df, aes(x, y))
-p = p + geom_point()
-p = p + geom_spoke(aes(angle=angle, radius=speed), color='blue')
+df <- expand.grid(x = 1:10, y = 1:10)
+df$angle <- runif(100, 0, 2 * pi)
+df$speed <- runif(100, 0, sqrt(0.1 * df$x))
+p <- ggplot(df, aes(x, y))
+p <- p + geom_point()
+p <- p + geom_spoke(aes(angle = angle, radius = speed), color = "blue")
 print(p)
 ```
 
 ### The Football Pitch Plot
 ```{r}
-df = expand.grid(x=c(12, 57.5, 103), y=c(37.5, 37.5, 37.5))
-p = ggplot(df, aes(x, y))
-p = p + geom_point()
-p = p + geom_vline(xintercept=0)
-p = p + geom_hline(yintercept=75)
-p = p + geom_segment(aes(x=0, y=27.5, xend=6, yend=27.5))
-p = p + geom_segment(aes(x=0, y=47.5, xend=6, yend=47.5))
-p = p + geom_segment(aes(x=6, y=27.5, xend=6, yend=47.5))
-p = p + geom_segment(aes(x=0, y=59.5, xend=18, yend=59.5))
-p = p + geom_segment(aes(x=0, y=15.5, xend=18, yend=15.5))
-p = p + geom_segment(aes(x=18, y=15.5, xend=18, yend=59.5))
-p = p + geom_curve(aes(x=18, y=29.5, xend=18, yend=45.5), curvature=0.67, ncp=50)
-p = p + geom_curve(aes(x=57.5, y=47.5, xend=57.5, yend=27.5), curvature=1, ncp=50)
-p = p + geom_vline(xintercept=57.5)
-p = p + geom_curve(aes(x=57.5, y=27.5, xend=57.5, yend=47.5), curvature=1, ncp=50)
-p = p + geom_curve(aes(x=97, y=45.5, xend=97, yend=29.5), curvature=0.67, ncp=50)
-p = p + geom_segment(aes(x=97, y=15.5, xend=97, yend=59.5))
-p = p + geom_segment(aes(x=97, y=59.5, xend=115, yend=59.5))
-p = p + geom_segment(aes(x=97, y=15.5, xend=115, yend=15.5))
-p = p + geom_segment(aes(x=115, y=27.5, xend=109, yend=27.5))
-p = p + geom_segment(aes(x=115, y=47.5, xend=109, yend=47.5))
-p = p + geom_segment(aes(x=109, y=27.5, xend=109, yend=47.5))
-p = p + geom_hline(yintercept=0)
-p = p + geom_vline(xintercept=115)
-p = p + ylim(0, 75) + xlim(0, 115)
+df <- expand.grid(x = c(12, 57.5, 103), y = c(37.5, 37.5, 37.5))
+p <- ggplot(df, aes(x, y))
+p <- p + geom_point()
+p <- p + geom_vline(xintercept = 0)
+p <- p + geom_hline(yintercept = 75)
+p <- p + geom_segment(aes(x = 0, y = 27.5, xend = 6, yend = 27.5))
+p <- p + geom_segment(aes(x = 0, y = 47.5, xend = 6, yend = 47.5))
+p <- p + geom_segment(aes(x = 6, y = 27.5, xend = 6, yend = 47.5))
+p <- p + geom_segment(aes(x = 0, y = 59.5, xend = 18, yend = 59.5))
+p <- p + geom_segment(aes(x = 0, y = 15.5, xend = 18, yend = 15.5))
+p <- p + geom_segment(aes(x = 18, y = 15.5, xend = 18, yend = 59.5))
+p <- p + geom_curve(
+    aes(x = 18, y = 29.5, xend = 18, yend = 45.5), curvature = 0.67, ncp = 50
+)
+p <- p + geom_curve(
+    aes(x = 57.5, y = 47.5, xend = 57.5, yend = 27.5), curvature = 1, ncp = 50
+)
+p <- p + geom_vline(xintercept = 57.5)
+p <- p + geom_curve(
+    aes(x = 57.5, y = 27.5, xend = 57.5, yend = 47.5), curvature = 1, ncp = 50
+)
+p <- p + geom_curve(
+    aes(x = 97, y = 45.5, xend = 97, yend = 29.5), curvature = 0.67, ncp = 50
+)
+p <- p + geom_segment(aes(x = 97, y = 15.5, xend = 97, yend = 59.5))
+p <- p + geom_segment(aes(x = 97, y = 59.5, xend = 115, yend = 59.5))
+p <- p + geom_segment(aes(x = 97, y = 15.5, xend = 115, yend = 15.5))
+p <- p + geom_segment(aes(x = 115, y = 27.5, xend = 109, yend = 27.5))
+p <- p + geom_segment(aes(x = 115, y = 47.5, xend = 109, yend = 47.5))
+p <- p + geom_segment(aes(x = 109, y = 27.5, xend = 109, yend = 47.5))
+p <- p + geom_hline(yintercept = 0)
+p <- p + geom_vline(xintercept = 115)
+p <- p + ylim(0, 75) + xlim(0, 115)
 print(p)
 ```
 

@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -145,6 +144,7 @@ summary {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -181,12 +181,13 @@ summary {
 </div>
 
 
-<p><font size="3"> <a href="../../R.html">⇦ Back</a></p>
+<p><font size="3"></p>
+<p><a href="../../R.html">⇦ Back</a></p>
 <div id="booleans" class="section level1">
 <h1><span class="header-section-number">1</span> Booleans</h1>
 <p>A Boolean is something that is either true or false. In R, the values TRUE and FALSE must be typed with capital letters:</p>
-<pre class="r"><code>y = TRUE
-n = FALSE</code></pre>
+<pre class="r"><code>y &lt;- TRUE
+n &lt;- FALSE</code></pre>
 <div id="equality" class="section level2">
 <h2><span class="header-section-number">1.1</span> Equality</h2>
 <p>You can also create a Boolean by testing equality. To do this, use two equal signs: <code>==</code></p>
@@ -195,140 +196,141 @@ n = FALSE</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>Remember that a SINGLE equals sign is used to assign a value to a variable while a DOUBLE equals sign is used to test for equality:</p>
 <pre class="r"><code># Assign a value of 1 to a
-a = 1
+a &lt;- 1
 # Assign a value of 1 to b
-b = 1
+b &lt;- 1
 # Does a equal b?
 a == b</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>This means that you can test equality using <code>==</code>, generate a Boolean, then assign this Boolean to a variable using <code>=</code>:</p>
-<pre class="r"><code># The statement &quot;(1 == 1)&quot; evaluates to &quot;TRUE&quot; and then we assign that result to the variable &quot;bool&quot;
-bool = (1 == 1)
+<pre class="r"><code># The statement &quot;(1 == 1)&quot; evaluates to &quot;TRUE&quot; and then we assign that result
+# to the variable &quot;bool&quot;
+bool &lt;- (1 == 1)
 # Is 1 equal to 1?
 print(bool)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>In addition to equality (<code>==</code>) you can test if two things are NOT equal using <code>!=</code>. In R, the exclamation mark means ‘not’:</p>
+<p>In addition to equality (<code>==</code>) you can test if two things are NOT equal using <code>!=</code>. In R, the exclamation mark means 'not':</p>
 <pre class="r"><code># Is 1 not equal to 1?
-bool = (1 != 1)
+bool &lt;- (1 != 1)
 print(bool)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <pre class="r"><code># Is 1 not equal to 2?
-bool = (1 != 2)
+bool &lt;- (1 != 2)
 print(bool)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="inequality" class="section level2">
 <h2><span class="header-section-number">1.2</span> Inequality</h2>
-<p>You can use <code>&gt;</code> and <code>&lt;</code> to test if something is greater than or less than something else. Use <code>&gt;=</code> to test if something is greater than <em>or equal to</em> something else and <code>&lt;=</code> to test ‘less than or equal to’:</p>
+<p>You can use <code>&gt;</code> and <code>&lt;</code> to test if something is greater than or less than something else. Use <code>&gt;=</code> to test if something is greater than <em>or equal to</em> something else and <code>&lt;=</code> to test 'less than or equal to':</p>
 <pre class="r"><code># Is 1 less than 2?
 print(1 &lt; 2)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <pre class="r"><code># Is attendance below or at capacity?
-attendance = 95
-capacity = 100
+attendance &lt;- 95
+capacity &lt;- 100
 print(attendance &lt;= capacity)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="and-and-or" class="section level2">
-<h2><span class="header-section-number">1.3</span> ‘And’ and ‘Or’</h2>
-<p>You can combine conditionals using ‘and’ and ‘or’ statements.</p>
-<p>An ‘and’ statement is created by using an ampersand (<code>&amp;</code>) between two conditionals. In order for an ‘and’ statement to evaluate to <code>TRUE</code> both conditionals must be true:</p>
+<h2><span class="header-section-number">1.3</span> 'And' and 'Or'</h2>
+<p>You can combine conditionals using 'and' and 'or' statements.</p>
+<p>An 'and' statement is created by using an ampersand (<code>&amp;</code>) between two conditionals. In order for an 'and' statement to evaluate to <code>TRUE</code> both conditionals must be true:</p>
 <pre class="r"><code># Is attendance below or at capacity AND
 # has everyone bought a ticket?
-attendance = 95
-capacity = 100
-tickets_sold = 93
+attendance &lt;- 95
+capacity &lt;- 100
+tickets_sold &lt;- 93
 print((attendance &lt;= capacity) &amp; (tickets_sold == attendance))</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 <p>Notice the use of brackets in the last line. Each conditional is enclosed in round brackets to aid readability.</p>
-<p>An ‘or’ statement is created by using a pipe (<code>|</code>) between two conditionals. In order for an ‘or’ statement to evaluate to <code>TRUE</code> either conditional can be true:</p>
+<p>An 'or' statement is created by using a pipe (<code>|</code>) between two conditionals. In order for an 'or' statement to evaluate to <code>TRUE</code> either conditional can be true:</p>
 <pre class="r"><code># Is attendance over capacity OR
 # has someone not bought a ticket?
-attendance = 105
-capacity = 100
-tickets_sold = 105
+attendance &lt;- 105
+capacity &lt;- 100
+tickets_sold &lt;- 105
 print((attendance &gt; capacity) | (tickets_sold != attendance))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>Notice that the same question is being asked as in the ‘and’ statement example, but this time in a different way.</p>
+<p>Notice that the same question is being asked as in the 'and' statement example, but this time in a different way.</p>
 </div>
 <div id="strings" class="section level2">
 <h2><span class="header-section-number">1.4</span> Strings</h2>
 <p>Strings are handled similarly to numbers:</p>
 <pre class="r"><code># Do these two people have the same name?
-person1 = 'WINSTON CHURCHILL'
-person2 = 'Winston Churchill'
+person1 &lt;- &quot;WINSTON CHURCHILL&quot;
+person2 &lt;- &quot;Winston Churchill&quot;
 print(tolower(person1) == tolower(person2))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>Notice the function <code>tolower()</code> that was used above to convert both strings to lowercase before making the comparison. Strings are case sensitive, so if we hadn’t used that function the result would have been <code>FALSE</code>.</p>
+<p>Notice the function <code>tolower()</code> that was used above to convert both strings to lowercase before making the comparison. Strings are case sensitive, so if we hadn't used that function the result would have been <code>FALSE</code>.</p>
 <p>You can also test if a string contains a certain sub-string or character using <code>grepl()</code>:</p>
-<pre class="r"><code>st = 'Hello World'
-print(grepl('Hello', st))</code></pre>
+<pre class="r"><code>st &lt;- &quot;Hello World&quot;
+print(grepl(&quot;Hello&quot;, st))</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>‘grepl’ stands for ‘global regular expression print - logical’, in case you were wondering.</p>
+<p>'grepl' stands for 'global regular expression print - logical', in case you were wondering.</p>
 </div>
 </div>
 <div id="ifelse-statements" class="section level1">
 <h1><span class="header-section-number">2</span> If/Else Statements</h1>
 <div id="if-statements" class="section level2">
 <h2><span class="header-section-number">2.1</span> If Statements</h2>
-<p>An ‘if’ statement is a chunk of code that will execute if a condition is true (and which will not execute if the condition is false). In order to write an if statement you need to:</p>
+<p>An 'if' statement is a chunk of code that will execute if a condition is true (and which will not execute if the condition is false). In order to write an if statement you need to:</p>
 <ul>
 <li>Put a Boolean condition inside round brackets</li>
 <li>Put the chunk of code to be executed if the condition is true inside curly brackets:</li>
 </ul>
 <pre class="r"><code>if (1 == 1) {
-    print(&quot;This will print to console because 1 is equal to 1 and so '1 == 1' evaluates to TRUE&quot;)
+    print(&quot;This will print to console because 1 is equal to 1&quot;)
 }</code></pre>
-<pre><code>## [1] &quot;This will print to console because 1 is equal to 1 and so '1 == 1' evaluates to TRUE&quot;</code></pre>
+<pre><code>## [1] &quot;This will print to console because 1 is equal to 1&quot;</code></pre>
 </div>
 <div id="else-statements" class="section level2">
 <h2><span class="header-section-number">2.2</span> Else Statements</h2>
-<p>An ‘else’ statement is a chunk of code that will execute if the ‘if’ statement does not execute:</p>
-<pre class="r"><code>height = 170
+<p>An 'else' statement is a chunk of code that will execute if the 'if' statement does not execute:</p>
+<pre class="r"><code>height &lt;- 170
 if (height &gt;= 180) {
-    print('This person is tall')
+    print(&quot;This person is tall&quot;)
 } else {
-    print('This person is not tall')
+    print(&quot;This person is not tall&quot;)
 }</code></pre>
 <pre><code>## [1] &quot;This person is not tall&quot;</code></pre>
 </div>
 <div id="else-if-statements" class="section level2">
 <h2><span class="header-section-number">2.3</span> Else If Statements</h2>
-<p>An ‘else if’ statement is like a second ‘if’ statement. It is a chunk of code that will execute if the first ‘if’ statement does not evaluate to true but the second one does:</p>
-<pre class="r"><code>height = 170
+<p>An 'else if' statement is like a second 'if' statement. It is a chunk of code that will execute if the first 'if' statement does not evaluate to true but the second one does:</p>
+<pre class="r"><code>height &lt;- 170
 if (height &gt;= 180) {
-    print('This person is tall')
+    print(&quot;This person is tall&quot;)
 } else if (height &lt; 180 &amp; height &gt;= 160) {
-    print('This person is medium height')
+    print(&quot;This person is medium height&quot;)
 } else {
-    print('This person is short')
+    print(&quot;This person is short&quot;)
 }</code></pre>
 <pre><code>## [1] &quot;This person is medium height&quot;</code></pre>
 </div>
 <div id="strings-1" class="section level2">
 <h2><span class="header-section-number">2.4</span> Strings</h2>
 <p>Besides the <code>grepl()</code> function mentioned above, another way to check if a string contains a sub-string is to use the <code>gregexpr()</code> (global regular expression) function. This returns the index of a sub-string or <code>-1</code> if it cannot find it:</p>
-<pre class="r"><code>st = 'Hello World'
+<pre class="r"><code>st &lt;- &quot;Hello World&quot;
 # Search for the letter &quot;x&quot; in the string &quot;Hello World&quot;
-idx_x = unlist(gregexpr(pattern='x', st))
+idx_x &lt;- unlist(gregexpr(pattern = &quot;x&quot;, st))
 # If the letter &quot;x&quot; is found, print a message that says that it has been found.
 # If the letter &quot;x&quot; is not found, print the opposite message.
 if (idx_x == -1) {
-    print('The string does NOT contain the letter x')
+    print(&quot;The string does NOT contain the letter x&quot;)
 } else {
-    print('The string DOES contain the letter x')
+    print(&quot;The string DOES contain the letter x&quot;)
 }</code></pre>
 <pre><code>## [1] &quot;The string does NOT contain the letter x&quot;</code></pre>
-<p>As expected, the letter “x” was not found in “Hello World”.</p>
+<p>As expected, the letter &quot;x&quot; was not found in &quot;Hello World&quot;.</p>
 </div>
 <div id="using-if-statements-to-check-your-code" class="section level2">
 <h2><span class="header-section-number">2.5</span> Using If Statements to Check Your Code</h2>
-<p>Imagine you are running some code using a dataset that someone gave you and which contains some errors. For example, maybe they entered someone’s birth year as 1890 instead of 1980 and so you calculate their age as being 130 instead of 40. You can use if statements together with the <code>stop()</code> function to sanitise your data and check that these types of errors don’t occur:</p>
-<pre class="r"><code>age = current_year - birth_year
+<p>Imagine you are running some code using a dataset that someone gave you and which contains some errors. For example, maybe they entered someone's birth year as 1890 instead of 1980 and so you calculate their age as being 130 instead of 40. You can use if statements together with the <code>stop()</code> function to sanitise your data and check that these types of errors don't occur:</p>
+<pre class="r"><code>age &lt;- current_year - birth_year
 if (age &lt;= 110) {
-    print('This person is not older than 110 years')
+    print(&quot;This person is not older than 110 years&quot;)
 } else {
-    stop('This person is older than 110 years. Are you sure their age is correct?')
+    stop(&quot;This person is older than 110 years. Are you sure this is correct?&quot;)
 }</code></pre>
 <p>The above code will cause the script to stop and produce the message:<br />
 <code>This person is older than 110 years. Are you sure their age is correct?</code><br />

@@ -183,7 +183,7 @@ summary {
 
 <div id="TOC">
 <ul>
-<li><a href="#whats-a-data-frame"><span class="toc-section-number">1</span> What’s a Data Frame?</a></li>
+<li><a href="#whats-a-data-frame"><span class="toc-section-number">1</span> What's a Data Frame?</a></li>
 <li><a href="#quick-info-about-a-data-frame"><span class="toc-section-number">2</span> Quick Info About a Data Frame</a></li>
 <li><a href="#columns-in-a-data-frame"><span class="toc-section-number">3</span> Columns in a Data Frame</a><ul>
 <li><a href="#add-columns"><span class="toc-section-number">3.1</span> Add Columns</a></li>
@@ -235,32 +235,40 @@ summary {
 <p><font size="3"></p>
 <p><a href="../../R.html">⇦ Back</a></p>
 <div id="whats-a-data-frame" class="section level1">
-<h1><span class="header-section-number">1</span> What’s a Data Frame?</h1>
+<h1><span class="header-section-number">1</span> What's a Data Frame?</h1>
 <p>Data frames are the most important data type in R. The power that R has as a programming language and its usefulness in statistics and data analysis comes from that fact that it has these. They allow calculations to be rapidly performed on data that is tabular in nature, ie data that can be represented as rows and columns (like Excel, but more powerful). The reason this is possible is because:</p>
 <blockquote>
 <p><strong><em>A data frame just is a fancy table</em></strong></p>
 </blockquote>
-<p>It also has rows and columns and, often, data frames are created by importing data from Excel. A more manual way to create them is by using the <code>data.frame()</code> function, which turns vectors into the columns of a ‘table’. Here’s an example using the top 10 most-streamed songs on Spotify:</p>
-<pre class="r"><code>spotify = data.frame(
-    Rank=c(1:10),
-    Song=c(
-        'Shape of You', 'Rockstar', 'One Dance', 'Closer', 'Thinking Out Loud',
-        &quot;God's Plan&quot;, 'Havana', 'Sunflower', 'Perfect', &quot;Say You Won't Let Go&quot;
+<p>It also has rows and columns and, often, data frames are created by importing data from Excel. A more manual way to create them is by using the <code>data.frame()</code> function, which turns vectors into the columns of a 'table'. Here's an example using the top 10 most-streamed songs on Spotify:</p>
+<pre class="r"><code>spotify &lt;- data.frame(
+    Rank = c(1:10),
+    Song = c(
+        &quot;Shape of You&quot;, &quot;Rockstar&quot;, &quot;One Dance&quot;, &quot;Closer&quot;, &quot;Thinking Out Loud&quot;,
+        &quot;God's Plan&quot;, &quot;Havana&quot;, &quot;Sunflower&quot;, &quot;Perfect&quot;, &quot;Say You Won't Let Go&quot;
     ),
-    Artist=c(
-        'Ed Sheeran', 'Post Malone', 'Drake', 'The Chainsmokers', 'Ed Sheeran',
-        'Drake', 'Camila Cabello', 'Post Malone', 'Ed Sheeran', 'James Arthur'
+    Artist = c(
+        &quot;Ed Sheeran&quot;, &quot;Post Malone&quot;, &quot;Drake&quot;, &quot;The Chainsmokers&quot;, &quot;Ed Sheeran&quot;,
+        &quot;Drake&quot;, &quot;Camila Cabello&quot;, &quot;Post Malone&quot;, &quot;Ed Sheeran&quot;, &quot;James Arthur&quot;
     ),
-    Featuring=c(NA, '21 Savage', 'Wizkid, Kyla', 'Halsey', NA, NA, 'Young Thug', 'Swae Lee', NA, NA),
-    Label=c('Warner', 'Universal', 'Universal', 'Sony', 'Warner', 'Universal', 'Sony', 'Universal', 'Warner', 'Sony'),
-    Streams.Millions=c(2449, 1851, 1824, 1734, 1504, 1495, 1407, 1400, 1366, 1360),
-    Release.Date=c(
-        '06/01/2017', '15/09/2017', '05/04/2016', '29/07/2016', '20/06/2014',
-        '19/01/2018', '03/08/2017', '18/10/2018', '03/03/2017', '09/09/2016'
+    Featuring = c(
+        NA, &quot;21 Savage&quot;, &quot;Wizkid, Kyla&quot;, &quot;Halsey&quot;, NA, NA, &quot;Young Thug&quot;,
+        &quot;Swae Lee&quot;, NA, NA
     ),
-    Weeks.at.no1=c(14, 17, 14, 11, 2, 11, 1, 2, NA, NA)
+    Label = c(
+        &quot;Warner&quot;, &quot;Universal&quot;, &quot;Universal&quot;, &quot;Sony&quot;, &quot;Warner&quot;, &quot;Universal&quot;,
+        &quot;Sony&quot;, &quot;Universal&quot;, &quot;Warner&quot;, &quot;Sony&quot;
+    ),
+    Streams_Millions = c(
+        2449, 1851, 1824, 1734, 1504, 1495, 1407, 1400, 1366, 1360
+    ),
+    Release_Date = c(
+        &quot;06/01/2017&quot;, &quot;15/09/2017&quot;, &quot;05/04/2016&quot;, &quot;29/07/2016&quot;, &quot;20/06/2014&quot;,
+        &quot;19/01/2018&quot;, &quot;03/08/2017&quot;, &quot;18/10/2018&quot;, &quot;03/03/2017&quot;, &quot;09/09/2016&quot;
+    ),
+    Weeks_at_no1 = c(14, 17, 14, 11, 2, 11, 1, 2, NA, NA)
 )</code></pre>
-As you can see above, eight vectors were created using the <code>c()</code> function and each was given a name. This creates a data frame that looks like this:
+<p>As you can see above, eight vectors were created using the <code>c()</code> function and each was given a name. This creates a data frame that looks like this:</p>
 <table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -280,13 +288,13 @@ Featuring
 Label
 </th>
 <th style="text-align:right;">
-Streams.Millions
+Streams_Millions
 </th>
 <th style="text-align:left;">
-Release.Date
+Release_Date
 </th>
 <th style="text-align:right;">
-Weeks.at.no1
+Weeks_at_no1
 </th>
 </tr>
 </thead>
@@ -426,7 +434,7 @@ Warner
 6
 </td>
 <td style="text-align:left;">
-God’s Plan
+God's Plan
 </td>
 <td style="text-align:left;">
 Drake
@@ -530,7 +538,7 @@ NA
 10
 </td>
 <td style="text-align:left;">
-Say You Won’t Let Go
+Say You Won't Let Go
 </td>
 <td style="text-align:left;">
 James Arthur
@@ -553,13 +561,13 @@ NA
 </tr>
 </tbody>
 </table>
-<p>Each row and column has a name (the ‘row heading’ or the ‘column heading’) and a number (the ‘index’). So the words ‘One Dance’ are in the ‘Song’ column which is also known as column 2 (ie the column’s heading is ‘Song’ and the column’s index is 2) and they are in row 3. By default, the rows’ names are the same as their indices. You can use either the name or the index when referring to a specific row/column.</p>
+<p>Each row and column has a name (the 'row heading' or the 'column heading') and a number (the 'index'). So the words &quot;One Dance&quot; are in the 'Song' column which is also known as column 2 (ie the column's heading is 'Song' and the column's index is 2) and they are in row 3. By default, the rows' names are the same as their indices. You can use either the name or the index when referring to a specific row/column.</p>
 </div>
 <div id="quick-info-about-a-data-frame" class="section level1">
 <h1><span class="header-section-number">2</span> Quick Info About a Data Frame</h1>
-<p>Often data frames can be very large, so you don’t want to (or maybe you can’t) view the entire thing at once. Use <code>head()</code> to just see the first few rows and <code>tail()</code> to just see the last few:</p>
+<p>Often data frames can be very large, so you don't want to (or maybe you can't) view the entire thing at once. Use <code>head()</code> to just see the first few rows and <code>tail()</code> to just see the last few:</p>
 <pre class="r"><code>head(spotify)</code></pre>
-<pre><code>##   Rank              Song           Artist    Featuring     Label Streams.Millions Release.Date Weeks.at.no1
+<pre><code>##   Rank              Song           Artist    Featuring     Label Streams_Millions Release_Date Weeks_at_no1
 ## 1    1      Shape of You       Ed Sheeran         &lt;NA&gt;    Warner             2449   06/01/2017           14
 ## 2    2          Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
 ## 3    3         One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
@@ -607,11 +615,11 @@ NA
 <h1><span class="header-section-number">3</span> Columns in a Data Frame</h1>
 <div id="add-columns" class="section level2">
 <h2><span class="header-section-number">3.1</span> Add Columns</h2>
-<p>Append a vector as a new column using <code>cbind()</code>. In this case we’re appending the name of the album each song came from:</p>
-<pre class="r"><code>df = cbind(
-    spotify, Album=c(
-        '÷', 'Beerbongs &amp; Bentleys', 'Views', 'Collage', '×', 'Scorpion',
-        'Camila', &quot;Hollywood's Bleeding&quot;, '÷', 'Back from the Edge'
+<p>Append a vector as a new column using <code>cbind()</code>. In this case we're appending the name of the album each song came from:</p>
+<pre class="r"><code>df &lt;- cbind(
+    spotify, Album = c(
+        &quot;÷&quot;, &quot;Beerbongs &amp; Bentleys&quot;, &quot;Views&quot;, &quot;Collage&quot;, &quot;×&quot;, &quot;Scorpion&quot;,
+        &quot;Camila&quot;, &quot;Hollywood's Bleeding&quot;, &quot;÷&quot;, &quot;Back from the Edge&quot;
     )
 )</code></pre>
 </div>
@@ -619,47 +627,48 @@ NA
 <h2><span class="header-section-number">3.2</span> Delete Columns</h2>
 <p>We can remove columns in a few different ways:</p>
 <pre class="r"><code># Delete a specific column using its name
-df$Weeks = NULL
+df$weeks &lt;- NULL
 # Delete multiple columns by listing their names using the subset() function
-df = subset(spotify, select=-c(Rank, Song, Artist))
-# Delete multiple columns by listing their names using the select() function from the dplyr package
+df &lt;- subset(spotify, select = -c(Rank, Song, Artist))
+# Delete multiple columns by listing their names using the select() function
+# from the dplyr package
 library(dplyr)
-df = select(spotify, -c('Rank', 'Song', 'Artist'))
+df &lt;- select(spotify, -c(&quot;Rank&quot;, &quot;Song&quot;, &quot;Artist&quot;))
 # Delete multiple columns by listing their names using indexing
-df = spotify[!names(spotify) %in% c('Rank', 'Song', 'Artist')]
+df &lt;- spotify[!names(spotify) %in% c(&quot;Rank&quot;, &quot;Song&quot;, &quot;Artist&quot;)]
 # Delete columns using their indices
-df = spotify[-c(1, 3:6, 12)]</code></pre>
+df &lt;- spotify[-c(1, 3:6, 12)]</code></pre>
 </div>
 <div id="rename-columns" class="section level2">
 <h2><span class="header-section-number">3.3</span> Rename Columns</h2>
-<p>First let’s remind ourselves of what the column names are:</p>
+<p>First let's remind ourselves of what the column names are:</p>
 <pre class="r"><code>print(colnames(spotify))</code></pre>
-<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Featuring&quot;        &quot;Label&quot;            &quot;Streams.Millions&quot;
-## [7] &quot;Release.Date&quot;     &quot;Weeks.at.no1&quot;</code></pre>
+<pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Featuring&quot;        &quot;Label&quot;            &quot;Streams_Millions&quot;
+## [7] &quot;Release_Date&quot;     &quot;Weeks_at_no1&quot;</code></pre>
 <div id="rename-using-the-current-name" class="section level3">
 <h3><span class="header-section-number">3.3.1</span> Rename Using the Current Name</h3>
-<p>Now use the <code>rename()</code> function from the <code>dplyr</code> package. The format to remember with this is <code>'New' = 'Old'</code>:</p>
-<pre class="r"><code># Rename the 'Artist' column to 'Artist Name'
-df = rename(spotify, 'Artist Name' = 'Artist')
-# Rename the 'Song' column to 'Song Name'
-df = rename(df, 'Song Name' = 'Song')
-# Rename the 'Featuring' column to 'ft'
-df = rename(df, 'ft' = 'Featuring')</code></pre>
+<p>Now use the <code>rename()</code> function from the <code>dplyr</code> package. The format to remember with this is <code>&quot;New&quot; = &quot;Old&quot;</code>:</p>
+<pre class="r"><code># Rename the &quot;Artist&quot; column to &quot;Artist Name&quot;
+df &lt;- rename(spotify, &quot;Artist Name&quot; = &quot;Artist&quot;)
+# Rename the &quot;Song&quot; column to &quot;Song Name&quot;
+df &lt;- rename(df, &quot;Song Name&quot; = &quot;Song&quot;)
+# Rename the &quot;Featuring&quot; column to &quot;ft&quot;
+df &lt;- rename(df, &quot;ft&quot; = &quot;Featuring&quot;)</code></pre>
 </div>
 <div id="rename-using-the-index" class="section level3">
 <h3><span class="header-section-number">3.3.2</span> Rename Using the Index</h3>
-<p>Column 5 is called “Label” but really it contains the name of the music group that owns that artist’s record label. So let’s change the name of column 5 to “Group”:</p>
-<pre class="r"><code>colnames(df)[5] = 'Group'</code></pre>
+<p>Column 5 is called 'Label' but really it contains the name of the music group that owns that artist's record label. So let's change the name of column 5 to &quot;Group&quot;:</p>
+<pre class="r"><code>colnames(df)[5] &lt;- &quot;Group&quot;</code></pre>
 </div>
 <div id="rename-using-the-current-name-from-the-index" class="section level3">
 <h3><span class="header-section-number">3.3.3</span> Rename Using the Current Name from the Index</h3>
-<p>Let’s rename the column called “Streams.Millions” to “Millions.of.Streams”. Let’s do this by first looking up the index of the column that’s called “Streams.Millions” (it is column 6) and then renaming column 6 to “Millions.of.Streams”.</p>
-<pre class="r"><code>idx = which(names(df) == 'Streams.Millions')
-colnames(df)[idx] = 'Millions.of.Streams'</code></pre>
+<p>Let's rename the column called &quot;Streams_Millions&quot; to &quot;Millions_of_Streams&quot;. Let's do this by first looking up the index of the column that's called &quot;Streams_Millions&quot; (it is column 6) and then renaming column 6 to &quot;Millions_of_Streams&quot;.</p>
+<pre class="r"><code>idx &lt;- which(names(df) == &quot;Streams_Millions&quot;)
+colnames(df)[idx] &lt;- &quot;Millions_of_Streams&quot;</code></pre>
 <p>Check out the new names:</p>
 <pre class="r"><code>print(colnames(df))</code></pre>
 <pre><code>## [1] &quot;Rank&quot;                &quot;Song Name&quot;           &quot;Artist Name&quot;         &quot;ft&quot;                  &quot;Group&quot;              
-## [6] &quot;Millions.of.Streams&quot; &quot;Release.Date&quot;        &quot;Weeks.at.no1&quot;</code></pre>
+## [6] &quot;Millions_of_Streams&quot; &quot;Release_Date&quot;        &quot;Weeks_at_no1&quot;</code></pre>
 </div>
 </div>
 </div>
@@ -668,37 +677,37 @@ colnames(df)[idx] = 'Millions.of.Streams'</code></pre>
 <div id="add-rows" class="section level2">
 <h2><span class="header-section-number">4.1</span> Add Rows</h2>
 <p>To add a new row (or rows) create a new data frame which has the same column headings as your current data frame and include the new information you want to add:</p>
-<pre class="r"><code>new_row = data.frame(
-    Rank=11,
-    Song='Love Yourself',
-    Artist='Justin Bieber',
-    Featuring=NA,
-    Label='Universal',
-    Streams.Millions=1357,
-    Release.Date='09/11/2015',
-    Weeks.at.no1=3
+<pre class="r"><code>new_row &lt;- data.frame(
+    Rank = 11,
+    Song = &quot;Love Yourself&quot;,
+    Artist = &quot;Justin Bieber&quot;,
+    Featuring = NA,
+    Label = &quot;Universal&quot;,
+    Streams_Millions = 1357,
+    Release_Date = &quot;09/11/2015&quot;,
+    Weeks_at_no1 = 3
 )</code></pre>
 <p>Use <code>rbind()</code> to do the actual appending:</p>
-<pre class="r"><code>df = rbind(spotify, new_row)</code></pre>
+<pre class="r"><code>df &lt;- rbind(spotify, new_row)</code></pre>
 </div>
 <div id="delete-rows" class="section level2">
 <h2><span class="header-section-number">4.2</span> Delete Rows</h2>
 <pre class="r"><code># Delete multiple rows by index
-df = spotify[-c(2, 4, 6), ]
+df &lt;- spotify[-c(2, 4, 6), ]
 # Delete the first row
-df = spotify[-1, ]</code></pre>
+df &lt;- spotify[-1, ]</code></pre>
 <p>Note how the above notation works:</p>
 <ul>
 <li>The square brackets indicate that you are indexing (extracting a subset of) the data frame</li>
-<li>The minus sign before the <code>c()</code> indicates that you are ‘subtracting’ (deleting) the named columns</li>
+<li>The minus sign before the <code>c()</code> indicates that you are 'subtracting' (deleting) the named columns</li>
 <li>The lack of any column names after the comma indicates <em>all</em> columns are relevant to this operation, ie you want to delete the values in this row from all columns</li>
 </ul>
 </div>
 <div id="rename-rows" class="section level2">
 <h2><span class="header-section-number">4.3</span> Rename Rows</h2>
 <pre class="r"><code># Change the row names to be sequential numbers
-rownames(df) = NULL
-rownames(df) = 1:nrow(df)</code></pre>
+rownames(df) &lt;- NULL
+rownames(df) &lt;- seq_len(nrow(df))</code></pre>
 </div>
 </div>
 <div id="indexing-aka-selecting" class="section level1">
@@ -713,26 +722,26 @@ rownames(df) = 1:nrow(df)</code></pre>
 <h2><span class="header-section-number">5.1</span> Select Certain Columns</h2>
 <p>This is essentially the same process as deleting columns, but this time you are choosing which columns to <em>keep</em> instead of which ones to get rid of. Again, this can be done using a function:</p>
 <pre class="r"><code># Select columns by name using the subset() function
-df = subset(spotify, select=c('Rank', 'Song', 'Artist'))
+df &lt;- subset(spotify, select = c(&quot;Rank&quot;, &quot;Song&quot;, &quot;Artist&quot;))
 # Select columns by name using the select() function from the dplyr package
-df = select(spotify, c('Rank', 'Song', 'Artist'))</code></pre>
-<p>…or by using square bracket notation:</p>
+df &lt;- select(spotify, c(&quot;Rank&quot;, &quot;Song&quot;, &quot;Artist&quot;))</code></pre>
+<p>...or by using square bracket notation:</p>
 <pre class="r"><code># Select columns by name using indexing
-df = spotify[c('Rank', 'Song', 'Artist')]
+df &lt;- spotify[c(&quot;Rank&quot;, &quot;Song&quot;, &quot;Artist&quot;)]
 # Select columns by index
-df = spotify[c(1:3)]
+df &lt;- spotify[c(1:3)]
 # Select columns by matching names to a list
-df = spotify[names(spotify) %in% c('Rank', 'Song', 'Artist')]</code></pre>
-<p>…or by using dollar sign notation:</p>
+df &lt;- spotify[names(spotify) %in% c(&quot;Rank&quot;, &quot;Song&quot;, &quot;Artist&quot;)]</code></pre>
+<p>...or by using dollar sign notation:</p>
 <pre class="r"><code># Select a single column by using the dollar sign notation
-df = spotify$Song</code></pre>
+df &lt;- spotify$Song</code></pre>
 <p>Dollar sign notation can only be used to select COLUMNS. To select rows, see below:</p>
 </div>
 <div id="select-certain-rows" class="section level2">
 <h2><span class="header-section-number">5.2</span> Select Certain Rows</h2>
 <p>When you use square brackets to index a data frame, R first selects the columns you asked for and then selects the rows. Thus, if you only provide one piece of information, R assumes you are asking for columns. So this code: <code>spotify[c(1:3)]</code> will select COLUMNS 1, 2 and 3 because you only provided one vector. If you want to select ROWS 1, 2 and 3, you need to provide two pieces of information: the columns that you want (in this case, all of them) and the rows that you want (1, 2 and 3) in the format <code>spotify[&lt;rows&gt;, &lt;columns&gt;]</code>:</p>
 <pre class="r"><code># Select certain rows by index
-df = spotify[c(1, 2, 3), ]</code></pre>
+df &lt;- spotify[c(1, 2, 3), ]</code></pre>
 <p>Notice that, because we wanted all the columns, we left the <code>&lt;columns&gt;</code> portion of the indexing blank. But we still needed to include the blank portion because otherwise R would have assumed we were asking for columns! In summary:</p>
 <ul>
 <li><code>spotify[c(1:3)]</code> selects COLUMNS 1 to 3</li>
@@ -743,13 +752,12 @@ df = spotify[c(1, 2, 3), ]</code></pre>
 <h2><span class="header-section-number">5.3</span> Select a Single Cell</h2>
 <p>Looking up a value in a particular cell in the table is essentially a combination of the above: selecting a certain column and a certain row and seeing what is at their intersection. Again, the format to use is <code>spotify[&lt;rows&gt;, &lt;columns&gt;]</code>:</p>
 <pre class="r"><code># Select a single cell
-df = spotify[4, 'Song']
+df &lt;- spotify[4, &quot;Song&quot;]
 print(df)</code></pre>
-<pre><code>## [1] Closer
-## 10 Levels: Closer God's Plan Havana One Dance Perfect Rockstar Say You Won't Let Go Shape of You ... Thinking Out Loud</code></pre>
-<p>Notice that, despite the fact you’ve only selected one cell, R remembers the other values in the column and prints them as “Levels” in the output above. That is because the single cell you’ve selected is still a data frame, it’s just a very small one, and so all the ‘structure’ of the original object is still there. To remove this, explicitly convert the cell’s contents to a character object:</p>
+<pre><code>## [1] &quot;Closer&quot;</code></pre>
+<p>Notice that, despite the fact you've only selected one cell, R remembers the other values in the column and prints them as 'Levels' in the output above. That is because the single cell you've selected is still a data frame, it's just a very small one, and so all the 'structure' of the original object is still there. To remove this, explicitly convert the cell's contents to a character object:</p>
 <pre class="r"><code># Select a single cell
-df = as.character(spotify$'Song'[4])
+df &lt;- as.character(spotify$&quot;Song&quot;[4])
 print(df)</code></pre>
 <pre><code>## [1] &quot;Closer&quot;</code></pre>
 <p>See how only the name of the song is printed. Also note that a slightly different method of indexing was used in that second example: the doller sign <code>$</code> is used to select an entire column before the square brackets are used to select a single element of that column.</p>
@@ -757,17 +765,17 @@ print(df)</code></pre>
 </div>
 <div id="searching-finding-filtering" class="section level1">
 <h1><span class="header-section-number">6</span> Searching, Finding, Filtering</h1>
-<p>While indexing/selecting is something you do when you know exactly which row(s) and column(s) you want, sometimes you do NOT know exact what you want. Instead, you first need to search through the data frame to find the information you are looking for. Then you can subset the data frame to filter out any information you don’t want:</p>
+<p>While indexing/selecting is something you do when you know exactly which row(s) and column(s) you want, sometimes you do NOT know exact what you want. Instead, you first need to search through the data frame to find the information you are looking for. Then you can subset the data frame to filter out any information you don't want:</p>
 <ul>
-<li>‘Search’ the data frame to see if the data you are looking for exists
+<li>'Search' the data frame to see if the data you are looking for exists
 <ul>
-<li>The result will be a boolean (ie TRUE/FALSE): the data was either found or it wasn’t</li>
+<li>The result will be a boolean (ie TRUE/FALSE): the data was either found or it wasn't</li>
 </ul></li>
-<li>‘Find’ the data if it does exist
+<li>'Find' the data if it does exist
 <ul>
 <li>The result will be the location of the data</li>
 </ul></li>
-<li>‘Filter’ the data frame so that it only contains what you want
+<li>'Filter' the data frame so that it only contains what you want
 <ul>
 <li>The result will be a new data frame, smaller than the original one, containing only the data you want</li>
 </ul></li>
@@ -776,24 +784,24 @@ print(df)</code></pre>
 <h2><span class="header-section-number">6.1</span> Searching</h2>
 <p>Does a column contain a certain value? For example, is there a song by The Chainsmokers in the Spotify top 10?</p>
 <pre class="r"><code># Does a column contain a certain value?
-bool = 'The Chainsmokers' %in% spotify$'Artist'
+bool &lt;- &quot;The Chainsmokers&quot; %in% spotify$&quot;Artist&quot;
 print(bool)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 <p>You can also search an entire column at once, ie search each row. For example, for each artist in the top 10, are they signed to a Universal Music Group label?</p>
 <pre class="r"><code># Does the rows contain a certain value?
-bool = (spotify$Label == 'Universal')
+bool &lt;- (spotify$Label == &quot;Universal&quot;)
 print(bool)</code></pre>
 <pre><code>##  [1] FALSE  TRUE  TRUE FALSE FALSE  TRUE FALSE  TRUE FALSE FALSE</code></pre>
 <p>Instead of searching through the data in a column you can also search through the names of the columns to see if the one you are looking for has been created yet. For example, has a column been created that contains the number of weeks a song was at number one for?</p>
 <pre class="r"><code># Is there a column with a certain name?
-bool = 'Weeks.at.no1' %in% colnames(spotify)
+bool &lt;- &quot;Weeks_at_no1&quot; %in% colnames(spotify)
 print(bool)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
 </div>
 <div id="finding" class="section level2">
 <h2><span class="header-section-number">6.2</span> Finding</h2>
-<p>‘Finding’ is similar to ‘searching’ except you get the locations of the matches, not just whether or not they exist. For example, what position in the top 10 is Camila Cabello’s song ‘Havana’?</p>
-<pre class="r"><code>idx = match('Havana', spotify$'Song')
+<p>'Finding' is similar to 'searching' except you get the locations of the matches, not just whether or not they exist. For example, what position in the top 10 is Camila Cabello's song &quot;Havana&quot;?</p>
+<pre class="r"><code>idx &lt;- match(&quot;Havana&quot;, spotify$&quot;Song&quot;)
 print(idx)</code></pre>
 <pre><code>## [1] 7</code></pre>
 </div>
@@ -803,31 +811,35 @@ print(idx)</code></pre>
 <div id="filter-using-subset" class="section level3">
 <h3><span class="header-section-number">6.3.1</span> Filter Using <code>subset()</code></h3>
 <p>You can filter out rows that do not meet a single condition, eg if I am only interested in Ed Sheeran (which I am &lt;3):</p>
-<pre class="r"><code>df = subset(spotify, Artist == 'Ed Sheeran')</code></pre>
-<p>Or you can filter out rows that do not meet multiple conditions, eg if I am only interested in Ed’s most popular songs:</p>
-<pre class="r"><code>df = subset(spotify, Artist == 'Ed Sheeran' &amp; Streams.Millions &gt;= 1500)</code></pre>
+<pre class="r"><code>df &lt;- subset(spotify, Artist == &quot;Ed Sheeran&quot;)</code></pre>
+<p>Or you can filter out rows that do not meet multiple conditions, eg if I am only interested in Ed's most popular songs:</p>
+<pre class="r"><code>df &lt;- subset(spotify, Artist == &quot;Ed Sheeran&quot; &amp; Streams_Millions &gt;= 1500)</code></pre>
 <p>You can keep all rows that meet any one of two+ conditions, eg if I am interested in Ed and all popular songs:</p>
-<pre class="r"><code>df = subset(spotify, Artist == 'Ed Sheeran' | Streams.Millions &gt;= 1500)</code></pre>
-<p>Or you can keep all rows that meet one condition or another condition BUT NOT BOTH (ie you can apply an ‘exclusive or’ condition), eg if I am interested in Post Malone’s songs and songs which feature Swae Lee, but happen to not like Sunflower:</p>
-<pre class="r"><code>df = subset(spotify, xor(Artist == 'Post Malone', Featuring == 'Swae Lee'))</code></pre>
+<pre class="r"><code>df &lt;- subset(spotify, Artist == &quot;Ed Sheeran&quot; | Streams_Millions &gt;= 1500)</code></pre>
+<p>Or you can keep all rows that meet one condition or another condition BUT NOT BOTH (ie you can apply an 'exclusive or' condition), eg if I am interested in Post Malone's songs and songs which feature Swae Lee, but happen to not like Sunflower:</p>
+<pre class="r"><code>df &lt;- subset(spotify, xor(Artist == &quot;Post Malone&quot;, Featuring == &quot;Swae Lee&quot;))</code></pre>
 </div>
 <div id="filter-using-filter-from-the-dplyr-library" class="section level3">
 <h3><span class="header-section-number">6.3.2</span> Filter Using <code>filter()</code> from the <code>dplyr</code> library</h3>
 <p>You can do the exact same as above with the <code>filter()</code> function:</p>
 <pre class="r"><code>library(dplyr)
-df = filter(spotify, Artist == 'Ed Sheeran')
-df = filter(spotify, Artist == 'Ed Sheeran' &amp; Streams.Millions &gt;= 1500)
-df = filter(spotify, Artist == 'Ed Sheeran' | Streams.Millions &gt;= 1500)
-df = filter(spotify, xor(Artist == 'Post Malone', Featuring == 'Swae Lee'))</code></pre>
+
+df &lt;- filter(spotify, Artist == &quot;Ed Sheeran&quot;)
+df &lt;- filter(spotify, Artist == &quot;Ed Sheeran&quot; &amp; Streams_Millions &gt;= 1500)
+df &lt;- filter(spotify, Artist == &quot;Ed Sheeran&quot; | Streams_Millions &gt;= 1500)
+df &lt;- filter(spotify, xor(Artist == &quot;Post Malone&quot;, Featuring == &quot;Swae Lee&quot;))</code></pre>
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
 </div>
 <div id="find-the-proportion-of-rows-that-meet-a-criteria" class="section level3">
 <h3><span class="header-section-number">6.3.3</span> Find the Proportion of Rows That Meet a Criteria</h3>
 <p>What proportion of the top 10 songs have over 1 700 million streams?</p>
-<pre class="r"><code>df = subset(spotify, Streams.Millions &gt;= 1700)
-proportion = nrow(df) / nrow(spotify)
-percentage = nrow(df) / nrow(spotify) * 100
-printf('Number of songs with over 1 700 million streams: %s (%3.1f or %3.1f%%)', nrow(df), proportion, percentage)</code></pre>
+<pre class="r"><code>df &lt;- subset(spotify, Streams_Millions &gt;= 1700)
+proportion &lt;- nrow(df) / nrow(spotify)
+percentage &lt;- nrow(df) / nrow(spotify) * 100
+printf(
+    &quot;Number of songs with over 1 700 million streams: %s (%3.1f or %3.1f%%)&quot;,
+    nrow(df), proportion, percentage
+)</code></pre>
 <pre><code>## Number of songs with over 1 700 million streams: 4 (0.4 or 40.0%)</code></pre>
 <p>Note that the <code>printf()</code> function that was used above comes from the R.utils library.</p>
 </div>
@@ -842,17 +854,17 @@ printf('Number of songs with over 1 700 million streams: %s (%3.1f or %3.1f%%)',
 </ul>
 <div id="remove-rows-with-missing-data" class="section level2">
 <h2><span class="header-section-number">7.1</span> Remove Rows with Missing Data</h2>
-<p>To remove all songs in the data frame that do not have a featuring artist (ie their value in the “Featuring” column is <code>&lt;NA&gt;</code>):</p>
+<p>To remove all songs in the data frame that do not have a featuring artist (ie their value in the &quot;Featuring&quot; column is <code>&lt;NA&gt;</code>):</p>
 <ul>
-<li>Take the column called “Featuring” from the spotify data frame: <code>spotify['Featuring']</code>.</li>
-<li>Ask the question “Is the value equal to <code>&lt;NA&gt;</code>” for each row in that column. This is done by the <code>is.na()</code> function.</li>
-<li>We want to find the rows that do NOT contain a null, but the function <code>is.na()</code> tells us which ones DO contain a null. So we need to inverse the question. This is done with the ‘not’ operator, which is an exclamation mark: <code>!()</code></li>
+<li>Take the column called &quot;Featuring&quot; from the spotify data frame: <code>spotify[&quot;Featuring&quot;]</code>.</li>
+<li>Ask the question &quot;Is the value equal to <code>&lt;NA&gt;</code>?&quot; for each row in that column. This is done by the <code>is.na()</code> function.</li>
+<li>We want to find the rows that do NOT contain a null, but the function <code>is.na()</code> tells us which ones DO contain a null. So we need to inverse the question. This is done with the 'not' operator, which is an exclamation mark: <code>!()</code></li>
 <li>Select only the rows from the spotify data frame that passed this logical test (ie those that do not contain a null) but include all columns: <code>spotify[&lt;rows&gt;, &lt;columns&gt;]</code></li>
 <li>Assign the output to a new data frame <code>df</code></li>
 </ul>
-<pre class="r"><code>df = spotify[!(is.na(spotify['Featuring'])),]
+<pre class="r"><code>df &lt;- spotify[!(is.na(spotify[&quot;Featuring&quot;])), ]
 print(df)</code></pre>
-<pre><code>##   Rank      Song           Artist    Featuring     Label Streams.Millions Release.Date Weeks.at.no1
+<pre><code>##   Rank      Song           Artist    Featuring     Label Streams_Millions Release_Date Weeks_at_no1
 ## 2    2  Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
 ## 3    3 One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
 ## 4    4    Closer The Chainsmokers       Halsey      Sony             1734   29/07/2016           11
@@ -862,12 +874,12 @@ print(df)</code></pre>
 </div>
 <div id="standardise-column-headings" class="section level2">
 <h2><span class="header-section-number">7.2</span> Standardise Column Headings</h2>
-<p>If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It’s good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:</p>
-<pre class="r"><code>names(df) = gsub('\\.', '_', names(df))
+<p>If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It's good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:</p>
+<pre class="r"><code>names(df) &lt;- gsub(&quot;\\.&quot;, &quot;_&quot;, names(df))
 print(names(df))</code></pre>
 <pre><code>## [1] &quot;Rank&quot;             &quot;Song&quot;             &quot;Artist&quot;           &quot;Featuring&quot;        &quot;Label&quot;            &quot;Streams_Millions&quot;
 ## [7] &quot;Release_Date&quot;     &quot;Weeks_at_no1&quot;</code></pre>
-<p>The columns “Streams.Millions” and “Release.Date” have been changed to “Streams_Millions” and “Release_Date”.</p>
+<p>The columns &quot;Streams_Millions&quot; and &quot;Release_Date&quot; have been changed to &quot;Streams_Millions&quot; and &quot;Release_Date&quot;.</p>
 </div>
 </div>
 <div id="sorting" class="section level1">
@@ -876,20 +888,20 @@ print(names(df))</code></pre>
 <div id="ascending-order" class="section level2">
 <h2><span class="header-section-number">8.1</span> Ascending Order</h2>
 <p>First sort alphabetically by artist name, then in order of number of streams:</p>
-<pre class="r"><code>df = arrange(spotify, Artist, Streams.Millions)</code></pre>
+<pre class="r"><code>df &lt;- arrange(spotify, Artist, Streams_Millions)</code></pre>
 </div>
 <div id="descending-order" class="section level2">
 <h2><span class="header-section-number">8.2</span> Descending Order</h2>
 <p>Sort into reverse alphabetical order:</p>
-<pre class="r"><code>df = arrange(spotify, desc(Artist))</code></pre>
+<pre class="r"><code>df &lt;- arrange(spotify, desc(Artist))</code></pre>
 </div>
 </div>
 <div id="creating-new-columns-from-existing-columns" class="section level1">
 <h1><span class="header-section-number">9</span> Creating New Columns From Existing Columns</h1>
 <div id="concatenate-strings" class="section level2">
 <h2><span class="header-section-number">9.1</span> Concatenate Strings</h2>
-<pre class="r"><code>spotify['Song and Artist'] = paste(spotify$Song, 'by', spotify$Artist)
-print(spotify[c('Song', 'Artist', 'Song and Artist')])</code></pre>
+<pre class="r"><code>spotify[&quot;Song and Artist&quot;] &lt;- paste(spotify$Song, &quot;by&quot;, spotify$Artist)
+print(spotify[c(&quot;Song&quot;, &quot;Artist&quot;, &quot;Song and Artist&quot;)])</code></pre>
 <pre><code>##                    Song           Artist                      Song and Artist
 ## 1          Shape of You       Ed Sheeran           Shape of You by Ed Sheeran
 ## 2              Rockstar      Post Malone              Rockstar by Post Malone
@@ -905,9 +917,9 @@ print(spotify[c('Song', 'Artist', 'Song and Artist')])</code></pre>
 <div id="perform-calculations" class="section level2">
 <h2><span class="header-section-number">9.2</span> Perform Calculations</h2>
 <p>To estimate the number of days each song was at number one for, multiple the number of weeks it was at number one by 7:</p>
-<pre class="r"><code>df = mutate(spotify, Days.at.no1=Weeks.at.no1 * 7)
-print(df[c('Song', 'Artist', 'Weeks.at.no1', 'Days.at.no1')])</code></pre>
-<pre><code>##                    Song           Artist Weeks.at.no1 Days.at.no1
+<pre class="r"><code>df &lt;- mutate(spotify, Days.at.no1 = Weeks_at_no1 * 7)
+print(df[c(&quot;Song&quot;, &quot;Artist&quot;, &quot;Weeks_at_no1&quot;, &quot;Days.at.no1&quot;)])</code></pre>
+<pre><code>##                    Song           Artist Weeks_at_no1 Days.at.no1
 ## 1          Shape of You       Ed Sheeran           14          98
 ## 2              Rockstar      Post Malone           17         119
 ## 3             One Dance            Drake           14          98
@@ -924,33 +936,33 @@ print(df[c('Song', 'Artist', 'Weeks.at.no1', 'Days.at.no1')])</code></pre>
 <h1><span class="header-section-number">10</span> Iterate over a Column</h1>
 <p>Sometimes, instead of performing an operation on an entire column you want to go row-by-row and do something different in each. For this we can iterate over all values in order. For example, if we want to get the average number of streams for each artist:</p>
 <pre class="r"><code># Initialise a new vector to contain the output
-average_streams = vector()
+average_streams &lt;- vector()
 # Get a list of all the artists in the data frame
-artists = unique(spotify['Artist'])
+artists &lt;- unique(spotify[&quot;Artist&quot;])
 # Iterate over the Artist column
-for (i in 1:nrow(artists)) {
+for (i in 1:seq_along(artists)) {
     # For each artist in the data frame:
-    artist = artists[i, 'Artist']
+    artist &lt;- artists[i, &quot;Artist&quot;]
 
     # Option 1 (doesn't use dplyr)
-    # this_artist_only = spotify[spotify$Artist == artist, ]
+    this_artist_only &lt;- spotify[spotify$Artist == artist, ]
     # Option 2 (uses dplyr)
-    this_artist_only = filter(spotify, Artist == artist)
+    this_artist_only &lt;- filter(spotify, Artist == artist)
 
-    average_streams_this_artist = mean(this_artist_only[, 'Streams.Millions'])
-    average_streams = c(average_streams, average_streams_this_artist)
+    average_streams_this_artist &lt;- mean(this_artist_only[, &quot;Streams_Millions&quot;])
+    average_streams &lt;- c(average_streams, average_streams_this_artist)
 }
 
 # Combine the results into a new data frame
-average_streams_df = data.frame(
-    Artist=artists,
-    Average.Streams.Millions=average_streams
+average_streams_df &lt;- data.frame(
+    Artist = artists,
+    Average.Streams_Millions = average_streams
 )</code></pre>
-<p>Now let’s take a look at the results:</p>
-<pre class="r"><code>kable_input = kable(average_streams_df)
+<p>Now let's take a look at the results:</p>
+<pre class="r"><code>kable_input &lt;- kable(average_streams_df)
 kable_styling(
-    kable_input, bootstrap_options=c('striped', 'hover', 'condensed'),
-    full_width=F
+    kable_input, bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
+    full_width = F
 )</code></pre>
 <table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
@@ -961,7 +973,7 @@ kable_styling(
 Artist
 </th>
 <th style="text-align:right;">
-Average.Streams.Millions
+Average.Streams_Millions
 </th>
 </tr>
 </thead>
@@ -974,7 +986,7 @@ Average.Streams.Millions
 Ed Sheeran
 </td>
 <td style="text-align:right;">
-1773.0
+1773
 </td>
 </tr>
 <tr>
@@ -985,7 +997,7 @@ Ed Sheeran
 Post Malone
 </td>
 <td style="text-align:right;">
-1625.5
+1773
 </td>
 </tr>
 <tr>
@@ -996,7 +1008,7 @@ Post Malone
 Drake
 </td>
 <td style="text-align:right;">
-1659.5
+1773
 </td>
 </tr>
 <tr>
@@ -1007,7 +1019,7 @@ Drake
 The Chainsmokers
 </td>
 <td style="text-align:right;">
-1734.0
+1773
 </td>
 </tr>
 <tr>
@@ -1018,7 +1030,7 @@ The Chainsmokers
 Camila Cabello
 </td>
 <td style="text-align:right;">
-1407.0
+1773
 </td>
 </tr>
 <tr>
@@ -1029,7 +1041,7 @@ Camila Cabello
 James Arthur
 </td>
 <td style="text-align:right;">
-1360.0
+1773
 </td>
 </tr>
 </tbody>
@@ -1037,49 +1049,49 @@ James Arthur
 <div id="iterate-over-two-columns" class="section level2">
 <h2><span class="header-section-number">10.1</span> Iterate over Two Columns</h2>
 <pre class="r"><code># Initialise new vectors to contain the output
-groups = vector()
-averages = vector()
+groups &lt;- vector()
+averages &lt;- vector()
 
 # Set the variables you are looking at
-variables = c('Rank', 'Streams.Millions')
+variables &lt;- c(&quot;Rank&quot;, &quot;Streams_Millions&quot;)
 
 # Iterate over the variables vector
 for (j in variables) {
     # Iterate over the Study column
-    artists = unique(df['Artist'])
-    for (i in 1:nrow(artists)) {
-        artist = artists[i, 'Artist']
+    artists &lt;- unique(df[&quot;Artist&quot;])
+    for (i in seq_along(artists)) {
+        artist &lt;- artists[i, &quot;Artist&quot;]
 
         # Option 1 (doesn't use dplyr)
-        # this_artist_only = spotify[spotify$Artist == study, ]
+        this_artist_only &lt;- spotify[spotify$Artist == artist, ]
         # Option 2 (uses dplyr)
-        this_artist_only = filter(spotify, Artist == artist)
+        this_artist_only &lt;- filter(spotify, Artist == artist)
 
-        average = mean(this_artist_only[, j])
+        average &lt;- mean(this_artist_only[, j])
         # Update output columns
-        groups = c(groups, as.character(artist))
-        averages = c(averages, average)
+        groups &lt;- c(groups, as.character(artist))
+        averages &lt;- c(averages, average)
     }
 }
 
 # Combine
-df_out = data.frame(
-    'Group' = groups,
-    'Average' = averages
+df_out &lt;- data.frame(
+    &quot;group&quot; &lt;- groups,
+    &quot;average&quot; &lt;- averages
 )
-kable_input = kable(df_out)
+kable_input &lt;- kable(df_out)
 kable_styling(
-    kable_input, bootstrap_options=c('striped', 'hover', 'condensed'),
-    full_width=F
+    kable_input, bootstrap_options = c(&quot;striped&quot;, &quot;hover&quot;, &quot;condensed&quot;),
+    full_width = F
 )</code></pre>
 <table class="table table-striped table-hover table-condensed" style="width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;">
-Group
+X.group.....groups
 </th>
 <th style="text-align:right;">
-Average
+X.average.....averages
 </th>
 </tr>
 </thead>
@@ -1089,47 +1101,7 @@ Average
 Ed Sheeran
 </td>
 <td style="text-align:right;">
-5.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Post Malone
-</td>
-<td style="text-align:right;">
-5.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Drake
-</td>
-<td style="text-align:right;">
-4.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-The Chainsmokers
-</td>
-<td style="text-align:right;">
-4.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Camila Cabello
-</td>
-<td style="text-align:right;">
-7.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-James Arthur
-</td>
-<td style="text-align:right;">
-10.0
+5
 </td>
 </tr>
 <tr>
@@ -1137,47 +1109,7 @@ James Arthur
 Ed Sheeran
 </td>
 <td style="text-align:right;">
-1773.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Post Malone
-</td>
-<td style="text-align:right;">
-1625.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Drake
-</td>
-<td style="text-align:right;">
-1659.5
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-The Chainsmokers
-</td>
-<td style="text-align:right;">
-1734.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Camila Cabello
-</td>
-<td style="text-align:right;">
-1407.0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-James Arthur
-</td>
-<td style="text-align:right;">
-1360.0
+1773
 </td>
 </tr>
 </tbody>

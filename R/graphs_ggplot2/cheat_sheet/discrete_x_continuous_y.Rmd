@@ -14,30 +14,30 @@ library(ggplot2)
 ```
 
 ### Columns
-```{r, message=FALSE}
-p = ggplot(mpg, aes(class, hwy))
-p = p + geom_col()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(class, hwy))
+p <- p + geom_col()
 print(p)
 ```
 
 ### Box Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(class, hwy))
-p = p + geom_boxplot()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(class, hwy))
+p <- p + geom_boxplot()
 print(p)
 ```
 
 ### Dot Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(class, hwy))
-p = p + geom_dotplot(binaxis='y', stackdir='center', dotsize=0.3)
+```{r message = FALSE}
+p <- ggplot(mpg, aes(class, hwy))
+p <- p + geom_dotplot(binaxis = "y", stackdir = "center", dotsize = 0.3)
 print(p)
 ```
 
 ### Violin Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(class, hwy))
-p = p + geom_violin(scale='area')
+```{r message = FALSE}
+p <- ggplot(mpg, aes(class, hwy))
+p <- p + geom_violin(scale = "area")
 print(p)
 ```
 

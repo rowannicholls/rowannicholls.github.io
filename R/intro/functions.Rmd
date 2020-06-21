@@ -19,15 +19,17 @@ Built-In Functions
 When you download and open R for the first time you have access to all of the functions in the _base_ library. These include all the ones you use most often. A complete list can be found on [this](https://stat.ethz.ch/R-manual/R-devel/library/base/html/00Index.html) page.
 
 Here are some of the functions included in base R:
-```{r, results='hide'}
+
+```{r results = "hide"}
 # Replace all instances of a substring in a string
-gsub('2', 'to', '2 be or not 2 be')
+gsub("2", "to", "2 be or not 2 be")
 # Replace the first instance of a substring in a string
-sub('quest', 'question', 'that is the quest')
-# Create a file path by adding in "/" on macOS and Linux and "\" on Windows between the words
-file.path('Desktop', 'New Folder', 'Memes')
+sub("quest", "question", "that is the quest")
+# Create a file path by adding in "/" on macOS and Linux and "\" on Windows
+# between the words
+file.path("Desktop", "New Folder", "Memes")
 # List the files in a folder
-list.files('.')
+list.files(".")
 # Create a vector
 c(12, 18, 15, 13)
 # Take the mean (average) of the given numbers
@@ -48,10 +50,10 @@ library(ggplot2)
 These give us access to hundreds of new functions, including `dnorm()` (which produces the density of a Normal distribution at given points) and `ggplot()` (which produces nice graphs):
 
 ```{r}
-x = seq(-4, 4, by=0.05)
-df = data.frame(
-    x=x,
-    y=stats::dnorm(x, mean=0, sd=1)
+x <- seq(-4, 4, by = 0.05)
+df <- data.frame(
+    x = x,
+    y = stats::dnorm(x, mean = 0, sd = 1)
 )
 ggplot2::ggplot(df) + ggplot2::geom_point(aes(x, y))
 ```
@@ -62,38 +64,53 @@ Custom Functions
 ----------------
 Take a look at the following code which records the amount of time it took four people to run 5 km and converts these into speed in km/hr:
 
-```{r, message=FALSE, results='hold'}
+```{r message = FALSE, results = "hold"}
 library(chron)
 
-distance = 5  # km
-runner_1 = '00:18:47'
-runner_2 = '00:19:03'
-runner_3 = '00:19:20'
-runner_4 = '00:19:54'
+distance <- 5  # km
+runner_1 <- "00:18:47"
+runner_2 <- "00:19:03"
+runner_3 <- "00:19:20"
+runner_4 <- "00:19:54"
 
-speed_runner_1 = as.numeric(distance / times(runner_1) / 24)
-speed_runner_2 = as.numeric(distance / times(runner_2) / 24)
-speed_runner_3 = as.numeric(distance / times(runner_3) / 24)
-speed_runner_4 = as.numeric(distance / times(runner_4) / 24)
+speed_runner_1 <- as.numeric(distance / times(runner_1) / 24)
+speed_runner_2 <- as.numeric(distance / times(runner_2) / 24)
+speed_runner_3 <- as.numeric(distance / times(runner_3) / 24)
+speed_runner_4 <- as.numeric(distance / times(runner_4) / 24)
 
-sprintf('Runner 1 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_1, speed_runner_1)
-sprintf('Runner 2 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_2, speed_runner_2)
-sprintf('Runner 3 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_3, speed_runner_3)
-sprintf('Runner 4 ran %s km in %s at a speed of %5.2f km/hr', distance, runner_4, speed_runner_4)
+sprintf(
+    "Runner 1 ran %s km in %s at a speed of %5.2f km/hr",
+    distance, runner_1, speed_runner_1
+)
+sprintf(
+    "Runner 2 ran %s km in %s at a speed of %5.2f km/hr",
+    distance, runner_2, speed_runner_2
+)
+sprintf(
+    "Runner 3 ran %s km in %s at a speed of %5.2f km/hr",
+    distance, runner_3, speed_runner_3
+)
+sprintf(
+    "Runner 4 ran %s km in %s at a speed of %5.2f km/hr",
+    distance, runner_4, speed_runner_4
+)
 ```
 
 Although the code works fine there is an awful lot of repetition! There is a principle in programming called DRY: don't repeat yourself. In general, if you find yourself copy-pasting code from within your own script or performing the same calculation more that twice you should consider moving it to it's own function:
 
 ```{r}
-time_to_speed = function(i, time, distance) {
-    speed = as.numeric(distance / times(time) / 24)
-    msg = sprintf('Runner %s ran %s km in %s at a speed of %5.2f km/hr', i, distance, time, speed)
+time_to_speed <- function(i, time, distance) {
+    speed <- as.numeric(distance / times(time) / 24)
+    msg <- sprintf(
+        "Runner %s ran %s km in %s at a speed of %5.2f km/hr",
+        i, distance, time, speed
+    )
     print(msg)
 }
 
-distance = 5  # km
-times = c('00:18:47', '00:19:03', '00:19:20', '00:19:54')
-for (i in 1:length(times)) {
+distance <- 5  # km
+times <- c("00:18:47", "00:19:03", "00:19:20", "00:19:54")
+for (i in seq_along(times)) {
     time_to_speed(i, times[i], distance)
 }
 ```
@@ -118,4 +135,5 @@ Summary
 - The cleanest code will have functions in __separate files__ and then import them into the main script.
 
 [⇦ Back](../../R.html)
+
 </font>

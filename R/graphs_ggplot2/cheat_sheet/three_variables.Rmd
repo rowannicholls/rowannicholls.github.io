@@ -14,26 +14,26 @@ library(ggplot2)
 ```
 
 ### Contour Map
-```{r, message=FALSE}
-seals$z = with(seals, sqrt(delta_long^2 + delta_lat^2))
-p = ggplot(seals, aes(long, lat))
-p = p + geom_contour(aes(z=z))
+```{r, message = FALSE}
+seals$z <- with(seals, sqrt(delta_long^2 + delta_lat^2))
+p <- ggplot(seals, aes(long, lat))
+p <- p + geom_contour(aes(z = z))
 print(p)
 ```
 
 ### Raster Map
-```{r, message=FALSE}
-seals$z = with(seals, sqrt(delta_long^2 + delta_lat^2))
-p = ggplot(seals, aes(long, lat))
-p = p + geom_raster(aes(fill=z))
+```{r, message = FALSE}
+seals$z <- with(seals, sqrt(delta_long^2 + delta_lat^2))
+p <- ggplot(seals, aes(long, lat))
+p <- p + geom_raster(aes(fill = z))
 print(p)
 ```
 
 ### Tile Map
-```{r, message=FALSE}
-seals$z = with(seals, sqrt(delta_long^2 + delta_lat^2))
-p = ggplot(seals, aes(long, lat))
-p = p + geom_tile(aes(fill=z))
+```{r, message = FALSE}
+seals$z <- with(seals, sqrt(delta_long^2 + delta_lat^2))
+p <- ggplot(seals, aes(long, lat))
+p <- p + geom_tile(aes(fill = z))
 print(p)
 ```
 

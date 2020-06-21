@@ -14,13 +14,16 @@ output:
 
 > A chi-squared test is used for **discrete, categorical data**. For example: medical data that includes people who are sick and people who are healthy, demographic data comparing people who are male and female, assessment data where people either passed or failed, etc. These tests are not relevant for continuous data, ie where each measurement/observation in the dataset is a 'value' (eg a percentage, a height in cm, a weight in kg, etc).
 
-```{r, echo=FALSE}
+```{r echo = FALSE}
 library(DiagrammeR)
 DiagrammeR::grViz(
     "digraph statistical_tests {
         rankdir='LR'
 
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+        node [
+            fontname=Helvetica, shape=box, width=5, fontsize=42,
+            fillcolor=white, style=filled
+        ]
                 'Continuous data'
                     'Differences'
                         'Means'
@@ -32,7 +35,9 @@ DiagrammeR::grViz(
                                 TGNonparametric [label='Nonparametric']
                                     TGIndependent [label='Independent groups']
                                         'Mann-Whitney U test'
-                                    TGNonindependent [label='Non-independent groups']
+                                    TGNonindependent [
+                                        label='Non-independent groups'
+                                    ]
                                         'Wilcoxon signed-rank test'
                             'More than two groups'
                                 MGParametric [label='Parametric']
@@ -40,7 +45,9 @@ DiagrammeR::grViz(
                                 MGNonparametric [label='Nonparametric']
                                     MGIndependent [label='Independent groups']
                                         'Kruskal-Wallis one-way ANOVA'
-                                    MGNonindependent [label='Non-independent groups']
+                                    MGNonindependent [
+                                        label='Non-independent groups'
+                                    ]
                                         'Friedman two-way ANOVA'
                         'Variances'
                     'Relationships'
@@ -54,7 +61,10 @@ DiagrammeR::grViz(
                                 RNonparametric [label='Nonparametric']
                                     'Spearman Rank Correlation'
 
-        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]
+        node [
+            fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue,
+            style=filled, fontsize=42
+        ]
             'Hypothesis'
                 'Discrete, categorical data'
                     'Chi-squared goodness-of-fit test'
@@ -98,7 +108,8 @@ DiagrammeR::grViz(
                 'Relationships' -> RNonindependent
                     RNonindependent -> 'Correlation analysis'
                         'Correlation analysis' -> RParametric
-                            RParametric -> 'Pearson product-moment r correlation'
+                            RParametric ->
+                                'Pearson product-moment r correlation'
                         'Correlation analysis' -> RNonparametric
                             RNonparametric -> 'Spearman Rank Correlation'
         'Hypothesis' -> 'Discrete, categorical data'
@@ -110,7 +121,7 @@ DiagrammeR::grViz(
     fontsize=70;
     label='Flowchart for Choosing a Statistical Test';
     }",
-    height=400, width=900
+    height = 400, width = 900
 )
 ```
 
@@ -132,21 +143,21 @@ Wikipedia Example
 -----------------
 The following example comes from [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit#Pearson's_chi-squared_test). If you randomly picked 100 people out of a population and 44 were male, is that population 50% male? You would have *observed* 44 males and 56 females, but your *expectation* would have been 50 males and 50 females. There are more than 5 samples in each group and the data is categorical (in this case it is *binary* - either male or female), as opposed to each data point being a measurement, so a chi-squared test can be considered. Take a look at how the information is entered into the `chisquare()` function in order to test the goodness-of-fit of your sample to the expected distribution:
 
-```{r, eval=FALSE}
+```{r eval = FALSE}
 # THE R.utils LIBRARY IS NEEDED FOR printf()
 library(R.utils)
 
-result = chisq.test(c(44, 56), p=c(1/2, 1/2))
-printf('p = %.2f', round(result$p.value, 2))
+result <- chisq.test(c(44, 56), p = c(1 / 2, 1 / 2))
+printf("p = %.2f", round(result$p.value, 2))
 ```
 
-```{r, message=FALSE, echo=FALSE}
+```{r message = FALSE, echo = FALSE}
 library(R.utils)
 ```
 
-```{r, echo=FALSE}
-result = chisq.test(c(44, 56), p=c(1/2, 1/2))
-printf('p = %.2f', round(result$p.value, 2))
+```{r echo = FALSE}
+result <- chisq.test(c(44, 56), p = c(1 / 2, 1 / 2))
+printf("p = %.2f", round(result$p.value, 2))
 ```
 
 As you can see, the `chisq.test()` statement takes the numbers that were *observed* in a vector as the first argument and the proportions that were *expected* in a vector as the "p" keyword argument. The p-value of 0.23 suggests that there is a 23% chance that the population is 50% male/female.
@@ -154,26 +165,26 @@ As you can see, the `chisq.test()` statement takes the numbers that were *observ
 As it happens, if you omit the "p" keyword argument the `chisq.test()` function assumes you expect equal numbers of each type of observation. Therefore, in this example (because we *expect* equal numbers of males and females) we can actually leave the argument out:
 
 ```{r}
-result = chisq.test(c(44, 56))
-printf('p = %.2f', round(result$p.value, 2))
+result <- chisq.test(c(44, 56))
+printf("p = %.2f", round(result$p.value, 2))
 ```
 
 If we observed 50 males and 50 females, the test would tell use that there is a 100% chance that the population is 50% male/female:
 
 ```{r}
-result = chisq.test(c(50, 50))
-printf('p = %.2f', round(result$p.value, 2))
+result <- chisq.test(c(50, 50))
+printf("p = %.2f", round(result$p.value, 2))
 ```
 
 Note that the test does __NOT__ work properly if you give it your data as proportions or percentages:
 
-```{r, eval=FALSE}
-result = chisq.test(c(0.44, 0.56))
-printf('p = %.2f', round(result$p.value, 2))
+```{r eval = FALSE}
+result <- chisq.test(c(0.44, 0.56))
+printf("p = %.2f", round(result$p.value, 2))
 ```
 
-```{r, echo=FALSE}
-printf('p = %.2f', round(0.90, 2))
+```{r echo = FALSE}
+printf("p = %.2f", round(0.90, 2))
 ```
 
 You must always provide the *actual numbers* observed and the *proportions* expected.
@@ -190,18 +201,18 @@ The following example comes from [the Crash Course Youtube video](https://www.yo
 Again, the data is categorical and each 'bin' (cell in the table) has more than 5 samples so a chi-squared test is appropriate.
 
 ```{r}
-n = 30 + 40 + 40 + 90
-result = chisq.test(c(25, 35, 50, 90), p=c(30/n, 40/n, 40/n, 90/n))
-printf('p = %.1f', round(result$p.value, 1))
+n <- 30 + 40 + 40 + 90
+result <- chisq.test(c(25, 35, 50, 90), p = c(30 / n, 40 / n, 40 / n, 90 / n))
+printf("p = %.1f", round(result$p.value, 1))
 ```
 
 Note that this example has 3 degrees of freedom. In general, the formula for degrees of freedom is `(nrows - 1) * (ncols - 1)`:
 
 ```{r}
-nrows = 2
-ncols = 4
-df = (nrows - 1) * (ncols - 1)
-printf('Degrees of freedom = %d', df)
+nrows <- 2
+ncols <- 4
+df <- (nrows - 1) * (ncols - 1)
+printf("Degrees of freedom = %d", df)
 ```
 
 This example can also be done manually by calculating the chi-square test statistic by hand:
@@ -209,15 +220,16 @@ This example can also be done manually by calculating the chi-square test statis
 $\chi^2 = \sum\frac{\left(observed - expected\right)^2}{expected}$
 
 ```{r}
-chisq = (25 - 30)^2 / 30 + (35 - 40)^2 / 40 + (50 - 40)^2 / 40 + (90 - 90)^2 / 90
-printf('chi-square = %.2f', round(chisq, 2))
+chisq <- (25 - 30)^2 / 30 + (35 - 40)^2 / 40 + (50 - 40)^2 / 40 +
+    (90 - 90)^2 / 90
+printf("chi-square = %.2f", round(chisq, 2))
 ```
 
 Then the chi-square test statistic can be converted into a p-value using the chi-distribution for 3 degrees of freedom:
 
 ```{r}
-p = pchisq(chisq, df=3, lower.tail=FALSE)
-printf('p = %.1f', round(p, 1))
+p <- pchisq(chisq, df = 3, lower.tail = FALSE)
+printf("p = %.1f", round(p, 1))
 ```
 
 As the p-value is above 0.05 we *fail to reject the null hypothesis* that the distribution of characters chosen by players is as the developers claimed.
@@ -247,12 +259,12 @@ Again using [an example from the Crash Course Youtube video](https://www.youtube
 In R, this is calculated in the same way as the previous example except a data frame is used to represent the 'observed' table:
 
 ```{r}
-df = data.frame(
-    No=c(79, 122, 204, 74),
-    Yes=c(82, 130, 240, 69)
+df <- data.frame(
+    No = c(79, 122, 204, 74),
+    Yes = c(82, 130, 240, 69)
 )
-result = chisq.test(df)
-printf('p = %.1f', round(result$p.value, 1))
+result <- chisq.test(df)
+printf("p = %.1f", round(result$p.value, 1))
 ```
 
 As p is larger than 0.05 we *fail to reject the null hypothesis* that the distribution of Hogwarts houses is the same for both pineapple-on-pizza lovers and haters.
@@ -269,12 +281,12 @@ Using [an example from Stat Trek](https://stattrek.com/chi-square-test/independe
 | Female | 250 | 300 | 50  |
 
 ```{r}
-df = data.frame(
-    Male=c(200, 150, 50),
-    Female=c(250, 300, 50)
+df <- data.frame(
+    Male = c(200, 150, 50),
+    Female = c(250, 300, 50)
 )
-result = chisq.test(df)
-printf('p = %.4f', round(result$p.value, 4))
+result <- chisq.test(df)
+printf("p = %.4f", round(result$p.value, 4))
 ```
 
 To quote: "since the p-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference".
@@ -301,13 +313,13 @@ Using [an example from DisplayR](https://www.displayr.com/what-is-the-chi-square
 | Watch what I eat and drink | 23           | 146                |
 | Whatever I feel like       | 7            | 124                |
 
-```{r, warning=FALSE}
-df = data.frame(
-    Living_alone=c(25, 146, 124),
-    Living_with_others=c(2, 23, 7)
+```{r warning = FALSE}
+df <- data.frame(
+    Living_alone = c(25, 146, 124),
+    Living_with_others = c(2, 23, 7)
 )
-result = chisq.test(df)
-printf('p = %.3f', round(result$p.value, 3))
+result <- chisq.test(df)
+printf("p = %.3f", round(result$p.value, 3))
 ```
 
 To quote: "as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a 'line ball' conclusion."
@@ -328,35 +340,34 @@ The null and alternative hypotheses are as follows:
 - $H_1$: The new equipment has a distribution different to the historical data
 
 ```{r}
-perform_chi_squared = function(obs, exp) {
-    n = sum(obs)
-    result = chisq.test(obs, p=exp/n)
-    p = result$p.value
+perform_chi_squared <- function(obs, exp) {
+    n <- sum(obs)
+    result <- chisq.test(obs, p = exp / n)
+    p <- result$p.value
     if (p <= 0.001) {
-        significance = '***'
-        interpretation = 'H_1 is accepted at a 99.9% confidence level.'
+        significance <- "***"
+        interpretation <- "H_1 is accepted at a 99.9% confidence level."
     } else if (p <= 0.01) {
-        significance = '**'
-        interpretation = 'H_1 is accepted at a 99% confidence level.'
+        significance <- "**"
+        interpretation <- "H_1 is accepted at a 99% confidence level."
     } else if (p <= 0.05) {
-        significance = '*'
-        interpretation = 'H_1 is accepted at a 95% confidence level.'
+        significance <- "*"
+        interpretation <- "H_1 is accepted at a 95% confidence level."
     } else {
-        significance = ''
-        interpretation = 'H_0 is accepted'
+        significance <- ""
+        interpretation <- "H_0 is accepted"
     }
-    return = list(p, significance, interpretation)
+    return <- list(p, significance, interpretation)
     return(return)
 }
 
-
-observations = c(30, 910, 60)
-expected = c(50, 900, 50)
-result = perform_chi_squared(observations, expected)
-p = result[1]
-sig = result[2]
-int = result[3]
-printf('p = %.3f%s. %s', p, sig, int)
+observations <- c(30, 910, 60)
+expected <- c(50, 900, 50)
+result <- perform_chi_squared(observations, expected)
+p <- result[1]
+sig <- result[2]
+int <- result[3]
+printf("p = %.3f%s. %s", p, sig, int)
 ```
 
 Thus, at a 99% confidence level, we can say that the new equipment has a different distribution of overweight-underweight widget production compared to the old equipment.

@@ -185,7 +185,7 @@ summary {
 <p><a href="../../R.html">⇦ Back</a></p>
 <div id="fail-safely" class="section level1">
 <h1>Fail Safely</h1>
-<p>If there’s an error in your R code, your script will fail. It will run up to the point where the bug exists and then exit, possibly giving you an error message which may or may not be useful in debugging the problem. This is fine if you’re still working on your script or if it’s not being used for anything important, but if it’s ‘production ready’ and being used for mission critical analysis then you’ve got yourself a problem! Additionally, if your coding project is very large and spans many files and databases it can become very hard to track down the exact problem and debug it efficiently. For these reasons (and others) R gives you the power to customise what happens if a particular section of code produces a warning or an error. This is known as the “try-catch” technique: you <strong>try</strong> to run a piece of code and <strong>catch</strong> any errors that are created.</p>
+<p>If there's an error in your R code, your script will fail. It will run up to the point where the bug exists and then exit, possibly giving you an error message which may or may not be useful in debugging the problem. This is fine if you're still working on your script or if it's not being used for anything important, but if it's 'production ready' and being used for mission critical analysis then you've got yourself a problem! Additionally, if your coding project is very large and spans many files and databases it can become very hard to track down the exact problem and debug it efficiently. For these reasons (and others) R gives you the power to customise what happens if a particular section of code produces a warning or an error. This is known as the &quot;try-catch&quot; technique: you <strong>try</strong> to run a piece of code and <strong>catch</strong> any errors that are created.</p>
 <p>The code itself is fairly self-explanatory. The function that implements a try-catch is called <code>tryCatch()</code> and there are four sections to it:</p>
 <ol style="list-style-type: decimal">
 <li>The code you want to try run</li>
@@ -193,49 +193,49 @@ summary {
 <li>What you want to happen if this code throws an error</li>
 <li>Additional code that will run regardless of whether there was an error or not</li>
 </ol>
-<p>The first part is compulsory, the last three are optional. Here’s a basic example:</p>
-<pre class="r"><code>tryCatch(
-    {
-        print(&quot;This is the 'try' part. The script will try to run the code in here&quot;)
+<p>The first part is compulsory, the last three are optional. Here's a basic example:</p>
+<pre class="r"><code>tryCatch({
+    print(
+        &quot;This is the 'try' part. The script will try to run the code in here&quot;
+    )},
+    warning = function(w) {
+        print(&quot;Warning! Something went wrong but I can continue&quot;)
     },
-    warning=function(w) {
-        print('Warning! Something went wrong but I can continue')
-    },
-    error=function(e) {
+    error = function(e) {
         print(&quot;Whoops! Something went so wrong I can't continue&quot;)
         stop()
     },
-    finally={
-        print('This text will print regardless of what happened')
+    finally = {
+        print(&quot;This text will print regardless of what happened&quot;)
     }
 )</code></pre>
 <pre><code>## [1] &quot;This is the 'try' part. The script will try to run the code in here&quot;
 ## [1] &quot;This text will print regardless of what happened&quot;</code></pre>
-<p>The script tried to run the first print statement and succeeded. It then bypassed the ‘warning’ function and the ‘error’ function as no warning or error was produced, but it did print the ‘finally’ function as that gets run regardless.</p>
+<p>The script tried to run the first print statement and succeeded. It then bypassed the 'warning' function and the 'error' function as no warning or error was produced, but it did print the 'finally' function as that gets run regardless.</p>
 </div>
 <div id="an-example" class="section level1">
 <h1>An Example</h1>
-<p>A useful implementation of this is when you are working with data that someone else has given you or that has been input by a user. You can’t guarantee that the data is going to be in the right format. Here’s an example where the users of an app input their age and a script uses that to estimate their birth year:</p>
-<pre class="r"><code>user_input = c(21, 22, 23, 24)
-current_year = as.numeric(format(Sys.Date(), '%Y'))
+<p>A useful implementation of this is when you are working with data that someone else has given you or that has been input by a user. You can't guarantee that the data is going to be in the right format. Here's an example where the users of an app input their age and a script uses that to estimate their birth year:</p>
+<pre class="r"><code>user_input &lt;- c(21, 22, 23, 24)
+current_year &lt;- as.numeric(format(Sys.Date(), &quot;%Y&quot;))
 print(current_year - user_input)</code></pre>
 <pre><code>## [1] 1999 1998 1997 1996</code></pre>
 <p>What would happen if one of the ages was in the string format by accident? It would cause the script to crash and the entire app might then go offline. This could be handled by doing the following:</p>
-<pre class="r"><code>user_input = c(21, 22, '23', 24)
-current_year = as.numeric(format(Sys.Date(), '%Y'))
-tryCatch(
-    {
+<pre class="r"><code>user_input &lt;- c(21, 22, &quot;23&quot;, 24)
+current_year &lt;- as.numeric(format(Sys.Date(), &quot;%Y&quot;))
+tryCatch({
         print(current_year - user_input)
     },
-    error=function(e) {
+    error = function(e) {
         print(&quot;Whoops! An error occurred but I can continue anyway!&quot;)
         print(current_year - as.numeric(user_input))
     }
 )</code></pre>
 <pre><code>## [1] &quot;Whoops! An error occurred but I can continue anyway!&quot;
 ## [1] 1999 1998 1997 1996</code></pre>
-<p>…and you can sleep easily knowing your code can handle exceptions!</p>
-<p><a href="../../R.html">⇦ Back</a> </font></p>
+<p>...and you can sleep easily knowing your code can handle exceptions!</p>
+<p><a href="../../R.html">⇦ Back</a></p>
+<p></font></p>
 </div>
 
 

@@ -14,24 +14,24 @@ library(ggplot2)
 ```
 
 ### Area Plot
-```{r, message=FALSE}
-p = ggplot(economics, aes(date, unemploy))
-p = p + geom_area()
+```{r message = FALSE}
+p <- ggplot(economics, aes(date, unemploy))
+p <- p + geom_area()
 print(p)
 ```
 
 ### Line Plot
 Data points are joined in ascending order of their x-value.
-```{r, message=FALSE}
-p = ggplot(economics, aes(date, unemploy))
-p = p + geom_line()
+```{r message = FALSE}
+p <- ggplot(economics, aes(date, unemploy))
+p <- p + geom_line()
 print(p)
 ```
 
 ### Step Plot
-```{r, message=FALSE}
-p = ggplot(women, aes(height, weight))
-p = p + geom_step()
+```{r message = FALSE}
+p <- ggplot(women, aes(height, weight))
+p <- p + geom_step()
 print(p)
 ```
 

@@ -187,11 +187,11 @@ summary {
 
 <p><font size="3"></p>
 <p><a href="../../../R.html">⇦ Back</a></p>
-<p>This example uses the <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts">‘chickwts’</a> built-in dataset which documents the weight of 71 chickens which had been fed different diets.</p>
+<p>This example uses the <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts">'chickwts'</a> built-in dataset which documents the weight of 71 chickens which had been fed different diets.</p>
 <blockquote>
 <p>An experiment was conducted to measure and compare the effectiveness of various feed supplements on the growth rate of chickens. Newly-hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types.</p>
 </blockquote>
-<p>Here’s an idea of what the data looks like:</p>
+<p>Here's an idea of what the data looks like:</p>
 <pre class="r"><code>print(head(chickwts, 15))</code></pre>
 <pre><code>##    weight      feed
 ## 1     179 horsebean
@@ -209,7 +209,7 @@ summary {
 ## 13    181   linseed
 ## 14    141   linseed
 ## 15    260   linseed</code></pre>
-<p>Let’s see what the six groups (type of feed given to the chickens) are:</p>
+<p>Let's see what the six groups (type of feed given to the chickens) are:</p>
 <pre class="r"><code>for (feed_type in unique(chickwts$feed)) {
     print(feed_type)
 }</code></pre>
@@ -221,8 +221,8 @@ summary {
 ## [1] &quot;casein&quot;</code></pre>
 <div id="which-statistical-test-should-be-used" class="section level1">
 <h1>Which Statistical Test Should Be Used?</h1>
-<div id="htmlwidget-3de526d7db71fef1b5c7" style="width:900px;height:400px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3de526d7db71fef1b5c7">{"x":{"diagram":"digraph statistical_tests {\n        rankdir=\"LR\"\n\n        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]\n                        \"Two groups\"\n                            TGParametric [label=\"Parametric\"]\n                                \"One-sample t-test\"\n                                \"Paired t-test\"\n                                \"Unpaired t-test\"\n                            TGNonparametric [label=\"Nonparametric\"]\n                                TGIndependent [label=\"Independent groups\"]\n                                    \"Mann-Whitney U test\"\n                                TGNonindependent [label=\"Non-independent groups\"]\n                                    \"Wilcoxon signed-rank test\"\n                            MGParametric [label=\"Parametric\"]\n                                \"ANOVA\"\n\n        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]\n            \"Hypothesis\"\n                \"Continuous data\"\n                    \"Differences\"\n                    \"Means\"\n                        \"More than two groups\"\n                            MGNonparametric [label=\"Nonparametric\"]\n                                MGIndependent [label=\"Independent groups\"]\n                                    \"Kruskal-Wallis one-way ANOVA\"\n\n        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]\n                                MGNonindependent [label=\"Non-independent groups\"]\n                                    \"Friedman two-way ANOVA\"\n                        \"Variances\"\n                    \"Relationships\"\n                        RIndependent [label=\"Independent groups\"]\n                            \"Regression analysis\"\n                                \"Multiple Linear Regression\"\n                        RNonindependent [label=\"Non-independent groups\"]\n                            \"Correlation analysis\"\n                                RParametric [label=\"Parametric\"]\n                                    \"Pearson product-moment r correlation\"\n                                RNonparametric [label=\"Nonparametric\"]\n                                    \"Spearman Rank Correlation\"\n                \"Discrete, categorical data\"\n                    \"Chi-squared goodness-of-fit test\"\n                    \"Chi-squared independence test\"\n\n        {\n            rank = same;\n            TGIndependent \"Mann-Whitney U test\"\n            TGNonindependent \"Wilcoxon signed-rank test\"\n            MGIndependent \"Kruskal-Wallis one-way ANOVA\"\n            MGNonindependent \"Friedman two-way ANOVA\"\n        }\n\n        \"Hypothesis\" -> \"Continuous data\";\n            \"Continuous data\" -> \"Differences\"\n                \"Differences\" -> \"Means\"\n                    \"Means\" -> \"Two groups\"\n                        \"Two groups\" -> TGParametric\n                            TGParametric -> \"One-sample t-test\"\n                            TGParametric -> \"Paired t-test\"\n                            TGParametric -> \"Unpaired t-test\"\n                        \"Two groups\" -> TGNonparametric\n                            TGNonparametric -> TGIndependent\n                                TGIndependent -> \"Mann-Whitney U test\"\n                            TGNonparametric -> TGNonindependent\n                                TGNonindependent -> \"Wilcoxon signed-rank test\"\n                    \"Means\" -> \"More than two groups\"\n                        \"More than two groups\" -> MGParametric\n                            MGParametric -> \"ANOVA\"\n                        \"More than two groups\" -> MGNonparametric\n                            MGNonparametric -> MGIndependent\n                                MGIndependent -> \"Kruskal-Wallis one-way ANOVA\"\n                            MGNonparametric -> MGNonindependent\n                                MGNonindependent -> \"Friedman two-way ANOVA\"\n                \"Differences\" -> \"Variances\"\n            \"Continuous data\" -> \"Relationships\"\n                \"Relationships\" -> RIndependent\n                    RIndependent -> \"Regression analysis\"\n                        \"Regression analysis\" -> \"Multiple Linear Regression\"\n                \"Relationships\" -> RNonindependent\n                    RNonindependent -> \"Correlation analysis\"\n                        \"Correlation analysis\" -> RParametric\n                            RParametric -> \"Pearson product-moment r correlation\"\n                        \"Correlation analysis\" -> RNonparametric\n                            RNonparametric -> \"Spearman Rank Correlation\"\n        \"Hypothesis\" -> \"Discrete, categorical data\"\n            \"Discrete, categorical data\" -> \"Chi-squared goodness-of-fit test\"\n            \"Discrete, categorical data\" -> \"Chi-squared independence test\"\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-923810e2166f09c3a0dc" style="width:900px;height:400px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-923810e2166f09c3a0dc">{"x":{"diagram":"digraph statistical_tests {\n        rankdir=\"LR\"\n\n        node [\n            fontname=Helvetica, shape=box, width=5, fontsize=42,\n            fillcolor=white, style=filled\n        ]\n                        \"Two groups\"\n                            TGParametric [label=\"Parametric\"]\n                                \"One-sample t-test\"\n                                \"Paired t-test\"\n                                \"Unpaired t-test\"\n                            TGNonparametric [label=\"Nonparametric\"]\n                                TGIndependent [label=\"Independent groups\"]\n                                    \"Mann-Whitney U test\"\n                                TGNonindependent [\n                                    label=\"Non-independent groups\"\n                                ]\n                                    \"Wilcoxon signed-rank test\"\n                            MGParametric [label=\"Parametric\"]\n                                \"ANOVA\"\n\n        node [\n            fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue,\n            style=filled, fontsize=42\n        ]\n            \"Hypothesis\"\n                \"Continuous data\"\n                    \"Differences\"\n                    \"Means\"\n                        \"More than two groups\"\n                            MGNonparametric [label=\"Nonparametric\"]\n                                MGIndependent [label=\"Independent groups\"]\n                                    \"Kruskal-Wallis one-way ANOVA\"\n\n        node [\n            fontname=Helvetica, shape=box, width=5, fontsize=42,\n            fillcolor=white, style=filled\n        ]\n                                MGNonindependent [\n                                    label=\"Non-independent groups\"\n                                ]\n                                    \"Friedman two-way ANOVA\"\n                        \"Variances\"\n                    \"Relationships\"\n                        RIndependent [label=\"Independent groups\"]\n                            \"Regression analysis\"\n                                \"Multiple Linear Regression\"\n                        RNonindependent [label=\"Non-independent groups\"]\n                            \"Correlation analysis\"\n                                RParametric [label=\"Parametric\"]\n                                    \"Pearson product-moment r correlation\"\n                                RNonparametric [label=\"Nonparametric\"]\n                                    \"Spearman Rank Correlation\"\n                \"Discrete, categorical data\"\n                    \"Chi-squared goodness-of-fit test\"\n                    \"Chi-squared independence test\"\n\n        {\n            rank = same;\n            TGIndependent \"Mann-Whitney U test\"\n            TGNonindependent \"Wilcoxon signed-rank test\"\n            MGIndependent \"Kruskal-Wallis one-way ANOVA\"\n            MGNonindependent \"Friedman two-way ANOVA\"\n        }\n\n        \"Hypothesis\" -> \"Continuous data\";\n            \"Continuous data\" -> \"Differences\"\n                \"Differences\" -> \"Means\"\n                    \"Means\" -> \"Two groups\"\n                        \"Two groups\" -> TGParametric\n                            TGParametric -> \"One-sample t-test\"\n                            TGParametric -> \"Paired t-test\"\n                            TGParametric -> \"Unpaired t-test\"\n                        \"Two groups\" -> TGNonparametric\n                            TGNonparametric -> TGIndependent\n                                TGIndependent -> \"Mann-Whitney U test\"\n                            TGNonparametric -> TGNonindependent\n                                TGNonindependent -> \"Wilcoxon signed-rank test\"\n                    \"Means\" -> \"More than two groups\"\n                        \"More than two groups\" -> MGParametric\n                            MGParametric -> \"ANOVA\"\n                        \"More than two groups\" -> MGNonparametric\n                            MGNonparametric -> MGIndependent\n                                MGIndependent -> \"Kruskal-Wallis one-way ANOVA\"\n                            MGNonparametric -> MGNonindependent\n                                MGNonindependent -> \"Friedman two-way ANOVA\"\n                \"Differences\" -> \"Variances\"\n            \"Continuous data\" -> \"Relationships\"\n                \"Relationships\" -> RIndependent\n                    RIndependent -> \"Regression analysis\"\n                        \"Regression analysis\" -> \"Multiple Linear Regression\"\n                \"Relationships\" -> RNonindependent\n                    RNonindependent -> \"Correlation analysis\"\n                        \"Correlation analysis\" -> RParametric\n                            RParametric ->\n                                \"Pearson product-moment r correlation\"\n                        \"Correlation analysis\" -> RNonparametric\n                            RNonparametric -> \"Spearman Rank Correlation\"\n        \"Hypothesis\" -> \"Discrete, categorical data\"\n            \"Discrete, categorical data\" -> \"Chi-squared goodness-of-fit test\"\n            \"Discrete, categorical data\" -> \"Chi-squared independence test\"\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <ul>
 <li>The (alternative) <strong>hypothesis</strong> is that there is a difference in growth rate between chickens fed different diets</li>
 <li>The variable being measured is weight (mass), which is <strong>continuous</strong></li>
@@ -238,31 +238,32 @@ summary {
 <h1>Performing the Kruskal-Wallis Test</h1>
 <p>The Kruskal-Wallis test is performed using the <code>kruskal.test()</code> function (<a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/kruskal.test">more info</a>):</p>
 <ul>
-<li>The independent variable is ‘feed’ and the dependent variable is ‘weight’</li>
-<li>When using an entire data frame as the input, the <code>kruskal.test()</code> function used the ‘tilde’ notation. This format requires that the dependent variable be specified first, followed by a tilde (“~”, which means ‘proportional to’ in statistics), followed by the independent variable: <code>weight ~ feed</code></li>
-<li>The data frame being used (‘chickwts’) is indicated using the ‘data’ keyword argument</li>
+<li>The independent variable is 'feed' and the dependent variable is 'weight'</li>
+<li>When using an entire data frame as the input, the <code>kruskal.test()</code> function used the 'tilde' notation. This format requires that the dependent variable be specified first, followed by a tilde (&quot;~&quot;, which means 'proportional to' in statistics), followed by the independent variable: <code>weight ~ feed</code></li>
+<li>The data frame being used ('chickwts') is indicated using the 'data' keyword argument</li>
 </ul>
-<pre class="r"><code>kruskal.test(weight ~ feed, data=chickwts)</code></pre>
+<pre class="r"><code>kruskal.test(weight ~ feed, data = chickwts)</code></pre>
 <pre><code>## 
 ##  Kruskal-Wallis rank sum test
 ## 
 ## data:  weight by feed
 ## Kruskal-Wallis chi-squared = 37.343, df = 5, p-value = 5.113e-07</code></pre>
 <p>As we can see from the output the p-value was 5.113e-07, which is strong evidence in favour of the alternative hypothesis (which is that chicks grow at different rates when fed these different diets). The individual values that have been returned can be accessed by setting a variable equal to <code>kruskal.test()</code> and then indexing it:</p>
-<pre class="r"><code>k = kruskal.test(weight ~ feed, data=chickwts)
+<pre class="r"><code>k &lt;- kruskal.test(weight ~ feed, data = chickwts)
 
-# GET THE KRUSKAL-WALLIS RANK SUM STATISTIC
-chi_squared = k$statistic
-# GET THE DEGREES OF FREEDOM OF THE APPROXIMATE CHI-SQUARED DISTRIBUTION OF THE TEST STATISTIC
-df = k$parameter
-# GET THE P-VALUE OF THE TEST
-p = k$p.value
-# GET THE CHARACTER STRING &quot;Kruskal-Wallis rank sum test&quot;
-name_of_test = k$method
-# GET A CHARACTER STRING GIVING THE NAMES OF THE DATA
-comparison = k$data.name
+# Get the Kruskal-Wallis rank sum statistic
+chi_squared &lt;- k$statistic
+# Get the degrees of freedom of the approximate chi-squared distribution of
+# the test statistic
+df &lt;- k$parameter
+# Get the p-value of the test
+p &lt;- k$p.value
+# Get the character string &quot;Kruskal-Wallis rank sum test&quot;
+name_of_test &lt;- k$method
+# Get a character string giving the names of the data
+comparison &lt;- k$data.name
 
-# PRINT THEM ALL
+# Print them all
 print(chi_squared)
 print(df)
 print(p)

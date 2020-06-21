@@ -191,11 +191,11 @@ library(stringr)</code></pre>
 <div id="paste" class="section level2">
 <h2><span class="header-section-number">1.1</span> <code>paste()</code></h2>
 <p><code>paste()</code> uses a space for separation by default:</p>
-<pre class="r"><code>st = paste('Hello', 'World')
+<pre class="r"><code>st &lt;- paste(&quot;Hello&quot;, &quot;World&quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello World&quot;</code></pre>
 <p>This default behaviour can be changed using the <code>sep</code> keyword argument, eg you can have a comma and a space:</p>
-<pre class="r"><code>st = paste('Hello', 'World', sep=', ')
+<pre class="r"><code>st &lt;- paste(&quot;Hello&quot;, &quot;World&quot;, sep = &quot;, &quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello, World&quot;</code></pre>
 <p>This function returns a <em>character vector</em>. This means that you can assign it to a variable for later use, like how I assigned it to the variable <code>st</code> in the above examples.</p>
@@ -203,10 +203,10 @@ print(st)</code></pre>
 <div id="cat" class="section level2">
 <h2><span class="header-section-number">1.2</span> <code>cat()</code></h2>
 <p><code>cat()</code> performs the same function as <code>paste()</code> and also uses a single space by default. This can also be changed through the use of the <code>sep</code> keyword argument.</p>
-<pre class="r"><code>cat('Hello', 'World')</code></pre>
+<pre class="r"><code>cat(&quot;Hello&quot;, &quot;World&quot;)</code></pre>
 <pre><code>## Hello World</code></pre>
 <p>The difference between <code>paste()</code> and <code>cat()</code> is that <code>cat()</code> does not return a value, it only prints it to the console. This means that it cannot be saved to a variable like this:</p>
-<pre class="r"><code>a = cat('Hello', 'World')</code></pre>
+<pre class="r"><code>a &lt;- cat(&quot;Hello&quot;, &quot;World&quot;)</code></pre>
 <p>The code below prints <code>NULL</code> because nothing was returned by the <code>cat()</code> function to the variable <code>a</code>!</p>
 <pre class="r"><code>print(a)</code></pre>
 <pre><code>## NULL</code></pre>
@@ -214,14 +214,14 @@ print(st)</code></pre>
 <div id="c" class="section level2">
 <h2><span class="header-section-number">1.3</span> <code>c()</code></h2>
 <p><code>c()</code> is similar to <code>paste()</code> in that it also combines/concatenates objects and allows you to assign them to variables, but <code>c()</code> turns them into <em>vectors</em>:</p>
-<pre class="r"><code>st = c('Hello', 'World')
+<pre class="r"><code>st &lt;- c(&quot;Hello&quot;, &quot;World&quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
 </div>
 <div id="paste0" class="section level2">
 <h2><span class="header-section-number">1.4</span> <code>paste0()</code></h2>
 <p><code>paste0()</code> uses no space for separation by default:</p>
-<pre class="r"><code>st = paste0('Hello', 'World')
+<pre class="r"><code>st &lt;- paste0(&quot;Hello&quot;, &quot;World&quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;HelloWorld&quot;</code></pre>
 </div>
@@ -229,8 +229,8 @@ print(st)</code></pre>
 <div id="split-strings" class="section level1">
 <h1><span class="header-section-number">2</span> Split Strings</h1>
 <p>Use <code>strsplit()</code>:</p>
-<pre class="r"><code>st = 'Split the words in a sentence.'
-st = strsplit(st, ' ')
+<pre class="r"><code>st &lt;- &quot;Split the words in a sentence.&quot;
+st &lt;- strsplit(st, &quot; &quot;)
 print(st)</code></pre>
 <pre><code>## [[1]]
 ## [1] &quot;Split&quot;     &quot;the&quot;       &quot;words&quot;     &quot;in&quot;        &quot;a&quot;         &quot;sentence.&quot;</code></pre>
@@ -238,49 +238,49 @@ print(st)</code></pre>
 <div id="search-for-a-character-or-sub-string" class="section level1">
 <h1><span class="header-section-number">3</span> Search for a Character or Sub-string</h1>
 <p>Find the indices where certain characters are:</p>
-<pre class="r"><code>st = 'Hello World'
-idx_o = unlist(gregexpr(pattern='o', st))
+<pre class="r"><code>st &lt;- &quot;Hello World&quot;
+idx_o &lt;- unlist(gregexpr(pattern = &quot;o&quot;, st))
 print(idx_o)</code></pre>
 <pre><code>## [1] 5 8</code></pre>
-<p>In this example the letter “o” can be found at both position 5 and 8 in the string “Hello World”.</p>
+<p>In this example the letter &quot;o&quot; can be found at both position 5 and 8 in the string &quot;Hello World&quot;.</p>
 </div>
 <div id="lookup-the-characters-at-particular-indices" class="section level1">
 <h1><span class="header-section-number">4</span> Lookup the Characters at Particular Indices</h1>
 <p>Use <code>substr()</code>:</p>
-<pre class="r"><code>st = 'Hello World'
-st = substr(st, start=3, stop=4)
+<pre class="r"><code>st &lt;- &quot;Hello World&quot;
+st &lt;- substr(st, start = 3, stop = 4)
 print(st)</code></pre>
 <pre><code>## [1] &quot;ll&quot;</code></pre>
 <p>Remove the text before a certain character:</p>
-<pre class="r"><code>sub_st = substr(st, start=idx_o[1], stop=nchar(st))
+<pre class="r"><code>sub_st &lt;- substr(st, start = idx_o[1], stop = nchar(st))
 print(sub_st)</code></pre>
 <pre><code>## [1] &quot;&quot;</code></pre>
 <p>Remove the text after a certain character:</p>
-<pre class="r"><code>sub_st = substr(st, start=1, stop=idx_o[1])
+<pre class="r"><code>sub_st &lt;- substr(st, start = 1, stop = idx_o[1])
 print(sub_st)</code></pre>
 <pre><code>## [1] &quot;ll&quot;</code></pre>
 </div>
 <div id="replace-a-sub-string" class="section level1">
 <h1><span class="header-section-number">5</span> Replace a Sub-string</h1>
 <p>Use <code>gsub()</code>:</p>
-<pre class="r"><code>st = 'Hello World'
-st = gsub('ello', 'i', st)
+<pre class="r"><code>st &lt;- &quot;Hello World&quot;
+st &lt;- gsub(&quot;ello&quot;, &quot;i&quot;, st)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hi World&quot;</code></pre>
 </div>
 <div id="overwrite-characters" class="section level1">
 <h1><span class="header-section-number">6</span> Overwrite Characters</h1>
 <p>Use <code>str_sub()</code>:</p>
-<pre class="r"><code>st = 'Hello World'
-str_sub(st, 6, 6) = '_'
-str_sub(st, 8, 7) = 'O'
+<pre class="r"><code>st &lt;- &quot;Hello World&quot;
+str_sub(st, 6, 6) &lt;- &quot;_&quot;
+str_sub(st, 8, 7) &lt;- &quot;O&quot;
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello_WOorld&quot;</code></pre>
 </div>
 <div id="change-the-case" class="section level1">
 <h1><span class="header-section-number">7</span> Change the Case</h1>
 <p>A string can be UPPERCASE, lowercase, Sentence case or Title Case:</p>
-<pre class="r"><code>st = 'The quick, brown Fox jumped over the lazy Dog'
+<pre class="r"><code>st &lt;- &quot;The quick, brown Fox jumped over the lazy Dog&quot;
 print(str_to_upper(st))</code></pre>
 <pre><code>## [1] &quot;THE QUICK, BROWN FOX JUMPED OVER THE LAZY DOG&quot;</code></pre>
 <pre class="r"><code>print(str_to_lower(st))</code></pre>
@@ -296,54 +296,54 @@ print(str_to_upper(st))</code></pre>
 <p>If you want to print a variable as part of a string using a specific format, use the <code>printf()</code> function from the R.utils library along with the <code>%</code> character to indicate where you want the variable to be inserted. You also need to have a letter after the <code>%</code> to indicate what type of format to use.</p>
 <div id="number-formats" class="section level2">
 <h2><span class="header-section-number">8.1</span> Number formats</h2>
-<p>When working with numbers, use the <code>f</code> for ‘floating-point’ in conjunction with <code>%</code>:</p>
-<pre class="r"><code>x = 1
-printf('x = %f', x)</code></pre>
+<p>When working with numbers, use the <code>f</code> for 'floating-point' in conjunction with <code>%</code>:</p>
+<pre class="r"><code>x &lt;- 1
+printf(&quot;x = %f&quot;, x)</code></pre>
 <pre><code>## x = 1.000000</code></pre>
 <p>Use a decimal point and a number to set the number of decimal places you see:</p>
-<pre class="r"><code>x = 1
-printf('x = %.2f', x)</code></pre>
+<pre class="r"><code>x &lt;- 1
+printf(&quot;x = %.2f&quot;, x)</code></pre>
 <pre><code>## x = 1.00</code></pre>
-<p>Use a number before the decimal point to set the ‘width’ of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:</p>
-<pre class="r"><code>x = 1
-printf('x = %8.2f', x)</code></pre>
+<p>Use a number before the decimal point to set the 'width' of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:</p>
+<pre class="r"><code>x &lt;- 1
+printf(&quot;x = %8.2f&quot;, x)</code></pre>
 <pre><code>## x =     1.00</code></pre>
 </div>
 <div id="string-formats" class="section level2">
 <h2><span class="header-section-number">8.2</span> String formats</h2>
 <p>Instead of the <code>f</code>, use an <code>s</code> together with the <code>%</code>.</p>
 <p>You can print to the console immediately:</p>
-<pre class="r"><code>st = 'Hello world'
-printf('Output text is: %s', st)</code></pre>
+<pre class="r"><code>st &lt;- &quot;Hello world&quot;
+printf(&quot;Output text is: %s&quot;, st)</code></pre>
 <pre><code>## Output text is: Hello world</code></pre>
-<p>…or you can write the value to a variable and print it to the console at a later stage by using the <code>sprintf()</code> function:</p>
-<pre class="r"><code>st = 'Hello world'
-st = sprintf('Output text is: %s', st)
+<p>...or you can write the value to a variable and print it to the console at a later stage by using the <code>sprintf()</code> function:</p>
+<pre class="r"><code>st &lt;- &quot;Hello world&quot;
+st &lt;- sprintf(&quot;Output text is: %s&quot;, st)
 print(st[1])</code></pre>
 <pre><code>## [1] &quot;Output text is: Hello world&quot;</code></pre>
 </div>
 <div id="using-formatted-output-with-a-dataframe" class="section level2">
 <h2><span class="header-section-number">8.3</span> Using formatted output with a dataframe</h2>
 <p>If you extract a single string from any vector or dataframe, it will be treated in the same way by the <code>printf()</code> function:</p>
-<pre class="r"><code>df = data.frame(
-    name = c('Alfa', 'Bravo', 'Charlie')
+<pre class="r"><code>df &lt;- data.frame(
+    name &lt;- c(&quot;Alfa&quot;, &quot;Bravo&quot;, &quot;Charlie&quot;)
 )
-printf('Output text is: %s', df$name[1])</code></pre>
+printf(&quot;Output text is: %s&quot;, df$name[1])</code></pre>
 <pre><code>## Output text is: Alfa</code></pre>
 </div>
 </div>
 <div id="unicode-and-emojii" class="section level1">
 <h1><span class="header-section-number">9</span> Unicode and Emojii</h1>
 <p>Unicode characters can be called by using <code>\U</code> and referencing their unicode number. Some can then simply be printed:</p>
-<pre class="r"><code>st1 = '\U03BC'  # mu
-st2 = '\U03B5'  # epsilon
-st3 = '\U03C9'  # omega
+<pre class="r"><code>st1 &lt;- &quot;\U03BC&quot;  # mu
+st2 &lt;- &quot;\U03B5&quot;  # epsilon
+st3 &lt;- &quot;\U03C9&quot;  # omega
 print(c(st1, st2, st3))</code></pre>
 <pre><code>## [1] &quot;μ&quot; &quot;ε&quot; &quot;ω&quot;</code></pre>
 <p>Others (eg emojis) cannot be printed this easily and need the special <code>utf8_print()</code> function from the <code>utf8</code> library:</p>
-<pre class="r"><code>st1 = '\U2705'  # white heavy check mark
-st2 = '\U274c'  # cross mark
-st3 = '\U0001f609'  # winking face
+<pre class="r"><code>st1 &lt;- &quot;\U2705&quot;  # white heavy check mark
+st2 &lt;- &quot;\U274c&quot;  # cross mark
+st3 &lt;- &quot;\U0001f609&quot;  # winking face
 utf8::utf8_print(c(st1, st2, st3))</code></pre>
 <pre><code>## [1] &quot;✅​&quot; &quot;❌​&quot; &quot;😉​&quot;</code></pre>
 <p><a href="../../R.html">⇦ Back</a></p>

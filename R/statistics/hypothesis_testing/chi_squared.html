@@ -204,10 +204,10 @@ summary {
 <p><font size="3"></p>
 <p><a href="../../../R.html">⇦ Back</a></p>
 <blockquote>
-<p>A chi-squared test is used for <strong>discrete, categorical data</strong>. For example: medical data that includes people who are sick and people who are healthy, demographic data comparing people who are male and female, assessment data where people either passed or failed, etc. These tests are not relevant for continuous data, ie where each measurement/observation in the dataset is a ‘value’ (eg a percentage, a height in cm, a weight in kg, etc).</p>
+<p>A chi-squared test is used for <strong>discrete, categorical data</strong>. For example: medical data that includes people who are sick and people who are healthy, demographic data comparing people who are male and female, assessment data where people either passed or failed, etc. These tests are not relevant for continuous data, ie where each measurement/observation in the dataset is a 'value' (eg a percentage, a height in cm, a weight in kg, etc).</p>
 </blockquote>
-<div id="htmlwidget-12cf95534c0c73d1fe62" style="width:900px;height:400px;" class="grViz html-widget"></div>
-<script type="application/json" data-for="htmlwidget-12cf95534c0c73d1fe62">{"x":{"diagram":"digraph statistical_tests {\n        rankdir=\"LR\"\n\n        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]\n                \"Continuous data\"\n                    \"Differences\"\n                        \"Means\"\n                            \"Two groups\"\n                                TGParametric [label=\"Parametric\"]\n                                    \"One-sample t-test\"\n                                    \"Paired t-test\"\n                                    \"Unpaired t-test\"\n                                TGNonparametric [label=\"Nonparametric\"]\n                                    TGIndependent [label=\"Independent groups\"]\n                                        \"Mann-Whitney U test\"\n                                    TGNonindependent [label=\"Non-independent groups\"]\n                                        \"Wilcoxon signed-rank test\"\n                            \"More than two groups\"\n                                MGParametric [label=\"Parametric\"]\n                                    \"ANOVA\"\n                                MGNonparametric [label=\"Nonparametric\"]\n                                    MGIndependent [label=\"Independent groups\"]\n                                        \"Kruskal-Wallis one-way ANOVA\"\n                                    MGNonindependent [label=\"Non-independent groups\"]\n                                        \"Friedman two-way ANOVA\"\n                        \"Variances\"\n                    \"Relationships\"\n                        RIndependent [label=\"Independent groups\"]\n                            \"Regression analysis\"\n                                \"Multiple Linear Regression\"\n                        RNonindependent [label=\"Non-independent groups\"]\n                            \"Correlation analysis\"\n                                RParametric [label=\"Parametric\"]\n                                    \"Pearson product-moment r correlation\"\n                                RNonparametric [label=\"Nonparametric\"]\n                                    \"Spearman Rank Correlation\"\n\n        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]\n            \"Hypothesis\"\n                \"Discrete, categorical data\"\n                    \"Chi-squared goodness-of-fit test\"\n                    \"Chi-squared independence test\"\n                    \"Chi-squared homogeneity test\"\n\n        {\n            rank = same;\n            TGIndependent \"Mann-Whitney U test\"\n            TGNonindependent \"Wilcoxon signed-rank test\"\n            MGIndependent \"Kruskal-Wallis one-way ANOVA\"\n            MGNonindependent \"Friedman two-way ANOVA\"\n        }\n\n        \"Hypothesis\" -> \"Continuous data\";\n            \"Continuous data\" -> \"Differences\"\n                \"Differences\" -> \"Means\"\n                    \"Means\" -> \"Two groups\"\n                        \"Two groups\" -> TGParametric\n                            TGParametric -> \"One-sample t-test\"\n                            TGParametric -> \"Paired t-test\"\n                            TGParametric -> \"Unpaired t-test\"\n                        \"Two groups\" -> TGNonparametric\n                            TGNonparametric -> TGIndependent\n                                TGIndependent -> \"Mann-Whitney U test\"\n                            TGNonparametric -> TGNonindependent\n                                TGNonindependent -> \"Wilcoxon signed-rank test\"\n                    \"Means\" -> \"More than two groups\"\n                        \"More than two groups\" -> MGParametric\n                            MGParametric -> \"ANOVA\"\n                        \"More than two groups\" -> MGNonparametric\n                            MGNonparametric -> MGIndependent\n                                MGIndependent -> \"Kruskal-Wallis one-way ANOVA\"\n                            MGNonparametric -> MGNonindependent\n                                MGNonindependent -> \"Friedman two-way ANOVA\"\n                \"Differences\" -> \"Variances\"\n            \"Continuous data\" -> \"Relationships\"\n                \"Relationships\" -> RIndependent\n                    RIndependent -> \"Regression analysis\"\n                        \"Regression analysis\" -> \"Multiple Linear Regression\"\n                \"Relationships\" -> RNonindependent\n                    RNonindependent -> \"Correlation analysis\"\n                        \"Correlation analysis\" -> RParametric\n                            RParametric -> \"Pearson product-moment r correlation\"\n                        \"Correlation analysis\" -> RNonparametric\n                            RNonparametric -> \"Spearman Rank Correlation\"\n        \"Hypothesis\" -> \"Discrete, categorical data\"\n            \"Discrete, categorical data\" -> \"Chi-squared goodness-of-fit test\"\n            \"Discrete, categorical data\" -> \"Chi-squared independence test\"\n            \"Discrete, categorical data\" -> \"Chi-squared homogeneity test\"\n\n    labelloc=\"t\";\n    fontsize=70;\n    label=\"Flowchart for Choosing a Statistical Test\";\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-2cf5754b4b594fbeb74d" style="width:900px;height:400px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-2cf5754b4b594fbeb74d">{"x":{"diagram":"digraph statistical_tests {\n        rankdir=\"LR\"\n\n        node [\n            fontname=Helvetica, shape=box, width=5, fontsize=42,\n            fillcolor=white, style=filled\n        ]\n                \"Continuous data\"\n                    \"Differences\"\n                        \"Means\"\n                            \"Two groups\"\n                                TGParametric [label=\"Parametric\"]\n                                    \"One-sample t-test\"\n                                    \"Paired t-test\"\n                                    \"Unpaired t-test\"\n                                TGNonparametric [label=\"Nonparametric\"]\n                                    TGIndependent [label=\"Independent groups\"]\n                                        \"Mann-Whitney U test\"\n                                    TGNonindependent [\n                                        label=\"Non-independent groups\"\n                                    ]\n                                        \"Wilcoxon signed-rank test\"\n                            \"More than two groups\"\n                                MGParametric [label=\"Parametric\"]\n                                    \"ANOVA\"\n                                MGNonparametric [label=\"Nonparametric\"]\n                                    MGIndependent [label=\"Independent groups\"]\n                                        \"Kruskal-Wallis one-way ANOVA\"\n                                    MGNonindependent [\n                                        label=\"Non-independent groups\"\n                                    ]\n                                        \"Friedman two-way ANOVA\"\n                        \"Variances\"\n                    \"Relationships\"\n                        RIndependent [label=\"Independent groups\"]\n                            \"Regression analysis\"\n                                \"Multiple Linear Regression\"\n                        RNonindependent [label=\"Non-independent groups\"]\n                            \"Correlation analysis\"\n                                RParametric [label=\"Parametric\"]\n                                    \"Pearson product-moment r correlation\"\n                                RNonparametric [label=\"Nonparametric\"]\n                                    \"Spearman Rank Correlation\"\n\n        node [\n            fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue,\n            style=filled, fontsize=42\n        ]\n            \"Hypothesis\"\n                \"Discrete, categorical data\"\n                    \"Chi-squared goodness-of-fit test\"\n                    \"Chi-squared independence test\"\n                    \"Chi-squared homogeneity test\"\n\n        {\n            rank = same;\n            TGIndependent \"Mann-Whitney U test\"\n            TGNonindependent \"Wilcoxon signed-rank test\"\n            MGIndependent \"Kruskal-Wallis one-way ANOVA\"\n            MGNonindependent \"Friedman two-way ANOVA\"\n        }\n\n        \"Hypothesis\" -> \"Continuous data\";\n            \"Continuous data\" -> \"Differences\"\n                \"Differences\" -> \"Means\"\n                    \"Means\" -> \"Two groups\"\n                        \"Two groups\" -> TGParametric\n                            TGParametric -> \"One-sample t-test\"\n                            TGParametric -> \"Paired t-test\"\n                            TGParametric -> \"Unpaired t-test\"\n                        \"Two groups\" -> TGNonparametric\n                            TGNonparametric -> TGIndependent\n                                TGIndependent -> \"Mann-Whitney U test\"\n                            TGNonparametric -> TGNonindependent\n                                TGNonindependent -> \"Wilcoxon signed-rank test\"\n                    \"Means\" -> \"More than two groups\"\n                        \"More than two groups\" -> MGParametric\n                            MGParametric -> \"ANOVA\"\n                        \"More than two groups\" -> MGNonparametric\n                            MGNonparametric -> MGIndependent\n                                MGIndependent -> \"Kruskal-Wallis one-way ANOVA\"\n                            MGNonparametric -> MGNonindependent\n                                MGNonindependent -> \"Friedman two-way ANOVA\"\n                \"Differences\" -> \"Variances\"\n            \"Continuous data\" -> \"Relationships\"\n                \"Relationships\" -> RIndependent\n                    RIndependent -> \"Regression analysis\"\n                        \"Regression analysis\" -> \"Multiple Linear Regression\"\n                \"Relationships\" -> RNonindependent\n                    RNonindependent -> \"Correlation analysis\"\n                        \"Correlation analysis\" -> RParametric\n                            RParametric ->\n                                \"Pearson product-moment r correlation\"\n                        \"Correlation analysis\" -> RNonparametric\n                            RNonparametric -> \"Spearman Rank Correlation\"\n        \"Hypothesis\" -> \"Discrete, categorical data\"\n            \"Discrete, categorical data\" -> \"Chi-squared goodness-of-fit test\"\n            \"Discrete, categorical data\" -> \"Chi-squared independence test\"\n            \"Discrete, categorical data\" -> \"Chi-squared homogeneity test\"\n\n    labelloc=\"t\";\n    fontsize=70;\n    label=\"Flowchart for Choosing a Statistical Test\";\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
 <p>Also note that for a chi-squared test to be valid <em>there must be more than 5 samples of each type</em>.</p>
 <p>There are three main chi-squared tests:</p>
 <ul>
@@ -215,7 +215,7 @@ summary {
 <li>Independence</li>
 <li>Homogeneity</li>
 </ul>
-<p>In R, all three are performed using the same function (<code>chisq.test()</code>) from the base programme (ie you don’t need to install any packages). For more info about this function, see <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/chisq.test">its documentation</a>.</p>
+<p>In R, all three are performed using the same function (<code>chisq.test()</code>) from the base programme (ie you don't need to install any packages). For more info about this function, see <a href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/chisq.test">its documentation</a>.</p>
 <div id="goodness-of-fit-test" class="section level1">
 <h1><span class="header-section-number">1</span> Goodness-of-Fit Test</h1>
 <p>This test answers the question <strong><em>does my distribution of numbers come from the distribution I expect</em></strong>?</p>
@@ -225,21 +225,21 @@ summary {
 <pre class="r"><code># THE R.utils LIBRARY IS NEEDED FOR printf()
 library(R.utils)
 
-result = chisq.test(c(44, 56), p=c(1/2, 1/2))
-printf('p = %.2f', round(result$p.value, 2))</code></pre>
+result &lt;- chisq.test(c(44, 56), p = c(1 / 2, 1 / 2))
+printf(&quot;p = %.2f&quot;, round(result$p.value, 2))</code></pre>
 <pre><code>## p = 0.23</code></pre>
-<p>As you can see, the <code>chisq.test()</code> statement takes the numbers that were <em>observed</em> in a vector as the first argument and the proportions that were <em>expected</em> in a vector as the “p” keyword argument. The p-value of 0.23 suggests that there is a 23% chance that the population is 50% male/female.</p>
-<p>As it happens, if you omit the “p” keyword argument the <code>chisq.test()</code> function assumes you expect equal numbers of each type of observation. Therefore, in this example (because we <em>expect</em> equal numbers of males and females) we can actually leave the argument out:</p>
-<pre class="r"><code>result = chisq.test(c(44, 56))
-printf('p = %.2f', round(result$p.value, 2))</code></pre>
+<p>As you can see, the <code>chisq.test()</code> statement takes the numbers that were <em>observed</em> in a vector as the first argument and the proportions that were <em>expected</em> in a vector as the &quot;p&quot; keyword argument. The p-value of 0.23 suggests that there is a 23% chance that the population is 50% male/female.</p>
+<p>As it happens, if you omit the &quot;p&quot; keyword argument the <code>chisq.test()</code> function assumes you expect equal numbers of each type of observation. Therefore, in this example (because we <em>expect</em> equal numbers of males and females) we can actually leave the argument out:</p>
+<pre class="r"><code>result &lt;- chisq.test(c(44, 56))
+printf(&quot;p = %.2f&quot;, round(result$p.value, 2))</code></pre>
 <pre><code>## p = 0.23</code></pre>
 <p>If we observed 50 males and 50 females, the test would tell use that there is a 100% chance that the population is 50% male/female:</p>
-<pre class="r"><code>result = chisq.test(c(50, 50))
-printf('p = %.2f', round(result$p.value, 2))</code></pre>
+<pre class="r"><code>result &lt;- chisq.test(c(50, 50))
+printf(&quot;p = %.2f&quot;, round(result$p.value, 2))</code></pre>
 <pre><code>## p = 1.00</code></pre>
 <p>Note that the test does <strong>NOT</strong> work properly if you give it your data as proportions or percentages:</p>
-<pre class="r"><code>result = chisq.test(c(0.44, 0.56))
-printf('p = %.2f', round(result$p.value, 2))</code></pre>
+<pre class="r"><code>result &lt;- chisq.test(c(0.44, 0.56))
+printf(&quot;p = %.2f&quot;, round(result$p.value, 2))</code></pre>
 <pre><code>## p = 0.90</code></pre>
 <p>You must always provide the <em>actual numbers</em> observed and the <em>proportions</em> expected.</p>
 </div>
@@ -273,25 +273,26 @@ printf('p = %.2f', round(result$p.value, 2))</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Again, the data is categorical and each ‘bin’ (cell in the table) has more than 5 samples so a chi-squared test is appropriate.</p>
-<pre class="r"><code>n = 30 + 40 + 40 + 90
-result = chisq.test(c(25, 35, 50, 90), p=c(30/n, 40/n, 40/n, 90/n))
-printf('p = %.1f', round(result$p.value, 1))</code></pre>
+<p>Again, the data is categorical and each 'bin' (cell in the table) has more than 5 samples so a chi-squared test is appropriate.</p>
+<pre class="r"><code>n &lt;- 30 + 40 + 40 + 90
+result &lt;- chisq.test(c(25, 35, 50, 90), p = c(30 / n, 40 / n, 40 / n, 90 / n))
+printf(&quot;p = %.1f&quot;, round(result$p.value, 1))</code></pre>
 <pre><code>## p = 0.3</code></pre>
 <p>Note that this example has 3 degrees of freedom. In general, the formula for degrees of freedom is <code>(nrows - 1) * (ncols - 1)</code>:</p>
-<pre class="r"><code>nrows = 2
-ncols = 4
-df = (nrows - 1) * (ncols - 1)
-printf('Degrees of freedom = %d', df)</code></pre>
+<pre class="r"><code>nrows &lt;- 2
+ncols &lt;- 4
+df &lt;- (nrows - 1) * (ncols - 1)
+printf(&quot;Degrees of freedom = %d&quot;, df)</code></pre>
 <pre><code>## Degrees of freedom = 3</code></pre>
 <p>This example can also be done manually by calculating the chi-square test statistic by hand:</p>
 <p><span class="math inline">\(\chi^2 = \sum\frac{\left(observed - expected\right)^2}{expected}\)</span></p>
-<pre class="r"><code>chisq = (25 - 30)^2 / 30 + (35 - 40)^2 / 40 + (50 - 40)^2 / 40 + (90 - 90)^2 / 90
-printf('chi-square = %.2f', round(chisq, 2))</code></pre>
+<pre class="r"><code>chisq &lt;- (25 - 30)^2 / 30 + (35 - 40)^2 / 40 + (50 - 40)^2 / 40 +
+    (90 - 90)^2 / 90
+printf(&quot;chi-square = %.2f&quot;, round(chisq, 2))</code></pre>
 <pre><code>## chi-square = 3.96</code></pre>
 <p>Then the chi-square test statistic can be converted into a p-value using the chi-distribution for 3 degrees of freedom:</p>
-<pre class="r"><code>p = pchisq(chisq, df=3, lower.tail=FALSE)
-printf('p = %.1f', round(p, 1))</code></pre>
+<pre class="r"><code>p &lt;- pchisq(chisq, df = 3, lower.tail = FALSE)
+printf(&quot;p = %.1f&quot;, round(p, 1))</code></pre>
 <pre><code>## p = 0.3</code></pre>
 <p>As the p-value is above 0.05 we <em>fail to reject the null hypothesis</em> that the distribution of characters chosen by players is as the developers claimed.</p>
 </div>
@@ -358,13 +359,13 @@ printf('p = %.1f', round(p, 1))</code></pre>
 </tr>
 </tbody>
 </table>
-<p>In R, this is calculated in the same way as the previous example except a data frame is used to represent the ‘observed’ table:</p>
-<pre class="r"><code>df = data.frame(
-    No=c(79, 122, 204, 74),
-    Yes=c(82, 130, 240, 69)
+<p>In R, this is calculated in the same way as the previous example except a data frame is used to represent the 'observed' table:</p>
+<pre class="r"><code>df &lt;- data.frame(
+    No = c(79, 122, 204, 74),
+    Yes = c(82, 130, 240, 69)
 )
-result = chisq.test(df)
-printf('p = %.1f', round(result$p.value, 1))</code></pre>
+result &lt;- chisq.test(df)
+printf(&quot;p = %.1f&quot;, round(result$p.value, 1))</code></pre>
 <pre><code>## p = 0.6</code></pre>
 <p>As p is larger than 0.05 we <em>fail to reject the null hypothesis</em> that the distribution of Hogwarts houses is the same for both pineapple-on-pizza lovers and haters.</p>
 </div>
@@ -396,14 +397,14 @@ printf('p = %.1f', round(result$p.value, 1))</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>df = data.frame(
-    Male=c(200, 150, 50),
-    Female=c(250, 300, 50)
+<pre class="r"><code>df &lt;- data.frame(
+    Male = c(200, 150, 50),
+    Female = c(250, 300, 50)
 )
-result = chisq.test(df)
-printf('p = %.4f', round(result$p.value, 4))</code></pre>
+result &lt;- chisq.test(df)
+printf(&quot;p = %.4f&quot;, round(result$p.value, 4))</code></pre>
 <pre><code>## p = 0.0003</code></pre>
-<p>To quote: “since the p-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference”.</p>
+<p>To quote: &quot;since the p-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference&quot;.</p>
 </div>
 </div>
 <div id="homogeneity-test" class="section level1">
@@ -444,21 +445,21 @@ printf('p = %.4f', round(result$p.value, 4))</code></pre>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>df = data.frame(
-    Living_alone=c(25, 146, 124),
-    Living_with_others=c(2, 23, 7)
+<pre class="r"><code>df &lt;- data.frame(
+    Living_alone = c(25, 146, 124),
+    Living_with_others = c(2, 23, 7)
 )
-result = chisq.test(df)
-printf('p = %.3f', round(result$p.value, 3))</code></pre>
+result &lt;- chisq.test(df)
+printf(&quot;p = %.3f&quot;, round(result$p.value, 3))</code></pre>
 <pre><code>## p = 0.052</code></pre>
-<p>To quote: “as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a ‘line ball’ conclusion.”</p>
+<p>To quote: &quot;as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a 'line ball' conclusion.&quot;</p>
 </div>
 </div>
 <div id="function-to-interpret-p-values" class="section level1">
 <h1><span class="header-section-number">4</span> Function to Interpret p-values</h1>
 <p>Consider a new example:</p>
 <blockquote>
-<p>A company manufactures widgets. The mass of the widgets that are produced is controlled through batch testing: rather than weighing every single one they take a batch and weigh all of them instead. If the batch as a whole is too light or too heavy, then all of the widgets in that batch are sent for re-manufacture. The company’s database shows that 90% of all batches are made within the acceptable mass range, while 5% are too heavy and 5% are too light.</p>
+<p>A company manufactures widgets. The mass of the widgets that are produced is controlled through batch testing: rather than weighing every single one they take a batch and weigh all of them instead. If the batch as a whole is too light or too heavy, then all of the widgets in that batch are sent for re-manufacture. The company's database shows that 90% of all batches are made within the acceptable mass range, while 5% are too heavy and 5% are too light.</p>
 <p>If the company were to install new manufacturing equipment they would want to know if they could expect this same distribution of acceptance and rejection. If they tested the first 1000 batches after installing the new equipment and 30 were too light and 60 were to heavy, would this be the case?</p>
 </blockquote>
 <p>The problem above suggests that the observed numbers of too light, acceptable and too heavy batches was <code>[30, 910, 60]</code> whereas the expected numbers were <code>[50, 900, 50]</code>, respectively.</p>
@@ -467,35 +468,34 @@ printf('p = %.3f', round(result$p.value, 3))</code></pre>
 <li><span class="math inline">\(H_0\)</span>: The new equipment follows the same distribution as the historical data</li>
 <li><span class="math inline">\(H_1\)</span>: The new equipment has a distribution different to the historical data</li>
 </ul>
-<pre class="r"><code>perform_chi_squared = function(obs, exp) {
-    n = sum(obs)
-    result = chisq.test(obs, p=exp/n)
-    p = result$p.value
+<pre class="r"><code>perform_chi_squared &lt;- function(obs, exp) {
+    n &lt;- sum(obs)
+    result &lt;- chisq.test(obs, p = exp / n)
+    p &lt;- result$p.value
     if (p &lt;= 0.001) {
-        significance = '***'
-        interpretation = 'H_1 is accepted at a 99.9% confidence level.'
+        significance &lt;- &quot;***&quot;
+        interpretation &lt;- &quot;H_1 is accepted at a 99.9% confidence level.&quot;
     } else if (p &lt;= 0.01) {
-        significance = '**'
-        interpretation = 'H_1 is accepted at a 99% confidence level.'
+        significance &lt;- &quot;**&quot;
+        interpretation &lt;- &quot;H_1 is accepted at a 99% confidence level.&quot;
     } else if (p &lt;= 0.05) {
-        significance = '*'
-        interpretation = 'H_1 is accepted at a 95% confidence level.'
+        significance &lt;- &quot;*&quot;
+        interpretation &lt;- &quot;H_1 is accepted at a 95% confidence level.&quot;
     } else {
-        significance = ''
-        interpretation = 'H_0 is accepted'
+        significance &lt;- &quot;&quot;
+        interpretation &lt;- &quot;H_0 is accepted&quot;
     }
-    return = list(p, significance, interpretation)
+    return &lt;- list(p, significance, interpretation)
     return(return)
 }
 
-
-observations = c(30, 910, 60)
-expected = c(50, 900, 50)
-result = perform_chi_squared(observations, expected)
-p = result[1]
-sig = result[2]
-int = result[3]
-printf('p = %.3f%s. %s', p, sig, int)</code></pre>
+observations &lt;- c(30, 910, 60)
+expected &lt;- c(50, 900, 50)
+result &lt;- perform_chi_squared(observations, expected)
+p &lt;- result[1]
+sig &lt;- result[2]
+int &lt;- result[3]
+printf(&quot;p = %.3f%s. %s&quot;, p, sig, int)</code></pre>
 <pre><code>## p = 0.006**. H_1 is accepted at a 99% confidence level.</code></pre>
 <p>Thus, at a 99% confidence level, we can say that the new equipment has a different distribution of overweight-underweight widget production compared to the old equipment.</p>
 <p><a href="../../../R.html">⇦ Back</a></p>

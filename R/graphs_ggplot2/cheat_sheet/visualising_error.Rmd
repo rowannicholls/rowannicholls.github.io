@@ -14,34 +14,34 @@ library(ggplot2)
 ```
 
 ### Cross Bars
-```{r, message=FALSE}
-df = data.frame(grp=c('A', 'B', 'C'), fit=c(5, 7, 6.5), se=c(1, 2, 1))
-p = ggplot(df, aes(grp, fit, ymin=fit - se, ymax=fit + se))
-p = p + geom_crossbar() + ylim(0, 9)
+```{r, message = FALSE}
+df <- data.frame(grp = c("A", "B", "C"), fit = c(5, 7, 6.5), se = c(1, 2, 1))
+p <- ggplot(df, aes(grp, fit, ymin = fit - se, ymax = fit + se))
+p <- p + geom_crossbar() + ylim(0, 9)
 print(p)
 ```
 
 ### Error Bars
-```{r, message=FALSE}
-df = data.frame(grp=c('A', 'B', 'C'), fit=c(5, 7, 6.5), se=c(1, 2, 1))
-p = ggplot(df, aes(grp, fit, ymin=fit - se, ymax=fit + se))
-p = p + geom_errorbar() + ylim(0, 9)
+```{r, message = FALSE}
+df <- data.frame(grp = c("A", "B", "C"), fit = c(5, 7, 6.5), se = c(1, 2, 1))
+p <- ggplot(df, aes(grp, fit, ymin = fit - se, ymax = fit + se))
+p <- p + geom_errorbar() + ylim(0, 9)
 print(p)
 ```
 
 ### Line Range
-```{r, message=FALSE}
-df = data.frame(grp=c('A', 'B', 'C'), fit=c(5, 7, 6.5), se=c(1, 2, 1))
-p = ggplot(df, aes(grp, fit, ymin=fit - se, ymax=fit + se))
-p = p + geom_linerange() + ylim(0, 9)
+```{r, message = FALSE}
+df <- data.frame(grp = c("A", "B", "C"), fit = c(5, 7, 6.5), se = c(1, 2, 1))
+p <- ggplot(df, aes(grp, fit, ymin = fit - se, ymax = fit + se))
+p <- p + geom_linerange() + ylim(0, 9)
 print(p)
 ```
 
 ### Point Range
-```{r, message=FALSE}
-df = data.frame(grp=c('A', 'B', 'C'), fit=c(5, 7, 6.5), se=c(1, 2, 1))
-p = ggplot(df, aes(grp, fit, ymin=fit - se, ymax=fit + se))
-p = p + geom_pointrange() + ylim(0, 9)
+```{r, message = FALSE}
+df <- data.frame(grp = c("A", "B", "C"), fit = c(5, 7, 6.5), se = c(1, 2, 1))
+p <- ggplot(df, aes(grp, fit, ymin = fit - se, ymax = fit + se))
+p <- p + geom_pointrange() + ylim(0, 9)
 print(p)
 ```
 

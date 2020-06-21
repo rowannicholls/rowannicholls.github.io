@@ -187,39 +187,39 @@ summary {
 <h1>Arithmetic</h1>
 <p>All the usual mathematical operations can be done in R:</p>
 <pre class="r"><code># Addition and subtraction
-a = 4 + 5 - 2
+a &lt;- 4 + 5 - 2
 # Multiplication and division
-b = 2 * 100 / 4
+b &lt;- 2 * 100 / 4
 # Integer division
-c = 47 %/% 5
+c &lt;- 47 %/% 5
 # Exponent
-d = 2 ^ 4
+d &lt;- 2 ^ 4
 # Modulus
-e = 5 %% 13
+e &lt;- 5 %% 13
 
 # Output to console
 c(a, b, c, d, e)</code></pre>
 <pre><code>## [1]  7 50  9 16  5</code></pre>
 <p>For more complicated operations, there are functions to do it for you:</p>
 <pre class="r"><code># Square root
-a = sqrt(49)
+a &lt;- sqrt(49)
 # Round down
-b = floor(-3.14159)
+b &lt;- floor(-3.14159)
 # Round up
-c = ceiling(-3.14159)
+c &lt;- ceiling(-3.14159)
 # Round towards zero
-d = trunc(-3.14159)
+d &lt;- trunc(-3.14159)
 # Round to a certain number of decimal points
-e = round(-3.14159, 3)
+e &lt;- round(-3.14159, 3)
 # Round to a certain number of significant figures
-f = signif(-3.14159, 3)
+f &lt;- signif(-3.14159, 3)
 
 # Output to console
 c(a, b, c, d, e, f)</code></pre>
 <pre><code>## [1]  7.000 -4.000 -3.000 -3.000 -3.142 -3.140</code></pre>
 <pre class="r"><code># Remove trailing zeros
 # Note that this converts the number to a string
-g = prettyNum(-3.14000, zero.print=NULL)
+g &lt;- prettyNum(-3.14000, zero.print = NULL)
 g</code></pre>
 <pre><code>## [1] &quot;-3.14&quot;</code></pre>
 <p><a href="../../R.html">⇦ Back</a></p>

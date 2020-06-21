@@ -17,7 +17,7 @@ This example comes from [the RDocumentation site](https://www.rdocumentation.org
 Here's the raw data:
 
 ```{r}
-rounding_times = matrix(
+rounding_times <- matrix(
     c(
         5.40, 5.50, 5.55,
         5.85, 5.70, 5.75,
@@ -44,10 +44,7 @@ rounding_times = matrix(
     ),
     nrow = 22,
     byrow = TRUE,
-    dimnames = list(
-        1 : 22,
-        c('Round Out', 'Narrow Angle', 'Wide Angle')
-    )
+    dimnames = list(1:22, c("Round Out", "Narrow Angle", "Wide Angle"))
 )
 print(head(rounding_times))
 ```
@@ -61,7 +58,10 @@ DiagrammeR::grViz(
     "digraph statistical_tests {
         rankdir='LR'
 
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+        node [
+            fontname=Helvetica, shape=box, width=5, fontsize=42,
+            fillcolor=white, style=filled
+        ]
                         'Two groups'
                             TGParametric [label='Parametric']
                                 'One-sample t-test'
@@ -70,24 +70,34 @@ DiagrammeR::grViz(
                             TGNonparametric [label='Nonparametric']
                                 TGIndependent [label='Independent groups']
                                     'Mann-Whitney U test'
-                                TGNonindependent [label='Non-independent groups']
+                                TGNonindependent [
+                                    label='Non-independent groups'
+                                ]
                                     'Wilcoxon signed-rank test'
                                 MGIndependent [label='Independent groups']
                                     'Kruskal-Wallis one-way ANOVA'
                             MGParametric [label='Parametric']
                                 'ANOVA'
 
-        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]
+        node [
+            fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue,
+            style=filled, fontsize=42
+        ]
             'Hypothesis'
                 'Continuous data'
                     'Differences'
                     'Means'
                         'More than two groups'
                             MGNonparametric [label='Nonparametric']
-                                MGNonindependent [label='Non-independent groups']
+                                MGNonindependent [
+                                    label='Non-independent groups'
+                                ]
                                     'Friedman two-way ANOVA'
 
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+        node [
+            fontname=Helvetica, shape=box, width=5, fontsize=42,
+            fillcolor=white, style=filled
+        ]
                         'Variances'
                     'Relationships'
                         RIndependent [label='Independent groups']
@@ -140,14 +150,15 @@ DiagrammeR::grViz(
                 'Relationships' -> RNonindependent
                     RNonindependent -> 'Correlation analysis'
                         'Correlation analysis' -> RParametric
-                            RParametric -> 'Pearson product-moment r correlation'
+                            RParametric ->
+                                'Pearson product-moment r correlation'
                         'Correlation analysis' -> RNonparametric
                             RNonparametric -> 'Spearman Rank Correlation'
         'Hypothesis' -> 'Discrete, categorical data'
             'Discrete, categorical data' -> 'Chi-squared goodness-of-fit test'
             'Discrete, categorical data' -> 'Chi-squared independence test'
     }",
-    height=400, width=900
+    height = 400, width = 900
 )
 ```
 
@@ -171,21 +182,22 @@ friedman.test(rounding_times)
 
 As we can see from the output the p-value was 0.003805, which is strong evidence in favour of the alternative hypothesis (which is that the methods are not equivalent with respect to speed). The individual values that have been returned can be accessed by setting a variable equal to `friedman.test()` and then indexing it:
 
-```{r, results='hold'}
-f = friedman.test(rounding_times)
+```{r results = "hold"}
+f <- friedman.test(rounding_times)
 
-# GET THE VALUE OF FRIEDMAN'S CHI-SQUARED STATISTIC
-chi_squared = f$statistic
-# GET THE DEGREES OF FREEDOM OF THE APPROXIMATE CHI-SQUARED DISTRIBUTION OF THE TEST STATISTIC
-df = f$parameter
-# GET THE P-VALUE OF THE TEST
-p = f$p.value
-# GET THE CHARACTER STRING "Friedman rank sum test"
-method = f$method
-# GET A CHARACTER STRING GIVING THE NAMES OF THE DATA
-name = f$data.name
+# Get the value of Friedman's chi-squared statistic
+chi_squared <- f$statistic
+# Get the degrees of freedom of the approximate chi-squared distribution of
+# the test statistic
+df <- f$parameter
+# Get the p-value of the test
+p <- f$p.value
+# Get the character string "Friedman rank sum test"
+method <- f$method
+# Get a character string giving the names of the data
+name <- f$data.name
 
-# PRINT THEM ALL
+# Print them all
 print(chi_squared)
 print(df)
 print(p)

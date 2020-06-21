@@ -14,15 +14,15 @@ All the usual mathematical operations can be done in R:
 
 ```{r}
 # Addition and subtraction
-a = 4 + 5 - 2
+a <- 4 + 5 - 2
 # Multiplication and division
-b = 2 * 100 / 4
+b <- 2 * 100 / 4
 # Integer division
-c = 47 %/% 5
+c <- 47 %/% 5
 # Exponent
-d = 2 ^ 4
+d <- 2 ^ 4
 # Modulus
-e = 5 %% 13
+e <- 5 %% 13
 
 # Output to console
 c(a, b, c, d, e)
@@ -32,24 +32,24 @@ For more complicated operations, there are functions to do it for you:
 
 ```{r}
 # Square root
-a = sqrt(49)
+a <- sqrt(49)
 # Round down
-b = floor(-3.14159)
+b <- floor(-3.14159)
 # Round up
-c = ceiling(-3.14159)
+c <- ceiling(-3.14159)
 # Round towards zero
-d = trunc(-3.14159)
+d <- trunc(-3.14159)
 # Round to a certain number of decimal points
-e = round(-3.14159, 3)
+e <- round(-3.14159, 3)
 # Round to a certain number of significant figures
-f = signif(-3.14159, 3)
+f <- signif(-3.14159, 3)
 
 # Output to console
 c(a, b, c, d, e, f)
 
 # Remove trailing zeros
 # Note that this converts the number to a string
-g = prettyNum(-3.14000, zero.print=NULL)
+g <- prettyNum(-3.14000, zero.print = NULL)
 g
 ```
 

@@ -186,47 +186,53 @@ summary {
 <div id="synopsis" class="section level1">
 <h1><span class="header-section-number">1</span> Synopsis</h1>
 <ul>
-<li>A ‘package’ is the same as a ‘library’</li>
+<li>A 'package' is the same as a 'library'</li>
 <li>Increase the number of functions you can call by installing <strong><em>packages</em></strong></li>
 <li>Once installed, you still need to <strong><em>import</em></strong> the library into your script</li>
 </ul>
 </div>
 <div id="what-are-packages-and-libraries-and-why-do-i-need-them" class="section level1">
 <h1><span class="header-section-number">2</span> What are Packages and Libraries, and Why Do I Need Them?</h1>
-<p>When you download and install R or RStudio you get access to what is known as <strong><em>base</em></strong> R. It’s very powerful and can do a lot of things but, as the name suggests, it’s very basic. In order to add functionality and be able to use other functions you need to <strong><em>install packages</em></strong> and <strong><em>import libraries</em></strong>.</p>
+<p>When you download and install R or RStudio you get access to what is known as <strong><em>base</em></strong> R. It's very powerful and can do a lot of things but, as the name suggests, it's very basic. In order to add functionality and be able to use other functions you need to <strong><em>install packages</em></strong> and <strong><em>import libraries</em></strong>.</p>
 <blockquote>
-<p><strong>What’s the difference between a library and a package?</strong><br />
-Nothing. They are two names for the same thing. For some reason you <em>install</em> a package and <em>import</em> a library but I don’t know why.</p>
+<p><strong>What's the difference between a library and a package?</strong><br />
+Nothing. They are two names for the same thing. For some reason you <em>install</em> a package and <em>import</em> a library but I don't know why.</p>
 </blockquote>
 </div>
 <div id="install-a-package" class="section level1">
 <h1><span class="header-section-number">3</span> Install a Package</h1>
 <p>Packages can be installed by running the <code>install.packages()</code> function. Specify the name of the package you want to install as a string and the repository you want to install it from by using the <code>repos</code> <strong><em>keyword argument</em></strong>:</p>
-<pre class="r"><code>install.packages('BlandAltmanLeh', repos='http://cran.us.r-project.org')
-install.packages('chron', repos='http://cran.us.r-project.org')
-install.packages('DiagrammeR', repos='http://cran.us.r-project.org')
-install.packages('dplyr', repos='http://cran.us.r-project.org')
-install.packages('ggplot2', repos='http://cran.us.r-project.org')
-install.packages('logging', repos='http://cran.us.r-project.org')
-install.packages('matrixStats', repos='http://cran.us.r-project.org')
-install.packages('Rmisc', repos='http://cran.us.r-project.org')
-install.packages('R.utils', repos='http://cran.us.r-project.org')
-install.packages('readr', repos='http://cran.us.r-project.org')
-install.packages('reticulate', repos='http://cran.us.r-project.org')
-install.packages('rmarkdown', repos='http://cran.us.r-project.org')
-install.packages('stringi', repos='http://cran.us.r-project.org')
-install.packages('stringr', repos='http://cran.us.r-project.org')
-install.packages('utf8', repos='http://cran.us.r-project.org')</code></pre>
-<p>The “cran” part of the repos URL refers to “CRAN”, the Comprehensive R Archive Network where most R packages are stored online.</p>
+<pre class="r"><code>install.packages(&quot;BlandAltmanLeh&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;chron&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;DiagrammeR&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;dplyr&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;ggplot2&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;ggpubr&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;kableExtra&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;knitr&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;lintr&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;logging&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;maps&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;matrixStats&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;Rmisc&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;R.utils&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;readr&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;reticulate&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;rmarkdown&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;stringi&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;stringr&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;titanic&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
+install.packages(&quot;utf8&quot;, repos = &quot;http://cran.us.r-project.org&quot;)</code></pre>
+<p>The &quot;cran&quot; part of the repos URL refers to &quot;CRAN&quot;, the Comprehensive R Archive Network where most R packages are stored online.</p>
 <blockquote>
-<p>You only need to install a package once on your computer. After it’s finished installing you can delete the <code>install.packages()</code> functions from your R script.</p>
+<p>You only need to install a package once on your computer. After it's finished installing you can delete the <code>install.packages()</code> functions from your R script.</p>
 </blockquote>
-<p>You can find out where on your computer the packages are installed by running <code>.libPaths()</code> and see what packages you’ve installed with <code>print(as.data.frame(installed.packages()))</code>.</p>
+<p>You can find out where on your computer the packages are installed by running <code>.libPaths()</code> and see what packages you've installed with <code>print(as.data.frame(installed.packages()))</code>.</p>
 <div id="updating-r" class="section level2">
 <h2><span class="header-section-number">3.1</span> Updating R</h2>
-<p>Sometimes you can only download a package if it’s compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you’re on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:</p>
+<p>Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:</p>
 <pre class="bash"><code>R --version</code></pre>
-<p>If you are using Ubuntu and aren’t using RStudio, update R by first opening <code>/etc/apt/sources.list</code> and adding whichever of the following lines corresponds to your Ubuntu version:</p>
+<p>If you are using Ubuntu and aren't using RStudio, update R by first opening <code>/etc/apt/sources.list</code> and adding whichever of the following lines corresponds to your Ubuntu version:</p>
 <pre class="bash"><code># 18.04
 deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
 # 16.04
@@ -244,39 +250,39 @@ sudo apt-get upgrade</code></pre>
 <div id="import-a-library" class="section level1">
 <h1><span class="header-section-number">4</span> Import a Library</h1>
 <p>When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.</p>
-<p><strong>Note:</strong> it’s best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:</p>
+<p><strong>Note:</strong> it's best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:</p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <p>You can now use the functionality that is included with the libraries you imported:</p>
 <pre class="r"><code># Import the 'dplyr' library
 library(dplyr)
-# As an example, you can now use the 'pipe' operator which puts a value into the front of the next pair of brackets:
-x = 49
-square_root = x %&gt;%
-    sqrt()
+# As an example, you can now use the 'pipe' operator which puts a value into
+# the front of the next pair of brackets:
+x &lt;- 49
+square_root &lt;- x %&gt;% sqrt()
 # This will be the square root of 49:
 square_root</code></pre>
 <pre><code>## [1] 7</code></pre>
 </div>
 <div id="call-a-function-from-a-library" class="section level1">
 <h1><span class="header-section-number">5</span> Call a Function From a Library</h1>
-<p>You can call a function that comes from a particular library in one of two ways. Here’s an example with the <code>str_length()</code> function, which comes from the ‘stringr’ library and finds the number of characters in a string. The first way is to just call the function as you would any other:</p>
+<p>You can call a function that comes from a particular library in one of two ways. Here's an example with the <code>str_length()</code> function, which comes from the 'stringr' library and finds the number of characters in a string. The first way is to just call the function as you would any other:</p>
 <pre class="r"><code># Import the library
 library(stringr)
 # Find the length of a string of text
-length = str_length('Hello, World')
+length &lt;- str_length(&quot;Hello, World&quot;)
 # Output to the console
 print(length)</code></pre>
 <pre><code>## [1] 12</code></pre>
 <p>While this is the simplest way of doing it, it can sometimes get confusing as to which function came from which library. This is especially true if you have imported a lot of them and are using all sorts of different functions all over the place. Consider using the alternative method, which involves using two colons to explicitly show which library the function came from:</p>
 <pre class="r"><code># Find the length of a string of text
-length = stringr::str_length('Hello, World')
+length &lt;- stringr::str_length(&quot;Hello, World&quot;)
 # Output to the console
 print(length)</code></pre>
 <pre><code>## [1] 12</code></pre>
 </div>
 <div id="alternative-methods-of-importing-libraries" class="section level1">
 <h1><span class="header-section-number">6</span> Alternative Methods of Importing Libraries</h1>
-<p>If your script is going to be run on someone else’s computer and you don’t know if they will have a particular package installed, import it into your script with the <code>require()</code> function. If the package is installed, it will import it. If it isn’t, it will first download and install it, then import it.</p>
+<p>If your script is going to be run on someone else's computer and you don't know if they will have a particular package installed, import it into your script with the <code>require()</code> function. If the package is installed, it will import it. If it isn't, it will first download and install it, then import it.</p>
 <pre class="r"><code>require(ggplot2)
 require(logging)</code></pre>
 <p>Sometimes, the messages that get printed to the console when a package is installed or imported get annoying. Suppress them with <code>suppressPackageStartupMessages()</code>:</p>
@@ -286,7 +292,7 @@ suppressPackageStartupMessages(library(logging))</code></pre>
 <div id="summary" class="section level1">
 <h1><span class="header-section-number">7</span> Summary</h1>
 <ul>
-<li>A ‘package’ is the same as a ‘library’</li>
+<li>A 'package' is the same as a 'library'</li>
 <li>Increase the number of functions you can call by installing <strong><em>packages</em></strong></li>
 <li>Once installed, you still need to <strong><em>import</em></strong> the library into your script</li>
 </ul>

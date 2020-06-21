@@ -14,9 +14,9 @@ library(ggplot2)
 ```
 
 ### Bar Chart
-```{r, message=FALSE}
-p = ggplot(mpg, aes(fl))
-p = p + geom_bar()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(fl))
+p <- p + geom_bar()
 print(p)
 ```
 

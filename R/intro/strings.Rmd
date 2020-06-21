@@ -21,14 +21,16 @@ There are a number of different ways to do this, depending on the exact function
 ## `paste()`
 
 `paste()` uses a space for separation by default:
+
 ```{r}
-st = paste('Hello', 'World')
+st <- paste("Hello", "World")
 print(st)
 ```
 
 This default behaviour can be changed using the `sep` keyword argument, eg you can have a comma and a space:
+
 ```{r}
-st = paste('Hello', 'World', sep=', ')
+st <- paste("Hello", "World", sep = ", ")
 print(st)
 ```
 
@@ -37,16 +39,19 @@ This function returns a *character vector*. This means that you can assign it to
 ## `cat()`
 
 `cat()` performs the same function as `paste()` and also uses a single space by default. This can also be changed through the use of the `sep` keyword argument.
+
 ```{r}
-cat('Hello', 'World')
+cat("Hello", "World")
 ```
 
 The difference between `paste()` and `cat()` is that `cat()` does not return a value, it only prints it to the console. This means that it cannot be saved to a variable like this:
-```{r, results='hide'}
-a = cat('Hello', 'World')
+
+```{r results = "hide"}
+a <- cat("Hello", "World")
 ```
 
 The code below prints `NULL` because nothing was returned by the `cat()` function to the variable `a`!
+
 ```{r}
 print(a)
 ```
@@ -54,34 +59,38 @@ print(a)
 ## `c()`
 
 `c()` is similar to `paste()` in that it also combines/concatenates objects and allows you to assign them to variables, but `c()` turns them into *vectors*:
+
 ```{r}
-st = c('Hello', 'World')
+st <- c("Hello", "World")
 print(st)
 ```
 
 ## `paste0()`
 
 `paste0()` uses no space for separation by default:
+
 ```{r}
-st = paste0('Hello', 'World')
+st <- paste0("Hello", "World")
 print(st)
 ```
 
 # Split Strings
 
 Use `strsplit()`:
+
 ```{r}
-st = 'Split the words in a sentence.'
-st = strsplit(st, ' ')
+st <- "Split the words in a sentence."
+st <- strsplit(st, " ")
 print(st)
 ```
 
 # Search for a Character or Sub-string
 
 Find the indices where certain characters are:
+
 ```{r}
-st = 'Hello World'
-idx_o = unlist(gregexpr(pattern='o', st))
+st <- "Hello World"
+idx_o <- unlist(gregexpr(pattern = "o", st))
 print(idx_o)
 ```
 In this example the letter "o" can be found at both position 5 and 8 in the string "Hello World".
@@ -89,48 +98,54 @@ In this example the letter "o" can be found at both position 5 and 8 in the stri
 # Lookup the Characters at Particular Indices
 
 Use `substr()`:
+
 ```{r}
-st = 'Hello World'
-st = substr(st, start=3, stop=4)
+st <- "Hello World"
+st <- substr(st, start = 3, stop = 4)
 print(st)
 ```
 
 Remove the text before a certain character:
+
 ```{r}
-sub_st = substr(st, start=idx_o[1], stop=nchar(st))
+sub_st <- substr(st, start = idx_o[1], stop = nchar(st))
 print(sub_st)
 ```
 
 Remove the text after a certain character:
+
 ```{r}
-sub_st = substr(st, start=1, stop=idx_o[1])
+sub_st <- substr(st, start = 1, stop = idx_o[1])
 print(sub_st)
 ```
 
 # Replace a Sub-string
 
 Use `gsub()`:
+
 ```{r}
-st = 'Hello World'
-st = gsub('ello', 'i', st)
+st <- "Hello World"
+st <- gsub("ello", "i", st)
 print(st)
 ```
 
 # Overwrite Characters
 
 Use `str_sub()`:
+
 ```{r}
-st = 'Hello World'
-str_sub(st, 6, 6) = '_'
-str_sub(st, 8, 7) = 'O'
+st <- "Hello World"
+str_sub(st, 6, 6) <- "_"
+str_sub(st, 8, 7) <- "O"
 print(st)
 ```
 
 # Change the Case
 
 A string can be UPPERCASE, lowercase, Sentence case or Title Case:
+
 ```{r}
-st = 'The quick, brown Fox jumped over the lazy Dog'
+st <- "The quick, brown Fox jumped over the lazy Dog"
 print(str_to_upper(st))
 print(str_to_lower(st))
 print(str_to_sentence(st))
@@ -144,64 +159,72 @@ If you want to print a variable as part of a string using a specific format, use
 ## Number formats
 
 When working with numbers, use the `f` for 'floating-point' in conjunction with `%`:
+
 ```{r}
-x = 1
-printf('x = %f', x)
+x <- 1
+printf("x = %f", x)
 ```
 
 Use a decimal point and a number to set the number of decimal places you see:
+
 ```{r}
-x = 1
-printf('x = %.2f', x)
+x <- 1
+printf("x = %.2f", x)
 ```
 
 Use a number before the decimal point to set the 'width' of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:
+
 ```{r}
-x = 1
-printf('x = %8.2f', x)
+x <- 1
+printf("x = %8.2f", x)
 ```
 
 ## String formats
 Instead of the `f`, use an `s` together with the `%`.
 
 You can print to the console immediately:
+
 ```{r}
-st = 'Hello world'
-printf('Output text is: %s', st)
+st <- "Hello world"
+printf("Output text is: %s", st)
 ```
 
 ...or you can write the value to a variable and print it to the console at a later stage by using the `sprintf()` function:
+
 ```{r}
-st = 'Hello world'
-st = sprintf('Output text is: %s', st)
+st <- "Hello world"
+st <- sprintf("Output text is: %s", st)
 print(st[1])
 ```
 
 ## Using formatted output with a dataframe
 
 If you extract a single string from any vector or dataframe, it will be treated in the same way by the `printf()` function:
+
 ```{r}
-df = data.frame(
-    name = c('Alfa', 'Bravo', 'Charlie')
+df <- data.frame(
+    name <- c("Alfa", "Bravo", "Charlie")
 )
-printf('Output text is: %s', df$name[1])
+printf("Output text is: %s", df$name[1])
 ```
 
 # Unicode and Emojii
 
 Unicode characters can be called by using `\U` and referencing their unicode number. Some can then simply be printed:
+
 ```{r}
-st1 = '\U03BC'  # mu
-st2 = '\U03B5'  # epsilon
-st3 = '\U03C9'  # omega
+st1 <- "\U03BC"  # mu
+st2 <- "\U03B5"  # epsilon
+st3 <- "\U03C9"  # omega
 print(c(st1, st2, st3))
 ```
 
 Others (eg emojis) cannot be printed this easily and need the special `utf8_print()` function from the `utf8` library:
+
 ```{r}
-st1 = '\U2705'  # white heavy check mark
-st2 = '\U274c'  # cross mark
-st3 = '\U0001f609'  # winking face
+st1 <- "\U2705"  # white heavy check mark
+st2 <- "\U274c"  # cross mark
+st3 <- "\U0001f609"  # winking face
 utf8::utf8_print(c(st1, st2, st3))
 ```
 

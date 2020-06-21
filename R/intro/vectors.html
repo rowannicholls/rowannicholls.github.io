@@ -181,19 +181,20 @@ summary {
 </div>
 
 
-<p><font size="3"> <a href="../../R.html">⇦ Back</a></p>
+<p><font size="3"></p>
+<p><a href="../../R.html">⇦ Back</a></p>
 <p>Vectors are lists of data, eg a list of numbers or a list of strings.</p>
 <div id="creating-a-vector" class="section level1">
 <h1><span class="header-section-number">1</span> Creating a Vector</h1>
-<p>The function that creates a vector is <code>c()</code>, where ‘c’ is short for ‘concatenate’. You already met this function in <a href="strings.html">the page on characters and strings</a>.</p>
+<p>The function that creates a vector is <code>c()</code>, where 'c' is short for 'concatenate'. You already met this function in <a href="strings.html">the page on characters and strings</a>.</p>
 <pre class="r"><code># A vector of strings:
-x = c('Alfa', 'Bravo', 'Charlie')
+x &lt;- c(&quot;Alfa&quot;, &quot;Bravo&quot;, &quot;Charlie&quot;)
 # A vector of numbers:
-x = c(1, 2, 3)
+x &lt;- c(1, 2, 3)
 # A vector of both:
-x = c('Alfa', 'Bravo', 3, 4)</code></pre>
+x &lt;- c(&quot;Alfa&quot;, &quot;Bravo&quot;, 3, 4)</code></pre>
 <p>You can also use the <code>vector()</code> function, which creates an empty vector of a certain type and length. In this example, it creates a vector of four integers (which, currently do not exist):</p>
-<pre class="r"><code>x = vector('integer', 4)</code></pre>
+<pre class="r"><code>x &lt;- vector(&quot;integer&quot;, 4)</code></pre>
 </div>
 <div id="indexing-a-vector" class="section level1">
 <h1><span class="header-section-number">2</span> Indexing a Vector</h1>
@@ -207,14 +208,14 @@ x = c('Alfa', 'Bravo', 3, 4)</code></pre>
 <div id="overwriting-an-element" class="section level1">
 <h1><span class="header-section-number">3</span> Overwriting an Element</h1>
 <p>You can overwrite a value in a vector by indexing its position and setting it equal to something else:</p>
-<pre class="r"><code>x[1] = 'ALFA'
+<pre class="r"><code>x[1] &lt;- &quot;ALFA&quot;
 print(x)</code></pre>
 <pre><code>## [1] &quot;ALFA&quot;    &quot;Bravo&quot;   &quot;Charlie&quot; &quot;Delta&quot;</code></pre>
 <p>You can also use the <code>mapvalues()</code> function from the <code>plyr</code> package to specify exactly what values you want to overwrite:</p>
-<pre class="r"><code>x = plyr::mapvalues(
+<pre class="r"><code>x &lt;- plyr::mapvalues(
     x,
-    c('Bravo', 'Charlie'),
-    c('BRAVO', 'CHARLIE')
+    c(&quot;Bravo&quot;, &quot;Charlie&quot;),
+    c(&quot;BRAVO&quot;, &quot;CHARLIE&quot;)
 )
 print(x)</code></pre>
 <pre><code>## [1] &quot;ALFA&quot;    &quot;BRAVO&quot;   &quot;CHARLIE&quot; &quot;Delta&quot;</code></pre>
@@ -222,11 +223,11 @@ print(x)</code></pre>
 <div id="appending-to-a-vector" class="section level1">
 <h1><span class="header-section-number">4</span> Appending to a Vector</h1>
 <p>To add an element to a vector, simple index one position after the last. For example, if a vector has four elements we need to index position five and set it equal to something:</p>
-<pre class="r"><code>x[5] = 'Echo'
+<pre class="r"><code>x[5] &lt;- &quot;Echo&quot;
 print(x)</code></pre>
 <pre><code>## [1] &quot;ALFA&quot;    &quot;BRAVO&quot;   &quot;CHARLIE&quot; &quot;Delta&quot;   &quot;Echo&quot;</code></pre>
 <p>Be careful though because if you get the element number wrong you will overwrite something instead of appending. A way to guarantee that you will always index the correct position is by using the <code>length()</code> function to get the number of elements in the vector. The length also happens to be the position of the last element, so by indexing one more than this value you will always be appending to the vector:</p>
-<pre class="r"><code>x[length(x) + 1] = 'Foxtrot'
+<pre class="r"><code>x[length(x) + 1] &lt;- &quot;Foxtrot&quot;
 print(x)</code></pre>
 <pre><code>## [1] &quot;ALFA&quot;    &quot;BRAVO&quot;   &quot;CHARLIE&quot; &quot;Delta&quot;   &quot;Echo&quot;    &quot;Foxtrot&quot;</code></pre>
 <p>This trick ensures you are always <em>appending</em> not <em>overwriting</em>, no matter what vector you are using.</p>

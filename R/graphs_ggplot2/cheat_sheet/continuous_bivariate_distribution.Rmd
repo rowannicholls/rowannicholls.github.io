@@ -14,23 +14,23 @@ library(ggplot2)
 ```
 
 ### Bins in 2D
-```{r, message=FALSE}
-p = ggplot(diamonds, aes(carat, price))
-p = p + geom_bin2d(binwidth=c(0.25, 500))
+```{r message = FALSE}
+p <- ggplot(diamonds, aes(carat, price))
+p <- p + geom_bin2d(binwidth = c(0.25, 500))
 print(p)
 ```
 
 ### Density in 2D
-```{r, message=FALSE}
-p = ggplot(diamonds, aes(carat, price))
-p = p + geom_density2d()
+```{r message = FALSE}
+p <- ggplot(diamonds, aes(carat, price))
+p <- p + geom_density2d()
 print(p)
 ```
 
 ### Hexagons
-```{r, message=FALSE}
-p = ggplot(diamonds, aes(carat, price))
-p = p + geom_hex()
+```{r message = FALSE}
+p <- ggplot(diamonds, aes(carat, price))
+p <- p + geom_hex()
 print(p)
 ```
 

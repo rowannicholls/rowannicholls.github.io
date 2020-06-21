@@ -185,14 +185,14 @@ summary {
 <p><a href="../../R.html">⇦ Back</a></p>
 <div id="python-dictionaries-in-r" class="section level1">
 <h1>Python Dictionaries in R?</h1>
-<p>In Python, users have access to a very useful data structure called ‘dictionaries’. They literally let a script <strong>translate</strong> an object into another object. Take a look at the following Python code:</p>
+<p>In Python, users have access to a very useful data structure called 'dictionaries'. They literally let a script <strong>translate</strong> an object into another object. Take a look at the following Python code:</p>
 <pre class="python"><code># Python code
 english_to_german = {
-    'potato': 'Kartoffel',
-    'ambulance': 'Krankenwagen',
-    'rabbit': 'Hase'
+    &quot;potato&quot;: &quot;Kartoffel&quot;,
+    &quot;ambulance&quot;: &quot;Krankenwagen&quot;,
+    &quot;rabbit&quot;: &quot;Hase&quot;
 }
-translation = english_to_german['potato']
+translation = english_to_german[&quot;potato&quot;]
 st = f'The German word for &quot;potato&quot; is &quot;{translation}&quot;'
 print(st)</code></pre>
 <pre><code>## The German word for &quot;potato&quot; is &quot;Kartoffel&quot;</code></pre>
@@ -200,16 +200,16 @@ print(st)</code></pre>
 </div>
 <div id="using-a-vector-like-a-dictionary" class="section level1">
 <h1>Using a Vector like a Dictionary</h1>
-<p>Start by initialising a list (ie a vector in ‘list mode’) and entering the English words:</p>
+<p>Start by initialising a list (ie a vector in 'list mode') and entering the English words:</p>
 <pre class="r"><code># From here onwards all the code is R
-english_to_german = vector(mode='list', length=3)
-names(english_to_german) = c('potato', 'ambulance', 'rabbit')</code></pre>
+english_to_german &lt;- vector(mode = &quot;list&quot;, length = 3)
+names(english_to_german) &lt;- c(&quot;potato&quot;, &quot;ambulance&quot;, &quot;rabbit&quot;)</code></pre>
 <p>Now enter the German words, associating each one with the corresponding English word:</p>
-<pre class="r"><code>english_to_german['potato'] = 'Kartoffel'
-english_to_german['ambulance'] = 'Krankenwagen'</code></pre>
+<pre class="r"><code>english_to_german[&quot;potato&quot;] &lt;- &quot;Kartoffel&quot;
+english_to_german[&quot;ambulance&quot;] &lt;- &quot;Krankenwagen&quot;</code></pre>
 <p>Instead of using the English <em>word</em>, we can associate the German word with the relevant <em>index</em> of the list:</p>
-<pre class="r"><code>english_to_german[[3]] = 'Hase'</code></pre>
-<p>Let’s take a look at the result:</p>
+<pre class="r"><code>english_to_german[[3]] &lt;- &quot;Hase&quot;</code></pre>
+<p>Let's take a look at the result:</p>
 <pre class="r"><code>print(english_to_german)</code></pre>
 <pre><code>## $potato
 ## [1] &quot;Kartoffel&quot;
@@ -219,33 +219,36 @@ english_to_german['ambulance'] = 'Krankenwagen'</code></pre>
 ## 
 ## $rabbit
 ## [1] &quot;Hase&quot;</code></pre>
-<pre class="r"><code>cat('The German word for \&quot;potato\&quot; is &quot;', english_to_german$'potato', '&quot;', sep='')</code></pre>
+<pre class="r"><code>cat(
+    &quot;The German word for \&quot;potato\&quot; is \&quot;&quot;, english_to_german$&quot;potato&quot;, &quot;\&quot;&quot;,
+    sep = &quot;&quot;
+)</code></pre>
 <pre><code>## The German word for &quot;potato&quot; is &quot;Kartoffel&quot;</code></pre>
 </div>
 <div id="using-a-data-frame-like-a-dictionary" class="section level1">
 <h1>Using a Data Frame like a Dictionary</h1>
-<p>A data frame is a lot more powerful than a list; for example, we could create our dictionary in a spreadsheet then import that as a data frame. We’re not going to do that in this example though, we’re going to create a data frame manually instead:</p>
-<pre class="r"><code>df = data.frame(
-    English=c('potato', 'ambulance', 'rabbit'),
-    German=c('Kartoffel', 'Krankenwagen', 'Hase')
+<p>A data frame is a lot more powerful than a list; for example, we could create our dictionary in a spreadsheet then import that as a data frame. We're not going to do that in this example though, we're going to create a data frame manually instead:</p>
+<pre class="r"><code>df &lt;- data.frame(
+    English = c(&quot;potato&quot;, &quot;ambulance&quot;, &quot;rabbit&quot;),
+    German = c(&quot;Kartoffel&quot;, &quot;Krankenwagen&quot;, &quot;Hase&quot;)
 )
-english_to_german = vector(mode='list')</code></pre>
-<p>Here’s how to convert that data frame into a dictionary once it’s in R:</p>
-<pre class="r"><code>for (i in 1:nrow(df)) {
-    key = df[i, 'English']
-    value = df[i, 'German']
-    english_to_german[as.character(key)] = as.character(value)
+english_to_german &lt;- vector(mode = &quot;list&quot;)</code></pre>
+<p>Here's how to convert that data frame into a dictionary once it's in R:</p>
+<pre class="r"><code>for (i in seq_along(df)) {
+    key &lt;- df[i, &quot;English&quot;]
+    value &lt;- df[i, &quot;German&quot;]
+    english_to_german[as.character(key)] &lt;- as.character(value)
 }
 print(english_to_german)</code></pre>
 <pre><code>## $potato
 ## [1] &quot;Kartoffel&quot;
 ## 
 ## $ambulance
-## [1] &quot;Krankenwagen&quot;
-## 
-## $rabbit
-## [1] &quot;Hase&quot;</code></pre>
-<pre class="r"><code>cat('The German word for \&quot;potato\&quot; is &quot;', english_to_german$'potato', '&quot;', sep='')</code></pre>
+## [1] &quot;Krankenwagen&quot;</code></pre>
+<pre class="r"><code>cat(
+    &quot;The German word for \&quot;potato\&quot; is \&quot;&quot;, english_to_german$&quot;potato&quot;, &quot;\&quot;&quot;,
+    sep = &quot;&quot;
+)</code></pre>
 <pre><code>## The German word for &quot;potato&quot; is &quot;Kartoffel&quot;</code></pre>
 <p><a href="../../R.html">⇦ Back</a> </font></p>
 </div>

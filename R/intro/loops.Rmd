@@ -11,27 +11,28 @@ output:
 
 [⇦ Back](../../R.html)
 
-```{r, echo=FALSE}
-# install.packages('kableExtra', repos='http://cran.us.r-project.org')
-suppressPackageStartupMessages(require(kableExtra))
-
-options(width=120)
+```{r echo = FALSE}
+options(width = 120)
 ```
 
 Why Use Loops?
 ==============
 As an example, let's use the Motor Trend car road test dataset (which is one of the datasets that comes pre-loaded in R). The first six rows look like this:
 
-```{r, echo=FALSE}
-mtcars = head(mtcars)
-kable_input = kable(mtcars)
-kable_styling(kable_input, bootstrap_options=c('striped', 'hover', 'condensed'))
+```{r echo = FALSE}
+library(kableExtra)
+
+mtcars <- head(mtcars)
+kable_input <- kable(mtcars)
+kable_styling(
+    kable_input, bootstrap_options = c("striped", "hover", "condensed")
+)
 ```
 
 If you have data in a data frame (which the above data is) or in a vector (and each column in the above data frame is a vector) then you can perform operations on an entire column in one go. For example, we can convert the weight of the cars in the above dataset (this information is stored in the "wt" column) from 'thousands of pounds' into 'thousands of kilograms' by dividing by 2.205 like this:
 
 ```{r}
-df = mtcars$wt / 2.205
+df <- mtcars$wt / 2.205
 print(df)
 ```
 
@@ -60,7 +61,7 @@ Vectors
 This works for vectors as well:
 
 ```{r}
-for (i in c('one', 'two', 'three')) {
+for (i in c("one", "two", "three")) {
     print(i)
 }
 ```
@@ -78,7 +79,7 @@ for (column in mtcars) {
 Sometimes it makes more sense to iterate over the _number_ of columns. This allows us to use the index of each column to access the corresponding information in a different object. For example, if we want to print each column's _heading_ and also print each column's _contents_ we need to tell the script to print the ith column heading and then to print the ith column's contents for each i from 1 to the number of columns in the data frame:
 
 ```{r}
-for (i in 1:length(mtcars)) {
+for (i in seq_along(mtcars)) {
     print(colnames(mtcars)[i])
     print(mtcars[[i]])
 }
@@ -89,18 +90,18 @@ While Loops
 A 'while loop' will continue performing a set of operations until a condition is met. Let's imagine you have a jug that is 1 litre in size and you are pouring 150 ml glasses of water into it. You want to continue doing this as many times as you can without letting the jug overflow. Let's set up the scenario:
 
 ```{r}
-water_in_jug = 0
-capacity = 1000
-glass_size = 150
-number_of_pours = 0
+water_in_jug <- 0
+capacity <- 1000
+glass_size <- 150
+number_of_pours <- 0
 ```
 
 You start with 0 ml of water in the jug. The capacity of the jug is 1000 ml. The size of the glass you are pouring in is 150 ml. You start having poured this glass into the jug 0 times. Now start pouring:
 
 ```{r}
 while (water_in_jug < capacity) {
-    water_in_jug = water_in_jug + 150
-    number_of_pours = number_of_pours + 1
+    water_in_jug <- water_in_jug + 150
+    number_of_pours <- number_of_pours + 1
 }
 print(number_of_pours)
 print(water_in_jug)
@@ -114,8 +115,8 @@ Let's continue using the above example. Now that we know that 6 pours is the mos
 
 ```{r}
 for (i in 1:6) {
-    water_in_jug = i * glass_size
-    number_of_pours = i
+    water_in_jug <- i * glass_size
+    number_of_pours <- i
 }
 print(number_of_pours)
 print(water_in_jug)
@@ -126,13 +127,13 @@ Hurray! No overflow!
 However, we could also use a while loop and set it to run exactly six times:
 
 ```{r}
-water_in_jug = 0
-capacity = 1000
-glass_size = 150
-number_of_pours = 0
+water_in_jug <- 0
+capacity <- 1000
+glass_size <- 150
+number_of_pours <- 0
 while (number_of_pours < 6) {
-    water_in_jug = water_in_jug + 150
-    number_of_pours = number_of_pours + 1
+    water_in_jug <- water_in_jug + 150
+    number_of_pours <- number_of_pours + 1
 }
 print(number_of_pours)
 print(water_in_jug)
@@ -147,4 +148,5 @@ Summary
 - There are also __while loops__ which repeat the same thing until a condition is met
 
 [⇦ Back](../../R.html)
+
 </font>

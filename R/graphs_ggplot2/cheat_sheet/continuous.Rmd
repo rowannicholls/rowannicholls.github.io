@@ -14,44 +14,44 @@ library(ggplot2)
 ```
 
 ### Area Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(hwy))
-p = p + geom_area(stat='bin')
+```{r message = FALSE}
+p <- ggplot(mpg, aes(hwy))
+p <- p + geom_area(stat = "bin")
 print(p)
 ```
 
 ### Density Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(hwy))
-p = p + geom_density()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(hwy))
+p <- p + geom_density()
 print(p)
 ```
 
 ### Dot Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(hwy))
-p = p + geom_dotplot()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(hwy))
+p <- p + geom_dotplot()
 print(p)
 ```
 
 ### Frequency Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(hwy))
-p = p + geom_freqpoly()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(hwy))
+p <- p + geom_freqpoly()
 print(p)
 ```
 
 ### Histogram
-```{r, message=FALSE}
-p = ggplot(mpg, aes(hwy))
-p = p + geom_histogram()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(hwy))
+p <- p + geom_histogram()
 print(p)
 ```
 
 ### Q-Q Plot
-```{r, message=FALSE}
-p = ggplot(mpg)
-p = p + geom_qq(aes(sample=hwy))
+```{r message = FALSE}
+p <- ggplot(mpg)
+p <- p + geom_qq(aes(sample = hwy))
 print(p)
 ```
 

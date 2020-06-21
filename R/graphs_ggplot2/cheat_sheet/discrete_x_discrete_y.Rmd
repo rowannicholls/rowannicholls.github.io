@@ -14,9 +14,9 @@ library(ggplot2)
 ```
 
 ### Counts
-```{r, message=FALSE}
-p = ggplot(diamonds, aes(cut, color))
-p = p + geom_count()
+```{r message = FALSE}
+p <- ggplot(diamonds, aes(cut, color))
+p <- p + geom_count()
 print(p)
 ```
 

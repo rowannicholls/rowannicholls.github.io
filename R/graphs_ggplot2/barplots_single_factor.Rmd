@@ -15,7 +15,7 @@ Initial Steps
 =============
 If you're going to be using ggplot2, the first thing you need to do is load the library:
 
-```{r, message=FALSE, results='hide'}
+```{r message = FALSE, results = "hide"}
 library(ggplot2)
 ```
 
@@ -31,7 +31,7 @@ Next, remember that when you are using ggplot2 you *always need to have your dat
 
 ```{r, echo=FALSE}
 library(tidyr)
-wide = spread(sleep, group, extra)
+wide <- spread(sleep, group, extra)
 ```
 
 <div class='col2'>
@@ -48,7 +48,7 @@ Wide-format data can be converted to long-format with the below code:
 # USE gather() FROM tidyr TO CONVERT
 # FROM WIDE TO LONG FORMAT
 library(tidyr)
-long = gather(wide, group, extra, c('1', '2'))
+long <- gather(wide, group, extra, c("1", "2"))
 ```
 <br>
 
@@ -74,8 +74,8 @@ print(head(trees))
 When a bar plot is created with ggplot2 using its *default settings* it will count the number of occurrences of a number in a column and use that for the height of the bars:
 
 ```{r}
-p = ggplot(trees, aes(Height))
-p = p + geom_bar()
+p <- ggplot(trees, aes(Height))
+p <- p + geom_bar()
 print(p)
 ```
 
@@ -96,11 +96,11 @@ Let's only plot one of the columns - Urban Female - and have one bar for each ag
 - This time, in contrast to the first example, we want the height of each bar to be the *actual value* in the data frame (ie the actual death rate). This is done by passing the 'identity' option to the `stat` keyword argument of the `geom_bar()` function:
 
 ```{r}
-# CONVERT THE ARRAY TO A DATA FRAME
-VADeaths = as.data.frame(VADeaths)
+# Convert the array to a data frame
+vadeaths <- as.data.frame(VADeaths)
 
-p = ggplot(VADeaths, aes(rownames(VADeaths), `Urban Female`))
-p = p + geom_bar(stat='identity')
+p <- ggplot(vadeaths, aes(rownames(vadeaths), `Urban Female`))
+p <- p + geom_bar(stat = "identity")
 print(p)
 ```
 
@@ -116,9 +116,9 @@ print(head(chickwts, 15))
 
 To plot the *mean* result of each group, we need to use the "summary" option of the `stat` keyword argument:
 
-```{r, message=FALSE}
-p = ggplot(chickwts, aes(feed, weight))
-p = p + geom_bar(stat='summary')
+```{r message = FALSE}
+p <- ggplot(chickwts, aes(feed, weight))
+p <- p + geom_bar(stat = "summary")
 print(p)
 ```
 
@@ -129,114 +129,128 @@ Let's make the plot look a little better:
 Titles and Labels
 -----------------
 
-```{r, message=FALSE}
-# CHANGE THE DATA FRAME'S LEVELS' NAMES TO EDIT THE BARS' LABELS
-levels(chickwts$feed)[levels(chickwts$feed) == 'casein'] = 'Casein'
-levels(chickwts$feed)[levels(chickwts$feed) == 'horsebean'] = 'Horsebean'
-levels(chickwts$feed)[levels(chickwts$feed) == 'linseed'] = 'Linseed'
-levels(chickwts$feed)[levels(chickwts$feed) == 'meatmeal'] = 'Meatmeal'
-levels(chickwts$feed)[levels(chickwts$feed) == 'soybean'] = 'Soybean'
-levels(chickwts$feed)[levels(chickwts$feed) == 'sunflower'] = 'Sunflower'
+```{r message = FALSE}
+# Change the data frame's levels' names to edit the bars' labels
+levels(chickwts$feed)[levels(chickwts$feed) == "casein"] <- "Casein"
+levels(chickwts$feed)[levels(chickwts$feed) == "horsebean"] <- "Horsebean"
+levels(chickwts$feed)[levels(chickwts$feed) == "linseed"] <- "Linseed"
+levels(chickwts$feed)[levels(chickwts$feed) == "meatmeal"] <- "Meatmeal"
+levels(chickwts$feed)[levels(chickwts$feed) == "soybean"] <- "Soybean"
+levels(chickwts$feed)[levels(chickwts$feed) == "sunflower"] <- "Sunflower"
 
-p = ggplot(chickwts, aes(feed, weight))
-p = p + geom_bar(stat='summary')
-# REMOVE THE MAIN X-AXIS LABEL
-p = p + xlab('')
-# ADD MAIN TITLE AND Y-AXIS LABEL
-p = p + labs(title='Chicken Weights By Feed Type', y='Weight [g]')
+p <- ggplot(chickwts, aes(feed, weight))
+p <- p + geom_bar(stat = "summary")
+# Remove the main x-axis label
+p <- p + xlab("")
+# Add main title and y-axis label
+p <- p + labs(title = "Chicken Weights By Feed Type", y = "Weight [g]")
 print(p)
 ```
 
 Distinguish Groups (Colour and Legend)
 --------------------------------------
 
-```{r, message=FALSE}
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + xlab('')
-p = p + labs(title='Chicken Weights By Feed Type', y='Weight [g]')
+```{r message = FALSE}
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + xlab("")
+p <- p + labs(title = "Chicken Weights By Feed Type", y = "Weight [g]")
 print(p)
 ```
 
 ### Edit the Legend
 Change the legend's title using the "fill" keyword argument in the `labs()` function:
 
-```{r, message=FALSE}
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+```{r message = FALSE}
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
 ### Remove the Legend
 The legend is placed automatically when you use the "fill" keyword argument to colour the bars. Remove it by changing its position to "none":
 
-```{r, message=FALSE}
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
-p = p + theme(legend.position = "none")
+```{r message = FALSE}
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
+p <- p + theme(legend.position = "none")
 print(p)
 ```
 
 ### Edit the Colours
 
-```{r, message=FALSE}
-blue = '#00B7EB'
-pink = '#EE2A7B'
-yellow = '#FFD100'
-green = '#5BBF21'
+```{r message = FALSE}
+blue <- "#00B7EB"
+pink <- "#EE2A7B"
+yellow <- "#FFD100"
+green <- "#5BBF21"
 
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + scale_fill_manual(values=c(blue, yellow, pink, green, 'red', 'orange'))
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + scale_fill_manual(
+    values = c(blue, yellow, pink, green, "red", "orange")
+)
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
 ### Use a Colour Palette
 **Viridis:**
 
-```{r, message=FALSE}
-# IMPORT THE LIBRARY THAT CONTAINS THE PALETTE
+```{r message = FALSE}
+# Import the library that contains the palette
 library(viridis)
 
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + scale_fill_viridis(discrete=TRUE)
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + scale_fill_viridis(discrete = TRUE)
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
 **Ggsci:**
 
-```{r, message=FALSE}
-# IMPORT THE LIBRARY THAT CONTAINS THE PALETTE
+```{r message = FALSE}
+# Import the library that contains the palette
 library(ggsci)
 
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + scale_fill_lancet()
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + scale_fill_lancet()
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
 **RColorBrewer:**
 
-```{r, message=FALSE}
-# IMPORT THE LIBRARY THAT CONTAINS THE PALETTE
+```{r message = FALSE}
+# Import the library that contains the palette
 library(RColorBrewer)
 
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + scale_fill_brewer(palette='Purples')
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + scale_fill_brewer(palette = "Purples")
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
@@ -244,26 +258,30 @@ Show Individual Points
 ----------------------
 Add in the `geom_point()` function:
 
-```{r, message=FALSE}
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary')
-p = p + geom_point()
-p = p + scale_fill_grey(start=0.8, end=0.2) 
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+```{r message = FALSE}
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary")
+p <- p + geom_point()
+p <- p + scale_fill_grey(start = 0.8, end = 0.2)
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
 Outline the Bars
 ----------------
-Use the "col" keyword argument in the `geom_bar()` function:
+Use the `col` keyword argument in the `geom_bar()` function:
 
-```{r, message=FALSE}
-p = ggplot(chickwts, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='summary', col='black')
-p = p + scale_fill_grey(start=0.8, end=0.2) 
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+```{r message = FALSE}
+p <- ggplot(chickwts, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "summary", col = "black")
+p <- p + scale_fill_grey(start = 0.8, end = 0.2)
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
@@ -274,23 +292,27 @@ Two changes need to happen here:
 - `summarySE()` from the "Rmisc" package can be used to generate the summary statistics for each group
 - The mean of each group is generated by the above function and so that can be plotted directly. The option being passed to `stat` thus needs to change from "summary" to "identity".
 
-```{r, message=FALSE}
+```{r message = FALSE}
 library(Rmisc)
-chickwts_summ = summarySE(chickwts, measurevar='weight', groupvars='feed')
+chickwts_summ <- summarySE(chickwts, measurevar = "weight", groupvars = "feed")
 print(chickwts_summ)
 
-p = ggplot(chickwts_summ, aes(feed, weight, fill=as.factor(feed)))
-p = p + geom_bar(stat='identity')
-p = p + geom_errorbar(aes(ymin=weight - se, ymax=weight + se), width=0.25)
-p = p + scale_fill_grey(start=0.8, end=0.2) 
-p = p + xlab('')
-p = p + labs(title='Chicken Weights by Feed Type', y='Weight [g]', fill='Feed')
+p <- ggplot(chickwts_summ, aes(feed, weight, fill = as.factor(feed)))
+p <- p + geom_bar(stat = "identity")
+p <- p + geom_errorbar(
+    aes(ymin = weight - se, ymax = weight + se), width = 0.25
+)
+p <- p + scale_fill_grey(start = 0.8, end = 0.2)
+p <- p + xlab("")
+p <- p + labs(
+    title = "Chicken Weights by Feed Type", y = "Weight [g]", fill = "Feed"
+)
 print(p)
 ```
 
 Save Plot
 =========
-Finally, use `ggsave('File Name.png')` to save the plot to your computer.
+Finally, use `ggsave("File Name.png")` to save the plot to your computer.
 
 Next: Multiple Factors
 ======================

@@ -17,7 +17,7 @@ Initial Step
 ============
 If you're going to be using ggplot2, the first thing you need to do is load the library:
 
-```{r, message=FALSE, results='hide'}
+```{r message = FALSE, results = "hide"}
 library(ggplot2)
 ```
 
@@ -32,24 +32,24 @@ print(sleep)
 The 'results' of the experiment are in column "extra", namely the number of extra hours of sleep for each participant for each medicine. The 'factors' are in the other two columns, "group" (ie which medicine was taken) and "ID" (ie the ID of the participant). If we try to plot this as a bar plot as per normal we do not get the full picture of the experiment:
 
 ```{r}
-p = ggplot(sleep, aes(x=ID, y=extra))
-p = p + geom_bar(stat='identity')
+p <- ggplot(sleep, aes(x = ID, y = extra))
+p <- p + geom_bar(stat = "identity")
 print(p)
 ```
 
 As you can see, there is only one bar for each participant! We're expecting two bars; one for each of the two times they repeated the experiment. Using colour to differentiate the two experimental runs will help to see what's going wrong:
 
 ```{r}
-p = ggplot(sleep, aes(x=ID, y=extra, fill=factor(group)))
-p = p + geom_bar(stat='identity')
+p <- ggplot(sleep, aes(x = ID, y = extra, fill = factor(group)))
+p <- p + geom_bar(stat = "identity")
 print(p)
 ```
 
 So, what's going on here is that there are indeed two bars for each participant, but the first (reddish-pink) one is behind the second (blueish-green) one. What we need to do is have them be side-by-side, ie for them to 'dodge' each other:
 
 ```{r}
-p = ggplot(sleep, aes(x=ID, y=extra, fill=factor(group)))
-p = p + geom_bar(stat='identity', position=position_dodge())
+p <- ggplot(sleep, aes(x = ID, y = extra, fill = factor(group)))
+p <- p + geom_bar(stat = "identity", position = position_dodge())
 print(p)
 ```
 
@@ -60,11 +60,14 @@ Format
 Let's improve how the plot looks:
 
 ```{r}
-p = ggplot(sleep, aes(x=ID, y=extra, fill=factor(group)))
-p = p + geom_bar(stat='identity', position=position_dodge())
-p = p + scale_fill_manual(values=c('#F4A582', '#92C5DE'))
-p = p + xlab('Participant ID')
-p = p + labs(title="Student's Sleep Experiment", y='Additional Sleep Time [hr]', fill='Medicine')
+p <- ggplot(sleep, aes(x = ID, y = extra, fill = factor(group)))
+p <- p + geom_bar(stat = "identity", position = position_dodge())
+p <- p + scale_fill_manual(values = c("#F4A582", "#92C5DE"))
+p <- p + xlab("Participant ID")
+p <- p + labs(
+    title = "Student's Sleep Experiment", y = "Additional Sleep Time [hr]",
+    fill = "Medicine"
+)
 print(p)
 ```
 
@@ -79,23 +82,25 @@ library(Rmisc)
 
 # "measurevar" IS THE VARIABLE BEING MEASURED
 # "groupvars" ARE THE VARIABLES REPRESENTING THE GROUPS
-sleep_summ = summarySE(sleep, measurevar='extra', groupvars='group')
+sleep_summ <- summarySE(sleep, measurevar = "extra", groupvars = "group")
 print(sleep_summ)
 ```
 
 As you can see from the above data frame, we now only have one factor (group) with 10 data points (N) in each. The mean value for each group has bee calculated (extra) along with the standard error (se). This can now all be plotted:
 
 ```{r}
-p = ggplot(sleep_summ, aes(x=group, y=extra, fill=factor(group)))
-p = p + geom_bar(stat='identity', position=position_dodge())
-p = p + geom_errorbar(aes(ymax=extra + se, ymin=extra - se), width=0.2)
+p <- ggplot(sleep_summ, aes(x = group, y = extra, fill = factor(group)))
+p <- p + geom_bar(stat = "identity", position = position_dodge())
+p <- p + geom_errorbar(aes(ymax = extra + se, ymin = extra - se), width = 0.2)
 # BAR FILL COLOURS
-p = p + scale_fill_manual(values=c('#F4A582', '#92C5DE'))
+p <- p + scale_fill_manual(values = c("#F4A582", "#92C5DE"))
 # TITLES AND LABELS
-p = p + xlab('Medicine')
-p = p + labs(title="Student's Sleep Experiment", y='Additional Sleep Time [hr]')
+p <- p + xlab("Medicine")
+p <- p + labs(
+    title = "Student's Sleep Experiment", y = "Additional Sleep Time [hr]"
+)
 # REMOVE LEGEND
-p = p + theme(legend.position = "none")
+p <- p + theme(legend.position = "none")
 print(p)
 ```
 
@@ -105,8 +110,8 @@ The Titanic dataset details the number of passengers that were on board the famo
 
 ```{r}
 # CONVERT TO DATA FRAME
-Titanic = as.data.frame(Titanic)
-print(head(Titanic, 15))
+titanic <- as.data.frame(Titanic)
+print(head(titanic, 15))
 ```
 
 There are too many factors to plot all at once: on a 2D graph only two can be shown at once:
@@ -122,54 +127,63 @@ There are too many factors to plot all at once: on a 2D graph only two can be sh
 <div class='col2'>
 
 ```{r}
-p = ggplot(
-    Titanic, aes(x=Age, y=Freq, fill=factor(Class))
+p <- ggplot(
+    titanic, aes(x = Age, y = Freq, fill = factor(Class))
 )
-p = p + geom_bar(stat='identity', position=position_dodge())
-p = p + scale_fill_manual(
-    values=c('#D1E5F0', '#92C5DE', '#4393C3', '#2166AC')
+p <- p + geom_bar(stat = "identity", position = position_dodge())
+p <- p + scale_fill_manual(
+    values = c("#D1E5F0", "#92C5DE", "#4393C3", "#2166AC")
 )
-p = p + xlab('Age')
-p = p + labs(title='Age of passengers on the Titanic', y='Count', fill='Class')
+p <- p + xlab("Age")
+p <- p + labs(
+    title = "Age of passengers on the Titanic", y = "Count", fill = "Class"
+)
 print(p)
 ```
 
 ```{r}
-p = ggplot(
-    Titanic, aes(x=Class, y=Freq, fill=factor(Sex))
+p <- ggplot(
+    titanic, aes(x = Class, y = Freq, fill = factor(Sex))
 )
-p = p + geom_bar(stat='identity', position=position_dodge())
-p = p + scale_fill_manual(
-    values=c('#92C5DE', '#2166AC')
+p <- p + geom_bar(stat = "identity", position = position_dodge())
+p <- p + scale_fill_manual(
+    values = c("#92C5DE", "#2166AC")
 )
-p = p + xlab('Class')
-p = p + labs(title='Class of passengers on the Titanic', y='Count', fill='Gender')
+p <- p + xlab("Class")
+p <- p + labs(
+    title = "Class of passengers on the Titanic", y = "Count", fill = "Gender"
+)
 print(p)
 ```
 
 ```{r}
-p = ggplot(
-    Titanic, aes(x=Sex, y=Freq, fill=factor(Survived))
+p <- ggplot(
+    titanic, aes(x = Sex, y = Freq, fill = factor(Survived))
 )
-p = p + geom_bar(stat='identity', position=position_dodge())
-p = p + scale_fill_manual(
-    values=c('#92C5DE', '#2166AC')
+p <- p + geom_bar(stat = "identity", position = position_dodge())
+p <- p + scale_fill_manual(
+    values = c("#92C5DE", "#2166AC")
 )
-p = p + xlab('Gender')
-p = p + labs(title='Gender of passengers on the Titanic', y='Count', fill='Survived')
+p <- p + xlab("Gender")
+p <- p + labs(
+    title = "Gender of passengers on the Titanic", y = "Count",
+    fill = "Survived"
+)
 print(p)
 ```
 
 ```{r}
-p = ggplot(
-    Titanic, aes(x=Survived, y=Freq, fill=factor(Age))
+p <- ggplot(
+    titanic, aes(x = Survived, y = Freq, fill = factor(Age))
 )
-p = p + geom_bar(stat='identity', position=position_dodge())
-p = p + scale_fill_manual(
-    values=c('#92C5DE', '#2166AC')
+p <- p + geom_bar(stat = "identity", position = position_dodge())
+p <- p + scale_fill_manual(
+    values = c("#92C5DE", "#2166AC")
 )
-p = p + xlab('Survived')
-p = p + labs(title='Survival of passengers on the Titanic', y='Count', fill='Age')
+p <- p + xlab("Survived")
+p <- p + labs(
+    title = "Survival of passengers on the Titanic", y = "Count", fill = "Age"
+)
 print(p)
 ```
 
@@ -177,7 +191,7 @@ print(p)
 
 Save Plot
 =========
-Finally, use `ggsave('File Name.png')` to save the plot to your computer.
+Finally, use `ggsave("File Name.png")` to save the plot to your computer.
 
 [⇦ Back](../../R.html)
 

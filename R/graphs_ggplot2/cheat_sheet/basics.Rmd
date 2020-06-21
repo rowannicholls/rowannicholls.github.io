@@ -15,20 +15,20 @@ library(ggplot2)
 
 ### Empty Axes
 ```{r}
-p = ggplot(data=mpg, aes(x=cty, y=hwy))
+p <- ggplot(data = mpg, aes(x = cty, y = hwy))
 print(p)
 ```
 
 ### A Quick Example
 ```{r}
-p = qplot(x=cty, y=hwy, data=mpg, geom='point')
+p <- qplot(x = cty, y = hwy, data = mpg, geom = "point")
 print(p)
 ```
 
 ### Blank Axes
 ```{r}
-p = ggplot(economics, aes(date, unemploy))
-p = p + geom_blank()
+p <- ggplot(economics, aes(date, unemploy))
+p <- p + geom_blank()
 print(p)
 ```
 

@@ -15,65 +15,65 @@ library(ggplot2)
 
 ### Path
 A path plot joins data points in the order that they appear in the x and y vectors (as opposed to a line plot - `geom_line()` - which joins data points in ascending order according to their x-values).
-```{r, message=FALSE}
-p = ggplot(economics, aes(date, unemploy))
-p = p + geom_path(lineend='butt', linejoin='round', linemitre=1)
+```{r message = FALSE}
+p <- ggplot(economics, aes(date, unemploy))
+p <- p + geom_path(lineend = "butt", linejoin = "round", linemitre = 1)
 print(p)
 ```
 
 ### Ribbon
-```{r, message=FALSE}
-p = ggplot(economics, aes(date, unemploy))
-p = p + geom_ribbon(aes(ymin=unemploy - 900, ymax=unemploy + 900))
+```{r message = FALSE}
+p <- ggplot(economics, aes(date, unemploy))
+p <- p + geom_ribbon(aes(ymin = unemploy - 900, ymax = unemploy + 900))
 print(p)
 ```
 
 ### Labels
-```{r, message=FALSE}
-p = ggplot(mpg, aes(cty, hwy))
-p = p + geom_label(aes(label=cty))
+```{r message = FALSE}
+p <- ggplot(mpg, aes(cty, hwy))
+p <- p + geom_label(aes(label = cty))
 print(p)
 ```
 
 ### Jitter
-```{r, message=FALSE}
-p = ggplot(mpg, aes(cty, hwy))
-p = p + geom_jitter(height=2, width=2)
+```{r message = FALSE}
+p <- ggplot(mpg, aes(cty, hwy))
+p <- p + geom_jitter(height = 2, width = 2)
 print(p)
 ```
 
 ### Scatter Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(cty, hwy))
-p = p + geom_point()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(cty, hwy))
+p <- p + geom_point()
 print(p)
 ```
 
 ### Quantiles
-```{r, message=FALSE}
-p = ggplot(mpg, aes(cty, hwy))
-p = p + geom_quantile()
+```{r message = FALSE}
+p <- ggplot(mpg, aes(cty, hwy))
+p <- p + geom_quantile()
 print(p)
 ```
 
 ### Rug Plot
-```{r, message=FALSE}
-p = ggplot(mpg, aes(cty, hwy))
-p = p + geom_rug(sides='bl')
+```{r message = FALSE}
+p <- ggplot(mpg, aes(cty, hwy))
+p <- p + geom_rug(sides = "bl")
 print(p)
 ```
 
 ### Smoothed
-```{r, message=FALSE}
-p = ggplot(mpg, aes(cty, hwy))
-p = p + geom_smooth(method='lm')
+```{r message = FALSE}
+p <- ggplot(mpg, aes(cty, hwy))
+p <- p + geom_smooth(method = "lm")
 print(p)
 ```
 
 ### Text
-```{r, message=FALSE}
-p = ggplot(mpg, aes(cty, hwy))
-p = p + geom_text(aes(label=cty))
+```{r message = FALSE}
+p <- ggplot(mpg, aes(cty, hwy))
+p <- p + geom_text(aes(label = cty))
 print(p)
 ```
 

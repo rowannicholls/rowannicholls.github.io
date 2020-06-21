@@ -31,13 +31,16 @@ for (feed_type in unique(chickwts$feed)) {
 Which Statistical Test Should Be Used?
 ======================================
 
-```{r, echo=FALSE}
+```{r echo = FALSE}
 library(DiagrammeR)
 DiagrammeR::grViz(
     "digraph statistical_tests {
         rankdir='LR'
 
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+        node [
+            fontname=Helvetica, shape=box, width=5, fontsize=42,
+            fillcolor=white, style=filled
+        ]
                         'Two groups'
                             TGParametric [label='Parametric']
                                 'One-sample t-test'
@@ -46,12 +49,17 @@ DiagrammeR::grViz(
                             TGNonparametric [label='Nonparametric']
                                 TGIndependent [label='Independent groups']
                                     'Mann-Whitney U test'
-                                TGNonindependent [label='Non-independent groups']
+                                TGNonindependent [
+                                    label='Non-independent groups'
+                                ]
                                     'Wilcoxon signed-rank test'
                             MGParametric [label='Parametric']
                                 'ANOVA'
 
-        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]
+        node [
+            fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue,
+            style=filled, fontsize=42
+        ]
             'Hypothesis'
                 'Continuous data'
                     'Differences'
@@ -61,8 +69,13 @@ DiagrammeR::grViz(
                                 MGIndependent [label='Independent groups']
                                     'Kruskal-Wallis one-way ANOVA'
 
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                                MGNonindependent [label='Non-independent groups']
+        node [
+            fontname=Helvetica, shape=box, width=5, fontsize=42,
+            fillcolor=white, style=filled
+        ]
+                                MGNonindependent [
+                                    label='Non-independent groups'
+                                ]
                                     'Friedman two-way ANOVA'
                         'Variances'
                     'Relationships'
@@ -116,14 +129,15 @@ DiagrammeR::grViz(
                 'Relationships' -> RNonindependent
                     RNonindependent -> 'Correlation analysis'
                         'Correlation analysis' -> RParametric
-                            RParametric -> 'Pearson product-moment r correlation'
+                            RParametric ->
+                                'Pearson product-moment r correlation'
                         'Correlation analysis' -> RNonparametric
                             RNonparametric -> 'Spearman Rank Correlation'
         'Hypothesis' -> 'Discrete, categorical data'
             'Discrete, categorical data' -> 'Chi-squared goodness-of-fit test'
             'Discrete, categorical data' -> 'Chi-squared independence test'
     }",
-    height=400, width=900
+    height = 400, width = 900
 )
 ```
 
@@ -146,26 +160,27 @@ The Kruskal-Wallis test is performed using the `kruskal.test()` function ([more 
 - The data frame being used ('chickwts') is indicated using the 'data' keyword argument
 
 ```{r}
-kruskal.test(weight ~ feed, data=chickwts)
+kruskal.test(weight ~ feed, data = chickwts)
 ```
 
 As we can see from the output the p-value was 5.113e-07, which is strong evidence in favour of the alternative hypothesis (which is that chicks grow at different rates when fed these different diets). The individual values that have been returned can be accessed by setting a variable equal to `kruskal.test()` and then indexing it:
 
-```{r, results='hold'}
-k = kruskal.test(weight ~ feed, data=chickwts)
+```{r results = "hold"}
+k <- kruskal.test(weight ~ feed, data = chickwts)
 
-# GET THE KRUSKAL-WALLIS RANK SUM STATISTIC
-chi_squared = k$statistic
-# GET THE DEGREES OF FREEDOM OF THE APPROXIMATE CHI-SQUARED DISTRIBUTION OF THE TEST STATISTIC
-df = k$parameter
-# GET THE P-VALUE OF THE TEST
-p = k$p.value
-# GET THE CHARACTER STRING "Kruskal-Wallis rank sum test"
-name_of_test = k$method
-# GET A CHARACTER STRING GIVING THE NAMES OF THE DATA
-comparison = k$data.name
+# Get the Kruskal-Wallis rank sum statistic
+chi_squared <- k$statistic
+# Get the degrees of freedom of the approximate chi-squared distribution of
+# the test statistic
+df <- k$parameter
+# Get the p-value of the test
+p <- k$p.value
+# Get the character string "Kruskal-Wallis rank sum test"
+name_of_test <- k$method
+# Get a character string giving the names of the data
+comparison <- k$data.name
 
-# PRINT THEM ALL
+# Print them all
 print(chi_squared)
 print(df)
 print(p)
