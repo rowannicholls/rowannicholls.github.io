@@ -52,7 +52,7 @@ Line Types
 ==========
 The style of line that is plotted can be controlled with the `lty` keyword argument (**l**ine **ty**pe), for example:  
 `plot(x, y, lty = "dashed", type = "l")`  
-will plot a dashed line. Note that the `type` keyword argument needs to be set to `l` for a line to be plotted (only the points will be plotted by default - ie a scatter plot instead of a line plot). The lines types that can be plotted are as follows:
+will plot a dashed line. Note that the `type` keyword argument needs to be set to `l` for a line to be plotted (only the points will be plotted by default - ie a scatter plot instead of a line plot). The line types that can be used are as follows:
 
 ```{r, message=FALSE}
 library(ggpubr)

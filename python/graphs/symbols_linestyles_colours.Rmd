@@ -1,0 +1,308 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Symbols, Line Styles and Colours'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Plot Symbols
+============
+By default, there are 39 symbols that can be used for the data points of a **plot** or a **scatter** graph. These are set using the `marker` keyword argument as follows:
+
+```{python, eval = FALSE}
+ax.plot(x, y, marker='.')
+```
+
+The above will create a graph using a **point** as the plot symbol for each data point. Here's a dictionary of the full set of options:
+
+```{python}
+symbols = {
+    'point': '.',
+    'pixel': ',',
+    'circle': 'o',
+    'triangle_down': 'v',
+    'triangle_up': '^',
+    'triangle_left': '<',
+    'triangle_right': '>',
+    'tri_down': '1',
+    'tri_up': '2',
+    'tri_left': '3',
+    'tri_right': '4',
+    'octagon': '8',
+    'square': 's',
+    'pentagon': 'p',
+    'plus (filled)': 'P',
+    'star': '*',
+    'hexagon1': 'h',
+    'hexagon2': 'H',
+    'plus': '+',
+    'x': 'x',
+    'x (filled)': 'X',
+    'diamond': 'D',
+    'thin_diamond': 'd',
+    'vline': '|',
+    'hline': '_',
+    'tickleft': 0,
+    'tickright': 1,
+    'tickup': 2,
+    'tickdown': 3,
+    'caretleft (centred)': 4,
+    'caretright (centred)': 5,
+    'caretup (centred)': 6,
+    'caretdown (centred)': 7,
+    'caretleft': 8,
+    'caretright': 9,
+    'caretup': 10,
+    'caretdown': 11,
+    'nothing': '',
+    'mathtext': '$f$',
+}
+```
+
+Here's a plot that shows off the full range of options:
+
+```{python eval = FALSE}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Create axes
+ax = plt.axes()
+ax.set(
+    title='Matplotlib Plot Markers'
+)
+for i, symbol in enumerate(symbols):
+    x = int(np.floor(i / 13) + 1)
+    y = 13 - i % 13 + 0.15
+    key = list(symbols.keys())[i]
+    marker = symbols[key]
+    ax.plot([x], [y], marker=marker)
+    x = np.floor(i / 13) + 1.1
+    y = 13 - i % 13
+    ax.annotate(key, [x, y])
+# Turn off axis ticks and tick labels
+plt.tick_params(axis='x', bottom=False, labelbottom=False)
+plt.tick_params(axis='y', left=False, labelleft=False)
+# Set the axis limits
+ax.set_xlim(0.9, 4)
+# Output
+plt.show()
+plt.close()
+```
+
+```{python echo = FALSE, results = "hide"}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Create axes
+ax = plt.axes()
+ax.set(
+    title='Matplotlib Plot Markers'
+)
+for i, symbol in enumerate(symbols):
+    x = int(np.floor(i / 13) + 1)
+    y = 13 - i % 13 + 0.15
+    key = list(symbols.keys())[i]
+    marker = symbols[key]
+    ax.plot([x], [y], marker=marker)
+    x = np.floor(i / 13) + 1.1
+    y = 13 - i % 13
+    ax.annotate(key, [x, y])
+# Turn off axis ticks and tick labels
+plt.tick_params(axis='x', bottom=False, labelbottom=False)
+plt.tick_params(axis='y', left=False, labelleft=False)
+# Set the axis limits
+ax.set_xlim(0.9, 4)
+# Output
+plt.show()
+plt.close()
+```
+
+For more info, see [the Matplotlib documentation](https://matplotlib.org/3.2.1/api/markers_api.html).
+
+Line Styles
+===========
+Similarly, the style of line that is plotted can be controlled with the `linestyle` or `ls` keyword argument, for example:
+
+```{python eval = FALSE}
+ax.plot(x, y, linestyle='-')
+```
+
+...will plot a solid line, which is also the default (ie if you omit the `linestyle` argument it with use this). The line styles that can be used are as follows:
+
+```{python eval = FALSE}
+linestyles = ['-', '--', '-.', ':']
+
+# Create axes
+ax = plt.axes()
+ax.set(
+    title='Matplotlib Line Styles'
+)
+for i, linestyle in enumerate(linestyles):
+    ax.plot(
+        [0, 2], [i, i],
+        linestyle=linestyle,
+        color='cornflowerblue',
+        linewidth=3
+    )
+    ax.text(-0.15, i - 0.05, repr(linestyle))
+# Turn off axis ticks and tick labels
+plt.tick_params(axis='x', bottom=False, labelbottom=False)
+plt.tick_params(axis='y', left=False, labelleft=False)
+# Set the axis limits
+ax.set_xlim(-0.2, 2.1)
+ax.set_ylim(-0.5, 3.5)
+# Output
+plt.show()
+plt.close()
+```
+
+```{python echo = FALSE, results = "hide"}
+linestyles = ['-', '--', '-.', ':']
+
+# Create axes
+ax = plt.axes()
+ax.set(
+    title='Matplotlib Line Styles'
+)
+for i, linestyle in enumerate(linestyles):
+    ax.plot(
+        [0, 2], [i, i],
+        linestyle=linestyle,
+        color='cornflowerblue',
+        linewidth=3
+    )
+    ax.text(-0.15, i - 0.05, repr(linestyle))
+# Turn off axis ticks and tick labels
+plt.tick_params(axis='x', bottom=False, labelbottom=False)
+plt.tick_params(axis='y', left=False, labelleft=False)
+# Set the axis limits
+ax.set_xlim(-0.2, 2.1)
+ax.set_ylim(-0.5, 3.5)
+# Output
+plt.show()
+plt.close()
+```
+
+The documentation is [here](https://matplotlib.org/gallery/lines_bars_and_markers/line_styles_reference.html).
+
+Colours
+=======
+The colour of a plot can be specified using the `color` or `c` keyword argument. Some of the available options are illustrated below:
+
+```{python}
+import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
+
+
+def plot_colortable(colors, title, sort_colors=True, emptycols=0):
+    cell_width = 212
+    cell_height = 22
+    swatch_width = 48
+    margin = 12
+    topmargin = 40
+
+    # Sort colors by hue, saturation, value and name
+    if sort_colors is True:
+        by_hsv = sorted(
+            (tuple(mcolors.rgb_to_hsv(mcolors.to_rgb(color))), name)
+            for name, color in colors.items()
+        )
+        names = [name for hsv, name in by_hsv]
+    else:
+        names = list(colors)
+
+    n = len(names)
+    ncols = 4 - emptycols
+    nrows = n // ncols + int(n % ncols > 0)
+
+    width = cell_width * 4 + 2 * margin
+    height = cell_height * nrows + margin + topmargin
+    dpi = 72
+
+    fig, ax = plt.subplots(figsize=(width / dpi, height / dpi), dpi=dpi)
+    fig.subplots_adjust(
+        margin / width, margin / height,
+        (width - margin) / width, (height - topmargin) / height
+    )
+    ax.set_xlim(0, cell_width * 4)
+    ax.set_ylim(cell_height * (nrows - 0.5), -cell_height / 2.)
+    ax.yaxis.set_visible(False)
+    ax.xaxis.set_visible(False)
+    ax.set_axis_off()
+    ax.set_title(title, fontsize=24, loc='left', pad=10)
+
+    for i, name in enumerate(names):
+        row = i % nrows
+        col = i // nrows
+        y = row * cell_height
+
+        swatch_start_x = cell_width * col
+        swatch_end_x = cell_width * col + swatch_width
+        text_pos_x = cell_width * col + swatch_width + 7
+
+        ax.text(
+            text_pos_x, y, name, fontsize=14,
+            horizontalalignment='left',
+            verticalalignment='center'
+        )
+
+        ax.hlines(
+            y, swatch_start_x, swatch_end_x,
+            color=colors[name], linewidth=18
+        )
+
+    return fig
+```
+
+```{python fig.height=-1}
+plot_colortable(
+    mcolors.BASE_COLORS, 'Base Colors', sort_colors=False, emptycols=1
+)
+plt.show()
+```
+
+```{python echo = FALSE}
+plt.close()
+```
+
+```{python}
+plot_colortable(
+    mcolors.TABLEAU_COLORS, 'Tableau Palette', sort_colors=False, emptycols=2
+)
+plt.show()
+```
+
+```{python echo = FALSE}
+plt.close()
+```
+
+```{python}
+plot_colortable(mcolors.CSS4_COLORS, 'CSS Colors')
+plt.show()
+```
+
+```{python echo = FALSE}
+plt.close()
+```
+
+```{python, eval = FALSE}
+# Optionally plot the XKCD colors (Caution: will produce large figure)
+plot_colortable(mcolors.XKCD_COLORS, 'XKCD Colors')
+plt.show()
+```
+
+```{python echo = FALSE}
+plt.close()
+```
+
+The Matplotlib documentation is [here](https://matplotlib.org/3.1.0/gallery/color/named_colors.html).
+
+[⇦ Back](../../python.html)
+
+</font>
