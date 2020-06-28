@@ -1,0 +1,858 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Bar Plots with Multiple Groups of Data'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+> This page follows on from [Bar Plots with One Group of Data](https://rowannicholls.github.io/python/graphs/ax_based/barplots_single_group.html).
+
+The Basics
+==========
+This example will once again use the iris dataset from the scikit-learn package (more info [here](https://rowannicholls.github.io/python/data/sklearn_datasets.html)) except this time all three groups will be used:
+
+```{python}
+from sklearn.datasets import load_iris
+
+# Load the dataset
+iris = load_iris()
+
+# Print the first 10 rows of data
+print(iris['data'][:10])
+```
+
+The dataset is a little bit confusing in its current format, so let's convert it into a Pandas data frame:
+
+```{python, echo=FALSE}
+import pandas as pd
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.max_colwidth', 40)
+# pd.set_option('display.precision', 3)
+pd.set_option('display.width', 1000)
+
+pink = '#FB4188'
+green = '#87C94A'
+blue = '#39C2F3'
+yellow = '#FADB39'
+lgrey = '#798287'
+dgrey = '#43454C'
+```
+
+```{python}
+import pandas as pd
+
+# Convert the array to a data frame
+iris_df = pd.DataFrame(iris['data'], columns=iris['feature_names'])
+# Add the species data as a column to the data frame
+iris_df['Species'] = iris['target']
+# Print the first 10 rows of data
+print(iris_df.iloc[:10,])
+```
+
+This dataset contains information about 150 different iris flowers of three types: 'setosa', 'versicolor' and 'virginica'. The first four columns of the data frame contain the measurements that were made on each flower: sepals length, sepal width, petal length and petal width. The fifth column, 'Species' contains either 0, 1 or 2 to show which of the three species of iris the flower was. There are 150 rows in the data frame: one for each flower that was examined and 50 of each species.
+
+Similar to [the previous examples](https://rowannicholls.github.io/python/graphs/ax_based/barplots_single_group.html), the `unique()` function from Numpy can be used to extract the unique values of the sepal widths and the `return_counts` option can be used to count the number of occurrences of each:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Settings
+x = 6  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a data frame for each species of iris
+setosa = iris_df[iris_df['Species'] == 0]
+versicolor = iris_df[iris_df['Species'] == 1]
+virginica = iris_df[iris_df['Species'] == 2]
+
+# Plot
+ax = plt.axes()
+width = 0.1
+# Count the number of occurrences of each sepal width for each species
+uniq, cnts = np.unique(setosa['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C0')
+uniq, cnts = np.unique(versicolor['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C2')
+uniq, cnts = np.unique(virginica['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C3')
+# Set labels
+ax.set_title('The Widths of the Sepals of 150 Iris Flowers')
+ax.set_xlabel('Width (cm)')
+ax.set_ylabel('Count')
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Settings
+x = 6  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a data frame for each species of iris
+setosa = iris_df[iris_df['Species'] == 0]
+versicolor = iris_df[iris_df['Species'] == 1]
+virginica = iris_df[iris_df['Species'] == 2]
+
+# Plot
+ax = plt.axes()
+width = 0.1
+# Count the number of occurrences of each sepal width for each species
+uniq, cnts = np.unique(setosa['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C0')
+uniq, cnts = np.unique(versicolor['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C2')
+uniq, cnts = np.unique(virginica['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C3')
+# Set labels
+ax.set_title('The Widths of the Sepals of 150 Iris Flowers')
+ax.set_xlabel('Width (cm)')
+ax.set_ylabel('Count')
+# Finish
+plt.show()
+plt.close()
+```
+
+This has worked but there are two immediate problems:
+
+- The fact that the data overlaps is confusing and it might be hiding some of the smaller bars in the back
+- We can't tell which species is which colour
+
+Let's fix the first of those problems first:
+
+Separating Each Group's Bars
+============================
+By reducing the width of each bar to a third of its original width and offsetting each group of data, we can separate the bars as follows:
+
+```{python, eval=FALSE}
+# Plot
+ax = plt.axes()
+width = 0.1 / 3
+# Count the number of occurrences of each sepal width for each species
+uniq, cnts = np.unique(setosa['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C0')
+uniq, cnts = np.unique(versicolor['sepal width (cm)'], return_counts=1)
+ax.bar(uniq + width, cnts, width, color='C2')
+uniq, cnts = np.unique(virginica['sepal width (cm)'], return_counts=1)
+ax.bar(uniq + 2 * width, cnts, width, color='C3')
+# Set labels
+ax.set_title('The Widths of the Sepals of 150 Iris Flowers')
+ax.set_xlabel('Width (cm)')
+ax.set_ylabel('Count')
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot
+ax = plt.axes()
+width = 0.1 / 3
+# Count the number of occurrences of each sepal width for each species
+uniq, cnts = np.unique(setosa['sepal width (cm)'], return_counts=1)
+ax.bar(uniq, cnts, width, color='C0')
+uniq, cnts = np.unique(versicolor['sepal width (cm)'], return_counts=1)
+ax.bar(uniq + width, cnts, width, color='C2')
+uniq, cnts = np.unique(virginica['sepal width (cm)'], return_counts=1)
+ax.bar(uniq + 2 * width, cnts, width, color='C3')
+# Set labels
+ax.set_title('The Widths of the Sepals of 150 Iris Flowers')
+ax.set_xlabel('Width (cm)')
+ax.set_ylabel('Count')
+# Finish
+plt.show()
+plt.close()
+```
+
+Adding a Legend
+===============
+The easiest way to indicate which group is which is to use a legend:
+
+```{python, eval=FALSE}
+# Plot
+ax = plt.axes()
+width = 0.1 / 3
+# Count the number of occurrences of each sepal width for each species
+uniq, cnts = np.unique(setosa['sepal width (cm)'], return_counts=1)
+bar0 = ax.bar(uniq, cnts, width, color='C0')
+uniq, cnts = np.unique(versicolor['sepal width (cm)'], return_counts=1)
+bar1 = ax.bar(uniq + width, cnts, width, color='C2')
+uniq, cnts = np.unique(virginica['sepal width (cm)'], return_counts=1)
+bar2 = ax.bar(uniq + 2 * width, cnts, width, color='C3')
+# Set labels
+ax.set_title('The Widths of the Sepals of 150 Iris Flowers')
+ax.set_xlabel('Width (cm)')
+ax.set_ylabel('Count')
+# Legend
+ax.legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica')
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot
+ax = plt.axes()
+width = 0.1 / 3
+# Count the number of occurrences of each sepal width for each species
+uniq, cnts = np.unique(setosa['sepal width (cm)'], return_counts=1)
+bar0 = ax.bar(uniq, cnts, width, color='C0')
+uniq, cnts = np.unique(versicolor['sepal width (cm)'], return_counts=1)
+bar1 = ax.bar(uniq + width, cnts, width, color='C2')
+uniq, cnts = np.unique(virginica['sepal width (cm)'], return_counts=1)
+bar2 = ax.bar(uniq + 2 * width, cnts, width, color='C3')
+# Set labels
+ax.set_title('The Widths of the Sepals of 150 Iris Flowers')
+ax.set_xlabel('Width (cm)')
+ax.set_ylabel('Count')
+# Legend
+ax.legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica')
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+Group Averages
+==============
+Instead of plotting the width of every single sepal from every single flower, we can group all the sepals in one group together and only plot the means:
+
+```{python, eval=FALSE}
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.06, 0.7, 0.86])
+width = 0.5
+# Plot the average sepal width for each species
+bar0 = ax.bar(0, setosa['sepal width (cm)'].mean(), width, color='C0')
+bar1 = ax.bar(1, versicolor['sepal width (cm)'].mean(), width, color='C2')
+bar2 = ax.bar(2, virginica['sepal width (cm)'].mean(), width, color='C3')
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('')
+ax.set_ylabel('Average Width (cm)')
+# Legend
+plt.gca().legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica'),
+    fontsize=8, loc='center left', bbox_to_anchor=(1, 0.5)
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.06, 0.7, 0.86])
+width = 0.5
+# Plot the average sepal width for each species
+bar0 = ax.bar(0, setosa['sepal width (cm)'].mean(), width, color='C0')
+bar1 = ax.bar(1, versicolor['sepal width (cm)'].mean(), width, color='C2')
+bar2 = ax.bar(2, virginica['sepal width (cm)'].mean(), width, color='C3')
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('')
+ax.set_ylabel('Average Width (cm)')
+# Legend
+plt.gca().legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica'),
+    fontsize=8, loc='center left', bbox_to_anchor=(1, 0.5)
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+Note that, in order to fit the legend in, we had to adjust the size of the plot area with `ax = plt.axes([0.1, 0.06, 0.7, 0.86])`
+
+> An important thing to realise at this point is that the first examples used 'infinite bins': each *sepal width* had a bar corresponding to it regardless of how many values there were. This previous example, however, is the opposite in that it only has *one bin* for each iris type. Essentially, all the bins have been compressed into one for each group. Later we will create plots that have a custom number of bins, between one and infinity.
+
+X-Axis Label
+------------
+Now that the x-axis corresponds to the groups as opposed to values, it looks strange to have the scale on that axis be a continuous variable. Replace it with the group names:
+
+```{python, eval=FALSE}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Plot the average sepal width for each species, including standard deviation
+data0 = setosa['sepal width (cm)']
+ax.bar(0, data0.mean(), width, color='C0')
+data1 = versicolor['sepal width (cm)']
+ax.bar(1, data1.mean(), width, color='C2')
+data2 = virginica['sepal width (cm)']
+ax.bar(2, data2.mean(), width, color='C3')
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(4) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Plot the average sepal width for each species, including standard deviation
+data0 = setosa['sepal width (cm)']
+ax.bar(0, data0.mean(), width, color='C0')
+data1 = versicolor['sepal width (cm)']
+ax.bar(1, data1.mean(), width, color='C2')
+data2 = virginica['sepal width (cm)']
+ax.bar(2, data2.mean(), width, color='C3')
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(4) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+Error Bars
+----------
+The fact that each bar represents a number of values means that we can calculate a standard deviation for each, and represent that uncertainty on the graph as error bars:
+
+```{python, eval=FALSE}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Plot the average sepal width for each species, including standard deviation
+data0 = setosa['sepal width (cm)']
+ax.bar([0], data0.mean(), width, color='C0', yerr=data0.std())
+data1 = versicolor['sepal width (cm)']
+ax.bar([1], data1.mean(), width, color='C2', yerr=data1.std())
+data2 = virginica['sepal width (cm)']
+ax.bar([2], data2.mean(), width, color='C3', yerr=data2.std())
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(4) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Plot the average sepal width for each species, including standard deviation
+data0 = setosa['sepal width (cm)']
+ax.bar([0], data0.mean(), width, color='C0', yerr=data0.std())
+data1 = versicolor['sepal width (cm)']
+ax.bar([1], data1.mean(), width, color='C2', yerr=data1.std())
+data2 = virginica['sepal width (cm)']
+ax.bar([2], data2.mean(), width, color='C3', yerr=data2.std())
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(4) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+Plot the Individual Points
+--------------------------
+Instead of error bars, the spread of the data can be communicated by showing the data points themselves on top of the bars:
+
+```{python, eval=FALSE}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Separate out the three datasets
+data0 = setosa['sepal width (cm)']
+data1 = versicolor['sepal width (cm)']
+data2 = virginica['sepal width (cm)']
+# Plot the individual points
+ax.scatter([0] * len(data0), data0, color='k')
+ax.scatter([1] * len(data1), data1, color='k')
+ax.scatter([2] * len(data2), data2, color='k')
+# Plot the average sepal width for each species
+ax.bar(0, data0.mean(), width, color='C0', zorder=0)
+ax.bar(1, data1.mean(), width, color='C2', zorder=0)
+ax.bar(2, data2.mean(), width, color='C3', zorder=0)
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(4) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Separate out the three datasets
+data0 = setosa['sepal width (cm)']
+data1 = versicolor['sepal width (cm)']
+data2 = virginica['sepal width (cm)']
+# Plot the individual points
+ax.scatter([0] * len(data0), data0, color='k')
+ax.scatter([1] * len(data1), data1, color='k')
+ax.scatter([2] * len(data2), data2, color='k')
+# Plot the average sepal width for each species
+ax.bar(0, data0.mean(), width, color='C0', zorder=0)
+ax.bar(1, data1.mean(), width, color='C2', zorder=0)
+ax.bar(2, data2.mean(), width, color='C3', zorder=0)
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(4) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+Annotate the Values
+-------------------
+Let's show the height of each bar as a number on the plot itself:
+
+```{python, eval=FALSE}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Separate out the three datasets
+data0 = setosa['sepal width (cm)']
+data1 = versicolor['sepal width (cm)']
+data2 = virginica['sepal width (cm)']
+# Plot the average sepal width for each species
+ax.bar(0, data0.mean(), width, color='C0', zorder=0)
+ax.bar(1, data1.mean(), width, color='C2', zorder=0)
+ax.bar(2, data2.mean(), width, color='C3', zorder=0)
+# Annotate the values above each bar
+for bar in ax.patches:
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 1.05 * height,
+        f'{height:4.2f}', ha='center', va='bottom'
+    )
+# Increase the height of the plot by 15% to accommodate the labels
+bottom, top = ax.get_ylim()
+ax.set_ylim(bottom, top * 1.15)
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks(np.arange(len(ax.patches)))
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(ax.patches) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot
+ax = plt.axes()
+width = 0.5
+# Separate out the three datasets
+data0 = setosa['sepal width (cm)']
+data1 = versicolor['sepal width (cm)']
+data2 = virginica['sepal width (cm)']
+# Plot the average sepal width for each species
+ax.bar(0, data0.mean(), width, color='C0', zorder=0)
+ax.bar(1, data1.mean(), width, color='C2', zorder=0)
+ax.bar(2, data2.mean(), width, color='C3', zorder=0)
+# Annotate the values above each bar
+for bar in ax.patches:
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 1.05 * height,
+        f'{height:4.2f}', ha='center', va='bottom'
+    )
+# Increase the height of the plot by 15% to accommodate the labels
+bottom, top = ax.get_ylim()
+ax.set_ylim(bottom, top * 1.15)
+# Set labels
+ax.set_title('Average Sepal Width for Each Species of Iris')
+ax.set_xlabel('Species')
+ax.set_ylabel('Average Width (cm)')
+# X-axis details
+ax.set_xticks(np.arange(len(ax.patches)))
+ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(ax.patches) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+# Finish
+plt.show()
+plt.close()
+```
+
+Custom Bins
+===========
+
+Stratification - Introducing an Additional Variable
+---------------------------------------------------
+This time we will stratify the data into long (6.5+ cm), medium (5.5 to 6.5 cm) and short (0 to 5.5 cm) sepals and plot the average sepal width for each group for each stratification:
+
+```{python, eval=FALSE}
+# Separate out the three datasets
+discriminator = 'sepal length (cm)'
+data0 = [
+    setosa[setosa[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    setosa[(setosa[discriminator] >= 5.5) & (setosa[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    setosa[setosa[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data1 = [
+    versicolor[versicolor[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    versicolor[(versicolor[discriminator] >= 5.5) & (versicolor[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    versicolor[versicolor[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data2 = [
+    virginica[virginica[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    virginica[(virginica[discriminator] >= 5.5) & (virginica[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    virginica[virginica[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+width = 0.3
+bar0 = ax.bar(
+    np.arange(len(data0)) - width, data0, width,
+    color='C0'
+)
+bar1 = ax.bar(
+    np.arange(len(data1)), data1, width,
+    color='C2'
+)
+bar2 = ax.bar(
+    np.arange(len(data2)) + width, data2, width,
+    color='C3'
+)
+# Set labels
+ax.set_title('Average Sepal Width Given the Sepal Length')
+ax.set_xlabel('Sepal Length (cm)')
+ax.set_ylabel('Average Sepal Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(data1) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim([min(xlocs), max(xlocs)])
+# Legend
+plt.gca().legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica'),
+    fontsize=8, loc='center left', bbox_to_anchor=(1, 0.5)
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Separate out the three datasets
+discriminator = 'sepal length (cm)'
+data0 = [
+    setosa[setosa[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    setosa[(setosa[discriminator] >= 5.5) & (setosa[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    setosa[setosa[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data1 = [
+    versicolor[versicolor[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    versicolor[(versicolor[discriminator] >= 5.5) & (versicolor[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    versicolor[versicolor[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data2 = [
+    virginica[virginica[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    virginica[(virginica[discriminator] >= 5.5) & (virginica[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    virginica[virginica[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+width = 0.3
+bar0 = ax.bar(
+    np.arange(len(data0)) - width, data0, width,
+    color='C0'
+)
+bar1 = ax.bar(
+    np.arange(len(data1)), data1, width,
+    color='C2'
+)
+bar2 = ax.bar(
+    np.arange(len(data2)) + width, data2, width,
+    color='C3'
+)
+# Set labels
+ax.set_title('Average Sepal Width Given the Sepal Length')
+ax.set_xlabel('Sepal Length (cm)')
+ax.set_ylabel('Average Sepal Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(data1) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim([min(xlocs), max(xlocs)])
+# Legend
+plt.gca().legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica'),
+    fontsize=8, loc='center left', bbox_to_anchor=(1, 0.5)
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+Add Annotations
+---------------
+As before, let's add the height above each bar:
+
+```{python, eval=FALSE}
+# Separate out the three datasets
+discriminator = 'sepal length (cm)'
+data0 = [
+    setosa[setosa[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    setosa[(setosa[discriminator] >= 5.5) & (setosa[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    setosa[setosa[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data1 = [
+    versicolor[versicolor[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    versicolor[(versicolor[discriminator] >= 5.5) & (versicolor[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    versicolor[versicolor[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data2 = [
+    virginica[virginica[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    virginica[(virginica[discriminator] >= 5.5) & (virginica[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    virginica[virginica[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+width = 0.3
+bar0 = ax.bar(
+    np.arange(len(data0)) - width, data0, width,
+    color='C0'
+)
+bar1 = ax.bar(
+    np.arange(len(data1)), data1, width,
+    color='C2'
+)
+bar2 = ax.bar(
+    np.arange(len(data2)) + width, data2, width,
+    color='C3'
+)
+# Annotate the values above each bar
+for bar in ax.patches:
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 1.05 * height,
+        f'{height:4.2f}', ha='center', va='bottom'
+    )
+# Increase the height of the plot by 10% to accommodate the labels
+bottom, top = ax.get_ylim()
+ax.set_ylim(bottom, top * 1.10)
+# Set labels
+ax.set_title('Average Sepal Width Given the Sepal Length')
+ax.set_xlabel('Sepal Length (cm)')
+ax.set_ylabel('Average Sepal Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(data1) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim([min(xlocs), max(xlocs)])
+# Legend
+plt.gca().legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica'),
+    fontsize=8, loc='center left', bbox_to_anchor=(1, 0.5)
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Separate out the three datasets
+discriminator = 'sepal length (cm)'
+data0 = [
+    setosa[setosa[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    setosa[(setosa[discriminator] >= 5.5) & (setosa[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    setosa[setosa[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data1 = [
+    versicolor[versicolor[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    versicolor[(versicolor[discriminator] >= 5.5) & (versicolor[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    versicolor[versicolor[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+data2 = [
+    virginica[virginica[discriminator] < 5.5]['sepal width (cm)'].mean(),
+    virginica[(virginica[discriminator] >= 5.5) & (virginica[discriminator] < 6.5)]['sepal width (cm)'].mean(),
+    virginica[virginica[discriminator] >= 6.5]['sepal width (cm)'].mean()
+]
+
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+width = 0.3
+bar0 = ax.bar(
+    np.arange(len(data0)) - width, data0, width,
+    color='C0'
+)
+bar1 = ax.bar(
+    np.arange(len(data1)), data1, width,
+    color='C2'
+)
+bar2 = ax.bar(
+    np.arange(len(data2)) + width, data2, width,
+    color='C3'
+)
+# Annotate the values above each bar
+for bar in ax.patches:
+    height = bar.get_height()
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 1.05 * height,
+        f'{height:4.2f}', ha='center', va='bottom'
+    )
+# Increase the height of the plot by 10% to accommodate the labels
+bottom, top = ax.get_ylim()
+ax.set_ylim(bottom, top * 1.10)
+# Set labels
+ax.set_title('Average Sepal Width Given the Sepal Length')
+ax.set_xlabel('Sepal Length (cm)')
+ax.set_ylabel('Average Sepal Width (cm)')
+# X-axis details
+ax.set_xticks([0, 1, 2])
+ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(data1) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim([min(xlocs), max(xlocs)])
+# Legend
+plt.gca().legend(
+    (bar0[0], bar1[0], bar2[0]), ('Setosa', 'Versicolor', 'Virginica'),
+    fontsize=8, loc='center left', bbox_to_anchor=(1, 0.5)
+)
+# Finish
+plt.show()
+plt.close()
+```
+
+Dual Axes
+---------
+Instead of using a legend, we can show that we are plotting different groups by having two y-axes that correspond to the colour of the group they refer to:
+
+```{python, eval=FALSE}
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes()
+width = 0.3
+ax.bar(np.arange(len(data1)) - 0.15, data1, width, color='C0')
+# Set labels
+ax.set_title('Average Sepal Width Given the Sepal Length')
+ax.set_xlabel('Sepal Length (cm)')
+ax.set_ylabel('Average Sepal Width (cm) - Versicolor', color='C0')
+ax.tick_params(axis='y', colors='C0')
+# X-axis details
+ax.set_xticks(np.arange(len(data1)))
+ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(data1) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim([min(xlocs), max(xlocs)])
+# Second y-axis
+ax2 = ax.twinx()
+ax2.bar(np.arange(len(data2)) + 0.15, data2, width, color='C3')
+ax2.set_ylabel('Average Sepal Width (cm) - Virginica', color='C3')
+ax2.tick_params(axis='y', colors='C3')
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes()
+width = 0.3
+ax.bar(np.arange(len(data1)) - 0.15, data1, width, color='C0')
+# Set labels
+ax.set_title('Average Sepal Width Given the Sepal Length')
+ax.set_xlabel('Sepal Length (cm)')
+ax.set_ylabel('Average Sepal Width (cm) - Versicolor', color='C0')
+ax.tick_params(axis='y', colors='C0')
+# X-axis details
+ax.set_xticks(np.arange(len(data1)))
+ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(data1) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim([min(xlocs), max(xlocs)])
+# Second y-axis
+ax2 = ax.twinx()
+ax2.bar(np.arange(len(data2)) + 0.15, data2, width, color='C3')
+ax2.set_ylabel('Average Sepal Width (cm) - Virginica', color='C3')
+ax2.tick_params(axis='y', colors='C3')
+# Finish
+plt.show()
+plt.close()
+```
+
+Save Plot
+=========
+Finally, use `plt.savefig('name_of_plot.png')` to save the plot to your computer.
+
+[⇦ Back](../../../python.html)
+
+</font>
