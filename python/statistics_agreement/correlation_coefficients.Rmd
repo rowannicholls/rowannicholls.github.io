@@ -1,0 +1,288 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Correlation Coefficients'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Let's use the following hypothetical example dataset which comes from Giavarina (2015)<sup>1</sup>. Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements below:
+
+```{python}
+import pandas as pd
+
+df = pd.DataFrame({
+    'Method A': [
+        1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
+        150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
+        650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
+    ],
+    'Method B': [
+        8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
+        181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
+        738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
+    ]
+})
+```
+
+These can be visualised as below:
+
+```{python eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Options
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+ax = plt.axes()
+ax.set(title='The Raw Data', xlabel='Method A', ylabel='Method B')
+# Scatter plot
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Show
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+import matplotlib.pyplot as plt
+
+# Options
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+ax = plt.axes()
+ax.set(title='The Raw Data', xlabel='Method A', ylabel='Method B')
+# Scatter plot
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Show
+plt.show()
+```
+
+These points seem to roughly show a straight-line relationship, but let's be a bit more precise and start to quantity *exactly* how much they correlate...
+
+Pearson's r
+===========
+As described on its [Wikipedia page](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient), the Pearson's r statistics measures linear correlation between two variables. It assumes that a set of data points can be approximated by a straight line and returns a value that describes how strong the linear correlation is:
+
+- +1 is total positive linear correlation (the data points all line on a straight line with a positive gradient)
+- 0 is no linear correlation (the data points are randomly scattered all over the plot area)
+- −1 is total negative linear correlation (the data points all line on a straight line with a negative gradient)
+
+```{python}
+from scipy import stats
+import numpy as np
+
+x = df['Method A']
+y = df['Method B']
+r, p = stats.pearsonr(x, y)
+# Transform the correlation coefficient into a Fishers’ Z-score
+r_z = np.arctanh(r)  # These two ways are equivalent
+r_z = 0.5 * np.log((1 + r) / (1 - r))  # These two ways are equivalent
+# Standard error
+se = 1 / np.sqrt(x.size - 3)
+# Calculate confidence interval in Z-space
+alpha = 0.05  # 95% CI
+z = stats.norm.ppf(1 - alpha / 2)
+lo_z, hi_z = r_z - z * se, r_z + z * se
+# Transform back into r-space
+lo, hi = np.tanh((lo_z, hi_z))
+print(f'r = {r:5.3f} (CI: {lo:5.3f} - {hi:5.3f}), p = {p:5.3f}')
+```
+
+This r value is close to 1, which confirms that the points nearly follow a straight-line. Let's visualise this by using the r statistic to generate a line-of-best-fit:
+
+```{python eval = FALSE}
+# LINE-OF-BEST-FIT
+r, p = stats.pearsonr(x, y)
+# Gradient of line-of-best-fit
+m = r * np.std(y) / np.std(x)
+# Y-intercept of line-of-best-fit
+c = np.mean(y) - m * np.mean(x)
+
+# PLOT
+ax = plt.axes()
+ax.set(title='The Raw Data', xlabel='Method A', ylabel='Method B')
+# Scatter plot
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Get axis limits
+left, right = plt.xlim()
+# Keep current axis limits
+ax.set_xlim(left, right)
+# Line-of-best-fit
+x = np.array([left, right])
+y = m * x + c
+ax.plot(
+    x, y, c='grey', ls='--',
+    label=f'r = {r:5.3f} (CI: {lo:5.3f} - {hi:5.3f}), p = {p:5.3f}'
+)
+# Legend
+ax.legend(frameon=False)
+# Show
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+# LINE-OF-BEST-FIT
+r, p = stats.pearsonr(x, y)
+# Gradient of line-of-best-fit
+m = r * np.std(y) / np.std(x)
+# Y-intercept of line-of-best-fit
+c = np.mean(y) - m * np.mean(x)
+
+# PLOT
+ax = plt.axes()
+ax.set(title='The Raw Data', xlabel='Method A', ylabel='Method B')
+# Scatter plot
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Get axis limits
+left, right = plt.xlim()
+# Keep current axis limits
+ax.set_xlim(left, right)
+# Line-of-best-fit
+x = np.array([left, right])
+y = m * x + c
+ax.plot(
+    x, y, c='grey', ls='--',
+    label=f'r = {r:5.3f} (CI: {lo:5.3f} - {hi:5.3f}), p = {p:5.3f}'
+)
+# Legend
+ax.legend(frameon=False)
+# Show
+plt.show()
+```
+
+It's often more useful to be able to do this calculation in a function so that it can be easily called as many times as you need it:
+
+```{python}
+def pearsons_correlation_coefficient(x, y):
+    """Calculate Pearson's r with confidence interval and significance."""
+    r, p = stats.pearsonr(x, y)
+    # Transform the correlation coefficient into a Fishers’ Z-score
+    r_z = np.arctanh(r)  # These two ways are equivalent
+    r_z = 0.5 * np.log((1 + r) / (1 - r))  # These two ways are equivalent
+    # Standard error
+    se = 1 / np.sqrt(x.size - 3)
+    # Calculate confidence interval in Z-space
+    alpha = 0.05  # 95% CI
+    z = stats.norm.ppf(1 - alpha / 2)
+    lo_z, hi_z = r_z - z * se, r_z + z * se
+    # Transform back into r-space
+    lo, hi = np.tanh((lo_z, hi_z))
+
+    return r, lo, hi, p
+
+
+x = df['Method A']
+y = df['Method B']
+r, lo, hi, p = pearsons_correlation_coefficient(x, y)
+print(f'r = {r:5.3f} ({lo:5.3f} - {hi:5.3f}), p = {p:5.3f}')
+```
+
+Lin's Concordance Correlation Coefficient (CCC)
+===============================================
+This is not yet fully implemented in Python's sklearn package, but we can use the version created by stylianos-kampakis on GitHub (available [here](https://github.com/stylianos-kampakis/supervisedPCA-Python/blob/master/Untitled.py)). As he says:
+
+> The concordance correlation coefficient is a measure of inter-rater
+agreement. It measures the deviation of the relationship between predicted
+and true values from the 45 degree line.
+
+Read more on [Wikipedia](https://en.wikipedia.org/wiki/Concordance_correlation_coefficient) or
+in the original paper by Lin<sup>2</sup>.
+
+This coefficient is used to assess the agreement between estimated values (ie those measured by some person or some instrument) and correct (ground truth) values. The coefficient itself can be between -1 and 1 where 1 indicates perfect agreement between the true and the predicted values.
+
+Let's use the same numbers we've already used in the Pearson's r example, except this time let's pretend that one set is a 'ground truth' list of measurements that are known to be 100% correct while the other set is a list of measurements that were taken using some instrument (and as such they only 'predict' the truth):
+
+```{python}
+y_true = df['Method A']
+y_pred = df['Method B']
+```
+
+Here we go with calculating the CCC:
+
+```{python}
+# Remove NaNs
+df = pd.DataFrame({
+    'y_true': y_true,
+    'y_pred': y_pred
+})
+df = df.dropna()
+y_true = df['y_true']
+y_pred = df['y_pred']
+# Pearson product-moment correlation coefficients
+cor = np.corrcoef(y_true, y_pred)[0][1]
+# Mean
+mean_true = np.mean(y_true)
+mean_pred = np.mean(y_pred)
+# Variance
+var_true = np.var(y_true)
+var_pred = np.var(y_pred)
+# Standard deviation
+sd_true = np.std(y_true)
+sd_pred = np.std(y_pred)
+# Calculate CCC
+numerator = 2 * cor * sd_true * sd_pred
+denominator = var_true + var_pred + (mean_true - mean_pred)**2
+ccc = numerator / denominator
+print(ccc)
+```
+
+Again, this may be more useful to have as a function:
+
+```{python}
+def concordance_correlation_coefficient(y_true, y_pred):
+    """Concordance correlation coefficient."""
+    # Remove NaNs
+    df = pd.DataFrame({
+        'y_true': y_true,
+        'y_pred': y_pred
+    })
+    df = df.dropna()
+    y_true = df['y_true']
+    y_pred = df['y_pred']
+    # Pearson product-moment correlation coefficients
+    cor = np.corrcoef(y_true, y_pred)[0][1]
+    # Mean
+    mean_true = np.mean(y_true)
+    mean_pred = np.mean(y_pred)
+    # Variance
+    var_true = np.var(y_true)
+    var_pred = np.var(y_pred)
+    # Standard deviation
+    sd_true = np.std(y_true)
+    sd_pred = np.std(y_pred)
+    # Calculate CCC
+    numerator = 2 * cor * sd_true * sd_pred
+    denominator = var_true + var_pred + (mean_true - mean_pred)**2
+    return numerator / denominator
+
+
+y_true = [3, -0.5, 2, 7, np.NaN]
+y_pred = [2.5, 0.0, 2, 8, 3]
+ccc = concordance_correlation_coefficient(y_true, y_pred)
+print(ccc)
+```
+
+Note that the numbers used in the example above were taken directly from stylianos-kampakis's [code](https://github.com/stylianos-kampakis/supervisedPCA-Python/blob/master/Untitled.py).
+
+References
+==========
+<sup>1</sup>Giavarina D (2015). "Understanding Bland Altman analysis". *Biochemia Medica*. **25** (2):141-151. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
+<sup>2</sup>Lin LIK (1989). "A concordance correlation coefficient to evaluate reproducibility". *Biometrics*. **45** (1):255-268.
+
+[⇦ Back](../../python.html)
+
+</font>
