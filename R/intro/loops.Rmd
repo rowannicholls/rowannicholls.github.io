@@ -66,8 +66,8 @@ for (i in c("one", "two", "three")) {
 }
 ```
 
-Data Frames Columns
--------------------
+Data Frame Columns
+------------------
 Given the same 'mtcars' data frame as above, we can iterate over each column directly:
 
 ```{r}
@@ -85,8 +85,8 @@ for (i in seq_along(mtcars)) {
 }
 ```
 
-Data Frames Rows
-----------------
+Data Frame Rows
+---------------
 Instead of iterating over a data frame's columns we can look at each of its *rows* in turn like this:
 
 ```{r}

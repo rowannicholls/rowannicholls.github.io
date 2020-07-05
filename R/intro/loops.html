@@ -186,8 +186,8 @@ summary {
 <li><a href="#why-use-loops"><span class="toc-section-number">1</span> Why Use Loops?</a></li>
 <li><a href="#for-loops"><span class="toc-section-number">2</span> For Loops</a><ul>
 <li><a href="#vectors"><span class="toc-section-number">2.1</span> Vectors</a></li>
-<li><a href="#data-frames-columns"><span class="toc-section-number">2.2</span> Data Frames Columns</a></li>
-<li><a href="#data-frames-rows"><span class="toc-section-number">2.3</span> Data Frames Rows</a></li>
+<li><a href="#data-frame-columns"><span class="toc-section-number">2.2</span> Data Frame Columns</a></li>
+<li><a href="#data-frame-rows"><span class="toc-section-number">2.3</span> Data Frame Rows</a></li>
 </ul></li>
 <li><a href="#while-loops"><span class="toc-section-number">3</span> While Loops</a></li>
 <li><a href="#using-a-while-loop-as-a-for-loop"><span class="toc-section-number">4</span> Using a While Loop as a For Loop</a></li>
@@ -503,8 +503,8 @@ print(df)</code></pre>
 ## [1] &quot;two&quot;
 ## [1] &quot;three&quot;</code></pre>
 </div>
-<div id="data-frames-columns" class="section level2">
-<h2><span class="header-section-number">2.2</span> Data Frames Columns</h2>
+<div id="data-frame-columns" class="section level2">
+<h2><span class="header-section-number">2.2</span> Data Frame Columns</h2>
 <p>Given the same ‘mtcars’ data frame as above, we can iterate over each column directly:</p>
 <pre class="r"><code>for (column in mtcars) {
     print(column)
@@ -548,8 +548,8 @@ print(df)</code></pre>
 ## [1] &quot;carb&quot;
 ## [1] 4 4 1 1 2 1</code></pre>
 </div>
-<div id="data-frames-rows" class="section level2">
-<h2><span class="header-section-number">2.3</span> Data Frames Rows</h2>
+<div id="data-frame-rows" class="section level2">
+<h2><span class="header-section-number">2.3</span> Data Frame Rows</h2>
 <p>Instead of iterating over a data frame’s columns we can look at each of its <em>rows</em> in turn like this:</p>
 <pre class="r"><code>for (i in 1:nrow(mtcars)) {
     print(mtcars[i, ])
