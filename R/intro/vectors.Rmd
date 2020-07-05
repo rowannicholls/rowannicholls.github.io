@@ -5,6 +5,7 @@ output:
         theme: paper
         highlight: textmate
         number_sections: true
+        toc: true
 ---
 <font size="3">
 
@@ -12,8 +13,8 @@ output:
 
 Vectors are lists of data, eg a list of numbers or a list of strings.
 
-# Creating a Vector
-
+Creating a Vector
+=================
 The function that creates a vector is `c()`, where 'c' is short for 'concatenate'. You already met this function in [the page on characters and strings](strings.html).
 
 ```{r}
@@ -31,8 +32,8 @@ You can also use the `vector()` function, which creates an empty vector of a cer
 x <- vector("integer", 4)
 ```
 
-# Indexing a Vector
-
+Indexing a Vector
+=================
 To see what is located at a certain point in the vector, use square brackets to index it. For example, to see the second element of `x = c('Alfa', 'Bravo', 'Charlie', 'Delta')`:
 
 ```{r echo = FALSE}
@@ -49,8 +50,8 @@ To see all elements from the second to the fourth:
 print(x[2:4])
 ```
 
-# Overwriting an Element
-
+Overwriting an Element
+======================
 You can overwrite a value in a vector by indexing its position and setting it equal to something else:
 
 ```{r}
@@ -69,8 +70,8 @@ x <- plyr::mapvalues(
 print(x)
 ```
 
-# Appending to a Vector
-
+Appending to a Vector
+=====================
 To add an element to a vector, simple index one position after the last. For example, if a vector has four elements we need to index position five and set it equal to something:
 
 ```{r}
@@ -86,6 +87,23 @@ print(x)
 ```
 
 This trick ensures you are always *appending* not *overwriting*, no matter what vector you are using.
+
+Removing Nulls
+==============
+If a vector contains missing data you might want to remove it. This is done by *indexing* the elements that are not "na". To do this you need to:
+
+- Use the `is.na()` function to find the elements that *are* nulls
+- Inverse this (which is done by using an exclamation mark) to get the locations of the elements that are *not* nulls
+- Index the vector (which is done with square brackets) to get the not-null elements themselves:
+
+```{r}
+# Create a vector with missing data
+x <- c(1, 2, 3, NULL, 5)
+# Remove nulls
+x <- x[!is.na(x)]
+# Check that it has worked
+print(x)
+```
 
 [⇦ Back](../../R.html)
 

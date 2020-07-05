@@ -180,13 +180,22 @@ summary {
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#creating-a-vector"><span class="toc-section-number">1</span> Creating a Vector</a></li>
+<li><a href="#indexing-a-vector"><span class="toc-section-number">2</span> Indexing a Vector</a></li>
+<li><a href="#overwriting-an-element"><span class="toc-section-number">3</span> Overwriting an Element</a></li>
+<li><a href="#appending-to-a-vector"><span class="toc-section-number">4</span> Appending to a Vector</a></li>
+<li><a href="#removing-nulls"><span class="toc-section-number">5</span> Removing Nulls</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
 <p><a href="../../R.html">⇦ Back</a></p>
 <p>Vectors are lists of data, eg a list of numbers or a list of strings.</p>
 <div id="creating-a-vector" class="section level1">
 <h1><span class="header-section-number">1</span> Creating a Vector</h1>
-<p>The function that creates a vector is <code>c()</code>, where 'c' is short for 'concatenate'. You already met this function in <a href="strings.html">the page on characters and strings</a>.</p>
+<p>The function that creates a vector is <code>c()</code>, where ‘c’ is short for ‘concatenate’. You already met this function in <a href="strings.html">the page on characters and strings</a>.</p>
 <pre class="r"><code># A vector of strings:
 x &lt;- c(&quot;Alfa&quot;, &quot;Bravo&quot;, &quot;Charlie&quot;)
 # A vector of numbers:
@@ -231,6 +240,22 @@ print(x)</code></pre>
 print(x)</code></pre>
 <pre><code>## [1] &quot;ALFA&quot;    &quot;BRAVO&quot;   &quot;CHARLIE&quot; &quot;Delta&quot;   &quot;Echo&quot;    &quot;Foxtrot&quot;</code></pre>
 <p>This trick ensures you are always <em>appending</em> not <em>overwriting</em>, no matter what vector you are using.</p>
+</div>
+<div id="removing-nulls" class="section level1">
+<h1><span class="header-section-number">5</span> Removing Nulls</h1>
+<p>If a vector contains missing data you might want to remove it. This is done by <em>indexing</em> the elements that are not “na”. To do this you need to:</p>
+<ul>
+<li>Use the <code>is.na()</code> function to find the elements that <em>are</em> nulls</li>
+<li>Inverse this (which is done by using an exclamation mark) to get the locations of the elements that are <em>not</em> nulls</li>
+<li>Index the vector (which is done with square brackets) to get the not-null elements themselves:</li>
+</ul>
+<pre class="r"><code># Create a vector with missing data
+x &lt;- c(1, 2, 3, NULL, 5)
+# Remove nulls
+x &lt;- x[!is.na(x)]
+# Check that it has worked
+print(x)</code></pre>
+<pre><code>## [1] 1 2 3 5</code></pre>
 <p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
