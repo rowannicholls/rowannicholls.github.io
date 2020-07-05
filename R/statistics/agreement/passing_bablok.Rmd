@@ -1,0 +1,142 @@
+---
+title: '<font size="5">Statistics in R:</font><br>Passing-Bablok Regression'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+This type of regression analysis was first published in Passing & Bablok (1983)<sup>1</sup>. As the [Wikipedia article](https://en.wikipedia.org/wiki/Passing%E2%80%93Bablok_regression) states:
+
+> Passing–Bablok regression is a statistical method for non-parametric regression analysis suitable for method comparison studies.
+
+Essentially, when two different methods are being used to take the same measurement a line-of-best-fit can fitted to the points. The Passing-Bablok method does this by:
+
+- Drawing a line between each pair of points in turn
+- Taking the gradient of each of these lines
+- Extending these lines to the y-axis and taking the y-intercepts
+- Taking the median of the gradients and the median of the y-intercepts of these lines
+
+The median gradient and median y-intercept create the line-of-best-fit. It has an associated confidence interval which can be interpreted as follows:
+
+- If 1 is within the confidence interval of the gradient and 0 within the confidence interval of the y-intercept, then the two methods are comparable within the investigated concentration range
+- If 1 is not in the confidence interval of the gradient then there is a proportional difference between the two methods
+- If 0 is not in the confidence interval of the y-interval then there is a systematic difference
+
+Let's use the following hypothetical example dataset which comes from Giavarina (2015)<sup>2</sup>. Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements below:
+
+```{r}
+method_a <- c(
+    1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
+    150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
+    650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
+)
+method_b <- c(
+    8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
+    181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
+    738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
+)
+```
+
+First, let's visualise this data:
+
+```{r}
+# Scatter plot
+plot(
+    method_a, method_b, main = "The Raw Data",
+    xlab = "Method A", ylab = "Method B",
+    pch = 21, col = "black", bg="gray"
+)
+# Reference line
+abline(0, 1, lty = "dashed")
+# Include a legend
+legend(0, 1000, "Reference line", lty = "dashed")
+```
+
+Now let's caclulate the Passing-Bablok line-of-best-fit and its confidence interval. This is done using the `mcreg` function from the `mcr` package, specifying what method you want to use with `method.reg = "PaBa"` as below:
+
+```{r}
+library(mcr)
+
+# Comparison of two measurement methods using regression analysis
+# (specifically, use the "PaBa" or Passing-Bablok method)
+value <- mcreg(method_a, method_b, method.reg = "PaBa")
+```
+
+This yields the following result:
+
+```{r}
+print(value@para)
+```
+
+The individual parameters can be separated out as follows:
+
+```{r}
+intercept_est <- value@para[1]
+intercept_lci <- value@para[5]
+intercept_uci <- value@para[7]
+gradient_est <- value@para[2]
+gradient_lci <- value@para[6]
+gradient_uci <- value@para[8]
+
+sprintf("Gradient = %4.2f (%4.2f - %4.2f)", gradient_est, gradient_lci, gradient_uci)
+sprintf("Intercept = %4.2f (%4.2f - %4.2f)", intercept_est, intercept_lci, intercept_uci)
+```
+
+Now let's visualise this result and how it approximates the raw data:
+
+```{r}
+library(scales)
+
+# Scatter plot
+plot(
+    method_a, method_b, main = "Passing-Bablok Regression",
+    xlab = "Method A", ylab = "Method B",
+    pch = 21, col = "black", bg="gray"
+)
+# Fill in colour between the confidence intervals
+mylims <- par("usr")
+x <- c(mylims[1], mylims[2], mylims[2], mylims[1])
+y <- c(
+    gradient_lci * x[1] + intercept_lci,
+    gradient_lci * x[2] + intercept_lci,
+    gradient_uci * x[2] + intercept_uci,
+    gradient_uci * x[1] + intercept_uci
+)
+polygon(x, y, col = alpha("dodgerblue", 0.2))
+# Reference line
+abline(0, 1, lty = "dashed")
+# Passing-Bablok regression lines
+abline(intercept_est, gradient_est, col = "dodgerblue", lwd = 2)
+abline(intercept_lci, gradient_lci, col = alpha("dodgerblue", 1))
+abline(intercept_uci, gradient_uci, col = alpha("dodgerblue", 1))
+# Include a legend
+legend(
+    0, 1000,
+    c(
+        "Reference line",
+        sprintf("%4.2fx + %4.2f", gradient_est, intercept_est),
+        sprintf("Upper CI: %4.2fx + %4.2f", gradient_uci, intercept_uci),
+        sprintf("Lower CI: %4.2fx + %4.2f", gradient_lci, intercept_lci)
+    ),
+    lty = c("dashed", "solid", "solid", "solid"),
+    lwd = c(1, 2, 1, 1),
+    col = c("black", "dodgerblue", alpha("dodgerblue", 1), alpha("dodgerblue", 1))
+)
+```
+
+References
+==========
+
+<sup>1</sup>Passing H, Bablok W (1983). "A new biometrical procedure for testing the equality of measurements from two different analytical methods. Application of linear regression procedures for method comparison studies in Clinical Chemistry, Part I". *Journal of Clinical Chemistry and Clinical Biochemistry*. **21** (11): 709–20. doi: [10.1515/cclm.1983.21.11.709](https://doi.org/10.1515%2Fcclm.1983.21.11.709). PMID: [6655447](https://pubmed.ncbi.nlm.nih.gov/6655447/)  
+<sup>2</sup>Giavarina D (2015). "Understanding Bland Altman analysis". *Biochemia Medica*. **25** (2):141-151. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
+
+[⇦ Back](../../../R.html)
+
+</font>
