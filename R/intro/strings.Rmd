@@ -5,78 +5,81 @@ output:
         theme: paper
         highlight: textmate
         number_sections: true
+        toc: true
 ---
+
 <font size="3">
+
 [⇦ Back](../../R.html)
 
-```{r message=FALSE}
-# Import packages
-library(R.utils)
-library(stringr)
-```
+Concatenate Strings
+===================
+There are a number of different ways to combine strings depending on the exact functionality you want:
 
-# Concatenate Strings
-There are a number of different ways to do this, depending on the exact functionality you want:
+- Use `paste()` or `paste0()` if you want a **character** object to be returned
+- Use `c()` if you want a **vector** to be returned
+- Use `cat()` if you want nothing to be returned (ie you just want the string to **print to screen**)
 
-## `paste()`
-
-`paste()` uses a space for separation by default:
+Return a Character Object
+-------------------------
+`paste()` combines strings by adding a space in between them. The result (which is a character object) can then be assigned to a variable:
 
 ```{r}
 st <- paste("Hello", "World")
 print(st)
 ```
 
-This default behaviour can be changed using the `sep` keyword argument, eg you can have a comma and a space:
+The default behaviour of adding a space in between each string can be changed by using the `sep` keyword argument. For example, you can have a comma and a space between each string by doing the following:
 
 ```{r}
 st <- paste("Hello", "World", sep = ", ")
 print(st)
 ```
 
-This function returns a *character vector*. This means that you can assign it to a variable for later use, like how I assigned it to the variable `st` in the above examples.
-
-## `cat()`
-
-`cat()` performs the same function as `paste()` and also uses a single space by default. This can also be changed through the use of the `sep` keyword argument.
+If you want to have **no space** between your strings you can either use `paste()` with no separation or you can use `paste0()` which does this by default:
 
 ```{r}
-cat("Hello", "World")
-```
-
-The difference between `paste()` and `cat()` is that `cat()` does not return a value, it only prints it to the console. This means that it cannot be saved to a variable like this:
-
-```{r results = "hide"}
-a <- cat("Hello", "World")
-```
-
-The code below prints `NULL` because nothing was returned by the `cat()` function to the variable `a`!
-
-```{r}
-print(a)
-```
-
-## `c()`
-
-`c()` is similar to `paste()` in that it also combines/concatenates objects and allows you to assign them to variables, but `c()` turns them into *vectors*:
-
-```{r}
-st <- c("Hello", "World")
+st <- paste("Hello", "World", sep = "")
 print(st)
 ```
-
-## `paste0()`
-
-`paste0()` uses no space for separation by default:
 
 ```{r}
 st <- paste0("Hello", "World")
 print(st)
 ```
 
-# Split Strings
+Return a Vector
+---------------
+The `c()` command stands for "**C**oncatenate" and is similar to `paste()` in that it also combines/concatenates objects and allows you to assign them to variables, but `c()` turns them into **vectors** (a list of objects) instead of characters (a single object):
 
-Use `strsplit()`:
+```{r}
+st <- c("Hello", "World")
+print(st)
+```
+
+Print with no Return
+--------------------
+The `cat()` command is also short for "con**CAT**enate", also performs the same function as `paste()`, also uses a single space by default and can also use the `sep` keyword argument to change this default:
+
+```{r}
+cat("Hello", "World")
+```
+
+The difference between `paste()` and `cat()` is that `cat()` does not return a value, it only prints to the console. This means that it cannot be saved to a variable like this:
+
+```{r results = "hide"}
+a <- cat("Hello", "World")
+```
+
+The code below prints `NULL` because nothing was returned by the `cat()` function and so nothing was saved to the `a` variable:
+
+```{r}
+print(a)
+```
+
+Split Strings
+=============
+Use `strsplit()` to do the opposite of concatenation:
 
 ```{r}
 st <- "Split the words in a sentence."
@@ -84,44 +87,105 @@ st <- strsplit(st, " ")
 print(st)
 ```
 
-# Search for a Character or Sub-string
+Search, Find, Lookup
+====================
+You can:
 
-Find the indices where certain characters are:
+- **Search** a string to see if it contains a certain letter or sub-string
+- **Find** where that letter or sub-string is located within the string
+- **Lookup** what letter or sub-string is at a certain location within a string
+
+Search for a Character or Sub-string
+------------------------------------
+Does a string contain the letter(s) you are looking for? Search the string and return a Boolean (true or false) to find out. This is done with the `grepl()` command:
+
+```{r}
+# Does the letter "o" appear in "Hello World"?
+grepl("o", "Hello World", fixed = TRUE)
+```
+
+In case you were wondering, this function's name is short for "**g**lobally search for a **r**egular **e**xpression and **p**rint matching lines - **l**ogical". You can now see why we shorten it!
+
+Find a Character or Sub-string
+------------------------------
+Now that we know our string contains the letter we are looking for, get the **indices** (positions) where that certain character is by using the `gregexpr()` command:
 
 ```{r}
 st <- "Hello World"
 idx_o <- unlist(gregexpr(pattern = "o", st))
 print(idx_o)
 ```
-In this example the letter "o" can be found at both position 5 and 8 in the string "Hello World".
 
-# Lookup the Characters at Particular Indices
+In this example, the letter "o" can be found at both position 5 and 8 in the string "Hello World".
 
-Use `substr()`:
+Lookup the Characters at Particular Indices
+-------------------------------------------
+You can see what characters are at a certain location within a string by using the `substr()` command. This takes the `start` and `stop` keyword arguments, which are pretty self-explanatory (they tell the command where to start and stop looking):
 
 ```{r}
 st <- "Hello World"
-st <- substr(st, start = 3, stop = 4)
+sub <- substr(st, start = 6, stop = 8)
+print(sub)
+```
+
+You can lookup all the characters from a given start point to the end of a string by using the total number of characters in a string (`nchar()`) as the stop point:
+
+```{r}
+sub <- substr(st, start = 6, stop = nchar(st))
+print(sub)
+```
+
+Similarly, you can lookup all the characters from the start of a string until a given stop point by using "1" as the start point:
+
+```{r}
+sub <- substr(st, start = 1, stop = 8)
+print(sub)
+```
+
+Delete, Overwrite, Replace
+==========================
+You can:
+
+- **Delete** all the characters before or after a given point in a string
+- **Overwrite** the characters at a given location within a string
+- **Replace** all occurrences of a certain letter or sub-string within a string with a given replacement
+
+Delete Characters
+-----------------
+This is again done using the `substr()` function but this time we are looking up text before and after a *character*, not an *index*.
+
+Remove the text *before* a certain character:
+
+```{r}
+st <- "Hello World"
+idx_o <- unlist(gregexpr(pattern = "o", st))
+sub <- substr(st, start = idx_o[1], stop = nchar(st))
+print(sub)
+```
+
+Remove the text *after* a certain character:
+
+```{r}
+sub <- substr(st, start = 1, stop = idx_o[1])
+print(sub)
+```
+
+Overwrite Characters
+--------------------
+Use the `str_sub()` command from the `stringr` library:
+
+```{r}
+library(stringr)
+
+st <- "Hello World"
+str_sub(st, 6, 6) <- "_"
+str_sub(st, 8, 7) <- "O"
 print(st)
 ```
 
-Remove the text before a certain character:
-
-```{r}
-sub_st <- substr(st, start = idx_o[1], stop = nchar(st))
-print(sub_st)
-```
-
-Remove the text after a certain character:
-
-```{r}
-sub_st <- substr(st, start = 1, stop = idx_o[1])
-print(sub_st)
-```
-
-# Replace a Sub-string
-
-Use `gsub()`:
+Replace Characters
+------------------
+Use the `gsub()` command:
 
 ```{r}
 st <- "Hello World"
@@ -129,19 +193,8 @@ st <- gsub("ello", "i", st)
 print(st)
 ```
 
-# Overwrite Characters
-
-Use `str_sub()`:
-
-```{r}
-st <- "Hello World"
-str_sub(st, 6, 6) <- "_"
-str_sub(st, 8, 7) <- "O"
-print(st)
-```
-
-# Change the Case
-
+Change the Case
+===============
 A string can be UPPERCASE, lowercase, Sentence case or Title Case:
 
 ```{r}
@@ -153,14 +206,17 @@ print(str_to_title(st))
 ```
 These functions come from the `stringr` library.
 
-# Formatted Output
-If you want to print a variable as part of a string using a specific format, use the `printf()` function from the R.utils library along with the `%` character to indicate where you want the variable to be inserted. You also need to have a letter after the `%` to indicate what type of format to use.
+Formatted Output
+================
+If you want to print a variable as part of a string using a specific format, use the `printf()` function from the `R.utils` library along with the `%` character to indicate where you want the variable to be inserted. You also need to have a letter after the `%` to indicate what type of format to use.
 
-## Number formats
-
+Number formats
+--------------
 When working with numbers, use the `f` for 'floating-point' in conjunction with `%`:
 
 ```{r}
+library(R.utils)
+
 x <- 1
 printf("x = %f", x)
 ```
@@ -179,7 +235,8 @@ x <- 1
 printf("x = %8.2f", x)
 ```
 
-## String formats
+String formats
+--------------
 Instead of the `f`, use an `s` together with the `%`.
 
 You can print to the console immediately:
@@ -197,8 +254,8 @@ st <- sprintf("Output text is: %s", st)
 print(st[1])
 ```
 
-## Using formatted output with a dataframe
-
+Using formatted output with a dataframe
+---------------------------------------
 If you extract a single string from any vector or dataframe, it will be treated in the same way by the `printf()` function:
 
 ```{r}
@@ -208,8 +265,8 @@ df <- data.frame(
 printf("Output text is: %s", df$name[1])
 ```
 
-# Unicode and Emojii
-
+Unicode and Emojii
+==================
 Unicode characters can be called by using `\U` and referencing their unicode number. Some can then simply be printed:
 
 ```{r}

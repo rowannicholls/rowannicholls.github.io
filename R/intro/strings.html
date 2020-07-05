@@ -180,105 +180,176 @@ summary {
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#concatenate-strings"><span class="toc-section-number">1</span> Concatenate Strings</a><ul>
+<li><a href="#return-a-character-object"><span class="toc-section-number">1.1</span> Return a Character Object</a></li>
+<li><a href="#return-a-vector"><span class="toc-section-number">1.2</span> Return a Vector</a></li>
+<li><a href="#print-with-no-return"><span class="toc-section-number">1.3</span> Print with no Return</a></li>
+</ul></li>
+<li><a href="#split-strings"><span class="toc-section-number">2</span> Split Strings</a></li>
+<li><a href="#search-find-lookup"><span class="toc-section-number">3</span> Search, Find, Lookup</a><ul>
+<li><a href="#search-for-a-character-or-sub-string"><span class="toc-section-number">3.1</span> Search for a Character or Sub-string</a></li>
+<li><a href="#find-a-character-or-sub-string"><span class="toc-section-number">3.2</span> Find a Character or Sub-string</a></li>
+<li><a href="#lookup-the-characters-at-particular-indices"><span class="toc-section-number">3.3</span> Lookup the Characters at Particular Indices</a></li>
+</ul></li>
+<li><a href="#delete-overwrite-replace"><span class="toc-section-number">4</span> Delete, Overwrite, Replace</a><ul>
+<li><a href="#delete-characters"><span class="toc-section-number">4.1</span> Delete Characters</a></li>
+<li><a href="#overwrite-characters"><span class="toc-section-number">4.2</span> Overwrite Characters</a></li>
+<li><a href="#replace-characters"><span class="toc-section-number">4.3</span> Replace Characters</a></li>
+</ul></li>
+<li><a href="#change-the-case"><span class="toc-section-number">5</span> Change the Case</a></li>
+<li><a href="#formatted-output"><span class="toc-section-number">6</span> Formatted Output</a><ul>
+<li><a href="#number-formats"><span class="toc-section-number">6.1</span> Number formats</a></li>
+<li><a href="#string-formats"><span class="toc-section-number">6.2</span> String formats</a></li>
+<li><a href="#using-formatted-output-with-a-dataframe"><span class="toc-section-number">6.3</span> Using formatted output with a dataframe</a></li>
+</ul></li>
+<li><a href="#unicode-and-emojii"><span class="toc-section-number">7</span> Unicode and Emojii</a></li>
+</ul>
+</div>
 
-<p><font size="3"> <a href="../../R.html">⇦ Back</a></p>
-<pre class="r"><code># Import packages
-library(R.utils)
-library(stringr)</code></pre>
+<p><font size="3"></p>
+<p><a href="../../R.html">⇦ Back</a></p>
 <div id="concatenate-strings" class="section level1">
 <h1><span class="header-section-number">1</span> Concatenate Strings</h1>
-<p>There are a number of different ways to do this, depending on the exact functionality you want:</p>
-<div id="paste" class="section level2">
-<h2><span class="header-section-number">1.1</span> <code>paste()</code></h2>
-<p><code>paste()</code> uses a space for separation by default:</p>
+<p>There are a number of different ways to combine strings depending on the exact functionality you want:</p>
+<ul>
+<li>Use <code>paste()</code> or <code>paste0()</code> if you want a <strong>character</strong> object to be returned</li>
+<li>Use <code>c()</code> if you want a <strong>vector</strong> to be returned</li>
+<li>Use <code>cat()</code> if you want nothing to be returned (ie you just want the string to <strong>print to screen</strong>)</li>
+</ul>
+<div id="return-a-character-object" class="section level2">
+<h2><span class="header-section-number">1.1</span> Return a Character Object</h2>
+<p><code>paste()</code> combines strings by adding a space in between them. The result (which is a character object) can then be assigned to a variable:</p>
 <pre class="r"><code>st &lt;- paste(&quot;Hello&quot;, &quot;World&quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello World&quot;</code></pre>
-<p>This default behaviour can be changed using the <code>sep</code> keyword argument, eg you can have a comma and a space:</p>
+<p>The default behaviour of adding a space in between each string can be changed by using the <code>sep</code> keyword argument. For example, you can have a comma and a space between each string by doing the following:</p>
 <pre class="r"><code>st &lt;- paste(&quot;Hello&quot;, &quot;World&quot;, sep = &quot;, &quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello, World&quot;</code></pre>
-<p>This function returns a <em>character vector</em>. This means that you can assign it to a variable for later use, like how I assigned it to the variable <code>st</code> in the above examples.</p>
-</div>
-<div id="cat" class="section level2">
-<h2><span class="header-section-number">1.2</span> <code>cat()</code></h2>
-<p><code>cat()</code> performs the same function as <code>paste()</code> and also uses a single space by default. This can also be changed through the use of the <code>sep</code> keyword argument.</p>
-<pre class="r"><code>cat(&quot;Hello&quot;, &quot;World&quot;)</code></pre>
-<pre><code>## Hello World</code></pre>
-<p>The difference between <code>paste()</code> and <code>cat()</code> is that <code>cat()</code> does not return a value, it only prints it to the console. This means that it cannot be saved to a variable like this:</p>
-<pre class="r"><code>a &lt;- cat(&quot;Hello&quot;, &quot;World&quot;)</code></pre>
-<p>The code below prints <code>NULL</code> because nothing was returned by the <code>cat()</code> function to the variable <code>a</code>!</p>
-<pre class="r"><code>print(a)</code></pre>
-<pre><code>## NULL</code></pre>
-</div>
-<div id="c" class="section level2">
-<h2><span class="header-section-number">1.3</span> <code>c()</code></h2>
-<p><code>c()</code> is similar to <code>paste()</code> in that it also combines/concatenates objects and allows you to assign them to variables, but <code>c()</code> turns them into <em>vectors</em>:</p>
-<pre class="r"><code>st &lt;- c(&quot;Hello&quot;, &quot;World&quot;)
+<p>If you want to have <strong>no space</strong> between your strings you can either use <code>paste()</code> with no separation or you can use <code>paste0()</code> which does this by default:</p>
+<pre class="r"><code>st &lt;- paste(&quot;Hello&quot;, &quot;World&quot;, sep = &quot;&quot;)
 print(st)</code></pre>
-<pre><code>## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
-</div>
-<div id="paste0" class="section level2">
-<h2><span class="header-section-number">1.4</span> <code>paste0()</code></h2>
-<p><code>paste0()</code> uses no space for separation by default:</p>
+<pre><code>## [1] &quot;HelloWorld&quot;</code></pre>
 <pre class="r"><code>st &lt;- paste0(&quot;Hello&quot;, &quot;World&quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;HelloWorld&quot;</code></pre>
 </div>
+<div id="return-a-vector" class="section level2">
+<h2><span class="header-section-number">1.2</span> Return a Vector</h2>
+<p>The <code>c()</code> command stands for “<strong>C</strong>oncatenate” and is similar to <code>paste()</code> in that it also combines/concatenates objects and allows you to assign them to variables, but <code>c()</code> turns them into <strong>vectors</strong> (a list of objects) instead of characters (a single object):</p>
+<pre class="r"><code>st &lt;- c(&quot;Hello&quot;, &quot;World&quot;)
+print(st)</code></pre>
+<pre><code>## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
+</div>
+<div id="print-with-no-return" class="section level2">
+<h2><span class="header-section-number">1.3</span> Print with no Return</h2>
+<p>The <code>cat()</code> command is also short for “con<strong>CAT</strong>enate”, also performs the same function as <code>paste()</code>, also uses a single space by default and can also use the <code>sep</code> keyword argument to change this default:</p>
+<pre class="r"><code>cat(&quot;Hello&quot;, &quot;World&quot;)</code></pre>
+<pre><code>## Hello World</code></pre>
+<p>The difference between <code>paste()</code> and <code>cat()</code> is that <code>cat()</code> does not return a value, it only prints to the console. This means that it cannot be saved to a variable like this:</p>
+<pre class="r"><code>a &lt;- cat(&quot;Hello&quot;, &quot;World&quot;)</code></pre>
+<p>The code below prints <code>NULL</code> because nothing was returned by the <code>cat()</code> function and so nothing was saved to the <code>a</code> variable:</p>
+<pre class="r"><code>print(a)</code></pre>
+<pre><code>## NULL</code></pre>
+</div>
 </div>
 <div id="split-strings" class="section level1">
 <h1><span class="header-section-number">2</span> Split Strings</h1>
-<p>Use <code>strsplit()</code>:</p>
+<p>Use <code>strsplit()</code> to do the opposite of concatenation:</p>
 <pre class="r"><code>st &lt;- &quot;Split the words in a sentence.&quot;
 st &lt;- strsplit(st, &quot; &quot;)
 print(st)</code></pre>
 <pre><code>## [[1]]
 ## [1] &quot;Split&quot;     &quot;the&quot;       &quot;words&quot;     &quot;in&quot;        &quot;a&quot;         &quot;sentence.&quot;</code></pre>
 </div>
-<div id="search-for-a-character-or-sub-string" class="section level1">
-<h1><span class="header-section-number">3</span> Search for a Character or Sub-string</h1>
-<p>Find the indices where certain characters are:</p>
+<div id="search-find-lookup" class="section level1">
+<h1><span class="header-section-number">3</span> Search, Find, Lookup</h1>
+<p>You can:</p>
+<ul>
+<li><strong>Search</strong> a string to see if it contains a certain letter or sub-string</li>
+<li><strong>Find</strong> where that letter or sub-string is located within the string</li>
+<li><strong>Lookup</strong> what letter or sub-string is at a certain location within a string</li>
+</ul>
+<div id="search-for-a-character-or-sub-string" class="section level2">
+<h2><span class="header-section-number">3.1</span> Search for a Character or Sub-string</h2>
+<p>Does a string contain the letter(s) you are looking for? Search the string and return a Boolean (true or false) to find out. This is done with the <code>grepl()</code> command:</p>
+<pre class="r"><code># Does the letter &quot;o&quot; appear in &quot;Hello World&quot;?
+grepl(&quot;o&quot;, &quot;Hello World&quot;, fixed = TRUE)</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<p>In case you were wondering, this function’s name is short for “<strong>g</strong>lobally search for a <strong>r</strong>egular <strong>e</strong>xpression and <strong>p</strong>rint matching lines - <strong>l</strong>ogical”. You can now see why we shorten it!</p>
+</div>
+<div id="find-a-character-or-sub-string" class="section level2">
+<h2><span class="header-section-number">3.2</span> Find a Character or Sub-string</h2>
+<p>Now that we know our string contains the letter we are looking for, get the <strong>indices</strong> (positions) where that certain character is by using the <code>gregexpr()</code> command:</p>
 <pre class="r"><code>st &lt;- &quot;Hello World&quot;
 idx_o &lt;- unlist(gregexpr(pattern = &quot;o&quot;, st))
 print(idx_o)</code></pre>
 <pre><code>## [1] 5 8</code></pre>
-<p>In this example the letter &quot;o&quot; can be found at both position 5 and 8 in the string &quot;Hello World&quot;.</p>
+<p>In this example, the letter “o” can be found at both position 5 and 8 in the string “Hello World”.</p>
 </div>
-<div id="lookup-the-characters-at-particular-indices" class="section level1">
-<h1><span class="header-section-number">4</span> Lookup the Characters at Particular Indices</h1>
-<p>Use <code>substr()</code>:</p>
+<div id="lookup-the-characters-at-particular-indices" class="section level2">
+<h2><span class="header-section-number">3.3</span> Lookup the Characters at Particular Indices</h2>
+<p>You can see what characters are at a certain location within a string by using the <code>substr()</code> command. This takes the <code>start</code> and <code>stop</code> keyword arguments, which are pretty self-explanatory (they tell the command where to start and stop looking):</p>
 <pre class="r"><code>st &lt;- &quot;Hello World&quot;
-st &lt;- substr(st, start = 3, stop = 4)
-print(st)</code></pre>
-<pre><code>## [1] &quot;ll&quot;</code></pre>
-<p>Remove the text before a certain character:</p>
-<pre class="r"><code>sub_st &lt;- substr(st, start = idx_o[1], stop = nchar(st))
-print(sub_st)</code></pre>
-<pre><code>## [1] &quot;&quot;</code></pre>
-<p>Remove the text after a certain character:</p>
-<pre class="r"><code>sub_st &lt;- substr(st, start = 1, stop = idx_o[1])
-print(sub_st)</code></pre>
-<pre><code>## [1] &quot;ll&quot;</code></pre>
+sub &lt;- substr(st, start = 6, stop = 8)
+print(sub)</code></pre>
+<pre><code>## [1] &quot; Wo&quot;</code></pre>
+<p>You can lookup all the characters from a given start point to the end of a string by using the total number of characters in a string (<code>nchar()</code>) as the stop point:</p>
+<pre class="r"><code>sub &lt;- substr(st, start = 6, stop = nchar(st))
+print(sub)</code></pre>
+<pre><code>## [1] &quot; World&quot;</code></pre>
+<p>Similarly, you can lookup all the characters from the start of a string until a given stop point by using “1” as the start point:</p>
+<pre class="r"><code>sub &lt;- substr(st, start = 1, stop = 8)
+print(sub)</code></pre>
+<pre><code>## [1] &quot;Hello Wo&quot;</code></pre>
 </div>
-<div id="replace-a-sub-string" class="section level1">
-<h1><span class="header-section-number">5</span> Replace a Sub-string</h1>
-<p>Use <code>gsub()</code>:</p>
-<pre class="r"><code>st &lt;- &quot;Hello World&quot;
-st &lt;- gsub(&quot;ello&quot;, &quot;i&quot;, st)
-print(st)</code></pre>
-<pre><code>## [1] &quot;Hi World&quot;</code></pre>
 </div>
-<div id="overwrite-characters" class="section level1">
-<h1><span class="header-section-number">6</span> Overwrite Characters</h1>
-<p>Use <code>str_sub()</code>:</p>
+<div id="delete-overwrite-replace" class="section level1">
+<h1><span class="header-section-number">4</span> Delete, Overwrite, Replace</h1>
+<p>You can:</p>
+<ul>
+<li><strong>Delete</strong> all the characters before or after a given point in a string</li>
+<li><strong>Overwrite</strong> the characters at a given location within a string</li>
+<li><strong>Replace</strong> all occurrences of a certain letter or sub-string within a string with a given replacement</li>
+</ul>
+<div id="delete-characters" class="section level2">
+<h2><span class="header-section-number">4.1</span> Delete Characters</h2>
+<p>This is again done using the <code>substr()</code> function but this time we are looking up text before and after a <em>character</em>, not an <em>index</em>.</p>
+<p>Remove the text <em>before</em> a certain character:</p>
 <pre class="r"><code>st &lt;- &quot;Hello World&quot;
+idx_o &lt;- unlist(gregexpr(pattern = &quot;o&quot;, st))
+sub &lt;- substr(st, start = idx_o[1], stop = nchar(st))
+print(sub)</code></pre>
+<pre><code>## [1] &quot;o World&quot;</code></pre>
+<p>Remove the text <em>after</em> a certain character:</p>
+<pre class="r"><code>sub &lt;- substr(st, start = 1, stop = idx_o[1])
+print(sub)</code></pre>
+<pre><code>## [1] &quot;Hello&quot;</code></pre>
+</div>
+<div id="overwrite-characters" class="section level2">
+<h2><span class="header-section-number">4.2</span> Overwrite Characters</h2>
+<p>Use the <code>str_sub()</code> command from the <code>stringr</code> library:</p>
+<pre class="r"><code>library(stringr)
+
+st &lt;- &quot;Hello World&quot;
 str_sub(st, 6, 6) &lt;- &quot;_&quot;
 str_sub(st, 8, 7) &lt;- &quot;O&quot;
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello_WOorld&quot;</code></pre>
 </div>
+<div id="replace-characters" class="section level2">
+<h2><span class="header-section-number">4.3</span> Replace Characters</h2>
+<p>Use the <code>gsub()</code> command:</p>
+<pre class="r"><code>st &lt;- &quot;Hello World&quot;
+st &lt;- gsub(&quot;ello&quot;, &quot;i&quot;, st)
+print(st)</code></pre>
+<pre><code>## [1] &quot;Hi World&quot;</code></pre>
+</div>
+</div>
 <div id="change-the-case" class="section level1">
-<h1><span class="header-section-number">7</span> Change the Case</h1>
+<h1><span class="header-section-number">5</span> Change the Case</h1>
 <p>A string can be UPPERCASE, lowercase, Sentence case or Title Case:</p>
 <pre class="r"><code>st &lt;- &quot;The quick, brown Fox jumped over the lazy Dog&quot;
 print(str_to_upper(st))</code></pre>
@@ -292,11 +363,37 @@ print(str_to_upper(st))</code></pre>
 <p>These functions come from the <code>stringr</code> library.</p>
 </div>
 <div id="formatted-output" class="section level1">
-<h1><span class="header-section-number">8</span> Formatted Output</h1>
-<p>If you want to print a variable as part of a string using a specific format, use the <code>printf()</code> function from the R.utils library along with the <code>%</code> character to indicate where you want the variable to be inserted. You also need to have a letter after the <code>%</code> to indicate what type of format to use.</p>
+<h1><span class="header-section-number">6</span> Formatted Output</h1>
+<p>If you want to print a variable as part of a string using a specific format, use the <code>printf()</code> function from the <code>R.utils</code> library along with the <code>%</code> character to indicate where you want the variable to be inserted. You also need to have a letter after the <code>%</code> to indicate what type of format to use.</p>
 <div id="number-formats" class="section level2">
-<h2><span class="header-section-number">8.1</span> Number formats</h2>
-<p>When working with numbers, use the <code>f</code> for 'floating-point' in conjunction with <code>%</code>:</p>
+<h2><span class="header-section-number">6.1</span> Number formats</h2>
+<p>When working with numbers, use the <code>f</code> for ‘floating-point’ in conjunction with <code>%</code>:</p>
+<pre class="r"><code>library(R.utils)</code></pre>
+<pre><code>## Loading required package: R.oo</code></pre>
+<pre><code>## Loading required package: R.methodsS3</code></pre>
+<pre><code>## R.methodsS3 v1.8.0 (2020-02-14 07:10:20 UTC) successfully loaded. See ?R.methodsS3 for help.</code></pre>
+<pre><code>## R.oo v1.23.0 successfully loaded. See ?R.oo for help.</code></pre>
+<pre><code>## 
+## Attaching package: 'R.oo'</code></pre>
+<pre><code>## The following object is masked from 'package:R.methodsS3':
+## 
+##     throw</code></pre>
+<pre><code>## The following objects are masked from 'package:methods':
+## 
+##     getClasses, getMethods</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     attach, detach, load, save</code></pre>
+<pre><code>## R.utils v2.9.2 successfully loaded. See ?R.utils for help.</code></pre>
+<pre><code>## 
+## Attaching package: 'R.utils'</code></pre>
+<pre><code>## The following object is masked from 'package:utils':
+## 
+##     timestamp</code></pre>
+<pre><code>## The following objects are masked from 'package:base':
+## 
+##     cat, commandArgs, getOption, inherits, isOpen, nullfile, parse,
+##     warnings</code></pre>
 <pre class="r"><code>x &lt;- 1
 printf(&quot;x = %f&quot;, x)</code></pre>
 <pre><code>## x = 1.000000</code></pre>
@@ -304,26 +401,26 @@ printf(&quot;x = %f&quot;, x)</code></pre>
 <pre class="r"><code>x &lt;- 1
 printf(&quot;x = %.2f&quot;, x)</code></pre>
 <pre><code>## x = 1.00</code></pre>
-<p>Use a number before the decimal point to set the 'width' of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:</p>
+<p>Use a number before the decimal point to set the ‘width’ of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:</p>
 <pre class="r"><code>x &lt;- 1
 printf(&quot;x = %8.2f&quot;, x)</code></pre>
 <pre><code>## x =     1.00</code></pre>
 </div>
 <div id="string-formats" class="section level2">
-<h2><span class="header-section-number">8.2</span> String formats</h2>
+<h2><span class="header-section-number">6.2</span> String formats</h2>
 <p>Instead of the <code>f</code>, use an <code>s</code> together with the <code>%</code>.</p>
 <p>You can print to the console immediately:</p>
 <pre class="r"><code>st &lt;- &quot;Hello world&quot;
 printf(&quot;Output text is: %s&quot;, st)</code></pre>
 <pre><code>## Output text is: Hello world</code></pre>
-<p>...or you can write the value to a variable and print it to the console at a later stage by using the <code>sprintf()</code> function:</p>
+<p>…or you can write the value to a variable and print it to the console at a later stage by using the <code>sprintf()</code> function:</p>
 <pre class="r"><code>st &lt;- &quot;Hello world&quot;
 st &lt;- sprintf(&quot;Output text is: %s&quot;, st)
 print(st[1])</code></pre>
 <pre><code>## [1] &quot;Output text is: Hello world&quot;</code></pre>
 </div>
 <div id="using-formatted-output-with-a-dataframe" class="section level2">
-<h2><span class="header-section-number">8.3</span> Using formatted output with a dataframe</h2>
+<h2><span class="header-section-number">6.3</span> Using formatted output with a dataframe</h2>
 <p>If you extract a single string from any vector or dataframe, it will be treated in the same way by the <code>printf()</code> function:</p>
 <pre class="r"><code>df &lt;- data.frame(
     name &lt;- c(&quot;Alfa&quot;, &quot;Bravo&quot;, &quot;Charlie&quot;)
@@ -333,19 +430,21 @@ printf(&quot;Output text is: %s&quot;, df$name[1])</code></pre>
 </div>
 </div>
 <div id="unicode-and-emojii" class="section level1">
-<h1><span class="header-section-number">9</span> Unicode and Emojii</h1>
+<h1><span class="header-section-number">7</span> Unicode and Emojii</h1>
 <p>Unicode characters can be called by using <code>\U</code> and referencing their unicode number. Some can then simply be printed:</p>
 <pre class="r"><code>st1 &lt;- &quot;\U03BC&quot;  # mu
 st2 &lt;- &quot;\U03B5&quot;  # epsilon
 st3 &lt;- &quot;\U03C9&quot;  # omega
 print(c(st1, st2, st3))</code></pre>
-<pre><code>## [1] &quot;μ&quot; &quot;ε&quot; &quot;ω&quot;</code></pre>
+<pre><code>## [1] &quot;&lt;U+03BC&gt;&quot; &quot;&lt;U+03B5&gt;&quot; &quot;&lt;U+03C9&gt;&quot;</code></pre>
 <p>Others (eg emojis) cannot be printed this easily and need the special <code>utf8_print()</code> function from the <code>utf8</code> library:</p>
-<pre class="r"><code>st1 &lt;- &quot;\U2705&quot;  # white heavy check mark
+<pre class="r"><code>library(utf8)
+
+st1 &lt;- &quot;\U2705&quot;  # white heavy check mark
 st2 &lt;- &quot;\U274c&quot;  # cross mark
 st3 &lt;- &quot;\U0001f609&quot;  # winking face
 utf8::utf8_print(c(st1, st2, st3))</code></pre>
-<pre><code>## [1] &quot;✅​&quot; &quot;❌​&quot; &quot;😉​&quot;</code></pre>
+<pre><code>## [1] &quot;\u2705&quot;     &quot;\u274c&quot;     &quot;\U0001f609&quot;</code></pre>
 <p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
