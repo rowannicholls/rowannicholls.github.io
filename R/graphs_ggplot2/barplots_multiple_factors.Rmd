@@ -7,6 +7,7 @@ output:
         number_sections: true
         toc: true
 ---
+
 <font size="3">
 
 [⇦ Back](../../R.html)
@@ -117,11 +118,11 @@ print(head(titanic, 15))
 There are too many factors to plot all at once: on a 2D graph only two can be shown at once:
 
 <style>
-  .col2 {
-    columns: 2 200px;         /* number of columns and width in pixels*/
-    -webkit-columns: 2 200px; /* chrome, safari */
-    -moz-columns: 2 200px;    /* firefox */
-  }
+    .col2 {
+        columns: 2 200px;         /* number of columns and width in pixels*/
+        -webkit-columns: 2 200px; /* chrome, safari */
+        -moz-columns: 2 200px;    /* firefox */
+    }
 </style>
 
 <div class='col2'>
@@ -136,7 +137,8 @@ p <- p + scale_fill_manual(
 )
 p <- p + xlab("Age")
 p <- p + labs(
-    title = "Age of passengers on the Titanic", y = "Count", fill = "Class"
+    title = "Age of passengers on the Titanic",
+    y = "Count", fill = "Class"
 )
 print(p)
 ```
@@ -151,14 +153,15 @@ p <- p + scale_fill_manual(
 )
 p <- p + xlab("Class")
 p <- p + labs(
-    title = "Class of passengers on the Titanic", y = "Count", fill = "Gender"
+    title = "Class of passengers on the Titanic",
+    y = "Count", fill = "Gender"
 )
 print(p)
 ```
 
 ```{r}
 p <- ggplot(
-    titanic, aes(x = Sex, y = Freq, fill = factor(Survived))
+    titanic, aes(x = Sex, y=Freq, fill=factor(Survived))
 )
 p <- p + geom_bar(stat = "identity", position = position_dodge())
 p <- p + scale_fill_manual(
@@ -166,7 +169,8 @@ p <- p + scale_fill_manual(
 )
 p <- p + xlab("Gender")
 p <- p + labs(
-    title = "Gender of passengers on the Titanic", y = "Count",
+    title = "Gender of passengers on the Titanic",
+    y = "Count",
     fill = "Survived"
 )
 print(p)
@@ -174,7 +178,7 @@ print(p)
 
 ```{r}
 p <- ggplot(
-    titanic, aes(x = Survived, y = Freq, fill = factor(Age))
+    titanic, aes(x = Survived, y=Freq, fill=factor(Age))
 )
 p <- p + geom_bar(stat = "identity", position = position_dodge())
 p <- p + scale_fill_manual(
@@ -182,7 +186,8 @@ p <- p + scale_fill_manual(
 )
 p <- p + xlab("Survived")
 p <- p + labs(
-    title = "Survival of passengers on the Titanic", y = "Count", fill = "Age"
+    title = "Survival of passengers on the Titanic",
+    y = "Count", fill = "Age"
 )
 print(p)
 ```
