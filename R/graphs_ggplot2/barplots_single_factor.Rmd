@@ -147,6 +147,8 @@ p <- p + labs(title = "Chicken Weights By Feed Type", y = "Weight [g]")
 print(p)
 ```
 
+Remember that you can include Unicode in your axis titles using the `\U` Unicode indicator (eg `"Pi: \U03C0"` renders as "Pi: π").
+
 Distinguish Groups (Colour and Legend)
 --------------------------------------
 

@@ -71,6 +71,18 @@ plot(
 )
 ```
 
+Unicode in Axis Titles
+----------------------
+If you are plotting scientific or mathematical results you might need to indicate units or symbols that are outside of the normal Latin alphabet. In these instances you can incorporate Unicode by using the `\U` Unicode indicator:
+
+```{r}
+plot(
+    anscombe$x1, anscombe$y1,
+    main = "Demonstration of Unicode in Axis Titles: \U03B6 \U03B5 \U03C9",
+    xlab = "Microseconds (\U03BCs)", ylab = "Pi: \U03C0"
+)
+```
+
 Axis Options
 ============
 The limits of the x- and y-axis can be changed with the `xlim` and `ylim` keyword arguments. Decide what you want the max and min values of the axes to be and specify these as vectors:

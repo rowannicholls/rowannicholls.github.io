@@ -120,7 +120,9 @@ There are many more options that can be tweaked in order to customise your plot 
 - Using additional keyword arguments inside `boxplot()`:
     + `boxplot(..., frame = FALSE)` will remove the border around the graph
     + `boxplot(..., asp = 2)` will set the aspect ratio of the plot to, in this case 2:1 (height:width)
-
+- Including Unicode symbols in your axis titles (eg for units or mathematical constants) by using the `\U` Unicode indicator:
+    - `"Time (\U03BCs)"` renders as "Time (μs)"
+    - `"Pi: \U03C0"` renders as "Pi: π"
 
 Save Plot
 =========
