@@ -66,8 +66,8 @@ for (i in c("one", "two", "three")) {
 }
 ```
 
-Data Frames
------------
+Data Frames Columns
+-------------------
 Given the same 'mtcars' data frame as above, we can iterate over each column directly:
 
 ```{r}
@@ -82,6 +82,24 @@ Sometimes it makes more sense to iterate over the _number_ of columns. This allo
 for (i in seq_along(mtcars)) {
     print(colnames(mtcars)[i])
     print(mtcars[[i]])
+}
+```
+
+Data Frames Rows
+----------------
+Instead of iterating over a data frame's columns we can look at each of its *rows* in turn like this:
+
+```{r}
+for (i in 1:nrow(mtcars)) {
+    print(mtcars[i, ])
+}
+```
+
+**However**, the above code is *not good practice*. Instead of iterating over the numbers from 1 to the number of rows in the data frame (`nrow()`), as was done above, you should instead use `seq_len(nrow())` like so:
+
+```{r}
+for (i in seq_len(nrow(mtcars))) {
+    print(mtcars[i, ])
 }
 ```
 
