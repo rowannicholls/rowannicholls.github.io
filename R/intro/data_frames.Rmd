@@ -430,6 +430,44 @@ print(names(df))
 
 The columns "Streams_Millions" and "Release_Date" have been changed to "Streams_Millions" and "Release_Date".
 
+Change Data Types of Columns
+----------------------------
+If you want to convert the data type of the elements in a column you can use the `as.xxx()` functions. For example:
+
+- `as.character()` converts a column's elements to strings
+- `as.numeric()` converts them to numbers
+
+Let's test this out by converting the "Weeks at no 1" column from numerical data (specifically, double-precision floats) to text data:
+
+```{r}
+print(typeof(spotify$Weeks_at_no1))
+spotify$Weeks_at_no1 <- as.character(spotify$Weeks_at_no1)
+print(typeof(spotify$Weeks_at_no1))
+```
+
+And now convert it back to numerical data:
+
+```{r}
+spotify$Weeks_at_no1 <- as.numeric(spotify$Weeks_at_no1)
+print(typeof(spotify$Weeks_at_no1))
+```
+
+This can be done for multiple columns at a time by using the `lappy()` function. To demonstrate this, let's repeat the above conversions for the "Streams Millions" column in addition to the "Weeks at no 1" column:
+
+```{r}
+print(c(typeof(spotify$Weeks_at_no1), typeof(spotify$Streams_Millions)))
+cols <- c("Weeks_at_no1", "Streams_Millions")
+spotify[cols] <- lapply(spotify[cols], as.character)
+print(c(typeof(spotify$Weeks_at_no1), typeof(spotify$Streams_Millions)))
+```
+
+Now convert them back to double-precision floats:
+
+```{r}
+spotify[cols] <- lapply(spotify[cols], as.numeric)
+print(c(typeof(spotify$Weeks_at_no1), typeof(spotify$Streams_Millions)))
+```
+
 Sorting
 =======
 This section is pretty self-explanatory.
