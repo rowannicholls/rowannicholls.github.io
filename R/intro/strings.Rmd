@@ -170,6 +170,16 @@ sub <- substr(st, start = 1, stop = idx_o[1])
 print(sub)
 ```
 
+As a more practical example, here's how to remove the extension from a filename:
+
+```{r}
+# Remove extension from filename
+filename <- "My_File.txt"
+idx <- unlist(gregexpr(pattern='\\.', filename))
+filename_root <- substr(filename, start = 1, stop = idx[1] - 1)
+print(filename_root)
+```
+
 Overwrite Characters
 --------------------
 Use the `str_sub()` command from the `stringr` library:
