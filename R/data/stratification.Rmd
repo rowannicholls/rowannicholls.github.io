@@ -105,7 +105,7 @@ iris_setosa$size <- ifelse(
     "large", "small"
 )
 print(head(iris_setosa, 15))
-# CREATE THE SCATTER PLOT
+# Create the scatter plot
 plot(
     iris_setosa$Sepal.Length, iris_setosa$Petal.Length,
     main = "The Sepal and Petal Lengths of 50 Iris Flowers",
@@ -114,10 +114,10 @@ plot(
 points(
     Petal.Length ~ Sepal.Length, subset(iris_setosa, size == "small"), pch = 4
 )
-# PLOT THE DASHED LINES
+# Plot the dashed lines
 segments(4.95, 1.35, 4.95, 2, col = "red", lty = "dashed")
 segments(4.95, 1.35, 6, 1.35, col = "red", lty = "dashed")
-# ADD THE TEXT
+# Add the text
 text(5.78, 1.0, "Small", col = "red")
 text(5.78, 1.9, "Large", col = "red")
 ```
@@ -127,7 +127,7 @@ Classification into Three+ Groups
 Again, this could be done using nested `ifelse()` functions, but multiple 'if statements' in a loop is arguably cleared:
 
 ```{r}
-iris_setosa$size <- ""  # CLEAR THE SIZE COLUMN
+iris_setosa$size <- ""  # Clear the size column
 for (i in seq_len(nrow(iris_setosa))) {
     if (
         (iris_setosa[i, "Sepal.Length"] > 5.05) &
@@ -144,7 +144,7 @@ for (i in seq_len(nrow(iris_setosa))) {
     }
 }
 print(head(iris_setosa, 15))
-# CREATE THE SCATTER PLOT
+# Create the scatter plot
 plot(
     iris_setosa$Sepal.Length, iris_setosa$Petal.Length,
     main = "The Sepal and Petal Lengths of 50 Iris Flowers",
@@ -158,12 +158,12 @@ points(
     Petal.Length ~ Sepal.Length, subset(iris_setosa, size == "medium"),
     pch = 20
 )
-# PLOT THE DASHED LINES
+# Plot the dashed lines
 segments(5.05, 1.55, 5.05, 2, col = "red", lty = "dashed")
 segments(5.05, 1.55, 6, 1.55, col = "red", lty = "dashed")
 segments(4.65, 1.25, 4.65, 2, col = "red", lty = "dashed")
 segments(4.65, 1.25, 6, 1.25, col = "red", lty = "dashed")
-# ADD THE TEXT
+# Add the text
 text(5.78, 1.0, "Small", col = "red")
 text(5.78, 1.45, "Medium", col = "red")
 text(5.78, 1.9, "Large", col = "red")
