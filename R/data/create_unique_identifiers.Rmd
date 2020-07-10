@@ -1,0 +1,156 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Create Unique Identifiers'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+This page discusses **how to work with data when there is no unique identifier** for each data point.
+
+Let's imagine we're running an experiment with participants in three locations - London, Birmingham and Manchester - who are asked to complete two tests on two different occasions. The raw data, once imported from csv, might look something like this:
+
+```{r}
+df <- read.csv("create_unique_identifiers.csv")
+
+library(kableExtra)
+
+kable_input <- kable(df)
+kable_styling(
+    kable_input, bootstrap_options = c("striped", "scale_down", "condensed"),
+    full_width = F, font_size = 11
+)
+```
+
+A feature of the above data is that there is no unique identifier: no single column contains values that only appear once. There are multiple rows with "London" as the collection site, "A" as the ID, "1" as the timepoint and so on. This makes it difficult to analyse this data; if you want to extract the first participant's data you can't just filter for "Participant A" as there are three Participant As. You need to *create an identifier* manually:
+
+```{r}
+# Create a new column with a unique ID for each participant
+df["UID"] <- paste0(df$Data_Collection_Site, "-", df$Participant_ID)
+print(head(df))
+
+# Create a list of the participants
+participants <- unique(df[["UID"]])
+print(participants)
+```
+
+In this case we've used "UID" for our new column, which stands for "**U**nique **ID**entifier".
+
+You might also have noticed that the format of the results of the two tests is different: the column `Passed_1` contains logical data while `Passed_2` contains binary 1s and 0s. Fortunately, this doesn't matter! R is smart enough to know that `1` and `TRUE` mean the same thing (and that `0` and `FALSE` mean the same thing) when the data needs to be binary.
+
+Now we can count the number of people who passed and failed the first test:
+
+```{r}
+# Initialise counters
+n_passed1 <- 0
+n_failed1 <- 0
+
+# For each participant
+for (i in seq_len(length(participants))) {
+    # Filter to get the rows that correspond to them
+    df_sub <- subset(df, UID == participants[i])
+
+    # Sum the values in column "Passed_1" that correspond to them
+    passed <- sum(df_sub[["Passed_1"]], na.rm = TRUE)
+
+    if (passed) {
+        # If they passed the first test, increase the counter
+        n_passed1 <- n_passed1 + 1
+    } else {
+        # If they didn't pass the first test, increase the other counter
+        n_failed1 <- n_failed1 + 1
+    }
+}
+```
+
+These results can be formatted and printed with the help of the `R.utils` library:
+
+```{r message = F, results = "hold"}
+library(R.utils)
+
+# Results
+per_passed1 <- n_passed1 / length(participants) * 100
+per_failed1 <- n_failed1 / length(participants) * 100
+printf("Total ppts:          %s\n", length(participants))
+printf("Total passed test 1: %s (%3.2f%s)\n", n_passed1, per_passed1, "%")
+printf("Total failed test 1: %s (%3.2f%s)\n", n_failed1, per_failed1, "%")
+```
+
+Similarly, we can count the passes and fails for the second test:
+
+```{r message = F, results = "hold"}
+# Initialise counters
+n_passed2 <- 0
+n_failed2 <- 0
+
+# For each participant
+for (i in seq_len(length(participants))) {
+    # Filter to get the rows that correspond to them
+    df_sub <- subset(df, UID == participants[i])
+
+    # Sum the values in column "Passed_2" that correspond to them
+    passed <- sum(df_sub[["Passed_2"]], na.rm = TRUE)
+
+    if (passed) {
+        # If they passed the first test, increase the counter
+        n_passed2 <- n_passed2 + 1
+    } else {
+        # If they didn't pass the first test, increase the other counter
+        n_failed2 <- n_failed2 + 1
+    }
+}
+
+# Results
+per_passed2 <- n_passed2 / length(participants) * 100
+per_failed2 <- n_failed2 / length(participants) * 100
+printf("Total ppts:          %s\n", length(participants))
+printf("Total passed test 2: %s (%3.2f%s)\n", n_passed2, per_passed2, "%")
+printf("Total failed test 2: %s (%3.2f%s)\n", n_failed2, per_failed2, "%")
+```
+
+And, finally, we can add one more complication by counting those who passed both tests as separate to those who only passed one test:
+
+```{r message = F, results = "hold"}
+# Initialise counters
+n_passed_1and2 <- 0
+n_failed_1or2 <- 0
+
+# For each participant
+for (i in seq_len(length(participants))) {
+    # Filter to get the rows that correspond to them
+    df_sub <- subset(df, UID == participants[i])
+
+    # Sum the values in column "Passed_1" that correspond to them
+    passed1 <- sum(df_sub[["Passed_1"]], na.rm = TRUE)
+
+    # Sum the values in column "Passed_2" that correspond to them
+    passed2 <- sum(df_sub[["Passed_2"]], na.rm = TRUE)
+
+    # Total
+    passed <- passed1 + passed2
+
+    if (passed == 2) {
+        # If they passed both tests, increase the counter
+        n_passed_1and2 <- n_passed_1and2 + 1
+    } else {
+        # If they failed one of the tests, increase the counter
+        n_failed_1or2 <- n_failed_1or2 + 1
+    }
+}
+
+# Results
+per_passed_1and2 <- n_passed_1and2 / length(participants) * 100
+per_failed_1or2 <- n_failed_1or2 / length(participants) * 100
+printf("Total ppts:          %s\n", length(participants))
+printf("Total passed both:   %s (%3.2f%s)\n", n_passed_1and2, per_passed_1and2, "%")
+printf("Total failed either: %s (%3.2f%s)\n", n_failed_1or2, per_failed_1or2, "%")
+```
+
+[⇦ Back](../../R.html)
+
+</font>
