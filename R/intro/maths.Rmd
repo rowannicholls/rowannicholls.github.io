@@ -28,28 +28,28 @@ e <- 5 %% 13
 c(a, b, c, d, e)
 ```
 
-For more complicated operations, there are functions to do it for you:
+For more complicated operations there are functions to do it for you:
 
 ```{r}
 # Square root
 a <- sqrt(49)
 # Round down
-b <- floor(-3.14159)
+b <- floor(-6.28318531)
 # Round up
-c <- ceiling(-3.14159)
+c <- ceiling(-6.28318531)
 # Round towards zero
-d <- trunc(-3.14159)
-# Round to a certain number of decimal points
-e <- round(-3.14159, 3)
+d <- trunc(-6.28318531)
+# Round to a certain number of decimal places
+e <- round(-6.28318531, 3)
 # Round to a certain number of significant figures
-f <- signif(-3.14159, 3)
+f <- signif(-6.28318531, 3)
 
 # Output to console
 c(a, b, c, d, e, f)
 
 # Remove trailing zeros
 # Note that this converts the number to a string
-g <- prettyNum(-3.14000, zero.print = NULL)
+g <- prettyNum(-6.28000, zero.print = NULL)
 g
 ```
 

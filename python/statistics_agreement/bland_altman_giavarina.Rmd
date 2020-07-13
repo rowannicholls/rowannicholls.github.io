@@ -1,0 +1,1036 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Bland-Altman and Giavarina Analysis'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+**Bland-Altman analysis** is used to assess the agreement between two methods of measuring something, usually clinical information. It was discussed in Bland & Altman (1986)<sup>1</sup> and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
+
+**Giavarina analysis** is identical to Bland-Altman analysis except that it accounts for [heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity). It does this by using percentage differences (relative to the means) on the y-axis instead of raw differences. It was published in Giavarina (2015)<sup>2</sup>.
+
+Calculating agreement is useful when discussing:
+
+- Test-retest experiments
+- Repeatability and reproducibility
+- Reliability
+- Intra- and inter-operator agreement
+- Intra- and inter-test agreement
+
+Where to Start: Bland & Altman's Difference Plot
+================================================
+The example shown in Bland & Altman (1986) uses data created especially for the paper. Bland measured the maximum speed of expiration (peak expiratory flow rate or PEFR) of 17 people, mainly his family and friends, using two different devices: a large and a mini Wright peak flow meter. This data is shown below:
+
+```{python}
+import pandas as pd
+
+df = pd.DataFrame({
+    'Wright Mini': [
+        512, 430, 520, 428, 500, 600, 364, 380, 658,
+        445, 432, 626, 260, 477, 259, 350, 451
+    ],
+    'Wright Large': [
+        494, 395, 516, 434, 476, 557, 413, 442, 650,
+        433, 417, 656, 267, 478, 178, 423, 427
+    ]
+})
+```
+
+Visualise the Data
+------------------
+Here are the measurements taken by the two different devices plotted against one another (this re-produces Figure 1 of Bland & Altman (1986)):
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Options
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.set(
+    title='Peak Expiratory Flow Rate',
+    xlabel='Large Meter (L/min)', ylabel='Mini Meter (L/min)'
+)
+# Scatter plot
+ax.scatter(
+    df['Wright Large'], df['Wright Mini'],
+    c='k', s=20, alpha=0.6, marker='o'
+)
+# Get axis limits
+left, right = plt.xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Reference line
+ax.plot([0, right], [0, right], c='grey', ls='--', label='Line of Equality')
+# Set aspect ratio
+ax.set_aspect('equal')
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Options
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.set(
+    title='Peak Expiratory Flow Rate',
+    xlabel='Large Meter (L/min)', ylabel='Mini Meter (L/min)'
+)
+# Scatter plot
+ax.scatter(
+    df['Wright Large'], df['Wright Mini'],
+    c='k', s=20, alpha=0.6, marker='o'
+)
+# Get axis limits
+left, right = plt.xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Reference line
+ax.plot([0, right], [0, right], c='grey', ls='--', label='Line of Equality')
+# Set aspect ratio
+ax.set_aspect('equal')
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+Time for Regression Analysis?
+-----------------------------
+As Bland and Altman say in their paper, at this point it's usual to [calculate the correlation coefficient](correlation_coefficients.html) (*r*) between the two methods. Doing so will give *r* = 0.94 (p < 0.001). They continue: "The null hypothesis here is that the measurements by the two methods are not linearly related. The probability is very small and we can safely conclude that PEFR measurements by the mini and large meters are **related**. However, this high correlation does *not* mean that the two methods **agree**", to paraphrase:
+
+- *r* measures how *correlated* two variables are, not the extent to which they *agree*. Perfect agreement implies that all the points lie along the line of equality, while a large *r* value merely implies that they all lie on a straight line (which could be *any* straight line)
+- Correlation depends on the range over which you test. If we only look at the data below 500 L/min or only the data above 500 L/min we get smaller values of *r* (0.88 and 0.90 respectively) than when we look at all the data together (*r* = 0.94). However, it would be absurd to argue that agreement is worse below 500 L/min *and* worse above 500 L/min than it is for everybody.
+- The test of significance may show that the two methods are related, but it would be amazing if two methods designed to measure the same quantity were not related! The test of significance is irrelevant to the question of agreement.
+- The *r* statistic is difficult to interpret: is an *r* value of 0.992 much worse than one of 0.996? How much worse?
+
+All the above leads us towards looking for a new method of measuring agreement:
+
+Bland-Altman Analysis
+---------------------
+In essence, if we are interested in knowing to what extent two measurement methods differ we should calculate the average difference between the values they produce when measuring the same participant. If this is small it means that it is effectively irrelevant which method you use; both will yield a similar result. The two methods or devices can thus be used interchangeably, or one can be used instead of the other if it is preferable for whatever reason. To check that this measurement difference is not related to the actual value that is being measured, it is useful to plot it against the mean value of the two values (ideally you would plot it against the true value, but as this is unknown the mean value that was measured is your best guess).
+
+First calculate the means and differences. This is the data that will be plotted:
+
+```{python}
+means = df.mean(axis=1)
+diffs = df.diff(axis=1).iloc[:, -1]
+```
+
+Then find the average difference and the standard deviation of the differences. These are good indicators of whether or not a method is biased and how consistent this bias is, respectively:
+
+```{python}
+import numpy as np
+
+bias = np.mean(diffs)
+sd = np.std(diffs, ddof=1)
+```
+
+If we assume that the data is Normally distributed it means that 95% of the points lie within two standard deviations of the mean (use 1.96 standard deviations if you want to be more accurate). The endpoints of this 95% range are known as the "limits of agreement" (LOA): 
+
+```{python}
+upper_loa = bias + 2 * sd
+lower_loa = bias - 2 * sd
+```
+
+Now we can plot this data (this plot re-produces Figure 2 of Bland & Altman (1986)):
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set(
+    title='Bland-Altman Plot for Two Methods of Measuring PEFR',
+    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+)
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the x-axis
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left, left + domain * 1.1)
+# Add the annotations
+ax.annotate(
+    '+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    '-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set(
+    title='Bland-Altman Plot for Two Methods of Measuring PEFR',
+    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+)
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the x-axis
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left, left + domain * 1.1)
+# Add the annotations
+ax.annotate(
+    '+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    '-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+# Show plot
+plt.show()
+```
+
+Confidence Intervals
+--------------------
+Neither the bias line nor the confidence intervals are known with certainty. The standard error of the bias can be estimate as:
+
+${se} = \sqrt{\frac{{sd}^2}{n}}$
+
+where $sd$ is the standard deviation and $n$ is the sample size. Similarly, the standard errors of the limits of agreement are approximately:
+
+${se} = \sqrt{\frac{3{sd}^2}{n}}$
+
+If we use the Student's t distribution we can calculate a "t-statistic" that corresponds to a 95% confidence interval given $n-1$ degrees of freedom. This will then give us the confidence intervals on the bias and LOA lines as follows:
+
+${CI} = y\pm\left(t\times{se}\right)$
+
+In Python, these calculations look as follows:
+
+```{python}
+import scipy.stats as stats
+
+# Sample size
+n = df.shape[0]
+# Variance
+var = sd**2
+# Standard error of the bias
+se_bias = np.sqrt(var / n)
+# Standard error of the limits of agreement
+se_loas = np.sqrt(3 * var / n)
+# Endpoints of the range that contains 95% of the Student’s t distribution
+t_interval = stats.t.interval(alpha=0.95, df=n - 1)
+# Confidence intervals
+ci_bias = bias + np.array(t_interval) * se_bias
+ci_upperloa = upper_loa + np.array(t_interval) * se_loas
+ci_lowerloa = lower_loa + np.array(t_interval) * se_loas
+```
+
+These can now be added to the plot:
+
+```{python, eval = FALSE}
+# Plot the confidence intervals
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+# Plot the confidence intervals' caps
+x_range = [left - domain * 0.025, left + domain * 0.025]
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set(
+    title='Bland-Altman Plot for Two Methods of Measuring PEFR',
+    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+)
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the x-axis
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Increase the y-axis limits to create space for the confidence intervals
+max_y = max(abs(ci_lowerloa[0]), abs(ci_upperloa[1]), abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left - domain * 0.05, left + domain * 1.1)
+# Add the annotations
+ax.annotate(
+    '+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    '-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+# Plot the confidence intervals
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+# Plot the confidence intervals' caps
+x_range = [left - domain * 0.025, left + domain * 0.025]
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+# Show plot
+plt.show()
+```
+
+Use Percentage Differences: Giavarina Analysis
+==============================================
+This example reproduces the one used in Giavarina (2015).
+
+Imagine a situation where two methods are used to measure something in particular and the two readings differ by 10 units. If this represents a large proportional difference - eg if one reading was 10 and the other was 20 - then this implies that the agreement between the methods is poor. On the other hand, if this only represents a small proportional difference - eg if one reading was 1000 and the other was 1010  - then we might not care. We could say that the agreement is good. Traditional Bland-Altman analysis does not capture this possibility: it assumes that all differences are equally consequential to the overall agreement. Giavarina analysis addresses this and, as a result, is more appropriate for data that is *heteroscedastic* - ie it becomes more spread out as the readings become larger.
+
+The following hypothetical data is used as an example in Giavarina (2015):
+
+```{python}
+df = pd.DataFrame({
+    'Method B': [
+        8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
+        181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
+        738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
+    ],
+    'Method A': [
+        1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
+        150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
+        650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
+    ]
+})
+```
+
+Regression Analysis
+-------------------
+Just like the Bland-Altman paper, the first recommended step is to visualise the data. Giavarina takes the extra step of performing Passing-Bablok regression, which is explained on [this page](passing_bablok.html):
+
+```{python, echo = FALSE}
+import math
+
+
+def passing_bablok(method1, method2):
+    """Perform Passing-Bablok analysis."""
+    #
+    # Calculate the gradients of the lines between each pair of points
+    #
+    n_points = len(method1)
+    # sv is a list of the gradients between of each pair of points
+    sv = []
+    # k is the number of gradients less than -1
+    k = 0
+    for i in range(n_points - 1):
+        for j in range(i + 1, n_points):
+            dy = method2[j] - method2[i]
+            dx = method1[j] - method1[i]
+            # Ignore gradients that are vertical (ie the x values of the points
+            # are the same)
+            if dx != 0:
+                gradient = dy / dx
+            elif dy < 0:
+                gradient = -1.e+23
+            elif dy > 0:
+                gradient = 1.e+23
+            else:
+                gradient = None
+            if gradient is not None:
+                sv.append(gradient)
+                k += (gradient < -1)
+    # Sort the gradients into ascending order
+    sv.sort()
+
+    #
+    # Find the estimated gradient and confidence limits
+    #
+    m0 = (len(sv) - 1) / 2
+    if m0 == int(m0):
+        # If odd
+        gradient_est = sv[k + int(m0)]
+    else:
+        # If even
+        gradient_est = 0.5 * (sv[k + int(m0 - 0.5)] + sv[k + int(m0 + 0.5)])
+    # Calculate the index of the upper and lower confidence bounds
+    w = 1.96
+    ci = w * math.sqrt((n_points * (n_points - 1) * (2 * n_points + 5)) / 18)
+    n_gradients = len(sv)
+    m1 = int(round((n_gradients - ci) / 2))
+    m2 = n_gradients - m1 - 1
+    # Calculate the lower and upper bounds of the gradient
+    (gradient_lb, gradient_ub) = (sv[k + m1], sv[k + m2])
+
+    def calc_intercept(method1, method2, gradient):
+        """Calculate intercept given points and a gradient."""
+        temp = []
+        for i in range(len(method1)):
+            temp.append(method2[i] - gradient * method1[i])
+        return np.median(temp)
+
+    # Calculate the intercept as the median of all the intercepts of all the
+    # lines connecting each pair of points
+    int_est = calc_intercept(method1, method2, gradient_est)
+    int_ub = calc_intercept(method1, method2, gradient_lb)
+    int_lb = calc_intercept(method1, method2, gradient_ub)
+
+    return (gradient_est, gradient_lb, gradient_ub), (int_est, int_lb, int_ub)
+```
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set(
+    title='Regression Analysis of Hypothetical Data',
+    xlabel='Method A',
+    ylabel='Method B'
+)
+# Scatter plot
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Get axis limits
+left, right = plt.xlim()
+top, bottom = plt.ylim()
+# Set wider axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Reference line
+ax.plot([0, right], [0, right], c='grey', ls='--', label='Line of Equality')
+# Passing-Bablok regression line
+beta, alpha = passing_bablok(df['Method A'], df['Method B'])
+x = np.array([left, right])
+y = beta[0] * x + alpha[0]
+ax.plot(x, y, label=f'{beta[0]:4.2f}x + {alpha[0]:4.2f}')
+# Passing-Bablok regression line - confidence intervals
+x = np.array([left, right])
+y_lb = beta[1] * x + alpha[1]
+y_ub = beta[2] * x + alpha[2]
+ax.plot(
+    x, y_ub, c='tab:blue', alpha=0.2,
+    label=f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
+)
+ax.plot(
+    x, y_lb, c='tab:blue', alpha=0.2,
+    label=f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
+)
+ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+# Set aspect ratio
+ax.set_aspect('equal')
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set(
+    title='Regression Analysis of Hypothetical Data',
+    xlabel='Method A',
+    ylabel='Method B'
+)
+# Scatter plot
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Get axis limits
+left, right = plt.xlim()
+top, bottom = plt.ylim()
+# Set wider axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Reference line
+ax.plot([0, right], [0, right], c='grey', ls='--', label='Line of Equality')
+# Passing-Bablok regression line
+beta, alpha = passing_bablok(df['Method A'], df['Method B'])
+x = np.array([left, right])
+y = beta[0] * x + alpha[0]
+ax.plot(x, y, label=f'{beta[0]:4.2f}x + {alpha[0]:4.2f}')
+# Passing-Bablok regression line - confidence intervals
+x = np.array([left, right])
+y_lb = beta[1] * x + alpha[1]
+y_ub = beta[2] * x + alpha[2]
+ax.plot(
+    x, y_ub, c='tab:blue', alpha=0.2,
+    label=f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
+)
+ax.plot(
+    x, y_lb, c='tab:blue', alpha=0.2,
+    label=f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
+)
+ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+# Set aspect ratio
+ax.set_aspect('equal')
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+The above re-produces Figure 1 from Giavarina (2015).
+
+Bland-Altman Analysis
+---------------------
+Figure 6 in Giavarina (2015) is a traditional Bland-Altman plot.
+
+Summary statistics:
+
+```{python}
+means = df.mean(axis=1)
+diffs = df.diff(axis=1).iloc[:, -1]
+bias = np.mean(diffs)
+sd = np.std(diffs, ddof=1)
+upper_loa = bias + 1.96 * sd
+lower_loa = bias - 1.96 * sd
+```
+
+Confidence intervals:
+
+```{python}
+# Sample size
+n = df.shape[0]
+# Variance
+var = sd**2
+# Standard error of the bias
+se_bias = np.sqrt(var / n)
+# Standard error of the limits of agreement
+se_loas = np.sqrt(3 * var / n)
+# Endpoints of the range that contains 95% of the Student’s t distribution
+t_interval = stats.t.interval(alpha=0.95, df=n - 1)
+# Confidence intervals
+ci_bias = bias + np.array(t_interval) * se_bias
+ci_upperloa = upper_loa + np.array(t_interval) * se_loas
+ci_lowerloa = lower_loa + np.array(t_interval) * se_loas
+```
+
+Plot:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set(
+    title='Bland-Altman Plot for Two Hypothetical Measurement Methods',
+    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+)
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the x-axis
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Increase the y-axis limits to create space for the confidence intervals
+max_y = max(abs(ci_lowerloa[0]), abs(ci_upperloa[1]), abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
+# Add the annotations
+ax.annotate(
+    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+# Plot the confidence intervals
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+# Plot the confidence intervals' caps
+x_range = [left - domain * 0.025, left + domain * 0.025]
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set(
+    title='Bland-Altman Plot for Two Hypothetical Measurement Methods',
+    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+)
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the x-axis
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Increase the y-axis limits to create space for the confidence intervals
+max_y = max(abs(ci_lowerloa[0]), abs(ci_upperloa[1]), abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
+# Add the annotations
+ax.annotate(
+    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+# Plot the confidence intervals
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+# Plot the confidence intervals' caps
+x_range = [left - domain * 0.025, left + domain * 0.025]
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+# Show plot
+plt.show()
+```
+
+Giavarina Analysis
+------------------
+The percentage differences are calculated relative to the means:
+
+```{python}
+means = df.mean(axis=1)
+diffs = df.diff(axis=1).iloc[:, -1]
+percent_diffs = diffs / means * 100
+bias = np.mean(percent_diffs)
+sd = np.std(percent_diffs, ddof=1)
+upper_loa = bias + 1.96 * sd
+lower_loa = bias - 1.96 * sd
+```
+
+Confidence intervals:
+
+```{python}
+# Sample size
+n = df.shape[0]
+# Variance
+var = sd**2
+# Standard error of the bias
+se_bias = np.sqrt(var / n)
+# Standard error of the limits of agreement
+se_loas = np.sqrt(3 * var / n)
+# Endpoints of the range that contains 95% of the Student’s t distribution
+t_interval = stats.t.interval(alpha=0.95, df=n - 1)
+# Confidence intervals
+ci_bias = bias + np.array(t_interval) * se_bias
+ci_upperloa = upper_loa + np.array(t_interval) * se_loas
+ci_lowerloa = lower_loa + np.array(t_interval) * se_loas
+```
+
+Plot (this re-produces Figure 7 in Giavarina (2015)):
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set(
+    title='Giavarina Plot for Two Hypothetical Measurement Methods',
+    xlabel='Means', ylabel=r'Percentage Differences (\%)'
+)
+# Scatter plot
+ax.scatter(means, percent_diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the x-axis
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Increase the y-axis limits to create space for the confidence intervals
+max_y = max(abs(ci_lowerloa[0]), abs(ci_upperloa[1]), abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
+# Add the annotations
+ax.annotate(
+    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    fr'{upper_loa:+4.2f}\%', (right, upper_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    fr'{bias:+4.2f}\%', (right, bias), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    fr'{lower_loa:+4.2f}\%', (right, lower_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+# Plot the confidence intervals
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+# Plot the confidence intervals' caps
+x_range = [left - domain * 0.025, left + domain * 0.025]
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set(
+    title='Giavarina Plot for Two Hypothetical Measurement Methods',
+    xlabel='Means', ylabel=r'Percentage Differences (\%)'
+)
+# Scatter plot
+ax.scatter(means, percent_diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the x-axis
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Increase the y-axis limits to create space for the confidence intervals
+max_y = max(abs(ci_lowerloa[0]), abs(ci_upperloa[1]), abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
+# Add the annotations
+ax.annotate(
+    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    fr'{upper_loa:+4.2f}\%', (right, upper_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    fr'{bias:+4.2f}\%', (right, bias), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+ax.annotate(
+    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
+)
+ax.annotate(
+    fr'{lower_loa:+4.2f}\%', (right, lower_loa), xytext=(0, -25),
+    textcoords='offset pixels'
+)
+# Plot the confidence intervals
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+# Plot the confidence intervals' caps
+x_range = [left - domain * 0.025, left + domain * 0.025]
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+# Show plot
+plt.show()
+```
+
+A Bland-Altman Function
+=======================
+When doing multiple Bland-Altman calculations it's often useful to have it as a function. Multiple data sets can then be analysed in quick succession. Here's an example of such a function:
+
+```{python}
+def bland_altman_analysis(df):
+    """Calculate agreement statistics."""
+    tests = list(df)
+
+    #
+    # Individual sample calculations
+    #
+    df['Mean'] = df[tests].mean(axis=1)
+    df['Diff'] = df[tests].diff(axis=1)[tests[-1]]
+    df['SD'] = df[tests].std(axis=1, ddof=1)
+    df['Variance'] = df['SD']**2
+
+    #
+    # Whole sample calculations
+    #
+    summary = pd.DataFrame()
+    means = ['mean_' + test for test in tests]
+    for i, mean in enumerate(means):
+        summary.loc[1, mean] = df[tests[i]].mean()
+    # Sample size
+    summary.loc[1, 'N'] = df.shape[0]
+    # Degrees of freedom
+    summary.loc[1, 'DoF'] = df.shape[0] - 1
+    # Bias (mean difference)
+    mean_diff = df['Diff'].mean()
+    summary.loc[1, 'mean_diff (bias)'] = mean_diff
+    # Standard deviation of the differences
+    st_dev_diff = df['Diff'].std(ddof=0)
+    summary.loc[1, 'st_dev_diff'] = st_dev_diff
+    summary.loc[1, 'lower_LoA'] = mean_diff - 1.96 * st_dev_diff
+    summary.loc[1, 'upper_LoA'] = mean_diff + 1.96 * st_dev_diff
+    # Average variance
+    summary.loc[1, 'mean_variance'] = df['Variance'].mean()
+    # Within-subject standard deviation
+    Sw = np.sqrt(df['Variance'].mean())
+    summary.loc[1, 'Within-Subject SD (Sw)'] = Sw
+    # Coefficient of repeatability
+    col = 'Coefficient of Repeatability (CR)'
+    summary.loc[1, col] = np.sqrt(2) * 1.96 * Sw
+
+    #
+    # Return
+    #
+    return df, summary
+```
+
+...and here is how it can be used:
+
+O'Brien and Kaiser's Repeated-Measures Data
+-------------------------------------------
+From the [R Documentation](https://vincentarelbundock.github.io/Rdatasets/doc/carData/OBrienKaiser.html): "These contrived repeated-measures data are taken from O'Brien and Kaiser (1985). The data are from an imaginary study in which 16 female and male subjects, who are divided into three treatments, are measured at a pretest, postest, and a follow-up session; during each session, they are measured at five occasions at intervals of one hour. The design, therefore, has two between-subject and two within-subject factors."
+
+```{python, echo = FALSE}
+# Hide SettingWithCopyWarning
+pd.options.mode.chained_assignment = None
+pd.set_option('display.max_columns', 20)
+```
+
+```{python}
+from pydataset import data
+
+OBrienKaiser = data('OBrienKaiser')
+df = OBrienKaiser[['pre.1', 'pre.2', 'pre.3', 'pre.4']]
+df, summary = bland_altman_analysis(df)
+print(summary)
+```
+
+Statsmodels
+-----------
+This example comes from [here](https://www.statsmodels.org/stable/generated/statsmodels.graphics.agreement.mean_diff_plot.html):
+
+```{python}
+np.random.seed(9999)
+m1 = np.random.random(20)
+m2 = np.random.random(20)
+df = pd.DataFrame({
+    'pre.1': m2,
+    'pre.2': m1
+})
+df, summary = bland_altman_analysis(df)
+print(summary)
+```
+
+Bland and Altman (1996)
+-----------------------
+This example comes from another Bland and Altman paper<sup>3</sup>:
+
+```{python}
+df = pd.DataFrame({
+    'm1': [
+        190, 220, 260, 210, 270, 280, 260, 275, 280, 320,
+        300, 270, 320, 335, 350, 360, 330, 335, 400, 430
+    ],
+    'm2': [
+        220, 200, 260, 300, 265, 280, 280, 275, 290, 290,
+        300, 250, 330, 320, 320, 320, 340, 385, 420, 460
+    ],
+    'm3': [
+        200, 240, 240, 280, 280, 270, 280, 275, 300, 300,
+        310, 330, 330, 335, 340, 350, 380, 360, 425, 480
+    ],
+    'm4': [
+        200, 230, 280, 265, 270, 275, 300, 305, 290, 290,
+        300, 370, 330, 375, 365, 345, 390, 370, 420, 470
+    ]
+})
+df, summary = bland_altman_analysis(df)
+print(summary)
+```
+
+References
+==========
+
+<sup>1</sup>Bland JM, Altman DG (1986). "Statistical methods for assessing agreement between two methods of clinical measurement". *Lancet*. **327** (8476): 307–10. doi: [ 10.1016/S0140-6736(86)90837-8](https://doi.org/10.1016/S0140-6736(86)90837-8). PMID: [2868172](https://pubmed.ncbi.nlm.nih.gov/2868172/)  
+<sup>2</sup>Giavarina D (2015). "Understanding Bland Altman analysis". *Biochemia Medica*. **25** (2):141-151. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
+<sup>3</sup>Bland JM, Altman DG (1996). "Statistical notes: measurement error". *BMJ*. **313** (7059): 744-53. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2352101/pdf/bmj00560-0056a.pdf
+
+[⇦ Back](../../python.html)
+
+</font>
