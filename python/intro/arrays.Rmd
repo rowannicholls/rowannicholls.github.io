@@ -1,0 +1,295 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Arrays'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+An **array** (aka a *matrix*) is an efficient way to handle multiple numbers. Importantly, it is *more efficient than using a list*. It is available from the `Numpy` package.
+
+Create an Array
+===============
+An array is created manually by first creating a list (or a list-of-list) of numbers and then using the `array()` function to convert it:
+
+```{python}
+import numpy as np
+
+ls = [1, 2, 3, 4, 5, 6, 7]
+ar = np.array(ls)
+print(ar)
+```
+
+```{python}
+ls_of_ls = [
+    [1, 2, 3, 4, 5, 6, 7],
+    [1, 2, 3, 4, 5, 6, 7],
+    [1, 2, 3, 4, 5, 6, 7]
+]
+ar = np.array(ls_of_ls)
+print(ar)
+```
+
+To create an array of all ones for a given size:
+
+```{python}
+ar = np.ones(5)
+print(ar)
+```
+
+...and all zeroes for a given size:
+
+```{python}
+ar = np.zeros(9)
+print(ar)
+```
+
+Index an Array
+==============
+Indexing is done with square brackets. Remember that Python uses zero-indexing, meaning that the first element is at index 0, the second is at index 1 and so on. This means that the number at index 4 of the list/array `[10, 20, 30, 40, 50, 60, 70]` is "50":
+
+```{python}
+ar = np.array([10, 20, 30, 40, 50, 60, 70])
+print(ar[4])
+```
+
+Use the `enumerate()` function to iterate over both the values in an array and their indexes. This can be used, for example, to find the index of the first value in an array to meet a certain condition. In the below example, the first occurrence of the number "4" is searched for using the `next()` function and it is found at index 3 in the array:
+
+```{python}
+# Index of first value meeting a condition
+idx = next(i for i, v in enumerate(ar) if v == 40)
+print(idx)
+```
+
+For the record, the actual value (as opposed to the index) can be returned in a similar fashion:
+
+```{python}
+# First value meeting a condition
+value = next(v for i, v in enumerate(ar) if v == 40)
+print(value)
+```
+
+Sort an array into numerical order and find the index where, if you were to insert a given number, it would maintain the numerical order:
+
+```{python}
+# Index where a number can be inserted while maintaining order
+idx = np.searchsorted(ar, 35)
+print(idx)
+```
+
+Augment an Array
+================
+
+Append
+------
+Add to an array using Numpy's `append()` function. You can append a single element, an array of elements or a list of them:
+
+```{python}
+ar = np.array([10, 20, 30, 40, 50, 60, 70])
+
+# Append a single number
+ar = np.append(ar, 80)
+print(ar)
+```
+
+```{python}
+# Append an array
+ar = np.append(ar, np.array([90, 100, 110]))
+print(ar)
+```
+
+```{python}
+# Append a list
+ar = np.append(ar, [120, 130, 140])
+print(ar)
+```
+
+Concatenate
+-----------
+To append elements as a new **row** you need to use the `concatenate()` function, although this can be a bit confusing. If you simply concatenate two arrays it will act identically to the `append()` function (although note that you need to use an extra set of round brackets when specifying the arrays to concatenate):
+
+```{python}
+ar1 = np.array([1, 2, 3])
+ar2 = np.array([4, 5, 6])
+
+# Flatten arrays before concatenating them
+ar = np.concatenate((ar1, ar2))  # Note the double round brackets
+print(ar)
+```
+
+The reason you need to use two sets of round brackets is because there is a hidden *keyword argument* included in the `concatenate()` function called "`axis`". If we leave it out (as we did in the previous example) it will take the default value of `None` and as a result it will *flatten the arrays* before concatenating them. This is why the functionality of the above example was identical to the `append()` function. Here is the example again but with the `axis` keyword argument explicitly shown:
+
+```{python}
+# Flatten arrays before concatenating them
+ar = np.concatenate((ar1, ar2), axis=None)
+print(ar)
+```
+
+As you can see, the above example is identical to the one before it, and both are identical to using the `append()` function.
+
+If we want to take control of the behaviour we need to specify which `axis` to concatenate along, either the "0" axis or the "1" axis. In our previous examples, our arrays have only had one dimension each and with one-dimensional data we only have the option to concatenate along the 0th axis:
+
+```{python}
+ar1 = np.array([1, 2, 3])
+ar2 = np.array([4, 5, 6])
+
+# Concatenate arrays horizontally
+ar = np.concatenate((ar1, ar2), axis=0)
+print(ar)
+```
+
+If we changed the above to `axis=1` the script would fail because it would be looking for an extra dimension to the data which doesn't exist. If we instead used two-dimensional data (ie arrays made from lists-of-lists) we could do the following:
+
+```{python}
+ar1 = np.array([[1, 2, 3]])  # Note the double square brackets creating a list-of-list
+ar2 = np.array([[4, 5, 6]])  # Note the double square brackets creating a list-of-list
+
+# Concatenate arrays vertically
+ar = np.concatenate((ar1, ar2), axis=0)
+print(ar)
+```
+
+Note that `axis=0` doesn't consistently mean "concatenate horizontally" or "concatenate vertically". It means "concatenate along the highest dimension". This means that, for this data, `axis=1` will concatenate horizontally and we will yet again produce `1 2 3 4 5 6` as an output (although this time it will be two-dimensional data - although only one dimension is occupied - as shown by the double square brackets in the output):
+
+```{python}
+# Concatenate arrays horizontally
+ar = np.concatenate((ar1, ar2), axis=1)
+print(ar)
+```
+
+If you recall our first `concatenate()` example you'll remember that not specifying an `axis` (or, equivalently, specifying it as `None`) it will flatten the arrays before concatenating, resulting in one-dimensional data (note the single square brackets in the output):
+
+```{python}
+# Concatenate arrays horizontally
+ar = np.concatenate((ar1, ar2), axis=None)
+print(ar)
+```
+
+Finally, here is a way to do a 'line-break': convert a one-dimensional array into a two-dimensional one:
+
+```{python}
+ar = np.array([1, 2, 3, 4, 5, 6])
+# Perform a line-break
+ar = np.concatenate(([ar[0:3]], [ar[3:]]), axis=0)
+print(ar)
+```
+
+Transpose
+---------
+Flipping an array along a diagonal axis can be done with the `.T` method:
+
+```{python}
+ar = np.array([
+    [10, 20, 30],
+    [40, 50, 60]
+])
+# Original array
+print(ar)
+```
+
+```{python}
+# Transposed array
+print(ar.T)
+```
+
+The `.transpose()` method also works:
+
+```{python}
+# Transposed array
+print(ar.transpose())
+```
+
+Here's how to use transposition to concatenate arrays in the exact way you want:
+
+```{python}
+ar1 = np.array([[1, 2], [3, 4]])
+ar2 = np.array([[5, 6]])
+ar = np.concatenate((ar1, ar2.T), axis=1)
+print(ar)
+```
+
+Array Arithmetic
+================
+Arrays can be added, subtracted, multiplied, etc.
+
+Array Addition
+--------------
+
+```{python}
+ar1 = np.array([10, 20, 30])
+ar2 = np.array([10, 20, 30])
+# Add elements
+ar = ar1 + ar2
+print(ar)
+```
+
+Array Subtraction
+-----------------
+
+```{python}
+# Subtract elements
+ar = ar - ar2
+print(ar)
+```
+
+'Simple' Multiplication
+-----------------------
+Here's the difference between multiplying a **list** by 2 versus multiplying an **array** by 2:
+
+```{python}
+# Multiply a list by 2
+ls = [1, 2, 3] * 2
+print(ls)
+```
+
+```{python}
+# Multiply an array by 2
+ar = np.array([1, 2, 3]) * 2
+print(ar)
+```
+
+As you can see, multiplication works on a list as an *object* whereas it works on the *elements* of an array.
+
+Dot Multiplication
+------------------
+
+```{python}
+ar1 = np.array([
+    [1, 2],
+    [3, 4],
+    [5, 6]
+])
+ar2 = np.array([
+    [5, 6, 7],
+    [7, 8, 9]
+])
+# Perform dot multiplication
+ar = np.dot(ar1, ar2)
+print(ar)
+```
+
+Cross Multiplication
+--------------------
+
+```{python}
+ar1 = np.array([
+    [1, 2],
+    [3, 4]
+])
+ar2 = np.array([
+    [5, 6],
+    [7, 8]
+])
+# Perform cross multiplication
+ar = np.cross(ar1, ar2)
+print(ar)
+```
+
+[⇦ Back](../../python.html)
+
+</font>

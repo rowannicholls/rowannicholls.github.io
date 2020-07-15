@@ -1,0 +1,326 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Comments, Variables and Data Types'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Synopsis
+========
+- You can add notes about your code in **comments**
+- There are a number of different types of data in Python:
+    + **Floats** and **ints** (integers), aka numbers
+    + **Strings**, aka text
+    + **Booleans**, aka true/false
+    + **Nulls**, aka missing data
+- Data can be assigned to **variables** for easier use
+- Data points can be collected together into **lists**
+- Actions can be performed using **functions**
+- Data can be **converted** to different types
+
+Comments
+========
+If you're brand new to Python and coding, the first thing to know about is __*comments*__.
+
+These are lines in your program that do absolutely nothing - they are ignored when your program is run. But they are **very** useful for making notes for yourself and, especially, for others who will have to read your code.
+
+You write a comment by starting your line with a hash "#":
+
+```{python}
+# This is a comment.
+# It will be ignored by your program.
+# But you can use it to write notes that explain what you are doing.
+```
+
+You can also write a multi-line comment using three sets of quotation marks (double or single) at the start and at the end of your text:
+
+```{python, eval = FALSE}
+"""
+This is a comment that
+spans multiple lines
+"""
+
+'''
+This is another multi-
+line comment
+'''
+```
+
+Technically, using three sets of quotation marks like this doesn't create a comment as such, it creates a *string* that is simply not used anywhere (see the "Strings" section below). However, this is still used as a recognised method for commenting; it has even [been endorsed by the creator of Python](https://twitter.com/gvanrossum/status/112670605505077248).
+
+> The IDE or text editor you are using to write your Python code will probably have a keyboard shortcut to quickly comment and uncomment multiple lines of code at once. It's worthwhile taking a look to see if it does!
+
+Don't underestimate the power of comments! Just because your code makes sense to you now while you're writing it doesn't mean it always will. It's surprisingly common for someone to re-open a piece of code they haven't worked on for a considerable period of time only to have completely forgotten what their thought process was. So use your comments as notes to yourself! Similarly, if someone else needs to use your code for something they will need to work out what it does; an almost impossible task if you don't explain yourself...
+
+Numbers
+=======
+
+Integers
+--------
+An "int" is a whole number. If you type one in Python the programme will recognise what it is, but it won't do anything with it unless you tell it to.
+
+```{python}
+# This is just a number
+27
+```
+
+If you aren't familiar with reading code, know that the first (grey) box contains the Python code that we wrote while the second (white) box contains the output of that code.
+
+You can add two whole numbers together or do other arithmetic operations on them. Depending on the programme you are using to run Python you may or may not see any output (but even if you don't see anything the addition will still have happened in the background).
+
+```{python}
+# You can use numbers to do arithmetic
+5 + 7
+```
+
+Floats
+------
+A "floating point number" is a number with a decimal point in it, so-called because the way Python stores these value in memory is reminiscent of numbers 'floating' around a decimal point.
+
+```{python}
+# This is just a number
+27.03
+```
+
+```{python}
+# You can use numbers to do arithmetic
+5.128 + 7.8
+```
+
+Variables
+=========
+A number is useless on its own. In order to use it you need to __*assign*__ it to a __*variable*__:
+
+```{python}
+# Assigning numbers to variables
+x = 5
+y = 7
+```
+
+Notice that when you assign a number to a variable it no longer gets outputted to the console. Variable assignment __*suppresses*__ output! Unless you are using an IDE that automatically suppresses output, in which case it makes no difference.
+
+You can use these numbers by __*calling*__ the variables:
+
+```{python}
+# You can use variables to do arithmetic by calling them
+# If you assign the answer to a third variable (z), the output will be suppressed:
+z = x + y
+# If you don't assign the answer to a variable, it will output to the console:
+x + y
+```
+
+Here's something that often confuses beginner coders: the statement `x = x + 1`. In mathematics, it doesn't make any sense! There's no value of `x` that will satisfy the equation! However, in programming, this statement is not an equation but an __*assignment*__ - you are giving a variable `x` a value that is equal to that of an existing variable `x` plus one:
+
+```{r}
+# Give the variable 'x' a value of six
+x = 6
+# Give the variable 'x' a value that is equal to the value of 'x', plus one
+x = x + 1
+# 'x' should now equal seven. Check that it does by calling it and outputting its value to the console:
+x
+```
+
+**Note:** there are rules that have to be followed when making variable names:
+
+* They may not start with a number
+* They may not contain spaces
+
+Additionally, there are a few conventions that programmers tend to adhere to:
+
+* Variable names should be all lowercase (unless it makes sense to use uppercase)
+* Words should be separated with underscores
+* If the number has a unit, show it in the variable name
+
+The following are GOOD examples of variable names:
+
+```{python}
+# Lowercase
+people = 34
+# Some things, especially acronyms, are only ever written in uppercase in
+# English. So it wouldn't make sense to code them in lowercase:
+BMI = 22
+# Use underscores to separate words
+final_answer = 100
+# A person's height in centimetres
+height_cm = 170
+```
+
+Strings
+=======
+"Strings" are characters that have been 'strung' together to form words. You can write a string by using single or double quotation marks, or sets of three double or single quotation marks:
+
+```{python}
+# These are strings, representing text
+my_string = "Hello, World!"
+my_string = 'Hello, World!'
+my_string = """Hello, World!"""
+my_string = '''Hello, World!'''
+```
+
+If you want to create a string that is more than one line long you have to use one of the triple-quotation-mark methods:
+
+```{python}
+my_string = """Hello,
+World!"""
+
+my_string = '''
+Hello, World!
+'''
+```
+
+**Note:** a number can be written as a string, but if you do this it will be interpreted by your program as text, not as a number! This is something that confuses many beginner coders:
+
+```{python}
+# This is a string, so you will not be able to use it to do maths!
+x = '5'
+
+# If you try to run the following code you will get an error (because you are trying to add a number to a letter,
+# which doesn't make sense!):
+# x + 2
+
+# Remember, numbers must NOT have quotation marks in order to be used as numbers
+x = 5
+x + 2
+```
+
+Booleans
+========
+These are binary "trues" and "falses":
+
+```{python}
+passed_test = True
+largest_prime_number = False
+```
+
+Note that the values "True" and "False" above are not strings because we have not used quotation marks. They are treated as their own object type by Python.
+
+Booleans become useful when we start to use "if statements" later on. Essentially, they are used to test things: we can ask Python **if** something is true or not.
+
+Nulls
+=====
+Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing it becomes useful when you're dealing with missing data.
+
+In Python, you have two different null characters:
+
+- `None` is the most basic: something has been defined but no value has been assigned to it
+- `NaN` or `nan` ('not-a-number') means that something has been defined as a number but no value has been given to it. If you are using something called Pandas to import data, it will use `NaN` for all missing data. Note that `NaN` does not exist in Python's standard library, you need to import it from a library called "Numpy":
+
+```{python}
+from numpy import NaN
+
+nothing = None
+not_a_number = NaN
+```
+
+Lists
+=====
+As the name suggests, a 'list' is a collection of objects. These can be numbers, strings, Booleans or a mixture, and are created by using square brackets:
+
+```{python}
+# A list of integers
+a = [4, 5, 6, 7, 8]
+# A list of floating-point numbers
+b = [4.1, 5.6, 6.0, 7.3, 8.2]
+# A list of strings
+c = ['One', 'Two', 'Three']
+# A list of Booleans
+d = [True, False, True, True, False]
+# A list of different data types
+e = [1, 2.3, 'Hello, World', False]
+```
+
+Built-In Functions
+==================
+Functions are bits of code that can be used again and again just by *calling* the function's name. You can tell that a function is being used because it will have round brackets - ().
+
+The first function you should know about is the `print()` function. This function takes a string and outputs it (**prints** it) to the console:
+
+```{python}
+print('Hello, World!')
+```
+
+See what happened there? We *called* the function `print()` by using its name and round brackets. Then we told it what to print - the string `'Hello, World!'`. This string is the *argument* of the function. You *pass* an *argument* to a function.
+
+Let's look at a different function, `type()`. This can take any piece of data as an argument and will *return* (ie output) the **type** of data that the argument is. We can then print that answer to the console with the `print()` function. Take a look:
+
+```{python}
+# An "int" is an integer - a whole number
+print(type(7))
+```
+
+```{python}
+# A "float" is a floating point number - it has a decimal point
+print(type(7.0))
+```
+
+```{python}
+# An "str" or string is text
+print(type('Hello, World!'))
+```
+
+```{python}
+# A "bool" or Boolean is a logical value
+print(type(True))
+```
+
+```{python}
+# A numeric null is stored as a number
+print(type(NaN))
+```
+
+```{python}
+# A general null is its own data type
+print(type(None))
+```
+
+```{python}
+# A list is a list of objects
+print(type([1, 2, 3]))
+```
+
+Type Conversion
+===============
+Often, objects of one data type can be converted into a different data type:
+
+```{python}
+# Start with a number
+x = 15
+# Convert it into a string
+x = str(x)
+# Check that it is indeed now a string
+print(type(x))
+```
+
+```{python}
+# Now take a string that is the text version of a number
+y = '15'
+# Convert it to an integer
+y = int(y)
+# Check that it is indeed now an integer
+print(type(y))
+```
+
+Obviously, only strings that are made up of digits can be converted into numbers. The string `"Hello"` cannot be converted into anything else!
+
+Summary
+=======
+- You can add notes about your code in **comments**
+- There are a number of different types of data in Python:
+    + **Ints** and **floats**, aka numbers
+    + **Strings**, aka text
+    + **Booleans**, aka logicals, aka true/false
+    + **Nulls**, aka missing data
+- Data can be assigned to **variables** for easier use
+- A collection of objects is called a **list**
+- Actions can be performed using **functions**
+- Data can be **converted** to different types
+
+[⇦ Back](../../python.html)
+
+</font>

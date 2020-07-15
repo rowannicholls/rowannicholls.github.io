@@ -1,0 +1,128 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Maths and Numbers'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Arithmetic
+==========
+All the usual mathematical operations can be done in Python:
+
+```{python}
+# Addition and subtraction
+print(4 + 5 - 2)
+```
+
+```{python}
+# Multiplication and division
+# (works left-to-right, as per BODMAS)
+print(2 * 100 / 4)
+```
+
+```{python}
+# Raising to a power
+print(2**4)
+```
+
+```{python}
+# Integer division
+# (floor division)
+print(47 // 5)
+```
+
+```{python}
+# Modulus
+print(13 % 5)
+```
+
+Functions
+=========
+For more complicated operations there are functions to do it for you. Many of these can be found in the `Numpy` package:
+
+```{python}
+import numpy as np
+
+# Square root
+print(np.sqrt(49))
+```
+
+```{python}
+# Round down
+print(np.floor(-6.28318531))
+```
+
+```{python}
+# Round up
+print(np.ceil(-6.28318531))
+```
+
+```{python}
+# Round to a certain number of decimal places
+print(round(-6.28318531, 3))
+```
+
+```{python}
+# Round to a certain multiple of 10
+print(round(-6283.18531, -2))
+```
+
+```{python}
+# Absolute value
+print(abs(-6.28318531))
+```
+
+In order to do more aesthetic changes such as removing trailing zeros or rounding to significant digits, see the page on formatted strings.
+
+Constants
+=========
+The `math` package gives you access to three mathematical constants:
+
+```{python}
+import math
+
+print(math.pi)
+```
+
+```{python}
+print(math.tau)
+```
+
+```{python}
+print(math.e)
+```
+
+Random Numbers
+==============
+You can generate random numbers using the `random` package:
+
+```{python, echo = FALSE}
+import random
+random.seed(20200715)
+```
+
+```{python}
+import random
+
+# A random number between 50 and -50
+print(random.randint(-50, 50))
+```
+
+Of course, when you generate a random number like this it will (probably) be different each time you run your code. This is unhelpful if you're trying to write an example or a script where you want the output to be consistent and re-producible. Fortunately, you can generate the same random number each time you run your script by setting the *seed* of the random number generator (if you don't set the seed, Python uses the current system time of your computer):
+
+```{python}
+random.seed(1234)
+
+# A random number between 50 and -50 (specifically, it will be 49)
+print(random.randint(-50, 50))
+```
+
+[⇦ Back](../../python.html)
+
+</font>
