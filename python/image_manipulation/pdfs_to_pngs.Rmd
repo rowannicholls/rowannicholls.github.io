@@ -1,0 +1,88 @@
+---
+title: '<font size="5">Image Manipulation in Python:</font><br>Convert PDFs to Images'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        # toc: true
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+The package `pdf2image` can be used to convert PDFs to PIL image objects which can then be saved as `.png` files or similar.
+
+Installation
+============
+- Head to the `pdf2image` package's [PyPI page](https://pypi.org/project/pdf2image/)
+- Follow the instructions on installing `poppler` which are reproduced here:
+    + **Windows**: install [poppler for Windows](http://blog.alivate.com.au/poppler-windows/), then add the `bin` folder to [PATH](https://www.architectryan.com/2018/03/17/add-to-the-path-on-windows-10/)
+    + **macOS**: install [poppler for macOS](http://macappstore.org/poppler/)
+    + **Linux**: most distros ship with `pdftoppm` and `pdftocairo`. If they are not installed, refer to your package manager to install `poppler-utils`
+- Open terminal and install `pdf2image` with `pip install pdf2image`
+- Check that it has worked by running `python` to open Python in the terminal then `import pdf2image` to check that there are no errors
+
+Usage
+=====
+In Python use:
+
+```{python, eval = FALSE}
+from pdf2image import convert_from_path
+```
+
+to import the `convert_from_path` function, then:
+
+```{python, eval = FALSE}
+images = convert_from_path('/path/to/example.pdf')
+```
+
+to import the pages of a PDF as a list of PIL image objects. These can then be saved to your computer as images with:
+
+```{python, eval = FALSE}
+images[idx].save('example.png')
+```
+
+where `idx` is the page number (starting at 0) of the page you want to save as an image.
+
+Convert All in Folder
+=====================
+The following script will convert all PDF files that are in the same folder as the script into PNG files and delete the PDFs. Note that no other files can be in the folder; only the PDFs and this script:
+
+```{python, eval = FALSE}
+"""Convert all pdfs in a folder into pngs."""
+import os
+from pdf2image import convert_from_path
+
+# Create a list with the names of the files in the folder
+files = os.listdir()
+# Remove this file
+files.remove(os.path.basename(__file__))
+# Remove hidden files
+files_old = files
+for filename in files_old:
+    if filename[0] == '.':
+        files.remove(filename)
+# Remove directories
+files_new = []
+for i in range(len(files)):
+    if not os.path.isdir(files[i]):
+        files_new.append(files[i])
+files = files_new
+files = sorted(files)
+# Convert each file to png and save it
+for file in files:
+    images = convert_from_path(file)
+    # This is a list, so extract just the image
+    images = images[0]
+    # Remove extension
+    filename = file.split('.')[0]
+    images.save(filename + '.png')
+    # Delete original file
+    os.remove(file)
+```
+
+[⇦ Back](../../python.html)
+
+</font>
