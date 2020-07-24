@@ -203,6 +203,15 @@ st <- gsub("ello", "i", st)
 print(st)
 ```
 
+Trim White Space
+----------------
+*White space* is what is created by the space bar or the tab key. You can **trim** a string by removing any white space at its start and end using the `trimws()` function:
+
+```{r}
+str <- "  Hello World  "
+print(trimws(str))
+```
+
 Change the Case
 ===============
 A string can be UPPERCASE, lowercase, Sentence case or Title Case:
@@ -224,7 +233,7 @@ Number formats
 --------------
 When working with numbers, use the `f` for 'floating-point' in conjunction with `%`:
 
-```{r}
+```{r, message = FALSE}
 library(R.utils)
 
 x <- 1

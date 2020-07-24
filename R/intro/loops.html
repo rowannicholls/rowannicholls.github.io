@@ -496,12 +496,27 @@ print(df)</code></pre>
 <div id="vectors" class="section level2">
 <h2><span class="header-section-number">2.1</span> Vectors</h2>
 <p>This works for vectors as well:</p>
-<pre class="r"><code>for (i in c(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;)) {
-    print(i)
+<pre class="r"><code>for (x in c(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;)) {
+    print(x)
 }</code></pre>
 <pre><code>## [1] &quot;one&quot;
 ## [1] &quot;two&quot;
 ## [1] &quot;three&quot;</code></pre>
+<p>The above example iterated over the <em>elements</em> of the list, but you can also iterate over the <em>indexes</em> of the list like this:</p>
+<pre class="r"><code>ls &lt;- c(&quot;one&quot;, &quot;two&quot;, &quot;three&quot;)
+for (idx in 1:length(ls)) {
+    print(idx)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3</code></pre>
+<p><strong>However</strong>, the above code is <em>not good practice</em> because it contains superfluous information: we <em>know</em> you want to start at “1” so there’s no need to specify “1:length(ls)”. Rather, use the <code>seq_along()</code> function which always starts at the beginning of the list and ends at the end:</p>
+<pre class="r"><code>for (idx in seq_along(ls)) {
+    print(idx)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3</code></pre>
 </div>
 <div id="data-frame-columns" class="section level2">
 <h2><span class="header-section-number">2.2</span> Data Frame Columns</h2>
@@ -566,7 +581,7 @@ print(df)</code></pre>
 ## Hornet Sportabout 18.7   8  360 175 3.15 3.44 17.02  0  0    3    2
 ##          mpg cyl disp  hp drat   wt  qsec vs am gear carb
 ## Valiant 18.1   6  225 105 2.76 3.46 20.22  1  0    3    1</code></pre>
-<p><strong>However</strong>, the above code is <em>not good practice</em>. Instead of iterating over the numbers from 1 to the number of rows in the data frame (<code>nrow()</code>), as was done above, you should instead use <code>seq_len(nrow())</code> like so:</p>
+<p><strong>However</strong>, the above code is again <em>not good practice</em>. Instead of iterating over the numbers from 1 to the number of rows in the data frame (<code>nrow()</code>), as was done above, you should instead use <code>seq_len(nrow())</code> like so:</p>
 <pre class="r"><code>for (i in seq_len(nrow(mtcars))) {
     print(mtcars[i, ])
 }</code></pre>

@@ -197,6 +197,7 @@ summary {
 <li><a href="#delete-characters"><span class="toc-section-number">4.1</span> Delete Characters</a></li>
 <li><a href="#overwrite-characters"><span class="toc-section-number">4.2</span> Overwrite Characters</a></li>
 <li><a href="#replace-characters"><span class="toc-section-number">4.3</span> Replace Characters</a></li>
+<li><a href="#trim-white-space"><span class="toc-section-number">4.4</span> Trim White Space</a></li>
 </ul></li>
 <li><a href="#change-the-case"><span class="toc-section-number">5</span> Change the Case</a></li>
 <li><a href="#formatted-output"><span class="toc-section-number">6</span> Formatted Output</a><ul>
@@ -354,6 +355,13 @@ st &lt;- gsub(&quot;ello&quot;, &quot;i&quot;, st)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hi World&quot;</code></pre>
 </div>
+<div id="trim-white-space" class="section level2">
+<h2><span class="header-section-number">4.4</span> Trim White Space</h2>
+<p><em>White space</em> is what is created by the space bar or the tab key. You can <strong>trim</strong> a string by removing any white space at its start and end using the <code>trimws()</code> function:</p>
+<pre class="r"><code>str &lt;- &quot;  Hello World  &quot;
+print(trimws(str))</code></pre>
+<pre><code>## [1] &quot;Hello World&quot;</code></pre>
+</div>
 </div>
 <div id="change-the-case" class="section level1">
 <h1><span class="header-section-number">5</span> Change the Case</h1>
@@ -375,33 +383,9 @@ print(str_to_upper(st))</code></pre>
 <div id="number-formats" class="section level2">
 <h2><span class="header-section-number">6.1</span> Number formats</h2>
 <p>When working with numbers, use the <code>f</code> for ‘floating-point’ in conjunction with <code>%</code>:</p>
-<pre class="r"><code>library(R.utils)</code></pre>
-<pre><code>## Loading required package: R.oo</code></pre>
-<pre><code>## Loading required package: R.methodsS3</code></pre>
-<pre><code>## R.methodsS3 v1.8.0 (2020-02-14 07:10:20 UTC) successfully loaded. See ?R.methodsS3 for help.</code></pre>
-<pre><code>## R.oo v1.23.0 successfully loaded. See ?R.oo for help.</code></pre>
-<pre><code>## 
-## Attaching package: 'R.oo'</code></pre>
-<pre><code>## The following object is masked from 'package:R.methodsS3':
-## 
-##     throw</code></pre>
-<pre><code>## The following objects are masked from 'package:methods':
-## 
-##     getClasses, getMethods</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     attach, detach, load, save</code></pre>
-<pre><code>## R.utils v2.9.2 successfully loaded. See ?R.utils for help.</code></pre>
-<pre><code>## 
-## Attaching package: 'R.utils'</code></pre>
-<pre><code>## The following object is masked from 'package:utils':
-## 
-##     timestamp</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     cat, commandArgs, getOption, inherits, isOpen, nullfile, parse,
-##     warnings</code></pre>
-<pre class="r"><code>x &lt;- 1
+<pre class="r"><code>library(R.utils)
+
+x &lt;- 1
 printf(&quot;x = %f&quot;, x)</code></pre>
 <pre><code>## x = 1.000000</code></pre>
 <p>Use a decimal point and a number to set the number of decimal places you see:</p>
@@ -443,13 +427,13 @@ printf(&quot;Output text is: %s&quot;, df$name[1])</code></pre>
 st2 &lt;- &quot;\U03B5&quot;  # epsilon
 st3 &lt;- &quot;\U03C9&quot;  # omega
 print(c(st1, st2, st3))</code></pre>
-<pre><code>## [1] &quot;&lt;U+03BC&gt;&quot; &quot;&lt;U+03B5&gt;&quot; &quot;&lt;U+03C9&gt;&quot;</code></pre>
+<pre><code>## [1] &quot;μ&quot; &quot;ε&quot; &quot;ω&quot;</code></pre>
 <p>Others (eg emojis) cannot be printed this easily and need the special <code>utf8_print()</code> function from the <code>utf8</code> library:</p>
 <pre class="r"><code>st1 &lt;- &quot;\U2705&quot;  # white heavy check mark
 st2 &lt;- &quot;\U274c&quot;  # cross mark
 st3 &lt;- &quot;\U0001f609&quot;  # winking face
 utf8::utf8_print(c(st1, st2, st3))</code></pre>
-<pre><code>## [1] &quot;\u2705&quot;     &quot;\u274c&quot;     &quot;\U0001f609&quot;</code></pre>
+<pre><code>## [1] &quot;✅​&quot; &quot;❌​&quot; &quot;😉​&quot;</code></pre>
 <p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
