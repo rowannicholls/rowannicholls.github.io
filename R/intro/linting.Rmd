@@ -1,0 +1,153 @@
+---
+title: '<font size="5">Introduction to R:</font><br>Linting R (and R Markdown)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+As Wikipedia says, "lint, or a linter, is a tool that analyses source code to flag programming errors, bugs, stylistic errors, and suspicious constructs." In other words, linting is the process of **standardising the format of how your code looks**.
+
+All written work has rules, either official or unofficial, about how it should be formatted. If you pick up and read a *report* you can expect a cover page, contents page, sections with headings in bold, page numbers, etc. Something like a *thesis* will additionally have chapters and appendices, and its *bibliography* will always follow the strict formatting rules of whichever referencing style it uses. In the same way, someone reading your code will have certain expectations about its format, and if your code is all over the place it will reduce its **readability**. This is why code style is important.
+
+Examples of Linting Errors
+==========================
+Trailing whitespace is superfluous:
+```{r, eval = FALSE}
+# Bad:
+print("Hello, World") ↵
+# Good:
+print("Hello, World")
+```
+Lines should not be more than 80 characters:
+```{r, eval = FALSE}
+# Bad:
+print(ifelse(variable == 78, sprintf("This is a long line %s", variable), "Avoid this"))
+# Good:
+print(
+    ifelse(
+        variable == 78, sprintf("This is a long line %s", variable),
+        "But it is broken up so it is fine"
+    )
+)
+```
+Commented code should be removed:
+```{r, eval = FALSE}
+# bad <- TRUE
+good <- TRUE
+```
+Do not place spaces around code in parentheses or square brackets:
+```{r, eval = FALSE}
+# Bad:
+print( "Hello, World" )
+# Good:
+print("Hello, World")
+```
+Put spaces around all infix operators:
+```{r, eval = FALSE}
+# Bad:
+2+2
+# Good:
+2 + 2
+```
+Use `<-` not `=` for assignment:
+```{r, eval = FALSE}
+# Bad:
+x = 2 + 2
+# Good:
+x <- 2 + 2
+```
+Variable and function name style should be snake_case:
+```{r, eval = FALSE}
+ThisIsBad <- 5
+this_is_good <- 5
+```
+
+How It Used To Be Done
+======================
+In the old days, coders would use **style guides** (such as [this one](https://google.github.io/styleguide/Rguide.html) or [this one](http://adv-r.had.co.nz/Style.html) or [this one](https://style.tidyverse.org/), and before the internet was what it is today the might even have used actual, physical books) in order to look up how to manually format their code. Fortunately, these days we have packages to do this for us, so take a look below:
+
+The Lintr Package
+=================
+This package will import an R script (or an R Markdown script that contains R code) and search it for style errors. Then it will tell you what they are so that you can fix them. To get it working do one of the following:
+
+**In RStudio**:
+
+- Install the package:
+    - Manually: select the "Packages" tab in the lower right-hand-side section ⇨ Install ⇨ search for "lintr" in the "Packages" search bar ⇨ Install
+    - Programmatically: run `install.packages("lintr")` in the Console
+- Point to the correct folder: use `setwd()` in the console to change to the folder where your script is
+- Run the linter manually:
+```r
+lint("<your_filename>.R>")
+```
+
+**In the Terminal**:
+
+- Install the package:
+    - Open R by running `R` ⇨ run `install.packages("lintr")` ⇨ run `q()` to quit
+- Point to the correct folder:
+    - Use `cd` to move into the folder where your script is
+- Run the linter manually:
+    - Open R by running `R`
+    - Run:
+```r
+library(lintr)
+lint("<your_filename>.R>")
+```
+
+This will produce an output showing the linting errors in your file. Ideally, nothing will be produced. For more information see [the docs](https://www.rdocumentation.org/packages/lintr/versions/1.0.3).
+
+Integrating the Linter with RStudio
+-----------------------------------
+You can bind this linting process to a keyboard shortcut in RStudio to make it as easy for yourself as possible:
+
+- Enable the "Markers" pane in RStudio: from the menu bar ⇨ "Tools" ⇨ "Global Options..." ⇨ go to "Code" on the left-hand-side ⇨ "Diagnostics" tab ⇨ check "Show diagnostics for R"
+- Create a keybinding: "Tools" ⇨ "addins" ⇨ "Browse Addins..." ⇨ "Keyboard Shortcuts..." ⇨ click in the "Shortcut" column next to "Lint current file" and press your desired key combination
+    - It's recommended to use Shift+Alt+L on Linux/Windows or Shift+Alt+Cmd+L on macOS
+
+Integrating the Linter with Sublime Text
+----------------------------------------
+`lintr` can be used with Sublime Linter for on-the-fly linting:
+
+- Install `SublimeLinter` using Package Control
+- Try install `sublimeLinter-contrib-lintr` using Package Control. If this doesn't work then do it manually:
+    - Download the ZIP from [the Github repo](https://github.com/jimhester/SublimeLinter-contrib-lintr)
+    - Sublime Text ⇨ Preferences ⇨ Browse Packages...
+    - A folder will open. Place the unzipped folder in here.
+
+Optionally, you can configure what linters are used or what specific linting rules are used. For example, you can have a different line length cutoff by changing the SublimeLinter User Settings to the following:
+```json
+{
+  "user": {
+    "linters": {
+      "r": {
+        "linters": "with_defaults(line_length_linter(120))"
+      }
+    }
+  }
+}
+```
+
+The Styler Package
+==================
+This will take things one step further than the `lintr` package in that it will *actually make* the linting changes it suggests.
+
+- Install the `styler` package in the same way as was detailed above for the `lintr` package
+- Use it in a similar way as the `lintr` package as well, although this time the R code to run is:
+```r
+library(styler)
+input <- readLines("<your_filename>.R")
+writeLines(style_text(input), con = "<your_filename>.R")
+```
+
+This will import your script, lint it then export it to the same file (ie it will overwrite your script).
+
+[⇦ Back](../../R.html)
+
+</font>

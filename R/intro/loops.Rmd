@@ -61,8 +61,25 @@ Vectors
 This works for vectors as well:
 
 ```{r}
-for (i in c("one", "two", "three")) {
-    print(i)
+for (x in c("one", "two", "three")) {
+    print(x)
+}
+```
+
+The above example iterated over the *elements* of the list, but you can also iterate over the *indexes* of the list like this:
+
+```{r}
+ls <- c("one", "two", "three")
+for (idx in 1:length(ls)) {
+    print(idx)
+}
+```
+
+**However**, the above code is *not good practice* because it contains superfluous information: we *know* you want to start at "1" so there's no need to specify "1:length(ls)". Rather, use the `seq_along()` function which always starts at the beginning of the list and ends at the end:
+
+```{r}
+for (idx in seq_along(ls)) {
+    print(idx)
 }
 ```
 
@@ -95,7 +112,7 @@ for (i in 1:nrow(mtcars)) {
 }
 ```
 
-**However**, the above code is *not good practice*. Instead of iterating over the numbers from 1 to the number of rows in the data frame (`nrow()`), as was done above, you should instead use `seq_len(nrow())` like so:
+**However**, the above code is again *not good practice*. Instead of iterating over the numbers from 1 to the number of rows in the data frame (`nrow()`), as was done above, you should instead use `seq_len(nrow())` like so:
 
 ```{r}
 for (i in seq_len(nrow(mtcars))) {
