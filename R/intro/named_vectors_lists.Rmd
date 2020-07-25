@@ -1,0 +1,232 @@
+---
+title: '<font size="5">Introduction to R:</font><br>Named Vectors and Lists (aka Dictionaries)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+Python Dictionaries in R?
+=========================
+In Python, users have access to a very useful data structure called 'dictionaries'. They literally let a script __translate__ an object into another object. Take a look at the following Python code which creates a very simple English-to-German language dictionary:
+
+```{python}
+# Python code
+english_to_german = {
+    "potato": "Kartoffel",
+    "ambulance": "Krankenwagen",
+    "rabbit": "Hase"
+}
+translation = english_to_german["potato"]
+st = f'The German word for "potato" is "{translation}"'
+print(st)
+```
+
+Dictionaries are so useful - for many aspects of coding, not just for language translation - that we want to be able to use them in R too!
+
+Using a Vector like a Dictionary
+================================
+While R does not have dictionary objects in the same way as Python it does have the ability to *add names to the elements of a vector.* Remember that a vector is a collection of objects in a particular order were each object can be indexed by referring to its position:
+
+```{r}
+# From here onwards all the code is R
+
+# This is a vector:
+german <- c("Kartoffel", "Krankenwagen", "Hase")
+# Vectors are indexed using the numerical position of the element you want:
+german[2]
+```
+
+To add names to each of the elements, use the `names()` function:
+
+```{r}
+english <- c("potato", "ambulance", "rabbit")
+names(german) <- english
+```
+
+You now have the ability to index the vector using *either* numerical positions *or* elements' names (although now you have to use TWO square brackets to do so because the vector has two dimensions of information):
+
+```{r}
+# Index using numerical position
+german[[2]]
+# Index using name
+german[["potato"]]
+```
+
+Let's take a look at the result:
+
+```{r}
+print(german)
+cat(
+    "The German word for \"potato\" is \"", german[["potato"]], "\"", sep = ""
+)
+```
+
+Example: A Contacts List
+------------------------
+It's not just literal language dictionaries that the dictionary 'data type' is useful for, here's an example of a list of contacts that stores information about a group of people:
+
+```{r}
+# Initialise the data for all your contacts
+people <- c("Alice", "Bob", "Carol")
+phone_numbers <- c("07410123456", "07420123456", "07430123456")
+ages <- c(21, 22, 23)
+birthday <- c("25 July", "18 October", "1 April")
+# Associate the people with the information to create "dictionaries"
+names(phone_numbers) <- people
+names(ages) <- people
+names(birthday) <- people
+```
+
+Now you can look up information about each person just by using their name:
+
+```{r}
+phone_numbers[["Alice"]]
+```
+
+Example: A Contacts List in Reverse
+-----------------------------------
+Instead of storing information in variables named for the information type, you can store it in variables names for the *person:*
+
+```{r}
+# Initialise the data for all your contacts
+information <- c("Phone Number", "Age", "Birthday")
+Alice <- c("07410123456", 21, "25 July")
+Bob <- c("07420123456", 22, "18 October")
+Carol <- c("07430123456", 23, "1 April")
+# Associate the information with the people to create "dictionaries"
+names(Alice) <- information
+names(Bob) <- information
+names(Carol) <- information
+```
+
+Now you can look up information about each person just by using their vector:
+
+```{r}
+Alice[["Phone Number"]]
+```
+
+This is the reverse of how we did it in section 2.2. One type of implementation might be more sensible than the other for your particular task.
+
+Vectors vs Lists
+================
+Note that there is a different data type in R called a **list**. These are *special types of vectors* as reflected by the fact that they can be created using the `vector()` function where the "mode" is specified as being a list:
+
+```{r}
+# Initialise a list
+english_to_german <- vector(mode = "list", length = 3)
+```
+
+Dictionaries can be made out of lists in a slightly different way to vectors. Start by entering the names (the English words):
+
+```{r}
+names(english_to_german) <- c("potato", "ambulance", "rabbit")
+```
+
+Then enter the values (the German words), associating each one with the corresponding name:
+
+```{r}
+english_to_german["potato"] <- "Kartoffel"
+english_to_german["ambulance"] <- "Krankenwagen"
+```
+
+Instead of using the English *words*, we could alternatively associate the German words with the relevant *indexes* of the list:
+
+```{r}
+english_to_german[[3]] <- "Hase"
+```
+
+This 'named list' is very similar to the 'named vector' we created in the first example, except we can now also index it with dollar sign notation:
+
+```{r}
+# Index using numerical position
+english_to_german[[2]]
+# Index using name
+english_to_german[["potato"]]
+# Index using dollar sign notation
+english_to_german$"rabbit"
+```
+
+There is another important difference between using vectors and lists, which is demonstrated in the following example:
+
+Example: A Dictionary of Data Frames
+------------------------------------
+It's not just string and numerical data that can be put into a dictionary, anything can be. Here's a example with entire data frames as the elements, specifically, the results of three tests given to a class of students:
+
+```{r}
+test1 <- data.frame(
+    Student = c("Alice", "Bob", "Carol"),
+    Result = c(60, 70, 80)
+)
+test2 <- data.frame(
+    Student = c("Bob", "Carol", "Doug"),
+    Result = c(61, 71, 81)
+)
+test3 <- data.frame(
+    Student = c("Alice", "Carol", "Doug"),
+    Result = c(62, 72, 82)
+)
+```
+
+If we try to create a dictionary out of these data frames using a vector we get an unexpected result:
+
+```{r}
+# Attempt to create a dictionary
+class_tests <- c(test1, test2, test3)
+names(class_tests) <- c("Test 1", "Test 2", "Test 3")
+class_tests
+```
+
+What has happened is that the data frames were appended to one another when the vector was created, meaning that there are now six elements (each of which is a series) as opposed to three (each being a data frame) like we want. We instead need to use a list:
+
+```{r}
+# Create a dictionary
+class_tests <- list(test1, test2, test3)
+names(class_tests) <- c("Test 1", "Test 2", "Test 3")
+class_tests
+```
+
+Now we can look up the results of any test in particular using its name:
+
+```{r}
+class_tests[["Test 3"]]
+```
+
+We could get even more crazy and have data frames within dictionaries within vectors within lists within data frames and so on!
+
+Convert Data Frames into Dictionaries
+=====================================
+A data frame is a lot more powerful than a vector. For example, we could create a dictionary in a spreadsheet then import that into R as a data frame. We're not going to do that in this example though, we're just going to create a data frame manually:
+
+```{r}
+# Create a data frame
+df <- data.frame(
+    English = c("potato", "ambulance", "rabbit"),
+    German = c("Kartoffel", "Krankenwagen", "Hase")
+)
+# Initialise a vector that will become a dictionary
+english_to_german <- vector()
+```
+
+Here's how to convert that data frame into a dictionary once it's in R:
+
+```{r}
+for (i in seq_len(nrow(df))) {
+    key <- df[i, "English"]
+    value <- df[i, "German"]
+    english_to_german[as.character(key)] <- as.character(value)
+}
+print(english_to_german)
+cat(
+    "The German word for \"potato\" is \"", english_to_german[["potato"]],
+    "\"", sep = ""
+)
+```
+
+[⇦ Back](../../R.html)
+</font>
