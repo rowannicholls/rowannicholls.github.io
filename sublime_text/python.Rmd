@@ -1,0 +1,146 @@
+---
+title: '<font size="5">Sublime Text 3</font><br>Using Python in Sublime Text'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+Setup {.tabset}
+=====
+
+macOS
+-----
+*On macOS Sierra, Mojave and Catalina:*
+
+- Python works immediately with SublimeREPL in macOS, but double check if it's Python 2 or Python 3
+- Create a custom build file for Python 3:
+    - Tools 🡒 Build System 🡒 New Build System...
+    - Use the following:
+    ```{json}
+    {
+        "cmd": ["python3", "-i", "-u", "$file"],
+        "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
+        "selector": "source.python"
+    }
+    ```
+    - Save as `python3.sublime-build` in the default location (which will be `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`)
+
+Ubuntu
+------
+*On Ubuntu 16.04 and 18.04:*
+
+- Double check that your default Python is 3.x.x, not 2.x.x:
+    - Check your Python version with:
+    ```{bash, eval = FALSE}
+    python --version
+    ```
+    - If it is Python 2, create an alias to overwrite this. First, open your `.bashrc` file:
+    ```{bash, eval = FALSE}
+    subl ~/.bashrc
+    ```
+    - Then add the following to the bottom:
+    ```{bash, eval = FALSE}
+    # the terminal command "python" should open python3, not python2
+    alias python=python3
+    ```
+    - Save, close and restart the terminal before running `python --version` again. The Python version should now be 3.x.x.
+- Use the default Sublime Text build functionality:
+    - This usually doesn't work out-of-the-box
+    - Go to Tools 🡒 Build System 🡒 New Build System...
+    - Replace all text with:
+    ```{json}
+    {
+        "cmd": ["python3", "-i", "-u", "$file"],
+        "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
+        "selector": "source.python"
+    }
+    ```
+    - Save it to the default location (which is `~/.config/sublime-text-3/Packages/User`) with a meaningful name like "python3.sublime-build"
+- Use SublimeREPL:
+    - Install SublimeREPL via Package Control (Ctrl+Shift+P 🡒 search for "install package" 🡒 search for "SublimeREPL")
+    - Tools 🡒 SublimeREPL 🡒 Python 🡒 Python - RUN current file (you can optionally create a [user key binding](key_bindings.html) to do this via a keyboard shortcut)
+    - Shift+Alt+8 creates a lower window which you can drag the Python output console to
+- Python files can also be run 'manually' from a Terminus terminal, look in [here](packages.html) for more info on installing that
+- Troubleshooting:
+    - If the code runs fine but you get the following window:
+    ```{bash, eval = FALSE}
+    SublimeREPL: obtaining sane environment failed in getenv()
+    Check console and 'getenv_command' setting
+    WARN: Falling back to SublimeText environment
+    ```
+    - Open Preferences 🡒 Package Settings 🡒 SublimeREPL 🡒 Settings - User
+    - Enter the following:
+    ```{json}
+        {
+          "getenv_command": false
+        }
+    ```
+
+Windows
+-------
+*On Windows 7, 8 and 10:*
+
+- Make sure you have Python 3 installed on your computer (Sublime Text is just a front end; it doesn't do the compiling itself!)
+    - IDLE is ok, not Canopy
+    - Check by running `python --version` from the Command Prompt; it should return the Python version you have as opposed to giving an error
+- Test that SublimeREPL is working:
+    - Open a .py file or create a new one and save it
+    - In Sublime Text: Tools 🡒 SublimeREPL 🡒 Python 🡒 Python - RUN current file
+    - This should (a) run without a problem and (b) show that you are running Python 3, not Python 2
+- If you ARE running Python 2, change it:
+    - Tools 🡒 Build System 🡒 New Build System...
+    - Replace all text with the following (but choose the right path to your Python executable!):
+    ```{json}
+    {
+        "cmd": ["C:/Users/<username>/AppData/Local/Programs/Python/Python36-32/python.exe", "-u", "$file"],
+        "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+        "selector": "source.python"
+    }
+    ```
+    - Save it to the default location with a meaningful name like "python3.sublime-build"
+    - Test that it works with Tools 🡒 Build System 🡒 python3, then Tools 🡒 Build
+- You might need to change the Environment Variable Path:
+    - Windows 7: Start 🡒 right-click on Computer 🡒 Properties 🡒 Advanced system settings 🡒 Environment Variables...
+    - Windows 10: Search "environ" from the start button 🡒 Edit the system environment variables 🡒 Environment Variables...
+    - Append the following to the top one (Path):
+    ```{text}
+    ;C:/Users/<username>/AppData/Local/Programs/Python/Python36-32/
+    ```
+- Shift+Alt+8 creates a lower window to which you can drag the Python output console
+
+Troubleshooting: Use Latex format with Matplotlib
+=================================================
+This is for when you are using the code `plt.rc('text', usetex=True)` in an attempt to use Latex in Matplotlib plots but it's causing them to not render or save. You will be seeing a very long error and/or an error saying that 'dvipng' could not be found.
+
+- Firstly, make sure that Latex is installed and that LaTeXTools is working by running a Latex file in Sublime Text
+- *Ubuntu*
+    - Everything should be sorted with:
+    ```{bash, eval = FALSE}
+    sudo apt-get install dvipng
+    ```
+    - If you get an error saying `matplotlib.cbook.Locked.TimeoutError: LOCKERROR`, delete the folder `/home/<username>/.cache/matplotlib/tex.cache` and try again
+    ```{bash, eval = FALSE}
+    rm /home/<username>/.cache/matplotlib/tex.cache
+    ```
+- *Windows 7, 8, 10*
+    - Delete the matplotlib caches: run the following in Python and delete everything in the folder that is outputted
+    ```{python, eval = FALSE}
+    import matplotlib as mpl
+    print(mpl.get_configdir())
+    ```
+    - After this is done, try to run the code again
+        - It might say `'latex' is not recognized as an internal or external command, operable program or batch file.` If this is the case, open Preferences 🡒 Package Settings 🡒 SublimeREPL 🡒 Settings - User
+        + Change the PATH to the following:
+        ```{text}
+        "default_extend_env": {"PATH":"C\\Users\\<username>\\AppData\\Local\\Programs\\Python\\Python36-32\\;C:\\Program Files (x86)\\MiKTeX 2.9\\miktex\\bin"},
+        ```
+
+[⇦ Back](../sublime_text.html)
+
+</font>

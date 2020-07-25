@@ -1,0 +1,39 @@
+---
+title: '<font size="5">Sublime Text 3</font><br>Using Bash in Sublime Text'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+Create a Bash Build System:
+
+- Create a new Sublime-Build file:
+    - Sublime-Build files tell Sublime Text how you want to run a script when you hit Ctrl+B
+    - Tools 🡒 Build System 🡒 New Build System...
+    - In the "untitled.sublime-build" that appears, replace everything with
+    ```{json}
+    {
+        "cmd"       : ["bash", "$file"],
+        "selector"  : "source.shell",
+
+        "windows": {
+            "path"  : "$path;c:\\mingw\\bin;c:\\mingw\\msys\\1.0\\bin",
+            "cmd"   : ["bash", "--login", "-i", "-c", "cd \"$file_path\"; \"$file\""]
+        },
+        
+        "osx": {
+            "path"  : "$PATH:/usr/local/bin:/usr/X11R6/bin:/opt/X11/bin:/usr/texbin"
+        }
+    }
+    ```
+- Save as "bash.sublime-build" in the default location (which, on macOS, is `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`)
+
+[⇦ Back](../sublime_text.html)
+
+</font>

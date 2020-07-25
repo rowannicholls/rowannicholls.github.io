@@ -1,0 +1,41 @@
+---
+title: '<font size="5">Sublime Text 3</font><br>Using R Markdown in Sublime Text'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+To render R Markdown:
+
+- The R-IDE and LSP packages need to be installed in Sublime Text:
+    - Command Palette 🡒 Package Control: Install Package 🡒 R-IDE
+    - Command Palette 🡒 Package Control: Install Package 🡒 LSP
+- Render with R-IDE to check that it works:
+    - Open an .Rmd file
+    - From the menu bar: R-IDE 🡒 Render R Markdown
+- Create an R Markdown build system:
+    - Tools 🡒 Build System 🡒 New Build System...
+    - In the "untitled.sublime-build" that appears, replace everything with:
+    ```{json}
+    {
+        "cmd"       : ["Rscript", "-e", "rmarkdown::render('$file')"],
+        "selector"  : "source.shell",
+    }
+    ```
+    - Save as "Rmarkdown.sublime-build" in the default location. For the record, the default locations are:
+        - *Ubuntu:* `/home/<username>/.config/sublime-text-3/Packages/User`
+        - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`
+- Render with the Build System:
+    - Open an .Rmd file
+    - From the menu bar: Tools 🡒 Build With...
+    - From then on you can just build with Ctrl+B/Cmd+B as the default build system will have been set when you used "Build With..."
+
+[⇦ Back](../sublime_text.html)
+
+</font>
