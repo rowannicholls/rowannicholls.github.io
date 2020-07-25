@@ -1,0 +1,35 @@
+---
+title: '<font size="5">Sublime Text 3</font><br>Using Pandoc in Sublime Text'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+> Tested on Windows 7
+
+Create a Pandoc Build System:
+
+- Create a new Sublime-Build file:
+    - Sublime-Build files tell Sublime Text how you want to build a document when you hit Ctrl+B
+    - Tools 🡒 Build System 🡒 New Build System...
+    - In the "untitled.sublime-build" that appears, replace everything with
+    ```{json}
+    {
+        "shell_cmd": "pandoc -o \"$file.pdf\" \"$file\" && start SumatraPDF \"$file.pdf\"",
+        "selector": "text.html.markdown",
+    }
+    ```
+- Save as `Markdown to PDF.sublime-build`
+- Tools 🡒 Build System 🡒 select "Automatic" to ensure Sublime picks your new Markdown build system
+- With a .md file open, hit Ctrl+B
+- You must have Sumatra PDF installed for this to work (https://www.sumatrapdfreader.org/free-pdf-reader.html)
+
+[⇦ Back](../sublime_text.html)
+
+</font>

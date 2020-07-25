@@ -1,0 +1,39 @@
+---
+title: '<font size="5">Sublime Text 3</font><br>Using R in Sublime Text'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+Setup {.tabset}
+=====
+
+macOS
+-----
+- Create an R Build System by creating a new Sublime-Build file:
+    - Sublime-Build files tell Sublime Text how you want to run a script when you hit Ctrl+B
+    - Tools 🡒 Build System 🡒 New Build System...
+    - In the "untitled.sublime-build" that appears, replace everything with
+    ```{json}
+    {
+        "cmd"       : ["Rscript", "$file"],
+        "selector"  : "source.shell",
+    }
+    ```
+- Save as "R.sublime-build" in the default location (which, on macOS, is `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`)
+- Run R files with Ctrl+B
+
+Ubuntu
+------
++ Once R has been installed (`sudo apt-get install r-base`) it works in Sublime Text with Ctrl+B
+- If the R-IDE package is installed (it is needed if you want to work with R Markdown) this behaviour changes (the default build system becomes R-IDE and its 'Exec' function). To fix this, go to Tools 🡒 Build With... and select "R" to re-teach Sublime Text what build system should be used as the automatic one.
+
+[⇦ Back](../sublime_text.html)
+
+</font>

@@ -1,0 +1,139 @@
+---
+title: '<font size="5">Sublime Text 3</font><br>Key Bindings'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+Default Key Bindings
+====================
+
+| Action                  | macOS           | Windows & Linux | Same?    |
+|:------------------------|:----------------|:----------------|:---------|
+| Next tab in group       | Ctrl+PgDn (Ctrl+Fn+🡓) or Alt+Cmd+🡒 | Ctrl+PgDn | Yes |
+| Previous tab in group   | Ctrl+PgUp (Ctrl+Fn+🡑) or Alt+Cmd+🡐 | Ctrl+PgUp | Yes |
+| Go to file in project   | Cmd+P or Cmd+T  | Ctrl+P          | Cmd/Ctrl swap |
+| Go to text in file      | Cmd+R           | Ctrl+R          | Cmd/Ctrl swap |
+| Open file               | Cmd+O           | Ctrl+O          | Cmd/Ctrl swap |
+| New tab                 | Cmd+N           | Ctrl+N          | Cmd/Ctrl swap |
+| Close tab               | Cmd+W           | Ctrl+W          | Cmd/Ctrl swap |
+| Re-open last closed     | Shift+Cmd+T     | Shift+Ctrl+T    | Cmd/Ctrl swap |
+| Command palette         | Shift+Cmd+P     | Shift+Ctrl+P    | Cmd/Ctrl swap |
+| Quick switch project    | Ctrl+Cmd+P      | Ctrl+Alt+P      | No       |
+| Cursor to end of line   | Cmd+🡒          | End             | No       |
+| Cursor to start of line | Cmd+🡐          | Home            | No       |
+| Cursor to end of file   | Cmd+🡑 or End (Fn+🡒)  | Ctrl+End  | No       |
+| Cursor to start of file | Cmd+🡓 or Home (Fn+🡐) | Ctrl+Home | No       |
+| Cursor to end of word   | Alt+🡒          | Ctrl+🡒         | No       |
+| Cursor to start of word | Alt+🡐          | Ctrl+🡐         | No       |
+| Cursor to end of subword   | Doesn't work | Alt+🡒          | No       |
+| Cursor to start of subword | Doesn't work | Alt+🡐          | No       |
+| Focus on group          | Ctrl+1/2/3/4    | Ctrl+1/2/3/4    | Yes      |
+| Move tab to group       | Ctrl+Shift+1/2/3/4 | Ctrl+Shift+1/2/3/4 | Yes      |
+| Number of groups        | Doesn't work    | Shift+Alt+1/2/3/4/5   | No       |
+| Scroll page down        | PgDn (Fn+🡓)     | PgDn            | Yes      |
+| Scroll page up          | PgUp (Fn+🡑)     | PgUp            | Yes      |
+| Save                    | Cmd+S            | Ctrl+S         | Cmd/Ctrl swap |
+| Save all                | Alt+Cmd+S        | None           | No            |
+| Undo                    | Cmd+Z           | Ctrl+Z          | Cmd/Ctrl swap |
+| Redo                    | Shift+Cmd+Z     | Ctrl+Y          | No        |
+| Find and Replace        | Alt+Cmd+F       | Ctrl+H          | No       |
+| Toggle side bar         | Cmd+K, Cmd+B    | Ctrl+K, Ctrl+B  | Cmd/Ctrl swap |
+| Toggle spell check      | F6 (Fn+F6)      | F6              | Yes      |
+| Toggle full screen      | Ctrl+Cmd+F      | F11             | No       |
+| Indent                  | Cmd+[           | Ctrl+[          | Cmd/Ctrl swap |
+| Outdent                 | Cmd+]           | Ctrl+]          | Cmd/Ctrl swap |
+| Select next instance    | Cmd+D           | Ctrl+D          | Cmd/Ctrl swap |
+
+*The following are key mapppings on a Mac keyboard:*
+
+| Key    | Mac keyboard mapping |
+|:-------|:---------------------|
+| PgUp   | Fn+🡑                 |
+| PgDn   | Fn+🡓                 |
+| Home   | Fn+🡐                |
+| End    | Fn+🡒                |
+| Delete | Fn+Back              |
+
+*The following are key bindings created by certain packages:*
+
+| Package                  | Action                   | macOS | Windows & Linux |
+|:-------------------------|:-------------------------|-------|-----------------|
+| SublimeREPL              | Run current Python file  | Ctrl+Alt+P | Ctrl+Alt+P |
+| Markdown Table Formatter | Align columns in Markdown tables | Shift+Ctrl+Alt+T | Shift+Ctrl+Alt+T |
+| PrettyJSON               | Make JSON more readable  | Ctrl+Cmd+J | Ctrl+Alt+J |
+
+Custom Key Bindings
+===================
+- This section details the custom key bindings I use in my Sublime Text
+- To create custom key bindings, go to Preferences 🡒 Key Bindings and edit the right-hand-side
+- It's worthwhile creating a backup of this file (Default.sublime-keymap). Then, when you next install Sublime Text on a new computer, you can just paste these key bindings in.
+
+| Package         | Action                     | macOS, Windows & Linux |
+|:----------------|:---------------------------|:-----------------------|
+| None            | Save all open files        | Ctrl+Alt+S             |
+| MarkdownPreview | Render Markdown            | Shift+Alt+M            |
+| SublimeREPL     | Run Python in SublimeREPL  | Shift+Ctrl+Alt+P       |
+| None            | Run Python in Build System | Shift+Alt+P            |
+| LatexTools      | Run Latex                  | Shift+Alt+L            |
+| None            | Run R                      | Shift+Alt+R            |
+| None            | Run R Markdown             | Shift+Alt+D            |
+| None            | Run Bash                   | Shift+Alt+B            |
+| Terminus        | Open terminal here         | Shift+Alt+T            |
+
+Here's my Default.sublime-keymap file that implements the above key bindings:
+
+```{json}
+[
+    // Save all
+    { "keys": ["ctrl+alt+s"], "command": "save_all" },
+    
+    /* Markdown */
+
+    // Render Markdown in browser
+    { "keys": ["shift+alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser": "markdown"} },
+    // Overwrite MardownEditing's key bindings
+    { "keys": ["ctrl+1"], "command": "focus_group", "args": { "group": 0 } },
+    { "keys": ["ctrl+2"], "command": "focus_group", "args": { "group": 1 } },
+    { "keys": ["ctrl+3"], "command": "focus_group", "args": { "group": 2 } },
+    { "keys": ["ctrl+4"], "command": "focus_group", "args": { "group": 3 } },
+    { "keys": ["ctrl+5"], "command": "focus_group", "args": { "group": 4 } },
+    
+    /* Python */
+
+    // Python in SublimeREPL
+    { "keys": ["shift+ctrl+alt+p"], "command": "run_existing_window_command", "args": {"id": "repl_python_run", "file": "config/Python/Main.sublime-menu"} },
+    // Python in Build system
+    { "keys": ["shift+alt+p"], "command": "build", "args": {"build_system": "Packages/User/python3.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    
+    /* Latex */
+
+    { "keys": ["shift+alt+l"], "command": "build", "args": {"build_system": "Packages/LaTeXTools/LaTeX.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    
+    /* R */
+    
+    // R in Build system
+    { "keys": ["shift+alt+r"], "command": "build", "args": {"build_system": "Packages/User/R.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    // R Markdown in Build system
+    { "keys": ["shift+alt+d"], "command": "build", "args": {"build_system": "Packages/User/Rmarkdown.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    
+    /* Bash */
+
+    // Bash in Build system
+    { "keys": ["shift+alt+b"], "command": "build", "args": {"build_system": "Packages/User/bash.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    // Termius
+    { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} }
+]
+```
+
+Use the 'default' Default.sublime-keymap file (ie the one the opens on the left-hand side when you go to Preferences 🡒 Key Bindings) to figure out what commands exist and how to re-bind them. Also take a look at the [key bindings documentation](https://www.sublimetext.com/docs/3/key_bindings.html).
+
+[⇦ Back](../sublime_text.html)
+
+</font>

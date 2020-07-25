@@ -1,0 +1,62 @@
+---
+title: '<font size="5">Sublime Text 3</font><br>Using Latex in Sublime Text'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+Prerequisites {.tabset}
+=============
+- You must have Latex installed already (eg by installing TexStudio, which can be downloaded from [here](https://www.texstudio.org/)). Make sure it is working by running a Latex file and ensure you know how to install packages (hint: TexStudio does it automatically).
+- You must have the LaTeXTools package for Sublime Text installed:
+    - Command Palette 🡒 Package Control: Install Package 🡒 LaTeXTools
+    - Close and re-open Sublime Text after the installation is finished
+    - Help: Preferences 🡒 Package Settings 🡒 LaTeXTools 🡒 Documentation
+
+Ubuntu
+------
+*On Ubuntu 16.04 and 18.04:*
+
+- Install TeXLive (from https://www.tug.org/texlive/acquire-netinstall.html, not via Terminal!):
+    + Download and unpack the .tar.gz
+    + Help: https://www.tug.org/texlive/quickinstall.html
+    + Open Terminal and cd into the unpacked `install-tl-*` folder
+    ```{bash, eval = FALSE}
+    sudo su
+    ./install-tl
+    i
+    PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH
+    apt-get install latexmk
+    ```
+- Install extra things that aren't in TexLive:
+```{bash, eval = FALSE}
+sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex-extra
+```
+- In Sublime Text, go to Preferences 🡒 Package Settings 🡒 LaTeXTools 🡒 Check System
+    - `xelatex` and `biber` might be missing and `display_log` might be false, but everything else should be there and be green
+- Test that it works:
+    - Open a Latex file and compile it with the build system (Tools 🡒 Build System 🡒 LaTeX)
+    - Compile it via Ctrl+C+B (the key binding doesn't work until you've made the association between the tex file and the Latex build system which happens when you run it via Tools 🡒 Build System 🡒 LaTeX)
+- If you have a bibliography, you need to copy the bibstyle file (eg apa.bst) into the working directory
+- For more key bindings, see Preferences 🡒 Package Settings 🡒 LaTeX Tools 🡒 Key Bindings-Default
+    - eg Ctrl+L,W for word count
+- To turn off the "NO BIB FILE" Warning:
+    - Place cursor in an open .tex file
+    - Ctrl-L,T,A,C (ie press Ctrl+L, then press t, then press a, then press c)
+
+Windows
+-------
+*On Windows 7, 8 and 10:*
+
+- Must have Sumatra PDF installed (https://www.sumatrapdfreader.org/free-pdf-reader.html)
+- Compile: Ctrl+C+B
+
+[⇦ Back](../sublime_text.html)
+
+</font>
