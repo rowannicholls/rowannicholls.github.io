@@ -18,7 +18,7 @@ macOS
 -----
 - Create an R Build System by creating a new Sublime-Build file:
     - Sublime-Build files tell Sublime Text how you want to run a script when you hit Ctrl+B
-    - Tools 🡒 Build System 🡒 New Build System...
+    - Tools ⭢ Build System ⭢ New Build System...
     - In the "untitled.sublime-build" that appears, replace everything with
     ```{json}
     {
@@ -32,7 +32,34 @@ macOS
 Ubuntu
 ------
 + Once R has been installed (`sudo apt-get install r-base`) it works in Sublime Text with Ctrl+B
-- If the R-IDE package is installed (it is needed if you want to work with R Markdown) this behaviour changes (the default build system becomes R-IDE and its 'Exec' function). To fix this, go to Tools 🡒 Build With... and select "R" to re-teach Sublime Text what build system should be used as the automatic one.
+- If the R-IDE package is installed (it is needed if you want to work with R Markdown) this behaviour changes (the default build system becomes R-IDE and its 'Exec' function). To fix this, go to Tools ⭢ Build With... and select "R" to re-teach Sublime Text what build system should be used as the automatic one.
+
+Linting
+=======
+- What is linting? Why should I do it in R? Read more about that kind of stuff [here](../R/intro/linting.html)
+- If you know what linting is and want to implement it for R in Sublime Text, take a look at the follow steps (I could get it working on macOS Catalina but not on Ubuntu 18.04):
+
+1. Install the **SublimeLinter** package from Package Control (install that if you have not already done so) in Sublime Text:
+    - Using the mouse: Preferences ⭢ Package Control ⭢ Install Package ⭢ search for "SublimeLinter" ⭢ enter
+    - Using the keyboard: Ctrl+Shift+P (Cmd+Shift+P on macOS) to open the Command Palette ⭢ search for "Package Control: Install Package" ⭢ enter ⭢ search for "SublimeLinter" ⭢ enter
+2. Because SublimeLinter is a linter *framework* and not a linter itself, you now need to install an R linter separately. And you need to install this linter *both* in R and in Sublime Text:
+    - In R (eg in RStudio), install the `lintr` package with `install.packages("lintr", repos = "http://cran.us.r-project.org")`
+    - In Sublime Text, install the `SublimeLinter-contrib-lintr` package
+        - Note that this is not always available in Package Control, so you can download it manually from [here](https://github.com/jimhester/SublimeLinter-contrib-lintr). Unzip it and move the folder into your packages folder (find where this is by opening Preferences ⭢ Browse Packages...).
+3. You now need to tell Sublime Text where your `lintr` R package is installed:
+    - Open R and run `.libPaths()` to get the path to your R packages, including to `lintr`
+    - Open the SublimeLinter settings (Preferences ⭢ Package Settings ⭢ SublimeLinter ⭢ Settings) and paste the following into the user settings (on the right-hand-side) between the curly brackets that will already be there:
+    ```{json}
+    "paths": {
+        "linux": [],
+        "osx": [],
+        "windows": []
+    }
+    ```
+    - Paste the path to your R packages in next to the relevant OS name
+3. To see the results of the linting every time you press save:
+    - Open Preferences ⭢ Package Settings ⭢ SublimeLinter ⭢ Settings
+    - Add to the user settings (on the right-hand-side): `"show_panel_on_save": "view"`
 
 [⇦ Back](../sublime_text.html)
 

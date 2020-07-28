@@ -14,13 +14,13 @@ output:
 To render R Markdown:
 
 - The R-IDE and LSP packages need to be installed in Sublime Text:
-    - Command Palette 🡒 Package Control: Install Package 🡒 R-IDE
-    - Command Palette 🡒 Package Control: Install Package 🡒 LSP
+    - Command Palette ⭢ Package Control: Install Package ⭢ R-IDE
+    - Command Palette ⭢ Package Control: Install Package ⭢ LSP
 - Render with R-IDE to check that it works:
     - Open an .Rmd file
-    - From the menu bar: R-IDE 🡒 Render R Markdown
+    - From the menu bar: R-IDE ⭢ Render R Markdown
 - Create an R Markdown build system:
-    - Tools 🡒 Build System 🡒 New Build System...
+    - Tools ⭢ Build System ⭢ New Build System...
     - In the "untitled.sublime-build" that appears, replace everything with:
     ```{json}
     {
@@ -33,7 +33,7 @@ To render R Markdown:
         - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`
 - Render with the Build System:
     - Open an .Rmd file
-    - From the menu bar: Tools 🡒 Build With...
+    - From the menu bar: Tools ⭢ Build With...
     - From then on you can just build with Ctrl+B/Cmd+B as the default build system will have been set when you used "Build With..."
 
 [⇦ Back](../sublime_text.html)

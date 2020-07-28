@@ -235,6 +235,24 @@ d = [True, False, True, True, False]
 e = [1, 2.3, 'Hello, World', False]
 ```
 
+Zero-Indexing
+-------------
+One of the most infamous facts about Python is that it uses **zero-indexing**. This means that it starts counting from 0 as opposed to from 1. Thus, when we want to refer to an element in a list (known as *indexing* the list) we need to use the number one lower than it's actual position.
+
+Indexing a list is done by using square brackets around the index number of the element you want and appending that to the list's variable name:
+
+```{python}
+# Create a list of strings
+ls = ['how', 'now', 'brown', 'cow']
+# Get the first element (which is at index 0)
+ls[0]
+```
+
+```{python}
+# Get the second element (which is at index 1)
+ls[1]
+```
+
 Built-In Functions
 ==================
 Functions are bits of code that can be used again and again just by *calling* the function's name. You can tell that a function is being used because it will have round brackets - ().

@@ -57,12 +57,20 @@ You can find out where on your computer the packages are installed by running `.
 
 Updating R
 ----------
-Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:
+Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed from the terminal with:
 
-```{bash eval = FALSE}
+```{bash, eval = FALSE}
 R --version
 ```
 
+To update R and RStudio manually, download and install the latest version from [the R website](https://www.r-project.org/). When you re-start RStudio it should automatically use this latest version. Note that if you are moving to a new major version (eg from version 3.5 to version 4.0) then you will have to re-install all your packages. Trying to simply update them will not work; the easiest thing to do is to delete all of them completely and then re-install from scratch. To find where they are installed on your computer, run `.libPaths()` in R and open the folder that is returned. Delete all the folders in there.
+
+> On Ubuntu the folder is usually `/usr/local/lib/R/site-library`  
+> On macOS the folder is usually `/Library/Frameworks/R.framework/Versions/<version>/Resources/library`
+
+If you are using Ubuntu, you have the option of updating R from the terminal (there is a package called `updateR` that allows you to update R from the terminal on macOS but it doesn't always work). Instructions on how to do this are below. Note that you will still need to re-install your packages if you are moving to a new major version number.
+
+### Updating R from the Terminal on Ubuntu
 If you are using Ubuntu and aren't using RStudio, update R by first opening `/etc/apt/sources.list` and adding whichever of the following lines corresponds to your Ubuntu version:
 
 ```{bash eval = FALSE}
@@ -82,8 +90,6 @@ sudo apt-get install r-base r-base-dev
 # To update any R libraries installed via APT:
 sudo apt-get upgrade
 ```
-
-If you are moving to a new major version (eg from 3.5 to 4.0) then not all packages will work, even if you attempt to update them. The easiest thing to do is to delete all of them (ie delete all folders inside the /usr/local/lib/R/site-library folder) and re-install them from scratch.
 
 # Import a Library
 When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.

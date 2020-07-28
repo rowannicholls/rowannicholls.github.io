@@ -192,7 +192,7 @@ summary {
 <li>Python works immediately with SublimeREPL in macOS, but double check if it's Python 2 or Python 3</li>
 <li>Create a custom build file for Python 3:
 <ul>
-<li>Tools 🡒 Build System 🡒 New Build System...</li>
+<li>Tools ⭢ Build System ⭢ New Build System...</li>
 <li>Use the following:</li>
 </ul>
 <pre class="json"><code>{
@@ -229,7 +229,7 @@ alias python=python3</code></pre>
 <li>Use the default Sublime Text build functionality:
 <ul>
 <li>This usually doesn't work out-of-the-box</li>
-<li>Go to Tools 🡒 Build System 🡒 New Build System...</li>
+<li>Go to Tools ⭢ Build System ⭢ New Build System...</li>
 <li>Replace all text with:</li>
 </ul>
 <pre class="json"><code>{
@@ -242,8 +242,8 @@ alias python=python3</code></pre>
 </ul></li>
 <li>Use SublimeREPL:
 <ul>
-<li>Install SublimeREPL via Package Control (Ctrl+Shift+P 🡒 search for &quot;install package&quot; 🡒 search for &quot;SublimeREPL&quot;)</li>
-<li>Tools 🡒 SublimeREPL 🡒 Python 🡒 Python - RUN current file (you can optionally create a <a href="key_bindings.html">user key binding</a> to do this via a keyboard shortcut)</li>
+<li>Install SublimeREPL via Package Control (Ctrl+Shift+P ⭢ search for &quot;install package&quot; ⭢ search for &quot;SublimeREPL&quot;)</li>
+<li>Tools ⭢ SublimeREPL ⭢ Python ⭢ Python - RUN current file (you can optionally create a <a href="key_bindings.html">user key binding</a> to do this via a keyboard shortcut)</li>
 <li>Shift+Alt+8 creates a lower window which you can drag the Python output console to</li>
 </ul></li>
 <li>Python files can also be run 'manually' from a Terminus terminal, look in <a href="packages.html">here</a> for more info on installing that</li>
@@ -255,7 +255,7 @@ alias python=python3</code></pre>
 Check console and 'getenv_command' setting
 WARN: Falling back to SublimeText environment</code></pre>
 <ul>
-<li>Open Preferences 🡒 Package Settings 🡒 SublimeREPL 🡒 Settings - User</li>
+<li>Open Preferences ⭢ Package Settings ⭢ SublimeREPL ⭢ Settings - User</li>
 <li>Enter the following:</li>
 </ul>
 <pre class="json"><code>    {
@@ -275,12 +275,12 @@ WARN: Falling back to SublimeText environment</code></pre>
 <li>Test that SublimeREPL is working:
 <ul>
 <li>Open a .py file or create a new one and save it</li>
-<li>In Sublime Text: Tools 🡒 SublimeREPL 🡒 Python 🡒 Python - RUN current file</li>
+<li>In Sublime Text: Tools ⭢ SublimeREPL ⭢ Python ⭢ Python - RUN current file</li>
 <li>This should (a) run without a problem and (b) show that you are running Python 3, not Python 2</li>
 </ul></li>
 <li>If you ARE running Python 2, change it:
 <ul>
-<li>Tools 🡒 Build System 🡒 New Build System...</li>
+<li>Tools ⭢ Build System ⭢ New Build System...</li>
 <li>Replace all text with the following (but choose the right path to your Python executable!):</li>
 </ul>
 <pre class="json"><code>{
@@ -290,12 +290,12 @@ WARN: Falling back to SublimeText environment</code></pre>
 }</code></pre>
 <ul>
 <li>Save it to the default location with a meaningful name like &quot;python3.sublime-build&quot;</li>
-<li>Test that it works with Tools 🡒 Build System 🡒 python3, then Tools 🡒 Build</li>
+<li>Test that it works with Tools ⭢ Build System ⭢ python3, then Tools ⭢ Build</li>
 </ul></li>
 <li>You might need to change the Environment Variable Path:
 <ul>
-<li>Windows 7: Start 🡒 right-click on Computer 🡒 Properties 🡒 Advanced system settings 🡒 Environment Variables...</li>
-<li>Windows 10: Search &quot;environ&quot; from the start button 🡒 Edit the system environment variables 🡒 Environment Variables...</li>
+<li>Windows 7: Start ⭢ right-click on Computer ⭢ Properties ⭢ Advanced system settings ⭢ Environment Variables...</li>
+<li>Windows 10: Search &quot;environ&quot; from the start button ⭢ Edit the system environment variables ⭢ Environment Variables...</li>
 <li>Append the following to the top one (Path):</li>
 </ul>
 <pre class="text"><code>;C:/Users/&lt;username&gt;/AppData/Local/Programs/Python/Python36-32/</code></pre></li>
@@ -326,7 +326,7 @@ print(mpl.get_configdir())</code></pre>
 <ul>
 <li>After this is done, try to run the code again
 <ul>
-<li>It might say <code>'latex' is not recognized as an internal or external command, operable program or batch file.</code> If this is the case, open Preferences 🡒 Package Settings 🡒 SublimeREPL 🡒 Settings - User</li>
+<li>It might say <code>'latex' is not recognized as an internal or external command, operable program or batch file.</code> If this is the case, open Preferences ⭢ Package Settings ⭢ SublimeREPL ⭢ Settings - User</li>
 <li>Change the PATH to the following:</li>
 </ul>
 <pre class="text"><code>&quot;default_extend_env&quot;: {&quot;PATH&quot;:&quot;C\\Users\\&lt;username&gt;\\AppData\\Local\\Programs\\Python\\Python36-32\\;C:\\Program Files (x86)\\MiKTeX 2.9\\miktex\\bin&quot;},</code></pre></li>

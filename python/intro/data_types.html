@@ -192,7 +192,9 @@ summary {
 <li><a href="#strings"><span class="toc-section-number">5</span> Strings</a></li>
 <li><a href="#booleans"><span class="toc-section-number">6</span> Booleans</a></li>
 <li><a href="#nulls"><span class="toc-section-number">7</span> Nulls</a></li>
-<li><a href="#lists"><span class="toc-section-number">8</span> Lists</a></li>
+<li><a href="#lists"><span class="toc-section-number">8</span> Lists</a><ul>
+<li><a href="#zero-indexing"><span class="toc-section-number">8.1</span> Zero-Indexing</a></li>
+</ul></li>
 <li><a href="#built-in-functions"><span class="toc-section-number">9</span> Built-In Functions</a></li>
 <li><a href="#type-conversion"><span class="toc-section-number">10</span> Type Conversion</a></li>
 <li><a href="#summary"><span class="toc-section-number">11</span> Summary</a></li>
@@ -220,9 +222,9 @@ summary {
 </div>
 <div id="comments" class="section level1">
 <h1><span class="header-section-number">2</span> Comments</h1>
-<p>If you’re brand new to Python and coding, the first thing to know about is <strong><em>comments</em></strong>.</p>
+<p>If you're brand new to Python and coding, the first thing to know about is <strong><em>comments</em></strong>.</p>
 <p>These are lines in your program that do absolutely nothing - they are ignored when your program is run. But they are <strong>very</strong> useful for making notes for yourself and, especially, for others who will have to read your code.</p>
-<p>You write a comment by starting your line with a hash “#”:</p>
+<p>You write a comment by starting your line with a hash &quot;#&quot;:</p>
 <pre class="python"><code># This is a comment.
 # It will be ignored by your program.
 # But you can use it to write notes that explain what you are doing.</code></pre>
@@ -236,29 +238,29 @@ spans multiple lines
 This is another multi-
 line comment
 '''</code></pre>
-<p>Technically, using three sets of quotation marks like this doesn’t create a comment as such, it creates a <em>string</em> that is simply not used anywhere (see the “Strings” section below). However, this is still used as a recognised method for commenting; it has even <a href="https://twitter.com/gvanrossum/status/112670605505077248">been endorsed by the creator of Python</a>.</p>
+<p>Technically, using three sets of quotation marks like this doesn't create a comment as such, it creates a <em>string</em> that is simply not used anywhere (see the &quot;Strings&quot; section below). However, this is still used as a recognised method for commenting; it has even <a href="https://twitter.com/gvanrossum/status/112670605505077248">been endorsed by the creator of Python</a>.</p>
 <blockquote>
-<p>The IDE or text editor you are using to write your Python code will probably have a keyboard shortcut to quickly comment and uncomment multiple lines of code at once. It’s worthwhile taking a look to see if it does!</p>
+<p>The IDE or text editor you are using to write your Python code will probably have a keyboard shortcut to quickly comment and uncomment multiple lines of code at once. It's worthwhile taking a look to see if it does!</p>
 </blockquote>
-<p>Don’t underestimate the power of comments! Just because your code makes sense to you now while you’re writing it doesn’t mean it always will. It’s surprisingly common for someone to re-open a piece of code they haven’t worked on for a considerable period of time only to have completely forgotten what their thought process was. So use your comments as notes to yourself! Similarly, if someone else needs to use your code for something they will need to work out what it does; an almost impossible task if you don’t explain yourself…</p>
+<p>Don't underestimate the power of comments! Just because your code makes sense to you now while you're writing it doesn't mean it always will. It's surprisingly common for someone to re-open a piece of code they haven't worked on for a considerable period of time only to have completely forgotten what their thought process was. So use your comments as notes to yourself! Similarly, if someone else needs to use your code for something they will need to work out what it does; an almost impossible task if you don't explain yourself...</p>
 </div>
 <div id="numbers" class="section level1">
 <h1><span class="header-section-number">3</span> Numbers</h1>
 <div id="integers" class="section level2">
 <h2><span class="header-section-number">3.1</span> Integers</h2>
-<p>An “int” is a whole number. If you type one in Python the programme will recognise what it is, but it won’t do anything with it unless you tell it to.</p>
+<p>An &quot;int&quot; is a whole number. If you type one in Python the programme will recognise what it is, but it won't do anything with it unless you tell it to.</p>
 <pre class="python"><code># This is just a number
 27</code></pre>
 <pre><code>## 27</code></pre>
-<p>If you aren’t familiar with reading code, know that the first (grey) box contains the Python code that we wrote while the second (white) box contains the output of that code.</p>
-<p>You can add two whole numbers together or do other arithmetic operations on them. Depending on the programme you are using to run Python you may or may not see any output (but even if you don’t see anything the addition will still have happened in the background).</p>
+<p>If you aren't familiar with reading code, know that the first (grey) box contains the Python code that we wrote while the second (white) box contains the output of that code.</p>
+<p>You can add two whole numbers together or do other arithmetic operations on them. Depending on the programme you are using to run Python you may or may not see any output (but even if you don't see anything the addition will still have happened in the background).</p>
 <pre class="python"><code># You can use numbers to do arithmetic
 5 + 7</code></pre>
 <pre><code>## 12</code></pre>
 </div>
 <div id="floats" class="section level2">
 <h2><span class="header-section-number">3.2</span> Floats</h2>
-<p>A “floating point number” is a number with a decimal point in it, so-called because the way Python stores these value in memory is reminiscent of numbers ‘floating’ around a decimal point.</p>
+<p>A &quot;floating point number&quot; is a number with a decimal point in it, so-called because the way Python stores these value in memory is reminiscent of numbers 'floating' around a decimal point.</p>
 <pre class="python"><code># This is just a number
 27.03</code></pre>
 <pre><code>## 27.03</code></pre>
@@ -281,7 +283,7 @@ z = x + y
 # If you don't assign the answer to a variable, it will output to the console:
 x + y</code></pre>
 <pre><code>## 12</code></pre>
-<p>Here’s something that often confuses beginner coders: the statement <code>x = x + 1</code>. In mathematics, it doesn’t make any sense! There’s no value of <code>x</code> that will satisfy the equation! However, in programming, this statement is not an equation but an <strong><em>assignment</em></strong> - you are giving a variable <code>x</code> a value that is equal to that of an existing variable <code>x</code> plus one:</p>
+<p>Here's something that often confuses beginner coders: the statement <code>x = x + 1</code>. In mathematics, it doesn't make any sense! There's no value of <code>x</code> that will satisfy the equation! However, in programming, this statement is not an equation but an <strong><em>assignment</em></strong> - you are giving a variable <code>x</code> a value that is equal to that of an existing variable <code>x</code> plus one:</p>
 <pre class="r"><code># Give the variable 'x' a value of six
 x = 6
 # Give the variable 'x' a value that is equal to the value of 'x', plus one
@@ -313,7 +315,7 @@ height_cm = 170</code></pre>
 </div>
 <div id="strings" class="section level1">
 <h1><span class="header-section-number">5</span> Strings</h1>
-<p>“Strings” are characters that have been ‘strung’ together to form words. You can write a string by using single or double quotation marks, or sets of three double or single quotation marks:</p>
+<p>&quot;Strings&quot; are characters that have been 'strung' together to form words. You can write a string by using single or double quotation marks, or sets of three double or single quotation marks:</p>
 <pre class="python"><code># These are strings, representing text
 my_string = &quot;Hello, World!&quot;
 my_string = 'Hello, World!'
@@ -341,19 +343,19 @@ x + 2</code></pre>
 </div>
 <div id="booleans" class="section level1">
 <h1><span class="header-section-number">6</span> Booleans</h1>
-<p>These are binary “trues” and “falses”:</p>
+<p>These are binary &quot;trues&quot; and &quot;falses&quot;:</p>
 <pre class="python"><code>passed_test = True
 largest_prime_number = False</code></pre>
-<p>Note that the values “True” and “False” above are not strings because we have not used quotation marks. They are treated as their own object type by Python.</p>
-<p>Booleans become useful when we start to use “if statements” later on. Essentially, they are used to test things: we can ask Python <strong>if</strong> something is true or not.</p>
+<p>Note that the values &quot;True&quot; and &quot;False&quot; above are not strings because we have not used quotation marks. They are treated as their own object type by Python.</p>
+<p>Booleans become useful when we start to use &quot;if statements&quot; later on. Essentially, they are used to test things: we can ask Python <strong>if</strong> something is true or not.</p>
 </div>
 <div id="nulls" class="section level1">
 <h1><span class="header-section-number">7</span> Nulls</h1>
-<p>Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing it becomes useful when you’re dealing with missing data.</p>
+<p>Nulls are, as the name suggests, equal to nothing. While it may seem weird that you can set a variable to nothing it becomes useful when you're dealing with missing data.</p>
 <p>In Python, you have two different null characters:</p>
 <ul>
 <li><code>None</code> is the most basic: something has been defined but no value has been assigned to it</li>
-<li><code>NaN</code> or <code>nan</code> (‘not-a-number’) means that something has been defined as a number but no value has been given to it. If you are using something called Pandas to import data, it will use <code>NaN</code> for all missing data. Note that <code>NaN</code> does not exist in Python’s standard library, you need to import it from a library called “Numpy”:</li>
+<li><code>NaN</code> or <code>nan</code> ('not-a-number') means that something has been defined as a number but no value has been given to it. If you are using something called Pandas to import data, it will use <code>NaN</code> for all missing data. Note that <code>NaN</code> does not exist in Python's standard library, you need to import it from a library called &quot;Numpy&quot;:</li>
 </ul>
 <pre class="python"><code>from numpy import NaN
 
@@ -362,7 +364,7 @@ not_a_number = NaN</code></pre>
 </div>
 <div id="lists" class="section level1">
 <h1><span class="header-section-number">8</span> Lists</h1>
-<p>As the name suggests, a ‘list’ is a collection of objects. These can be numbers, strings, Booleans or a mixture, and are created by using square brackets:</p>
+<p>As the name suggests, a 'list' is a collection of objects. These can be numbers, strings, Booleans or a mixture, and are created by using square brackets:</p>
 <pre class="python"><code># A list of integers
 a = [4, 5, 6, 7, 8]
 # A list of floating-point numbers
@@ -373,15 +375,28 @@ c = ['One', 'Two', 'Three']
 d = [True, False, True, True, False]
 # A list of different data types
 e = [1, 2.3, 'Hello, World', False]</code></pre>
+<div id="zero-indexing" class="section level2">
+<h2><span class="header-section-number">8.1</span> Zero-Indexing</h2>
+<p>One of the most infamous facts about Python is that it uses <strong>zero-indexing</strong>. This means that it starts counting from 0 as opposed to from 1. Thus, when we want to refer to an element in a list (known as <em>indexing</em> the list) we need to use the number one lower than it's actual position.</p>
+<p>Indexing a list is done by using square brackets around the index number of the element you want and appending that to the list's variable name:</p>
+<pre class="python"><code># Create a list of strings
+ls = ['how', 'now', 'brown', 'cow']
+# Get the first element (which is at index 0)
+ls[0]</code></pre>
+<pre><code>## 'how'</code></pre>
+<pre class="python"><code># Get the second element (which is at index 1)
+ls[1]</code></pre>
+<pre><code>## 'now'</code></pre>
+</div>
 </div>
 <div id="built-in-functions" class="section level1">
 <h1><span class="header-section-number">9</span> Built-In Functions</h1>
-<p>Functions are bits of code that can be used again and again just by <em>calling</em> the function’s name. You can tell that a function is being used because it will have round brackets - ().</p>
+<p>Functions are bits of code that can be used again and again just by <em>calling</em> the function's name. You can tell that a function is being used because it will have round brackets - ().</p>
 <p>The first function you should know about is the <code>print()</code> function. This function takes a string and outputs it (<strong>prints</strong> it) to the console:</p>
 <pre class="python"><code>print('Hello, World!')</code></pre>
 <pre><code>## Hello, World!</code></pre>
 <p>See what happened there? We <em>called</em> the function <code>print()</code> by using its name and round brackets. Then we told it what to print - the string <code>'Hello, World!'</code>. This string is the <em>argument</em> of the function. You <em>pass</em> an <em>argument</em> to a function.</p>
-<p>Let’s look at a different function, <code>type()</code>. This can take any piece of data as an argument and will <em>return</em> (ie output) the <strong>type</strong> of data that the argument is. We can then print that answer to the console with the <code>print()</code> function. Take a look:</p>
+<p>Let's look at a different function, <code>type()</code>. This can take any piece of data as an argument and will <em>return</em> (ie output) the <strong>type</strong> of data that the argument is. We can then print that answer to the console with the <code>print()</code> function. Take a look:</p>
 <pre class="python"><code># An &quot;int&quot; is an integer - a whole number
 print(type(7))</code></pre>
 <pre><code>## &lt;class 'int'&gt;</code></pre>

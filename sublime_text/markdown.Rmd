@@ -13,14 +13,14 @@ output:
 
 Packages to Install
 ===================
-Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or Shift+Cmd+P on macOS) 🡒 search for "Package Control: Install Package" 🡒 search for each package in turn. Close and re-open Sublime Text after each one finishes installing.
+Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or Shift+Cmd+P on macOS) ⭢ search for "Package Control: Install Package" ⭢ search for each package in turn. Close and re-open Sublime Text after each one finishes installing.
 
 - **MarkdownEditing**
     - A general Markdown plugin
     + *Note:* this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) (see below) to fix it.
     - To change the colour scheme of Markdown text windows:
         - Have the window with the undesirable colour scheme active
-        - Preferences 🡒 Settings - Syntax Specific 🡒 add the following into the 'User' settings (left-hand side):
+        - Preferences ⭢ Settings - Syntax Specific ⭢ add the following into the 'User' settings (left-hand side):
         ```{json}
         {
             "extensions":
@@ -33,7 +33,7 @@ Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or 
             "translate_tabs_to_spaces": false
         }
         ```
-    - If it starts to think that .txt files are Markdown file, open a .txt file (ie have that window active) and go: View 🡒 Syntax 🡒 Open all with current extension as... 🡒 your syntax choice
+    - If it starts to think that .txt files are Markdown file, open a .txt file (ie have that window active) and go: View ⭢ Syntax ⭢ Open all with current extension as... ⭢ your syntax choice
 - **MarkdownPreview**
     - View rendered Markdown in your browser
     - You can create a [user key binding](key_bindings.html) (see below) to immediately open the current Markdown file as a rendered HTML page in your web browser
@@ -43,7 +43,7 @@ Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or 
 
 Key Bindings
 ============
-To create custom key bindings, go to Preferences 🡒 Key Bindings and edit the right-hand-side, eg by entering the following:
+To create custom key bindings, go to Preferences ⭢ Key Bindings and edit the right-hand-side, eg by entering the following:
 
 ```{json}
 [
@@ -69,8 +69,8 @@ Rendering Maths
 How to have Latex equations in your Markdown be rendered by MarkdownPreview in Sublime Text:
 
 - Open the MarkdownPreview Package Settings:
-    - *macOS:* Menu bar 🡒 Sublime Text 🡒 Preferences 🡒 Package Settings 🡒 Markdown Preview 🡒 Settings
-    - *Linux/Windows:* Preferences 🡒 Package Settings 🡒 Markdown Preview 🡒 Settings
+    - *macOS:* Menu bar ⭢ Sublime Text ⭢ Preferences ⭢ Package Settings ⭢ Markdown Preview ⭢ Settings
+    - *Linux/Windows:* Preferences ⭢ Package Settings ⭢ Markdown Preview ⭢ Settings
 - In the User settings (on the right-hand side), you need to add two things:
 	- JavaScript settings to point Sublime Text to information about MathJax:
     ```{json}
@@ -192,8 +192,8 @@ How to have Latex equations in your Markdown be rendered by MarkdownPreview in S
 MarkdownPreview uses MathJax to turn Latex equations into HTML. The settings for how this works are contained in two files:
 
 - The **MathJax JavaScript configuration file** that gets installed by default when you install the MarkdownPreview package. This is hidden on your system so it can't be opened normally (even if you un-hide hidden files or search for it in the terminal) so use the PackageResourceViewer package:
-    - Install it via Command Palette 🡒 search for "Package Control: Install Package" 🡒 search for "PackageResourceViewer"
-    - Use it via Command Palette 🡒 search for "PackageResourceViewer: Open Resource" 🡒 MarkdownPreview 🡒 js/ 🡒 math_config.js
+    - Install it via Command Palette ⭢ search for "Package Control: Install Package" ⭢ search for "PackageResourceViewer"
+    - Use it via Command Palette ⭢ search for "PackageResourceViewer: Open Resource" ⭢ MarkdownPreview ⭢ js/ ⭢ math_config.js
 - The **Markdown Preview Package Settings** which can be opened from inside Sublime Text but for reference are located here:
     - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User/MarkdownPreview.sublime-settings`
     - *Linux:* `/home/<username>/.config/sublime-text-3/Packages/User/MarkdownPreview.sublime-settings`

@@ -17,7 +17,7 @@ Create a Pandoc Build System:
 
 - Create a new Sublime-Build file:
     - Sublime-Build files tell Sublime Text how you want to build a document when you hit Ctrl+B
-    - Tools 🡒 Build System 🡒 New Build System...
+    - Tools ⭢ Build System ⭢ New Build System...
     - In the "untitled.sublime-build" that appears, replace everything with
     ```{json}
     {
@@ -26,7 +26,7 @@ Create a Pandoc Build System:
     }
     ```
 - Save as `Markdown to PDF.sublime-build`
-- Tools 🡒 Build System 🡒 select "Automatic" to ensure Sublime picks your new Markdown build system
+- Tools ⭢ Build System ⭢ select "Automatic" to ensure Sublime picks your new Markdown build system
 - With a .md file open, hit Ctrl+B
 - You must have Sumatra PDF installed for this to work (https://www.sumatrapdfreader.org/free-pdf-reader.html)
 

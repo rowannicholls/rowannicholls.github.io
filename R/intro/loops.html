@@ -199,7 +199,7 @@ summary {
 <p><a href="../../R.html">⇦ Back</a></p>
 <div id="why-use-loops" class="section level1">
 <h1><span class="header-section-number">1</span> Why Use Loops?</h1>
-<p>As an example, let’s use the Motor Trend car road test dataset (which is one of the datasets that comes pre-loaded in R). The first six rows look like this:</p>
+<p>As an example, let's use the Motor Trend car road test dataset (which is one of the datasets that comes pre-loaded in R). The first six rows look like this:</p>
 <table class="table table-striped table-hover table-condensed" style="margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
@@ -471,7 +471,7 @@ Valiant
 </tr>
 </tbody>
 </table>
-<p>If you have data in a data frame (which the above data is) or in a vector (and each column in the above data frame is a vector) then you can perform operations on an entire column in one go. For example, we can convert the weight of the cars in the above dataset (this information is stored in the “wt” column) from ‘thousands of pounds’ into ‘thousands of kilograms’ by dividing by 2.205 like this:</p>
+<p>If you have data in a data frame (which the above data is) or in a vector (and each column in the above data frame is a vector) then you can perform operations on an entire column in one go. For example, we can convert the weight of the cars in the above dataset (this information is stored in the &quot;wt&quot; column) from 'thousands of pounds' into 'thousands of kilograms' by dividing by 2.205 like this:</p>
 <pre class="r"><code>df &lt;- mtcars$wt / 2.205
 print(df)</code></pre>
 <pre><code>## [1] 1.188209 1.303855 1.052154 1.458050 1.560091 1.569161</code></pre>
@@ -479,7 +479,7 @@ print(df)</code></pre>
 </div>
 <div id="for-loops" class="section level1">
 <h1><span class="header-section-number">2</span> For Loops</h1>
-<p>A ‘for loop’ will repeat the same operations a given number of times. You can tell the programme to perform the same action FOR a certain number of repetitions. The syntax is as follows:</p>
+<p>A 'for loop' will repeat the same operations a given number of times. You can tell the programme to perform the same action FOR a certain number of repetitions. The syntax is as follows:</p>
 <pre class="r"><code>for (i in 1:3) {
     print(i)
 }</code></pre>
@@ -489,10 +489,10 @@ print(df)</code></pre>
 <p>Note that you start with the word <code>for</code>, followed by an expression in round brackets then one or more functions between curly brackets. This tells the programme:</p>
 <ul>
 <li>For each number in the range 1 to 3</li>
-<li>Assign that number to the variable ‘i’</li>
+<li>Assign that number to the variable 'i'</li>
 <li>Then print that variable</li>
 </ul>
-<p>Hence the output of this script is the numbers ‘1’, ‘2’ and ‘3’ in order.</p>
+<p>Hence the output of this script is the numbers '1', '2' and '3' in order.</p>
 <div id="vectors" class="section level2">
 <h2><span class="header-section-number">2.1</span> Vectors</h2>
 <p>This works for vectors as well:</p>
@@ -510,7 +510,7 @@ for (idx in 1:length(ls)) {
 <pre><code>## [1] 1
 ## [1] 2
 ## [1] 3</code></pre>
-<p><strong>However</strong>, the above code is <em>not good practice</em> because it contains superfluous information: we <em>know</em> you want to start at “1” so there’s no need to specify “1:length(ls)”. Rather, use the <code>seq_along()</code> function which always starts at the beginning of the list and ends at the end:</p>
+<p><strong>However</strong>, the above code is <em>not good practice</em> because it contains superfluous information: we <em>know</em> you want to start at &quot;1&quot; so there's no need to specify &quot;1:length(ls)&quot;. Rather, use the <code>seq_along()</code> function which always starts at the beginning of the list and ends at the end:</p>
 <pre class="r"><code>for (idx in seq_along(ls)) {
     print(idx)
 }</code></pre>
@@ -520,7 +520,7 @@ for (idx in 1:length(ls)) {
 </div>
 <div id="data-frame-columns" class="section level2">
 <h2><span class="header-section-number">2.2</span> Data Frame Columns</h2>
-<p>Given the same ‘mtcars’ data frame as above, we can iterate over each column directly:</p>
+<p>Given the same 'mtcars' data frame as above, we can iterate over each column directly:</p>
 <pre class="r"><code>for (column in mtcars) {
     print(column)
 }</code></pre>
@@ -535,7 +535,7 @@ for (idx in 1:length(ls)) {
 ## [1] 1 1 1 0 0 0
 ## [1] 4 4 4 3 3 3
 ## [1] 4 4 1 1 2 1</code></pre>
-<p>Sometimes it makes more sense to iterate over the <em>number</em> of columns. This allows us to use the index of each column to access the corresponding information in a different object. For example, if we want to print each column’s <em>heading</em> and also print each column’s <em>contents</em> we need to tell the script to print the ith column heading and then to print the ith column’s contents for each i from 1 to the number of columns in the data frame:</p>
+<p>Sometimes it makes more sense to iterate over the <em>number</em> of columns. This allows us to use the index of each column to access the corresponding information in a different object. For example, if we want to print each column's <em>heading</em> and also print each column's <em>contents</em> we need to tell the script to print the ith column heading and then to print the ith column's contents for each i from 1 to the number of columns in the data frame:</p>
 <pre class="r"><code>for (i in seq_along(mtcars)) {
     print(colnames(mtcars)[i])
     print(mtcars[[i]])
@@ -565,7 +565,7 @@ for (idx in 1:length(ls)) {
 </div>
 <div id="data-frame-rows" class="section level2">
 <h2><span class="header-section-number">2.3</span> Data Frame Rows</h2>
-<p>Instead of iterating over a data frame’s columns we can look at each of its <em>rows</em> in turn like this:</p>
+<p>Instead of iterating over a data frame's columns we can look at each of its <em>rows</em> in turn like this:</p>
 <pre class="r"><code>for (i in 1:nrow(mtcars)) {
     print(mtcars[i, ])
 }</code></pre>
@@ -601,7 +601,7 @@ for (idx in 1:length(ls)) {
 </div>
 <div id="while-loops" class="section level1">
 <h1><span class="header-section-number">3</span> While Loops</h1>
-<p>A ‘while loop’ will continue performing a set of operations until a condition is met. Let’s imagine you have a jug that is 1 litre in size and you are pouring 150 ml glasses of water into it. You want to continue doing this as many times as you can without letting the jug overflow. Let’s set up the scenario:</p>
+<p>A 'while loop' will continue performing a set of operations until a condition is met. Let's imagine you have a jug that is 1 litre in size and you are pouring 150 ml glasses of water into it. You want to continue doing this as many times as you can without letting the jug overflow. Let's set up the scenario:</p>
 <pre class="r"><code>water_in_jug &lt;- 0
 capacity &lt;- 1000
 glass_size &lt;- 150
@@ -619,7 +619,7 @@ print(number_of_pours)</code></pre>
 </div>
 <div id="using-a-while-loop-as-a-for-loop" class="section level1">
 <h1><span class="header-section-number">4</span> Using a While Loop as a For Loop</h1>
-<p>Let’s continue using the above example. Now that we know that 6 pours is the most we can perform before the jug overflows, we could use a for loop and set it to run exactly six times:</p>
+<p>Let's continue using the above example. Now that we know that 6 pours is the most we can perform before the jug overflows, we could use a for loop and set it to run exactly six times:</p>
 <pre class="r"><code>for (i in 1:6) {
     water_in_jug &lt;- i * glass_size
     number_of_pours &lt;- i
@@ -642,7 +642,7 @@ print(number_of_pours)</code></pre>
 <pre><code>## [1] 6</code></pre>
 <pre class="r"><code>print(water_in_jug)</code></pre>
 <pre><code>## [1] 900</code></pre>
-<p>The opposite (using a for loop as a while loop) isn’t really possible; how could you set up a for loop to run until a condition is met? You don’t know beforehand how many times the loop needs to run for!</p>
+<p>The opposite (using a for loop as a while loop) isn't really possible; how could you set up a for loop to run until a condition is met? You don't know beforehand how many times the loop needs to run for!</p>
 </div>
 <div id="summary" class="section level1">
 <h1><span class="header-section-number">5</span> Summary</h1>
