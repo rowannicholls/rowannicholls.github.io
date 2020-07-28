@@ -239,14 +239,14 @@ print(st)</code></pre>
 </div>
 <div id="return-a-vector" class="section level2">
 <h2><span class="header-section-number">1.2</span> Return a Vector</h2>
-<p>The <code>c()</code> command stands for &quot;<strong>C</strong>oncatenate&quot; and is similar to <code>paste()</code> in that it also combines/concatenates objects and allows you to assign them to variables, but <code>c()</code> turns them into <strong>vectors</strong> (a list of objects) instead of characters (a single object):</p>
+<p>The <code>c()</code> command stands for “<strong>C</strong>oncatenate” and is similar to <code>paste()</code> in that it also combines/concatenates objects and allows you to assign them to variables, but <code>c()</code> turns them into <strong>vectors</strong> (a list of objects) instead of characters (a single object):</p>
 <pre class="r"><code>st &lt;- c(&quot;Hello&quot;, &quot;World&quot;)
 print(st)</code></pre>
 <pre><code>## [1] &quot;Hello&quot; &quot;World&quot;</code></pre>
 </div>
 <div id="print-with-no-return" class="section level2">
 <h2><span class="header-section-number">1.3</span> Print with no Return</h2>
-<p>The <code>cat()</code> command is also short for &quot;con<strong>CAT</strong>enate&quot;, also performs the same function as <code>paste()</code>, also uses a single space by default and can also use the <code>sep</code> keyword argument to change this default:</p>
+<p>The <code>cat()</code> command is also short for “con<strong>CAT</strong>enate”, also performs the same function as <code>paste()</code>, also uses a single space by default and can also use the <code>sep</code> keyword argument to change this default:</p>
 <pre class="r"><code>cat(&quot;Hello&quot;, &quot;World&quot;)</code></pre>
 <pre><code>## Hello World</code></pre>
 <p>The difference between <code>paste()</code> and <code>cat()</code> is that <code>cat()</code> does not return a value, it only prints to the console. This means that it cannot be saved to a variable like this:</p>
@@ -279,8 +279,7 @@ print(st)</code></pre>
 <pre class="r"><code># Does the letter &quot;o&quot; appear in &quot;Hello World&quot;?
 grepl(&quot;o&quot;, &quot;Hello World&quot;, fixed = TRUE)</code></pre>
 <pre><code>## [1] TRUE</code></pre>
-<p>In case you were wondering, this function's name is short for &quot;<strong>g</strong>lobally search for a <strong>r</strong>egular <strong>e</strong>xpression and <strong>p</strong>rint matching lines - <strong>l</strong>ogical&quot;. You can now see why we shorten it!</p>
-<p>You may have noticed that we set the keyword argument <code>fixed</code> to <code>TRUE</code> - this causes the <code>grepl()</code> function to search for <em>exactly</em> the string that was provided. If this is omitted the default behaviour is to treat the string being searched for as a <em>regular expression,</em> which may create unexpected results.</p>
+<p>In case you were wondering, this function’s name is short for “<strong>g</strong>lobally search for a <strong>r</strong>egular <strong>e</strong>xpression and <strong>p</strong>rint matching lines - <strong>l</strong>ogical”. You can now see why we shorten it!</p>
 </div>
 <div id="find-a-character-or-sub-string" class="section level2">
 <h2><span class="header-section-number">3.2</span> Find a Character or Sub-string</h2>
@@ -289,7 +288,7 @@ grepl(&quot;o&quot;, &quot;Hello World&quot;, fixed = TRUE)</code></pre>
 idx_o &lt;- unlist(gregexpr(pattern = &quot;o&quot;, st))
 print(idx_o)</code></pre>
 <pre><code>## [1] 5 8</code></pre>
-<p>In this example, the letter &quot;o&quot; can be found at both position 5 and 8 in the string &quot;Hello World&quot;.</p>
+<p>In this example, the letter “o” can be found at both position 5 and 8 in the string “Hello World”.</p>
 </div>
 <div id="lookup-the-characters-at-particular-indices" class="section level2">
 <h2><span class="header-section-number">3.3</span> Lookup the Characters at Particular Indices</h2>
@@ -302,7 +301,7 @@ print(sub)</code></pre>
 <pre class="r"><code>sub &lt;- substr(st, start = 6, stop = nchar(st))
 print(sub)</code></pre>
 <pre><code>## [1] &quot; World&quot;</code></pre>
-<p>Similarly, you can lookup all the characters from the start of a string until a given stop point by using &quot;1&quot; as the start point:</p>
+<p>Similarly, you can lookup all the characters from the start of a string until a given stop point by using “1” as the start point:</p>
 <pre class="r"><code>sub &lt;- substr(st, start = 1, stop = 8)
 print(sub)</code></pre>
 <pre><code>## [1] &quot;Hello Wo&quot;</code></pre>
@@ -329,7 +328,7 @@ print(sub)</code></pre>
 <pre class="r"><code>sub &lt;- substr(st, start = 1, stop = idx_o[1])
 print(sub)</code></pre>
 <pre><code>## [1] &quot;Hello&quot;</code></pre>
-<p>As a more practical example, here's how to remove the extension from a filename:</p>
+<p>As a more practical example, here’s how to remove the extension from a filename:</p>
 <pre class="r"><code># Remove extension from filename
 filename &lt;- &quot;My_File.txt&quot;
 idx &lt;- unlist(gregexpr(pattern='\\.', filename))
@@ -383,7 +382,7 @@ print(str_to_upper(st))</code></pre>
 <p>If you want to print a variable as part of a string using a specific format, use the <code>printf()</code> function from the <code>R.utils</code> library along with the <code>%</code> character to indicate where you want the variable to be inserted. You also need to have a letter after the <code>%</code> to indicate what type of format to use.</p>
 <div id="number-formats" class="section level2">
 <h2><span class="header-section-number">6.1</span> Number formats</h2>
-<p>When working with numbers, use the <code>f</code> for 'floating-point' in conjunction with <code>%</code>:</p>
+<p>When working with numbers, use the <code>f</code> for ‘floating-point’ in conjunction with <code>%</code>:</p>
 <pre class="r"><code>library(R.utils)
 
 x &lt;- 1
@@ -393,7 +392,7 @@ printf(&quot;x = %f&quot;, x)</code></pre>
 <pre class="r"><code>x &lt;- 1
 printf(&quot;x = %.2f&quot;, x)</code></pre>
 <pre><code>## x = 1.00</code></pre>
-<p>Use a number before the decimal point to set the 'width' of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:</p>
+<p>Use a number before the decimal point to set the ‘width’ of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:</p>
 <pre class="r"><code>x &lt;- 1
 printf(&quot;x = %8.2f&quot;, x)</code></pre>
 <pre><code>## x =     1.00</code></pre>
@@ -405,7 +404,7 @@ printf(&quot;x = %8.2f&quot;, x)</code></pre>
 <pre class="r"><code>st &lt;- &quot;Hello world&quot;
 printf(&quot;Output text is: %s&quot;, st)</code></pre>
 <pre><code>## Output text is: Hello world</code></pre>
-<p>...or you can write the value to a variable and print it to the console at a later stage by using the <code>sprintf()</code> function:</p>
+<p>…or you can write the value to a variable and print it to the console at a later stage by using the <code>sprintf()</code> function:</p>
 <pre class="r"><code>st &lt;- &quot;Hello world&quot;
 st &lt;- sprintf(&quot;Output text is: %s&quot;, st)
 print(st[1])</code></pre>

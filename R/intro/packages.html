@@ -186,17 +186,17 @@ summary {
 <div id="synopsis" class="section level1">
 <h1><span class="header-section-number">1</span> Synopsis</h1>
 <ul>
-<li>A ‘package’ is the same as a ‘library’</li>
+<li>A 'package' is the same as a 'library'</li>
 <li>Increase the number of functions you can call by installing <strong><em>packages</em></strong></li>
 <li>Once installed, you still need to <strong><em>import</em></strong> the library into your script</li>
 </ul>
 </div>
 <div id="what-are-packages-and-libraries-and-why-do-i-need-them" class="section level1">
 <h1><span class="header-section-number">2</span> What are Packages and Libraries, and Why Do I Need Them?</h1>
-<p>When you download and install R or RStudio you get access to what is known as <strong><em>base</em></strong> R. It’s very powerful and can do a lot of things but, as the name suggests, it’s very basic. In order to add functionality and be able to use other functions you need to <strong><em>install packages</em></strong> and <strong><em>import libraries</em></strong>.</p>
+<p>When you download and install R or RStudio you get access to what is known as <strong><em>base</em></strong> R. It's very powerful and can do a lot of things but, as the name suggests, it's very basic. In order to add functionality and be able to use other functions you need to <strong><em>install packages</em></strong> and <strong><em>import libraries</em></strong>.</p>
 <blockquote>
-<p><strong>What’s the difference between a library and a package?</strong><br />
-Nothing. They are two names for the same thing. For some reason you <em>install</em> a package and <em>import</em> a library but I don’t know why.</p>
+<p><strong>What's the difference between a library and a package?</strong><br />
+Nothing. They are two names for the same thing. For some reason you <em>install</em> a package and <em>import</em> a library but I don't know why.</p>
 </blockquote>
 </div>
 <div id="install-a-package" class="section level1">
@@ -223,24 +223,16 @@ install.packages(&quot;stringi&quot;, repos = &quot;http://cran.us.r-project.org
 install.packages(&quot;stringr&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
 install.packages(&quot;titanic&quot;, repos = &quot;http://cran.us.r-project.org&quot;)
 install.packages(&quot;utf8&quot;, repos = &quot;http://cran.us.r-project.org&quot;)</code></pre>
-<p>The “cran” part of the repos URL refers to “CRAN”, the Comprehensive R Archive Network where most R packages are stored online.</p>
+<p>The &quot;cran&quot; part of the repos URL refers to &quot;CRAN&quot;, the Comprehensive R Archive Network where most R packages are stored online.</p>
 <blockquote>
-<p>You only need to install a package once on your computer. After it’s finished installing you can delete the <code>install.packages()</code> functions from your R script.</p>
+<p>You only need to install a package once on your computer. After it's finished installing you can delete the <code>install.packages()</code> functions from your R script.</p>
 </blockquote>
-<p>You can find out where on your computer the packages are installed by running <code>.libPaths()</code> and see what packages you’ve installed with <code>print(as.data.frame(installed.packages()))</code>.</p>
+<p>You can find out where on your computer the packages are installed by running <code>.libPaths()</code> and see what packages you've installed with <code>print(as.data.frame(installed.packages()))</code>.</p>
 <div id="updating-r" class="section level2">
 <h2><span class="header-section-number">3.1</span> Updating R</h2>
-<p>Sometimes you can only download a package if it’s compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you’re on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed from the terminal with:</p>
+<p>Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:</p>
 <pre class="bash"><code>R --version</code></pre>
-<p>To update R and RStudio manually, download and install the latest version from <a href="https://www.r-project.org/">the R website</a>. When you re-start RStudio it should automatically use this latest version. Note that if you are moving to a new major version (eg from version 3.5 to version 4.0) then you will have to re-install all your packages. Trying to simply update them will not work; the easiest thing to do is to delete all of them completely and then re-install from scratch. To find where they are installed on your computer, run <code>.libPaths()</code> in R and open the folder that is returned. Delete all the folders in there.</p>
-<blockquote>
-<p>On Ubuntu the folder is usually <code>/usr/local/lib/R/site-library</code><br />
-On macOS the folder is usually <code>/Library/Frameworks/R.framework/Versions/&lt;version&gt;/Resources/library</code></p>
-</blockquote>
-<p>If you are using Ubuntu, you have the option of updating R from the terminal (there is a package called <code>updateR</code> that allows you to update R from the terminal on macOS but it doesn’t always work). Instructions on how to do this are below. Note that you will still need to re-install your packages if you are moving to a new major version number.</p>
-<div id="updating-r-from-the-terminal-on-ubuntu" class="section level3">
-<h3><span class="header-section-number">3.1.1</span> Updating R from the Terminal on Ubuntu</h3>
-<p>If you are using Ubuntu and aren’t using RStudio, update R by first opening <code>/etc/apt/sources.list</code> and adding whichever of the following lines corresponds to your Ubuntu version:</p>
+<p>If you are using Ubuntu and aren't using RStudio, update R by first opening <code>/etc/apt/sources.list</code> and adding whichever of the following lines corresponds to your Ubuntu version:</p>
 <pre class="bash"><code># 18.04
 deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
 # 16.04
@@ -252,13 +244,13 @@ deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran40/</code></pre>
 sudo apt-get install r-base r-base-dev
 # To update any R libraries installed via APT:
 sudo apt-get upgrade</code></pre>
-</div>
+<p>If you are moving to a new major version (eg from 3.5 to 4.0) then not all packages will work, even if you attempt to update them. The easiest thing to do is to delete all of them (ie delete all folders inside the /usr/local/lib/R/site-library folder) and re-install them from scratch.</p>
 </div>
 </div>
 <div id="import-a-library" class="section level1">
 <h1><span class="header-section-number">4</span> Import a Library</h1>
 <p>When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.</p>
-<p><strong>Note:</strong> it’s best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:</p>
+<p><strong>Note:</strong> it's best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:</p>
 <pre class="r"><code>library(dplyr)</code></pre>
 <p>You can now use the functionality that is included with the libraries you imported:</p>
 <pre class="r"><code># Import the 'dplyr' library
@@ -273,7 +265,7 @@ square_root</code></pre>
 </div>
 <div id="call-a-function-from-a-library" class="section level1">
 <h1><span class="header-section-number">5</span> Call a Function From a Library</h1>
-<p>You can call a function that comes from a particular library in one of two ways. Here’s an example with the <code>str_length()</code> function, which comes from the ‘stringr’ library and finds the number of characters in a string. The first way is to just call the function as you would any other:</p>
+<p>You can call a function that comes from a particular library in one of two ways. Here's an example with the <code>str_length()</code> function, which comes from the 'stringr' library and finds the number of characters in a string. The first way is to just call the function as you would any other:</p>
 <pre class="r"><code># Import the library
 library(stringr)
 # Find the length of a string of text
@@ -290,7 +282,7 @@ print(length)</code></pre>
 </div>
 <div id="alternative-methods-of-importing-libraries" class="section level1">
 <h1><span class="header-section-number">6</span> Alternative Methods of Importing Libraries</h1>
-<p>If your script is going to be run on someone else’s computer and you don’t know if they will have a particular package installed, import it into your script with the <code>require()</code> function. If the package is installed, it will import it. If it isn’t, it will first download and install it, then import it.</p>
+<p>If your script is going to be run on someone else's computer and you don't know if they will have a particular package installed, import it into your script with the <code>require()</code> function. If the package is installed, it will import it. If it isn't, it will first download and install it, then import it.</p>
 <pre class="r"><code>require(ggplot2)
 require(logging)</code></pre>
 <p>Sometimes, the messages that get printed to the console when a package is installed or imported get annoying. Suppress them with <code>suppressPackageStartupMessages()</code>:</p>
@@ -300,7 +292,7 @@ suppressPackageStartupMessages(library(logging))</code></pre>
 <div id="summary" class="section level1">
 <h1><span class="header-section-number">7</span> Summary</h1>
 <ul>
-<li>A ‘package’ is the same as a ‘library’</li>
+<li>A 'package' is the same as a 'library'</li>
 <li>Increase the number of functions you can call by installing <strong><em>packages</em></strong></li>
 <li>Once installed, you still need to <strong><em>import</em></strong> the library into your script</li>
 </ul>
