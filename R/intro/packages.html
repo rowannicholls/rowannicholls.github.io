@@ -230,8 +230,16 @@ install.packages(&quot;utf8&quot;, repos = &quot;http://cran.us.r-project.org&qu
 <p>You can find out where on your computer the packages are installed by running <code>.libPaths()</code> and see what packages you've installed with <code>print(as.data.frame(installed.packages()))</code>.</p>
 <div id="updating-r" class="section level2">
 <h2><span class="header-section-number">3.1</span> Updating R</h2>
-<p>Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed with:</p>
+<p>Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed from the terminal with:</p>
 <pre class="bash"><code>R --version</code></pre>
+<p>To update R and RStudio manually, download and install the latest version from <a href="https://www.r-project.org/">the R website</a>. When you re-start RStudio it should automatically use this latest version. Note that if you are moving to a new major version (eg from version 3.5 to version 4.0) then you will have to re-install all your packages. Trying to simply update them will not work, you actually need to re-install them. The normal methods of package installation should work fine so try them first, but if you are having issues the easiest thing is to delete all of your package files completely and then re-install from scratch. To find where your package files are stored on your computer run <code>.libPaths()</code> in R and open the folder that is returned. Delete all the folders in there.</p>
+<blockquote>
+<p>On Ubuntu the folder is usually <code>/usr/local/lib/R/site-library</code><br />
+On macOS the folder is usually <code>/Library/Frameworks/R.framework/Versions/&lt;version&gt;/Resources/library</code></p>
+</blockquote>
+<p>If you are using Ubuntu, you have the option of updating R from the terminal (there is a package called <code>updateR</code> that allows you to update R from the terminal on macOS but it doesn't always work). Instructions on how to do this are below. Note that you will still need to re-install your packages if you are moving to a new major version number.</p>
+<div id="updating-r-from-the-terminal-on-ubuntu" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> Updating R from the Terminal on Ubuntu</h3>
 <p>If you are using Ubuntu and aren't using RStudio, update R by first opening <code>/etc/apt/sources.list</code> and adding whichever of the following lines corresponds to your Ubuntu version:</p>
 <pre class="bash"><code># 18.04
 deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
@@ -244,7 +252,7 @@ deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran40/</code></pre>
 sudo apt-get install r-base r-base-dev
 # To update any R libraries installed via APT:
 sudo apt-get upgrade</code></pre>
-<p>If you are moving to a new major version (eg from 3.5 to 4.0) then not all packages will work, even if you attempt to update them. The easiest thing to do is to delete all of them (ie delete all folders inside the /usr/local/lib/R/site-library folder) and re-install them from scratch.</p>
+</div>
 </div>
 </div>
 <div id="import-a-library" class="section level1">
