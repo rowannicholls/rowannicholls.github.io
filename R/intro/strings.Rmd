@@ -106,6 +106,8 @@ grepl("o", "Hello World", fixed = TRUE)
 
 In case you were wondering, this function's name is short for "**g**lobally search for a **r**egular **e**xpression and **p**rint matching lines - **l**ogical". You can now see why we shorten it!
 
+You may have noticed that we set the keyword argument `fixed` to `TRUE` - this causes the `grepl()` function to search for *exactly* the string that was provided. If this is omitted the default behaviour is to treat the string being searched for as a *regular expression,* which may create unexpected results.
+
 Find a Character or Sub-string
 ------------------------------
 Now that we know our string contains the letter we are looking for, get the **indices** (positions) where that certain character is by using the `gregexpr()` command:

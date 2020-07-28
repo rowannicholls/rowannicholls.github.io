@@ -269,7 +269,7 @@ sudo dnf install sublime-text</code></pre>
 <pre class="bash"><code>subl.exe &lt;filename&gt;</code></pre>
 <p>If this doesn't work, it's probably because Sublime Text is not added to your PATH:</p>
 <ul>
-<li>System Properties 🡒 Advanced System Settings 🡒 Advanced 🡒 Environment Variables (or run <code>sysdm.cpl</code> from Command Prompt)</li>
+<li>System Properties ⭢ Advanced System Settings ⭢ Advanced ⭢ Environment Variables (or run <code>sysdm.cpl</code> from Command Prompt)</li>
 <li>Create a new system variable:
 <ul>
 <li>Click &quot;New...&quot;&quot;</li>
@@ -286,20 +286,20 @@ sudo dnf install sublime-text</code></pre>
 <ul>
 <li>If the default behaviour is to open new files in a new window, you can change this so that they open in the same window:
 <ul>
-<li>Sublime Text 🡒 Preferences 🡒 Settings 🡒 right-hand-side (User settings)</li>
+<li>Sublime Text ⭢ Preferences ⭢ Settings ⭢ right-hand-side (User settings)</li>
 <li>Add <code>&quot;open_files_in_new_window&quot;: false</code></li>
 </ul></li>
 <li><em>macOS Sierra:</em>
 <ul>
 <li>The default behaviour is to add a full stop when space bar is pressed twice. This is a Sierra thing, not a Sublime Text thing.</li>
-<li>It can be disabled by going to System Preferences 🡒 Keyboard 🡒 Text 🡒 deselect &quot;Add period with double-space&quot; on the right</li>
+<li>It can be disabled by going to System Preferences ⭢ Keyboard ⭢ Text ⭢ deselect &quot;Add period with double-space&quot; on the right</li>
 </ul></li>
 </ul>
 <p><strong>If Sublime Text is not in the 'Open With' Menus:</strong></p>
 <ul>
 <li><em>Ubuntu 18.04:</em>
 <ul>
-<li>Right-click on a file 🡒 Open With Other Application 🡒 Sublime Text</li>
+<li>Right-click on a file ⭢ Open With Other Application ⭢ Sublime Text</li>
 <li>This should change the default for this file type so that it will always open with Sublime Text.</li>
 <li>In reality, this works for some file types but not for others. For these, you need to manually make Sublime Text the default editor.</li>
 </ul></li>
@@ -314,7 +314,7 @@ sudo dnf install sublime-text</code></pre>
 <ul>
 <li><em>macOS:</em>
 <ul>
-<li>Right-click a file in Finder 🡒 Get Info 🡒 under &quot;Open with:&quot; find &quot;Sublime Text&quot; in the dropdown menu 🡒 click &quot;Change All...&quot; 🡒 Continue</li>
+<li>Right-click a file in Finder ⭢ Get Info ⭢ under &quot;Open with:&quot; find &quot;Sublime Text&quot; in the dropdown menu ⭢ click &quot;Change All...&quot; ⭢ Continue</li>
 </ul></li>
 <li><em>Ubuntu 18.04:</em>
 <ul>
@@ -328,8 +328,8 @@ sudo find . -name &quot;sublime_text.desktop&quot;</code></pre>
 </ul>
 <pre class="bash"><code>subl /usr/share/applications/defaults.list</code></pre>
 <ul>
-<li>Ctrl+H 🡒 Find all instances of &quot;gedit&quot; 🡒 Replace them with &quot;sublime_text&quot;</li>
-<li>Save the file (you need your sudo password) 🡒 log out and back in again 🡒 you should be all set</li>
+<li>Ctrl+H ⭢ Find all instances of &quot;gedit&quot; ⭢ Replace them with &quot;sublime_text&quot;</li>
+<li>Save the file (you need your sudo password) ⭢ log out and back in again ⭢ you should be all set</li>
 </ul></li>
 <li><em>Ubuntu 16.04:</em>
 <ul>
@@ -339,15 +339,15 @@ sudo find . -name &quot;sublime_text.desktop&quot;</code></pre>
 sudo apt update
 sudo apt install ubuntu-tweak</code></pre>
 <ul>
-<li>&quot;Admins&quot; tab 🡒 &quot;File Type Manager&quot; section 🡒 &quot;Text&quot; category from the left side bar 🡒 click on the &quot;Associated Application&quot; column to sort it by Application name 🡒 select the top entry with gedit, then Press and hold the Shift key and click on the last entry with gedit. Then click on the &quot;Edit: button 🡒 select the desired application from they list and click &quot;close&quot;</li>
+<li>&quot;Admins&quot; tab ⭢ &quot;File Type Manager&quot; section ⭢ &quot;Text&quot; category from the left side bar ⭢ click on the &quot;Associated Application&quot; column to sort it by Application name ⭢ select the top entry with gedit, then Press and hold the Shift key and click on the last entry with gedit. Then click on the &quot;Edit: button ⭢ select the desired application from they list and click &quot;close&quot;</li>
 </ul></li>
 <li><em>Fedora 22:</em>
 <ul>
-<li>Right-click on a file 🡒 Properties 🡒 Open With 🡒 select &quot;Sublime Text&quot; 🡒 Set as default</li>
+<li>Right-click on a file ⭢ Properties ⭢ Open With ⭢ select &quot;Sublime Text&quot; ⭢ Set as default</li>
 </ul></li>
 <li><em>Windows 8:</em>
 <ul>
-<li>Right-click on a file 🡒 Open with 🡒 choose default program</li>
+<li>Right-click on a file ⭢ Open with ⭢ choose default program</li>
 </ul></li>
 </ul>
 </div>
@@ -356,7 +356,7 @@ sudo apt install ubuntu-tweak</code></pre>
 <p>Turn spell check on by pressing F6 (Fn+F6 on macOS).</p>
 <p><strong>Add Words to the Dictionary:</strong></p>
 <ul>
-<li>Go to Preferences 🡒 Settings (on macOS there is a keyboard shortcut: Cmd+Comma)</li>
+<li>Go to Preferences ⭢ Settings (on macOS there is a keyboard shortcut: Cmd+Comma)</li>
 <li>This opens up your preferences file which, for the record, is located here:
 <ul>
 <li><em>macOS:</em> <code>/Users/&lt;username&gt;/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings</code></li>
@@ -373,18 +373,18 @@ sudo apt install ubuntu-tweak</code></pre>
     ]
 }</code></pre>
 <ul>
-<li>To alphabetise this list, select the lines and go Edit 🡒 Sort Lines (shortcut: F9, or Fn+F9 on macOS)</li>
+<li>To alphabetise this list, select the lines and go Edit ⭢ Sort Lines (shortcut: F9, or Fn+F9 on macOS)</li>
 <li>Hint: it's worthwhile creating a backup of your user preferences file. Then, when you next install Sublime Text on a new computer you can just paste your old preferences in.</li>
 </ul>
 <p><strong>Installing Other Dictionaries:</strong></p>
 <ul>
 <li>Go to <a href="https://github.com/titoBouzout/Dictionaries" class="uri">https://github.com/titoBouzout/Dictionaries</a></li>
-<li>Download as a zip file 🡒 unzip it 🡒 rename the folder &quot;Dictionaries&quot;</li>
-<li>In Sublime Text, go to Preferences 🡒 Browse Packages...</li>
+<li>Download as a zip file ⭢ unzip it ⭢ rename the folder &quot;Dictionaries&quot;</li>
+<li>In Sublime Text, go to Preferences ⭢ Browse Packages...</li>
 <li>The Packages folder will open up</li>
 <li>Move your new &quot;Dictionaries&quot; folder here</li>
-<li>In Sublime Text, choose the language (eg View 🡒 Dictionaries 🡒 German)</li>
-<li>Be sure Spell Check is activated (F6 or View 🡒 Spell Check)</li>
+<li>In Sublime Text, choose the language (eg View ⭢ Dictionaries ⭢ German)</li>
+<li>Be sure Spell Check is activated (F6 or View ⭢ Spell Check)</li>
 </ul>
 </div>
 <div id="insert-unicode-characters" class="section level1">
@@ -399,7 +399,7 @@ sudo apt install ubuntu-tweak</code></pre>
 <li><em>macOS Sierra:</em>
 <ul>
 <li>There's no simple way to do this via keyboard shortcuts. The complicated way is as follows:</li>
-<li>Go to System Preferences 🡒 Keyboard 🡒 Input Sources</li>
+<li>Go to System Preferences ⭢ Keyboard ⭢ Input Sources</li>
 <li>Enable Unicode Hex Input</li>
 <li>Each time you want to input a Unicode character:
 <ul>

@@ -108,7 +108,7 @@ subl.exe <filename>
 
 If this doesn't work, it's probably because Sublime Text is not added to your PATH:
 
-- System Properties 🡒 Advanced System Settings 🡒 Advanced 🡒 Environment Variables (or run `sysdm.cpl` from Command Prompt)
+- System Properties ⭢ Advanced System Settings ⭢ Advanced ⭢ Environment Variables (or run `sysdm.cpl` from Command Prompt)
 - Create a new system variable:
     - Click "New...""
     - Name: `SUBLIME`
@@ -119,16 +119,16 @@ If this doesn't work, it's probably because Sublime Text is not added to your PA
 General Sublime Text Configuration
 ==================================
 - If the default behaviour is to open new files in a new window, you can change this so that they open in the same window:
-    - Sublime Text 🡒 Preferences 🡒 Settings 🡒 right-hand-side (User settings)
+    - Sublime Text ⭢ Preferences ⭢ Settings ⭢ right-hand-side (User settings)
     - Add `"open_files_in_new_window": false`
 - *macOS Sierra:*
     - The default behaviour is to add a full stop when space bar is pressed twice. This is a Sierra thing, not a Sublime Text thing.
-    - It can be disabled by going to System Preferences 🡒 Keyboard 🡒 Text 🡒 deselect "Add period with double-space" on the right
+    - It can be disabled by going to System Preferences ⭢ Keyboard ⭢ Text ⭢ deselect "Add period with double-space" on the right
 
 **If Sublime Text is not in the 'Open With' Menus:**
 
 - *Ubuntu 18.04:*
-    - Right-click on a file 🡒 Open With Other Application 🡒 Sublime Text
+    - Right-click on a file ⭢ Open With Other Application ⭢ Sublime Text
     - This should change the default for this file type so that it will always open with Sublime Text.
     - In reality, this works for some file types but not for others. For these, you need to manually make Sublime Text the default editor.
 - *Ubuntu 16.04:*
@@ -141,7 +141,7 @@ General Sublime Text Configuration
 **Make Sublime Text the Default Editor:**
 
 - *macOS:*
-    - Right-click a file in Finder 🡒 Get Info 🡒 under "Open with:" find "Sublime Text" in the dropdown menu 🡒 click "Change All..." 🡒 Continue
+    - Right-click a file in Finder ⭢ Get Info ⭢ under "Open with:" find "Sublime Text" in the dropdown menu ⭢ click "Change All..." ⭢ Continue
 - *Ubuntu 18.04:*
     - Find "sublime_text.desktop" ("sublime-text.desktop" on some systems):
     ```{bash, eval = FALSE}
@@ -153,8 +153,8 @@ General Sublime Text Configuration
     ```{bash, eval = FALSE}
     subl /usr/share/applications/defaults.list
     ```
-    - Ctrl+H 🡒 Find all instances of "gedit" 🡒 Replace them with "sublime_text"
-    - Save the file (you need your sudo password) 🡒 log out and back in again 🡒 you should be all set
+    - Ctrl+H ⭢ Find all instances of "gedit" ⭢ Replace them with "sublime_text"
+    - Save the file (you need your sudo password) ⭢ log out and back in again ⭢ you should be all set
 - *Ubuntu 16.04:*
     - Install Ubuntu Tweak:
     ```{bash, eval = FALSE}
@@ -162,11 +162,11 @@ General Sublime Text Configuration
     sudo apt update
     sudo apt install ubuntu-tweak
     ```
-    - "Admins" tab 🡒 "File Type Manager" section 🡒 "Text" category from the left side bar 🡒 click on the "Associated Application" column to sort it by Application name 🡒 select the top entry with gedit, then Press and hold the Shift key and click on the last entry with gedit. Then click on the "Edit: button 🡒 select the desired application from they list and click "close"
+    - "Admins" tab ⭢ "File Type Manager" section ⭢ "Text" category from the left side bar ⭢ click on the "Associated Application" column to sort it by Application name ⭢ select the top entry with gedit, then Press and hold the Shift key and click on the last entry with gedit. Then click on the "Edit: button ⭢ select the desired application from they list and click "close"
 - *Fedora 22:*
-    - Right-click on a file 🡒 Properties 🡒 Open With 🡒 select "Sublime Text" 🡒 Set as default
+    - Right-click on a file ⭢ Properties ⭢ Open With ⭢ select "Sublime Text" ⭢ Set as default
 - *Windows 8:*
-    - Right-click on a file 🡒 Open with 🡒 choose default program
+    - Right-click on a file ⭢ Open with ⭢ choose default program
 
 Dictionaries
 ============
@@ -174,7 +174,7 @@ Turn spell check on by pressing F6 (Fn+F6 on macOS).
 
 **Add Words to the Dictionary:**
 
-- Go to Preferences 🡒 Settings (on macOS there is a keyboard shortcut: Cmd+Comma)
+- Go to Preferences ⭢ Settings (on macOS there is a keyboard shortcut: Cmd+Comma)
 - This opens up your preferences file which, for the record, is located here:
     - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings`
     - *Linux:* `~/.config/sublime-text-3/Packages/User/Preferences.sublime-settings`
@@ -189,18 +189,18 @@ Turn spell check on by pressing F6 (Fn+F6 on macOS).
 	]
 }
 ```
-- To alphabetise this list, select the lines and go Edit 🡒 Sort Lines (shortcut: F9, or Fn+F9 on macOS)
+- To alphabetise this list, select the lines and go Edit ⭢ Sort Lines (shortcut: F9, or Fn+F9 on macOS)
 - Hint: it's worthwhile creating a backup of your user preferences file. Then, when you next install Sublime Text on a new computer you can just paste your old preferences in.
 
 **Installing Other Dictionaries:**
 
 - Go to https://github.com/titoBouzout/Dictionaries
-- Download as a zip file 🡒 unzip it 🡒 rename the folder "Dictionaries"
-- In Sublime Text, go to Preferences 🡒 Browse Packages...
+- Download as a zip file ⭢ unzip it ⭢ rename the folder "Dictionaries"
+- In Sublime Text, go to Preferences ⭢ Browse Packages...
 - The Packages folder will open up
 - Move your new "Dictionaries" folder here
-- In Sublime Text, choose the language (eg View 🡒 Dictionaries 🡒 German)
-- Be sure Spell Check is activated (F6 or View 🡒 Spell Check)
+- In Sublime Text, choose the language (eg View ⭢ Dictionaries ⭢ German)
+- Be sure Spell Check is activated (F6 or View ⭢ Spell Check)
 
 Insert Unicode Characters
 =========================
@@ -210,7 +210,7 @@ Insert Unicode Characters
     - Frustratingly, you can't search for Unicode sequences, so to get the poop emoji (💩) you need to search "poop" as opposed to "1f4a9" or "u+1f4a9"
 - *macOS Sierra:*
     - There's no simple way to do this via keyboard shortcuts. The complicated way is as follows:
-    - Go to System Preferences 🡒 Keyboard 🡒 Input Sources
+    - Go to System Preferences ⭢ Keyboard ⭢ Input Sources
     - Enable Unicode Hex Input
     - Each time you want to input a Unicode character:
         - Switch to the Unicode hex input system. The default keyboard binding for this (Cmd+Space) conflicts with Spotlight Search, so you would need to change it to something different.
