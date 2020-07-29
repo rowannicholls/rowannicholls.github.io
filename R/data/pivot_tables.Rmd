@@ -1,0 +1,147 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Pivot Tables'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+```
+
+A "pivot table" is a way of summarising the data in a table. For example, if we have the following results of three tests that were taken by two students:
+
+```{r, echo = FALSE}
+results <- data.frame(
+    Student = c("A", "B", "A", "B", "A", "B"),
+    Test = c("Test 1", "Test 1", "Test 2", "Test 2", "Test 3", "Test 3"),
+    Score = c(66, 76, 80, 77, 59, 61)
+)
+library(kableExtra)
+kable_input <- kable(results)
+kable_styling(
+    kable_input, bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = F
+)
+```
+
+Then a pivot table would look as follows:
+
+```{r, echo = FALSE}
+library(tidyr)
+wide <- spread(results, Test, Score)
+kable_input <- kable(wide)
+kable_styling(
+    kable_input, bootstrap_options = c("striped", "hover", "condensed"),
+    full_width = F
+)
+```
+
+As you can see, the first table was **long** while the second was **wide**. That's another way of talking about this type of operation: going from long to wide or, if you want to go the opposite way, from wide to long.
+
+From Long to Wide
+=================
+For this example we will use the ["Gapminder" dataset](https://cran.r-project.org/web/packages/gapminder/README.html), which can be installed as follows:
+
+```{r, eval = FALSE}
+install.packages("gapminder", repos = "http://cran.us.r-project.org")
+```
+
+This dataset contains the life expectancy, population and GDP per capita of 142 countries as recorded in various years:
+
+```{r, results = "hold"}
+# Import the gapminder as a tibble
+library(gapminder)
+# Convert tibble to data frame
+gapminder <- as.data.frame(gapminder)
+# Display
+head(gapminder, n = 20)
+cat("\n\t\t\t\t\t\t\t...\n\n")
+tail(gapminder)
+```
+
+As you can see, this is a **long** dataset. To pivot it and make it **wide**, you have two options:
+
+Using spread() from tidyr
+-------------------------
+The `spread()` function allows us to choose which variable to use as the column headings and which to use as the data in the table:
+
+```{r}
+library(tidyr)
+# Select the columns we are interested in
+long <- gapminder[c("country", "continent", "year", "pop")]
+# Pivot
+wide <- spread(long, year, pop)
+```
+
+Show the population in each country in each year sampled:
+
+```{r}
+head(wide[, 1:12])
+```
+
+Using cast() from reshape
+-------------------------
+The `cast()` function allows us to do the same thing without needing to first trim down to just the columns we want:
+
+```{r, message = F}
+library(reshape)
+wide <- cast(gapminder, country ~ year, value = "pop")
+head(wide[, 1:12])
+```
+
+Of course, we do want to keep the "continent" column there:
+
+```{r, message = F}
+wide <- cast(gapminder, country + continent ~ year, value = "pop")
+head(wide[, 1:12])
+```
+
+From Wide to Long
+=================
+Unsurprisingly, this is the opposite operation: going from a **wide** table to a **long** one.
+
+Using gather() from tidyr
+-------------------------
+
+```{r}
+keycol <- "year"
+valuecol <- "pop"
+gathercols <- c(
+    "1952", "1957", "1962", "1967", "1972", "1977",
+    "1982", "1987", "1992", "1997", "2002", "2007"
+)
+long <- gather(
+    wide, keycol, valuecol, all_of(gathercols), factor_key = TRUE
+)
+head(long)
+```
+
+From Long to Wide via Summarising
+=================================
+Lastly, we can generate summary statistics for the data in the table at the same time as we are pivoting it. For this example, let's use the `ChickWeight` pre-loaded dataset which details the weights of chicks on different diets at different ages:
+
+```{r}
+head(ChickWeight)
+```
+
+Here's how we can pivot the table and end up with the *median* weight of each chick over the time points:
+
+```{r}
+chick_weights <- aggregate(
+    weight ~ Chick + Diet, data = ChickWeight, FUN = median
+)
+chick_weights$Chick <- as.numeric(as.character(chick_weights$Chick))
+chick_weights <- chick_weights[order(chick_weights$Chick), ]
+head(chick_weights)
+```
+
+[⇦ Back](../../R.html)
+
+</font>
