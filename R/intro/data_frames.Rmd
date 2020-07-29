@@ -11,7 +11,7 @@ output:
 
 [⇦ Back](../../R.html)
 
-```{r echo = FALSE}
+```{r, echo = FALSE}
 options(width = 120)
 ```
 
@@ -55,7 +55,7 @@ spotify <- data.frame(
 
 As you can see above, eight vectors were created using the `c()` function and each was given a name. This creates a data frame that looks like this:
 
-```{r echo  =  FALSE}
+```{r, echo = FALSE}
 library(kableExtra)
 
 kable_input <- kable(spotify)
@@ -107,7 +107,7 @@ Delete Columns
 --------------
 We can remove columns in a few different ways:
 
-```{r message = FALSE}
+```{r, message = FALSE}
 # Delete a specific column using its name
 df$weeks <- NULL
 # Delete multiple columns by listing their names using the subset() function
@@ -477,7 +477,7 @@ Ascending Order
 First sort alphabetically by artist name, then in order of number of streams:
 
 ```{r}
-df <- arrange(spotify, Artist, Streams_Millions)
+df <- dplyr::arrange(spotify, Artist, Streams_Millions)
 ```
 
 Descending Order
@@ -485,7 +485,7 @@ Descending Order
 Sort into reverse alphabetical order:
 
 ```{r}
-df <- arrange(spotify, desc(Artist))
+df <- dplyr::arrange(spotify, desc(Artist))
 ```
 
 Creating New Columns From Existing Columns
