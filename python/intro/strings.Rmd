@@ -1,0 +1,456 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Strings'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+<!-- Started:
+| 2019-04-24 | Python 3.6.6  | macOS Sierra | Atom Script | -->
+
+As introduced in [the data types page](data_types.html#strings), 'strings' are characters that have been 'strung' together to form words.
+
+Types of Strings
+================
+
+String Literals
+---------------
+A **string literal** is a 'normal string' - it's the type you will most often encounter in coding. You can write a string by using single or double quotation marks, or two matched sets of three double or single quotation marks:
+
+```{python}
+# These are strings, representing text
+st = "Hello, World!"
+st = 'Hello, World!'
+st = """Hello, World!"""
+st = '''Hello, World!'''
+```
+
+Strings that take up more than one line can only be defined using the latter two methods:
+
+```{python}
+# This is a string that crosses lines
+st = '''Hello,
+World!'''
+print(st)
+```
+
+Or, alternatively, a 'newline character' can be used. In this case, one pair of single or double quotation marks can be used:
+
+```{python}
+# This is a string that crosses lines
+st = 'Hello,\nWorld!'
+print(st)
+```
+
+If you want to include quotation marks in a string, you need to define the string using one of the other types of quotation marks. For example, if you want to have *double* quotation marks in your string you need to use *single* quotation marks to define it. If you try to use double quotation marks to define it Python will get confused as to whether you have created one string or two:
+
+```{python, eval = FALSE}
+# Correct
+st = 'This string contains a "quote"'
+# Incorrect - will create an error! The letters "quote" are outside your string
+# st = "This string contains a "quote""
+```
+
+Python strings are particularly robust: they can handle many foreign characters:
+
+```{python}
+# Foreign characters entered explicitly
+print('À Æ Ç Ë Õ Ω 💩')
+```
+
+One thing to take note of is the backslash character ("&#x5c;"). In string literals, this used as an *escape character.* This means that whatever immediately follows a backslash is NOT simply interpreted as text and, if it has been used correctly, it will actually be interpreted as an instruction to insert a special character:
+
+```{python, eval = FALSE}
+# These following strings all contain escape characters that cause special
+# characters to be inserted
+print('\" Quotation marks')
+print('\\ A backslash')
+print('\t A tab')
+print('\n A newline')
+print('\xe1 \xA9 Foreign characters entered as hex code')
+print('\u00df \u03A9 Foreign characters entered as Unicode')
+```
+
+```{python, echo = FALSE}
+# These following strings all contain escape characters that cause special
+# characters to be inserted
+print('\" Quotation marks')
+print('\\ A backslash')
+print('\t A tab')
+print('\n A newline')
+print('\xe1 \xA9 Foreign characters entered as hex code')
+print('\u00df \u03A9 Foreign characters entered as Unicode')
+```
+
+Raw String Literals
+-------------------
+A **raw** string literal is exactly the same as a regular string literal except that *the backslash is NOT an escape character* - everything is interpreted as 'raw' text. A raw string literal is created by putting an "r" or "R" in front of the string:
+
+```{python}
+# These characters are not escaped
+print(r'\" \\ \t \n \xe1 \xA9 \u00df \u03A9 💩')
+```
+
+<!-- In Python 2, you would need to prepend a 'u' when using unicode in a
+string. In Python 3 all strings are unicode by default, so this is largely
+redundant although it still exists. Don't worry about it unless you need to
+change how the text is encoded or how the text data us being stored as bytes -->
+
+F-Strings
+---------
+These strings are used for **formatting** and are created by prepending the letter "f" or "F". An f-string can display the value of a variable directly in it, and it uses curly brackets to indicate the position of the variable:
+
+```{python}
+st = 'Hello, World!'
+print(f'My string is: {st}')
+```
+
+More information about these can be found on [the f-string page](f_strings.html).
+
+Raw F-Strings
+-------------
+As the name suggests, these **combine** raw strings and f-strings, ie they are f-strings where backslashes are not treated as escape characters. As you would expect, they are created by prepending "fr" or "FR":
+
+```{python}
+st = 'Hello, World!'
+print(fr'\n {st}')
+```
+
+Concatenate Strings
+===================
+Combining strings in Python is very easy, simply use "+" to add them together!
+
+```{python}
+st1 = 'Alpha'
+st2 = 'bet'
+st = st1 + st2
+print(st)
+```
+
+Displaying Strings Together
+---------------------------
+Note that it is also possible to display two strings as one without actually combining them: in the next example the same strings `Alpha` and `bet` are shown side-by-side whilst remaining two objects:
+
+```{python}
+print(st1, st2, sep='')
+```
+
+The above was achieved by changing the default behaviour of the `print()` function - which usually displays elements with a space in between them - through the use of the `sep` keyword argument. This determines what characters **sep**arate the elements being printed. Note that this doesn't affect the strings themself, it merely changes how they are shown in the console on that particular occasion:
+
+```{python}
+print(st1, st2, sep=', ')
+```
+
+Similarly, the `end` keyword argument determines what characters end a string when it gets displayed. By default, this is a 'new line' character, ie everything gets shown on a new line when you use the `print()` function. This can be changed to get a result similar to the above:
+
+```{python, eval = FALSE}
+print(st1, end='')
+print(st2)
+```
+
+```
+## Alphabet
+```
+
+File Paths
+----------
+If you are dealing with files and folders on your computer it means you will be using file paths. The temptation will be to do something like this:
+
+```{python}
+# Define the location of a file on your computer
+home_dir = 'home'
+new_dir = 'New Folder'
+file_name = 'My File.py'
+# Create a file path
+file_path = home_dir + '/' + new_dir + '/' + file_name
+print(file_path)
+```
+
+However, this is bad practice. In addition to being cumbersome, this method will not work if someone runs your code on a Windows computer (because on Windows the slashes between elements in a path point the other way to those on Unix-based OSs like macOS and Linux). The best way to do this is actually to import the `os` package and use a function specially created for this purpose:
+
+```{python, eval = FALSE}
+import os
+
+# Create a proper file path
+file_path = os.path.join(home_dir, new_dir, file_name)
+print(file_path)
+```
+
+```
+## home/New Folder/My File.py    🡐 this will appear on macOS and Linux
+## home\New Folder\My File.py    🡐 this will appear on Windows
+```
+
+Split Strings
+=============
+Use the `.split()` method to split a string at a certain character or sub-string. Remember that Python uses zero-indexing and so the number 0 refers to the first element in something whilst 1 refers to the second element and so on.
+
+One Split
+---------
+Split a string into two parts by splitting it once. In this case, split a file named `Filename.py` at the full stop to get its name and its extension:
+
+```{python}
+st = 'Filename.png'
+file_name = st.split('.')[0]
+extension = st.split('.')[1]
+print('File name:', file_name, '    Extension:', extension)
+```
+
+Notice that this approach caused us to lose the dot. When we use the `.split()` method it does not include the character we are splitting on in either of the sections.
+
+Split into a List
+-----------------
+Divide an articulated string up into its constituent parts:
+
+```{python}
+st = '/User/username/Downloads'
+ls = st.split('/')
+print(ls)
+```
+
+Search, Find, Lookup
+====================
+You can:
+
+- **Search** a string to see if it contains a certain letter or sub-string
+- **Find** where that letter or sub-string is located within the string
+- **Lookup** what letter or sub-string is at a certain location within a string
+
+Search for a Character or Sub-string
+------------------------------------
+Does a string contain the letter(s) you are looking for? Search the string and return a Boolean (true or false) to find out. This is done with the `in` statement:
+
+```{python}
+# Do the letters "lena" appear in "Filename.png"?
+boolean = 'lena' in 'Filename.png'
+print(boolean)
+```
+
+There are special methods to search for sub-strings at the start and at the end of strings:
+
+```{python}
+# Does this website use SSL encryption? 
+address = 'https://docs.python.org/3/library/string.html'
+boolean = address.startswith('https')
+print(boolean)
+```
+
+```{python}
+# Is this file a PNG?
+filename = 'My File.png'
+boolean = filename.endswith('.png')
+print(boolean)
+```
+
+Find a Character or Sub-string
+------------------------------
+Now that we know our string contains the letter(s) we are looking for, get the **indices** (positions) where they are by using the correct method. You have two options here - `.index()` and `.find()` - with the difference being how they behave if they do not find what they are looking for:
+
+- `.index()` will return a ValueError if it does not find what it is looking for, which (under normal circumstances) will immediately cause your script to stop running
+- `.find()` will return "-1" if it does not find what it is looking for, meaning that your script will continue to run
+
+If they *do* find what they are looking for, they will both return the index of the *first* occurrence of that sub-string (remembering that Python uses zero-indexing and so the first element is number 0):
+
+```{python}
+st = '/User/username/Downloads'
+# First appearance of a sub-string - return "ValueError" on failure
+idx = st.index('/')
+# First appearance of a sub-string - return "-1" on failure
+idx = st.find('/')
+print(idx)
+```
+
+The index of the *last* occurrence of a sub-string can be found with either `.rindex()` or `.rfind()` - the differences between these two is the same as before. As their names suggest, these methods search from the **R**ight:
+
+```{python}
+# Last appearance of a sub-string - return "ValueError" on failure
+idx = st.rindex('/')
+# Last appearance of a sub-string - return "-1" on failure
+idx = st.rfind('/')
+print(idx)
+```
+
+*All* occurrences can be found by using a more complicated statement which requires the `re` (regular expression) package:
+
+```{python}
+import re
+
+# Find all occurrences of a sub-string - return an empty string on failure
+idx = [m.start() for m in re.finditer('/', st)]
+print(idx)
+```
+
+### Insert a Character or Sub-String
+The above methods which find locations within strings can be used to insert characters:
+
+```{python}
+st = 'Hello World'
+# Insert a comma between the words
+idx = st.index(' ')
+st = st[:idx] + ',' + st[idx:]
+print(st)
+```
+
+Lookup the Characters at Particular Indices
+-------------------------------------------
+You can see what characters are at a certain location within a string by **indexing** it. Strings in Python are basically 'lists of characters' and thus they can be indexed in a similar way to lists:
+
+```{python}
+st = 'Hello, World!'
+# Return the first, fourth and eighth characters
+print(st[0], st[3], st[7])
+```
+
+Use negative numbers to refer to positions of elements starting from the right-hand-side (ie element "-1" is the last character, "-2" is the second-last, etc):
+
+```{python}
+# Return the last, third-last and eighth-last characters
+print(st[-1], st[-3], st[-8])
+```
+
+Use a colon to refer to a range of characters. The end of the range (ie the second number) must be *one more* than the index of the last character you want. In Python, you index up until *but not including* a certain index:
+
+```{python}
+# Return the second to fifth characters
+print(st[1:5])
+```
+
+To return all characters from an index until the end of the string, leave the end of the range blank. To return all characters up until an index, leave the start of the range blank:
+
+```{python}
+# Return the first word and the second word
+print('First word:', st[:5], '   Second word:', st[7:])
+```
+
+Delete, Overwrite, Replace
+==========================
+You can:
+
+- **Delete** all the characters before or after a given point in a string
+- Not **overwrite** the characters at a given location within a string
+- **Replace** all occurrences of a certain letter or sub-string within a string with a given replacement
+
+Delete Characters
+-----------------
+To delete characters at, before, after or between certain **indexes** simply index the string:
+
+```{python}
+st = 'Hello, World!'
+# Delete character at index 5
+st1 = st[:5] + st[5 + 1:]
+# Delete characters before index 7
+st2 = st[7:]
+# Delete characters after index 4
+st3 = st[:5]
+# Delete characters between index 4 and 7
+st4 = st[7:][:5]
+
+print(st1, st2, st3, st4, sep=', ')
+```
+
+Overwrite Characters
+--------------------
+This is not possible in Python. Strings are "immutable" which means that they cannot be changed. The only thing you can do is create a new string that omits the part you want to overwrite:
+
+```{python}
+st = 'Hello, World!'
+st = st[0] + 'i' + st[5:]
+print(st)
+```
+
+Replace Characters
+------------------
+Instead of using indexes, sub-strings can be searched for and replaced by other sub-strings using the `.replace()` method:
+
+```{python}
+st = 'Seven + 8 = 15'
+st = st.replace('Seven', '7')
+print(st)
+```
+
+This is useful if you have characters that cause problems in certain instances. For example, file names cannot contain slashes, so you can remove them as follows:
+
+```{python}
+st = '01/02/03'
+st = st.replace('/', '_')
+print(st)
+```
+
+Similarly, if you are exporting something to Latex you will need to add escape characters:
+
+```{python}
+st = '01_02_03'
+st = st.replace('_', r'\_')
+print(st)
+```
+
+Trim White Space
+----------------
+Leading and trailing white space (space and tab characters) can be removed with the `.strip()` method:
+
+```{python}
+st = ' Hello  '
+st = st.strip()
+print('|' + st + '|')
+```
+
+Change the Case
+===============
+A string can be UPPERCASE, lowercase, Sentence case or Title Case:
+
+```{python}
+# lowercase
+st = 'Filename.PNG'
+filename = st.split('.', 1)[0]
+extension = st.split('.', 1)[1].lower()
+print(filename + '.' + extension)
+```
+
+```{python}
+# UPPERCASE
+st = 'Hello, World!'
+print(st.upper())
+```
+
+```{python}
+# Sentence case
+st = 'hello. greetings to the world.'
+print('. '.join(x.capitalize() for x in st.split('. ')))
+```
+
+```{python}
+# Title Case
+st = 'alice in wonderland'
+print(st.title())
+```
+
+Pascal Case
+-----------
+'Pascal case' is when there are no spaces between words and, instead, every word is capitalised is order to make it readable (LikeThisForExample). Here is a function that converts a string written in this manner into sentence case:
+
+```{python}
+def pascal_to_sentance_case(w):
+    """Convert a string in Pascal case into sentence case."""
+    new_word = ''
+    for i, word in enumerate(re.findall('([A-Z][a-z]*)', w)):
+        if i == 0:
+            new_word = new_word + word
+        else:
+            new_word = new_word + ' ' + word.lower()
+    return new_word
+
+
+# Turn Pascal case into sentence case
+new_word = pascal_to_sentance_case('PascalCase')
+print(new_word)
+```
+
+[⇦ Back](../../python.html)
+
+</font>
