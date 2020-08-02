@@ -1,0 +1,71 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>A Script to Check Your Installation and Packages'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+The following script can be run to check that you have Python installed correctly, that you are using the right version and that you are running it from the correct location. The packages that this script requires are imported at the top of the script, so make sure you have those installed or else it won't work.
+
+```{python, eval = FALSE}
+import distro
+import os
+from pip._internal.operations.freeze import freeze
+import platform
+import subprocess
+import sys
+import time
+
+today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
+print(f'This script was run on {today}')
+print(f'This is a {platform.system()} machine')
+name = platform.node()
+print(f'Its name is {name}')
+if platform.system() == 'Linux':
+    if int(platform.python_version()[2]) >= 7:
+        OS = distro.linux_distribution()[0]
+        version = distro.linux_distribution()[1]
+    else:
+        OS = platform.linux_distribution()[0]
+        version = platform.linux_distribution()[1]
+    print(f'Its OS is {OS}')
+    print(f'Its OS version is {version}')
+elif platform.system() == 'Windows':
+    OS = platform.release()
+    print(f'Its OS is {OS}')
+elif platform.system() == 'Darwin':
+    macOS_vers = {
+        '10.11': 'El Capitan',
+        '10.12': 'Sierra',
+        '10.13': 'High Sierra',
+        '10.14': 'Mojave',
+        '10.15': 'Catalina'
+    }
+    OS = macOS_vers[platform.mac_ver()[0][:5]]
+    print(f'Its OS is macOS {OS}')
+    print(f'Its OS version is {platform.mac_ver()[0]}')
+py = platform.python_version()
+print(f'Its Python version is {py}')
+path = sys.executable
+print(f'Python is being run from {path}')
+user = os.getcwd().split("/")[2]
+print(f'The user is {user}')
+process = subprocess.Popen(
+    ['git', 'rev-parse', 'HEAD'], shell=False, stdout=subprocess.PIPE
+)
+git_hash = process.communicate()[0].strip()
+print(f'The git hash is {git_hash}')
+print('The installed packages are:')
+for requirement in freeze(local_only=True):
+    print(requirement)
+```
+
+[⇦ Back](../../python.html)
+
+</font>
