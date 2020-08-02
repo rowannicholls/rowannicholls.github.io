@@ -1,4 +1,4 @@
-# NEEDED BY DEBIAN
+# Needed by Debian:
 # sudo apt-get install libssl-dev
 # sudo apt-get install libcurl4-openssl-dev
 # REPO FOR UBUNTU
