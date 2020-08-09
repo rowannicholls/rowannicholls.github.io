@@ -464,10 +464,10 @@ print(tn)</code></pre>
 ## [1] 329</code></pre>
 <p>We have all the information we need to calculate the four most important results of a confusion matrix investigation:</p>
 <ul>
-<li>Sensitivity: how good is our test at predicting who survived?</li>
-<li>Specificity: how good is our prediction at picking up who died?</li>
-<li>Positive predictive value: if our test predicted that a passenger survived, how much value does that information have to us?</li>
-<li>Negative predictive value: if our test predicted that a passenger died, how much value does that information have to us?</li>
+<li><strong>Sensitivity:</strong> how good is our test at predicting who survived? A highly sensitive test can be used to <em>rule out</em> candidates because a negative result is likely to be correct.</li>
+<li><strong>Specificity:</strong> how good is our prediction at picking up who died? A highly specific test can be used to <em>rule in</em> candidates because a positive result is likely to be correct.</li>
+<li><strong>Positive predictive value:</strong> if our test predicted that a passenger survived, how much value does that information have to us?</li>
+<li><strong>Negative predictive value:</strong> if our test predicted that a passenger died, how much value does that information have to us?</li>
 </ul>
 <pre class="r"><code>sens &lt;- tp / (tp + fn)
 spec &lt;- tn / (tn + fp)
