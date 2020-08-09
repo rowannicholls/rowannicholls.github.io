@@ -299,10 +299,10 @@ print(tn)
 
 We have all the information we need to calculate the four most important results of a confusion matrix investigation:
 
-- Sensitivity: how good is our test at predicting who survived?
-- Specificity: how good is our prediction at picking up who died?
-- Positive predictive value: if our test predicted that a passenger survived, how much value does that information have to us?
-- Negative predictive value: if our test predicted that a passenger died, how much value does that information have to us?
+- **Sensitivity:** how good is our test at predicting who survived? A highly sensitive test can be used to *rule out* candidates because a negative result is likely to be correct.
+- **Specificity:** how good is our prediction at picking up who died? A highly specific test can be used to *rule in* candidates because a positive result is likely to be correct.
+- **Positive predictive value:** if our test predicted that a passenger survived, how much value does that information have to us?
+- **Negative predictive value:** if our test predicted that a passenger died, how much value does that information have to us?
 
 ```{r results = "hold"}
 sens <- tp / (tp + fn)

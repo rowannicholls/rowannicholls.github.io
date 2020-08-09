@@ -1,0 +1,237 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Descriptive and Summary Statistics'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+```
+
+This page is a more advanced version of the [intro to descriptive statistics](../statistics/descriptive_statistics.html).
+
+Means, Medians, IQRs
+====================
+Find the basics statistics that describe a set of data points.
+
+Vectors
+-------
+If your data is stored in a vector, you can simply run functions like `median()`, `IQR()` and so on. Because R is primarily made for statistics, these type of operations are named in a very logical and easy-to-remember way!
+
+```{r, results = "hold"}
+data <- c(1, 2, 3, 4, 5, 6, 7, 8, 10, 11)
+med <- median(data)
+print(med)
+avg <- mean(data)
+print(avg)
+iqr <- IQR(data)
+print(iqr)
+```
+
+Data Frames
+-----------
+The columns of a data frame are actually vectors, so the same operations as above are also very straightforward:
+
+```{r, results = "hold"}
+df <- data.frame(
+    group = c(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+    data = c(1, 2, 3, 4, 5, 6, 7, 8, 10, 11)
+)
+med <- median(df$data)
+print(med)
+avg <- mean(df$data)
+print(avg)
+iqr <- IQR(df$data)
+print(iqr)
+```
+
+Do Everything at Once
+---------------------
+We can calculate all these summary statistics in one go with the help of the `describeBy()` function from the `psych` package. With this function we can just throw in a data frame column and it will output a table with all the information we want, although doing so will generate a warning:
+
+```{r}
+library(psych)
+
+# Without specifying a group
+# (gives a warning)
+db <- psych::describeBy(df$data)
+print(db)
+```
+
+A single value from this table can be accessed by indexing it:
+
+```{r}
+print(db$median)
+```
+
+If we want to avoid the warning that the above call to `describeBy()` created, we need to *specify a group.* In our example, we have a data frame where once column is called "group" and it tells us that all the data points are in group "1":
+
+```{r}
+# Specifying a group
+db <- psych::describeBy(df$data, group = df$group)
+print(db)
+```
+
+You can see that no warning was generated this time, although in order to access a single value we now need to index the table twice:
+
+```{r}
+print(db[[1]]$median)
+```
+
+Creating Summary Statistics Tables - one statistics, multiple metrics
+=====================================================================
+
+Example Data
+------------
+For this example we are going to use the "Gapminder" dataset which can be installed with the `gapminder` package:
+
+```{r}
+library(gapminder)
+```
+
+This dataset contains demographic information about multiple countries across different time points:
+
+```{r, results = "hold"}
+# Convert the tibble to a data frame
+gapminder <- as.data.frame(gapminder)
+# Preview our data
+print(head(gapminder, 15))
+print(tail(gapminder))
+```
+
+This dataset is a bit larger than what we need for this tutorial, so let's trim it down a bit - to 27 rows - just to make it easier to use:
+
+```{r}
+df <- subset(
+    gapminder,
+    (continent == "Oceania" | continent == "Americas") & year == 2007
+)
+print(df)
+```
+
+Establish a 'Discriminator'
+---------------------------
+A 'discriminator' is like a category. In this example we are going to categorise the 27 countries in our dataset as either having a "Large" or a "Small" population:
+
+```{r}
+df$discriminator <- ifelse(df$pop >= 10000000, "Large", "Small")
+print(df)
+```
+
+Use the `group_by()` function from the `dplyr` package to sort this data into two groups by the discriminator, ie sort the countries into "Large" and "Small":
+
+```{r, message = FALSE}
+library(dplyr)
+
+table <- dplyr::group_by(df, discriminator)
+```
+
+Calculate Means by Group
+------------------------
+The `summarise()` function together with the `mean()` function will produce a table that shows the means (and only the means) of each metric (life expectancy, population and GDP per capita) for each group (Large and Small countries):
+
+```{r, message = FALSE}
+table_mean <- summarise(
+    table,
+    lifeExp = mean(lifeExp, na.rm = TRUE),
+    pop = mean(pop, na.rm = TRUE),
+    gdpPercap = mean(gdpPercap, na.rm = TRUE)
+)
+# Convert the tibble to a data frame
+table_mean <- as.data.frame(table_mean)
+print(table_mean)
+```
+
+This table is in 'wide' format, but we can convert it into 'long' format using the `gather()` function from the `tidyr` package:
+
+```{r}
+library(tidyr)
+
+# Convert from wide to long
+table_mean <- tidyr::gather(
+    table_mean, key = "variable", "value", lifeExp, pop, gdpPercap
+)
+print(table_mean)
+```
+
+A similar method that leaves us with the same result but *transposed* (so the discriminator forms the column headings):
+
+```{r, message = FALSE}
+table_mean <- summarise(
+    table,
+    lifeExp = mean(lifeExp, na.rm = TRUE),
+    pop = mean(pop, na.rm = TRUE),
+    gdpPercap = mean(gdpPercap, na.rm = TRUE)
+)
+table_mean <- as.data.frame(t(table_mean))
+colnames(table_mean) <- table_mean[1, ]
+table_mean <- table_mean[-1, ]
+print(table_mean)
+```
+
+Format the Output
+-----------------
+We can change what the table looks like with a bit of string formatting (using `sprintf()`):
+
+```{r, message = FALSE}
+table_mean <- summarise(
+    table,
+    `Life Exp` = sprintf("%4.1f (%3.1f)", mean(lifeExp), sd(lifeExp)),
+    `Population` = sprintf("%4.1f (%3.1f)", mean(pop) / 10^6, sd(pop) / 10^6),
+    `GDP per Capita` = sprintf("%4.1f (%3.1f)", mean(gdpPercap), sd(gdpPercap))
+)
+table_mean <- as.data.frame(t(table_mean))
+colnames(table_mean) <- table_mean[1, ]
+table_mean <- table_mean[-1, ]
+print(table_mean)
+```
+
+Creating Summary Statistics Tables - multiple statistics, one metric
+====================================================================
+This time we are creating a table with multiple statistics (instead of just the mean), but just for the 'population' metric:
+
+```{r, message = FALSE}
+table_pop <- summarise(
+    table,
+    median = median(pop, na.rm = T),
+    n = n(),
+    non_na_count = sum(!is.na(pop)),
+    stdev = sd(pop, na.rm = T)
+)
+table_pop <- as.data.frame(table_pop)
+print(table_pop)
+```
+
+A specific value can be extracted from the table through indexing:
+
+```{r}
+print(table_pop[1, "median"])
+print(table_pop[table_pop$discriminator == "Small", "median"])
+```
+
+Here it is transposed and formatted:
+
+```{r, message = FALSE}
+table_pop <- summarise(
+    table,
+    Median = sprintf("%3.1f million", median(pop) / 10^6),
+    n = n(),
+    `Non-nulls` = sum(!is.na(pop)),
+    `Standard deviation` = sprintf("%3.1f million", sd(pop) / 10^6)
+)
+table_pop <- as.data.frame(t(table_pop))
+colnames(table_pop) <- table_pop[1, ]
+table_pop <- table_pop[-1, ]
+print(table_pop)
+```
+
+[⇦ Back](../../R.html)
+
+</font>

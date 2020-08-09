@@ -109,17 +109,17 @@ Unsurprisingly, this is the opposite operation: going from a **wide** table to a
 
 Using gather() from tidyr
 -------------------------
-
 ```{r}
-keycol <- "year"
-valuecol <- "pop"
+# Either explicitly define which columns to use
 gathercols <- c(
     "1952", "1957", "1962", "1967", "1972", "1977",
     "1982", "1987", "1992", "1997", "2002", "2007"
 )
-long <- gather(
-    wide, keycol, valuecol, all_of(gathercols), factor_key = TRUE
-)
+# Or programmatically extract them from the column names
+gathercols <- colnames(wide)[3:length(colnames(wide))]
+
+# Convert from wide format to long format
+long <- gather(wide, "year", "pop", all_of(gathercols), factor_key = TRUE)
 head(long)
 ```
 
