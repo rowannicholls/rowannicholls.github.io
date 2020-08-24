@@ -304,6 +304,11 @@ st2 = 'bet'
 st = st1 + st2
 print(st)</code></pre>
 <pre><code>## Alphabet</code></pre>
+<p>If the strings are in a list, they can be combined using the <code>.join()</code> method:</p>
+<pre class="python"><code>ls = ['Alpha', 'bet']
+word = ''.join(x for x in ls)
+print(word)</code></pre>
+<pre><code>## Alphabet</code></pre>
 <div id="displaying-strings-together" class="section level2">
 <h2><span class="header-section-number">2.1</span> Displaying Strings Together</h2>
 <p>Note that it is also possible to display two strings as one without actually combining them: in the next example the same strings <code>Alpha</code> and <code>bet</code> are shown side-by-side whilst remaining two objects:</p>
@@ -471,6 +476,16 @@ st4 = st[7:][:5]
 
 print(st1, st2, st3, st4, sep=', ')</code></pre>
 <pre><code>## Hello World!, World!, Hello, World</code></pre>
+<p>To delete characters at, before, after or between certain <strong>sub-strings</strong> your first need to <em>find</em> the sub-string, get its index, then perform the deletion:</p>
+<pre class="python"><code>st = 'Hello, World!'
+
+# Find the comma
+idx_comma = st.find(',')
+# Delete all characters after the comma
+st = st[:idx_comma]
+
+print(st)</code></pre>
+<pre><code>## Hello</code></pre>
 </div>
 <div id="overwrite-characters" class="section level2">
 <h2><span class="header-section-number">5.2</span> Overwrite Characters</h2>

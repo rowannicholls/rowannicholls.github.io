@@ -133,6 +133,14 @@ st = st1 + st2
 print(st)
 ```
 
+If the strings are in a list, they can be combined using the `.join()` method:
+
+```{python}
+ls = ['Alpha', 'bet']
+word = ''.join(x for x in ls)
+print(word)
+```
+
 Displaying Strings Together
 ---------------------------
 Note that it is also possible to display two strings as one without actually combining them: in the next example the same strings `Alpha` and `bet` are shown side-by-side whilst remaining two objects:
@@ -352,6 +360,19 @@ st3 = st[:5]
 st4 = st[7:][:5]
 
 print(st1, st2, st3, st4, sep=', ')
+```
+
+To delete characters at, before, after or between certain **sub-strings** your first need to *find* the sub-string, get its index, then perform the deletion:
+
+```{python}
+st = 'Hello, World!'
+
+# Find the comma
+idx_comma = st.find(',')
+# Delete all characters after the comma
+st = st[:idx_comma]
+
+print(st)
 ```
 
 Overwrite Characters
