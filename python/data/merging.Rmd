@@ -1,0 +1,168 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Merging'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+```
+
+Example Data
+============
+Here are the final log standings from the 2018-19 and 2019-20 English Premier League seasons, sorted alphabetically by team:
+
+```{python, results = "asis"}
+import pandas as pd
+
+EPL_2018_19 = pd.DataFrame({
+    'Team': [
+        'Arsenal', 'Bournemouth', 'Brighton & Hove Albion', 'Burnley', 'Cardiff City', 'Chelsea', 'Crystal Palace',
+        'Everton', 'Fulham', 'Huddersfield Town', 'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United',
+        'Newcastle United', 'Southampton', 'Tottenham Hotspur', 'Watford', 'West Ham United', 'Wolverhampton Wanderers'
+    ],
+    'Points': [70, 45, 36, 40, 34, 72, 49, 54, 26, 16, 52, 97, 98, 66, 45, 39, 71, 50, 52, 57]
+})
+EPL_2019_20 = pd.DataFrame({
+    'Team': [
+        'Arsenal', 'Aston Villa', 'Bournemouth', 'Brighton & Hove Albion', 'Burnley', 'Chelsea', 'Crystal Palace',
+        'Everton', 'Leicester City', 'Liverpool', 'Manchester City', 'Manchester United', 'Newcastle United',
+        'Norwich City', 'Sheffield United', 'Southampton', 'Tottenham Hotspur', 'Watford', 'West Ham United',
+        'Wolverhampton Wanderers'
+    ],
+    'Points': [56, 35, 34, 41, 54, 66, 43, 49, 62, 99, 81, 66, 44, 21, 54, 52, 59, 34, 39, 59]
+})
+```
+
+```{r, echo = FALSE, results = "hold"}
+EPL_2018_19 <- data.frame(
+    "Team" = c(
+        "Arsenal", "Bournemouth", "Brighton & Hove Albion", "Burnley", "Cardiff City", "Chelsea", "Crystal Palace",
+        "Everton", "Fulham", "Huddersfield Town", "Leicester City", "Liverpool", "Manchester City", "Manchester United",
+        "Newcastle United", "Southampton", "Tottenham Hotspur", "Watford", "West Ham United", "Wolverhampton Wanderers"
+    ),
+    "Points" = c(70, 45, 36, 40, 34, 72, 49, 54, 26, 16, 52, 97, 98, 66, 45, 39, 71, 50, 52, 57)
+)
+EPL_2019_20 <- data.frame(
+    "Team" = c(
+        "Arsenal", "Aston Villa", "Bournemouth", "Brighton & Hove Albion", "Burnley", "Chelsea", "Crystal Palace",
+        "Everton", "Leicester City", "Liverpool", "Manchester City", "Manchester United", "Newcastle United",
+        "Norwich City", "Sheffield United", "Southampton", "Tottenham Hotspur", "Watford", "West Ham United",
+        "Wolverhampton Wanderers"
+    ),
+    "Points" = c(56, 35, 34, 41, 54, 66, 43, 49, 62, 99, 81, 66, 44, 21, 54, 52, 59, 34, 39, 59)
+)
+
+library(kableExtra)
+
+kable_input <- kable(EPL_2018_19)
+kable_styling(
+    kable_input, bootstrap_options = c("striped", "scale_down", "condensed"), full_width = F, font_size = 11,
+    position = "float_left"
+)
+kable_input <- kable(EPL_2019_20)
+kable_styling(
+    kable_input, bootstrap_options = c("striped", "scale_down", "condensed"), full_width = F, font_size = 11,
+    position = "center"
+)
+```
+
+Concatenation
+=============
+Concatenating two data frames is actually *not* the same as merging them, it's simply combining them by sticking one next to the other:
+
+Append a data frame to the bottom of another with the `.append()` method:
+
+```{python, results = "hold"}
+total = EPL_2018_19.append(EPL_2019_20)
+```
+
+Append a data frame to the bottom of another with the `concat()` function:
+
+```{python, results = "hold"}
+total = pd.concat([EPL_2018_19, EPL_2019_20])
+```
+
+Both of the above produce the same output:
+
+```{python, results = "hold"}
+print(total)
+```
+
+Append a data frame to the side of another with the `concat()` function and `axis='columns'`:
+
+```{python, results = "hold"}
+total = pd.concat([EPL_2018_19, EPL_2019_20], axis='columns')
+print(total)
+```
+
+Merging
+=======
+There are four types of merging:
+
+- Outer: keep all teams in *both* data frames (don't delete any data)
+- Left: keep all teams in the *left* data frame (but delete those in the right data frame that don't appear in the left)
+- Right: keep all teams in the *right* data frame (but delete those in the left data frame that don't appear in the right)
+- Inner: only keep the teams that are common to both data frames
+
+<center>
+![](outer.png) ![](left.png) <br>
+![](right.png) ![](inner.png)
+
+*(1) Keep all rows in both data frames, (2) keep all rows in the left data frame but only those in the right that are also in the left, (3) keep all rows in the right data frame but only those in the left that are also in the right, (4) keep only the rows that appear in both data frames*
+</center>
+
+Outer (Keep all rows in both data frames)
+-----------------------------------------
+Merge the data from both seasons by team name:
+
+```{python, results = "hold"}
+outer = pd.merge(EPL_2018_19, EPL_2019_20, on='Team', how='outer')
+print(outer)
+```
+
+As you can see, the teams that were in the league for both seasons (eg Arsenal and Bournemouth) have values in the "Points" columns for both seasons, whereas teams such as Aston Villa and Cardiff City which were promoted/relegated after the first season only have values for one season. For the other season there is an "NaN" (not a number). That is why there are 23 rows in the data frame when there are only 20 teams in the Premier League in any one season.
+
+Left (Keep all rows in the left data frame)
+-------------------------------------------
+To see the points for all the teams in the 2018-19 season and the season after:
+
+```{python, results = "hold"}
+left = pd.merge(EPL_2018_19, EPL_2019_20, on='Team', how='left')
+print(left)
+```
+
+The three teams that got promoted into the Premier League are not shown here as their names do not appear in the left data frame.
+
+Right (Keep all rows in the right data frame)
+---------------------------------------------
+To see the points for all the teams in the 2019-20 season and the season before:
+
+```{python, results = "hold"}
+right = pd.merge(EPL_2018_19, EPL_2019_20, on='Team', how='right')
+print(right)
+```
+
+The three teams that got relegated from the Premier League are not shown here as their names do not appear in the right data frame.
+
+Inner (Keep only the rows that appear in both data frames)
+----------------------------------------------------------
+To see the points for all the teams that were in the Premier League for both seasons:
+
+```{python, results = "hold"}
+inner = pd.merge(EPL_2018_19, EPL_2019_20, on='Team')
+print(inner)
+```
+
+The teams that got promoted and relegated from the Premier League are not shown here as their names do not appear in both data frames. As a results only 17 rows remain. **This is the default behaviour of the `merge()` function**.
+
+[⇦ Back](../../python.html)
+
+</font>

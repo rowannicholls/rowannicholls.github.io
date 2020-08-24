@@ -200,28 +200,28 @@ e &lt;- 5 %% 13
 # Output to console
 c(a, b, c, d, e)</code></pre>
 <pre><code>## [1]  7 50  9 16  5</code></pre>
-<p>For more complicated operations, there are functions to do it for you:</p>
+<p>For more complicated operations there are functions to do it for you:</p>
 <pre class="r"><code># Square root
 a &lt;- sqrt(49)
 # Round down
-b &lt;- floor(-3.14159)
+b &lt;- floor(-6.28318531)
 # Round up
-c &lt;- ceiling(-3.14159)
+c &lt;- ceiling(-6.28318531)
 # Round towards zero
-d &lt;- trunc(-3.14159)
-# Round to a certain number of decimal points
-e &lt;- round(-3.14159, 3)
+d &lt;- trunc(-6.28318531)
+# Round to a certain number of decimal places
+e &lt;- round(-6.28318531, 3)
 # Round to a certain number of significant figures
-f &lt;- signif(-3.14159, 3)
+f &lt;- signif(-6.28318531, 3)
 
 # Output to console
 c(a, b, c, d, e, f)</code></pre>
-<pre><code>## [1]  7.000 -4.000 -3.000 -3.000 -3.142 -3.140</code></pre>
+<pre><code>## [1]  7.000 -7.000 -6.000 -6.000 -6.283 -6.280</code></pre>
 <pre class="r"><code># Remove trailing zeros
 # Note that this converts the number to a string
-g &lt;- prettyNum(-3.14000, zero.print = NULL)
+g &lt;- prettyNum(-6.28000, zero.print = NULL)
 g</code></pre>
-<pre><code>## [1] &quot;-3.14&quot;</code></pre>
+<pre><code>## [1] &quot;-6.28&quot;</code></pre>
 <p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
