@@ -1,0 +1,1150 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>File IO: Create, Export, Import, Convert Data'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+```
+
+This script will demonstrate how to:
+
+- Create a whole bunch of Python objects (lists, arrays, data frames, etc)
+- Export them to your hard drive in various formats (Excel spreadsheets, text files, JSON files, etc)
+- Import them into Python again
+- Convert from one object type to another
+
+Start by creating the folders to export the data to:
+
+```{python}
+import os
+
+# Create folders if they do not already exist
+for folder in ['csv', 'html', 'json', 'mat', 'npy', 'ods', 'tab', 'tsv', 'txt', 'xls', 'xlsx']:
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+```
+
+Create Data
+===========
+
+Lists
+-----
+Create list:
+```{python}
+ls = [1, 2, 3, 4, 5] + list('ABCDE') + list(range(5))
+```
+
+Create list-of-lists:
+```{python}
+ls_of_ls = [
+    [1, 'Bulbasaur', 'Grass', 'Poison'],
+    [2, 'Ivysaur', 'Grass', 'Poison'],
+    [3, 'Venusaur', 'Grass', 'Poison'],
+    [4, 'Charmander', 'Fire'],
+    [5, 'Charmeleon', 'Fire'],
+    [6, 'Charizard', 'Fire', 'Flying'],
+    [7, 'Squirtle', 'Water'],
+    [8, 'Wartortle', 'Water'],
+    [9, 'Blastoise', 'Water'],
+]
+```
+
+Tuples
+------
+Create tuple:
+```{python}
+tupl = (1, 2, 3, 4, 5)
+```
+
+Create tuple of tuples:
+```{python}
+tupl_of_tupl = (
+    (1, 2),
+    (3, 4),
+    (5, 6)
+)
+```
+
+Numpy Arrays
+------------
+Import Numpy:
+```{python}
+import numpy as np
+```
+
+Create array:
+```{python}
+array = np.arange(5)
+```
+
+Create array-of-arrays:
+```{python}
+array_of_arrays = np.array([
+    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5],
+])
+```
+
+Strings
+-------
+Create string:
+```{python}
+st = 'Hello, World!'
+```
+
+Create multi-line string:
+```{python}
+st_multi = """Paragraph 1:
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut tellus vel nisi semper faucibus. Praesent ultricies
+a urna a tincidunt. Curabitur nec posuere est, non convallis nibh. Donec interdum, lacus at ultrices faucibus, urna elit
+mollis nunc, id cursus leo augue ut orci.
+
+Paragraph 2:
+Nulla maximus, quam ac semper lobortis, diam quam sodales diam, quis efficitur tortor tortor volutpat neque. Fusce
+turpis libero, porttitor quis eros a, mollis lobortis eros. Pellentesque pellentesque augue consequat tortor vulputate
+hendrerit.
+"""
+```
+
+Create comma-separated values:
+```{python}
+st_csv = '30,40,50'
+```
+
+Create tab-separated values:
+```{python}
+st_tsv = '30\t40\t50'
+```
+
+Create space-separated values:
+```{python}
+st_ssv = '30 40 50'
+```
+
+Dictionaries
+------------
+Create dictionary:
+```{python}
+dct = {
+    'Fibonacci': [0, 1, 1, 2, 3, 5, 8, 13],
+    'Primes': [2, 3, 5, 7, 11, 13, 17, 19]
+}
+```
+
+Pandas Objects
+--------------
+Import Pandas:
+```{python}
+import pandas as pd
+```
+
+Create series:
+```{python}
+ser = pd.Series(['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'])
+```
+
+Create data frame:
+```{python}
+df = pd.DataFrame(
+    {
+        'Person': [
+            'Charles Babbage', 'Ada Lovelace', 'Alan Turing', 'Mary Somerville', 'John Conway',
+            'Katherine Johnson'
+        ],
+        'Age': [79, 36, 41, 91, 82, 101],
+        'DOB': ['1791-12-26', '1815-12-10', '1912-06-23', '1780-12-26', '1937-12-26', '1918-08-26'],
+    }
+)
+```
+
+SQL Databases
+-------------
+Create SQL database:
+```{python, results = "hide", echo = FALSE}
+import sqlite3
+
+dbase = sqlite3.connect(':memory:')
+cur = dbase.cursor()
+cur.execute('CREATE TABLE Example (Name text, DOB date, Age integer)')
+cur.execute("INSERT INTO Example (Name, DOB, Age) VALUES ('Picasso', '1881-10-25', 91)")
+cur.execute(f"INSERT INTO Example VALUES ('Lovelace', '1815-12-10', {1852 - 1815})")
+```
+
+```{python, results = "hide", eval = FALSE}
+import sqlite3
+
+dbase = sqlite3.connect(':memory:')
+cur = dbase.cursor()
+cur.execute('CREATE TABLE Example (Name text, DOB date, Age integer)')
+cur.execute("INSERT INTO Example (Name, DOB, Age) VALUES ('Picasso', '1881-10-25', 91)")
+cur.execute(f"INSERT INTO Example VALUES ('Lovelace', '1815-12-10', {1852 - 1815})")
+```
+
+Export
+======
+
+Data Frames
+-----------
+Import Pandas:
+```{python}
+import pandas as pd
+```
+
+Export data frame to comma-separated values (.csv):
+```{python}
+df.to_csv('csv/data frame.csv', index=False)
+```
+
+Export data frame to tab-separated values (.tsv):
+```{python}
+df.to_csv('tsv/data frame.tsv', index=False, sep='\t')
+```
+
+Export data frame to tab-separated values (.tab):
+```{python}
+df.to_csv('tab/data frame.tab', index=False, sep='\t')
+```
+
+Export data frame to Excel 97-2004 workbook (.xls):
+```{python}
+df.to_excel('xls/data frame.xls')
+```
+
+Export data frame to Excel 2007 workbook (.xlsx):
+```{python}
+df.to_excel('xlsx/data frame.xlsx')
+```
+
+Export data frames to multiple sheets of an Excel 2007 workbook (.xlsx):
+```{python}
+with pd.ExcelWriter('xlsx/multiple data frames.xlsx') as writer:
+    df.to_excel(writer, sheet_name='Sheet_1')
+    df.to_excel(writer, sheet_name='Sheet_2')
+```
+
+Export data frame to space-separated values in a text file:
+```{python}
+import numpy as np
+
+np.savetxt('txt/data frame - space-separated values.txt', df, fmt='%s')
+```
+
+Export data frame to comma-separated values in a text file:
+```{python}
+np.savetxt('txt/data frame - comma-separated values.txt', df, fmt='%s', delimiter=',')
+```
+
+Export data frame to tab-separated values in a text file:
+```{python}
+output = [df.columns.tolist()] + df.values.tolist()
+np.savetxt('txt/data frame - tab-separated values.txt', output, fmt='%s', delimiter='\t')
+```
+
+Dictionaries
+------------
+
+Export dictionary as a MATLAB object (.mat):
+```{python}
+import scipy.io
+
+scipy.io.savemat('mat/dictionary.mat', dct, oned_as='row')
+```
+
+Export dictionary as a Numpy object (.npy):
+```{python}
+import numpy as np
+
+np.save('npy/dictionary.npy', dct)
+```
+
+Export dictionary to comma-separated values (.csv) in four different ways:
+```{python, results = "hide"}
+import csv
+
+with open('csv/dictionary - multiple columns, single cell in each.csv', 'w') as file:
+    w = csv.DictWriter(file, dct.keys())
+    w.writeheader()
+    w.writerow(dct)
+
+with open('csv/dictionary - multiple columns, multiple cells in each.csv', 'w') as file:
+    w = csv.writer(file)
+    w.writerow(dct.keys())
+    for i in range(len(list(dct.values())[0])):
+        w.writerow([ls[i] for ls in list(dct.values())])
+
+with open('csv/dictionary - multiple rows, single cell in each.csv', 'w') as file:
+    w = csv.writer(file)
+    for key in list(dct.keys()):
+        w.writerow([key, str(dct[key])])
+
+with open('csv/dictionary - multiple rows, multiple cells in each.csv', 'w') as file:
+    w = csv.writer(file)
+    for key in list(dct.keys()):
+        w.writerow([key] + dct[key])
+```
+
+Export dictionary to tab-separated values (.tsv) in four different ways:
+```{python, results = "hide"}
+import csv
+
+with open('tsv/dictionary - multiple columns, single cell in each.tsv', 'w') as file:
+    w = csv.DictWriter(file, dct.keys(), delimiter='\t')
+    w.writeheader()
+    w.writerow(dct)
+
+with open('tsv/dictionary - multiple columns, multiple cells in each.tsv', 'w') as file:
+    w = csv.writer(file, delimiter='\t')
+    w.writerow(dct.keys())
+    for i in range(len(list(dct.values())[0])):
+        w.writerow([ls[i] for ls in list(dct.values())])
+
+with open('tsv/dictionary - multiple rows, single cell in each.tsv', 'w') as file:
+    w = csv.writer(file, delimiter='\t')
+    for key in list(dct.keys()):
+        w.writerow([key, str(dct[key])])
+
+with open('tsv/dictionary - multiple rows, multiple cells in each.tsv', 'w') as file:
+    w = csv.writer(file, delimiter='\t')
+    for key in list(dct.keys()):
+        w.writerow([key] + dct[key])
+```
+
+Export dictionary to tab-separated values (.tab) in four different ways:
+```{python, results = "hide"}
+import csv
+
+with open('tab/dictionary - multiple columns, single cell in each.tab', 'w') as file:
+    w = csv.DictWriter(file, dct.keys(), delimiter='\t')
+    w.writeheader()
+    w.writerow(dct)
+
+with open('tab/dictionary - multiple columns, multiple cells in each.tab', 'w') as file:
+    w = csv.writer(file, delimiter='\t')
+    w.writerow(dct.keys())
+    for i in range(len(list(dct.values())[0])):
+        w.writerow([ls[i] for ls in list(dct.values())])
+
+with open('tab/dictionary - multiple rows, single cell in each.tab', 'w') as file:
+    w = csv.writer(file, delimiter='\t')
+    for key in list(dct.keys()):
+        w.writerow([key, str(dct[key])])
+
+with open('tab/dictionary - multiple rows, multiple cells in each.tab', 'w') as file:
+    w = csv.writer(file, delimiter='\t')
+    for key in list(dct.keys()):
+        w.writerow([key] + dct[key])
+```
+
+Export dictionary to text file:
+```{python}
+import json
+
+json.dump(dct, open('txt/dictionary.txt', 'w'))
+```
+
+Export dictionary to JSON file:
+```{python}
+import json
+
+with open('json/dictionary.json', 'w') as file:
+    json.dump(dct, file)
+```
+
+Lists
+-----
+
+Export list to comma-separated values (.csv):
+```{python}
+import numpy as np
+
+np.savetxt('csv/list.csv', ls, delimiter=',', fmt='%s')
+```
+
+Export list to tab-separated values (.tsv):
+```{python}
+np.savetxt('tsv/list.tsv', ls, delimiter='\t', fmt='%s')
+```
+
+Export list to tab-separated values (.tab):
+```{python}
+np.savetxt('tab/list.tab', ls, delimiter='\t', fmt='%s')
+```
+
+Export list to open document spreadsheet (.ods):
+```{python}
+import pyexcel_ods
+
+pyexcel_ods.save_data('ods/list.ods', {'Sheet 1': [ls]})
+```
+
+Export list to Excel 97-2004 workbook (.xls):
+```{python}
+import xlwt
+
+book = xlwt.Workbook()
+sheet1 = book.add_sheet('sheet1')
+for i, v in enumerate(ls):
+    sheet1.write(i, 0, v)
+book.save('xls/list.xls')
+```
+
+Export list to text file as a single line:
+```{python, results = "hide"}
+with open('txt/list - single line.txt', 'w') as file:
+    file.write(str(ls))
+```
+
+Export list to text file with each element on a new line:
+```{python, results = "hide"}
+with open('txt/list - multiple lines.txt', 'w') as file:
+    for v in ls:
+        file.write(str(v) + '\n')
+```
+
+Export list to HTML:
+```{python, eval = FALSE}
+file = open('html/list.html', 'w')
+for item in ls:
+    file.write(str(item) + '\n')
+file.close()
+```
+
+```{python, echo = FALSE, results = "hide"}
+file = open('html/list.html', 'w')
+for item in ls:
+    file.write(str(item) + '\n')
+file.close()
+```
+
+Export list-of-lists to text file:
+```{python}
+with open('txt/list-of-lists.txt', 'w') as file:
+    json.dump(ls_of_ls, file)
+```
+
+Export list-of-lists to comma-separated values (.csv):
+```{python}
+with open('csv/list-of-lists.csv', 'w', newline='') as file:
+    a = csv.writer(file, delimiter=',')
+    a.writerows(ls_of_ls)
+```
+
+Export list-of-lists to comma-separated values (.csv) (one-liner):
+```{python}
+csv.writer(open('csv/list-of-lists.csv', 'w')).writerows(ls_of_ls)
+```
+
+Export list-of-lists to text file as comma-separated values:
+```{python}
+with open('txt/list-of-lists - comma-separated values.txt', 'w', newline='') as file:
+    a = csv.writer(file, delimiter=',')
+    a.writerows(ls_of_ls)
+```
+
+Export list-of-lists to tab-separated values (.tsv):
+```{python}
+with open('tsv/list-of-lists.tsv', 'w', newline='') as file:
+    a = csv.writer(file, delimiter='\t')
+    a.writerows(ls_of_ls)
+```
+
+Export list-of-lists to tab-separated values (.tab):
+```{python}
+with open('tab/list-of-lists.tab', 'w', newline='') as file:
+    a = csv.writer(file, delimiter='\t')
+    a.writerows(ls_of_ls)
+```
+
+Export list-of-lists to text file as tab-separated values:
+```{python}
+with open('txt/list-of-lists - tab-separated values.txt', 'w', newline='') as file:
+    csv.writer(file, delimiter='\t').writerows(ls_of_ls)
+```
+
+Export list-of-lists to sheets of an Excel 97-2004 workbook (.xls):
+```{python}
+wb = xlwt.Workbook()
+ws = wb.add_sheet('Sheet1')
+for i, row in enumerate(ls_of_ls):
+    for j, cell in enumerate(row):
+        ws.write(i, j, cell)
+ws.col(0).width = 256 * max([len(row[0:]) for row in ls_of_ls])
+ws = wb.add_sheet('Sheet2')
+for i, row in enumerate(reversed(ls_of_ls)):
+    for j, cell in enumerate(row):
+        ws.write(i, j, cell)
+ws.col(0).width = 256 * max([len(row[0:]) for row in ls_of_ls])
+wb.save('xls/list-of-lists.xls')
+```
+
+Export list-of-lists to sheets of an Excel 2007 workbook (.xlsx):
+```{python, eval = FALSE}
+import xlsxwriter
+
+wb = xlsxwriter.Workbook('xlsx/list-of-lists.xlsx')
+ws = wb.add_worksheet('Sheet1')
+for i, row in enumerate(ls_of_ls):
+    for j, col in enumerate(row):
+        ws.write(i, j, col)
+ws = wb.add_worksheet('Sheet2')
+for i, row in enumerate(reversed(ls_of_ls)):
+    for j, col in enumerate(row):
+        ws.write(i, j, col)
+wb.close()
+```
+
+```{python, echo = FALSE, results = "hide"}
+import xlsxwriter
+
+wb = xlsxwriter.Workbook('xlsx/list-of-lists.xlsx')
+ws = wb.add_worksheet('Sheet1')
+for i, row in enumerate(ls_of_ls):
+    for j, col in enumerate(row):
+        ws.write(i, j, col)
+ws = wb.add_worksheet('Sheet2')
+for i, row in enumerate(reversed(ls_of_ls)):
+    for j, col in enumerate(row):
+        ws.write(i, j, col)
+wb.close()
+```
+
+Export list-of-lists to open document spreadsheet (.ods):
+```{python}
+data = {
+    'Sheet 1': ls_of_ls,
+    'Sheet 2': reversed(ls_of_ls)
+}
+pyexcel_ods.save_data('ods/list-of-lists.ods', data)
+```
+
+Strings
+-------
+Export string to text file - one line at a time:
+```{python, eval = FALSE}
+lines = [y for y in st_multi.splitlines()]
+file = open('txt/string - one line at a time.txt', 'w')
+for line in lines:
+    file.write(str(line) + '\n')
+file.close()
+```
+
+```{python, echo = FALSE, results = "hide"}
+lines = [y for y in st_multi.splitlines()]
+file = open('txt/string - one line at a time.txt', 'w')
+for line in lines:
+    file.write(str(line) + '\n')
+file.close()
+```
+
+Export string to text file - all together:
+```{python, eval = FALSE}
+file = open('txt/string - all together.txt', 'w')
+file.write(st_multi)
+file.close()
+```
+
+```{python, echo = FALSE, results = "hide"}
+file = open('txt/string - all together.txt', 'w')
+file.write(st_multi)
+file.close()
+```
+
+SQL Table
+---------
+Export SQL table to a spreadsheet:
+```{python}
+def export_table(tablename, filename):
+    """
+    Export an SQL table in a specified format.
+
+    SQLite does not support information schema so you need to use pragma.
+    """
+    # Export table to comma-separated values (.csv)
+    if filename.endswith('csv'):
+        w = csv.writer(open(filename, 'w'))
+        cur.execute(f'PRAGMA table_info ({tablename})')
+        w.writerow([x[1] for x in cur.fetchall()])
+        cur.execute(f'SELECT * FROM {tablename}')
+        w.writerows(cur.fetchall())
+    # Export table to Excel 97-2004 workbook (.xls)
+    elif filename.endswith('xls'):
+        wb = xlwt.Workbook()
+        ws = wb.add_sheet('Sheet 1')
+        cur.execute(f'PRAGMA table_info ({tablename})')
+        for col_num, col_details in enumerate(cur.fetchall()):
+            ws.write(0, col_num, col_details[1])
+        cur.execute(f'SELECT * FROM {tablename}')
+        for i, row in enumerate(cur.fetchall()):
+            for j, cell in enumerate(row):
+                ws.write(i + 1, j, cell)
+        wb.save(filename)
+    # Export table to Excel 2007 workbook (.xlsx)
+    elif filename.endswith('xlsx'):
+        wb = xlsxwriter.Workbook(filename)
+        ws = wb.add_worksheet('Sheet 1')
+        cur.execute(f'PRAGMA table_info ({tablename})')
+        for col_num, col_details in enumerate(cur.fetchall()):
+            ws.write(0, col_num, col_details[1])
+        cur.execute(f'SELECT * FROM {tablename}')
+        for i, row in enumerate(cur.fetchall()):
+            for j, cell in enumerate(row):
+                ws.write(i + 1, j, cell)
+        wb.close()
+    # Export table to open document spreadsheet (.ods)
+    elif filename.endswith('ods'):
+        cur.execute(f'PRAGMA table_info ({tablename})')
+        cols = [x[1] for x in cur.fetchall()]
+        cur.execute(f'SELECT * FROM {tablename}')
+        out = [cols] + [[y for y in x] for x in cur.fetchall()]
+        data = {'Sheet 1': out}
+        pyexcel_ods.save_data(filename, data)
+    # Exception handling
+    else:
+        ext = filename.split('.')[-1]
+        raise ValueError(
+            f'Extension "{ext}" is not recognised; ' +
+            'please use csv, xls, xlsx or ods files'
+        )
+
+
+export_table('Example', 'csv/SQL table.csv')
+export_table('Example', 'xls/SQL table.xls')
+export_table('Example', 'xlsx/SQL table.xlsx')
+export_table('Example', 'ods/SQL table.ods')
+```
+
+Import
+======
+
+Comma-Separated Values (CSVs)
+-----------------------------
+Import comma-separated values (.csv) as a data frame:
+```{python}
+import pandas as pd
+
+df = pd.read_csv('csv/data frame.csv', parse_dates=True)
+```
+
+Import comma-separated values (.csv) as a data frame using a custom date parser:
+```{python}
+import datetime
+
+
+def dateparser(x):
+    """
+    Parse dates.
+
+    Example formats:
+    '%Y-%m-%d %H:%M:%S'   2000-01-02 17:01:02
+    '%Y-%m-%d'            2000-01-02
+    '%d/%m/%Y'            02/01/2000
+    '%d %b %Y %H:%M:%S'   2 Jan 2000
+    """
+    return datetime.datetime.strptime(x, '%Y-%m-%d')
+
+
+df = pd.read_csv('csv/data frame.csv', parse_dates=['DOB'], date_parser=dateparser)
+date = df.loc[0, 'DOB']
+```
+
+Import comma-separated values (.csv) as a data frame - use the first column as the index:
+```{python}
+df = pd.read_csv('csv/data frame.csv', parse_dates=True, index_col=0)
+```
+
+Import all CSVs in a folder as data frames:
+```{python}
+for file in os.listdir('csv'):
+    df = pd.read_csv(os.path.join('csv', file), parse_dates=True, index_col=0)
+```
+
+Import comma-separated values (.csv) as a dictionary:
+```{python}
+dct = {}
+with open('csv/dictionary - multiple columns, single cell in each.csv', newline='') as file:
+    reader = csv.DictReader(file)
+    for row in reader:
+        dct = dict(row)
+```
+
+Import comma-separated values (.csv) as a list-of-lists:
+```{python}
+ls_of_ls = []
+with open('csv/list-of-lists.csv', newline='') as file:
+    for row in csv.reader(file):
+        ls_of_ls.append(row)
+```
+
+Import comma-separated values (.csv) in a text file as a tuple of lists of strings:
+```{python}
+tupl_of_lists = ()
+with open('txt/list-of-lists - comma-separated values.txt', newline='') as file:
+    # Replace empty cells with blanks
+    for row in csv.reader((line.replace('\0', '') for line in file)):
+        tupl_of_lists = tuple(list(tupl_of_lists) + [row])
+```
+
+Tab-Separated Values (TSVs)
+---------------------------
+Import tab-separated values (.tsv) as a data frame:
+```{python}
+df = pd.read_csv('tsv/data frame.tsv', sep='\t')
+```
+
+Import tab-separated values (.tsv) as a list:
+```{python}
+ls = []
+with open('tsv/list.tsv') as file:
+    for line in file:
+        ls.append(line[:-1])
+```
+
+Import tab-separated values in a text file as a data frame:
+```{python}
+df = pd.read_csv('txt/data frame - tab-separated values.txt', sep='\t')
+```
+
+Import tab-separated values in a text file as a tuple of lists of strings:
+```{python}
+tupl_of_lists = []
+with open('txt/list-of-lists - tab-separated values.txt', newline='') as file:
+    for row in csv.reader(file, delimiter='\t'):
+        tupl_of_lists.append(row)
+```
+
+Tab-Separated Values (TABs)
+---------------------------
+Import tab-separated values (.tab) as a data frame:
+```{python}
+df = pd.read_csv('tab/data frame.tab', sep='\t')
+```
+
+MATLAB Data Files
+-----------------
+Import MATLAB data files (.mat) as a dictionary:
+```{python}
+import scipy.io
+
+dct = scipy.io.loadmat('mat/dictionary.mat')
+```
+
+Text Files
+----------
+Import text file (.txt) as a list:
+```{python}
+ls = []
+with open('txt/list - multiple lines.txt') as file:
+    for line in file:
+        ls.append(line[:-1])
+```
+
+Import text file (.txt) as a list of lines:
+```{python}
+ls = []
+with open('txt/string - all together.txt') as file:
+    for line in file:
+        ls.append(line[:-1])
+```
+
+Import text file (.txt) as a string:
+```{python}
+file = open('txt/string - all together.txt', 'r')
+st = file.read()
+```
+
+Import text file (.txt) as a list-of-lists:
+```{python}
+import json
+
+with open('txt/list-of-lists.txt', 'r') as file:
+    ls = json.load(file)
+```
+
+Import text file (.txt) as a dictionary:
+```{python}
+import json
+
+dct = json.load(open('txt/dictionary.txt'))
+```
+
+Numpy Objects 
+-------------
+Import Numpy object (.npy) as a dictionary:
+```{python}
+import numpy as np
+
+dct = np.load('npy/dictionary.npy', allow_pickle=True).item()
+```
+
+HTML
+----
+Import HTML as a list:
+```{python}
+ls = []
+for line in open('html/list.html', 'r', encoding='utf8'):
+    # Remove the newline character from the end of each line
+    ls.append(line[:-1])
+```
+
+JSON
+----
+Import JSON as a dictionary:
+```{python}
+import json
+
+with open('json/dictionary.json') as file:
+    dct = json.load(file)
+```
+
+Open Document Spreadsheet
+-------------------------
+Import open document spreadsheet (.ods) as a list-of-lists:
+```{python}
+def import_ods(filename):
+    from pyexcel_ods import get_data
+    data = []
+    wb = get_data(filename)
+    # wb is an OrderedDict where each key is a sheetname
+    for sheetname in list(wb.keys()):
+        sheet = wb[sheetname]
+        data += [sheet]
+    return data
+
+
+ls_of_ls = import_ods('ods/list-of-lists.ods')
+```
+
+Excel 97-2004 Workbooks
+-----------------------
+Import Excel 97-2004 workbook (.xls) as a list-of-lists:
+```{python}
+def import_xls(filename):
+    """Import Excel 97-2004 workbook (.xls) as a list-of-lists."""
+    import xlrd
+    data = []
+    wb = xlrd.open_workbook(filename)
+    sh1 = wb.sheet_by_index(0)
+    for rownum in range(sh1.nrows):
+        data += [sh1.row_values(rownum)]
+    return data
+
+
+ls_of_ls = import_xls('xls/list-of-lists.xls')
+```
+
+Import Excel 97-2004 workbook (.xls) as a data frame:
+```{python}
+import pandas as pd
+
+df = pd.read_excel('xls/data frame.xls', index_col=0)
+```
+
+Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)
+------------------------------------------------------------
+Import Excel 2007 workbook (.xlsx) as a list-of-lists:
+```{python}
+def import_xlsx(filename):
+    """Import Excel 2007 workbook (.xlsx) as a list-of-lists."""
+    import xlrd
+    data = []
+    wb = xlrd.open_workbook(filename)
+    sh = wb.sheet_by_index(0)
+    for rownum in range(sh.nrows):
+        data += [sh.row_values(rownum)]
+    return data
+
+
+ls_of_ls = import_xlsx('xlsx/list-of-lists.xlsx')
+```
+
+Import Excel 2007 workbook (.xlsx) as a data frame:
+```{python}
+import pandas as pd
+
+df = pd.read_excel('xlsx/data frame.xlsx', index_col=0)
+```
+
+All Spreadsheet Types
+---------------------
+Import spreadsheet as a list-of-lists:
+```{python}
+def import_spreadsheet_list(filename):
+    """Import a spreadsheet and convert it to a list-of-lists."""
+    data = []
+    if filename.endswith('csv'):
+        import csv
+        data = []
+        reader = csv.reader(open(filename, 'r'))
+        for row in reader:
+            # Be able to handle empty cells
+            for i, v in enumerate(row):
+                if v == '':
+                    row[i] = 'None'
+            data.append(row)
+    elif filename.endswith('xls'):
+        import xlrd
+        wb = xlrd.open_workbook(filename)
+        for i, sheet_name in enumerate(wb.sheet_names()):
+            sh = wb.sheet_by_name(sheet_name)
+            sheet = []
+            for rownum in range(sh.nrows):
+                sheet += [sh.row_values(rownum)]
+            data += [sheet]
+    elif filename.endswith('xlsx'):
+        from openpyxl import load_workbook
+        try:
+            wb = load_workbook(filename)
+        except IOError:
+            raise IOError(f'The file "{filename}" was not found!')
+        for sh in wb.worksheets:
+            sheet = []
+            for row in sh.iter_rows():
+                data_row = []
+                for cell in row:
+                    data_row += [cell.internal_value]
+                sheet += [data_row]
+            data += [sheet]
+    elif filename.endswith('ods'):
+        from pyexcel_ods import get_data
+        wb = get_data(filename)
+        # wb is an OrderedDict where each key is a sheetname
+        for sheetname in list(wb.keys()):
+            sheet = wb[sheetname]
+            data += [sheet]
+    return data
+
+
+sheet1 = import_spreadsheet_list('csv/list-of-lists.csv')  # A CSV can only have one sheet
+[sheet1, sheet2] = import_spreadsheet_list('xls/list-of-lists.xls')
+[sheet1, sheet2] = import_spreadsheet_list('xlsx/list-of-lists.xlsx')
+[sheet1, sheet2] = import_spreadsheet_list('ods/list-of-lists.ods')
+```
+
+Import spreadsheet as a dictionary of sheets which are lists-of-lists:
+```{python}
+def import_spreadsheet_dict(filename):
+    """Import a spreadsheet and convert it to a list-of-lists."""
+    data = {}
+    if filename.endswith('csv'):
+        import csv
+        data = []
+        reader = csv.reader(open(filename, 'r'))
+        for row in reader:
+            # Be able to handle empty cells
+            for i, v in enumerate(row):
+                if v == '':
+                    row[i] = 'None'
+            data.append(row)
+    elif filename.endswith('xls'):
+        import xlrd
+        wb = xlrd.open_workbook(filename)
+        for i, sheet_name in enumerate(wb.sheet_names()):
+            sh = wb.sheet_by_name(sheet_name)
+            sheet = []
+            for rownum in range(sh.nrows):
+                sheet += [sh.row_values(rownum)]
+            data[sheet_name] = sheet
+    elif filename.endswith('xlsx'):
+        from openpyxl import load_workbook
+        wb = load_workbook(filename)
+        for i, sh in enumerate(wb.worksheets):
+            sheet_name = wb.sheetnames[i]
+            sheet = []
+            for row in sh.iter_rows():
+                data_row = []
+                for cell in row:
+                    data_row += [cell.internal_value]
+                sheet += [data_row]
+            data[sheet_name] = sheet
+    elif filename.endswith('ods'):
+        from pyexcel_ods import get_data
+        wb = get_data(filename)
+        # wb is an OrderedDict where each key is a sheetname
+        for sheetname in list(wb.keys()):
+            sheet = wb[sheetname]
+            data[sheetname] = sheet
+    return data
+
+
+ls_of_ls = import_spreadsheet_dict('csv/list-of-lists.csv')  # A CSV can only have one sheet
+dct = import_spreadsheet_dict('xls/list-of-lists.xls')
+dct = import_spreadsheet_dict('xlsx/list-of-lists.xlsx')
+dct = import_spreadsheet_dict('ods/list-of-lists.ods')
+```
+
+Convert
+=======
+
+Pandas Objects
+--------------
+Convert data frame to dictionary:
+```{python}
+import pandas as pd
+
+dct = df.to_dict()
+```
+
+Convert data frame to a list-of-lists:
+```{python}
+ls_of_ls = df.values.tolist()
+# Add the column headings to the start of the list-of-lists
+ls_of_ls = [df.columns.tolist()] + ls_of_ls
+```
+
+Convert series to list:
+```{python}
+ls = list(ser)
+```
+
+Lists with Text and Numbers
+---------------------------
+Convert list-of-lists to a dictionary (row headers as keys):
+```{python}
+dct = {rows[0]: rows[1:] for rows in ls_of_ls}
+```
+
+Convert list-of-lists to a dictionary for each row (column headers as keys):
+```{python}
+for row in ls_of_ls[1:]:
+    # Create a dictionary for each row from the second onwards
+    globals()[str(row[0]).replace(' ', '_')] = {}
+# For each column, add each row's information to its dictionary
+for column_idx, column_value in enumerate(ls_of_ls[0]):
+    # For each element in the first row
+    for row in ls_of_ls[1:]:
+        # For each row from the second onwards
+        globals()[str(row[0]).replace(' ', '_')][column_value] = row[column_idx]
+# print(Charles_Babbage['Age'])
+```
+
+Convert list-of-lists to a dictionary for each row (row headers as keys):
+```{python}
+for column_idx, column_value in enumerate(ls_of_ls[0]):
+    # Create a dictionary for each element in the first row
+    globals()[str(column_value).replace(' ', '_')] = {}
+# For each row, add each column's information to its dictionary
+for row in ls_of_ls[1:]:
+    # For each row from the second onwards
+    for column_idx, column_value in enumerate(ls_of_ls[0]):
+        # For each element in the first row
+        try:
+            globals()[str(column_value).replace(' ', '_')][row[0]] = row[column_idx]
+        # Sometimes, not all cells have values
+        # These blank ones need to be passed
+        except ValueError:
+            pass
+# print(Age['Charles Babbage'])
+```
+
+Arrays
+------
+Convert array to list:
+```{python}
+ls = list(array)
+```
+
+Convert array-of-arrays to list-of-lists:
+```{python}
+ls_of_ls = [list(array) for array in array_of_arrays]
+```
+
+Lists with numbers only
+-----------------------
+Convert list to array:
+```{python}
+array = np.array(ls)
+```
+
+Convert list-of-lists to array-of-arrays:
+```{python}
+array = np.array(ls_of_ls)
+```
+
+Convert list of numbers to list of strings:
+```{python}
+ls = [str(x) for x in ls]
+```
+
+Convert list of strings to list of numbers (can handle scientific notation):
+```{python}
+ls = [float(x) for x in ls]
+```
+
+Convert list-of-lists of numbers to list-of-lists of strings:
+```{python}
+ls_of_ls = [[str(x) for x in ls] for ls in ls_of_ls]
+```
+
+Convert list-of-lists of strings to list-of-lists of numbers (can handle scientific notation):
+```{python}
+ls_of_ls_floats = [[float(j) for j in i] for i in ls_of_ls]
+```
+
+Convert lists-of-list of strings to list-of-lists of numbers (doesn't handle scientific notation):
+```{python}
+ls_of_ls_ints = [[int(j) for j in i] for i in ls_of_ls]
+```
+
+Convert string of space-separated values to list of numbers:
+```{python}
+ls = [int(x) for x in st_ssv.split(' ')]
+```
+
+Tuples
+------
+Convert tuple to list:
+```{python}
+ls = list(tupl)
+```
+
+Convert tuple-of-tuples to list-of-lists:
+```{python}
+ls_of_ls = [list(i) for i in tupl_of_tupl]
+```
+
+Text
+----
+Convert text to list, removing empty lines:
+```{python}
+ls = [y for y in (x.strip() for x in st_multi.splitlines()) if y]
+```
+
+Convert text to list, keeping empty lines:
+```{python}
+ls = [y for y in st_multi.splitlines()]
+```
+
+Convert text to dictionary:
+```{python}
+ls = [y for y in (x.strip() for x in st_multi.splitlines()) if y]
+dct = {}
+for i in range(len(ls)):
+    if i % 2 == 0:
+        dct[ls[i]] = ls[i + 1]
+# print(dct['Paragraph 1:'])
+```
+
+Lists with Strings Only
+-----------------------
+Convert list to dictionary:
+```{python}
+dct = {}
+for i in range(len(ls)):
+    if i % 2 == 0:
+        dct[ls[i]] = ls[i + 1]
+# print(dct['Paragraph 1:'])
+```
+
+[⇦ Back](../../python.html)
+
+</font>
