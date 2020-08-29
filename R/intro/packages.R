@@ -41,6 +41,9 @@ install.packages("styler", repos = "http://cran.us.r-project.org")
 install.packages("tidyverse", repos = "http://cran.us.r-project.org")
 install.packages("titanic", repos = "http://cran.us.r-project.org")
 install.packages("utf8", repos = "http://cran.us.r-project.org")
+install.packages("writexl", repos = "http://cran.us.r-project.org")
+install.packages("WriteXLS", repos = "http://cran.us.r-project.org")
+install.packages("xlsx", repos = "http://cran.us.r-project.org")  # Could not install on Ubunut 18.04 with R 4.0.2
 install.packages("xtable", repos = "http://cran.us.r-project.org")
 
 library(BlandAltmanLeh)
@@ -80,6 +83,9 @@ library(styler)
 library(tidyverse)
 library(titanic)
 library(utf8)
+library(writexl)
+library(WriteXLS)
+library(xlsx)
 library(xtable)
 
 # Couldn't install with R 4.x.x
