@@ -1,0 +1,228 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>File IO: Create, Export and Import Data'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+```
+
+This script will demonstrate how to:
+
+- Create R objects (strings, vectors, data frames)
+- Export them to your hard drive in various formats (Excel spreadsheets, text files, etc)
+- Import them into R again
+
+Start by creating folders to export the data to:
+
+```{r}
+for (folder in c("csv", "tab", "tex", "tsv", "txt", "xls", "xlsx")) {
+    dir.create(file.path(folder), showWarnings = FALSE)
+}
+```
+
+Create Data
+===========
+
+Strings
+-------
+```{r}
+st <- "Lorem ipsum dolor sit amet"
+```
+
+Vectors
+-------
+```{r}
+vct <- c("Hello", "World")
+```
+
+Data Frames
+-----------
+```{r}
+df <- data.frame(
+    Name = c("Charles Babbage", "Ada Lovelace", "Alan Turing", "Mary Somerville", "John Conway", "Katherine Johnson"),
+    Age = c(79, 36, 41, 91, 82, 101),
+    DOB = c("1791-12-26", "1815-12-10", "1912-06-23", "1780-12-26", "1937-12-26", "1918-08-26")
+)
+```
+
+Export
+======
+
+Strings
+-------
+Export string to a text file (.txt):
+```{r}
+cat("Hello", file = "txt/string.txt", sep = "\n")
+cat("World", file = "txt/string.txt", append = TRUE)
+```
+
+Vectors
+-------
+Export vector to a text file (.txt):
+```{r}
+fileConn <- file("txt/vector.txt")
+writeLines(vct, fileConn)
+close(fileConn)
+```
+
+Data Frames
+-----------
+Export data frame as comma-separated values (.csv):
+```{r}
+utils::write.csv(df, "csv/data frame.csv")
+readr::write_csv(df, "csv/data frame.csv")
+```
+
+Export data frame as tab-separated values (.tsv):
+```{r}
+write.table(df, file = "tsv/data frame.tsv", sep = "\t", row.names = FALSE)
+```
+
+Export data frame as tab-separated values (.tab):
+```{r}
+write.table(df, file = "tab/data frame.tab", sep = "\t", row.names = FALSE)
+```
+
+Export data frame as tab-separated values to a text file (.txt):
+```{r}
+write.table(df, file = "txt/data frame.txt", sep = "\t", row.names = FALSE)
+```
+
+Export data frame to an Excel 97-2004 workbook (.xls):
+```{r}
+library(WriteXLS)
+WriteXLS(df, "xls/data frame.xls")
+```
+
+Export data frame to an Excel 2007 workbook (.xlsx):
+```{r}
+library(openxlsx)
+wb <- createWorkbook()
+addWorksheet(wb, "Sheet 1")
+writeData(wb, "Sheet 1", df)
+saveWorkbook(wb, "xlsx/data frame.xlsx", overwrite = TRUE)
+```
+
+Export data frame as a kable table to a Latex file (.tex):
+```{r}
+library(kableExtra)
+kable_input <- kable(df, "latex", booktabs = TRUE, escape = FALSE)
+kable_output <- kable_styling(kable_input, latex_options = c("striped"))
+cat(kable_output, file = "tex/kable table.tex", append = FALSE)
+```
+
+Console Output
+--------------
+Redirect console output to text file:
+```{r, results = "hide"}
+sink("txt/diary.txt")
+print("Hello world")
+sink()
+```
+
+Import
+======
+
+Comma-Separated Values (CSVs)
+-----------------------------
+Import comma-separated values (.csv) as a data frame:
+```{r}
+df <- utils::read.csv("csv/data frame.csv")
+```
+
+Readr's `read_csv()` will produces console output if you don't specify the column types. Either manually specify these or use `col_types = cols()` to have R guess the types:
+```{r}
+library(readr)
+df <- readr::read_csv("csv/data frame.csv", col_types = cols())
+```
+
+If there are blank rows at the top of the CSV, skip them when importing it:
+```{r}
+df <- read.csv("csv/data frame.csv", skip = 2)
+```
+
+Import all CSVs in a folder as a list of data frames:
+```{r}
+filenames <- list.files(path = "csv", pattern = "*.csv")
+filepaths <- file.path("csv", filenames)
+ls <- lapply(filepaths, read.csv)
+```
+
+Use the file names to create a named list which can then be indexed with either a number or the file names themselves:
+```{r}
+names(ls) <- filenames
+# print(ls[["data frame.csv"]])
+# print(ls[[1]])
+```
+
+Tab-Separated Values (TSVs)
+---------------------------
+Import tab-separated values (.tsv) as a data frame:
+```{r}
+df <- read.table("tsv/data frame.tsv", sep = "\t", header = TRUE)
+df <- read.delim("tsv/data frame.tsv", header = TRUE)
+```
+
+Import tab-separated values (.tab) as a data frame:
+```{r}
+df <- read.table("tab/data frame.tab", sep = "\t", header = TRUE)
+df <- read.delim("tab/data frame.tab", header = TRUE)
+```
+
+Import tab-separated values from a text file (.txt) as a data frame:
+```{r}
+df <- read.table("txt/data frame.txt", header = TRUE)
+```
+
+Text Files
+----------
+Import text file (.txt) as a string:
+```{r}
+library(readtext)
+st <- readtext("txt/string.txt")$text
+```
+
+Import text file (.txt) as a data frame:
+```{r}
+df <- read.table("txt/data frame.txt", header = TRUE)
+```
+
+Excel 97-2004 Workbooks
+-----------------------
+Import an Excel 97-2004 workbook (.xls) as a tibble:
+```{r}
+library(readxl)
+tib <- readxl::read_excel("xls/data frame.xls")
+```
+
+Then convert it to a data frame:
+```{r}
+df <- as.data.frame(tib)
+```
+
+Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)
+------------------------------------------------------------
+
+Import an Excel 2007 workbook (.xlsx) as a tibble:
+```{r}
+library(readxl)
+tib <- readxl::read_excel("xlsx/data frame.xlsx")
+```
+
+Then convert it to a data frame:
+```{r}
+df <- as.data.frame(tib)
+```
+
+[⇦ Back](../../R.html)
+
+</font>
