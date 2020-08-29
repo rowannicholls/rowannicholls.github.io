@@ -1,7 +1,7 @@
 """
-PRODUCE META INFORMATION ABOUT THE COMPUTER & PYTHON.
+Produce meta information about the computer and Python.
 
-WORKS ON:
+Works on:
 ┌────────────┬────────────────┬───────────────┬────────────────────────────┐
 │ DATE       │ OS             │ VERSION       │ LOCATION                   │
 ├────────────┼────────────────┼───────────────┼────────────────────────────┤
@@ -22,7 +22,7 @@ import subprocess
 import sys
 import time
 
-# GENERAL IMPLEMENTATION
+# General implementation
 today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
 print(f'This script was run on {today}')
 print(f'This is a {platform.system()} machine')
@@ -66,7 +66,7 @@ print('The installed packages are:')
 for requirement in freeze(local_only=True):
     print(requirement)
 
-# SPECIFIC STUFF
+# Specific stuff
 print('\n\n')
 if platform.system() == 'Linux':
     print('\nWORKS ON:')
