@@ -15,9 +15,9 @@ Create a Bash Build System:
 
 - Create a new Sublime-Build file:
     - Sublime-Build files tell Sublime Text how you want to run a script when you hit Ctrl+B
-    - Tools ⭢ Build System ⭢ New Build System...
+    - Tools > Build System > New Build System...
     - In the "untitled.sublime-build" that appears, replace everything with
-    ```{json}
+    ```json
     {
         "cmd"       : ["bash", "$file"],
         "selector"  : "source.shell",

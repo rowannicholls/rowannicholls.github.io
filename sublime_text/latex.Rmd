@@ -15,9 +15,9 @@ Prerequisites {.tabset}
 =============
 - You must have Latex installed already (eg by installing TexStudio, which can be downloaded from [here](https://www.texstudio.org/)). Make sure it is working by running a Latex file and ensure you know how to install packages (hint: TexStudio does it automatically).
 - You must have the LaTeXTools package for Sublime Text installed:
-    - Command Palette ⭢ Package Control: Install Package ⭢ LaTeXTools
+    - Command Palette > Package Control: Install Package > LaTeXTools
     - Close and re-open Sublime Text after the installation is finished
-    - Help: Preferences ⭢ Package Settings ⭢ LaTeXTools ⭢ Documentation
+    - Help: Preferences > Package Settings > LaTeXTools > Documentation
 
 Ubuntu
 ------
@@ -38,13 +38,13 @@ Ubuntu
 ```{bash, eval = FALSE}
 sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex-extra
 ```
-- In Sublime Text, go to Preferences ⭢ Package Settings ⭢ LaTeXTools ⭢ Check System
+- In Sublime Text, go to Preferences > Package Settings > LaTeXTools > Check System
     - `xelatex` and `biber` might be missing and `display_log` might be false, but everything else should be there and be green
 - Test that it works:
-    - Open a Latex file and compile it with the build system (Tools ⭢ Build System ⭢ LaTeX)
-    - Compile it via Ctrl+C+B (the key binding doesn't work until you've made the association between the tex file and the Latex build system which happens when you run it via Tools ⭢ Build System ⭢ LaTeX)
+    - Open a Latex file and compile it with the build system (Tools > Build System > LaTeX)
+    - Compile it via Ctrl+C+B (the key binding doesn't work until you've made the association between the tex file and the Latex build system which happens when you run it via Tools > Build System > LaTeX)
 - If you have a bibliography, you need to copy the bibstyle file (eg apa.bst) into the working directory
-- For more key bindings, see Preferences ⭢ Package Settings ⭢ LaTeX Tools ⭢ Key Bindings-Default
+- For more key bindings, see Preferences > Package Settings > LaTeX Tools > Key Bindings-Default
     - eg Ctrl+L,W for word count
 - To turn off the "NO BIB FILE" Warning:
     - Place cursor in an open .tex file

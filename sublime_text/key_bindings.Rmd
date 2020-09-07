@@ -14,65 +14,65 @@ output:
 Default Key Bindings
 ====================
 
-| Action                  | macOS           | Windows & Linux | Same?    |
-|:------------------------|:----------------|:----------------|:---------|
-| Next tab in group       | Ctrl+PgDn (Ctrl+Fn+⭣) or Alt+Cmd+⭢ | Ctrl+PgDn | Yes |
-| Previous tab in group   | Ctrl+PgUp (Ctrl+Fn+⭡) or Alt+Cmd+⭠ | Ctrl+PgUp | Yes |
-| Go to file in project   | Cmd+P or Cmd+T  | Ctrl+P          | Cmd/Ctrl swap |
-| Go to text in file      | Cmd+R           | Ctrl+R          | Cmd/Ctrl swap |
-| Open file               | Cmd+O           | Ctrl+O          | Cmd/Ctrl swap |
-| New tab                 | Cmd+N           | Ctrl+N          | Cmd/Ctrl swap |
-| Close tab               | Cmd+W           | Ctrl+W          | Cmd/Ctrl swap |
-| Re-open last closed     | Shift+Cmd+T     | Shift+Ctrl+T    | Cmd/Ctrl swap |
-| Command palette         | Shift+Cmd+P     | Shift+Ctrl+P    | Cmd/Ctrl swap |
-| Quick switch project    | Ctrl+Cmd+P      | Ctrl+Alt+P      | No       |
-| Cursor to end of line   | Cmd+⭢          | End             | No       |
-| Cursor to start of line | Cmd+⭠          | Home            | No       |
-| Cursor to end of file   | Cmd+⭡ or End (Fn+⭢)  | Ctrl+End  | No       |
-| Cursor to start of file | Cmd+⭣ or Home (Fn+⭠) | Ctrl+Home | No       |
-| Cursor to end of word   | Alt+⭢          | Ctrl+⭢         | No       |
-| Cursor to start of word | Alt+⭠          | Ctrl+⭠         | No       |
-| Cursor to end of subword   | Doesn't work | Alt+⭢          | No       |
-| Cursor to start of subword | Doesn't work | Alt+⭠          | No       |
-| Focus on group          | Ctrl+1/2/3/4    | Ctrl+1/2/3/4    | Yes      |
-| Move tab to group       | Ctrl+Shift+1/2/3/4 | Ctrl+Shift+1/2/3/4 | Yes      |
-| Number of groups        | Doesn't work    | Shift+Alt+1/2/3/4/5   | No       |
-| Scroll page down        | PgDn (Fn+⭣)     | PgDn            | Yes      |
-| Scroll page up          | PgUp (Fn+⭡)     | PgUp            | Yes      |
-| Save                    | Cmd+S            | Ctrl+S         | Cmd/Ctrl swap |
-| Save all                | Alt+Cmd+S        | None           | No            |
-| Undo                    | Cmd+Z           | Ctrl+Z          | Cmd/Ctrl swap |
-| Redo                    | Shift+Cmd+Z     | Ctrl+Y          | No        |
-| Find and Replace        | Alt+Cmd+F       | Ctrl+H          | No       |
-| Toggle side bar         | Cmd+K, Cmd+B    | Ctrl+K, Ctrl+B  | Cmd/Ctrl swap |
-| Toggle spell check      | F6 (Fn+F6)      | F6              | Yes      |
-| Toggle full screen      | Ctrl+Cmd+F      | F11             | No       |
-| Indent                  | Cmd+[           | Ctrl+[          | Cmd/Ctrl swap |
-| Outdent                 | Cmd+]           | Ctrl+]          | Cmd/Ctrl swap |
-| Select next instance    | Cmd+D           | Ctrl+D          | Cmd/Ctrl swap |
+| Action                     | macOS                      | Windows & Linux     | Same?         |
+|:---------------------------|:---------------------------|:--------------------|:--------------|
+| Next tab in group          | Ctrl+PgDn or Alt+Cmd+Right | Ctrl+PgDn           | Yes           |
+| Previous tab in group      | Ctrl+PgUp or Alt+Cmd+Left  | Ctrl+PgUp           | Yes           |
+| Go to file in project      | Cmd+P or Cmd+T             | Ctrl+P              | Cmd/Ctrl swap |
+| Go to text in file         | Cmd+R                      | Ctrl+R              | Cmd/Ctrl swap |
+| Open file                  | Cmd+O                      | Ctrl+O              | Cmd/Ctrl swap |
+| New tab                    | Cmd+N                      | Ctrl+N              | Cmd/Ctrl swap |
+| Close tab                  | Cmd+W                      | Ctrl+W              | Cmd/Ctrl swap |
+| Re-open last closed        | Shift+Cmd+T                | Shift+Ctrl+T        | Cmd/Ctrl swap |
+| Command palette            | Shift+Cmd+P                | Shift+Ctrl+P        | Cmd/Ctrl swap |
+| Quick switch project       | Ctrl+Cmd+P                 | Ctrl+Alt+P          | No            |
+| Cursor to end of line      | Cmd+Right                  | End                 | No            |
+| Cursor to start of line    | Cmd+Left                   | Home                | No            |
+| Cursor to end of file      | Cmd+Up or End (Fn+Right)   | Ctrl+End            | No            |
+| Cursor to start of file    | Cmd+Down or Home (Fn+Left) | Ctrl+Home           | No            |
+| Cursor to end of word      | Alt+Right                  | Ctrl+Right          | No            |
+| Cursor to start of word    | Alt+Left                   | Ctrl+Left           | No            |
+| Cursor to end of subword   | Doesn't work               | Alt+Right           | No            |
+| Cursor to start of subword | Doesn't work               | Alt+Left            | No            |
+| Focus on group             | Ctrl+1/2/3/4               | Ctrl+1/2/3/4        | Yes           |
+| Move tab to group          | Ctrl+Shift+1/2/3/4         | Ctrl+Shift+1/2/3/4  | Yes           |
+| Number of groups           | Doesn't work               | Shift+Alt+1/2/3/4/5 | No            |
+| Scroll page down           | PgDn (Fn+Down)             | PgDn                | Yes           |
+| Scroll page up             | PgUp (Fn+Up)               | PgUp                | Yes           |
+| Save                       | Cmd+S                      | Ctrl+S              | Cmd/Ctrl swap |
+| Save all                   | Alt+Cmd+S                  | None                | No            |
+| Undo                       | Cmd+Z                      | Ctrl+Z              | Cmd/Ctrl swap |
+| Redo                       | Shift+Cmd+Z                | Ctrl+Y              | No            |
+| Find and Replace           | Alt+Cmd+F                  | Ctrl+H              | No            |
+| Toggle side bar            | Cmd+K, Cmd+B               | Ctrl+K, Ctrl+B      | Cmd/Ctrl swap |
+| Toggle spell check         | F6 (Fn+F6)                 | F6                  | Yes           |
+| Toggle full screen         | Ctrl+Cmd+F                 | F11                 | No            |
+| Indent                     | Cmd+[                      | Ctrl+[              | Cmd/Ctrl swap |
+| Outdent                    | Cmd+]                      | Ctrl+]              | Cmd/Ctrl swap |
+| Select next instance       | Cmd+D                      | Ctrl+D              | Cmd/Ctrl swap |
 
 *The following are key mapppings on a Mac keyboard:*
 
 | Key    | Mac keyboard mapping |
 |:-------|:---------------------|
-| PgUp   | Fn+⭡                 |
-| PgDn   | Fn+⭣                 |
-| Home   | Fn+⭠                |
-| End    | Fn+⭢                |
+| PgUp   | Fn+Up                |
+| PgDn   | Fn+Down              |
+| Home   | Fn+Left              |
+| End    | Fn+Right             |
 | Delete | Fn+Back              |
 
 *The following are key bindings created by certain packages:*
 
-| Package                  | Action                   | macOS | Windows & Linux |
-|:-------------------------|:-------------------------|-------|-----------------|
-| SublimeREPL              | Run current Python file  | Ctrl+Alt+P | Ctrl+Alt+P |
+| Package                  | Action                           | macOS            | Windows & Linux  |
+|:-------------------------|:---------------------------------|:-----------------|:-----------------|
+| SublimeREPL              | Run current Python file          | Ctrl+Alt+P       | Ctrl+Alt+P       |
 | Markdown Table Formatter | Align columns in Markdown tables | Shift+Ctrl+Alt+T | Shift+Ctrl+Alt+T |
-| PrettyJSON               | Make JSON more readable  | Ctrl+Cmd+J | Ctrl+Alt+J |
+| PrettyJSON               | Make JSON more readable          | Ctrl+Cmd+J       | Ctrl+Alt+J       |
 
 Custom Key Bindings
 ===================
 - This section details the custom key bindings I use in my Sublime Text
-- To create custom key bindings, go to Preferences ⭢ Key Bindings and edit the right-hand-side
+- To create custom key bindings, go to Preferences > Key Bindings and edit the right-hand-side
 - It's worthwhile creating a backup of this file (Default.sublime-keymap). Then, when you next install Sublime Text on a new computer, you can just paste these key bindings in.
 
 | Package         | Action                     | macOS, Windows & Linux |
@@ -89,7 +89,7 @@ Custom Key Bindings
 
 Here's my Default.sublime-keymap file that implements the above key bindings:
 
-```{json}
+```json
 [
     // Save all
     { "keys": ["ctrl+alt+s"], "command": "save_all" },
@@ -132,7 +132,7 @@ Here's my Default.sublime-keymap file that implements the above key bindings:
 ]
 ```
 
-Use the 'default' Default.sublime-keymap file (ie the one the opens on the left-hand side when you go to Preferences ⭢ Key Bindings) to figure out what commands exist and how to re-bind them. Also take a look at the [key bindings documentation](https://www.sublimetext.com/docs/3/key_bindings.html).
+Use the 'default' Default.sublime-keymap file (ie the one the opens on the left-hand side when you go to Preferences > Key Bindings) to figure out what commands exist and how to re-bind them. Also take a look at the [key bindings documentation](https://www.sublimetext.com/docs/3/key_bindings.html).
 
 [⇦ Back](../sublime_text.html)
 
