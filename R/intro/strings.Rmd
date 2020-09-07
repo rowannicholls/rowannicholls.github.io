@@ -108,6 +108,14 @@ In case you were wondering, this function's name is short for "**g**lobally sear
 
 You may have noticed that we set the keyword argument `fixed` to `TRUE` - this causes the `grepl()` function to search for *exactly* the string that was provided. If this is omitted the default behaviour is to treat the string being searched for as a *regular expression,* which may create unexpected results.
 
+### Search for a Character or Sub-string at the Start or End of a String
+Does a string start with or end with a certain thing?
+
+```{r}
+startsWith("alphabet", "a")
+endsWith("Filename.csv", ".csv")
+```
+
 Find a Character or Sub-string
 ------------------------------
 Now that we know our string contains the letter we are looking for, get the **indices** (positions) where that certain character is by using the `gregexpr()` command:

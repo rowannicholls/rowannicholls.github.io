@@ -16,10 +16,15 @@ Which OS are you using? {.tabset}
 
 Ubuntu
 ------
-The following works for Ubuntu 16.04 to 18.04.
 
 ### Installing and Setting up
-- There is no need to install Python on Ubuntu: it comes already installed. In fact, multiple versions of Python come pre-installed (these multiple installations can be found in the /usr/bin/ folder)
+
+#### Ubuntu 20.04
+- There is no need to install Python on Ubuntu 20.04 because it comes pre-installed with Python 3.8.2
+- Note, however, that the terminal command `python` doesn't work; you specifically need to use `python3`
+
+#### Ubuntu 16.04 to 18.04
+- There is no need to install Python on Ubuntu 16.04 to 18.04: it comes already installed. In fact, multiple versions of Python come pre-installed (these multiple installations can be found in the /usr/bin/ folder)
 - However, the version of Python that Ubuntu uses by default is version 2 (usually 2.7) even though it has Python 3 installed. This is not good; Python 2 is no longer supported so everyone should be using Python 3. Check which version you are using from the terminal with:
 
     ```{bash, eval=FALSE}
@@ -79,7 +84,7 @@ sudo update-alternatives --config python3
 ```
 
 ### Using Python from the Command-Line
-- If you open a terminal and run `python` you will open Python in that terminal. You can enter individual Python commands directly in at the `>>>` prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running `exit()`.
+- If you open a terminal and run `python` you will open Python in that terminal. This is known as 'interactive mode'. You can enter individual Python commands directly in at the `>>>` prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's possible. Exit by running `exit()`.
 - If you have a script file (one with the ".py" extension) you can run it from the terminal by changing into the directory where the folder is located (using the "cd" command to **c**hange **d**irectory) and running `python <filename>` with the ".py" extension included. In fact, you don't actually need to change directory into the one where the script is located, you can just run `python <path_to_file>/<filename>` and it will work.
 
 ### Installing Packages
