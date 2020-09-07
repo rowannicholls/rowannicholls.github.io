@@ -20,9 +20,9 @@ macOS
 
 - Python works immediately with SublimeREPL in macOS, but double check if it's Python 2 or Python 3
 - Create a custom build file for Python 3:
-    - Tools ⭢ Build System ⭢ New Build System...
+    - Tools > Build System > New Build System...
     - Use the following:
-    ```{json}
+    ```json
     {
         "cmd": ["python3", "-i", "-u", "$file"],
         "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
@@ -52,9 +52,9 @@ Ubuntu
     - Save, close and restart the terminal before running `python --version` again. The Python version should now be 3.x.x.
 - Use the default Sublime Text build functionality:
     - This usually doesn't work out-of-the-box
-    - Go to Tools ⭢ Build System ⭢ New Build System...
+    - Go to Tools > Build System > New Build System...
     - Replace all text with:
-    ```{json}
+    ```json
     {
         "cmd": ["python3", "-i", "-u", "$file"],
         "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
@@ -63,8 +63,8 @@ Ubuntu
     ```
     - Save it to the default location (which is `~/.config/sublime-text-3/Packages/User`) with a meaningful name like "python3.sublime-build"
 - Use SublimeREPL:
-    - Install SublimeREPL via Package Control (Ctrl+Shift+P ⭢ search for "install package" ⭢ search for "SublimeREPL")
-    - Tools ⭢ SublimeREPL ⭢ Python ⭢ Python - RUN current file (you can optionally create a [user key binding](key_bindings.html) to do this via a keyboard shortcut)
+    - Install SublimeREPL via Package Control (Ctrl+Shift+P > search for "install package" > search for "SublimeREPL")
+    - Tools > SublimeREPL > Python > Python - RUN current file (you can optionally create a [user key binding](key_bindings.html) to do this via a keyboard shortcut)
     - Shift+Alt+8 creates a lower window which you can drag the Python output console to
 - Python files can also be run 'manually' from a Terminus terminal, look in [here](packages.html) for more info on installing that
 - Troubleshooting:
@@ -74,9 +74,9 @@ Ubuntu
     Check console and 'getenv_command' setting
     WARN: Falling back to SublimeText environment
     ```
-    - Open Preferences ⭢ Package Settings ⭢ SublimeREPL ⭢ Settings - User
+    - Open Preferences > Package Settings > SublimeREPL > Settings - User
     - Enter the following:
-    ```{json}
+    ```json
         {
           "getenv_command": false
         }
@@ -91,12 +91,12 @@ Windows
     - Check by running `python --version` from the Command Prompt; it should return the Python version you have as opposed to giving an error
 - Test that SublimeREPL is working:
     - Open a .py file or create a new one and save it
-    - In Sublime Text: Tools ⭢ SublimeREPL ⭢ Python ⭢ Python - RUN current file
+    - In Sublime Text: Tools > SublimeREPL > Python > Python - RUN current file
     - This should (a) run without a problem and (b) show that you are running Python 3, not Python 2
 - If you ARE running Python 2, change it:
-    - Tools ⭢ Build System ⭢ New Build System...
+    - Tools > Build System > New Build System...
     - Replace all text with the following (but choose the right path to your Python executable!):
-    ```{json}
+    ```json
     {
         "cmd": ["C:/Users/<username>/AppData/Local/Programs/Python/Python36-32/python.exe", "-u", "$file"],
         "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
@@ -104,12 +104,12 @@ Windows
     }
     ```
     - Save it to the default location with a meaningful name like "python3.sublime-build"
-    - Test that it works with Tools ⭢ Build System ⭢ python3, then Tools ⭢ Build
+    - Test that it works with Tools > Build System > python3, then Tools > Build
 - You might need to change the Environment Variable Path:
-    - Windows 7: Start ⭢ right-click on Computer ⭢ Properties ⭢ Advanced system settings ⭢ Environment Variables...
-    - Windows 10: Search "environ" from the start button ⭢ Edit the system environment variables ⭢ Environment Variables...
+    - Windows 7: Start > right-click on Computer > Properties > Advanced system settings > Environment Variables...
+    - Windows 10: Search "environ" from the start button > Edit the system environment variables > Environment Variables...
     - Append the following to the top one (Path):
-    ```{text}
+    ```text
     ;C:/Users/<username>/AppData/Local/Programs/Python/Python36-32/
     ```
 - Shift+Alt+8 creates a lower window to which you can drag the Python output console
@@ -135,9 +135,9 @@ This is for when you are using the code `plt.rc('text', usetex=True)` in an atte
     print(mpl.get_configdir())
     ```
     - After this is done, try to run the code again
-        - It might say `'latex' is not recognized as an internal or external command, operable program or batch file.` If this is the case, open Preferences ⭢ Package Settings ⭢ SublimeREPL ⭢ Settings - User
+        - It might say `'latex' is not recognized as an internal or external command, operable program or batch file.` If this is the case, open Preferences > Package Settings > SublimeREPL > Settings - User
         + Change the PATH to the following:
-        ```{text}
+        ```text
         "default_extend_env": {"PATH":"C\\Users\\<username>\\AppData\\Local\\Programs\\Python\\Python36-32\\;C:\\Program Files (x86)\\MiKTeX 2.9\\miktex\\bin"},
         ```
 
