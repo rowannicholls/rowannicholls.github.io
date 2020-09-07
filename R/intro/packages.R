@@ -1,55 +1,71 @@
+# Ubuntu 20.04
+# ------------
+# 
+# Install R
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+# sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+# sudo apt update
+# sudo apt install r-base
+# Run with `R`
+#
+# Install packages
+# The default library location (/usr/local/lib/R/site-library) is not writable.
+# Instead, open R in a terminal and run install.packages() there. It will offer
+# to create a personal library for you. Use that to install all your packages.
+
 # Needed by Debian:
 # sudo apt-get install libssl-dev
 # sudo apt-get install libcurl4-openssl-dev
 # REPO FOR UBUNTU
 # https://cloud.r-project.org/bin/linux/ubuntu
 
-install.packages("BlandAltmanLeh", repos = "http://cran.us.r-project.org")
-install.packages("brglm2", repos = "http://cran.us.r-project.org")
-install.packages("chron", repos = "http://cran.us.r-project.org")
-install.packages("devtools", repos = "http://cran.us.r-project.org")
-install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
-install.packages("dplyr", repos = "http://cran.us.r-project.org")
-install.packages("emmeans", repos = "http://cran.us.r-project.org")
-install.packages("forestplot", repos = "http://cran.us.r-project.org")
-install.packages("formatR", repos = "http://cran.us.r-project.org")
-install.packages("gapminder", repos = "http://cran.us.r-project.org")
-install.packages("ggplot2", repos = "http://cran.us.r-project.org")
-install.packages("ggpubr", repos = "http://cran.us.r-project.org")
-install.packages("gtools", repos = "http://cran.us.r-project.org")
-install.packages("Hmisc", repos = "http://cran.us.r-project.org")  # Could not install on Ubunut 18.04 with R 4.0.2
-install.packages("ini", repos = "http://cran.us.r-project.org")
-install.packages("kableExtra", repos = "http://cran.us.r-project.org")
-install.packages("knitr", repos = "http://cran.us.r-project.org")
-install.packages("lintr", repos = "http://cran.us.r-project.org")
-install.packages("logging", repos = "http://cran.us.r-project.org")
-install.packages("maps", repos = "http://cran.us.r-project.org")
-install.packages("mcr", repos = "http://cran.us.r-project.org")
-install.packages("pdftools", repos = "http://cran.us.r-project.org")
-install.packages("pROC", repos = "http://cran.us.r-project.org")
-install.packages("psych", repos = "http://cran.us.r-project.org")
-install.packages("readtext", repos = "http://cran.us.r-project.org")
-install.packages("reshape2", repos = "http://cran.us.r-project.org")  # Could not install on Ubunut 18.04 with R 4.0.2
-install.packages("Rmisc", repos = "http://cran.us.r-project.org")
-install.packages("R.utils", repos = "http://cran.us.r-project.org")
-install.packages("readr", repos = "http://cran.us.r-project.org")
-install.packages("reticulate", repos = "http://cran.us.r-project.org")
-install.packages("rmarkdown", repos = "http://cran.us.r-project.org")
-install.packages("stringi", repos = "http://cran.us.r-project.org")
-install.packages("stringr", repos = "http://cran.us.r-project.org")
-install.packages("styler", repos = "http://cran.us.r-project.org")
-install.packages("tidyverse", repos = "http://cran.us.r-project.org")
-install.packages("titanic", repos = "http://cran.us.r-project.org")
-install.packages("utf8", repos = "http://cran.us.r-project.org")
-install.packages("writexl", repos = "http://cran.us.r-project.org")
-install.packages("WriteXLS", repos = "http://cran.us.r-project.org")
-install.packages("xlsx", repos = "http://cran.us.r-project.org")  # Could not install on Ubunut 18.04 with R 4.0.2
-install.packages("xtable", repos = "http://cran.us.r-project.org")
+# install.packages("BlandAltmanLeh", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("brglm2", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("chron", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("devtools", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
+# install.packages("DiagrammeR", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("dplyr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("emmeans", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("forestplot", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("formatR", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("gapminder", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("ggplot2", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("ggpubr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
+# install.packages("gtools", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("Hmisc", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
+# install.packages("ini", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("kableExtra", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
+# install.packages("knitr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("lintr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
+# install.packages("logging", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("maps", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("matrixStats", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on macOS Catalina or Ubuntu 18.04 with R 4.0.2
+# install.packages("mcr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("pdftools", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
+# install.packages("pROC", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("psych", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("readtext", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
+# install.packages("reshape2", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
+# install.packages("Rmisc", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("R.utils", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("readr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("reticulate", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("rmarkdown", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("stringi", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("stringr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("styler", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("tidyverse", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
+# install.packages("titanic", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("utf8", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("writexl", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("WriteXLS", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("xlsx", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 0r 20.04 with R 4.0.2
+# install.packages("xtable", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 
 library(BlandAltmanLeh)
 library(brglm2)
 library(chron)
-library(devtools)
+# library(devtools)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(DiagrammeR)
 library(dplyr)
 library(emmeans)
@@ -57,20 +73,21 @@ library(forestplot)
 library(formatR)
 library(gapminder)
 library(ggplot2)
-library(ggpubr)
+# library(ggpubr)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(gtools)
 library(Hmisc)
 library(ini)
-library(kableExtra)
+# library(kableExtra)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(knitr)
-library(lintr)
+# library(lintr)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(logging)
 library(maps)
+library(matrixStats)  # Could not install on macOS Catalina or Ubuntu 18.04 with R 4.0.2
 library(mcr)
-library(pdftools)
+# library(pdftools)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(pROC)
 library(psych)
-library(readtext)
+# library(readtext)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(reshape2)
 library(Rmisc)
 library(R.utils)
@@ -80,17 +97,16 @@ library(rmarkdown)
 library(stringi)
 library(stringr)
 library(styler)
-library(tidyverse)
+# library(tidyverse)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(titanic)
 library(utf8)
 library(writexl)
 library(WriteXLS)
-library(xlsx)
+# library(xlsx)  # Could not install on Ubuntu 18.04 0r 20.04 with R 4.0.2
 library(xtable)
 
 # Couldn't install with R 4.x.x
-# install.packages("matrixStats", repos = "http://cran.us.r-project.org")
-# library(matrixStats)
+
 
 # Full run
 # [Finished in 384.6s]

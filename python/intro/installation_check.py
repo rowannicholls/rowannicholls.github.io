@@ -12,6 +12,7 @@ Works on:
 │ 2020-06-06 │ Ubuntu 18.04   │ Python 3.6.9  │ /usr/bin/python3.6         │
 │ 2020-06-06 │ Ubuntu 18.04   │ Python 3.8.0  │ /usr/bin/python3           │
 │ 2020-06-07 │ macOS Catalina │ Python 3.8.2  │ ...rsions/3.8.2/bin/python │
+│ 2020-09-06 │ Ubuntu 20.04   │ Python 3.8.2  │ /usr/bin/python3           │
 └────────────┴────────────────┴───────────────┴────────────────────────────┘
 """
 import distro
