@@ -1,2 +1,2 @@
-# THIS IS MY FIRST BASH SCRIPT
+# This is my first bash script
 echo "Hello, World"

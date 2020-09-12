@@ -1,2 +1,2 @@
-# MAIN SCRIPT
+# Main script
 source myscript.sh
