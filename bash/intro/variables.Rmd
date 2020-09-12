@@ -9,7 +9,7 @@ output:
 ---
 <font size="3">
 
-> This page has been tested on both macOS Catalina and Ubuntu 18.04
+> This page has been tested on macOS Catalina and Ubuntu 18.04 & 20.04
 
 [⇦ Back](../../bash.html)
 
@@ -27,10 +27,10 @@ Quotation Marks
 If you want to have a space in your value, use quotation marks (double or single):
 
 ```{bash, result='hold', comment=NA}
-# SINGLE QUOTATION MARKS
+# Single quotation marks
 message='Hello, World'
 echo $message
-# DOUBLE QUOTATION MARKS
+# Double quotation marks
 message="Hello, World"
 echo $message
 ```
@@ -44,9 +44,9 @@ So it doesn't matter if you use double or single quotation marks when you assign
 ```{bash, comment=NA}
 message='Hello
 World'
-echo My message is: $message  # NO QUOTATION MARKS
-echo 'My message is: $message'  # SINGLE QUOTATION MARKS
-echo "My message is: $message"  # DOUBLE QUOTATION MARKS
+echo My message is: $message  # No quotation marks
+echo 'My message is: $message'  # Single quotation marks
+echo "My message is: $message"  # Double quotation marks
 ```
 
 Another example using the `touch` command (which creates a new file):
@@ -65,9 +65,9 @@ Note that `$message` is actually shorthand for `${message}`: a dollar sign AND c
 
 ```{bash, comment=NA}
 prefix='un'
-# THIS DOES NOT WORK AS EXPECTED
+# This does not work as expected
 echo "That's $prefixbelievable"
-# THIS WORKS AS EXPECTED
+# This works as expected
 echo "That's ${prefix}believable"
 ```
 
@@ -87,11 +87,11 @@ The 'hash', 'at' and 'question mark' symbols are all pre-defined variables in ba
 If a script called "myscript.sh" contained the following:
 
 ```{bash, comment=NA, eval=FALSE}
-# NUMBER OF ARGUMENTS
+# Number of arguments
 echo $#
-# THE ARGUMENTS
+# The arguments
 echo $@
-# EXIT CODE
+# Exit code
 echo $?
 ```
 
@@ -109,9 +109,9 @@ Unlike most programming languages, Bash doesn't worry too much about what *type*
 
 ```{bash, comment=NA}
 variable="1234"
-# TREAT IT AS A STRING
+# Treat it as a string
 echo "My variable is $variable"
-# TREAT IT AS A NUMBER
+# Treat it as a number
 let "variable += 1111"
 echo "My variable is $variable"
 ```
@@ -119,12 +119,12 @@ echo "My variable is $variable"
 This also works for *nulls* (empty variables) and undeclared variables:
 
 ```{bash, comment=NA}
-# UNDECLARED VARIABLES DON'T POSE A PROBLEM
+# Undeclared variables don't pose a problem
 echo "There is nothing here: $variable"
 variable=""
-# TREAT IT AS A STRING
+# Treat it as a string
 echo "There is nothing here: $variable"
-# TREAT IT AS A NUMBER
+# Treat it as a number
 let "variable += 1"
 echo "Now there is something here: $variable"
 ```
@@ -132,11 +132,11 @@ echo "Now there is something here: $variable"
 The last variable type to worry about is *arrays*. Very simply, they are lists of items and are created by using round brackets. At this point, if we try to do anything with an array we can only use the first number; we have to use a *loop* if we want to do anything else and those are discussed on [another page](arrays_loops.html).
 
 ```{bash, comment=NA}
-# CREATE AN ARRAY
+# Create an array
 x=(10 11 12 13)
-# MULTIPLY BY 2
+# Multiply by 2
 y=$(expr $x \* 2)
-# UNFORTUNATELY, THIS ONLY WORKS ON THE FIRST ELEMENT (WHICH IS THE NUMBER 10)
+# Unfortunately, this only works on the first element (which is the number 10)
 echo $y
 ```
 

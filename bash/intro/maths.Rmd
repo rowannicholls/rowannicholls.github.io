@@ -9,7 +9,7 @@ output:
 ---
 <font size="3">
 
-> This page has been tested on both macOS Catalina and Ubuntu 18.04
+> This page has been tested on macOS Catalina and Ubuntu 18.04 & 20.04
 
 [⇦ Back](../../bash.html)
 
@@ -22,13 +22,13 @@ expr
 All the usual mathematical operations are possible in Bash using the `expr` (*expression*) command:
 
 ```{bash, comment=NA}
-# ADDITION
+# Addition
 expr 1 + 2
-# SUBTRACTION
+# Subtraction
 expr 1 - 2
-# MULTIPLICATION
+# Multiplication
 expr 1 \* 2
-# DIVISION
+# Division
 expr 2 / 1
 ```
 
@@ -37,7 +37,7 @@ Multiplication needs to have a backslash before the `*`. This is because the ast
 Note also that division poses a problem because fractions aren't something that can be immediately handled:
 
 ```{bash, eval=FALSE, comment=NA}
-# THIS CAUSES AN ERROR
+# This causes an error
 expr 1 / 2
 ```
 
@@ -58,16 +58,16 @@ Another option is to use the `let` command and the 'arithmetic-assignment' doubl
 
 ```{bash, comment=NA}
 answer=11
-# ADDITION
+# Addition
 let answer+=4
 echo $answer
-# SUBTRACTION
+# Subtraction
 let answer-=3
 echo $answer
-# MULTIPLICATION
+# Multiplication
 let answer\*=2
 echo $answer
-# DIVISION
+# Division
 let answer/=3
 echo $answer
 ```
@@ -78,13 +78,13 @@ Next, you can use double brackets to perform **arithmetic expansion**:
 
 ```{bash, comment=NA}
 answer=6
-# ADDITION
+# Addition
 echo $((answer + 2))
-# SUBTRACTION
+# Subtraction
 echo $((answer - 2))
-# MULTIPLICATION
-echo $((answer * 2))  # NOTE THAT WE DO NOT NEED THE ESCAPING BACKSLASH!
-# DIVISION
+# Multiplication
+echo $((answer * 2))  # Note that we do not need the escaping backslash!
+# Division
 echo $((answer / 2))
 ```
 
@@ -92,13 +92,13 @@ Equivalently, you can use single square brackets:
 
 ```{bash, comment=NA}
 answer=6
-# ADDITION
+# Addition
 echo $[answer + 2]
-# SUBTRACTION
+# Subtraction
 echo $[answer - 2]
-# MULTIPLICATION
-echo $[answer * 2]  # NOTE THAT WE DO NOT NEED THE ESCAPING BACKSLASH!
-# DIVISION
+# Multiplication
+echo $[answer * 2]  # Note that we do not need the escaping backslash!
+# Division
 echo $[answer / 2]
 ```
 
@@ -106,10 +106,10 @@ This method also lets you do C-style incrementation
 
 ```{bash, comment=NA}
 answer=6
-# PRINT TO CONSOLE THEN ADD 1
+# Print to console then add 1
 echo $[answer++]
 echo $answer
-# ADD ONE THEN PRINT TO CONSOLE
+# Add one then print to console
 echo $[++answer]
 ```
 
@@ -122,7 +122,7 @@ Pipe to Standard Out
 The first option is to write the calculation as a string, echo it to the console and then send it to the `bc` programme. This sending is done using a pipe symbol (`|`) which is why it's known as 'piping'. Piping is only possible when you have sent something to the console (more precisely, you have to send it to the 'standard output', or STDOUT, which just so happens to be the console) which is why we first need the `echo` command.
 
 ```{bash, comment=NA}
-# WRITE AS A STRING, USE ECHO TO SEND TO STDOUT, PIPE STDOUT TO bc
+# Write as a string, use echo to send to stdout, pipe stdout to bc
 echo "5.12 + 12.1 - 16.2 * 2.7 / 1.4" | bc
 ```
 
@@ -133,7 +133,7 @@ Triple Arrow
 We can also use a triple arrow:
 
 ```{bash, comment=NA}
-# WRITE AS A STRING, SEND TO bc
+# Write as a string, send to bc
 bc <<< "5.12 + 12.1 - 16.2 * 2.7 / 1.4"
 ```
 

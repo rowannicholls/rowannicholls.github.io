@@ -9,7 +9,7 @@ output:
 ---
 <font size="3">
 
-> This page has been tested on both macOS Catalina and Ubuntu 18.04
+> This page has been tested on macOS Catalina and Ubuntu 18.04 & 20.04
 
 [⇦ Back](../../bash.html)
 
@@ -20,7 +20,7 @@ Joining two strings is a simple case of calling them one after another:
 ```{bash, comment=NA}
 a=Hello
 b=World
-# REMEBER TO USE DOUBLE QUOTATION MARKS WHEN THERE IS A SPACE
+# Remember to use double quotation marks when there is a space
 c="$a, $b"
 echo $c
 ```

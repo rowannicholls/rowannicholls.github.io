@@ -9,7 +9,7 @@ output:
 ---
 <font size="3">
 
-> This page has been tested on both macOS Catalina and Ubuntu 18.04
+> This page has been tested on macOS Catalina and Ubuntu 18.04 & 20.04
 
 [⇦ Back](../../bash.html)
 
@@ -18,7 +18,7 @@ Arrays and Lists
 'Arrays' and 'lists' are data types in Bash, just like strings, numbers, nulls and Booleans. Fundamentally, they are both *collections of elements* separated by spaces. Arrays are created using round brackets and lists with quotation marks:
 
 ```{bash, comment=NA}
-# ARRAYS
+# Arrays
 numbers=(2 4 6 8 10)
 strings=(
     string1
@@ -29,7 +29,7 @@ strings=(
 booleans=(true false false true)
 different_data_types=(2 string2 false)
 
-# LISTS
+# Lists
 numbers='2 4 6 8 10'
 strings='
     string1
@@ -95,7 +95,7 @@ The logic is: **for** each element **x<sub>i</sub>** **in** the collection of el
 Numbers
 -------
 ```{bash, comment=NA}
-# ARRAY
+# Array
 numbers=(2 4 6 8 10)
 for number in ${numbers[@]}
 do
@@ -104,7 +104,7 @@ done
 ```
 
 ```{bash, comment=NA}
-# LIST
+# List
 list='2 4 6 8 10'
 for element in $list
 do 
@@ -115,7 +115,7 @@ done
 Strings
 -------
 ```{bash, comment=NA}
-# ARRAY
+# Array
 strings=(Alfa Bravo Charlie Delta)
 for string in ${strings[@]}
 do
@@ -124,7 +124,7 @@ done
 ```
 
 ```{bash, comment=NA}
-# LIST
+# List
 list='Alfa Bravo Charlie Delta'
 for element in $list
 do 
@@ -156,12 +156,12 @@ Instead of running a loop **for** a certain number of times, we can run it **unt
 The loop will repeat **while** the square number is less than 100. Once it grows larger than 100 the loop will stop.
 
 ```{bash, comment=NA}
-# WHAT ARE THE SQUARE NUMBERS SMALLER THAN 100?
+# What are the square numbers smaller than 100?
 i=1
 while [ $(($i**2)) -lt 100 ]
 do
     echo $(($i**2))
-    i=$[$i+1]  # INCREMENT THE LOOP COUNTER
+    i=$[$i+1]  # Increment the loop counter
 done
 ```
 
@@ -178,14 +178,14 @@ do
 done
 ```
 
-Stop this madness by pressing $#Ctrl$+$#C$.
+Stop this madness by pressing Ctrl+C.
 
 Break Out of a While Loop
 -------------------------
 Another way to break out of a *while loop* is to use the `break` command once a certain point is reached. As the name suggests, this command breaks you out of a loop and carries on with the rest of the script. In this example, we have a *while loop* that will ostensibly run forever because we have set it to run `while true`, however, once the square number reaches 100 it will break out and the script will halt:
 
 ```{bash, comment=NA}
-# WHAT ARE THE SQUARE NUMBERS SMALLER THAN 100?
+# What are the square numbers smaller than 100?
 i=1
 while true
 do
@@ -194,7 +194,7 @@ do
         break
     fi
     echo $(($i**2))
-    i=$[$i+1]  # INCREMENT THE LOOP COUNTER
+    i=$[$i+1]  # Increment the loop counter
 done
 ```
 
@@ -211,7 +211,7 @@ do
     then
         break
     fi
-    i=$[$i+1]  # INCREMENT THE LOOP COUNTER
+    i=$[$i+1]  # Increment the loop counter
 done
 ```
 

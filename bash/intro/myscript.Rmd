@@ -9,7 +9,7 @@ output:
 ---
 <font size="3">
 
-> This page has been tested on both macOS Catalina and Ubuntu 18.04
+> This page has been tested on macOS Catalina and Ubuntu 18.04 & 20.04
 
 [⇦ Back](../../bash.html)
 
@@ -27,11 +27,11 @@ Creating a Bash Script
 ======================
 - Option 1:
     - Open up the Terminal
-        - On macOS, use $#Cmd$+$#Space$ to open spotlight search then start typing 'Terminal'. Hit $#Enter$ when it pops up.
-        - On Ubuntu, use $#Ctrl$+$#Alt$+$#T$
+        - On macOS, use Cmd+Space to open spotlight search then start typing 'Terminal'. Hit Enter when it pops up.
+        - On Ubuntu, use Ctrl+Alt+T
     - Change directory into the folder you want the Bash script to be in using `cd`
         + `cd` stands for 'change directory'
-        + Once you've typed `cd` followed by a space into the terminal, use $#Tab$ to auto-complete the name of the folder you want to change into
+        + Once you've typed `cd` followed by a space into the terminal, use Tab to auto-complete the name of the folder you want to change into
         + Run `echo $PWD` to check your **P**resent **W**orking **D**irectory, ie what folder you are currently in, and `ls` to **l**i**s**t the files in your present working directory
     - Create the script with `touch myscript.sh`
 - Option 2:
@@ -44,7 +44,7 @@ Creating a Bash Script
 
 Once the file `myscript.sh` is created, open it and paste in the following:
 ```{bash, results='hide'}
-# THIS IS MY FIRST BASH SCRIPT
+# This is my first bash script
 echo "Hello, World"
 ```
 This is a simple script that will display the words "Hello, World". The first line is a comment: it does nothing and will not be run because it is not part of the programme, but it is useful to have because it serves as a note to yourself. The second line displays ('echoes') the words between the quotation marks.
@@ -60,8 +60,8 @@ There are a number of ways to do this (if the script runs successfully, you will
 - **Option 3:** move myscript.sh into one of the folders in your PATH (to see what these folders are, run `echo $PATH`). It can now be run from the terminal with `myscript.sh`
     + Note that the convention is to not have the `.sh` extension when you are using this method
 - **Option 4:** if the default programme for a shell script file to open with is set to be the Terminal, the script can be run immediately by double-clicking it
-    - On macOS, once it has been made executable (`chmod +x myscript.sh`) right click the file → Open With → Other... → at the "Enable" dropdown menu change "Recommended Applications" to "All Applications" → look for the "Utilities" folder → select "Terminal". Now you can double-click the file to run it.
-    - On Ubuntu, right-click → Properties → Permissions → check "Allow executing file as program"
+    - On macOS, once it has been made executable (`chmod +x myscript.sh`) right click the file > Open With > Other... > at the "Enable" dropdown menu change "Recommended Applications" to "All Applications" > look for the "Utilities" folder > select "Terminal". Now you can double-click the file to run it.
+    - On Ubuntu, right-click > Properties > Permissions > check "Allow executing file as program"
 - **Option 5:** your script can be run from another script (the other script can 'call' it or 'source' it)
     + Often a large project will have a "MAIN.sh" script that calls all the sub-scripts that make up the programme in order. This is a neat way to keep the project organised and for it to be possible to run the entire thing just by running one master script.
     + A script can be run from another script using the `source` command, eg having `source myscript.sh` in a different script file inside the same folder as myscript. Running that script will cause "Hello, World" to be displayed.

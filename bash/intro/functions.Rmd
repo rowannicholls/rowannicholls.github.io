@@ -9,7 +9,7 @@ output:
 ---
 <font size="3">
 
-> This page has been tested on both macOS Catalina and Ubuntu 18.04
+> This page has been tested on macOS Catalina and Ubuntu 18.04 & 20.04
 
 [⇦ Back](../../bash.html)
 
@@ -21,11 +21,11 @@ Here's the format of a function in Bash:
 
 ```{bash, comment=NA}
 my_function () {
-    # WRITE YOUR CODE HERE
+    # Write your code here
     echo "Hello, World"
 }
 
-# CALL YOUR FUNCTION LIKE THIS
+# Call your function like this
 my_function
 ```
 
@@ -40,11 +40,11 @@ Another format is like this:
 
 ```{bash, comment=NA}
 function my_function {
-    # WRITE YOUR CODE HERE
+    # Write your code here
     echo "Hello, World"
 }
 
-# CALL YOUR FUNCTION LIKE THIS
+# Call your function like this
 my_function
 ```
 
@@ -60,11 +60,11 @@ my_function
 
 ```{bash, comment=NA, echo=FALSE}
 function my_function {
-    # WRITE YOUR CODE HERE
+    # Write your code here
     echo "Hello, World"
 }
 
-# CALL YOUR FUNCTION LIKE THIS
+# Call your function like this
 my_function
 my_function
 my_function
@@ -73,9 +73,9 @@ my_function
 Note that it's much more useful if your functions have descriptive titles that reveal what they do, as opposed to generic ones:
 
 ```{bash, comment=NA, eval=FALSE}
-# THIS IS NOT A GOOD NAME FOR A FUNCTION
+# This is not a good name for a function
 my_function
-# THIS IS MUCH BETTER AS IT TELLS YOU WHAT IT DOES
+# This is much better as it tells you what it does
 print_hello_world
 ```
 
@@ -90,12 +90,12 @@ Here's what it looks like in practice:
 
 ```{bash, comment=NA}
 function my_function {
-    # WRITE YOUR CODE HERE
+    # Write your code here
     echo $1
     echo $2
 }
 
-# CALL YOUR FUNCTION LIKE THIS
+# Call your function like this
 my_function Hello World
 ```
 
@@ -126,7 +126,7 @@ Global variables are useful for making your script simpler: you can define a var
 Global variables are created in the way we are used to creating variables:
 
 ```{bash, comment=NA}
-# THIS VARIABLE IS GLOBAL, SO IT CAN BE ACCESSED INSIDE FUNCTIONS
+# This variable is global, so it can be accessed inside functions
 my_message="Hello, World"
 
 function my_function {
@@ -139,11 +139,11 @@ my_function
 Local variables are create using the `local` command:
 
 ```{bash, comment=NA}
-# THIS VARIABLE IS GLOBAL
+# This variable is global
 my_message="Hello, World"
 
 function my_function {
-    # THIS VARIABLE IS LOCAL
+    # This variable is local
     local my_message="Goodbye, World"
     echo "Message inside function: $my_message"
 }

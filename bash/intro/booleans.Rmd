@@ -9,7 +9,7 @@ output:
 ---
 <font size="3">
 
-> This page has been tested on both macOS Catalina and Ubuntu 18.04
+> This page has been tested on macOS Catalina and Ubuntu 18.04 & 20.04
 
 [⇦ Back](../../bash.html)
 
@@ -233,7 +233,7 @@ We can get more complicated by having if statements inside of if statements:
 age=15
 if [ $age -lt 18 ] || [ $age -gt 65 ]
 then
-    # THE PERSON IS 18 OR YOUNGER OR 65 OR OLDER
+    # The person is 18 or younger or 65 or older
     if [ $age -lt 18 ]
     then
         echo "The person is 18 or younger"
