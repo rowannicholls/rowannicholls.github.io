@@ -22,17 +22,17 @@ Here's what it looks like:
 import matplotlib.pyplot as plt
 import numpy as np
 
-# SETTINGS
-x = 6  # WANT FIGURES TO BE A6
+# Settings
+x = 6  # Want figures to be A6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 
-# CREATE SOME DATA
+# Create some data
 x = np.arange(100)
 y = x**2
 
-# PLOT
+# Plot
 plt.plot(x, y)
 plt.title(r'\LaTeX\ in Labels')
 plt.xlabel(r'Time, $t$ [\textmu s]')
@@ -48,7 +48,7 @@ This gives us access to, for example, `\textOmega`. Have a look:
 ```{python}
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
-# PLOT
+# Plot
 plt.plot(x, y)
 plt.title(r'\LaTeX\ in Labels')
 plt.xlabel(r'Time, $t$ [\textmu s]')
@@ -61,11 +61,11 @@ Finally, note that we can combine "r-strings" with "f-strings" to create "fr-str
 ```{python}
 plt.plot(x, y)
 plt.title(r'\LaTeX\ in Labels')
-# \textmu WORKS OUT-OF-THE-BOX
+# \textmu works out-of-the-box
 plt.xlabel(r'Time, $T$ [\textmu s]')
-# OTHER GREEK LETTERS NEED THE textgreek PACKAGE
+# Other Greek letters need the textgreek package
 plt.ylabel(r'Resistance, $R$ [\textOmega]')
-# ADD ANNOTATIONS
+# Add annotations
 mean_y = np.mean(y)
 ylim = plt.ylim(min(y), max(y))
 xlim = plt.xlim(min(x), max(x))
@@ -86,17 +86,16 @@ If you get an error such as:
 ```
 It means that you are missing the Latex style file that was mentioned in the error and should manually install it:
 
-- Go to [CTAN](https://www.ctan.org/), search for and download the required pacakge (in this example it's "textgreek")
+- Go to [CTAN](https://www.ctan.org/), search for and download the required package (in this example it's "textgreek")
 - It will either download as a `.sty` file or as a `.zip` file. If the latter, unzip it and run Latex on the `.ins` and `.dtx` files (eg by opening the folder in a terminal and running `latex textgreek.ins`) which will create the `.sty` file.
     - Follow any advice printed to the terminal, eg with how to run the `.dtx` file
 - Move the `.sty` file to an appropriate directory, eg `/usr/share/texmf/tex/latex` on Ubuntu
-- Update the ls-R file in this source tree. Because the folder you moved the `.sty` file to might not be searched by default, the ls-R file must be updated to make the system aware of the new package.
+- Update the ls-R file in this source tree. Because the folder you moved the `.sty` file into might not be searched by default, the ls-R file must be updated to make the system aware of the new package.
 
 On Ubuntu, the last two points can be done from the terminal with:
 
 ```{bash, eval=FALSE}
-sudo cp <package>.sty /usr/share/texmf/tex/latex
-sudo cp textgreek.sty /usr/share/texmf/tex/latex
+sudo mv <package>.sty /usr/share/texmf/tex/latex/<package>.sty
 sudo mktexlsr
 ```
 

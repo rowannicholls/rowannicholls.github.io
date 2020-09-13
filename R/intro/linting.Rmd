@@ -79,7 +79,7 @@ This package will import an R script (or an R Markdown script that contains R co
 **In RStudio**:
 
 - Install the package:
-    - Manually: select the "Packages" tab in the lower right-hand-side section ⇨ Install ⇨ search for "lintr" in the "Packages" search bar ⇨ Install
+    - Manually: select the "Packages" tab in the lower right-hand-side section > Install > search for "lintr" in the "Packages" search bar > Install
     - Programmatically: run `install.packages("lintr")` in the Console
 - Point to the correct folder: use `setwd()` in the console to change to the folder where your script is
 - Run the linter manually:
@@ -90,7 +90,7 @@ lint("<your_filename>.R>")
 **In the Terminal**:
 
 - Install the package:
-    - Open R by running `R` ⇨ run `install.packages("lintr")` ⇨ run `q()` to quit
+    - Open R by running `R` > run `install.packages("lintr")` > run `q()` to quit
 - Point to the correct folder:
     - Use `cd` to move into the folder where your script is
 - Run the linter manually:
@@ -107,8 +107,8 @@ Integrating the Linter with RStudio
 -----------------------------------
 You can bind this linting process to a keyboard shortcut in RStudio to make it as easy for yourself as possible:
 
-- Enable the "Markers" pane in RStudio: from the menu bar ⇨ "Tools" ⇨ "Global Options..." ⇨ go to "Code" on the left-hand-side ⇨ "Diagnostics" tab ⇨ check "Show diagnostics for R"
-- Create a keybinding: "Tools" ⇨ "addins" ⇨ "Browse Addins..." ⇨ "Keyboard Shortcuts..." ⇨ click in the "Shortcut" column next to "Lint current file" and press your desired key combination
+- Enable the "Markers" pane in RStudio: from the menu bar > "Tools" > "Global Options..." > go to "Code" on the left-hand-side > "Diagnostics" tab > check "Show diagnostics for R"
+- Create a keybinding: "Tools" > "addins" > "Browse Addins..." > "Keyboard Shortcuts..." > click in the "Shortcut" column next to "Lint current file" and press your desired key combination
     - It's recommended to use Shift+Alt+L on Linux/Windows or Shift+Alt+Cmd+L on macOS
 
 Integrating the Linter with Sublime Text
@@ -118,7 +118,7 @@ Integrating the Linter with Sublime Text
 - Install `SublimeLinter` using Package Control
 - Try install `sublimeLinter-contrib-lintr` using Package Control. If this doesn't work then do it manually:
     - Download the ZIP from [the Github repo](https://github.com/jimhester/SublimeLinter-contrib-lintr)
-    - Sublime Text ⇨ Preferences ⇨ Browse Packages...
+    - Sublime Text > Preferences > Browse Packages...
     - A folder will open. Place the unzipped folder in here.
 
 Optionally, you can configure what linters are used or what specific linting rules are used. For example, you can have a different line length cutoff by changing the SublimeLinter User Settings to the following:

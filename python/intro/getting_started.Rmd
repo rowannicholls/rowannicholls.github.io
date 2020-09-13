@@ -19,11 +19,13 @@ Ubuntu
 
 ### Installing and Setting up
 
-#### Ubuntu 20.04
+**Ubuntu 20.04**
+
 - There is no need to install Python on Ubuntu 20.04 because it comes pre-installed with Python 3.8.2
 - Note, however, that the terminal command `python` doesn't work; you specifically need to use `python3`
 
-#### Ubuntu 16.04 to 18.04
+**Ubuntu 16.04 to 18.04**
+
 - There is no need to install Python on Ubuntu 16.04 to 18.04: it comes already installed. In fact, multiple versions of Python come pre-installed (these multiple installations can be found in the /usr/bin/ folder)
 - However, the version of Python that Ubuntu uses by default is version 2 (usually 2.7) even though it has Python 3 installed. This is not good; Python 2 is no longer supported so everyone should be using Python 3. Check which version you are using from the terminal with:
 
@@ -184,16 +186,20 @@ The following works for macOS Sierra, Mojave and Catalina.
     pyenv version
     ```
     - Append the following to your terminal's run commands (ie add these lines to the bottom of either ~/.bash_profile or ~/.zshrc, depending on which version of macOS you have)
-    ```
+
+    ```{bash, eval=FALSE}
     if command -v pyenv 1>/dev/null 2>&1; then
         eval "$(pyenv init -)"
     fi
     ```
-        - The following commands will do this automatically for you:
-        ```{bash, eval=FALSE}
-        echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.zshrc
-        echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash_profile
-        ```
+
+    - The following commands will do this automatically for you:
+
+    ```{bash, eval=FALSE}
+    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.zshrc
+    echo -e 'if command -v pyenv 1>/dev/null 2>&1; then\n  eval "$(pyenv init -)"\nfi' >> ~/.bash_profile
+    ```
+
     - If you have previously added aliases to your .bash_profile or .zshrc file(s) you will need to remove these/comment them out
     - Reset the current shell to let the changes take effect:
     ```{bash, eval=FALSE}
@@ -295,11 +301,11 @@ The easiest way to update is just to install the latest version (again, from the
     - Windows 7: Start > right-click on "Computer" > Properties > Advanced system settings > Environment Variables > edit the top one (path)
     - Windows 10: Control Panel > System and Security > System - Advanced stystem settings > Environment Variables > edit the top one (path)
 - Append the following (with your username in place of "`<username>`")
-```
+```{bash, eval=FALSE}
 ;C:/Users/<username>/AppData/Local/Programs/Python/Python36-32/
 ```
 - Open Command Prompt (if it is already open, close it and open it again) and run:
-```
+```{bash, eval=FALSE}
 python
 ```
 - Python should open in the Command Prompt, showing you version and help information
@@ -308,19 +314,21 @@ python
 
 ### Installing Packages
 - For most packages, use Python's standard package manager "pip". pip should come already installed with Python; double check this by running the following two separate commands from Command Prompt:
+
+    ```{bash, eval=FALSE}
+python
+import pip
     ```
-    python
-    import pip
-    ```
+
     - If nothing happens (no errors appear), then all is good
     - 'pip2' is the version of pip for Python 2, 'pip3' is for Python 3 and 'pip' uses whichever version of Python is installed
     - Now that you are sure you have pip, you can use it directly from a new Command Prompt (or from the same Command Prompt after exiting Python with `exit()`) to install packages with:
-    ```
+    ```{bash, eval=FALSE}
     python -m pip install --user <package_name>
     ```
 - When installing packages, rather install them one-by-one as opposed to all at once. This is because pip sometimes installs multiple packages at once but not sequentially, and so if something fails you don't know what caused what.
 - Install most of the common packages with the following commands:
-```
+```{bash, eval=FALSE}
 python -m pip install --user numpy
 python -m pip install --user scipy
 python -m pip install --user setuptools
@@ -346,7 +354,7 @@ python -m pip install --user apiclient
 python -m pip install --user sklearn
 ```
 - You can upgrade pip with:
-```
+```{bash, eval=FALSE}
 python -m pip install --upgrade pip
 ```
 
@@ -385,15 +393,15 @@ This works for Fedora 22.
 
 ### Installing Packages
 - The best option is to use the standard Python package manager, "pip" (aka pip3 for Python 3):
-```
+```{bash, eval=FALSE}
 sudo dnf install python3-pip
 ```
 - Update pip with:
-```
+```{bash, eval=FALSE}
 sudo pip3 install --update pip
 ```
 - Most of the common packages can be installed with:
-```
+```{bash, eval=FALSE}
 sudo pip3 install numpy
 sudo pip3 install scipy
 sudo pip3 install matplotlib
@@ -414,7 +422,7 @@ sudo pip3 install imageio
 sudo pip3 install sklearn
 ```
 - If it says that pip3 is not a recognised command, reinstalling it might work:
-```
+```{bash, eval=FALSE}
 sudo dnf reinstall python3-pip
 ```
 

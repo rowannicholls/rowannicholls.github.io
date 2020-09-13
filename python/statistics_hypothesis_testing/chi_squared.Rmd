@@ -240,7 +240,7 @@ In Python, this is calculated in the same way as the previous example except:
 ```{python}
 import numpy as np
 
-# ARE TWO DISTRIBUTIONS INDEPENDENT?
+# Are two distributions independent?
 observations = np.array(
     [
         [79, 122, 204, 74],
@@ -250,16 +250,16 @@ observations = np.array(
 row_totals = np.array([np.sum(observations, axis=1)])
 col_totals = np.array([np.sum(observations, axis=0)])
 n = np.sum(observations)
-# CALCULATE THE EXPECTED OBSERVATIONS
+# Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
-# CALCULATE THE CHI-SQUARE TEST STATISTIC
+# Calculate the chi-square test statistic
 chisq, p = chisquare(observations, expected)
 chisq = np.sum(chisq)
-# DEGREES OF FREEDOM
+# Degrees of freedom
 rows = observations.shape[0]
 cols = observations.shape[1]
 df = (rows - 1) * (cols - 1)
-# CONVERT CHI-SQUARE TEST STATISTIC TO P-VALUE
+# Convert chi-square test statistic to p-value
 p = 1 - chi2.cdf(chisq, df)
 print(f'p = {p:3.1f}')
 ```
@@ -278,7 +278,7 @@ Using [an example from Stat Trek](https://stattrek.com/chi-square-test/independe
 | Female | 250 | 300 | 50  |
 
 ```{python}
-# ARE TWO DISTRIBUTIONS INDEPENDENT?
+# Are two distributions independent?
 observations = np.array(
     [
         [200, 150, 50],
@@ -288,16 +288,16 @@ observations = np.array(
 row_totals = np.array([np.sum(observations, axis=1)])
 col_totals = np.array([np.sum(observations, axis=0)])
 n = np.sum(observations)
-# CALCULATE THE EXPECTED OBSERVATIONS
+# Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
-# CALCULATE CHI-SQUARE TEST STATISTIC
+# Calculate chi-square test statistic
 chisq, p = chisquare(observations, expected)
 chisq = np.sum(chisq)
-# DEGREES OF FREEDOM
+# Degrees of freedom
 rows = observations.shape[0]
 cols = observations.shape[1]
 df = (rows - 1) * (cols - 1)
-# CONVERT CHI-SQUARE TEST STATISTIC TO P-VALUE
+# Convert chi-square test statistic to p-value
 p = 1 - chi2.cdf(chisq, df)
 print(f'p = {p:6.4f}')
 ```
@@ -327,7 +327,7 @@ Using [an example from DisplayR](https://www.displayr.com/what-is-the-chi-square
 | Whatever I feel like       | 7            | 124                |
 
 ```{python}
-# DO DIFFERENT SAMPLES COME FROM THE SAME POPULATION?
+# Do different samples come from the same population?
 observations = np.array(
     [
         [25, 146, 124],
@@ -337,16 +337,16 @@ observations = np.array(
 row_totals = np.array([np.sum(observations, axis=1)])
 col_totals = np.array([np.sum(observations, axis=0)])
 n = np.sum(observations)
-# CALCULATE THE EXPECTED OBSERVATIONS
+# Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
-# CALCULATE CHI-SQUARE TEST STATISTIC
+# Calculate chi-square test statistic
 chisq, p = chisquare(observations, expected)
 chisq = np.sum(chisq)
-# DEGREES OF FREEDOM
+# Degrees of freedom
 rows = observations.shape[0]
 cols = observations.shape[1]
 df = (rows - 1) * (cols - 1)
-# CONVERT CHI-SQUARE TEST STATISTIC TO P-VALUE
+# Convert chi-square test statistic to p-value
 p = 1 - chi2.cdf(chisq, df)
 print(f'p = {p:5.3f}')
 ```
@@ -370,7 +370,7 @@ The null and alternative hypotheses are as follows:
 
 ```{python}
 def perform_chi_squared(obs, exp):
-    """PERFORM A CHI-SQUARED TEST AND INTERPRET THE P-VALUE."""
+    """Perform a chi-squared test and interpret the p-value."""
     chisq, p = chisquare(obs, exp)
     if p <= 0.001:
         significance = '***'

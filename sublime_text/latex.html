@@ -416,6 +416,31 @@ summary {
 </ul>
 <div id="ubuntu" class="section level2">
 <h2>Ubuntu</h2>
+<p><em>On Ubuntu 20.04:</em></p>
+<ul>
+<li>Install Latex from the terminal with:</li>
+</ul>
+<pre class="bash"><code>sudo apt-get install dvipng
+sudo apt-get install texlive-latex-extra
+sudo apt-get install texlive-fonts-recommended
+sudo apt-get install texlive-pictures
+sudo apt-get install texlive-font-utils  # Needed for eps figures to work
+sudo apt-get install latexmk  # Needed for running Latex in Sublime Text
+sudo apt install texlive-lang-greek</code></pre>
+<ul>
+<li>Then install ImageMagick with:</li>
+</ul>
+<pre class="bash"><code>cd Downloads
+wget https://www.imagemagick.org/download/ImageMagick.tar.gz
+tar xvzf ImageMagick.tar.gz
+cd ImageMagick-7.0.x-xx/  # Replace the &quot;x&quot;s with the right version numbers
+./configure
+make
+sudo make install
+sudo ldconfig /usr/local/lib</code></pre>
+<ul>
+<li>Check it has worked with <code>magick -version</code></li>
+</ul>
 <p><em>On Ubuntu 16.04 and 18.04:</em></p>
 <ul>
 <li>Install TeXLive (from <a href="https://www.tug.org/texlive/acquire-netinstall.html" class="uri">https://www.tug.org/texlive/acquire-netinstall.html</a>, not via Terminal!):
@@ -432,6 +457,7 @@ apt-get install latexmk</code></pre></li>
 <li>Install extra things that aren’t in TexLive:</li>
 </ul>
 <pre class="bash"><code>sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex-extra</code></pre>
+<p><strong>Once finished:</strong></p>
 <ul>
 <li>In Sublime Text, go to Preferences &gt; Package Settings &gt; LaTeXTools &gt; Check System
 <ul>

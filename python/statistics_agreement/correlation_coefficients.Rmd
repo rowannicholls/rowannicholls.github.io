@@ -102,17 +102,17 @@ lo, hi = np.tanh((lo_z, hi_z))
 print(f'r = {r:5.3f} (CI: {lo:5.3f} - {hi:5.3f}), p = {p:5.3f}')
 ```
 
-This r value is close to 1, which confirms that the points nearly follow a straight-line. Let's visualise this by using the r statistic to generate a line-of-best-fit:
+This r value is close to 1, which confirms that the points nearly follow a straight-line. Let's visualise this by using the r statistic to generate a line of best-fit:
 
 ```{python eval = FALSE}
-# LINE-OF-BEST-FIT
+# Line of best-fit
 r, p = stats.pearsonr(x, y)
-# Gradient of line-of-best-fit
+# Gradient of line of best-fit
 m = r * np.std(y) / np.std(x)
-# Y-intercept of line-of-best-fit
+# Y-intercept of line of best-fit
 c = np.mean(y) - m * np.mean(x)
 
-# PLOT
+# Plot
 ax = plt.axes()
 ax.set(title='The Raw Data', xlabel='Method A', ylabel='Method B')
 # Scatter plot
@@ -121,7 +121,7 @@ ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 left, right = plt.xlim()
 # Keep current axis limits
 ax.set_xlim(left, right)
-# Line-of-best-fit
+# Line of best-fit
 x = np.array([left, right])
 y = m * x + c
 ax.plot(
@@ -135,14 +135,14 @@ plt.show()
 ```
 
 ```{python echo = FALSE, results = "hide"}
-# LINE-OF-BEST-FIT
+# Line of best-fit
 r, p = stats.pearsonr(x, y)
-# Gradient of line-of-best-fit
+# Gradient of line of best-fit
 m = r * np.std(y) / np.std(x)
-# Y-intercept of line-of-best-fit
+# Y-intercept of line of best-fit
 c = np.mean(y) - m * np.mean(x)
 
-# PLOT
+# Plot
 ax = plt.axes()
 ax.set(title='The Raw Data', xlabel='Method A', ylabel='Method B')
 # Scatter plot
@@ -151,7 +151,7 @@ ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 left, right = plt.xlim()
 # Keep current axis limits
 ax.set_xlim(left, right)
-# Line-of-best-fit
+# Line of best-fit
 x = np.array([left, right])
 y = m * x + c
 ax.plot(
