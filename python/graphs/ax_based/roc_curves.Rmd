@@ -26,14 +26,14 @@ The data can be downloaded from the Stanford website using Pandas:
 ```{python, results='hide'}
 import pandas as pd
 
-# SETTINGS FOR DISPLAYING PANDAS DATA FRAMES
+# Settings for displaying pandas data frames
 pd.set_option('display.max_columns', 20)
 pd.set_option('display.max_colwidth', 20)
 pd.set_option('display.width', 1000)
 
-# DOWNLOAD DATA
+# Download data
 df = pd.read_csv('https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv')
-# SHOW DATA
+# Show data
 print(df.head().to_html(index=False))
 ```
 
@@ -115,21 +115,21 @@ First, import the necessary libraries and customise the settings you will use fo
 import matplotlib.pyplot as plt
 import numpy as np
 
-# WANT FIGURES TO BE A6
+# Want figures to be A6
 x = 6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
-# USE LATEX FOR THE PLOT LABELS
+# Use latex for the plot labels
 plt.rc('text', usetex=True)
-# USE A SERIF FONT FOR THE PLOT LABELS
+# Use a serif font for the plot labels
 plt.rc('font', family='serif')
-# BE ABLE TO USE GREEK SYMBOLS IN THE PLOT LABELS
+# Be able to use greek symbols in the plot labels
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 ```
 
 Next, extract the data you will be using to create the ROC curve from the data frame. In our case, the "Fare" is the score data and "Survived" is the truth/outcome data:
 
 ```{python}
-# EXTRACT THE DATA OF INTEREST FROM THE DATA FRAME
+# Extract the data of interest from the data frame
 y = df['Survived'].values
 score = df['Fare'].values
 ```
@@ -141,13 +141,13 @@ Next, initialise the variables that will be used for generating the plot:
 - The total number of positive outcomes (people who survived) and negative outcomes (people who died) is needed for calculating rate
 
 ```{python}
-# INITIALISE THE FALSE POSITIVE RATES
+# Initialise the false positive rates
 fpr = []
-# INITIALISE THE TRUE POSITIVE RATES
+# Initialise the true positive rates
 tpr = []
-# THRESHOLDS TO ITERATE THROUGH
+# Thresholds to iterate through
 thresholds = [0] + sorted(score)
-# GET THE NUMBER OF POSITIVE AND NEGATIVE RESULTS
+# Get the number of positive and negative results
 P = sum(y)
 N = len(y) - P
 ```
@@ -155,8 +155,8 @@ N = len(y) - P
 For each threshold (ie for each fare price), calculate the true and false positive rate associated with using it as a cut-off for predicting survival:
 
 ```{python}
-# ITERATE THROUGH ALL THRESHOLDS AND DETERMINE THE FRACTION OF TRUE POSITIVES
-# AND FALSE NEGATIVES FOUND AT EVERY THRESHOLD
+# Iterate through all thresholds and determine the fraction of true positives
+# and false negatives found at every threshold
 for threshold in thresholds:
     FP = 0
     TP = 0
@@ -173,14 +173,14 @@ for threshold in thresholds:
 Convert the false positive rate to specificity (which is what is more usually plotted):
 
 ```{python}
-# GET SPECIFICITY FROM FALSE POSITIVE RATE
+# Get specificity from false positive rate
 spec = [1 - x for x in fpr]
 ```
 
 Use the trapezoidal rule to calculate the area under the curve:
 
 ```{python}
-# GET THE AREA UNDER THE CURVE FROM THE TRAPEZOIDAL RULE (USING NUMPY)
+# Get the area under the curve from the trapezoidal rule (using Numpy)
 AUC = -np.trapz(spec, tpr)
 ```
 
@@ -188,24 +188,24 @@ Now we can use Matplotlib to create the plot:
 
 ```{python, results='hide', eval=FALSE}
 #
-# PLOT
+# Plot
 #
 ax = plt.axes()
-# USE AN F-STRING TO INCLUDE THE AUC IN THE TITLE
+# Use an f-string to include the AUC in the title
 ax.set_title(
     'Receiver Operating Characteristic Curve\n'
     f'(AUC = {AUC:4.2})'
 )
-# PLOT THE ROC CURVE
+# Plot the ROC curve
 ax.plot(spec, tpr, 'k-')
-# PLOT THE DIAGONAL LINE (BE CAREFUL TO NOT START AT THE ORIGIN)
+# Plot the diagonal line (be careful to not start at the origin)
 ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
-# REVERSE THE X-AXIS
+# Reverse the x-axis
 ax.set_xlim([1, 0])
 ax.set_ylim([0, 1])
 ax.set_xlabel('Specificity')
 ax.set_ylabel('Sensitivity')
-# MAKE THE PLOT SQUARE
+# Make the plot square
 ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
 plt.show()
 plt.close()
@@ -213,24 +213,24 @@ plt.close()
 
 ```{python, results='hide', echo=FALSE}
 #
-# PLOT
+# Plot
 #
 ax = plt.axes()
-# USE AN F-STRING TO INCLUDE THE AUC IN THE TITLE
+# Use an f-string to include the AUC in the title
 ax.set_title(
     'Receiver Operating Characteristic Curve\n'
     f'(AUC = {AUC:4.2})'
 )
-# PLOT THE ROC CURVE
+# Plot the ROC curve
 ax.plot(spec, tpr, 'k-')
-# PLOT THE DIAGONAL LINE (BE CAREFUL TO NOT START AT THE ORIGIN)
+# Plot the diagonal line (be careful to not start at the origin)
 ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
-# REVERSE THE X-AXIS
+# Reverse the x-axis
 ax.set_xlim([1, 0])
 ax.set_ylim([0, 1])
 ax.set_xlabel('Specificity')
 ax.set_ylabel('Sensitivity')
-# MAKE THE PLOT SQUARE
+# Make the plot square
 ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
 plt.show()
 plt.close()
@@ -245,39 +245,39 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn.metrics as metrics
 
-# DOWNLOAD DATA
+# Download data
 df = pd.read_csv('https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv')
 
-# EXTRACT THE DATA OF INTEREST FROM THE DATA FRAME
+# Extract the data of interest from the data frame
 y = df['Survived'].values
 score = df['Fare'].values
-# GENERATE THE FALSE POSITIVE RATES, TRUE POSITIVE RATES AND THRESHOLDS
+# Generate the false positive rates, true positive rates and thresholds
 fpr, tpr, thresholds = metrics.roc_curve(y, score)
-# GENERATE THE AREA UNDER THE CURVE
-# EQUIVALENT TO auc = metrics.roc_auc_score(y, score)
+# Generate the area under the curve
+# This is equivalent to auc = metrics.roc_auc_score(y, score)
 auc = metrics.auc(fpr, tpr)
-# GET SPECIFICITY FROM FALSE POSITIVE RATE
+# Get specificity from false positive rate
 spec = [1 - x for x in fpr]
 
 #
-# PLOT
+# Plot
 #
 ax = plt.axes()
-# USE AN F-STRING TO INCLUDE THE AUC IN THE TITLE
+# Use an f-string to include the AUC in the title
 ax.set_title(
-    'Receiver Operating Characteristic\n' +
-    f'(AUC = {auc:4.2f})'
+    'Receiver Operating Characteristic Curve\n'
+    f'(AUC = {AUC:4.2})'
 )
-# PLOT THE ROC CURVE
+# Plot the ROC curve
 ax.plot(spec, tpr, 'k-')
-# PLOT THE DIAGONAL LINE (BE CAREFUL TO NOT START AT THE ORIGIN)
+# Plot the diagonal line (be careful to not start at the origin)
 ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
-# REVERSE THE X-AXIS
+# Reverse the x-axis
 ax.set_xlim([1, 0])
 ax.set_ylim([0, 1])
 ax.set_xlabel('Specificity')
 ax.set_ylabel('Sensitivity')
-# MAKE THE PLOT SQUARE
+# Make the plot square
 ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
 plt.show()
 plt.close()
@@ -288,39 +288,39 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn.metrics as metrics
 
-# DOWNLOAD DATA
+# Download data
 df = pd.read_csv('https://web.stanford.edu/class/archive/cs/cs109/cs109.1166/stuff/titanic.csv')
 
-# EXTRACT THE DATA OF INTEREST FROM THE DATA FRAME
+# Extract the data of interest from the data frame
 y = df['Survived'].values
 score = df['Fare'].values
-# GENERATE THE FALSE POSITIVE RATES, TRUE POSITIVE RATES AND THRESHOLDS
+# Generate the false positive rates, true positive rates and thresholds
 fpr, tpr, thresholds = metrics.roc_curve(y, score)
-# GENERATE THE AREA UNDER THE CURVE
-# EQUIVALENT TO auc = metrics.roc_auc_score(y, score)
+# Generate the area under the curve
+# This is equivalent to auc = metrics.roc_auc_score(y, score)
 auc = metrics.auc(fpr, tpr)
-# GET SPECIFICITY FROM FALSE POSITIVE RATE
+# Get specificity from false positive rate
 spec = [1 - x for x in fpr]
 
 #
-# PLOT
+# Plot
 #
 ax = plt.axes()
-# USE AN F-STRING TO INCLUDE THE AUC IN THE TITLE
+# Use an f-string to include the AUC in the title
 ax.set_title(
-    'Receiver Operating Characteristic\n' +
-    f'(AUC = {auc:4.2f})'
+    'Receiver Operating Characteristic Curve\n'
+    f'(AUC = {AUC:4.2})'
 )
-# PLOT THE ROC CURVE
+# Plot the ROC curve
 ax.plot(spec, tpr, 'k-')
-# PLOT THE DIAGONAL LINE (BE CAREFUL TO NOT START AT THE ORIGIN)
+# Plot the diagonal line (be careful to not start at the origin)
 ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
-# REVERSE THE X-AXIS
+# Reverse the x-axis
 ax.set_xlim([1, 0])
 ax.set_ylim([0, 1])
 ax.set_xlabel('Specificity')
 ax.set_ylabel('Sensitivity')
-# MAKE THE PLOT SQUARE
+# Make the plot square
 ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
 plt.show()
 plt.close()

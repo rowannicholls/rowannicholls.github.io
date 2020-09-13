@@ -24,9 +24,9 @@ will plot with circles, and so on.
 num_symbols <- 26
 nrows <- 13
 ncols <- 2
-# SET THE MARGINS OF THE PLOTTING AREA
+# Set the margins of the plotting area
 par(mar = c(0, 0, 0, 0))
-# PLOT
+# Plot
 x <- c()
 y <- c()
 for (i in 0:25) {
@@ -69,9 +69,9 @@ will plot in red. The complete list is below:
 num_colours <- 657
 nrows <- 110
 ncols <- 6
-# SET THE MARGINS OF THE PLOTTING AREA
+# Set the margins of the plotting area
 par(mar = c(0, 0, 0, 0))
-# PLOT
+# Plot
 plot(
     seq(1.5, 3.5, by = 2), seq(1.5, 3.5, by = 2),
     xlim = c(0, ncols * 2), ylim = c(0, nrows),

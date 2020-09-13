@@ -16,14 +16,14 @@ This type of regression analysis was first published in Passing & Bablok (1983)<
 
 > Passing–Bablok regression is a statistical method for non-parametric regression analysis suitable for method comparison studies.
 
-Essentially, when two different methods are being used to take the same measurement a line-of-best-fit can fitted to the points. The Passing-Bablok method does this by:
+Essentially, when two different methods are being used to take the same measurement a line of best-fit can fitted to the points. The Passing-Bablok method does this by:
 
 - Drawing a line between each pair of points in turn
 - Taking the gradient of each of these lines
 - Extending these lines to the y-axis and taking the y-intercepts
 - Taking the median of the gradients and the median of the y-intercepts of these lines
 
-The median gradient and median y-intercept create the line-of-best-fit. It has an associated confidence interval which can be interpreted as follows:
+The median gradient and median y-intercept create the line of best-fit. It has an associated confidence interval which can be interpreted as follows:
 
 - If 1 is within the confidence interval of the gradient and 0 within the confidence interval of the y-intercept, then the two methods are comparable within the investigated concentration range
 - If 1 is not in the confidence interval of the gradient then there is a proportional difference between the two methods
@@ -59,7 +59,7 @@ abline(0, 1, lty = "dashed")
 legend(0, 1000, "Reference line", lty = "dashed")
 ```
 
-Now let's caclulate the Passing-Bablok line-of-best-fit and its confidence interval. This is done using the `mcreg` function from the `mcr` package, specifying what method you want to use with `method.reg = "PaBa"` as below:
+Now let's caclulate the Passing-Bablok line of best-fit and its confidence interval. This is done using the `mcreg` function from the `mcr` package, specifying what method you want to use with `method.reg = "PaBa"` as below:
 
 ```{r}
 library(mcr)

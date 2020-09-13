@@ -21,6 +21,36 @@ Prerequisites {.tabset}
 
 Ubuntu
 ------
+
+*On Ubuntu 20.04:*
+
+- Install Latex from the terminal with:
+
+```{bash, eval = FALSE}
+sudo apt-get install dvipng
+sudo apt-get install texlive-latex-extra
+sudo apt-get install texlive-fonts-recommended
+sudo apt-get install texlive-pictures
+sudo apt-get install texlive-font-utils  # Needed for eps figures to work
+sudo apt-get install latexmk  # Needed for running Latex in Sublime Text
+sudo apt install texlive-lang-greek
+```
+
+- Then install ImageMagick with:
+
+```{bash, eval = FALSE}
+cd Downloads
+wget https://www.imagemagick.org/download/ImageMagick.tar.gz
+tar xvzf ImageMagick.tar.gz
+cd ImageMagick-7.0.x-xx/  # Replace the "x"s with the right version numbers
+./configure
+make
+sudo make install
+sudo ldconfig /usr/local/lib
+```
+
+- Check it has worked with `magick -version`
+
 *On Ubuntu 16.04 and 18.04:*
 
 - Install TeXLive (from https://www.tug.org/texlive/acquire-netinstall.html, not via Terminal!):
@@ -38,6 +68,9 @@ Ubuntu
 ```{bash, eval = FALSE}
 sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex-extra
 ```
+
+**Once finished:**
+
 - In Sublime Text, go to Preferences > Package Settings > LaTeXTools > Check System
     - `xelatex` and `biber` might be missing and `display_log` might be false, but everything else should be there and be green
 - Test that it works:
