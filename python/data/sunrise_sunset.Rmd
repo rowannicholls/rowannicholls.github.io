@@ -1,0 +1,267 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Look Up Sunrise and Sunset Times'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+This page uses the **Astral** package from sffjunkie:
+
+- PyPI: https://pypi.org/project/astral/
+- Read the Docs: https://astral.readthedocs.io/en/stable/index.html
+- GitHub: https://github.com/sffjunkie/astral
+- Install: `pip install astral` or `pip3 install astral`
+
+Hello World Example
+===================
+Copied from https://astral.readthedocs.io/en/stable/index.html
+
+```{python, results = "hold"}
+from astral import LocationInfo
+city = LocationInfo('London', 'England', 'Europe/London', 51.5, -0.116)
+print((
+    f'Information for {city.name}/{city.region}\n'
+    f'Timezone: {city.timezone}\n'
+    f'Latitude: {city.latitude:.02f}; Longitude: {city.longitude:.02f}\n'
+))
+
+import datetime
+from astral.sun import sun
+s = sun(city.observer, date=datetime.date(2009, 4, 22))
+print((
+    f'Dawn:    {s["dawn"]}\n'
+    f'Sunrise: {s["sunrise"]}\n'
+    f'Noon:    {s["noon"]}\n'
+    f'Sunset:  {s["sunset"]}\n'
+    f'Dusk:    {s["dusk"]}\n'
+))
+```
+
+Account for Daylight Savings
+============================
+The above code works fine, but it doesn't take daylight savings into account! Let's start by getting a function that indicates whether DST is in effect at a particular time and location by generating a Boolean (True/False). Credit for this code goes to https://stackoverflow.com/questions/2881025/python-daylight-savings-time
+
+```{python, results = "hold"}
+import pytz
+
+
+def is_dst(dt=None, timezone='UTC'):
+    """Is daylight savings in effect?"""
+    if dt is None:
+        dt = datetime.datetime.utcnow()
+    timezone = pytz.timezone(timezone)
+    timezone_aware_date = timezone.localize(dt, is_dst=None)
+    return timezone_aware_date.tzinfo._dst.seconds != 0
+```
+
+Let's try it out for two dates: one in January and one in July:
+
+```{python, eval = FALSE}
+# Is daylight savings in effect on 1 January?
+date = datetime.datetime(2020, 1, 1)
+print(is_dst(date, timezone='Europe/London'))
+# Is daylight savings in effect on 1 July?
+date = datetime.datetime(2020, 7, 1)
+print(is_dst(date, timezone='Europe/London'))
+```
+
+```{python, echo = FALSE}
+# Is daylight savings in effect on 1 January?
+date = datetime.datetime(2020, 1, 1)
+print(is_dst(date, timezone='Europe/London'))
+# Is daylight savings in effect on 1 July?
+date = datetime.datetime(2020, 7, 1)
+print(is_dst(date, timezone='Europe/London'))
+```
+
+Incorporating this into the sunrise/sunset times code allows us to add an hour to times that fall during DST:
+
+```{python, results = "hold"}
+# Pick a date during DST
+date = datetime.datetime(2020, 9, 17)
+# Get the unadjusted sunrise and sunset times
+city = LocationInfo('Oxford', 'England', 'Europe/London', 51.738931, -1.246467)
+s = sun(city.observer, date=date)
+sunrise = s['sunrise']
+sunset = s['sunset']
+# Initialise a time zone
+timezone = 'GMT'
+# Is daylight savings in effect?
+if is_dst(date, timezone='Europe/London'):
+    # If DST is in effect, add an hour and change the time zone
+    tdelta = datetime.timedelta(hours=1)
+    sunrise = sunrise + tdelta
+    sunset = sunset + tdelta
+    timezone = 'BST'
+# Re-format
+sunrise = sunrise.strftime(f'%H:%M {timezone}')
+sunset = sunset.strftime(f'%H:%M {timezone}')
+print(f'Sunrise: {sunrise}, sunset: {sunset}')
+```
+
+Make It a Function
+==================
+Turn the above code into a function to be able to call it easily on multiple days:
+
+```{python, results = "hold"}
+def sunrise_sunset(date):
+    """Get the sunrise and sunset times adjusted for DST."""
+    # 'date' is taken at midnight, but daylight savings starts/ends at 1am/2am
+    # so move the time to midday to be accurate
+    tdelta = datetime.timedelta(hours=12)
+    date = date + tdelta
+    # Get the unadjusted sunrise and sunset times
+    city = LocationInfo(
+        'Oxford', 'England', 'Europe/London', 51.738931, -1.246467
+    )
+    s = sun(city.observer, date=date)
+    sunrise = s['sunrise']
+    sunset = s['sunset']
+    # Initialise a time zone
+    timezone = 'GMT'
+    # Is daylight savings in effect?
+    if is_dst(date, timezone='Europe/London'):
+        tdelta = datetime.timedelta(hours=1)
+        sunrise = sunrise + tdelta
+        sunset = sunset + tdelta
+        timezone = 'BST'
+    # To be conservative, round the time up to the nearest minute
+    if sunrise.second > 0:
+        sunrise = sunrise + datetime.timedelta(minutes=1)
+    if sunrise.second > 13:
+        sunset = sunset + datetime.timedelta(minutes=1)
+    # Re-format
+    sunrise = sunrise.strftime(f'%H:%M {timezone}')
+    sunset = sunset.strftime(f'%H:%M {timezone}')
+    return sunrise, sunset
+```
+
+Let's try it out for two days, one before and one during daylight savings (which in the UK in 2020 started at 1am on 29 March):
+
+```{python}
+# 28 March 2020
+date = datetime.datetime(2020, 3, 28)
+sunrise, sunset = sunrise_sunset(date)
+print(f'Sunrise: {sunrise}, sunset: {sunset}')
+```
+
+```{python}
+# 29 March 2020
+date = datetime.datetime(2020, 3, 29)
+sunrise, sunset = sunrise_sunset(date)
+print(f'Sunrise: {sunrise}, sunset: {sunset}')
+```
+
+As there is a jump of about an hour between these two sets of times, it looks like we're correct.
+
+Iterate Over a Month
+====================
+To get the sunrise and sunset times for every day in one or more consecutive months we will need to import Python's built-in calendar functionality:
+
+```{python, results = "hold"}
+import calendar
+
+# Create a calendar
+cal = calendar.Calendar()
+```
+
+This calendar object has the method `.itermonthdates()` which will generate all the days in a given month in a given year (ie it will generate the numbers 1 to 30 if it it supplied with "September", 1 to 31 if it is supplied with "October" and so on). We can use this to generate all the sunrise and sunset times for any number of consecutive months starting at a month of our choosing:
+
+```{python, iterate, eval = FALSE}
+import numpy as np
+
+# Choose a start year and month
+start_year = 2020
+start_month = 9
+# Initialise output lists
+dates = []
+sunrises = []
+sunsets = []
+
+# Iterate over four months
+for i in range(4):
+    month = start_month + i
+    # If you overflow the year, move to the next year
+    year = int(start_year + np.floor((month - 1) / 12))
+    # Similarly correct the month
+    month = month % 12
+    if month == 0:
+        month = 12
+    # For each day in that month in that year
+    for day in cal.itermonthdates(year, month):
+        if day.month == month:
+            day_datetime = datetime.datetime(day.year, day.month, day.day)
+            sunrise, sunset = sunrise_sunset(day_datetime)
+            dates.append(day.strftime('%Y-%m-%d'))
+            sunrises.append(sunrise)
+            sunsets.append(sunset)
+# Create list-of-lists
+ls_of_ls = [dates, sunrises, sunsets]
+
+print(f'Dates: {ls_of_ls[0][:5]}')
+print(f'Sunrises: {ls_of_ls[1][:5]}')
+print(f'Sunsets: {ls_of_ls[2][:5]}')
+```
+
+```{python, iterate_copy, echo = FALSE, results = "hide"}
+import numpy as np
+
+# Choose a start year and month
+start_year = 2020
+start_month = 9
+# Initialise output lists
+dates = []
+sunrises = []
+sunsets = []
+
+# Iterate over four months
+for i in range(4):
+    month = start_month + i
+    # If you overflow the year, move to the next year
+    year = int(start_year + np.floor((month - 1) / 12))
+    # Similarly correct the month
+    month = month % 12
+    if month == 0:
+        month = 12
+    # For each day in that month in that year
+    for day in cal.itermonthdates(year, month):
+        if day.month == month:
+            day_datetime = datetime.datetime(day.year, day.month, day.day)
+            sunrise, sunset = sunrise_sunset(day_datetime)
+            dates.append(day.strftime('%Y-%m-%d'))
+            sunrises.append(sunrise)
+            sunsets.append(sunset)
+# Create list-of-lists
+ls_of_ls = [dates, sunrises, sunsets]
+
+print(f'Dates: {ls_of_ls[0][:5]}')
+print(f'Sunrises: {ls_of_ls[1][:5]}')
+print(f'Sunsets: {ls_of_ls[2][:5]}')
+```
+
+```
+## Dates: ['2020-09-01', '2020-09-02', '2020-09-03', '2020-09-04', '2020-09-05']
+## Sunrises: ['06:19 BST', '06:20 BST', '06:22 BST', '06:23 BST', '06:25 BST']
+## Sunsets: ['19:50 BST', '19:49 BST', '19:47 BST', '19:44 BST', '19:42 BST']
+```
+
+Finally, let's export these results to a CSV file:
+
+```{python, results = "hold"}
+import csv
+
+# Export list-of-lists to comma-separated values (.csv)
+with open('sunrise_sunset.csv', 'w', newline='') as file:
+    a = csv.writer(file, delimiter=',')
+    a.writerows(ls_of_ls)
+```
+
+[⇦ Back](../../python.html)
+
+</font>

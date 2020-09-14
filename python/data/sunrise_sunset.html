@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Data Handling in Python: Look Up Sunrise and Sunset Times</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -396,85 +396,200 @@ summary {
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Data Handling in Python:</font><br>Look Up Sunrise and Sunset Times</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#hello-world-example"><span class="toc-section-number">1</span> Hello World Example</a></li>
+<li><a href="#account-for-daylight-savings"><span class="toc-section-number">2</span> Account for Daylight Savings</a></li>
+<li><a href="#make-it-a-function"><span class="toc-section-number">3</span> Make It a Function</a></li>
+<li><a href="#iterate-over-a-month"><span class="toc-section-number">4</span> Iterate Over a Month</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
+<p><a href="../../python.html">⇦ Back</a></p>
+<p>This page uses the <strong>Astral</strong> package from sffjunkie:</p>
 <ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/python_vs_r.html">Python vs R</a></li>
-</ol>
+<li>PyPI: <a href="https://pypi.org/project/astral/" class="uri">https://pypi.org/project/astral/</a></li>
+<li>Read the Docs: <a href="https://astral.readthedocs.io/en/stable/index.html" class="uri">https://astral.readthedocs.io/en/stable/index.html</a></li>
+<li>GitHub: <a href="https://github.com/sffjunkie/astral" class="uri">https://github.com/sffjunkie/astral</a></li>
+<li>Install: <code>pip install astral</code> or <code>pip3 install astral</code></li>
+</ul>
+<div id="hello-world-example" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Hello World Example</h1>
+<p>Copied from <a href="https://astral.readthedocs.io/en/stable/index.html" class="uri">https://astral.readthedocs.io/en/stable/index.html</a></p>
+<pre class="python"><code>from astral import LocationInfo
+city = LocationInfo(&#39;London&#39;, &#39;England&#39;, &#39;Europe/London&#39;, 51.5, -0.116)
+print((
+    f&#39;Information for {city.name}/{city.region}\n&#39;
+    f&#39;Timezone: {city.timezone}\n&#39;
+    f&#39;Latitude: {city.latitude:.02f}; Longitude: {city.longitude:.02f}\n&#39;
+))</code></pre>
+<pre><code>## Information for London/England
+## Timezone: Europe/London
+## Latitude: 51.50; Longitude: -0.12</code></pre>
+<pre class="python"><code>import datetime
+from astral.sun import sun
+s = sun(city.observer, date=datetime.date(2009, 4, 22))
+print((
+    f&#39;Dawn:    {s[&quot;dawn&quot;]}\n&#39;
+    f&#39;Sunrise: {s[&quot;sunrise&quot;]}\n&#39;
+    f&#39;Noon:    {s[&quot;noon&quot;]}\n&#39;
+    f&#39;Sunset:  {s[&quot;sunset&quot;]}\n&#39;
+    f&#39;Dusk:    {s[&quot;dusk&quot;]}\n&#39;
+))</code></pre>
+<pre><code>## Dawn:    2009-04-22 04:13:04.923309+00:00
+## Sunrise: 2009-04-22 04:50:16.515411+00:00
+## Noon:    2009-04-22 11:59:02+00:00
+## Sunset:  2009-04-22 19:08:41.215821+00:00
+## Dusk:    2009-04-22 19:46:06.362457+00:00</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import, Convert Data</a></li>
-<li><a href="python/data/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-</ol>
+<div id="account-for-daylight-savings" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Account for Daylight Savings</h1>
+<p>The above code works fine, but it doesn’t take daylight savings into account! Let’s start by getting a function that indicates whether DST is in effect at a particular time and location by generating a Boolean (True/False). Credit for this code goes to <a href="https://stackoverflow.com/questions/2881025/python-daylight-savings-time" class="uri">https://stackoverflow.com/questions/2881025/python-daylight-savings-time</a></p>
+<pre class="python"><code>import pytz
+
+
+def is_dst(dt=None, timezone=&#39;UTC&#39;):
+    &quot;&quot;&quot;Is daylight savings in effect?&quot;&quot;&quot;
+    if dt is None:
+        dt = datetime.datetime.utcnow()
+    timezone = pytz.timezone(timezone)
+    timezone_aware_date = timezone.localize(dt, is_dst=None)
+    return timezone_aware_date.tzinfo._dst.seconds != 0</code></pre>
+<p>Let’s try it out for two dates: one in January and one in July:</p>
+<pre class="python"><code># Is daylight savings in effect on 1 January?
+date = datetime.datetime(2020, 1, 1)
+print(is_dst(date, timezone=&#39;Europe/London&#39;))
+# Is daylight savings in effect on 1 July?
+date = datetime.datetime(2020, 7, 1)
+print(is_dst(date, timezone=&#39;Europe/London&#39;))</code></pre>
+<pre><code>## False</code></pre>
+<pre><code>## True</code></pre>
+<p>Incorporating this into the sunrise/sunset times code allows us to add an hour to times that fall during DST:</p>
+<pre class="python"><code># Pick a date during DST
+date = datetime.datetime(2020, 9, 17)
+# Get the unadjusted sunrise and sunset times
+city = LocationInfo(&#39;Oxford&#39;, &#39;England&#39;, &#39;Europe/London&#39;, 51.738931, -1.246467)
+s = sun(city.observer, date=date)
+sunrise = s[&#39;sunrise&#39;]
+sunset = s[&#39;sunset&#39;]
+# Initialise a time zone
+timezone = &#39;GMT&#39;
+# Is daylight savings in effect?
+if is_dst(date, timezone=&#39;Europe/London&#39;):
+    # If DST is in effect, add an hour and change the time zone
+    tdelta = datetime.timedelta(hours=1)
+    sunrise = sunrise + tdelta
+    sunset = sunset + tdelta
+    timezone = &#39;BST&#39;
+# Re-format
+sunrise = sunrise.strftime(f&#39;%H:%M {timezone}&#39;)
+sunset = sunset.strftime(f&#39;%H:%M {timezone}&#39;)
+print(f&#39;Sunrise: {sunrise}, sunset: {sunset}&#39;)</code></pre>
+<pre><code>## Sunrise: 06:43 BST, sunset: 19:13 BST</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a> <!-- 4. Graphing using pyplot (quicker for simple plots but gives you less control over how they look)
-    - Box Plots (aka box-and-whisker plots)
-        + One Group of Data
-        + Multiple Groups of Data
-    + Bar Plots
-        + One Group of Data
-        + Multiple Groups of Data --> <!-- 5. Graphing using axes (more complicated but gives you more control) --></li>
-<li>Graphing using axes
-<ul>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="make-it-a-function" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Make It a Function</h1>
+<p>Turn the above code into a function to be able to call it easily on multiple days:</p>
+<pre class="python"><code>def sunrise_sunset(date):
+    &quot;&quot;&quot;Get the sunrise and sunset times adjusted for DST.&quot;&quot;&quot;
+    # &#39;date&#39; is taken at midnight, but daylight savings starts/ends at 1am/2am
+    # so move the time to midday to be accurate
+    tdelta = datetime.timedelta(hours=12)
+    date = date + tdelta
+    # Get the unadjusted sunrise and sunset times
+    city = LocationInfo(
+        &#39;Oxford&#39;, &#39;England&#39;, &#39;Europe/London&#39;, 51.738931, -1.246467
+    )
+    s = sun(city.observer, date=date)
+    sunrise = s[&#39;sunrise&#39;]
+    sunset = s[&#39;sunset&#39;]
+    # Initialise a time zone
+    timezone = &#39;GMT&#39;
+    # Is daylight savings in effect?
+    if is_dst(date, timezone=&#39;Europe/London&#39;):
+        tdelta = datetime.timedelta(hours=1)
+        sunrise = sunrise + tdelta
+        sunset = sunset + tdelta
+        timezone = &#39;BST&#39;
+    # To be conservative, round the time up to the nearest minute
+    if sunrise.second &gt; 0:
+        sunrise = sunrise + datetime.timedelta(minutes=1)
+    if sunrise.second &gt; 13:
+        sunset = sunset + datetime.timedelta(minutes=1)
+    # Re-format
+    sunrise = sunrise.strftime(f&#39;%H:%M {timezone}&#39;)
+    sunset = sunset.strftime(f&#39;%H:%M {timezone}&#39;)
+    return sunrise, sunset</code></pre>
+<p>Let’s try it out for two days, one before and one during daylight savings (which in the UK in 2020 started at 1am on 29 March):</p>
+<pre class="python"><code># 28 March 2020
+date = datetime.datetime(2020, 3, 28)
+sunrise, sunset = sunrise_sunset(date)
+print(f&#39;Sunrise: {sunrise}, sunset: {sunset}&#39;)</code></pre>
+<pre><code>## Sunrise: 05:49 GMT, sunset: 18:33 GMT</code></pre>
+<pre class="python"><code># 29 March 2020
+date = datetime.datetime(2020, 3, 29)
+sunrise, sunset = sunrise_sunset(date)
+print(f&#39;Sunrise: {sunrise}, sunset: {sunset}&#39;)</code></pre>
+<pre><code>## Sunrise: 06:47 BST, sunset: 19:34 BST</code></pre>
+<p>As there is a jump of about an hour between these two sets of times, it looks like we’re correct.</p>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<div id="hypothesis-testing" class="section level4">
-<h4>Hypothesis Testing</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics_hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ol>
-</div>
-<div id="agreement-accuracy-precision" class="section level4">
-<h4>Agreement (Accuracy &amp; Precision)</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics_agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics_agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics_agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-</ol>
-</div>
-</div>
-<div id="image-manipulation" class="section level2">
-<h2>Image Manipulation</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/image_manipulation/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-</ol>
+<div id="iterate-over-a-month" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Iterate Over a Month</h1>
+<p>To get the sunrise and sunset times for every day in one or more consecutive months we will need to import Python’s built-in calendar functionality:</p>
+<pre class="python"><code>import calendar
+
+# Create a calendar
+cal = calendar.Calendar()</code></pre>
+<p>This calendar object has the method <code>.itermonthdates()</code> which will generate all the days in a given month in a given year (ie it will generate the numbers 1 to 30 if it it supplied with “September”, 1 to 31 if it is supplied with “October” and so on). We can use this to generate all the sunrise and sunset times for any number of consecutive months starting at a month of our choosing:</p>
+<pre class="python"><code>import numpy as np
+
+# Choose a start year and month
+start_year = 2020
+start_month = 9
+# Initialise output lists
+dates = []
+sunrises = []
+sunsets = []
+
+# Iterate over four months
+for i in range(4):
+    month = start_month + i
+    # If you overflow the year, move to the next year
+    year = int(start_year + np.floor((month - 1) / 12))
+    # Similarly correct the month
+    month = month % 12
+    if month == 0:
+        month = 12
+    # For each day in that month in that year
+    for day in cal.itermonthdates(year, month):
+        if day.month == month:
+            day_datetime = datetime.datetime(day.year, day.month, day.day)
+            sunrise, sunset = sunrise_sunset(day_datetime)
+            dates.append(day.strftime(&#39;%Y-%m-%d&#39;))
+            sunrises.append(sunrise)
+            sunsets.append(sunset)
+# Create list-of-lists
+ls_of_ls = [dates, sunrises, sunsets]
+
+print(f&#39;Dates: {ls_of_ls[0][:5]}&#39;)
+print(f&#39;Sunrises: {ls_of_ls[1][:5]}&#39;)
+print(f&#39;Sunsets: {ls_of_ls[2][:5]}&#39;)</code></pre>
+<pre><code>## Dates: [&#39;2020-09-01&#39;, &#39;2020-09-02&#39;, &#39;2020-09-03&#39;, &#39;2020-09-04&#39;, &#39;2020-09-05&#39;]
+## Sunrises: [&#39;06:19 BST&#39;, &#39;06:20 BST&#39;, &#39;06:22 BST&#39;, &#39;06:23 BST&#39;, &#39;06:25 BST&#39;]
+## Sunsets: [&#39;19:50 BST&#39;, &#39;19:49 BST&#39;, &#39;19:47 BST&#39;, &#39;19:44 BST&#39;, &#39;19:42 BST&#39;]</code></pre>
+<p>Finally, let’s export these results to a CSV file:</p>
+<pre class="python"><code>import csv
+
+# Export list-of-lists to comma-separated values (.csv)
+with open(&#39;sunrise_sunset.csv&#39;, &#39;w&#39;, newline=&#39;&#39;) as file:
+    a = csv.writer(file, delimiter=&#39;,&#39;)
+    a.writerows(ls_of_ls)</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
