@@ -1,0 +1,138 @@
+---
+title: '<font size="5">Statistics in R:</font><br>Principal Component Analysis'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: false
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+Principal component analysis (PCA) is a statistical technique used to *reduce the number of variables* you have in your data while *not losing any of the useful information* each variable provides. Let's take the "setosa" data from the `iris` library (which is built-in to R) as an example:
+
+```{r}
+# Get example data
+df <- subset(iris, Species == "setosa")
+print(head(df))
+```
+
+This dataset has four variables: sepal length, sepal width, petal length and petal width. While not massive, four variables can still be cumbersome to work with and, more importantly, some of them may actually be unhelpful and merely contribute to the likelihood of **overfitting** (when a model is made to be too specific to a given set of data - a common problem when there are many variables). PCA can help us *reduce the dimension* of our feature space. It does this by taking our four variables (or whatever number of variables a dataset happens to have) and creating four new independent variables that are each a combination of the original four. The best out of these new variables can then be chosen for creating a model, and none of the contributions of any of the four original ones will have been forgotten because each new variable contains a 'piece' of *all* the old ones!
+
+To do PCA in R we will use the `prcomp()` function. This will, however, require our dataset be entirely complete - no missing values can exist. Remove any NAs that might be present with the following:
+
+```{r}
+# Remove NAs
+for (col in colnames(df)) {
+    df <- subset(df, df[[col]] != "NA")
+}
+```
+
+Secondly, our data must be entirely numeric, so remove the "Species" column:
+
+```{r}
+# Data frame must be entirely numeric
+df <- df[c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")]
+```
+
+Now we can perform the PCA with just one short line:
+
+```{r}
+# Perform PCA
+pca <- prcomp(df)
+```
+
+The output of this function can be quickly plotted in base R:
+
+```{r}
+# Plot first two principal components
+plot(pca$x[,1], pca$x[,2])
+```
+
+What this shows is the first two of the four 'new variables' that have been created out of the original ones. These are more properly known as the first two **principal components**, or PC1 and PC2.
+
+Now, if we want to calculate the variance in each of these four new variables (aka the principal components) we can do this:
+
+```{r}
+# Calculate the variance
+pca_var <- pca$sdev^2
+print(pca_var)
+```
+
+But it is often more useful to calculate these variances as percentages:
+
+```{r}
+# Calculate the percentage variance
+pca_var_per <- round(pca_var / sum(pca_var) * 100, 1)
+print(pca_var_per)
+```
+
+Plotting these percentage variances looks like this:
+
+```{r}
+# Plot the percentages
+barplot(
+    pca_var_per, main = "Percentage Variances of the Principal Components",
+    xlab= "Principal Component", ylab= "Principal Variation"
+)
+```
+
+What this bar plot tells us is that the first principal component (PC1) accounts for most of the variation in the data. In other words, there is one important cluster in the principal component space, which makes sense as there only appeared to be one cluster in the scatter plot we made.
+
+We can use ggplot2 to make the graph look nicer:
+
+```{r}
+library(ggplot2)
+
+# Format the data the way ggplot likes it
+X = pca$x[,1]
+Y = pca$x[,2]
+pca_data <- data.frame(Names = rownames(pca$x), + X, + Y)
+
+# Plot
+p <- ggplot(data = pca_data, aes(x = X, y = Y, label = Names))
+p <- p + geom_text()
+p <- p + xlab(paste0("PC1 - ", pca_var_per[1], "%"))
+p <- p + ylab(paste0("PC2 - ", pca_var_per[2], "%"))
+p <- p + theme_bw()
+p <- p + ggtitle("PCA graph")
+print(p)
+```
+
+Usefully, the x-axis label now includes what percentage of the variation in the original data is being accounted for by PC1. Similarly, the y-axis tells us the percentage of the variation in the original data for which PC2 accounts.
+
+Next, we will use the loading scores to determine which variables have the largest effect. The `prcomp()` function, confusingly, calls these loading scores "rotation". Here, we will just look at the loading score for PC1 since it is the most important (it accounts for 76.5% of the variation in the data):
+
+```{r}
+loading_scores <- pca$rotation[,1]
+print(loading_scores)
+```
+
+Variables that influence the data towards the **left** side of the plot will have loading scores that are *large and negative*. Variables that influence the data towards the **right** side of the plot will have loading scores that are *large and positive*. We can use the `abs()` function to get the magnitudes of the loading scores; this will mean we can stop worrying about the sign!
+
+```{r}
+scores <- abs(loading_scores)
+```
+
+Sort from high to low:
+
+```{r}
+scores_ranked <- sort(scores, decreasing=TRUE)
+```
+
+Pick the variables that have the largest absolute loading scores (in our case we will just pick the top 2):
+
+```{r}
+top_2 <- names(scores_ranked[1:2])
+```
+
+Finally, look up what these actual loading scores are (ie with the sign included):
+
+```{r}
+print(pca$rotation[top_2, 1])
+```
+
+[⇦ Back](../../R.html)
+
+</font>
