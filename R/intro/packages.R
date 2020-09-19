@@ -34,7 +34,7 @@
 # install.packages("gtools", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("Hmisc", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
 # install.packages("ini", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
-# install.packages("kableExtra", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
+install.packages("kableExtra", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 or 20.04 with R 4.0.2
 # install.packages("knitr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("lintr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
 # install.packages("logging", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -77,7 +77,7 @@ library(ggplot2)
 library(gtools)
 library(Hmisc)
 library(ini)
-# library(kableExtra)  # Could not install on Ubuntu 20.04 with R 4.0.2
+library(kableExtra)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(knitr)
 # library(lintr)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(logging)
@@ -100,8 +100,8 @@ library(styler)
 # library(tidyverse)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(titanic)
 library(utf8)
-library(writexl)
-library(WriteXLS)
+# library(writexl)
+# library(WriteXLS)
 # library(xlsx)  # Could not install on Ubuntu 18.04 0r 20.04 with R 4.0.2
 library(xtable)
 
