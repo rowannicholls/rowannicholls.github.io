@@ -26,8 +26,7 @@ Data frames are not one of the object types that get included in Python by defau
 Creating a Data Frame
 =====================
 
-Create from dictionary
-----------------------
+**Create from dictionary:**  
 A data frame can be 'manually' created by using the `DataFrame()` function from Pandas. This takes as its input a **dictionary object**. It turns this into a data frame using the dictionary's **keys** as the column headings and the dictionary's **values** as the rows. Note that *all the columns need to be the same length*. In other words, each of the dictionary's values (which will usually be lists) need to have the same number of elements.
 
 For this page we will use the results of the men's 100m finals from the Rio 2016 Olympics as our example data:
@@ -72,8 +71,7 @@ df = pd.DataFrame({
 print(df)
 ```
 
-Create from array or lists
---------------------------
+**Create from array or lists:**  
 Alternatively, a data frame can be created from a Numpy array and/or a list-of-lists instead of from a dictionary:
 
 ```{python}
@@ -99,8 +97,7 @@ df = pd.DataFrame(
 print(df)
 ```
 
-Import from file
-----------------
+**Import from file:**  
 See [the page on file IO](../data/create_export_import_convert.html) for more info on importing data frames.
 
 ```{python}
@@ -108,15 +105,13 @@ See [the page on file IO](../data/create_export_import_convert.html) for more in
 df = pd.read_csv('data frame.csv')
 ```
 
-Import from URL
----------------
+**Import from URL:**  
 Any data object on the internet that could be interpreted as a data frame can be imported:
 
-```{python, eval = FALSE}
+```{python}
 # Import comma-separated values (.csv file) as a data frame
-data_url = 'https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/data/csv/data%20frame.csv'
-df_downloaded = pd.read_csv(data_url)
-print(df_downloaded)
+data_url = 'https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/intro/data%20frame.csv'
+df = pd.read_csv(data_url)
 ```
 
 Displaying a Data Frame
@@ -1239,8 +1234,10 @@ df.drop_duplicates()
 Performing Calculations on a Data Frame
 =======================================
 
-Perform standard calculations on rows
--------------------------------------
+Perform standard calculations
+-----------------------------
+
+**Perform standard calculations on rows:**  
 Pandas has a number of common statistical operations built-in as methods. For example, calculate the mean time each athlete took to run 100m across their heat, semi-final and final
 (ie calculate the mean of each row):
 
@@ -1260,8 +1257,7 @@ total_time = df[['Heat', 'Semi-Final', 'Final']].sum(axis=1)
 print(list(round(total_time, 2)))
 ```
 
-Perform standard calculations on columns
-----------------------------------------
+**Perform standard calculations on columns:**  
 The built-in methods work similarly on columns as to how they work on rows. The difference is which 'axis' they operate on: axis=0 is for columns and axis=1 is for rows.
 By default these methods work over columns (axis=0). For example, calculate the mean time that these athletes took to complete their heat, semi-final and final respectively
 (ie calculate the mean of each column):
@@ -1295,8 +1291,10 @@ n_americans = len([v for v in df['Country'] if v == 'United States'])
 print(n_americans)
 ```
 
-Perform direct calculations using columns
------------------------------------------
+Perform direct calculations
+---------------------------
+
+**Perform direct calculations using columns:**  
 We aren't limited to just using the built-in methods, we can actually perform whatever operations we want **directly** on the values in each row.
 For example, here's a more 'direct' way of calculating the total of all the times in each row:
 
@@ -1306,8 +1304,7 @@ total_time = df['Heat'] + df['Semi-Final'] + df['Final']
 print([round(x, 2) for x in total_time])
 ```
 
-Perform direct calculations using rows
---------------------------------------
+**Perform direct calculations using rows:**  
 Similarly, here's a more 'direct' way to sum up all the times in each column. It is, however, more fiddly as you need to extract just the numerical data and convert each row to an array:
 
 ```{python}
@@ -1318,7 +1315,7 @@ total_time = times.values[0] + times.values[1] + times.values[2] + times.values[
 print(total_time)
 ```
 
-**Iterate over rows:**  
+**Perform direct calculations by iterating over rows:**  
 Yet another way to sum up all the values in a column is to iterate over each row in that column:
 
 ```{python}
@@ -1358,8 +1355,10 @@ df['New age'] = [v + 1 for v in df['Age']]
 print(list(df['New age']))
 ```
 
-Perform lambda calculations on rows
------------------------------------
+Perform lambda calculations
+---------------------------
+
+**Perform lambda calculations on rows:**  
 **Lambda calculations** are useful when you want to perform operations on *each cell* in a particular row as opposed to on *all* cells in that row or on the row as a whole. For example, if we want to round Yohan Blake's times to three significant figures each, there is no single, pre-defined function that we can apply to all cells in his row that will do this. There is the `round()` function, but that would round all his times to a given number of *decimal places* not to a given number of *significant figures*:
 
 ```{python}
@@ -1383,8 +1382,7 @@ print(list(sig_figs))
 
 And now we have three significant figures as desired.
 
-Perform lambda calculations on columns
---------------------------------------
+**Perform lambda calculations on columns:**  
 Similar to the above, lambda calculations can be used on columns to apply a function differently to each cell in that column. For example, if we want to extract just the the first name of each athlete, we will need to look up where the first space is in each of their names and extract the letters that come before it:
 
 ```{python}
@@ -1395,8 +1393,7 @@ print(list(first_name))
 
 Notice that we had to specify `axis=1` to apply the function to a column as opposed to a row (`axis=0`) which is the default.
 
-Perform lambda calculations on data frames
-------------------------------------------
+**Perform lambda calculations on data frames:**  
 Lambda functions can also be performed on entire data frames, which enables us to perform calculations using **multiple** rows or columns. This example uses multiple columns to find the average time for all of each athlete's races (there are simpler ways to do this calculation, this is just for demonstration!):
 
 ```{python}
@@ -1404,8 +1401,10 @@ df['Mean Time'] = df.apply(lambda df: (df['Heat'] + df['Semi-Final'] + df['Final
 print(list(round(df['Mean Time'], 2)))
 ```
 
-Perform custom calculations on columns
---------------------------------------
+Perform custom calculations
+---------------------------
+
+**Perform custom calculations on columns:**  
 If you want to perform a function that is complex or specific enough to make lambda functions cumbersome, the best option is to create a custom function and `.apply()` it to the column. Here's an example that stratifies the final times into categories:
 
 ```{python}
