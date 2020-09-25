@@ -1,0 +1,1685 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Data Frames'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+What's a Data Frame?
+====================
+A data frame is a **table**. It is the programming equivalent of an Excel spreadsheet. It has rows and columns with row headings (known as indexes/indices) and column headings.
+
+Data frames are not one of the object types that get included in Python by default. In order to unlock them, you need to install the 'Pandas' package and then import it into each script where you want to use them:
+
+- In the terminal run `pip3 install pandas`
+- At the top of each script in which you want to use data frames import Pandas with `import pandas as pd`
+- The objects and functions included in Pandas can then be used by prepending the shorthand `pd.`
+
+"Pandas" is short for "panel data" which is a term for the type of information you get when you take multiple measurements over a number of time points.
+
+Creating a Data Frame
+=====================
+
+Create from dictionary
+----------------------
+A data frame can be 'manually' created by using the `DataFrame()` function from Pandas. This takes as its input a **dictionary object**. It turns this into a data frame using the dictionary's **keys** as the column headings and the dictionary's **values** as the rows. Note that *all the columns need to be the same length*. In other words, each of the dictionary's values (which will usually be lists) need to have the same number of elements.
+
+For this page we will use the results of the men's 100m finals from the Rio 2016 Olympics as our example data:
+
+```{python}
+import pandas as pd
+
+rio_100m_men = {
+    'Athlete': [
+        'Usain Bolt', 'Justin Gatlin', 'Andre De Grasse', 'Yohan Blake', 'Akani Simbine', 'Ben Youssef Meïté',
+        'Jimmy Vicaut', 'Trayvon Bromell'
+    ],
+    'Country': [
+        'Jamaica', 'United States', 'Canada', 'Jamaica', 'South Africa', 'Ivory Coast', 'France', 'United States'
+    ],
+    'Age': [29, 34, 21, 26, 22, 29, 24, 21],
+    'Heat': [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+    'Semi-Final': [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+    'Final': [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+}
+df = pd.DataFrame(rio_100m_men)
+print(df)
+```
+
+As you can see, we started with a dictionary `rio_100m_men` which had the same number of elements (8) in each value. This was then converted into a Pandas data frame and each *key* became a column heading and each *value* became a column corresponding to its key. Of course, the fact that Python is a 'zero-indexed' language means that Usain Bolt is shown in the above table as having come '0th'! That doesn't make much sense so let's re-create the data frame using a custom index (custom row headings):
+
+```{python}
+df = pd.DataFrame({
+        'Athlete': [
+            'Usain Bolt', 'Justin Gatlin', 'Andre De Grasse', 'Yohan Blake', 'Akani Simbine',
+            'Ben Youssef Meïté', 'Jimmy Vicaut', 'Trayvon Bromell'
+        ],
+        'Country': [
+            'Jamaica', 'United States', 'Canada', 'Jamaica', 'South Africa', 'Ivory Coast', 'France', 'United States'
+        ],
+        'Age': [29, 34, 21, 26, 22, 29, 24, 21],
+        'Heat': [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+        'Semi-Final': [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+        'Final': [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+    }, index=[1, 2, 3, 4, 5, 6, 7, 8]
+)
+print(df)
+```
+
+Create from array or lists
+--------------------------
+Alternatively, a data frame can be created from a Numpy array and/or a list-of-lists instead of from a dictionary:
+
+```{python}
+import numpy as np
+
+# Create an array from a list-of-lists
+rio_100m_men = np.array([
+    ['Athlete', 'Country', 'Age', 'Heat', 'Semi-Final', 'Final'],
+    ['Usain Bolt', 'Jamaica', 29, 10.07, 9.86, 9.81],
+    ['Justin Gatlin', 'United States', 34, 10.01, 9.94, 9.89],
+    ['Andre De Grasse', 'Canada', 21, 10.04, 9.92, 9.91],
+    ['Yohan Blake', 'Jamaica', 26, 10.11, 10.01, 9.93],
+    ['Akani Simbine', 'South Africa', 22, 10.14, 9.98, 9.94],
+    ['Ben Youssef Meïté', 'Ivory Coast', 29, 10.03, 9.97, 9.96],
+    ['Jimmy Vicaut', 'France', 24, 10.19, 9.95, 10.04],
+    ['Trayvon Bromell', 'United States', 21, 10.13, 10.01, 10.06],
+])
+# Convert the array to a data frame
+df = pd.DataFrame(
+    data=rio_100m_men[1:, :],
+    columns=rio_100m_men[0, :]
+)
+print(df)
+```
+
+Import from file
+----------------
+See [the page on file IO](../data/create_export_import_convert.html) for more info on importing data frames.
+
+```{python}
+# Import comma-separated values (.csv file) as a data frame
+df = pd.read_csv('data frame.csv')
+```
+
+Import from URL
+---------------
+Any data object on the internet that could be interpreted as a data frame can be imported:
+
+```{python, eval = FALSE}
+# Import comma-separated values (.csv file) as a data frame
+data_url = 'https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/data/csv/data%20frame.csv'
+df_downloaded = pd.read_csv(data_url)
+print(df_downloaded)
+```
+
+Displaying a Data Frame
+=======================
+Use the `.head()` method to see only the first 5 rows of a data frame (or `.head(n)` to see the first n rows). This is useful if you have a lot of data!
+
+```{python}
+print(df.head())
+```
+
+Similarly, `.tail()` will show the last 5 rows (and `.tail(n)` will show the last n rows):
+
+```{python}
+print(df.tail())
+```
+
+Display options
+---------------
+Change the amount of information that gets shown in your console when you print a data frame by tweaking the below options:
+
+```{python}
+pd.set_option('display.max_rows', 3)
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.precision', 3)
+pd.set_option('display.width', 1000)
+print(df)
+```
+
+Reset these options with the following
+
+```{python}
+pd.reset_option('display.max_rows')
+pd.reset_option('display.max_columns')
+pd.reset_option('display.max_colwidth')
+pd.reset_option('display.precision')
+pd.reset_option('display.width')
+print(df)
+```
+
+For more info about the display options, see here: https://pandas.pydata.org/pandas-docs/stable/user_guide/options.html
+
+Getting Information about a Data Frame
+======================================
+Get the number of rows and columns:
+
+```{python}
+nrows = df.shape[0]
+ncols = df.shape[1]
+```
+
+Get the names of the columns:
+
+```{python}
+colnames = list(df)
+```
+
+Notice from the above that when you convert a data frame into a list, you are *only left with the column names*.
+
+The 'row names' are more properly called the 'indices' (or 'indexes' if you're American):
+
+```{python}
+rownames = list(df.index)
+print(rownames)
+```
+
+Check if a data frame is empty or not:
+
+```{python}
+# Create an empty data frame
+df_empty = pd.DataFrame({'A': []})
+print(df_empty.empty)
+```
+
+Rows in a Data Frame
+====================
+
+Append a row
+------------
+Append a data frame as a new row:
+
+```{python}
+new_row_dct = {
+    'Athlete': 'Chijindu Ujah',
+    'Country': 'Great Britain',
+    'Age': 22,
+    'Heat': 10.13,
+    'Semi-Final': 10.01,
+    'Final': None,
+}
+new_row_df = pd.DataFrame(new_row_dct, index=[1])
+df_extended = df.append(new_row_df, ignore_index=True)
+print(df_extended)
+```
+
+Append a dictionary as a new row:
+
+```{python}
+new_row_dct = {
+    'Athlete': 'Chijindu Ujah',
+    'Country': 'Great Britain',
+    'Age': 22,
+    'Heat': 10.13,
+    'Semi-Final': 10.01,
+    'Final': None,
+}
+df_extended = df.append(new_row_dct, ignore_index=True)
+print(df_extended)
+```
+
+If a dictionary's values are lists like in the example below, first convert it into a data frame before appending it:
+
+```{python}
+new_row_dct = {
+    'Athlete': ['Chijindu Ujah'],
+    'Country': ['Great Britain'],
+    'Age': [22],
+    'Heat': [10.13],
+    'Semi-Final': [10.01],
+    'Final': [None],
+}
+new_row_df = pd.DataFrame(new_row_dct)
+df_extended = df.append(new_row_df, ignore_index=True)
+print(df_extended)
+```
+
+Append a list as a new row:
+
+```{python}
+df.loc[df.shape[0]] = ['Chijindu Ujah', 'Great Britain', 22, 10.13, 10.01, None]
+print(df)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Undo
+df = df.drop(8)
+```
+
+The code above works best if the data frame has the 'default' row indices, ie if the rows are numbered sequentially from 0. If the data frame is instead a subset of a larger data frame (and thus doesn't have sequential row indices) or if the indices are strings (see the "rename the rows" section), this code might still work but not produce the expected result:
+
+```{python}
+df_indexed = df.set_index('Athlete')
+df_indexed.loc[df_indexed.shape[0]] = [
+    'Great Britain', 22, 10.13, 10.01, None
+]
+# This probably isn't what you want
+print(df_indexed)
+```
+
+Insert a row
+------------
+'Appending' a row will add it onto the bottom, whereas 'inserting' a row will place it at whatever position you specify (in this case it will be at index 5).
+
+```{python}
+def insert_row(row, df, index):
+    """Insert a given row in a given DataFrame at a given index."""
+    an_array = np.array([row])
+    row_df = pd.DataFrame(an_array, columns=list(df))
+    df = df.iloc[:index, :]\
+        .append(row_df, ignore_index=True)\
+        .append(df.iloc[index:, :], ignore_index=True)
+    return df
+
+
+row = ['Chijindu Ujah', 'Great Britain', 22, 10.13, 10.01, None]
+insert_at = 5
+df_new = insert_row(row, df, insert_at)
+print(df_new)
+```
+
+Similarly, the above code works best with 'default' indices.
+
+Concatenate a data frame as new rows
+------------------------------------
+Instead of adding one row to the bottom of a data frame, now we are adding a whole data frame onto the bottom:
+
+```{python}
+new_row_df = pd.DataFrame({
+    'Athlete': ['Jak Ali Harvey', 'Nickel Ashmeade', 'Christophe Lemaitre'],
+    'Country': ['Turkey', 'Jamaica', 'France'],
+    'Age': [27, 26, 26],
+    'Heat': [10.14, 10.13, 10.16],
+    'Semi-Final': [10.03, 10.05, 10.07],
+    'Final': [None, None, None],
+})
+new_df = pd.concat([df, new_row_df], ignore_index=True)
+print(new_df)
+```
+
+Merge two data frames
+---------------------
+'Merging' is a more complicated form of combining data frames than 'appending' or 'concatenating'. The two objects get combined such that where they have matching values the data gets added together in the same row as opposed to in a new row. It's complicated enough that I've made a [whole separate page on merging](../data/merging.html).
+
+Rename the rows (ie change the row indices)
+-------------------------------------------
+You can rename rows (as many as you want at one time) using a dictionary together with the `rename()` function:
+
+```{python}
+# Format is {old_name: new_name}
+df = df.rename(index={1: 'Row 1'})
+print(df)
+```
+
+```{python}
+# Format is {old_name: new_name}
+df = df.rename(
+    index={
+        2: 'Row 2',
+        3: 'Row 3',
+        4: 'Row 4',
+    }
+)
+print(df)
+```
+
+Reset the row names (row indices) but keep the old ones in a column called "index":
+
+```{python}
+df_reset = df.reset_index()
+print(df_reset)
+```
+
+Reset the row names completely:
+
+```{python}
+df = df.reset_index(drop = True)
+print(df)
+```
+
+**Use a column as the row names (row indices):**  
+Up until now we have been using the row indices that were auto-generated when the data frame was created: the rows were numbered from 0 at the top to 7 at the bottom. However, we don't have to use those numbers and, in fact, we can use words at the row indices if we want. This is how we can use the athletes' names as the row indices (the `.set_index()` function is needed):
+
+```{python}
+df_indexed = df.set_index('Athlete')
+print(df_indexed)
+```
+
+This can make it easier to index the data frame as we can now use row 'names' instead of row 'indices':
+
+```{python}
+# Get certain rows and certain columns as a data frame
+subset = df_indexed.loc[['Justin Gatlin', 'Jimmy Vicaut'], ['Country', 'Age']]
+print(subset)
+```
+
+```{python}
+# Get one row and all columns as a series
+cols = df_indexed.loc['Jimmy Vicaut', :]
+print(cols)
+```
+
+```{python}
+# Get one row and one column as a value
+cell = df_indexed.loc['Jimmy Vicaut', 'Age']
+print(cell)
+```
+
+Delete rows
+-----------
+Delete row using row name:
+
+```{python}
+df_deleted = df.drop(1)
+print(df_deleted)
+```
+
+Delete row using row index (the below example looks exactly the same as the above example because the row names and row indices of our data frame happen to be the same, but this will not necessarily always be the case!):
+
+```{python}
+df_deleted = df.drop(df.index[1])
+print(df_deleted)
+```
+
+Delete multiple rows by name:
+
+```{python}
+df_deleted = df.drop([1, 2, 5])
+print(df_deleted)
+```
+
+Delete rows that have a certain value in a particular column (in this example: delete all rows where the athlete is 30 years old):
+
+```{python, eval = FALSE}
+df.drop(df[df['Age'] == 30].index)
+```
+
+Delete rows that have one of a list of certain values in a particular column (in this example: delete all rows where the athlete is 30, 31 or 32 years old):
+
+```{python, eval = FALSE}
+df.drop(df[df['Age'].isin([30, 31, 32])].index)
+```
+
+Columns in a Data Frame
+=======================
+
+```{python, echo = FALSE}
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.width', 1000)
+```
+
+Append a column
+---------------
+To modify an existing data frame by adding columns:
+
+```{python}
+df['Reaction Time'] = [0.155, 0.152, 0.141, 0.145, 0.128, 0.156, 0.140, 0.135]
+df['Finish Position'] = ['Gold', 'Silver', 'Bronze', '4th', '5th', '6th', '7th', '8th']
+print(df)
+```
+
+To create a *new data frame* that has a copy of the original data plus the new column(s), use the `.assign()` method:
+
+```{python}
+df_new = df.assign(Other=['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'])
+print(df_new)
+```
+
+The `.assign()` method is slower (because it has to create a copy of the data) but it allows you to keep the old, unmodified data frame in addition to having the new, modified one.
+
+**Appending a column inside a loop:**  
+The incorrect way:
+
+```{python, eval = FALSE}
+new_df = df['Athlete']  # This creates a SERIES, not a DATA FRAME
+for col in ['Semi-Final', 'Final']:
+    new_df[col] = df[col]  # This does not work as expected
+```
+
+The correct way (although it might generate a SettingWithCopy warning):
+
+```{python}
+new_df = df.loc[:, ['Athlete']]  # This creates a DATA FRAME
+for col in ['Semi-Final', 'Final']:
+    new_df[col] = df[col]  # This works as expected
+print(new_df)
+```
+
+The correct way (which will not generate a SettingWithCopy warning):
+
+```{python}
+new_df = df.loc[:, ['Athlete']]
+for col in ['Semi-Final', 'Final']:
+    new_df[col] = df[col].copy()
+print(new_df)
+```
+
+Insert a column
+---------------
+'Appending' a column will place it on the end, whereas 'inserting' a column will place it at the location specified (in this case it will be at position 1).
+
+```{python}
+new_df.insert(
+    1, 'Country',
+    [
+        'Jamaica', 'United States', 'Canada', 'Jamaica', 'South Africa', 'Ivory Coast', 'France', 'United States'
+    ]
+)
+print(new_df)
+```
+
+Concatenate a data frame as new columns
+---------------------------------------
+Instead of adding one column to the side of a data frame, now we are adding a whole data frame onto the side:
+
+```{python}
+new_col_df = pd.DataFrame({
+    'Reaction Time': [0.155, 0.152, 0.141, 0.145, 0.128, 0.156, 0.140, 0.135],
+    'Finish Position': ['Gold', 'Silver', 'Bronze', '4th', '5th', '6th', '7th', '8th'],
+})
+new_df = pd.concat([new_df, new_col_df], axis=1)
+print(new_df)
+```
+
+Merge two data frames
+---------------------
+'Merging' is a more complicated form of combining data frames than 'appending' or 'concatenating'. The two objects get combined such that where they have matching values the data gets added together in the same row as opposed to in a new row. It's complicated enough that I've made a [whole page on merging](../data/merging.html).
+
+Rename the columns
+------------------
+Rename one column as follows:
+
+```{python}
+# Format is {'old_name': 'new_name'}
+df_renamed = df.rename(columns={'Athlete': 'Name'})
+print(list(df_renamed))
+```
+
+Rename multiple columns as follows:
+
+```{python}
+# Format is {'old_name': 'new_name'}
+df_renamed = df.rename(
+    columns={
+        'Heat': 'Race 1',
+        'Semi-Final': 'Race 2',
+        'Final': 'Race 3',
+    }
+)
+print(list(df_renamed))
+```
+
+Alternatively, you can use a dictionary comprehension to rename all columns at once:
+
+```{python}
+new_names = ['Name', 'Nation', 'Years', 'Race 1', 'Race 2', 'Race 3', 'Position', 'Reaction']
+dct = {old: new for old, new in zip(list(df), new_names)}
+df_renamed = df.rename(columns=dct)
+print(list(df_renamed))
+```
+
+Delete columns
+--------------
+Delete column by column name:
+
+```{python}
+df_deleted = df.drop('Athlete', axis=1)
+print(df_deleted)
+```
+
+Delete column(s) by index:
+
+```{python}
+df_deleted = df.drop(df.columns[[5]], axis=1)
+print(df_deleted)
+```
+
+Iterating over a Data Frame
+===========================
+
+Row-by-row
+----------
+Iterating over a data frame's rows using `.iterrows()`
+
+```{python}
+for i, row in df.iterrows():
+    row_num = i
+    person = row['Athlete']
+    age = row['Age']
+    print(i, person, age)
+```
+
+Iterating over a data frame's rows using `.itertuples()`
+
+```{python}
+for row in df.itertuples():
+    row_num = row.Index
+    person = row.Athlete
+    age = row.Age
+    print(row_num, person, age)
+```
+
+Column-by-column
+----------------
+Iterate over a data frame's columns using `.iteritems()`
+
+```{python}
+for colname, col in df.iteritems():
+    Gatlin = col[1]
+    Simbine = col[4]
+    print(colname, Gatlin, Simbine)
+```
+
+Iterate over a data frame's columns using the column names
+
+```{python}
+for colname in list(df):
+    Bolt = df[colname][1]
+    print(Bolt)
+```
+
+Cell-by-cell
+------------
+Iterate over every cell in a data frame by using BOTH `.iterrows()` and `.iteritems()`
+
+```{python}
+# Use a smaller data frame for this example
+dct = {
+    'Athlete': ['Usain Bolt', 'Justin Gatlin', 'Andre De Grasse'],
+    'Country': ['Jamaica', 'United States', 'Canada'],
+    'Age': [29, 34, 21],
+    'Heat': [10.07, 10.01, 10.04],
+    'Semi-Final': [9.86, 9.94, 9.92],
+    'Final': [9.81, 9.89, 9.91],
+}
+df_small = pd.DataFrame(dct)
+# Iterate over every cell
+for i, row in df_small.iterrows():
+    for colname, cell in row.iteritems():
+        print(f'{colname:10} {cell}')
+```
+
+Iterate over every cell in a single row by reducing the data frame to a
+single row then iterating through the columns:
+
+```{python}
+# Iterate over every cell in row 3 (index number 2)
+idx = 2
+for colname, col in df[idx:idx + 1].iteritems():
+    cell = col.values[0]
+    print(cell)
+```
+
+Indexing a Data Frame
+=====================
+'Indexing' is the method used to **select** or **extract** data in a data frame.
+
+Extract multiple rows and columns
+---------------------------------
+There are two methods that can be used to get certain rows and columns out of a data frame:
+
+- `.loc[]` uses the **names** of the columns you want
+- `.iloc[]` uses the **indices** of the columns you want
+
+Remember that *row names are the same as row indices*, so both methods use these.
+
+Columns *names* should be provided as **lists** (see the 'extract one cell' section to see what happens if you don't) while column *indices* and row *indices* can be provided as either **lists** or **slices**. The advantage of using slices is that you can quickly provide many numbers; the disadvantage is that these numbers have to be consecutive.
+
+Here's a demonstration of `.loc[]` and `.iloc[]` at work using lists:
+
+```{python}
+# Format is [[row_idxs], [col_names]]
+subset = df.loc[[2, 4], ['Athlete', 'Final']]
+print(subset)
+```
+
+```{python}
+# Format is [[row_idxs], [col_idxs]]
+subset = df.iloc[[2, 4], [0, 5]]
+print(subset)
+```
+
+**Extract multiple *consecutive* rows and columns:**  
+As mentioned, using slices instead of lists when specifying indices can be more efficient but only works when extracting consecutive rows and columns:
+
+```{python}
+# Format is [slice, [col_names]] to get consecutive rows
+subset = df.loc[2:4, ['Athlete', 'Country', 'Age']]
+print(subset)
+```
+
+```{python}
+# Format is [slice, slice] to get consecutive rows and cols
+subset = df.iloc[2:5, :3]
+print(subset)
+```
+
+Also note that in the above examples `.loc[]` took `2:4` as its slice of row indices while `.iloc[]` took `2:5` and yet they returned the same rows! The methods handle slices differently!
+
+Extract multiple rows
+---------------------
+Similar to the above, `.loc[]` and `.iloc[]` can be used to get multiple rows (and all columns). This is a rare occasion where both methods are used in the exact same way!
+
+```{python}
+# Format is [[row_idxs], :] to get multiple rows and all columns
+rows = df.loc[[1, 3], :]
+print(rows)
+```
+```{python}
+# Format is [[row_idxs], :] to get multiple rows and all columns
+rows = df.iloc[[1, 3], :]
+print(rows)
+```
+
+**Extract multiple *consecutive* rows:**  
+Use slices instead of lists for the row indices/names:
+
+```{python}
+# Format is [slice, :] to get consecutive rows and all columns
+rows = df.loc[2:3, :]
+print(rows)
+```
+
+```{python}
+# Format is [slice, :] to get consecutive rows and all columns
+rows = df.iloc[2:4, :]
+print(rows)
+```
+
+Once again note that `.loc[]` and `.iloc[]` handle slices differently (`2:3` and `2:4` produced the same result!).
+
+**Bonus:** you can index a data frame directly (ie without using a function or method) with a slice to get consecutive rows:
+
+```{python}
+# Format is [slice] to get consecutive rows
+rows = df[slice(2, 4)]
+print(rows)
+```
+
+```{python}
+rows = df[2:4]
+print(rows)
+```
+
+Extract one row
+---------------
+Extracting just one row uses the same process as extracting multiple rows, except this time only one row is specified. Any of the three aforementioned methods can be used (`.loc[]`, `.iloc[]` and direct indexing).
+
+To extract the row as a **data frame** (ie as a spreadsheet with only one row), use a list (ie have square brackets around the row index) or slice:
+
+```{python}
+# Format is [[number], :] to get one row and all columns as a data frame
+row = df.loc[[5], :]
+print(row)
+```
+
+```{python}
+# Format is [[number], :] to get one row and all columns as a data frame
+row = df.iloc[[5], :]
+print(row)
+```
+
+```{python}
+# Format is [slice(x, x + 1)] to get one row and all columns as a data frame
+row = df[slice(5, 6)]
+print(row)
+```
+
+```{python}
+# Format is [x:x + 1] to get one row and all columns as a data frame
+row = df[5:6]
+print(row)
+```
+
+To extract the row as a **series** (ie as a column with only one row), use a value (ie do not have square brackets around the row index):
+
+```{python}
+# Format is [number, :] to get one row and all columns as a series
+row = df.loc[5, :]
+print(row)
+```
+
+```{python}
+# Format is [number, :] to get one row and all columns as a series
+row = df.iloc[5, :]
+print(row)
+```
+
+```{python}
+# Format is [number] to get one row and all columns as a series
+row = df.loc[5]
+print(row)
+```
+
+**Extract one row and only certain columns:**  
+If you use any of the above three methods to extract a single row as a **series** you can then use direct indexing to extract only certain columns:
+
+```{python}
+# Format is [number, :][[col_names]] to get one row and certain columns as a series
+row = df.loc[5, :][['Athlete', 'Semi-Final', 'Final']]
+print(row)
+```
+
+```{python}
+# Format is [number, :][[col_names]] to get one row and certain columns as a series
+row = df.iloc[5, :][['Athlete', 'Semi-Final', 'Final']]
+print(row)
+```
+
+```{python}
+# Format is [number][[col_names]] to get one row and certain columns as a series
+row = df.loc[5][['Athlete', 'Semi-Final', 'Final']]
+print(row)
+```
+
+In practice, only the last of these three methods makes sense to use because the first two tell Python to extract all columns and then to only extract certain columns!
+
+Extract multiple columns
+------------------------
+`.loc[]` and `.iloc[]` can also be used to get multiple columns (and all rows):
+
+```{python}
+# Format is [:, [col_names]] to get all rows and certain columns
+cols = df.loc[:, ['Athlete', 'Age']]
+print(cols)
+```
+
+```{python}
+# Format is [:, [col_idxs]] to get all rows and certain columns
+cols = df.iloc[:, [0, 2]]
+print(cols)
+```
+
+**Bonus:** you can index a data frame directly (ie without using a function or method) with a list to get columns:
+
+```{python}
+# Format is [[col_names]] to get all rows and certain columns
+cols = df[['Athlete', 'Age']]
+print(cols)
+```
+
+```{python}
+# Format is [list(col_names)] to get all rows and certain columns
+cols = df[list(('Athlete', 'Age'))]
+print(cols)
+```
+
+**Extract multiple *consecutive* columns:**  
+Use slices instead of lists for the column indices. It should be clear that this can only be used together with `.iloc[]`.
+
+```{python}
+# Format is [:, slice] to get all rows and consecutive columns
+columns = df.iloc[:, :3]
+print(columns)
+```
+
+Extract one column
+------------------
+Extracting just one column uses the same process as extracting multiple columns, except this time only one column is specified. Any of the three aforementioned methods can be used (`.loc[]`, `.iloc[]` and direct indexing).
+
+To extract the column as a **data frame** (ie as a spreadsheet with only one column), use a list (ie have square brackets around the column name/index):
+
+```{python}
+# Format is [:, ['col_name']] to get all rows and one column as a data frame
+age = df.loc[:, ['Age']]
+# Format is [:, [col_idx]] to get all rows and one column as a data frame
+age = df.iloc[:, [2]]
+# Format is [[col_idx]] to get all rows and one column as a data frame
+age = df[['Age']]
+print(age)
+```
+
+To extract the column as a **series** (ie as a 'column object'), use a value (ie do not have square brackets around the column name/index):
+
+```{python}
+# Format is [:, 'col_name'] to get all rows and one column as a series
+age = df.loc[:, 'Age']
+# Format is [:, col_idx] to get all rows and one column as a series
+age = df.iloc[:, 2]
+# Format is [col_idx] to get all rows and one column as a series
+age = df['Age']
+print(age)
+```
+
+**Bonus:** you can use the direct indexing method on any data frame, which means that the following will work:
+
+```{python}
+# Format is [:][col_name] to get all rows and one column as a series
+age = df.loc[:]['Age']
+print(age)
+```
+
+**Extract one column and only certain rows:**  
+Any of the above methods that use `.loc[]` or `.iloc[]` can be simply adapted to extract only certain rows by replacing the colon with either a list or a slice:
+
+```{python}
+# Format is [[row_idx], 'col_name'] to get certain rows and one column as a series
+age = df.loc[[2, 3], 'Athlete']
+print(age)
+```
+
+```{python}
+# Format is [slice, col_idx] to get certain, consecutive rows and one column as a series
+age = df.iloc[2:4, 0]
+print(age)
+```
+
+**Bonus:** again, because you can use the direct indexing method on any data frame, the following is also an option:
+
+```{python}
+# Format is [slice][col_name] to get certain, consecutive rows and one column as a series
+age = df.loc[2:3]['Athlete']
+print(age)
+```
+
+Extract one cell
+----------------
+The most correct way to extract a single value from a data frame or series is to use `.at[]` or `.iat[]` depending on whether you want to use the name or the index of the column, respectively.
+
+`.at[]` uses the **name** of the column you are interested in:
+
+```{python}
+# Format is [row_idx, 'col_name']
+cell = df.at[3, 'Athlete']
+print(cell)
+```
+
+`.iat[]` uses the **index** of the column you are interested in:
+
+```{python}
+# Format is [row_idx, col_idx]
+cell = df.iat[3, 0]
+print(cell)
+```
+
+Note that it is also possible (but less 'correct') to use `.loc[]` and `.iloc[]` to extract a single cell. These methods are actually meant to be used for extracting groups of rows and columns, but if you use them to extract a group of *one* row and *one* column it's exactly the same as extracting a single cell!
+
+First, this is how you use `.loc[]` and `.iloc[]` to extract single cells as **data frames** (ie spreadsheets, which in this case only have one cell):
+
+```{python}
+# Format is [[row_idxs], [col_names]] to get a data frame
+cell = df.loc[[3], ['Athlete']]
+print(cell)
+```
+
+```{python}
+# Format is [[row_idxs], [col_idxs]] to get a data frame
+cell = df.iloc[[3], [0]]
+print(cell)
+```
+
+Extract single cells as **series** (ie columns, which in this case only have one cell) by providing either the row or the column as a value, not as a list (ie don't use square brackets). Whether you provide the row or the column as a value will determine whether your result is named after it's row or it's column:
+
+```{python}
+# Format is [[row_idx], col_name] to get a cell named after it's column
+cell = df.loc[[3], 'Athlete']
+print(cell)
+```
+
+```{python}
+# Format is [row_idx, [col_idxs]] to get a cell named after it's row
+cell = df.iloc[3, [0]]
+print(cell)
+```
+
+To use `.loc[]` and `.iloc[]` to extract single values as **strings or numbers**, provide both
+the row and the column as values as opposed to as lists:
+
+```{python}
+# Format is [row_idx, 'col_name'] if you want a single cell
+cell = df.loc[3, 'Athlete']
+print(cell)
+```
+
+```{python}
+# Format is [row_idx, col_idx] if you want a single cell
+cell = df.iloc[3, 0]
+print(cell)
+```
+
+Finally, you can also use a mixture of these methods and direct indexing
+to extract single values:
+
+```{python}
+# Format is [row_idx]['col_name'] if you want a single cell
+cell = df.loc[3]['Athlete']
+print(cell)
+```
+
+```{python}
+# Format is [row_idx][col_idx] if you want a single cell
+cell = df.iloc[3][0]
+print(cell)
+```
+
+Searching, Finding, Filtering
+=============================
+While 'indexing' is something you do when you know exactly which row(s) and column(s) you want, sometimes you do NOT know exact what you want. Instead, you first need to search through the data frame to find the information you are looking for. Then you can subset the data frame to filter out any information you don't want:
+
+- 'Search' the data frame to see if the data you are looking for exists
+    - The result will be a **boolean** (ie True/False): the data was either found or it wasn't
+- 'Find' the data if it does exist
+    - The result will be the **location** of the data
+- 'Filter' the data frame so that it only contains what you want
+    - The result will be a **new data frame**, smaller than the original one, containing only the data you want
+
+Searching
+---------
+
+**Search a column:**  
+Does a column contain a certain value? For example, was Yohan Blake in the final?
+
+```{python}
+# Search for a value
+result = 'Yohan Blake' in df['Athlete'].values
+print(result)
+```
+
+Alternatively, this type of search can be done using the `.any()` and `.all()` methods:
+
+```{python}
+# Search for any occurrence of a value
+result = (df['Athlete'] == 'Yohan Blake').any()
+print(result)
+```
+
+```{python}
+# Check if all values in a column meet a criteria
+result = (df['Age'] <= 34).all()
+print(result)
+```
+
+**Search the values in a column individually:**  
+You can also get the results of the search for each row: for each athlete, do they come from Jamaica?
+
+```{python}
+# Search each row for a value
+result = df['Country'] == 'Jamaica'
+print(list(result))
+```
+
+The same thing can be done with a function: the `where()` function from Numpy:
+
+```{python}
+import numpy as np
+
+result = np.where(df['Country'] == 'Jamaica', True, False)
+print(list(result))
+```
+
+**Search for substrings:**  
+Instead of just searching for athletes with certain names, we can search `within` the names for athletes who have the letter "e" in their name, for example:
+
+```{python}
+# Search for a substring
+result = ['e' in i for i in df['Athlete']]
+print(result)
+```
+
+Note that the specific task of searching for a letter within a column of strings can also be performed using the `.contains()` method:
+
+```{python}
+# Search for a substring
+result = df['Athlete'].str.contains('e')
+print(list(result))
+```
+
+**Append the results of a search as a column:**  
+It's a small extra step to add the results of a search to the data frame itself:
+
+```{python}
+# Search for a substring
+df['e in name?'] = ['e' in i for i in df['Athlete']]
+print(df[['Athlete', 'e in name?']])
+```
+
+Do the same thing but using a loop:
+
+```{python}
+# Search for a substring
+df['e in name?'] = False
+for i, row in df.iterrows():
+    if 'e' in df.at[i, 'Athlete']:
+        df.at[i, 'e in name?'] = True
+    else:
+        df.at[i, 'e in name?'] = False
+print(df[['Athlete', 'e in name?']])
+```
+
+**Search through multiple columns:**  
+The logical operators 'and' (`&`) and 'or' (`|`) can be used to find rows that match very specific criteria. Notice the round brackets that are being used to group the logical evaluations together:
+
+```{python}
+# Search for values across multiple columns
+results = (df['Semi-Final'] == 10.01) | ((df['Final'] == 9.89) & (df['Country'] == 'United States'))
+print(list(results))
+```
+
+**Search using inequalities:**  
+In addition to the logical operators, the following inequality symbols can be mixed and matched:
+
+- Greater than: `>`
+- Less than: `<`
+- Greater than or equal to: `>=`
+- Less than or equal to: `<=`
+- not equal to: `!=`
+
+```{python}
+df['Sub-10'] = df['Final'] < 10.00
+print(df[['Athlete', 'Final', 'Sub-10']])
+```
+
+Similar to a previous example, the same thing can be done with the `where()` function from Numpy:
+
+```{python}
+import numpy as np
+
+df['Sub-10'] = np.where(df['Final'] < 10.00, True, False)
+print(df[['Athlete', 'Final', 'Sub-10']])
+```
+
+**Search using inequalities across multiple columns:**  
+For example, which non-American athletes ran sub-10 in the final?
+
+```{python}
+# Search for values across multiple columns
+results = (df['Country'] != 'United States') & (df['Final'] <= 10.00)
+print(list(results))
+```
+
+...or:
+
+```{python}
+# Search for values across multiple columns
+results = np.where((df['Country'] != 'United States') & (df['Final'] <= 10.00), True, False)
+print(list(results))
+```
+
+**Search through column names:**  
+Instead of searching through the *data in a column* you can also search through the *names of the columns* to see if the one you are looking for has been created yet.
+For example, has a column been created that contains the time the athletes ran in the final?
+
+```{python}
+# Search for a column name
+result = 'Final' in list(df)
+print(result)
+```
+
+Finding
+-------
+'Finding' is similar to 'searching' except you get the *indices* of the matches, not just whether they exist or not. For example, what row in the data frame is occupied by Andre De Grasse?
+
+```{python}
+# Find
+idx = df[df['Athlete'] == 'Andre De Grasse'].index
+print(f'As an index object: {idx}\nAs a list: {list(idx)}')
+```
+
+Now that we can find indices, let's use them to look up data in the table:
+
+**VLOOKUP using index:**  
+Find a value in a column corresponding to a value in a different column. For example, what was Akani Simbine's time in his heat?
+
+```{python}
+# Look up
+idx = df[df['Athlete'] == 'Akani Simbine'].index
+value = df.loc[idx, 'Heat']
+print(f"Akani Simbine's time in his heat: {list(value)[0]}s")
+```
+
+**VLOOKUP using Booleans:**  
+Instead of using indices, can search a data frame or column using any of the methods described above to generate Booleans. Those can then be used to index the data frame or
+column to leave only those that were 'found in the search'. As an example, here's how to find the non-American athletes who ran sub-10 **and** get their names:
+
+```{python}
+# Search for values across multiple columns
+results = (df['Country'] != 'United States') & (df['Final'] <= 10.00)
+# Index a column with the results of the search
+non_american_sub_10 = df['Athlete'][results]
+print(list(non_american_sub_10))
+```
+
+Filtering
+---------
+Filtering removes all rows whose values do not meet certain criteria.
+
+**Filter using a single criteria:**  
+As an example, here is the data of the United States athletes only:
+
+```{python, echo = FALSE}
+# Undo
+df = df.drop(['e in name?', 'Sub-10'], axis=1)
+```
+
+```{python}
+# Filter
+subset = df[df['Country'] == 'United States']
+print(subset)
+```
+
+...and of the non-United States athletes only:
+
+```{python}
+# Filter
+subset = df[df['Country'] != 'United States']
+print(subset)
+```
+
+Let's take another look at the above code. It starts off as a search: `df['Country'] == 'United States'` will search for all rows in the "Country" column that are equal to "United States" and return a **series of Booleans** (True, False, etc, corresponding to the rows in which the "United States" text was found). That series of Booleans is then used to **index** the data frame, and only the rows corresponding to the "Trues" in the Boolean series 'survive' the indexing.
+
+**Filter using a list of criteria:**  
+Instead of matching only one criteria, here is how to filter out all rows that do not match either of two criteria: what is the data for athletes who came from either the United States or South Africa?
+
+```{python}
+# Filter
+subset = df[df['Country'].isin(['United States', 'South Africa'])]
+print(subset)
+```
+
+...and all athletes who came from *neither* the US or SA:
+
+```{python}
+# Filter
+subset = df[~df['Country'].isin(['United States', 'South Africa'])]
+print(subset)
+```
+
+**Filter using multiple lists of criteria/multiple columns:**  
+Using 'and not' logic:
+
+```{python}
+subset = df[
+    df['Country'].isin(['United States', 'South Africa', 'Jamaica']) & ~
+    df['Age'].isin([26, 34])
+]
+print(subset)
+```
+
+Using 'or' logic:
+
+```{python}
+subset = df[
+    df['Country'].isin(['South Africa']) |
+    df['Age'].isin([26, 34])
+]
+print(subset)
+```
+
+Of course, *all* the above filtering examples work with both strings and numbers as the criteria.
+
+**Filter out nulls:**  
+Filter out all rows that have a null value in a particular column:
+
+```{python}
+subset = df[df['Age'].notnull()]
+```
+
+Filter out all rows that contain any null values in any columns:
+
+```{python}
+subset = df.dropna()
+```
+
+**Removing duplicates:**  
+Remove all rows that appear more than once:
+
+```{python, eval = FALSE}
+df.drop_duplicates()
+```
+
+Performing Calculations on a Data Frame
+=======================================
+
+Perform standard calculations on rows
+-------------------------------------
+Pandas has a number of common statistical operations built-in as methods. For example, calculate the mean time each athlete took to run 100m across their heat, semi-final and final
+(ie calculate the mean of each row):
+
+```{python}
+# Calculate means
+means = df[['Heat', 'Semi-Final', 'Final']].mean(axis=1)
+# or
+means = df.loc[:, ['Heat', 'Semi-Final', 'Final']].mean(axis=1)
+print(list(round(means, 2)))
+```
+
+And calculate the total time each athlete was running for (calculate the total of each row):
+
+```{python}
+# Calculate totals
+total_time = df[['Heat', 'Semi-Final', 'Final']].sum(axis=1)
+print(list(round(total_time, 2)))
+```
+
+Perform standard calculations on columns
+----------------------------------------
+The built-in methods work similarly on columns as to how they work on rows. The difference is which 'axis' they operate on: axis=0 is for columns and axis=1 is for rows.
+By default these methods work over columns (axis=0). For example, calculate the mean time that these athletes took to complete their heat, semi-final and final respectively
+(ie calculate the mean of each column):
+
+```{python}
+# Calculate means
+means = df[['Heat', 'Semi-Final', 'Final']].mean()
+print(list(round(means, 2)))
+```
+
+```{python}
+# or
+means = df.loc[:, ['Heat', 'Semi-Final', 'Final']].mean()
+print(list(round(means, 2)))
+```
+
+And the total time they took to complete the heats, semi-finals and final (calculate the total of each column):
+
+```{python}
+# Calculate totals
+total_time = df[['Heat', 'Semi-Final', 'Final']].sum()
+print(list(round(total_time, 2)))
+```
+
+**Perform standard calculations on columns using subsetting:**  
+If we search a column for values and subset the column to extract just those values we can then use them in a calculation. For example, here is how to calculate how many Americans were in the race by
+counting the number of occurrences of "United States" in the Country column:
+
+```{python}
+n_americans = len([v for v in df['Country'] if v == 'United States'])
+print(n_americans)
+```
+
+Perform direct calculations using columns
+-----------------------------------------
+We aren't limited to just using the built-in methods, we can actually perform whatever operations we want **directly** on the values in each row.
+For example, here's a more 'direct' way of calculating the total of all the times in each row:
+
+```{python}
+# Calculate totals
+total_time = df['Heat'] + df['Semi-Final'] + df['Final']
+print([round(x, 2) for x in total_time])
+```
+
+Perform direct calculations using rows
+--------------------------------------
+Similarly, here's a more 'direct' way to sum up all the times in each column. It is, however, more fiddly as you need to extract just the numerical data and convert each row to an array:
+
+```{python}
+# Extract only the numerical data
+times = df[['Heat', 'Semi-Final', 'Final']]
+# Add the rows
+total_time = times.values[0] + times.values[1] + times.values[2] + times.values[3] + times.values[4] + times.values[5] + times.values[6] + times.values[7]
+print(total_time)
+```
+
+**Iterate over rows:**  
+Yet another way to sum up all the values in a column is to iterate over each row in that column:
+
+```{python}
+# Initialise output array
+total_time = np.zeros([1, 3])
+# Iterate over rows
+for i, row in df.iterrows():
+    total_time = total_time + row[['Heat', 'Semi-Final', 'Final']].values
+print(total_time)
+```
+
+Iteration over rows can also be used to sum up the values in each row:
+
+```{python}
+# Initialise the output column
+df['Total Time'] = np.nan
+for i, row in df.iterrows():
+    df.loc[i, 'Total Time'] = row['Heat'] + row['Semi-Final'] + row['Final']
+print(list(round(df['Total Time'], 2)))
+```
+
+Here's another example using iteration over each row in a column, this time in order to **update** it:
+
+```{python}
+# Increase the ages of all athletes by 1 year
+new_age = []
+for v in df['Age']:
+    new_age.append(v + 1)
+df['New age'] = new_age
+print(list(df['New age']))
+```
+
+Note that the above example can also be done using **list comprehension**:
+
+```{python}
+df['New age'] = [v + 1 for v in df['Age']]
+print(list(df['New age']))
+```
+
+Perform lambda calculations on rows
+-----------------------------------
+**Lambda calculations** are useful when you want to perform operations on *each cell* in a particular row as opposed to on *all* cells in that row or on the row as a whole. For example, if we want to round Yohan Blake's times to three significant figures each, there is no single, pre-defined function that we can apply to all cells in his row that will do this. There is the `round()` function, but that would round all his times to a given number of *decimal places* not to a given number of *significant figures*:
+
+```{python}
+# Extract only the numerical data
+times = df[['Heat', 'Semi-Final', 'Final']]
+# Round all values to one decimal place
+rounded = round(times, 1)
+# Extract Yohan Blake's times
+rounded = rounded.loc[[4], :]
+print(rounded)
+```
+
+As you can see, the method above resulted in 3, 3 and 2 significant figures. The reason this is difficult is because the times he ran (10.11, 10.01 and 9.93) have
+4, 4 and 3 digits respectively, so they need to be rounded to 1, 1 and 2 decimal places to leave 3 sig figs in each. Hence we need to apply a function differently to each cell, and a lambda function does exactly this:
+
+```{python}
+# Apply a function differently to each cell in one row
+sig_figs = times.apply(lambda x: str(x[4])[:4])
+print(list(sig_figs))
+```
+
+And now we have three significant figures as desired.
+
+Perform lambda calculations on columns
+--------------------------------------
+Similar to the above, lambda calculations can be used on columns to apply a function differently to each cell in that column. For example, if we want to extract just the the first name of each athlete, we will need to look up where the first space is in each of their names and extract the letters that come before it:
+
+```{python}
+# Find the first name of each athlete
+first_name = df.apply(lambda x: x['Athlete'][:x['Athlete'].find(' ')], axis=1)
+print(list(first_name))
+```
+
+Notice that we had to specify `axis=1` to apply the function to a column as opposed to a row (`axis=0`) which is the default.
+
+Perform lambda calculations on data frames
+------------------------------------------
+Lambda functions can also be performed on entire data frames, which enables us to perform calculations using **multiple** rows or columns. This example uses multiple columns to find the average time for all of each athlete's races (there are simpler ways to do this calculation, this is just for demonstration!):
+
+```{python}
+df['Mean Time'] = df.apply(lambda df: (df['Heat'] + df['Semi-Final'] + df['Final']) / 3, axis=1)
+print(list(round(df['Mean Time'], 2)))
+```
+
+Perform custom calculations on columns
+--------------------------------------
+If you want to perform a function that is complex or specific enough to make lambda functions cumbersome, the best option is to create a custom function and `.apply()` it to the column. Here's an example that stratifies the final times into categories:
+
+```{python}
+def stratify(time):
+    """Assign a categorical description to a time."""
+    if time <= 9.9:
+        category = 'Sub-9.9'
+    elif time <= 10.0:
+        category = 'Sub-10'
+    else:
+        category = 'Not sub-10'
+    return category
+
+
+# Apply a function to a column
+df['Category'] = df['Final'].apply(stratify)
+print(df[['Athlete', 'Final', 'Category']])
+```
+
+**Alternative ways to stratify data into two categories:**  
+If your aim is to sort your data into categories then another option, besides applying custom functions, is to just index the data:
+
+```{python}
+df['Category'] = 'Not sub-10'
+df.loc[df['Final'] <= 10.0, 'Category'] = 'Sub-10'
+print(list(df['Category']))
+```
+
+...or you could use Numpy's `where()` function:
+
+```{python}
+df['Category'] = np.where(df['Final'] <= 10.0, 'Sub-10', 'Not sub-10')
+print(list(df['Category']))
+```
+
+The `np.where()` function is equivalent to the `ifelse()` function in R.
+
+**Alternative ways to stratify data into three categories:**  
+Repeating the above methods with three categories give this:
+
+```{python}
+df['Category'] = 'Not sub-10'
+df.loc[df['Final'] <= 10.0, 'Category'] = 'Sub-10'
+df.loc[df['Final'] <= 9.9, 'Category'] = 'Sub-9.9'
+print(list(df['Category']))
+```
+
+...and using `where()`:
+
+```{python}
+df['Category'] = np.where(
+    df['Final'] <= 9.9, 'Sub-9.9', np.where(df['Final'] <= 10.0, 'Sub-10', 'Not sub-10')
+)
+print(list(df['Category']))
+```
+
+However, the **most correct** way to stratify data into three or more categories is by using Numpy's `select()` function:
+
+```{python}
+conditions = [
+    (df['Final'] <= 9.9),
+    (df['Final'] <= 10.0),
+]
+categories = ['Sub-9.9', 'Sub-10']
+df['Category'] = np.select(conditions, categories, default='Not sub-10')
+print(list(df['Category']))
+```
+
+Here's a similar example using multiple columns to do the stratification:
+
+```{python}
+conditions = [
+    (df['Semi-Final'] <= 9.9) & (df['Final'] <= 9.9),
+    (df['Semi-Final'] <= 10.0) & (df['Final'] <= 10.0)
+]
+categories = ['Sub-9.9', 'Sub-10']
+df['Category'] = np.select(conditions, categories, default='Not sub-10')
+print(list(df['Category']))
+```
+
+Cleaning a Data Frame
+=====================
+Data cleaning is done to handle incomplete or partially incorrect datasets:
+
+- An **incomplete** dataset will have missing values in some places
+- A **partially incorrect** dataset might have misspelled column headings or similar
+
+```{python, echo = FALSE}
+# Reset the data frame
+df = pd.read_csv('data frame.csv')
+```
+
+Replace NaNs
+------------
+If you have missing data (an **incomplete** dataset) these cells will contain Numpy's "not-a-number" object, NaN. These can be replaced with any other value you want.
+
+**Sanitise whole data frame:**  
+
+```{python}
+# Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    'Athlete': ['Usain Bolt', 'Justin Gatlin', 'Andre De Grasse'],
+    'Country': [np.nan, 'United States', np.nan],
+    'Age': [29, np.nan, 21]
+})
+# Replace NaNs
+df_sanitised = df_unsanitised.fillna('Unknown')
+print(df_sanitised)
+```
+
+**Sanitise one column:**  
+If you want to replace missing data in one column only the default behaviour is for *only that column* to be returned. This usually isn't what you want,
+so use the 'inplace' keyword argument to perform the replacement in the data frame immediately without needing to assign a return to anything:
+
+```{python}
+# Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    'Athlete': ['Usain Bolt', 'Justin Gatlin', 'Andre De Grasse'],
+    'Country': [np.nan, 'United States', np.nan],
+    'Age': [29, np.nan, 21]
+})
+# Replace NaNs in one column
+df_unsanitised['Country'].fillna('Unknown', inplace=True)
+print(df_unsanitised)
+```
+
+Replace values
+--------------
+
+**Sanitise whole data frame:**  
+If you known there are some values that are misspelled you can replace all of them in the data frame in one go:
+
+```{python}
+# Replace all occurrences of a value
+df_replaced = df.replace(['United States', 'South Africa'], ['USA', 'RSA'])
+print(list(df_replaced['Country']))
+```
+
+If you want to replace incorrect data with "None" values you will need to use Numpy's "not-a-number" objects rather that Python's built-in "None" objects. This is because when Python inserts a "None" values it will actually remove that cell, the space will be filled with the value in the cell above!
+
+```{python}
+df_replaced = df.replace('United States', None)  # This does not work as expected!
+print(df_replaced)
+```
+
+Justin Gatlin does not come from Jamaica and Trayvon Bromell does not come from France! Rather do this:
+
+```{python}
+df_replaced = df.replace('United States', np.nan)
+print(df_replaced)
+```
+
+**Sanitise one column:**  
+If you want to only replace values in one column, you can use indexing:
+
+```{python}
+df.loc[df['Age'] == 22, 'Age'] = 'twenty-two'
+print(list(df['Age']))
+```
+
+```{python, echo = FALSE}
+# Undo
+df.loc[df['Age'] == 'twenty-two', 'Age'] = 22
+```
+
+Use lambda functions
+--------------------
+If you want to do more complicated searches and replaces that require functions to be run on cells as individual values (as opposed to being run on columns as a whole), you will need to use lambda functions.
+
+```{python}
+# Create a column with data that has inconsistent formatting
+df['Time'] = ['+9.81', '9.89', '9.91s', '9.93s', '9.94', '-9.96', '+10.04', '10.06s']
+print(list(df['Time']))
+```
+
+```{python}
+# Sanitise column
+df['Time'] = df['Time'].map(lambda x: x.lstrip('+-').rstrip('s'))
+print(list(df['Time']))
+```
+
+```{python, echo = FALSE}
+# Undo
+df = df.drop('Time', axis=1)
+```
+
+Convert data type
+-----------------
+If you have values that are numbers instead of strings, or values that are strings instead of integers or floats, you should convert them to the correct data type. The below method using a lambda function is able to handle missing data:
+
+```{python}
+# Convert integers to strings
+df['Age'] = df['Age'].apply(lambda x: str(x) if pd.notnull(x) else x)
+
+# Convert strings to floats
+df['Age'] = df['Age'].notnull().astype(float)
+
+# Convert objects to numbers
+df['Age'] = df['Age'].astype(str).astype(float)
+
+# Convert objects to Booleans
+df['Age'] = df['Age'].astype('bool')
+```
+
+```{python, echo = FALSE}
+# Undo
+df['Age'] = [29, 34, 21, 26, 22, 29, 24, 21]
+```
+
+Sanitise data using RegEx
+-------------------------
+If you're replacing values with special characters you may need to use regular expressions (RegEx):
+
+```{python}
+df = df.replace({'\n': '<br>'}, regex=True)
+```
+
+Sorting
+=======
+
+Sort rows
+---------
+
+**Ascending order:**  
+Sort on one column:
+
+```{python}
+df_sorted = df.sort_values('Athlete')
+print(df_sorted)
+```
+
+Sort first by one column, then by another:
+
+```{python}
+df_sorted = df.sort_values(['Country', 'Age'])
+print(df_sorted)
+```
+
+**Descending order:**  
+
+```{python}
+df_sorted = df.sort_values('Athlete', ascending=False, na_position='first')
+print(df_sorted)
+```
+
+Re-order columns
+----------------
+
+**Using the columns' names:**  
+The method below can also be used to remove a column: just leave it out of the indexing.
+
+```{python}
+df_reordered = df[['Heat', 'Semi-Final', 'Final', 'Athlete', 'Country', 'Age']]
+print(list(df_reordered))
+```
+
+**Using the columns' indices:**  
+
+```{python}
+cols = list(df)
+cols = cols[:2] + [cols[-1]] + cols[2:-1]
+df_reordered = df[cols]
+print(list(df_reordered))
+```
+
+Export
+======
+For more ways to export data frames, see [the page on file IO](../data/create_export_import_convert.html).
+
+```{python}
+# Export data frame to comma-separated values (.csv)
+df.to_csv('data frame.csv', index=False)
+```
+
+[⇦ Back](../../python.html)
+
+</font>
