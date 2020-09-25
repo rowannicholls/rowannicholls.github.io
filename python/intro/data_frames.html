@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Introduction to Python: Data Frames</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -396,89 +396,1822 @@ summary {
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to Python:</font><br>Data Frames</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#whats-a-data-frame"><span class="toc-section-number">1</span> What’s a Data Frame?</a></li>
+<li><a href="#creating-a-data-frame"><span class="toc-section-number">2</span> Creating a Data Frame</a>
+<ul>
+<li><a href="#create-from-dictionary"><span class="toc-section-number">2.1</span> Create from dictionary</a></li>
+<li><a href="#create-from-array-or-lists"><span class="toc-section-number">2.2</span> Create from array or lists</a></li>
+<li><a href="#import-from-file"><span class="toc-section-number">2.3</span> Import from file</a></li>
+<li><a href="#import-from-url"><span class="toc-section-number">2.4</span> Import from URL</a></li>
+</ul></li>
+<li><a href="#displaying-a-data-frame"><span class="toc-section-number">3</span> Displaying a Data Frame</a>
+<ul>
+<li><a href="#display-options"><span class="toc-section-number">3.1</span> Display options</a></li>
+</ul></li>
+<li><a href="#getting-information-about-a-data-frame"><span class="toc-section-number">4</span> Getting Information about a Data Frame</a></li>
+<li><a href="#rows-in-a-data-frame"><span class="toc-section-number">5</span> Rows in a Data Frame</a>
+<ul>
+<li><a href="#append-a-row"><span class="toc-section-number">5.1</span> Append a row</a></li>
+<li><a href="#insert-a-row"><span class="toc-section-number">5.2</span> Insert a row</a></li>
+<li><a href="#concatenate-a-data-frame-as-new-rows"><span class="toc-section-number">5.3</span> Concatenate a data frame as new rows</a></li>
+<li><a href="#merge-two-data-frames"><span class="toc-section-number">5.4</span> Merge two data frames</a></li>
+<li><a href="#rename-the-rows-ie-change-the-row-indices"><span class="toc-section-number">5.5</span> Rename the rows (ie change the row indices)</a></li>
+<li><a href="#delete-rows"><span class="toc-section-number">5.6</span> Delete rows</a></li>
+</ul></li>
+<li><a href="#columns-in-a-data-frame"><span class="toc-section-number">6</span> Columns in a Data Frame</a>
+<ul>
+<li><a href="#append-a-column"><span class="toc-section-number">6.1</span> Append a column</a></li>
+<li><a href="#insert-a-column"><span class="toc-section-number">6.2</span> Insert a column</a></li>
+<li><a href="#concatenate-a-data-frame-as-new-columns"><span class="toc-section-number">6.3</span> Concatenate a data frame as new columns</a></li>
+<li><a href="#merge-two-data-frames-1"><span class="toc-section-number">6.4</span> Merge two data frames</a></li>
+<li><a href="#rename-the-columns"><span class="toc-section-number">6.5</span> Rename the columns</a></li>
+<li><a href="#delete-columns"><span class="toc-section-number">6.6</span> Delete columns</a></li>
+</ul></li>
+<li><a href="#iterating-over-a-data-frame"><span class="toc-section-number">7</span> Iterating over a Data Frame</a>
+<ul>
+<li><a href="#row-by-row"><span class="toc-section-number">7.1</span> Row-by-row</a></li>
+<li><a href="#column-by-column"><span class="toc-section-number">7.2</span> Column-by-column</a></li>
+<li><a href="#cell-by-cell"><span class="toc-section-number">7.3</span> Cell-by-cell</a></li>
+</ul></li>
+<li><a href="#indexing-a-data-frame"><span class="toc-section-number">8</span> Indexing a Data Frame</a>
+<ul>
+<li><a href="#extract-multiple-rows-and-columns"><span class="toc-section-number">8.1</span> Extract multiple rows and columns</a></li>
+<li><a href="#extract-multiple-rows"><span class="toc-section-number">8.2</span> Extract multiple rows</a></li>
+<li><a href="#extract-one-row"><span class="toc-section-number">8.3</span> Extract one row</a></li>
+<li><a href="#extract-multiple-columns"><span class="toc-section-number">8.4</span> Extract multiple columns</a></li>
+<li><a href="#extract-one-column"><span class="toc-section-number">8.5</span> Extract one column</a></li>
+<li><a href="#extract-one-cell"><span class="toc-section-number">8.6</span> Extract one cell</a></li>
+</ul></li>
+<li><a href="#searching-finding-filtering"><span class="toc-section-number">9</span> Searching, Finding, Filtering</a>
+<ul>
+<li><a href="#searching"><span class="toc-section-number">9.1</span> Searching</a></li>
+<li><a href="#finding"><span class="toc-section-number">9.2</span> Finding</a></li>
+<li><a href="#filtering"><span class="toc-section-number">9.3</span> Filtering</a></li>
+</ul></li>
+<li><a href="#performing-calculations-on-a-data-frame"><span class="toc-section-number">10</span> Performing Calculations on a Data Frame</a>
+<ul>
+<li><a href="#perform-standard-calculations-on-rows"><span class="toc-section-number">10.1</span> Perform standard calculations on rows</a></li>
+<li><a href="#perform-standard-calculations-on-columns"><span class="toc-section-number">10.2</span> Perform standard calculations on columns</a></li>
+<li><a href="#perform-direct-calculations-using-columns"><span class="toc-section-number">10.3</span> Perform direct calculations using columns</a></li>
+<li><a href="#perform-direct-calculations-using-rows"><span class="toc-section-number">10.4</span> Perform direct calculations using rows</a></li>
+<li><a href="#perform-lambda-calculations-on-rows"><span class="toc-section-number">10.5</span> Perform lambda calculations on rows</a></li>
+<li><a href="#perform-lambda-calculations-on-columns"><span class="toc-section-number">10.6</span> Perform lambda calculations on columns</a></li>
+<li><a href="#perform-lambda-calculations-on-data-frames"><span class="toc-section-number">10.7</span> Perform lambda calculations on data frames</a></li>
+<li><a href="#perform-custom-calculations-on-columns"><span class="toc-section-number">10.8</span> Perform custom calculations on columns</a></li>
+</ul></li>
+<li><a href="#cleaning-a-data-frame"><span class="toc-section-number">11</span> Cleaning a Data Frame</a>
+<ul>
+<li><a href="#replace-nans"><span class="toc-section-number">11.1</span> Replace NaNs</a></li>
+<li><a href="#replace-values"><span class="toc-section-number">11.2</span> Replace values</a></li>
+<li><a href="#use-lambda-functions"><span class="toc-section-number">11.3</span> Use lambda functions</a></li>
+<li><a href="#convert-data-type"><span class="toc-section-number">11.4</span> Convert data type</a></li>
+<li><a href="#sanitise-data-using-regex"><span class="toc-section-number">11.5</span> Sanitise data using RegEx</a></li>
+</ul></li>
+<li><a href="#sorting"><span class="toc-section-number">12</span> Sorting</a>
+<ul>
+<li><a href="#sort-rows"><span class="toc-section-number">12.1</span> Sort rows</a></li>
+<li><a href="#re-order-columns"><span class="toc-section-number">12.2</span> Re-order columns</a></li>
+</ul></li>
+<li><a href="#export"><span class="toc-section-number">13</span> Export</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../python.html">⇦ Back</a></p>
+<div id="whats-a-data-frame" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> What’s a Data Frame?</h1>
+<p>A data frame is a <strong>table</strong>. It is the programming equivalent of an Excel spreadsheet. It has rows and columns with row headings (known as indexes/indices) and column headings.</p>
+<p>Data frames are not one of the object types that get included in Python by default. In order to unlock them, you need to install the ‘Pandas’ package and then import it into each script where you want to use them:</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
+<li>In the terminal run <code>pip3 install pandas</code></li>
+<li>At the top of each script in which you want to use data frames import Pandas with <code>import pandas as pd</code></li>
+<li>The objects and functions included in Pandas can then be used by prepending the shorthand <code>pd.</code></li>
+</ul>
+<p>“Pandas” is short for “panel data” which is a term for the type of information you get when you take multiple measurements over a number of time points.</p>
+</div>
+<div id="creating-a-data-frame" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Creating a Data Frame</h1>
+<div id="create-from-dictionary" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Create from dictionary</h2>
+<p>A data frame can be ‘manually’ created by using the <code>DataFrame()</code> function from Pandas. This takes as its input a <strong>dictionary object</strong>. It turns this into a data frame using the dictionary’s <strong>keys</strong> as the column headings and the dictionary’s <strong>values</strong> as the rows. Note that <em>all the columns need to be the same length</em>. In other words, each of the dictionary’s values (which will usually be lists) need to have the same number of elements.</p>
+<p>For this page we will use the results of the men’s 100m finals from the Rio 2016 Olympics as our example data:</p>
+<pre class="python"><code>import pandas as pd
+
+rio_100m_men = {
+    &#39;Athlete&#39;: [
+        &#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;,
+        &#39;Jimmy Vicaut&#39;, &#39;Trayvon Bromell&#39;
+    ],
+    &#39;Country&#39;: [
+        &#39;Jamaica&#39;, &#39;United States&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;South Africa&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;United States&#39;
+    ],
+    &#39;Age&#39;: [29, 34, 21, 26, 22, 29, 24, 21],
+    &#39;Heat&#39;: [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+    &#39;Semi-Final&#39;: [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+    &#39;Final&#39;: [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+}
+df = pd.DataFrame(rio_100m_men)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p>As you can see, we started with a dictionary <code>rio_100m_men</code> which had the same number of elements (8) in each value. This was then converted into a Pandas data frame and each <em>key</em> became a column heading and each <em>value</em> became a column corresponding to its key. Of course, the fact that Python is a ‘zero-indexed’ language means that Usain Bolt is shown in the above table as having come ‘0th’! That doesn’t make much sense so let’s re-create the data frame using a custom index (custom row headings):</p>
+<pre class="python"><code>df = pd.DataFrame({
+        &#39;Athlete&#39;: [
+            &#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;,
+            &#39;Ben Youssef Meïté&#39;, &#39;Jimmy Vicaut&#39;, &#39;Trayvon Bromell&#39;
+        ],
+        &#39;Country&#39;: [
+            &#39;Jamaica&#39;, &#39;United States&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;South Africa&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;United States&#39;
+        ],
+        &#39;Age&#39;: [29, 34, 21, 26, 22, 29, 24, 21],
+        &#39;Heat&#39;: [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+        &#39;Semi-Final&#39;: [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+        &#39;Final&#39;: [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+    }, index=[1, 2, 3, 4, 5, 6, 7, 8]
+)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 1         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 2      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 3    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 4        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 5      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 6  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 7       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 8    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+</div>
+<div id="create-from-array-or-lists" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Create from array or lists</h2>
+<p>Alternatively, a data frame can be created from a Numpy array and/or a list-of-lists instead of from a dictionary:</p>
+<pre class="python"><code>import numpy as np
+
+# Create an array from a list-of-lists
+rio_100m_men = np.array([
+    [&#39;Athlete&#39;, &#39;Country&#39;, &#39;Age&#39;, &#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;],
+    [&#39;Usain Bolt&#39;, &#39;Jamaica&#39;, 29, 10.07, 9.86, 9.81],
+    [&#39;Justin Gatlin&#39;, &#39;United States&#39;, 34, 10.01, 9.94, 9.89],
+    [&#39;Andre De Grasse&#39;, &#39;Canada&#39;, 21, 10.04, 9.92, 9.91],
+    [&#39;Yohan Blake&#39;, &#39;Jamaica&#39;, 26, 10.11, 10.01, 9.93],
+    [&#39;Akani Simbine&#39;, &#39;South Africa&#39;, 22, 10.14, 9.98, 9.94],
+    [&#39;Ben Youssef Meïté&#39;, &#39;Ivory Coast&#39;, 29, 10.03, 9.97, 9.96],
+    [&#39;Jimmy Vicaut&#39;, &#39;France&#39;, 24, 10.19, 9.95, 10.04],
+    [&#39;Trayvon Bromell&#39;, &#39;United States&#39;, 21, 10.13, 10.01, 10.06],
+])
+# Convert the array to a data frame
+df = pd.DataFrame(
+    data=rio_100m_men[1:, :],
+    columns=rio_100m_men[0, :]
+)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country Age   Heat Semi-Final  Final
+## 0         Usain Bolt        Jamaica  29  10.07       9.86   9.81
+## 1      Justin Gatlin  United States  34  10.01       9.94   9.89
+## 2    Andre De Grasse         Canada  21  10.04       9.92   9.91
+## 3        Yohan Blake        Jamaica  26  10.11      10.01   9.93
+## 4      Akani Simbine   South Africa  22  10.14       9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast  29  10.03       9.97   9.96
+## 6       Jimmy Vicaut         France  24  10.19       9.95  10.04
+## 7    Trayvon Bromell  United States  21  10.13      10.01  10.06</code></pre>
+</div>
+<div id="import-from-file" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Import from file</h2>
+<p>See <a href="../data/create_export_import_convert.html">the page on file IO</a> for more info on importing data frames.</p>
+<pre class="python"><code># Import comma-separated values (.csv file) as a data frame
+df = pd.read_csv(&#39;data frame.csv&#39;)</code></pre>
+</div>
+<div id="import-from-url" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Import from URL</h2>
+<p>Any data object on the internet that could be interpreted as a data frame can be imported:</p>
+<pre class="python"><code># Import comma-separated values (.csv file) as a data frame
+data_url = &#39;https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/data/csv/data%20frame.csv&#39;
+df_downloaded = pd.read_csv(data_url)
+print(df_downloaded)</code></pre>
+</div>
+</div>
+<div id="displaying-a-data-frame" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Displaying a Data Frame</h1>
+<p>Use the <code>.head()</code> method to see only the first 5 rows of a data frame (or <code>.head(n)</code> to see the first n rows). This is useful if you have a lot of data!</p>
+<pre class="python"><code>print(df.head())</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final
+## 0       Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1    Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2  Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3      Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94</code></pre>
+<p>Similarly, <code>.tail()</code> will show the last 5 rows (and <code>.tail(n)</code> will show the last n rows):</p>
+<pre class="python"><code>print(df.tail())</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<div id="display-options" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Display options</h2>
+<p>Change the amount of information that gets shown in your console when you print a data frame by tweaking the below options:</p>
+<pre class="python"><code>pd.set_option(&#39;display.max_rows&#39;, 3)
+pd.set_option(&#39;display.max_columns&#39;, 20)
+pd.set_option(&#39;display.max_colwidth&#39;, 40)
+pd.set_option(&#39;display.precision&#39;, 3)
+pd.set_option(&#39;display.width&#39;, 1000)
+print(df)</code></pre>
+<pre><code>##             Athlete        Country  Age   Heat  Semi-Final  Final
+## 0        Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## ..              ...            ...  ...    ...         ...    ...
+## 7   Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 
+## [8 rows x 6 columns]</code></pre>
+<p>Reset these options with the following</p>
+<pre class="python"><code>pd.reset_option(&#39;display.max_rows&#39;)
+pd.reset_option(&#39;display.max_columns&#39;)
+pd.reset_option(&#39;display.max_colwidth&#39;)
+pd.reset_option(&#39;display.precision&#39;)
+pd.reset_option(&#39;display.width&#39;)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p>For more info about the display options, see here: <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/options.html" class="uri">https://pandas.pydata.org/pandas-docs/stable/user_guide/options.html</a></p>
+</div>
+</div>
+<div id="getting-information-about-a-data-frame" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Getting Information about a Data Frame</h1>
+<p>Get the number of rows and columns:</p>
+<pre class="python"><code>nrows = df.shape[0]
+ncols = df.shape[1]</code></pre>
+<p>Get the names of the columns:</p>
+<pre class="python"><code>colnames = list(df)</code></pre>
+<p>Notice from the above that when you convert a data frame into a list, you are <em>only left with the column names</em>.</p>
+<p>The ‘row names’ are more properly called the ‘indices’ (or ‘indexes’ if you’re American):</p>
+<pre class="python"><code>rownames = list(df.index)
+print(rownames)</code></pre>
+<pre><code>## [0, 1, 2, 3, 4, 5, 6, 7]</code></pre>
+<p>Check if a data frame is empty or not:</p>
+<pre class="python"><code># Create an empty data frame
+df_empty = pd.DataFrame({&#39;A&#39;: []})
+print(df_empty.empty)</code></pre>
+<pre><code>## True</code></pre>
+</div>
+<div id="rows-in-a-data-frame" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Rows in a Data Frame</h1>
+<div id="append-a-row" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> Append a row</h2>
+<p>Append a data frame as a new row:</p>
+<pre class="python"><code>new_row_dct = {
+    &#39;Athlete&#39;: &#39;Chijindu Ujah&#39;,
+    &#39;Country&#39;: &#39;Great Britain&#39;,
+    &#39;Age&#39;: 22,
+    &#39;Heat&#39;: 10.13,
+    &#39;Semi-Final&#39;: 10.01,
+    &#39;Final&#39;: None,
+}
+new_row_df = pd.DataFrame(new_row_dct, index=[1])
+df_extended = df.append(new_row_df, ignore_index=True)
+print(df_extended)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 8      Chijindu Ujah  Great Britain   22  10.13       10.01   None</code></pre>
+<p>Append a dictionary as a new row:</p>
+<pre class="python"><code>new_row_dct = {
+    &#39;Athlete&#39;: &#39;Chijindu Ujah&#39;,
+    &#39;Country&#39;: &#39;Great Britain&#39;,
+    &#39;Age&#39;: 22,
+    &#39;Heat&#39;: 10.13,
+    &#39;Semi-Final&#39;: 10.01,
+    &#39;Final&#39;: None,
+}
+df_extended = df.append(new_row_dct, ignore_index=True)
+print(df_extended)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 8      Chijindu Ujah  Great Britain   22  10.13       10.01   None</code></pre>
+<p>If a dictionary’s values are lists like in the example below, first convert it into a data frame before appending it:</p>
+<pre class="python"><code>new_row_dct = {
+    &#39;Athlete&#39;: [&#39;Chijindu Ujah&#39;],
+    &#39;Country&#39;: [&#39;Great Britain&#39;],
+    &#39;Age&#39;: [22],
+    &#39;Heat&#39;: [10.13],
+    &#39;Semi-Final&#39;: [10.01],
+    &#39;Final&#39;: [None],
+}
+new_row_df = pd.DataFrame(new_row_dct)
+df_extended = df.append(new_row_df, ignore_index=True)
+print(df_extended)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 8      Chijindu Ujah  Great Britain   22  10.13       10.01   None</code></pre>
+<p>Append a list as a new row:</p>
+<pre class="python"><code>df.loc[df.shape[0]] = [&#39;Chijindu Ujah&#39;, &#39;Great Britain&#39;, 22, 10.13, 10.01, None]
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 8      Chijindu Ujah  Great Britain   22  10.13       10.01   None</code></pre>
+<p>The code above works best if the data frame has the ‘default’ row indices, ie if the rows are numbered sequentially from 0. If the data frame is instead a subset of a larger data frame (and thus doesn’t have sequential row indices) or if the indices are strings (see the “rename the rows” section), this code might still work but not produce the expected result:</p>
+<pre class="python"><code>df_indexed = df.set_index(&#39;Athlete&#39;)
+df_indexed.loc[df_indexed.shape[0]] = [
+    &#39;Great Britain&#39;, 22, 10.13, 10.01, None
+]
+# This probably isn&#39;t what you want
+print(df_indexed)</code></pre>
+<pre><code>##                          Country  Age   Heat  Semi-Final  Final
+## Athlete                                                        
+## Usain Bolt               Jamaica   29  10.07        9.86   9.81
+## Justin Gatlin      United States   34  10.01        9.94   9.89
+## Andre De Grasse           Canada   21  10.04        9.92   9.91
+## Yohan Blake              Jamaica   26  10.11       10.01   9.93
+## Akani Simbine       South Africa   22  10.14        9.98   9.94
+## Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## Jimmy Vicaut              France   24  10.19        9.95  10.04
+## Trayvon Bromell    United States   21  10.13       10.01  10.06
+## 8                  Great Britain   22  10.13       10.01   None</code></pre>
+</div>
+<div id="insert-a-row" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> Insert a row</h2>
+<p>‘Appending’ a row will add it onto the bottom, whereas ‘inserting’ a row will place it at whatever position you specify (in this case it will be at index 5).</p>
+<pre class="python"><code>def insert_row(row, df, index):
+    &quot;&quot;&quot;Insert a given row in a given DataFrame at a given index.&quot;&quot;&quot;
+    an_array = np.array([row])
+    row_df = pd.DataFrame(an_array, columns=list(df))
+    df = df.iloc[:index, :]\
+        .append(row_df, ignore_index=True)\
+        .append(df.iloc[index:, :], ignore_index=True)
+    return df
+
+
+row = [&#39;Chijindu Ujah&#39;, &#39;Great Britain&#39;, 22, 10.13, 10.01, None]
+insert_at = 5
+df_new = insert_row(row, df, insert_at)
+print(df_new)</code></pre>
+<pre><code>##              Athlete        Country Age   Heat Semi-Final  Final
+## 0         Usain Bolt        Jamaica  29  10.07       9.86   9.81
+## 1      Justin Gatlin  United States  34  10.01       9.94   9.89
+## 2    Andre De Grasse         Canada  21  10.04       9.92   9.91
+## 3        Yohan Blake        Jamaica  26  10.11      10.01   9.93
+## 4      Akani Simbine   South Africa  22  10.14       9.98   9.94
+## 5      Chijindu Ujah  Great Britain  22  10.13      10.01   None
+## 6  Ben Youssef Meïté    Ivory Coast  29  10.03       9.97   9.96
+## 7       Jimmy Vicaut         France  24  10.19       9.95  10.04
+## 8    Trayvon Bromell  United States  21  10.13      10.01  10.06</code></pre>
+<p>Similarly, the above code works best with ‘default’ indices.</p>
+</div>
+<div id="concatenate-a-data-frame-as-new-rows" class="section level2" number="5.3">
+<h2 number="5.3"><span class="header-section-number">5.3</span> Concatenate a data frame as new rows</h2>
+<p>Instead of adding one row to the bottom of a data frame, now we are adding a whole data frame onto the bottom:</p>
+<pre class="python"><code>new_row_df = pd.DataFrame({
+    &#39;Athlete&#39;: [&#39;Jak Ali Harvey&#39;, &#39;Nickel Ashmeade&#39;, &#39;Christophe Lemaitre&#39;],
+    &#39;Country&#39;: [&#39;Turkey&#39;, &#39;Jamaica&#39;, &#39;France&#39;],
+    &#39;Age&#39;: [27, 26, 26],
+    &#39;Heat&#39;: [10.14, 10.13, 10.16],
+    &#39;Semi-Final&#39;: [10.03, 10.05, 10.07],
+    &#39;Final&#39;: [None, None, None],
+})
+new_df = pd.concat([df, new_row_df], ignore_index=True)
+print(new_df)</code></pre>
+<pre><code>##                 Athlete        Country  Age   Heat  Semi-Final  Final
+## 0            Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1         Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2       Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3           Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4         Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5     Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6          Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7       Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 8        Jak Ali Harvey         Turkey   27  10.14       10.03   None
+## 9       Nickel Ashmeade        Jamaica   26  10.13       10.05   None
+## 10  Christophe Lemaitre         France   26  10.16       10.07   None</code></pre>
+</div>
+<div id="merge-two-data-frames" class="section level2" number="5.4">
+<h2 number="5.4"><span class="header-section-number">5.4</span> Merge two data frames</h2>
+<p>‘Merging’ is a more complicated form of combining data frames than ‘appending’ or ‘concatenating’. The two objects get combined such that where they have matching values the data gets added together in the same row as opposed to in a new row. It’s complicated enough that I’ve made a <a href="../data/merging.html">whole separate page on merging</a>.</p>
+</div>
+<div id="rename-the-rows-ie-change-the-row-indices" class="section level2" number="5.5">
+<h2 number="5.5"><span class="header-section-number">5.5</span> Rename the rows (ie change the row indices)</h2>
+<p>You can rename rows (as many as you want at one time) using a dictionary together with the <code>rename()</code> function:</p>
+<pre class="python"><code># Format is {old_name: new_name}
+df = df.rename(index={1: &#39;Row 1&#39;})
+print(df)</code></pre>
+<pre><code>##                  Athlete        Country  Age   Heat  Semi-Final  Final
+## 0             Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## Row 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2        Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3            Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4          Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5      Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6           Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7        Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<pre class="python"><code># Format is {old_name: new_name}
+df = df.rename(
+    index={
+        2: &#39;Row 2&#39;,
+        3: &#39;Row 3&#39;,
+        4: &#39;Row 4&#39;,
+    }
+)
+print(df)</code></pre>
+<pre><code>##                  Athlete        Country  Age   Heat  Semi-Final  Final
+## 0             Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## Row 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## Row 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## Row 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## Row 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5      Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6           Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7        Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p>Reset the row names (row indices) but keep the old ones in a column called “index”:</p>
+<pre class="python"><code>df_reset = df.reset_index()
+print(df_reset)</code></pre>
+<pre><code>##    index            Athlete        Country  Age   Heat  Semi-Final  Final
+## 0      0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1  Row 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2  Row 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3  Row 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4  Row 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5      5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6      6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7      7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p>Reset the row names completely:</p>
+<pre class="python"><code>df = df.reset_index(drop = True)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p><strong>Use a column as the row names (row indices):</strong><br />
+Up until now we have been using the row indices that were auto-generated when the data frame was created: the rows were numbered from 0 at the top to 7 at the bottom. However, we don’t have to use those numbers and, in fact, we can use words at the row indices if we want. This is how we can use the athletes’ names as the row indices (the <code>.set_index()</code> function is needed):</p>
+<pre class="python"><code>df_indexed = df.set_index(&#39;Athlete&#39;)
+print(df_indexed)</code></pre>
+<pre><code>##                          Country  Age   Heat  Semi-Final  Final
+## Athlete                                                        
+## Usain Bolt               Jamaica   29  10.07        9.86   9.81
+## Justin Gatlin      United States   34  10.01        9.94   9.89
+## Andre De Grasse           Canada   21  10.04        9.92   9.91
+## Yohan Blake              Jamaica   26  10.11       10.01   9.93
+## Akani Simbine       South Africa   22  10.14        9.98   9.94
+## Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## Jimmy Vicaut              France   24  10.19        9.95  10.04
+## Trayvon Bromell    United States   21  10.13       10.01  10.06</code></pre>
+<p>This can make it easier to index the data frame as we can now use row ‘names’ instead of row ‘indices’:</p>
+<pre class="python"><code># Get certain rows and certain columns as a data frame
+subset = df_indexed.loc[[&#39;Justin Gatlin&#39;, &#39;Jimmy Vicaut&#39;], [&#39;Country&#39;, &#39;Age&#39;]]
+print(subset)</code></pre>
+<pre><code>##                      Country  Age
+## Athlete                          
+## Justin Gatlin  United States   34
+## Jimmy Vicaut          France   24</code></pre>
+<pre class="python"><code># Get one row and all columns as a series
+cols = df_indexed.loc[&#39;Jimmy Vicaut&#39;, :]
+print(cols)</code></pre>
+<pre><code>## Country       France
+## Age               24
+## Heat           10.19
+## Semi-Final      9.95
+## Final          10.04
+## Name: Jimmy Vicaut, dtype: object</code></pre>
+<pre class="python"><code># Get one row and one column as a value
+cell = df_indexed.loc[&#39;Jimmy Vicaut&#39;, &#39;Age&#39;]
+print(cell)</code></pre>
+<pre><code>## 24</code></pre>
+</div>
+<div id="delete-rows" class="section level2" number="5.6">
+<h2 number="5.6"><span class="header-section-number">5.6</span> Delete rows</h2>
+<p>Delete row using row name:</p>
+<pre class="python"><code>df_deleted = df.drop(1)
+print(df_deleted)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p>Delete row using row index (the below example looks exactly the same as the above example because the row names and row indices of our data frame happen to be the same, but this will not necessarily always be the case!):</p>
+<pre class="python"><code>df_deleted = df.drop(df.index[1])
+print(df_deleted)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p>Delete multiple rows by name:</p>
+<pre class="python"><code>df_deleted = df.drop([1, 2, 5])
+print(df_deleted)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final
+## 0       Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 3      Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 6     Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
+<p>Delete rows that have a certain value in a particular column (in this example: delete all rows where the athlete is 30 years old):</p>
+<pre class="python"><code>df.drop(df[df[&#39;Age&#39;] == 30].index)</code></pre>
+<p>Delete rows that have one of a list of certain values in a particular column (in this example: delete all rows where the athlete is 30, 31 or 32 years old):</p>
+<pre class="python"><code>df.drop(df[df[&#39;Age&#39;].isin([30, 31, 32])].index)</code></pre>
+</div>
+</div>
+<div id="columns-in-a-data-frame" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Columns in a Data Frame</h1>
+<div id="append-a-column" class="section level2" number="6.1">
+<h2 number="6.1"><span class="header-section-number">6.1</span> Append a column</h2>
+<p>To modify an existing data frame by adding columns:</p>
+<pre class="python"><code>df[&#39;Reaction Time&#39;] = [0.155, 0.152, 0.141, 0.145, 0.128, 0.156, 0.140, 0.135]
+df[&#39;Finish Position&#39;] = [&#39;Gold&#39;, &#39;Silver&#39;, &#39;Bronze&#39;, &#39;4th&#39;, &#39;5th&#39;, &#39;6th&#39;, &#39;7th&#39;, &#39;8th&#39;]
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81          0.155            Gold
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89          0.152          Silver
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91          0.141          Bronze
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93          0.145             4th
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94          0.128             5th
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96          0.156             6th
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04          0.140             7th
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06          0.135             8th</code></pre>
+<p>To create a <em>new data frame</em> that has a copy of the original data plus the new column(s), use the <code>.assign()</code> method:</p>
+<pre class="python"><code>df_new = df.assign(Other=[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;H&#39;])
+print(df_new)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position Other
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81          0.155            Gold     A
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89          0.152          Silver     B
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91          0.141          Bronze     C
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93          0.145             4th     D
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94          0.128             5th     E
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96          0.156             6th     F
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04          0.140             7th     G
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06          0.135             8th     H</code></pre>
+<p>The <code>.assign()</code> method is slower (because it has to create a copy of the data) but it allows you to keep the old, unmodified data frame in addition to having the new, modified one.</p>
+<p><strong>Appending a column inside a loop:</strong><br />
+The incorrect way:</p>
+<pre class="python"><code>new_df = df[&#39;Athlete&#39;]  # This creates a SERIES, not a DATA FRAME
+for col in [&#39;Semi-Final&#39;, &#39;Final&#39;]:
+    new_df[col] = df[col]  # This does not work as expected</code></pre>
+<p>The correct way (although it might generate a SettingWithCopy warning):</p>
+<pre class="python"><code>new_df = df.loc[:, [&#39;Athlete&#39;]]  # This creates a DATA FRAME
+for col in [&#39;Semi-Final&#39;, &#39;Final&#39;]:
+    new_df[col] = df[col]  # This works as expected
+print(new_df)</code></pre>
+<pre><code>##              Athlete  Semi-Final  Final
+## 0         Usain Bolt        9.86   9.81
+## 1      Justin Gatlin        9.94   9.89
+## 2    Andre De Grasse        9.92   9.91
+## 3        Yohan Blake       10.01   9.93
+## 4      Akani Simbine        9.98   9.94
+## 5  Ben Youssef Meïté        9.97   9.96
+## 6       Jimmy Vicaut        9.95  10.04
+## 7    Trayvon Bromell       10.01  10.06</code></pre>
+<p>The correct way (which will not generate a SettingWithCopy warning):</p>
+<pre class="python"><code>new_df = df.loc[:, [&#39;Athlete&#39;]]
+for col in [&#39;Semi-Final&#39;, &#39;Final&#39;]:
+    new_df[col] = df[col].copy()
+print(new_df)</code></pre>
+<pre><code>##              Athlete  Semi-Final  Final
+## 0         Usain Bolt        9.86   9.81
+## 1      Justin Gatlin        9.94   9.89
+## 2    Andre De Grasse        9.92   9.91
+## 3        Yohan Blake       10.01   9.93
+## 4      Akani Simbine        9.98   9.94
+## 5  Ben Youssef Meïté        9.97   9.96
+## 6       Jimmy Vicaut        9.95  10.04
+## 7    Trayvon Bromell       10.01  10.06</code></pre>
+</div>
+<div id="insert-a-column" class="section level2" number="6.2">
+<h2 number="6.2"><span class="header-section-number">6.2</span> Insert a column</h2>
+<p>‘Appending’ a column will place it on the end, whereas ‘inserting’ a column will place it at the location specified (in this case it will be at position 1).</p>
+<pre class="python"><code>new_df.insert(
+    1, &#39;Country&#39;,
+    [
+        &#39;Jamaica&#39;, &#39;United States&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;South Africa&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;United States&#39;
+    ]
+)
+print(new_df)</code></pre>
+<pre><code>##              Athlete        Country  Semi-Final  Final
+## 0         Usain Bolt        Jamaica        9.86   9.81
+## 1      Justin Gatlin  United States        9.94   9.89
+## 2    Andre De Grasse         Canada        9.92   9.91
+## 3        Yohan Blake        Jamaica       10.01   9.93
+## 4      Akani Simbine   South Africa        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast        9.97   9.96
+## 6       Jimmy Vicaut         France        9.95  10.04
+## 7    Trayvon Bromell  United States       10.01  10.06</code></pre>
+</div>
+<div id="concatenate-a-data-frame-as-new-columns" class="section level2" number="6.3">
+<h2 number="6.3"><span class="header-section-number">6.3</span> Concatenate a data frame as new columns</h2>
+<p>Instead of adding one column to the side of a data frame, now we are adding a whole data frame onto the side:</p>
+<pre class="python"><code>new_col_df = pd.DataFrame({
+    &#39;Reaction Time&#39;: [0.155, 0.152, 0.141, 0.145, 0.128, 0.156, 0.140, 0.135],
+    &#39;Finish Position&#39;: [&#39;Gold&#39;, &#39;Silver&#39;, &#39;Bronze&#39;, &#39;4th&#39;, &#39;5th&#39;, &#39;6th&#39;, &#39;7th&#39;, &#39;8th&#39;],
+})
+new_df = pd.concat([new_df, new_col_df], axis=1)
+print(new_df)</code></pre>
+<pre><code>##              Athlete        Country  Semi-Final  Final  Reaction Time Finish Position
+## 0         Usain Bolt        Jamaica        9.86   9.81          0.155            Gold
+## 1      Justin Gatlin  United States        9.94   9.89          0.152          Silver
+## 2    Andre De Grasse         Canada        9.92   9.91          0.141          Bronze
+## 3        Yohan Blake        Jamaica       10.01   9.93          0.145             4th
+## 4      Akani Simbine   South Africa        9.98   9.94          0.128             5th
+## 5  Ben Youssef Meïté    Ivory Coast        9.97   9.96          0.156             6th
+## 6       Jimmy Vicaut         France        9.95  10.04          0.140             7th
+## 7    Trayvon Bromell  United States       10.01  10.06          0.135             8th</code></pre>
+</div>
+<div id="merge-two-data-frames-1" class="section level2" number="6.4">
+<h2 number="6.4"><span class="header-section-number">6.4</span> Merge two data frames</h2>
+<p>‘Merging’ is a more complicated form of combining data frames than ‘appending’ or ‘concatenating’. The two objects get combined such that where they have matching values the data gets added together in the same row as opposed to in a new row. It’s complicated enough that I’ve made a <a href="../data/merging.html">whole page on merging</a>.</p>
+</div>
+<div id="rename-the-columns" class="section level2" number="6.5">
+<h2 number="6.5"><span class="header-section-number">6.5</span> Rename the columns</h2>
+<p>Rename one column as follows:</p>
+<pre class="python"><code># Format is {&#39;old_name&#39;: &#39;new_name&#39;}
+df_renamed = df.rename(columns={&#39;Athlete&#39;: &#39;Name&#39;})
+print(list(df_renamed))</code></pre>
+<pre><code>## [&#39;Name&#39;, &#39;Country&#39;, &#39;Age&#39;, &#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;, &#39;Reaction Time&#39;, &#39;Finish Position&#39;]</code></pre>
+<p>Rename multiple columns as follows:</p>
+<pre class="python"><code># Format is {&#39;old_name&#39;: &#39;new_name&#39;}
+df_renamed = df.rename(
+    columns={
+        &#39;Heat&#39;: &#39;Race 1&#39;,
+        &#39;Semi-Final&#39;: &#39;Race 2&#39;,
+        &#39;Final&#39;: &#39;Race 3&#39;,
+    }
+)
+print(list(df_renamed))</code></pre>
+<pre><code>## [&#39;Athlete&#39;, &#39;Country&#39;, &#39;Age&#39;, &#39;Race 1&#39;, &#39;Race 2&#39;, &#39;Race 3&#39;, &#39;Reaction Time&#39;, &#39;Finish Position&#39;]</code></pre>
+<p>Alternatively, you can use a dictionary comprehension to rename all columns at once:</p>
+<pre class="python"><code>new_names = [&#39;Name&#39;, &#39;Nation&#39;, &#39;Years&#39;, &#39;Race 1&#39;, &#39;Race 2&#39;, &#39;Race 3&#39;, &#39;Position&#39;, &#39;Reaction&#39;]
+dct = {old: new for old, new in zip(list(df), new_names)}
+df_renamed = df.rename(columns=dct)
+print(list(df_renamed))</code></pre>
+<pre><code>## [&#39;Name&#39;, &#39;Nation&#39;, &#39;Years&#39;, &#39;Race 1&#39;, &#39;Race 2&#39;, &#39;Race 3&#39;, &#39;Position&#39;, &#39;Reaction&#39;]</code></pre>
+</div>
+<div id="delete-columns" class="section level2" number="6.6">
+<h2 number="6.6"><span class="header-section-number">6.6</span> Delete columns</h2>
+<p>Delete column by column name:</p>
+<pre class="python"><code>df_deleted = df.drop(&#39;Athlete&#39;, axis=1)
+print(df_deleted)</code></pre>
+<pre><code>##          Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position
+## 0        Jamaica   29  10.07        9.86   9.81          0.155            Gold
+## 1  United States   34  10.01        9.94   9.89          0.152          Silver
+## 2         Canada   21  10.04        9.92   9.91          0.141          Bronze
+## 3        Jamaica   26  10.11       10.01   9.93          0.145             4th
+## 4   South Africa   22  10.14        9.98   9.94          0.128             5th
+## 5    Ivory Coast   29  10.03        9.97   9.96          0.156             6th
+## 6         France   24  10.19        9.95  10.04          0.140             7th
+## 7  United States   21  10.13       10.01  10.06          0.135             8th</code></pre>
+<p>Delete column(s) by index:</p>
+<pre class="python"><code>df_deleted = df.drop(df.columns[[5]], axis=1)
+print(df_deleted)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Reaction Time Finish Position
+## 0         Usain Bolt        Jamaica   29  10.07        9.86          0.155            Gold
+## 1      Justin Gatlin  United States   34  10.01        9.94          0.152          Silver
+## 2    Andre De Grasse         Canada   21  10.04        9.92          0.141          Bronze
+## 3        Yohan Blake        Jamaica   26  10.11       10.01          0.145             4th
+## 4      Akani Simbine   South Africa   22  10.14        9.98          0.128             5th
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97          0.156             6th
+## 6       Jimmy Vicaut         France   24  10.19        9.95          0.140             7th
+## 7    Trayvon Bromell  United States   21  10.13       10.01          0.135             8th</code></pre>
+</div>
+</div>
+<div id="iterating-over-a-data-frame" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Iterating over a Data Frame</h1>
+<div id="row-by-row" class="section level2" number="7.1">
+<h2 number="7.1"><span class="header-section-number">7.1</span> Row-by-row</h2>
+<p>Iterating over a data frame’s rows using <code>.iterrows()</code></p>
+<pre class="python"><code>for i, row in df.iterrows():
+    row_num = i
+    person = row[&#39;Athlete&#39;]
+    age = row[&#39;Age&#39;]
+    print(i, person, age)</code></pre>
+<pre><code>## 0 Usain Bolt 29
+## 1 Justin Gatlin 34
+## 2 Andre De Grasse 21
+## 3 Yohan Blake 26
+## 4 Akani Simbine 22
+## 5 Ben Youssef Meïté 29
+## 6 Jimmy Vicaut 24
+## 7 Trayvon Bromell 21</code></pre>
+<p>Iterating over a data frame’s rows using <code>.itertuples()</code></p>
+<pre class="python"><code>for row in df.itertuples():
+    row_num = row.Index
+    person = row.Athlete
+    age = row.Age
+    print(row_num, person, age)</code></pre>
+<pre><code>## 0 Usain Bolt 29
+## 1 Justin Gatlin 34
+## 2 Andre De Grasse 21
+## 3 Yohan Blake 26
+## 4 Akani Simbine 22
+## 5 Ben Youssef Meïté 29
+## 6 Jimmy Vicaut 24
+## 7 Trayvon Bromell 21</code></pre>
+</div>
+<div id="column-by-column" class="section level2" number="7.2">
+<h2 number="7.2"><span class="header-section-number">7.2</span> Column-by-column</h2>
+<p>Iterate over a data frame’s columns using <code>.iteritems()</code></p>
+<pre class="python"><code>for colname, col in df.iteritems():
+    Gatlin = col[1]
+    Simbine = col[4]
+    print(colname, Gatlin, Simbine)</code></pre>
+<pre><code>## Athlete Justin Gatlin Akani Simbine
+## Country United States South Africa
+## Age 34 22
+## Heat 10.01 10.14
+## Semi-Final 9.94 9.98
+## Final 9.89 9.94
+## Reaction Time 0.152 0.128
+## Finish Position Silver 5th</code></pre>
+<p>Iterate over a data frame’s columns using the column names</p>
+<pre class="python"><code>for colname in list(df):
+    Bolt = df[colname][1]
+    print(Bolt)</code></pre>
+<pre><code>## Justin Gatlin
+## United States
+## 34
+## 10.01
+## 9.94
+## 9.89
+## 0.152
+## Silver</code></pre>
+</div>
+<div id="cell-by-cell" class="section level2" number="7.3">
+<h2 number="7.3"><span class="header-section-number">7.3</span> Cell-by-cell</h2>
+<p>Iterate over every cell in a data frame by using BOTH <code>.iterrows()</code> and <code>.iteritems()</code></p>
+<pre class="python"><code># Use a smaller data frame for this example
+dct = {
+    &#39;Athlete&#39;: [&#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;],
+    &#39;Country&#39;: [&#39;Jamaica&#39;, &#39;United States&#39;, &#39;Canada&#39;],
+    &#39;Age&#39;: [29, 34, 21],
+    &#39;Heat&#39;: [10.07, 10.01, 10.04],
+    &#39;Semi-Final&#39;: [9.86, 9.94, 9.92],
+    &#39;Final&#39;: [9.81, 9.89, 9.91],
+}
+df_small = pd.DataFrame(dct)
+# Iterate over every cell
+for i, row in df_small.iterrows():
+    for colname, cell in row.iteritems():
+        print(f&#39;{colname:10} {cell}&#39;)</code></pre>
+<pre><code>## Athlete    Usain Bolt
+## Country    Jamaica
+## Age        29
+## Heat       10.07
+## Semi-Final 9.86
+## Final      9.81
+## Athlete    Justin Gatlin
+## Country    United States
+## Age        34
+## Heat       10.01
+## Semi-Final 9.94
+## Final      9.89
+## Athlete    Andre De Grasse
+## Country    Canada
+## Age        21
+## Heat       10.04
+## Semi-Final 9.92
+## Final      9.91</code></pre>
+<p>Iterate over every cell in a single row by reducing the data frame to a single row then iterating through the columns:</p>
+<pre class="python"><code># Iterate over every cell in row 3 (index number 2)
+idx = 2
+for colname, col in df[idx:idx + 1].iteritems():
+    cell = col.values[0]
+    print(cell)</code></pre>
+<pre><code>## Andre De Grasse
+## Canada
+## 21
+## 10.04
+## 9.92
+## 9.91
+## 0.141
+## Bronze</code></pre>
+</div>
+</div>
+<div id="indexing-a-data-frame" class="section level1" number="8">
+<h1 number="8"><span class="header-section-number">8</span> Indexing a Data Frame</h1>
+<p>‘Indexing’ is the method used to <strong>select</strong> or <strong>extract</strong> data in a data frame.</p>
+<div id="extract-multiple-rows-and-columns" class="section level2" number="8.1">
+<h2 number="8.1"><span class="header-section-number">8.1</span> Extract multiple rows and columns</h2>
+<p>There are two methods that can be used to get certain rows and columns out of a data frame:</p>
 <ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/data_frames.html">Data Frames</a></li>
-<li><a href="python/intro/python_vs_r.html">Python vs R</a></li>
-</ol>
+<li><code>.loc[]</code> uses the <strong>names</strong> of the columns you want</li>
+<li><code>.iloc[]</code> uses the <strong>indices</strong> of the columns you want</li>
+</ul>
+<p>Remember that <em>row names are the same as row indices</em>, so both methods use these.</p>
+<p>Columns <em>names</em> should be provided as <strong>lists</strong> (see the ‘extract one cell’ section to see what happens if you don’t) while column <em>indices</em> and row <em>indices</em> can be provided as either <strong>lists</strong> or <strong>slices</strong>. The advantage of using slices is that you can quickly provide many numbers; the disadvantage is that these numbers have to be consecutive.</p>
+<p>Here’s a demonstration of <code>.loc[]</code> and <code>.iloc[]</code> at work using lists:</p>
+<pre class="python"><code># Format is [[row_idxs], [col_names]]
+subset = df.loc[[2, 4], [&#39;Athlete&#39;, &#39;Final&#39;]]
+print(subset)</code></pre>
+<pre><code>##            Athlete Final
+## 2  Andre De Grasse  9.91
+## 4    Akani Simbine  9.94</code></pre>
+<pre class="python"><code># Format is [[row_idxs], [col_idxs]]
+subset = df.iloc[[2, 4], [0, 5]]
+print(subset)</code></pre>
+<pre><code>##            Athlete Final
+## 2  Andre De Grasse  9.91
+## 4    Akani Simbine  9.94</code></pre>
+<p><strong>Extract multiple <em>consecutive</em> rows and columns:</strong><br />
+As mentioned, using slices instead of lists when specifying indices can be more efficient but only works when extracting consecutive rows and columns:</p>
+<pre class="python"><code># Format is [slice, [col_names]] to get consecutive rows
+subset = df.loc[2:4, [&#39;Athlete&#39;, &#39;Country&#39;, &#39;Age&#39;]]
+print(subset)</code></pre>
+<pre><code>##            Athlete       Country  Age
+## 2  Andre De Grasse        Canada   21
+## 3      Yohan Blake       Jamaica   26
+## 4    Akani Simbine  South Africa   22</code></pre>
+<pre class="python"><code># Format is [slice, slice] to get consecutive rows and cols
+subset = df.iloc[2:5, :3]
+print(subset)</code></pre>
+<pre><code>##            Athlete       Country  Age
+## 2  Andre De Grasse        Canada   21
+## 3      Yohan Blake       Jamaica   26
+## 4    Akani Simbine  South Africa   22</code></pre>
+<p>Also note that in the above examples <code>.loc[]</code> took <code>2:4</code> as its slice of row indices while <code>.iloc[]</code> took <code>2:5</code> and yet they returned the same rows! The methods handle slices differently!</p>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
+<div id="extract-multiple-rows" class="section level2" number="8.2">
+<h2 number="8.2"><span class="header-section-number">8.2</span> Extract multiple rows</h2>
+<p>Similar to the above, <code>.loc[]</code> and <code>.iloc[]</code> can be used to get multiple rows (and all columns). This is a rare occasion where both methods are used in the exact same way!</p>
+<pre class="python"><code># Format is [[row_idxs], :] to get multiple rows and all columns
+rows = df.loc[[1, 3], :]
+print(rows)</code></pre>
+<pre><code>##          Athlete        Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 1  Justin Gatlin  United States   34  10.01        9.94  9.89          0.152          Silver
+## 3    Yohan Blake        Jamaica   26  10.11       10.01  9.93          0.145             4th</code></pre>
+<pre class="python"><code># Format is [[row_idxs], :] to get multiple rows and all columns
+rows = df.iloc[[1, 3], :]
+print(rows)</code></pre>
+<pre><code>##          Athlete        Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 1  Justin Gatlin  United States   34  10.01        9.94  9.89          0.152          Silver
+## 3    Yohan Blake        Jamaica   26  10.11       10.01  9.93          0.145             4th</code></pre>
+<p><strong>Extract multiple <em>consecutive</em> rows:</strong><br />
+Use slices instead of lists for the row indices/names:</p>
+<pre class="python"><code># Format is [slice, :] to get consecutive rows and all columns
+rows = df.loc[2:3, :]
+print(rows)</code></pre>
+<pre><code>##            Athlete  Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 2  Andre De Grasse   Canada   21  10.04        9.92  9.91          0.141          Bronze
+## 3      Yohan Blake  Jamaica   26  10.11       10.01  9.93          0.145             4th</code></pre>
+<pre class="python"><code># Format is [slice, :] to get consecutive rows and all columns
+rows = df.iloc[2:4, :]
+print(rows)</code></pre>
+<pre><code>##            Athlete  Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 2  Andre De Grasse   Canada   21  10.04        9.92  9.91          0.141          Bronze
+## 3      Yohan Blake  Jamaica   26  10.11       10.01  9.93          0.145             4th</code></pre>
+<p>Once again note that <code>.loc[]</code> and <code>.iloc[]</code> handle slices differently (<code>2:3</code> and <code>2:4</code> produced the same result!).</p>
+<p><strong>Bonus:</strong> you can index a data frame directly (ie without using a function or method) with a slice to get consecutive rows:</p>
+<pre class="python"><code># Format is [slice] to get consecutive rows
+rows = df[slice(2, 4)]
+print(rows)</code></pre>
+<pre><code>##            Athlete  Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 2  Andre De Grasse   Canada   21  10.04        9.92  9.91          0.141          Bronze
+## 3      Yohan Blake  Jamaica   26  10.11       10.01  9.93          0.145             4th</code></pre>
+<pre class="python"><code>rows = df[2:4]
+print(rows)</code></pre>
+<pre><code>##            Athlete  Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 2  Andre De Grasse   Canada   21  10.04        9.92  9.91          0.141          Bronze
+## 3      Yohan Blake  Jamaica   26  10.11       10.01  9.93          0.145             4th</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a> <!-- 4. Graphing using pyplot (quicker for simple plots but gives you less control over how they look)
-    - Box Plots (aka box-and-whisker plots)
-        + One Group of Data
-        + Multiple Groups of Data
-    + Bar Plots
-        + One Group of Data
-        + Multiple Groups of Data --> <!-- 5. Graphing using axes (more complicated but gives you more control) --></li>
-<li>Graphing using axes
+<div id="extract-one-row" class="section level2" number="8.3">
+<h2 number="8.3"><span class="header-section-number">8.3</span> Extract one row</h2>
+<p>Extracting just one row uses the same process as extracting multiple rows, except this time only one row is specified. Any of the three aforementioned methods can be used (<code>.loc[]</code>, <code>.iloc[]</code> and direct indexing).</p>
+<p>To extract the row as a <strong>data frame</strong> (ie as a spreadsheet with only one row), use a list (ie have square brackets around the row index) or slice:</p>
+<pre class="python"><code># Format is [[number], :] to get one row and all columns as a data frame
+row = df.loc[[5], :]
+print(row)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97  9.96          0.156             6th</code></pre>
+<pre class="python"><code># Format is [[number], :] to get one row and all columns as a data frame
+row = df.iloc[[5], :]
+print(row)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97  9.96          0.156             6th</code></pre>
+<pre class="python"><code># Format is [slice(x, x + 1)] to get one row and all columns as a data frame
+row = df[slice(5, 6)]
+print(row)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97  9.96          0.156             6th</code></pre>
+<pre class="python"><code># Format is [x:x + 1] to get one row and all columns as a data frame
+row = df[5:6]
+print(row)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97  9.96          0.156             6th</code></pre>
+<p>To extract the row as a <strong>series</strong> (ie as a column with only one row), use a value (ie do not have square brackets around the row index):</p>
+<pre class="python"><code># Format is [number, :] to get one row and all columns as a series
+row = df.loc[5, :]
+print(row)</code></pre>
+<pre><code>## Athlete            Ben Youssef Meïté
+## Country                  Ivory Coast
+## Age                               29
+## Heat                           10.03
+## Semi-Final                      9.97
+## Final                           9.96
+## Reaction Time                  0.156
+## Finish Position                  6th
+## Name: 5, dtype: object</code></pre>
+<pre class="python"><code># Format is [number, :] to get one row and all columns as a series
+row = df.iloc[5, :]
+print(row)</code></pre>
+<pre><code>## Athlete            Ben Youssef Meïté
+## Country                  Ivory Coast
+## Age                               29
+## Heat                           10.03
+## Semi-Final                      9.97
+## Final                           9.96
+## Reaction Time                  0.156
+## Finish Position                  6th
+## Name: 5, dtype: object</code></pre>
+<pre class="python"><code># Format is [number] to get one row and all columns as a series
+row = df.loc[5]
+print(row)</code></pre>
+<pre><code>## Athlete            Ben Youssef Meïté
+## Country                  Ivory Coast
+## Age                               29
+## Heat                           10.03
+## Semi-Final                      9.97
+## Final                           9.96
+## Reaction Time                  0.156
+## Finish Position                  6th
+## Name: 5, dtype: object</code></pre>
+<p><strong>Extract one row and only certain columns:</strong><br />
+If you use any of the above three methods to extract a single row as a <strong>series</strong> you can then use direct indexing to extract only certain columns:</p>
+<pre class="python"><code># Format is [number, :][[col_names]] to get one row and certain columns as a series
+row = df.loc[5, :][[&#39;Athlete&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]]
+print(row)</code></pre>
+<pre><code>## Athlete       Ben Youssef Meïté
+## Semi-Final                 9.97
+## Final                      9.96
+## Name: 5, dtype: object</code></pre>
+<pre class="python"><code># Format is [number, :][[col_names]] to get one row and certain columns as a series
+row = df.iloc[5, :][[&#39;Athlete&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]]
+print(row)</code></pre>
+<pre><code>## Athlete       Ben Youssef Meïté
+## Semi-Final                 9.97
+## Final                      9.96
+## Name: 5, dtype: object</code></pre>
+<pre class="python"><code># Format is [number][[col_names]] to get one row and certain columns as a series
+row = df.loc[5][[&#39;Athlete&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]]
+print(row)</code></pre>
+<pre><code>## Athlete       Ben Youssef Meïté
+## Semi-Final                 9.97
+## Final                      9.96
+## Name: 5, dtype: object</code></pre>
+<p>In practice, only the last of these three methods makes sense to use because the first two tell Python to extract all columns and then to only extract certain columns!</p>
+</div>
+<div id="extract-multiple-columns" class="section level2" number="8.4">
+<h2 number="8.4"><span class="header-section-number">8.4</span> Extract multiple columns</h2>
+<p><code>.loc[]</code> and <code>.iloc[]</code> can also be used to get multiple columns (and all rows):</p>
+<pre class="python"><code># Format is [:, [col_names]] to get all rows and certain columns
+cols = df.loc[:, [&#39;Athlete&#39;, &#39;Age&#39;]]
+print(cols)</code></pre>
+<pre><code>##              Athlete  Age
+## 0         Usain Bolt   29
+## 1      Justin Gatlin   34
+## 2    Andre De Grasse   21
+## 3        Yohan Blake   26
+## 4      Akani Simbine   22
+## 5  Ben Youssef Meïté   29
+## 6       Jimmy Vicaut   24
+## 7    Trayvon Bromell   21</code></pre>
+<pre class="python"><code># Format is [:, [col_idxs]] to get all rows and certain columns
+cols = df.iloc[:, [0, 2]]
+print(cols)</code></pre>
+<pre><code>##              Athlete  Age
+## 0         Usain Bolt   29
+## 1      Justin Gatlin   34
+## 2    Andre De Grasse   21
+## 3        Yohan Blake   26
+## 4      Akani Simbine   22
+## 5  Ben Youssef Meïté   29
+## 6       Jimmy Vicaut   24
+## 7    Trayvon Bromell   21</code></pre>
+<p><strong>Bonus:</strong> you can index a data frame directly (ie without using a function or method) with a list to get columns:</p>
+<pre class="python"><code># Format is [[col_names]] to get all rows and certain columns
+cols = df[[&#39;Athlete&#39;, &#39;Age&#39;]]
+print(cols)</code></pre>
+<pre><code>##              Athlete  Age
+## 0         Usain Bolt   29
+## 1      Justin Gatlin   34
+## 2    Andre De Grasse   21
+## 3        Yohan Blake   26
+## 4      Akani Simbine   22
+## 5  Ben Youssef Meïté   29
+## 6       Jimmy Vicaut   24
+## 7    Trayvon Bromell   21</code></pre>
+<pre class="python"><code># Format is [list(col_names)] to get all rows and certain columns
+cols = df[list((&#39;Athlete&#39;, &#39;Age&#39;))]
+print(cols)</code></pre>
+<pre><code>##              Athlete  Age
+## 0         Usain Bolt   29
+## 1      Justin Gatlin   34
+## 2    Andre De Grasse   21
+## 3        Yohan Blake   26
+## 4      Akani Simbine   22
+## 5  Ben Youssef Meïté   29
+## 6       Jimmy Vicaut   24
+## 7    Trayvon Bromell   21</code></pre>
+<p><strong>Extract multiple <em>consecutive</em> columns:</strong><br />
+Use slices instead of lists for the column indices. It should be clear that this can only be used together with <code>.iloc[]</code>.</p>
+<pre class="python"><code># Format is [:, slice] to get all rows and consecutive columns
+columns = df.iloc[:, :3]
+print(columns)</code></pre>
+<pre><code>##              Athlete        Country  Age
+## 0         Usain Bolt        Jamaica   29
+## 1      Justin Gatlin  United States   34
+## 2    Andre De Grasse         Canada   21
+## 3        Yohan Blake        Jamaica   26
+## 4      Akani Simbine   South Africa   22
+## 5  Ben Youssef Meïté    Ivory Coast   29
+## 6       Jimmy Vicaut         France   24
+## 7    Trayvon Bromell  United States   21</code></pre>
+</div>
+<div id="extract-one-column" class="section level2" number="8.5">
+<h2 number="8.5"><span class="header-section-number">8.5</span> Extract one column</h2>
+<p>Extracting just one column uses the same process as extracting multiple columns, except this time only one column is specified. Any of the three aforementioned methods can be used (<code>.loc[]</code>, <code>.iloc[]</code> and direct indexing).</p>
+<p>To extract the column as a <strong>data frame</strong> (ie as a spreadsheet with only one column), use a list (ie have square brackets around the column name/index):</p>
+<pre class="python"><code># Format is [:, [&#39;col_name&#39;]] to get all rows and one column as a data frame
+age = df.loc[:, [&#39;Age&#39;]]
+# Format is [:, [col_idx]] to get all rows and one column as a data frame
+age = df.iloc[:, [2]]
+# Format is [[col_idx]] to get all rows and one column as a data frame
+age = df[[&#39;Age&#39;]]
+print(age)</code></pre>
+<pre><code>##    Age
+## 0   29
+## 1   34
+## 2   21
+## 3   26
+## 4   22
+## 5   29
+## 6   24
+## 7   21</code></pre>
+<p>To extract the column as a <strong>series</strong> (ie as a ‘column object’), use a value (ie do not have square brackets around the column name/index):</p>
+<pre class="python"><code># Format is [:, &#39;col_name&#39;] to get all rows and one column as a series
+age = df.loc[:, &#39;Age&#39;]
+# Format is [:, col_idx] to get all rows and one column as a series
+age = df.iloc[:, 2]
+# Format is [col_idx] to get all rows and one column as a series
+age = df[&#39;Age&#39;]
+print(age)</code></pre>
+<pre><code>## 0    29
+## 1    34
+## 2    21
+## 3    26
+## 4    22
+## 5    29
+## 6    24
+## 7    21
+## Name: Age, dtype: int64</code></pre>
+<p><strong>Bonus:</strong> you can use the direct indexing method on any data frame, which means that the following will work:</p>
+<pre class="python"><code># Format is [:][col_name] to get all rows and one column as a series
+age = df.loc[:][&#39;Age&#39;]
+print(age)</code></pre>
+<pre><code>## 0    29
+## 1    34
+## 2    21
+## 3    26
+## 4    22
+## 5    29
+## 6    24
+## 7    21
+## Name: Age, dtype: int64</code></pre>
+<p><strong>Extract one column and only certain rows:</strong><br />
+Any of the above methods that use <code>.loc[]</code> or <code>.iloc[]</code> can be simply adapted to extract only certain rows by replacing the colon with either a list or a slice:</p>
+<pre class="python"><code># Format is [[row_idx], &#39;col_name&#39;] to get certain rows and one column as a series
+age = df.loc[[2, 3], &#39;Athlete&#39;]
+print(age)</code></pre>
+<pre><code>## 2    Andre De Grasse
+## 3        Yohan Blake
+## Name: Athlete, dtype: object</code></pre>
+<pre class="python"><code># Format is [slice, col_idx] to get certain, consecutive rows and one column as a series
+age = df.iloc[2:4, 0]
+print(age)</code></pre>
+<pre><code>## 2    Andre De Grasse
+## 3        Yohan Blake
+## Name: Athlete, dtype: object</code></pre>
+<p><strong>Bonus:</strong> again, because you can use the direct indexing method on any data frame, the following is also an option:</p>
+<pre class="python"><code># Format is [slice][col_name] to get certain, consecutive rows and one column as a series
+age = df.loc[2:3][&#39;Athlete&#39;]
+print(age)</code></pre>
+<pre><code>## 2    Andre De Grasse
+## 3        Yohan Blake
+## Name: Athlete, dtype: object</code></pre>
+</div>
+<div id="extract-one-cell" class="section level2" number="8.6">
+<h2 number="8.6"><span class="header-section-number">8.6</span> Extract one cell</h2>
+<p>The most correct way to extract a single value from a data frame or series is to use <code>.at[]</code> or <code>.iat[]</code> depending on whether you want to use the name or the index of the column, respectively.</p>
+<p><code>.at[]</code> uses the <strong>name</strong> of the column you are interested in:</p>
+<pre class="python"><code># Format is [row_idx, &#39;col_name&#39;]
+cell = df.at[3, &#39;Athlete&#39;]
+print(cell)</code></pre>
+<pre><code>## Yohan Blake</code></pre>
+<p><code>.iat[]</code> uses the <strong>index</strong> of the column you are interested in:</p>
+<pre class="python"><code># Format is [row_idx, col_idx]
+cell = df.iat[3, 0]
+print(cell)</code></pre>
+<pre><code>## Yohan Blake</code></pre>
+<p>Note that it is also possible (but less ‘correct’) to use <code>.loc[]</code> and <code>.iloc[]</code> to extract a single cell. These methods are actually meant to be used for extracting groups of rows and columns, but if you use them to extract a group of <em>one</em> row and <em>one</em> column it’s exactly the same as extracting a single cell!</p>
+<p>First, this is how you use <code>.loc[]</code> and <code>.iloc[]</code> to extract single cells as <strong>data frames</strong> (ie spreadsheets, which in this case only have one cell):</p>
+<pre class="python"><code># Format is [[row_idxs], [col_names]] to get a data frame
+cell = df.loc[[3], [&#39;Athlete&#39;]]
+print(cell)</code></pre>
+<pre><code>##        Athlete
+## 3  Yohan Blake</code></pre>
+<pre class="python"><code># Format is [[row_idxs], [col_idxs]] to get a data frame
+cell = df.iloc[[3], [0]]
+print(cell)</code></pre>
+<pre><code>##        Athlete
+## 3  Yohan Blake</code></pre>
+<p>Extract single cells as <strong>series</strong> (ie columns, which in this case only have one cell) by providing either the row or the column as a value, not as a list (ie don’t use square brackets). Whether you provide the row or the column as a value will determine whether your result is named after it’s row or it’s column:</p>
+<pre class="python"><code># Format is [[row_idx], col_name] to get a cell named after it&#39;s column
+cell = df.loc[[3], &#39;Athlete&#39;]
+print(cell)</code></pre>
+<pre><code>## 3    Yohan Blake
+## Name: Athlete, dtype: object</code></pre>
+<pre class="python"><code># Format is [row_idx, [col_idxs]] to get a cell named after it&#39;s row
+cell = df.iloc[3, [0]]
+print(cell)</code></pre>
+<pre><code>## Athlete    Yohan Blake
+## Name: 3, dtype: object</code></pre>
+<p>To use <code>.loc[]</code> and <code>.iloc[]</code> to extract single values as <strong>strings or numbers</strong>, provide both the row and the column as values as opposed to as lists:</p>
+<pre class="python"><code># Format is [row_idx, &#39;col_name&#39;] if you want a single cell
+cell = df.loc[3, &#39;Athlete&#39;]
+print(cell)</code></pre>
+<pre><code>## Yohan Blake</code></pre>
+<pre class="python"><code># Format is [row_idx, col_idx] if you want a single cell
+cell = df.iloc[3, 0]
+print(cell)</code></pre>
+<pre><code>## Yohan Blake</code></pre>
+<p>Finally, you can also use a mixture of these methods and direct indexing to extract single values:</p>
+<pre class="python"><code># Format is [row_idx][&#39;col_name&#39;] if you want a single cell
+cell = df.loc[3][&#39;Athlete&#39;]
+print(cell)</code></pre>
+<pre><code>## Yohan Blake</code></pre>
+<pre class="python"><code># Format is [row_idx][col_idx] if you want a single cell
+cell = df.iloc[3][0]
+print(cell)</code></pre>
+<pre><code>## Yohan Blake</code></pre>
+</div>
+</div>
+<div id="searching-finding-filtering" class="section level1" number="9">
+<h1 number="9"><span class="header-section-number">9</span> Searching, Finding, Filtering</h1>
+<p>While ‘indexing’ is something you do when you know exactly which row(s) and column(s) you want, sometimes you do NOT know exact what you want. Instead, you first need to search through the data frame to find the information you are looking for. Then you can subset the data frame to filter out any information you don’t want:</p>
 <ul>
-<li>Box Plots (aka box-and-whisker plots)
+<li>‘Search’ the data frame to see if the data you are looking for exists
 <ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
+<li>The result will be a <strong>boolean</strong> (ie True/False): the data was either found or it wasn’t</li>
 </ul></li>
-<li>Bar Plots
+<li>‘Find’ the data if it does exist
 <ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
+<li>The result will be the <strong>location</strong> of the data</li>
 </ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
+<li>‘Filter’ the data frame so that it only contains what you want
+<ul>
+<li>The result will be a <strong>new data frame</strong>, smaller than the original one, containing only the data you want</li>
 </ul></li>
-</ol>
+</ul>
+<div id="searching" class="section level2" number="9.1">
+<h2 number="9.1"><span class="header-section-number">9.1</span> Searching</h2>
+<p><strong>Search a column:</strong><br />
+Does a column contain a certain value? For example, was Yohan Blake in the final?</p>
+<pre class="python"><code># Search for a value
+result = &#39;Yohan Blake&#39; in df[&#39;Athlete&#39;].values
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<p>Alternatively, this type of search can be done using the <code>.any()</code> and <code>.all()</code> methods:</p>
+<pre class="python"><code># Search for any occurrence of a value
+result = (df[&#39;Athlete&#39;] == &#39;Yohan Blake&#39;).any()
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<pre class="python"><code># Check if all values in a column meet a criteria
+result = (df[&#39;Age&#39;] &lt;= 34).all()
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<p><strong>Search the values in a column individually:</strong><br />
+You can also get the results of the search for each row: for each athlete, do they come from Jamaica?</p>
+<pre class="python"><code># Search each row for a value
+result = df[&#39;Country&#39;] == &#39;Jamaica&#39;
+print(list(result))</code></pre>
+<pre><code>## [True, False, False, True, False, False, False, False]</code></pre>
+<p>The same thing can be done with a function: the <code>where()</code> function from Numpy:</p>
+<pre class="python"><code>import numpy as np
+
+result = np.where(df[&#39;Country&#39;] == &#39;Jamaica&#39;, True, False)
+print(list(result))</code></pre>
+<pre><code>## [True, False, False, True, False, False, False, False]</code></pre>
+<p><strong>Search for substrings:</strong><br />
+Instead of just searching for athletes with certain names, we can search <code>within</code> the names for athletes who have the letter “e” in their name, for example:</p>
+<pre class="python"><code># Search for a substring
+result = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
+print(result)</code></pre>
+<pre><code>## [False, False, True, True, True, True, False, True]</code></pre>
+<p>Note that the specific task of searching for a letter within a column of strings can also be performed using the <code>.contains()</code> method:</p>
+<pre class="python"><code># Search for a substring
+result = df[&#39;Athlete&#39;].str.contains(&#39;e&#39;)
+print(list(result))</code></pre>
+<pre><code>## [False, False, True, True, True, True, False, True]</code></pre>
+<p><strong>Append the results of a search as a column:</strong><br />
+It’s a small extra step to add the results of a search to the data frame itself:</p>
+<pre class="python"><code># Search for a substring
+df[&#39;e in name?&#39;] = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
+print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
+<pre><code>##              Athlete  e in name?
+## 0         Usain Bolt       False
+## 1      Justin Gatlin       False
+## 2    Andre De Grasse        True
+## 3        Yohan Blake        True
+## 4      Akani Simbine        True
+## 5  Ben Youssef Meïté        True
+## 6       Jimmy Vicaut       False
+## 7    Trayvon Bromell        True</code></pre>
+<p>Do the same thing but using a loop:</p>
+<pre class="python"><code># Search for a substring
+df[&#39;e in name?&#39;] = False
+for i, row in df.iterrows():
+    if &#39;e&#39; in df.at[i, &#39;Athlete&#39;]:
+        df.at[i, &#39;e in name?&#39;] = True
+    else:
+        df.at[i, &#39;e in name?&#39;] = False
+print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
+<pre><code>##              Athlete  e in name?
+## 0         Usain Bolt       False
+## 1      Justin Gatlin       False
+## 2    Andre De Grasse        True
+## 3        Yohan Blake        True
+## 4      Akani Simbine        True
+## 5  Ben Youssef Meïté        True
+## 6       Jimmy Vicaut       False
+## 7    Trayvon Bromell        True</code></pre>
+<p><strong>Search through multiple columns:</strong><br />
+The logical operators ‘and’ (<code>&amp;</code>) and ‘or’ (<code>|</code>) can be used to find rows that match very specific criteria. Notice the round brackets that are being used to group the logical evaluations together:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Semi-Final&#39;] == 10.01) | ((df[&#39;Final&#39;] == 9.89) &amp; (df[&#39;Country&#39;] == &#39;United States&#39;))
+print(list(results))</code></pre>
+<pre><code>## [False, True, False, True, False, False, False, True]</code></pre>
+<p><strong>Search using inequalities:</strong><br />
+In addition to the logical operators, the following inequality symbols can be mixed and matched:</p>
+<ul>
+<li>Greater than: <code>&gt;</code></li>
+<li>Less than: <code>&lt;</code></li>
+<li>Greater than or equal to: <code>&gt;=</code></li>
+<li>Less than or equal to: <code>&lt;=</code></li>
+<li>not equal to: <code>!=</code></li>
+</ul>
+<pre class="python"><code>df[&#39;Sub-10&#39;] = df[&#39;Final&#39;] &lt; 10.00
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Sub-10&#39;]])</code></pre>
+<pre><code>##              Athlete  Final  Sub-10
+## 0         Usain Bolt   9.81    True
+## 1      Justin Gatlin   9.89    True
+## 2    Andre De Grasse   9.91    True
+## 3        Yohan Blake   9.93    True
+## 4      Akani Simbine   9.94    True
+## 5  Ben Youssef Meïté   9.96    True
+## 6       Jimmy Vicaut  10.04   False
+## 7    Trayvon Bromell  10.06   False</code></pre>
+<p>Similar to a previous example, the same thing can be done with the <code>where()</code> function from Numpy:</p>
+<pre class="python"><code>import numpy as np
+
+df[&#39;Sub-10&#39;] = np.where(df[&#39;Final&#39;] &lt; 10.00, True, False)
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Sub-10&#39;]])</code></pre>
+<pre><code>##              Athlete  Final  Sub-10
+## 0         Usain Bolt   9.81    True
+## 1      Justin Gatlin   9.89    True
+## 2    Andre De Grasse   9.91    True
+## 3        Yohan Blake   9.93    True
+## 4      Akani Simbine   9.94    True
+## 5  Ben Youssef Meïté   9.96    True
+## 6       Jimmy Vicaut  10.04   False
+## 7    Trayvon Bromell  10.06   False</code></pre>
+<p><strong>Search using inequalities across multiple columns:</strong><br />
+For example, which non-American athletes ran sub-10 in the final?</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
+print(list(results))</code></pre>
+<pre><code>## [True, False, True, True, True, True, False, False]</code></pre>
+<p>…or:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = np.where((df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00), True, False)
+print(list(results))</code></pre>
+<pre><code>## [True, False, True, True, True, True, False, False]</code></pre>
+<p><strong>Search through column names:</strong><br />
+Instead of searching through the <em>data in a column</em> you can also search through the <em>names of the columns</em> to see if the one you are looking for has been created yet. For example, has a column been created that contains the time the athletes ran in the final?</p>
+<pre class="python"><code># Search for a column name
+result = &#39;Final&#39; in list(df)
+print(result)</code></pre>
+<pre><code>## True</code></pre>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<div id="hypothesis-testing" class="section level4">
-<h4>Hypothesis Testing</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ol>
+<div id="finding" class="section level2" number="9.2">
+<h2 number="9.2"><span class="header-section-number">9.2</span> Finding</h2>
+<p>‘Finding’ is similar to ‘searching’ except you get the <em>indices</em> of the matches, not just whether they exist or not. For example, what row in the data frame is occupied by Andre De Grasse?</p>
+<pre class="python"><code># Find
+idx = df[df[&#39;Athlete&#39;] == &#39;Andre De Grasse&#39;].index
+print(f&#39;As an index object: {idx}\nAs a list: {list(idx)}&#39;)</code></pre>
+<pre><code>## As an index object: Int64Index([2], dtype=&#39;int64&#39;)
+## As a list: [2]</code></pre>
+<p>Now that we can find indices, let’s use them to look up data in the table:</p>
+<p><strong>VLOOKUP using index:</strong><br />
+Find a value in a column corresponding to a value in a different column. For example, what was Akani Simbine’s time in his heat?</p>
+<pre class="python"><code># Look up
+idx = df[df[&#39;Athlete&#39;] == &#39;Akani Simbine&#39;].index
+value = df.loc[idx, &#39;Heat&#39;]
+print(f&quot;Akani Simbine&#39;s time in his heat: {list(value)[0]}s&quot;)</code></pre>
+<pre><code>## Akani Simbine&#39;s time in his heat: 10.14s</code></pre>
+<p><strong>VLOOKUP using Booleans:</strong><br />
+Instead of using indices, can search a data frame or column using any of the methods described above to generate Booleans. Those can then be used to index the data frame or column to leave only those that were ‘found in the search’. As an example, here’s how to find the non-American athletes who ran sub-10 <strong>and</strong> get their names:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
+# Index a column with the results of the search
+non_american_sub_10 = df[&#39;Athlete&#39;][results]
+print(list(non_american_sub_10))</code></pre>
+<pre><code>## [&#39;Usain Bolt&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;]</code></pre>
 </div>
-<div id="agreement-accuracy-precision" class="section level4">
-<h4>Agreement (Accuracy &amp; Precision)</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-</ol>
+<div id="filtering" class="section level2" number="9.3">
+<h2 number="9.3"><span class="header-section-number">9.3</span> Filtering</h2>
+<p>Filtering removes all rows whose values do not meet certain criteria.</p>
+<p><strong>Filter using a single criteria:</strong><br />
+As an example, here is the data of the United States athletes only:</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;] == &#39;United States&#39;]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position
+## 1    Justin Gatlin  United States   34  10.01        9.94   9.89          0.152          Silver
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06          0.135             8th</code></pre>
+<p>…and of the non-United States athletes only:</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;] != &#39;United States&#39;]
+print(subset)</code></pre>
+<pre><code>##              Athlete       Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position
+## 0         Usain Bolt       Jamaica   29  10.07        9.86   9.81          0.155            Gold
+## 2    Andre De Grasse        Canada   21  10.04        9.92   9.91          0.141          Bronze
+## 3        Yohan Blake       Jamaica   26  10.11       10.01   9.93          0.145             4th
+## 4      Akani Simbine  South Africa   22  10.14        9.98   9.94          0.128             5th
+## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96          0.156             6th
+## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04          0.140             7th</code></pre>
+<p>Let’s take another look at the above code. It starts off as a search: <code>df[&#39;Country&#39;] == &#39;United States&#39;</code> will search for all rows in the “Country” column that are equal to “United States” and return a <strong>series of Booleans</strong> (True, False, etc, corresponding to the rows in which the “United States” text was found). That series of Booleans is then used to <strong>index</strong> the data frame, and only the rows corresponding to the “Trues” in the Boolean series ‘survive’ the indexing.</p>
+<p><strong>Filter using a list of criteria:</strong><br />
+Instead of matching only one criteria, here is how to filter out all rows that do not match either of two criteria: what is the data for athletes who came from either the United States or South Africa?</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;])]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position
+## 1    Justin Gatlin  United States   34  10.01        9.94   9.89          0.152          Silver
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94          0.128             5th
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06          0.135             8th</code></pre>
+<p>…and all athletes who came from <em>neither</em> the US or SA:</p>
+<pre class="python"><code># Filter
+subset = df[~df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;])]
+print(subset)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position
+## 0         Usain Bolt      Jamaica   29  10.07        9.86   9.81          0.155            Gold
+## 2    Andre De Grasse       Canada   21  10.04        9.92   9.91          0.141          Bronze
+## 3        Yohan Blake      Jamaica   26  10.11       10.01   9.93          0.145             4th
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97   9.96          0.156             6th
+## 6       Jimmy Vicaut       France   24  10.19        9.95  10.04          0.140             7th</code></pre>
+<p><strong>Filter using multiple lists of criteria/multiple columns:</strong><br />
+Using ‘and not’ logic:</p>
+<pre class="python"><code>subset = df[
+    df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;, &#39;Jamaica&#39;]) &amp; ~
+    df[&#39;Age&#39;].isin([26, 34])
+]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Reaction Time Finish Position
+## 0       Usain Bolt        Jamaica   29  10.07        9.86   9.81          0.155            Gold
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94          0.128             5th
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06          0.135             8th</code></pre>
+<p>Using ‘or’ logic:</p>
+<pre class="python"><code>subset = df[
+    df[&#39;Country&#39;].isin([&#39;South Africa&#39;]) |
+    df[&#39;Age&#39;].isin([26, 34])
+]
+print(subset)</code></pre>
+<pre><code>##          Athlete        Country  Age   Heat  Semi-Final Final  Reaction Time Finish Position
+## 1  Justin Gatlin  United States   34  10.01        9.94  9.89          0.152          Silver
+## 3    Yohan Blake        Jamaica   26  10.11       10.01  9.93          0.145             4th
+## 4  Akani Simbine   South Africa   22  10.14        9.98  9.94          0.128             5th</code></pre>
+<p>Of course, <em>all</em> the above filtering examples work with both strings and numbers as the criteria.</p>
+<p><strong>Filter out nulls:</strong><br />
+Filter out all rows that have a null value in a particular column:</p>
+<pre class="python"><code>subset = df[df[&#39;Age&#39;].notnull()]</code></pre>
+<p>Filter out all rows that contain any null values in any columns:</p>
+<pre class="python"><code>subset = df.dropna()</code></pre>
+<p><strong>Removing duplicates:</strong><br />
+Remove all rows that appear more than once:</p>
+<pre class="python"><code>df.drop_duplicates()</code></pre>
 </div>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-</ol>
+<div id="performing-calculations-on-a-data-frame" class="section level1" number="10">
+<h1 number="10"><span class="header-section-number">10</span> Performing Calculations on a Data Frame</h1>
+<div id="perform-standard-calculations-on-rows" class="section level2" number="10.1">
+<h2 number="10.1"><span class="header-section-number">10.1</span> Perform standard calculations on rows</h2>
+<p>Pandas has a number of common statistical operations built-in as methods. For example, calculate the mean time each athlete took to run 100m across their heat, semi-final and final (ie calculate the mean of each row):</p>
+<pre class="python"><code># Calculate means
+means = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean(axis=1)
+# or
+means = df.loc[:, [&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean(axis=1)
+print(list(round(means, 2)))</code></pre>
+<pre><code>## [9.91, 9.95, 9.96, 10.02, 10.02, 9.99, 10.06, 10.07]</code></pre>
+<p>And calculate the total time each athlete was running for (calculate the total of each row):</p>
+<pre class="python"><code># Calculate totals
+total_time = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].sum(axis=1)
+print(list(round(total_time, 2)))</code></pre>
+<pre><code>## [29.74, 29.84, 29.87, 30.05, 30.06, 29.96, 30.18, 30.2]</code></pre>
+</div>
+<div id="perform-standard-calculations-on-columns" class="section level2" number="10.2">
+<h2 number="10.2"><span class="header-section-number">10.2</span> Perform standard calculations on columns</h2>
+<p>The built-in methods work similarly on columns as to how they work on rows. The difference is which ‘axis’ they operate on: axis=0 is for columns and axis=1 is for rows. By default these methods work over columns (axis=0). For example, calculate the mean time that these athletes took to complete their heat, semi-final and final respectively (ie calculate the mean of each column):</p>
+<pre class="python"><code># Calculate means
+means = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean()
+print(list(round(means, 2)))</code></pre>
+<pre><code>## [10.09, 9.96, 9.94]</code></pre>
+<pre class="python"><code># or
+means = df.loc[:, [&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean()
+print(list(round(means, 2)))</code></pre>
+<pre><code>## [10.09, 9.96, 9.94]</code></pre>
+<p>And the total time they took to complete the heats, semi-finals and final (calculate the total of each column):</p>
+<pre class="python"><code># Calculate totals
+total_time = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].sum()
+print(list(round(total_time, 2)))</code></pre>
+<pre><code>## [80.72, 79.64, 79.54]</code></pre>
+<p><strong>Perform standard calculations on columns using subsetting:</strong><br />
+If we search a column for values and subset the column to extract just those values we can then use them in a calculation. For example, here is how to calculate how many Americans were in the race by counting the number of occurrences of “United States” in the Country column:</p>
+<pre class="python"><code>n_americans = len([v for v in df[&#39;Country&#39;] if v == &#39;United States&#39;])
+print(n_americans)</code></pre>
+<pre><code>## 2</code></pre>
+</div>
+<div id="perform-direct-calculations-using-columns" class="section level2" number="10.3">
+<h2 number="10.3"><span class="header-section-number">10.3</span> Perform direct calculations using columns</h2>
+<p>We aren’t limited to just using the built-in methods, we can actually perform whatever operations we want <strong>directly</strong> on the values in each row. For example, here’s a more ‘direct’ way of calculating the total of all the times in each row:</p>
+<pre class="python"><code># Calculate totals
+total_time = df[&#39;Heat&#39;] + df[&#39;Semi-Final&#39;] + df[&#39;Final&#39;]
+print([round(x, 2) for x in total_time])</code></pre>
+<pre><code>## [29.74, 29.84, 29.87, 30.05, 30.06, 29.96, 30.18, 30.2]</code></pre>
+</div>
+<div id="perform-direct-calculations-using-rows" class="section level2" number="10.4">
+<h2 number="10.4"><span class="header-section-number">10.4</span> Perform direct calculations using rows</h2>
+<p>Similarly, here’s a more ‘direct’ way to sum up all the times in each column. It is, however, more fiddly as you need to extract just the numerical data and convert each row to an array:</p>
+<pre class="python"><code># Extract only the numerical data
+times = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]]
+# Add the rows
+total_time = times.values[0] + times.values[1] + times.values[2] + times.values[3] + times.values[4] + times.values[5] + times.values[6] + times.values[7]
+print(total_time)</code></pre>
+<pre><code>## [80.72 79.64 79.54]</code></pre>
+<p><strong>Iterate over rows:</strong><br />
+Yet another way to sum up all the values in a column is to iterate over each row in that column:</p>
+<pre class="python"><code># Initialise output array
+total_time = np.zeros([1, 3])
+# Iterate over rows
+for i, row in df.iterrows():
+    total_time = total_time + row[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].values
+print(total_time)</code></pre>
+<pre><code>## [[80.72 79.64 79.54]]</code></pre>
+<p>Iteration over rows can also be used to sum up the values in each row:</p>
+<pre class="python"><code># Initialise the output column
+df[&#39;Total Time&#39;] = np.nan
+for i, row in df.iterrows():
+    df.loc[i, &#39;Total Time&#39;] = row[&#39;Heat&#39;] + row[&#39;Semi-Final&#39;] + row[&#39;Final&#39;]
+print(list(round(df[&#39;Total Time&#39;], 2)))</code></pre>
+<pre><code>## [29.74, 29.84, 29.87, 30.05, 30.06, 29.96, 30.18, 30.2]</code></pre>
+<p>Here’s another example using iteration over each row in a column, this time in order to <strong>update</strong> it:</p>
+<pre class="python"><code># Increase the ages of all athletes by 1 year
+new_age = []
+for v in df[&#39;Age&#39;]:
+    new_age.append(v + 1)
+df[&#39;New age&#39;] = new_age
+print(list(df[&#39;New age&#39;]))</code></pre>
+<pre><code>## [30, 35, 22, 27, 23, 30, 25, 22]</code></pre>
+<p>Note that the above example can also be done using <strong>list comprehension</strong>:</p>
+<pre class="python"><code>df[&#39;New age&#39;] = [v + 1 for v in df[&#39;Age&#39;]]
+print(list(df[&#39;New age&#39;]))</code></pre>
+<pre><code>## [30, 35, 22, 27, 23, 30, 25, 22]</code></pre>
+</div>
+<div id="perform-lambda-calculations-on-rows" class="section level2" number="10.5">
+<h2 number="10.5"><span class="header-section-number">10.5</span> Perform lambda calculations on rows</h2>
+<p><strong>Lambda calculations</strong> are useful when you want to perform operations on <em>each cell</em> in a particular row as opposed to on <em>all</em> cells in that row or on the row as a whole. For example, if we want to round Yohan Blake’s times to three significant figures each, there is no single, pre-defined function that we can apply to all cells in his row that will do this. There is the <code>round()</code> function, but that would round all his times to a given number of <em>decimal places</em> not to a given number of <em>significant figures</em>:</p>
+<pre class="python"><code># Extract only the numerical data
+times = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]]
+# Round all values to one decimal place
+rounded = round(times, 1)
+# Extract Yohan Blake&#39;s times
+rounded = rounded.loc[[4], :]
+print(rounded)</code></pre>
+<pre><code>##    Heat  Semi-Final Final
+## 4  10.1        10.0  9.94</code></pre>
+<p>As you can see, the method above resulted in 3, 3 and 2 significant figures. The reason this is difficult is because the times he ran (10.11, 10.01 and 9.93) have 4, 4 and 3 digits respectively, so they need to be rounded to 1, 1 and 2 decimal places to leave 3 sig figs in each. Hence we need to apply a function differently to each cell, and a lambda function does exactly this:</p>
+<pre class="python"><code># Apply a function differently to each cell in one row
+sig_figs = times.apply(lambda x: str(x[4])[:4])
+print(list(sig_figs))</code></pre>
+<pre><code>## [&#39;10.1&#39;, &#39;9.98&#39;, &#39;9.94&#39;]</code></pre>
+<p>And now we have three significant figures as desired.</p>
+</div>
+<div id="perform-lambda-calculations-on-columns" class="section level2" number="10.6">
+<h2 number="10.6"><span class="header-section-number">10.6</span> Perform lambda calculations on columns</h2>
+<p>Similar to the above, lambda calculations can be used on columns to apply a function differently to each cell in that column. For example, if we want to extract just the the first name of each athlete, we will need to look up where the first space is in each of their names and extract the letters that come before it:</p>
+<pre class="python"><code># Find the first name of each athlete
+first_name = df.apply(lambda x: x[&#39;Athlete&#39;][:x[&#39;Athlete&#39;].find(&#39; &#39;)], axis=1)
+print(list(first_name))</code></pre>
+<pre><code>## [&#39;Usain&#39;, &#39;Justin&#39;, &#39;Andre&#39;, &#39;Yohan&#39;, &#39;Akani&#39;, &#39;Ben&#39;, &#39;Jimmy&#39;, &#39;Trayvon&#39;]</code></pre>
+<p>Notice that we had to specify <code>axis=1</code> to apply the function to a column as opposed to a row (<code>axis=0</code>) which is the default.</p>
+</div>
+<div id="perform-lambda-calculations-on-data-frames" class="section level2" number="10.7">
+<h2 number="10.7"><span class="header-section-number">10.7</span> Perform lambda calculations on data frames</h2>
+<p>Lambda functions can also be performed on entire data frames, which enables us to perform calculations using <strong>multiple</strong> rows or columns. This example uses multiple columns to find the average time for all of each athlete’s races (there are simpler ways to do this calculation, this is just for demonstration!):</p>
+<pre class="python"><code>df[&#39;Mean Time&#39;] = df.apply(lambda df: (df[&#39;Heat&#39;] + df[&#39;Semi-Final&#39;] + df[&#39;Final&#39;]) / 3, axis=1)
+print(list(round(df[&#39;Mean Time&#39;], 2)))</code></pre>
+<pre><code>## [9.91, 9.95, 9.96, 10.02, 10.02, 9.99, 10.06, 10.07]</code></pre>
+</div>
+<div id="perform-custom-calculations-on-columns" class="section level2" number="10.8">
+<h2 number="10.8"><span class="header-section-number">10.8</span> Perform custom calculations on columns</h2>
+<p>If you want to perform a function that is complex or specific enough to make lambda functions cumbersome, the best option is to create a custom function and <code>.apply()</code> it to the column. Here’s an example that stratifies the final times into categories:</p>
+<pre class="python"><code>def stratify(time):
+    &quot;&quot;&quot;Assign a categorical description to a time.&quot;&quot;&quot;
+    if time &lt;= 9.9:
+        category = &#39;Sub-9.9&#39;
+    elif time &lt;= 10.0:
+        category = &#39;Sub-10&#39;
+    else:
+        category = &#39;Not sub-10&#39;
+    return category
+
+
+# Apply a function to a column
+df[&#39;Category&#39;] = df[&#39;Final&#39;].apply(stratify)
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Category&#39;]])</code></pre>
+<pre><code>##              Athlete  Final    Category
+## 0         Usain Bolt   9.81     Sub-9.9
+## 1      Justin Gatlin   9.89     Sub-9.9
+## 2    Andre De Grasse   9.91      Sub-10
+## 3        Yohan Blake   9.93      Sub-10
+## 4      Akani Simbine   9.94      Sub-10
+## 5  Ben Youssef Meïté   9.96      Sub-10
+## 6       Jimmy Vicaut  10.04  Not sub-10
+## 7    Trayvon Bromell  10.06  Not sub-10</code></pre>
+<p><strong>Alternative ways to stratify data into two categories:</strong><br />
+If your aim is to sort your data into categories then another option, besides applying custom functions, is to just index the data:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = &#39;Not sub-10&#39;
+df.loc[df[&#39;Final&#39;] &lt;= 10.0, &#39;Category&#39;] = &#39;Sub-10&#39;
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>…or you could use Numpy’s <code>where()</code> function:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = np.where(df[&#39;Final&#39;] &lt;= 10.0, &#39;Sub-10&#39;, &#39;Not sub-10&#39;)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>The <code>np.where()</code> function is equivalent to the <code>ifelse()</code> function in R.</p>
+<p><strong>Alternative ways to stratify data into three categories:</strong><br />
+Repeating the above methods with three categories give this:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = &#39;Not sub-10&#39;
+df.loc[df[&#39;Final&#39;] &lt;= 10.0, &#39;Category&#39;] = &#39;Sub-10&#39;
+df.loc[df[&#39;Final&#39;] &lt;= 9.9, &#39;Category&#39;] = &#39;Sub-9.9&#39;
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>…and using <code>where()</code>:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = np.where(
+    df[&#39;Final&#39;] &lt;= 9.9, &#39;Sub-9.9&#39;, np.where(df[&#39;Final&#39;] &lt;= 10.0, &#39;Sub-10&#39;, &#39;Not sub-10&#39;)
+)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>However, the <strong>most correct</strong> way to stratify data into three or more categories is by using Numpy’s <code>select()</code> function:</p>
+<pre class="python"><code>conditions = [
+    (df[&#39;Final&#39;] &lt;= 9.9),
+    (df[&#39;Final&#39;] &lt;= 10.0),
+]
+categories = [&#39;Sub-9.9&#39;, &#39;Sub-10&#39;]
+df[&#39;Category&#39;] = np.select(conditions, categories, default=&#39;Not sub-10&#39;)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>Here’s a similar example using multiple columns to do the stratification:</p>
+<pre class="python"><code>conditions = [
+    (df[&#39;Semi-Final&#39;] &lt;= 9.9) &amp; (df[&#39;Final&#39;] &lt;= 9.9),
+    (df[&#39;Semi-Final&#39;] &lt;= 10.0) &amp; (df[&#39;Final&#39;] &lt;= 10.0)
+]
+categories = [&#39;Sub-9.9&#39;, &#39;Sub-10&#39;]
+df[&#39;Category&#39;] = np.select(conditions, categories, default=&#39;Not sub-10&#39;)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+</div>
+</div>
+<div id="cleaning-a-data-frame" class="section level1" number="11">
+<h1 number="11"><span class="header-section-number">11</span> Cleaning a Data Frame</h1>
+<p>Data cleaning is done to handle incomplete or partially incorrect datasets:</p>
+<ul>
+<li>An <strong>incomplete</strong> dataset will have missing values in some places</li>
+<li>A <strong>partially incorrect</strong> dataset might have misspelled column headings or similar</li>
+</ul>
+<div id="replace-nans" class="section level2" number="11.1">
+<h2 number="11.1"><span class="header-section-number">11.1</span> Replace NaNs</h2>
+<p>If you have missing data (an <strong>incomplete</strong> dataset) these cells will contain Numpy’s “not-a-number” object, NaN. These can be replaced with any other value you want.</p>
+<p><strong>Sanitise whole data frame:</strong></p>
+<pre class="python"><code># Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    &#39;Athlete&#39;: [&#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;],
+    &#39;Country&#39;: [np.nan, &#39;United States&#39;, np.nan],
+    &#39;Age&#39;: [29, np.nan, 21]
+})
+# Replace NaNs
+df_sanitised = df_unsanitised.fillna(&#39;Unknown&#39;)
+print(df_sanitised)</code></pre>
+<pre><code>##            Athlete        Country      Age
+## 0       Usain Bolt        Unknown       29
+## 1    Justin Gatlin  United States  Unknown
+## 2  Andre De Grasse        Unknown       21</code></pre>
+<p><strong>Sanitise one column:</strong><br />
+If you want to replace missing data in one column only the default behaviour is for <em>only that column</em> to be returned. This usually isn’t what you want, so use the ‘inplace’ keyword argument to perform the replacement in the data frame immediately without needing to assign a return to anything:</p>
+<pre class="python"><code># Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    &#39;Athlete&#39;: [&#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;],
+    &#39;Country&#39;: [np.nan, &#39;United States&#39;, np.nan],
+    &#39;Age&#39;: [29, np.nan, 21]
+})
+# Replace NaNs in one column
+df_unsanitised[&#39;Country&#39;].fillna(&#39;Unknown&#39;, inplace=True)
+print(df_unsanitised)</code></pre>
+<pre><code>##            Athlete        Country   Age
+## 0       Usain Bolt        Unknown  29.0
+## 1    Justin Gatlin  United States   NaN
+## 2  Andre De Grasse        Unknown  21.0</code></pre>
+</div>
+<div id="replace-values" class="section level2" number="11.2">
+<h2 number="11.2"><span class="header-section-number">11.2</span> Replace values</h2>
+<p><strong>Sanitise whole data frame:</strong><br />
+If you known there are some values that are misspelled you can replace all of them in the data frame in one go:</p>
+<pre class="python"><code># Replace all occurrences of a value
+df_replaced = df.replace([&#39;United States&#39;, &#39;South Africa&#39;], [&#39;USA&#39;, &#39;RSA&#39;])
+print(list(df_replaced[&#39;Country&#39;]))</code></pre>
+<pre><code>## [&#39;Jamaica&#39;, &#39;USA&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;RSA&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;USA&#39;]</code></pre>
+<p>If you want to replace incorrect data with “None” values you will need to use Numpy’s “not-a-number” objects rather that Python’s built-in “None” objects. This is because when Python inserts a “None” values it will actually remove that cell, the space will be filled with the value in the cell above!</p>
+<pre class="python"><code>df_replaced = df.replace(&#39;United States&#39;, None)  # This does not work as expected!
+print(df_replaced)</code></pre>
+<pre><code>##              Athlete       Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt       Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin       Jamaica   34  10.01        9.94   9.89
+## 2    Andre De Grasse        Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake       Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine  South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell        France   21  10.13       10.01  10.06</code></pre>
+<p>Justin Gatlin does not come from Jamaica and Trayvon Bromell does not come from France! Rather do this:</p>
+<pre class="python"><code>df_replaced = df.replace(&#39;United States&#39;, np.nan)
+print(df_replaced)</code></pre>
+<pre><code>##              Athlete       Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt       Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin           NaN   34  10.01        9.94   9.89
+## 2    Andre De Grasse        Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake       Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine  South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell           NaN   21  10.13       10.01  10.06</code></pre>
+<p><strong>Sanitise one column:</strong><br />
+If you want to only replace values in one column, you can use indexing:</p>
+<pre class="python"><code>df.loc[df[&#39;Age&#39;] == 22, &#39;Age&#39;] = &#39;twenty-two&#39;
+print(list(df[&#39;Age&#39;]))</code></pre>
+<pre><code>## [29, 34, 21, 26, &#39;twenty-two&#39;, 29, 24, 21]</code></pre>
+</div>
+<div id="use-lambda-functions" class="section level2" number="11.3">
+<h2 number="11.3"><span class="header-section-number">11.3</span> Use lambda functions</h2>
+<p>If you want to do more complicated searches and replaces that require functions to be run on cells as individual values (as opposed to being run on columns as a whole), you will need to use lambda functions.</p>
+<pre class="python"><code># Create a column with data that has inconsistent formatting
+df[&#39;Time&#39;] = [&#39;+9.81&#39;, &#39;9.89&#39;, &#39;9.91s&#39;, &#39;9.93s&#39;, &#39;9.94&#39;, &#39;-9.96&#39;, &#39;+10.04&#39;, &#39;10.06s&#39;]
+print(list(df[&#39;Time&#39;]))</code></pre>
+<pre><code>## [&#39;+9.81&#39;, &#39;9.89&#39;, &#39;9.91s&#39;, &#39;9.93s&#39;, &#39;9.94&#39;, &#39;-9.96&#39;, &#39;+10.04&#39;, &#39;10.06s&#39;]</code></pre>
+<pre class="python"><code># Sanitise column
+df[&#39;Time&#39;] = df[&#39;Time&#39;].map(lambda x: x.lstrip(&#39;+-&#39;).rstrip(&#39;s&#39;))
+print(list(df[&#39;Time&#39;]))</code></pre>
+<pre><code>## [&#39;9.81&#39;, &#39;9.89&#39;, &#39;9.91&#39;, &#39;9.93&#39;, &#39;9.94&#39;, &#39;9.96&#39;, &#39;10.04&#39;, &#39;10.06&#39;]</code></pre>
+</div>
+<div id="convert-data-type" class="section level2" number="11.4">
+<h2 number="11.4"><span class="header-section-number">11.4</span> Convert data type</h2>
+<p>If you have values that are numbers instead of strings, or values that are strings instead of integers or floats, you should convert them to the correct data type. The below method using a lambda function is able to handle missing data:</p>
+<pre class="python"><code># Convert integers to strings
+df[&#39;Age&#39;] = df[&#39;Age&#39;].apply(lambda x: str(x) if pd.notnull(x) else x)
+
+# Convert strings to floats
+df[&#39;Age&#39;] = df[&#39;Age&#39;].notnull().astype(float)
+
+# Convert objects to numbers
+df[&#39;Age&#39;] = df[&#39;Age&#39;].astype(str).astype(float)
+
+# Convert objects to Booleans
+df[&#39;Age&#39;] = df[&#39;Age&#39;].astype(&#39;bool&#39;)</code></pre>
+</div>
+<div id="sanitise-data-using-regex" class="section level2" number="11.5">
+<h2 number="11.5"><span class="header-section-number">11.5</span> Sanitise data using RegEx</h2>
+<p>If you’re replacing values with special characters you may need to use regular expressions (RegEx):</p>
+<pre class="python"><code>df = df.replace({&#39;\n&#39;: &#39;&lt;br&gt;&#39;}, regex=True)</code></pre>
+</div>
+</div>
+<div id="sorting" class="section level1" number="12">
+<h1 number="12"><span class="header-section-number">12</span> Sorting</h1>
+<div id="sort-rows" class="section level2" number="12.1">
+<h2 number="12.1"><span class="header-section-number">12.1</span> Sort rows</h2>
+<p><strong>Ascending order:</strong><br />
+Sort on one column:</p>
+<pre class="python"><code>df_sorted = df.sort_values(&#39;Athlete&#39;)
+print(df_sorted)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93</code></pre>
+<p>Sort first by one column, then by another:</p>
+<pre class="python"><code>df_sorted = df.sort_values([&#39;Country&#39;, &#39;Age&#39;])
+print(df_sorted)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89</code></pre>
+<p><strong>Descending order:</strong></p>
+<pre class="python"><code>df_sorted = df.sort_values(&#39;Athlete&#39;, ascending=False, na_position=&#39;first&#39;)
+print(df_sorted)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94</code></pre>
+</div>
+<div id="re-order-columns" class="section level2" number="12.2">
+<h2 number="12.2"><span class="header-section-number">12.2</span> Re-order columns</h2>
+<p><strong>Using the columns’ names:</strong><br />
+The method below can also be used to remove a column: just leave it out of the indexing.</p>
+<pre class="python"><code>df_reordered = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;, &#39;Athlete&#39;, &#39;Country&#39;, &#39;Age&#39;]]
+print(list(df_reordered))</code></pre>
+<pre><code>## [&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;, &#39;Athlete&#39;, &#39;Country&#39;, &#39;Age&#39;]</code></pre>
+<p><strong>Using the columns’ indices:</strong></p>
+<pre class="python"><code>cols = list(df)
+cols = cols[:2] + [cols[-1]] + cols[2:-1]
+df_reordered = df[cols]
+print(list(df_reordered))</code></pre>
+<pre><code>## [&#39;Athlete&#39;, &#39;Country&#39;, &#39;Final&#39;, &#39;Age&#39;, &#39;Heat&#39;, &#39;Semi-Final&#39;]</code></pre>
+</div>
+</div>
+<div id="export" class="section level1" number="13">
+<h1 number="13"><span class="header-section-number">13</span> Export</h1>
+<p>For more ways to export data frames, see <a href="../data/create_export_import_convert.html">the page on file IO</a>.</p>
+<pre class="python"><code># Export data frame to comma-separated values (.csv)
+df.to_csv(&#39;data frame.csv&#39;, index=False)</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
