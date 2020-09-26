@@ -47,16 +47,18 @@ method_b <- c(
 First, let's visualise this data:
 
 ```{r}
+# Make the plot square
+par(pty="s")
 # Scatter plot
 plot(
     method_a, method_b, main = "The Raw Data",
     xlab = "Method A", ylab = "Method B",
-    pch = 21, col = "black", bg="gray"
+    pch = 21, col = "black", bg="gray", xaxs = "i", yaxs = "i"
 )
 # Reference line
 abline(0, 1, lty = "dashed")
 # Include a legend
-legend(0, 1000, "Reference line", lty = "dashed")
+legend(0, 1000, "Reference line", lty = "dashed", cex = 0.8)
 ```
 
 Now let's caclulate the Passing-Bablok line of best-fit and its confidence interval. This is done using the `mcreg` function from the `mcr` package, specifying what method you want to use with `method.reg = "PaBa"` as below:
@@ -94,11 +96,13 @@ Now let's visualise this result and how it approximates the raw data:
 ```{r}
 library(scales)
 
+# Make the plot square
+par(pty="s")
 # Scatter plot
 plot(
     method_a, method_b, main = "Passing-Bablok Regression",
     xlab = "Method A", ylab = "Method B",
-    pch = 21, col = "black", bg="gray"
+    pch = 21, col = "black", bg="gray", xaxs = "i", yaxs = "i"
 )
 # Fill in colour between the confidence intervals
 mylims <- par("usr")
@@ -127,7 +131,8 @@ legend(
     ),
     lty = c("dashed", "solid", "solid", "solid"),
     lwd = c(1, 2, 1, 1),
-    col = c("black", "dodgerblue", alpha("dodgerblue", 1), alpha("dodgerblue", 1))
+    col = c("black", "dodgerblue", alpha("dodgerblue", 1), alpha("dodgerblue", 1)),
+    cex = 0.8
 )
 ```
 

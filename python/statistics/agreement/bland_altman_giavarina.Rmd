@@ -167,11 +167,11 @@ Now we can plot this data (this plot re-produces Figure 2 of Bland & Altman (198
 ax = plt.axes()
 ax.set(
     title='Bland-Altman Plot for Two Methods of Measuring PEFR',
-    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+    xlabel='Mean (L/min)', ylabel='Difference (L/min)'
 )
 # Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
-# Plot the x-axis
+# Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
 ax.axhline(y=upper_loa, c='grey', ls='--')
@@ -187,27 +187,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left, left + domain * 1.1)
 # Add the annotations
-ax.annotate(
-    '+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    '-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
+ax.annotate('+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{bias:+4.2f}', (right, bias), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
 # Show plot
 plt.show()
 ```
@@ -216,11 +201,11 @@ plt.show()
 ax = plt.axes()
 ax.set(
     title='Bland-Altman Plot for Two Methods of Measuring PEFR',
-    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+    xlabel='Mean (L/min)', ylabel='Difference (L/min)'
 )
 # Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
-# Plot the x-axis
+# Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
 ax.axhline(y=upper_loa, c='grey', ls='--')
@@ -236,27 +221,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left, left + domain * 1.1)
 # Add the annotations
-ax.annotate(
-    '+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    '-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
+ax.annotate('+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{bias:+4.2f}', (right, bias), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
 # Show plot
 plt.show()
 ```
@@ -300,28 +270,28 @@ These can now be added to the plot:
 
 ```{python, eval = FALSE}
 # Plot the confidence intervals
-ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
-ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
-ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--', alpha=0.5)
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--', alpha=0.5)
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--', alpha=0.5)
 # Plot the confidence intervals' caps
 x_range = [left - domain * 0.025, left + domain * 0.025]
-ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--', alpha=0.5)
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
 ax = plt.axes()
 ax.set(
     title='Bland-Altman Plot for Two Methods of Measuring PEFR',
-    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+    xlabel='Mean (L/min)', ylabel='Difference (L/min)'
 )
 # Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
-# Plot the x-axis
+# Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
 ax.axhline(y=upper_loa, c='grey', ls='--')
@@ -359,17 +329,17 @@ ax.annotate(
     textcoords='offset pixels'
 )
 # Plot the confidence intervals
-ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
-ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
-ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--')
+ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--', alpha=0.5)
+ax.plot([left] * 2, list(ci_bias), c='grey', ls='--', alpha=0.5)
+ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--', alpha=0.5)
 # Plot the confidence intervals' caps
 x_range = [left - domain * 0.025, left + domain * 0.025]
-ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--')
-ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--')
+ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--', alpha=0.5)
 # Show plot
 plt.show()
 ```
@@ -598,11 +568,11 @@ Plot:
 ax = plt.axes()
 ax.set(
     title='Bland-Altman Plot for Two Hypothetical Measurement Methods',
-    xlabel='Means (L/min)', ylabel='Differences (L/min)'
+    xlabel='Mean', ylabel='Difference'
 )
 # Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
-# Plot the x-axis
+# Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
 ax.axhline(y=upper_loa, c='grey', ls='--')
@@ -618,27 +588,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
 # Add the annotations
-ax.annotate(
-    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
+ax.annotate('+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{bias:+4.2f}', (right, bias), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
 # Plot the confidence intervals
 ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
 ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
@@ -663,7 +618,7 @@ ax.set(
 )
 # Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
-# Plot the x-axis
+# Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
 ax.axhline(y=upper_loa, c='grey', ls='--')
@@ -679,27 +634,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
 # Add the annotations
-ax.annotate(
-    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
+ax.annotate('+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{bias:+4.2f}', (right, bias), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
 # Plot the confidence intervals
 ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
 ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
@@ -759,7 +699,7 @@ ax.set(
 )
 # Scatter plot
 ax.scatter(means, percent_diffs, c='k', s=20, alpha=0.6, marker='o')
-# Plot the x-axis
+# Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
 ax.axhline(y=upper_loa, c='grey', ls='--')
@@ -775,27 +715,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
 # Add the annotations
-ax.annotate(
-    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    fr'{upper_loa:+4.2f}\%', (right, upper_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    fr'{bias:+4.2f}\%', (right, bias), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    fr'{lower_loa:+4.2f}\%', (right, lower_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
+ax.annotate('+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(fr'{upper_loa:+4.2f}\%', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(fr'{bias:+4.2f}\%', (right, bias), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(fr'{lower_loa:+4.2f}\%', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
 # Plot the confidence intervals
 ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
 ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
@@ -820,7 +745,7 @@ ax.set(
 )
 # Scatter plot
 ax.scatter(means, percent_diffs, c='k', s=20, alpha=0.6, marker='o')
-# Plot the x-axis
+# Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
 ax.axhline(y=upper_loa, c='grey', ls='--')
@@ -836,27 +761,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left - domain * 0.05, left + domain * 1.13)
 # Add the annotations
-ax.annotate(
-    '+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    fr'{upper_loa:+4.2f}\%', (right, upper_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    fr'{bias:+4.2f}\%', (right, bias), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    '-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    fr'{lower_loa:+4.2f}\%', (right, lower_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
+ax.annotate('+1.96×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(fr'{upper_loa:+4.2f}\%', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(fr'{bias:+4.2f}\%', (right, bias), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('-1.96×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
+ax.annotate(fr'{lower_loa:+4.2f}\%', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
 # Plot the confidence intervals
 ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--')
 ax.plot([left] * 2, list(ci_bias), c='grey', ls='--')
