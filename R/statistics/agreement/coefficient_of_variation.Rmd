@@ -1,0 +1,183 @@
+---
+title: '<font size="5">Statistics in R:</font><br>Coefficient of Variation'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+The **coefficient of variation** is a *measure of dispersion* of a distribution of numbers. The shorthand is "CV"; avoid using "CoV" or similar because that's generally used for "covariance".
+
+One Sample
+==========
+The coefficient of variation of a single set of numbers is the ratio of the numbers' standard deviation to their mean: $c_v = \frac{\sigma}{\mu}$ or, if expressed as a percentage: $c_v = \frac{\sigma}{\mu} \times 100$
+
+In other words, it is the dispersion of the numbers relative to their size:
+
+- If the numbers are large, it's less important if they are spread out: if you take repeated measurements of the diameter of the Earth and your measurements differ by a matter of metres each time, it's no big deal
+- However, if the numbers are small, it's more important if they are spread out: if you take repeated measurements of someone's height and your measurements differ by a matter of metres each time then it means that something is going on!
+
+Here's an example (taken from [the Wikipedia page](https://en.wikipedia.org/wiki/Coefficient_of_variation) on coefficients of variation):
+
+```{r}
+numbers <- c(1, 5, 6, 8, 10, 40, 65, 88)
+
+mean <- mean(numbers)
+sd <- sd(numbers)
+
+# As a unitless value
+cv <- sd / mean
+print(cv)
+# As a percentage
+cv <- cv * 100
+print(cv)
+```
+
+This can be reported via a statement such as:
+
+```{r}
+print(sprintf("The standard deviation is %5.1f%% of the mean.", cv))
+```
+
+Two Samples
+===========
+When you have **repeated** measurements, things become a bit more complicated. Conceptually, it should still be possible to describe your numbers' variation using a measure of dispersion relative to the size of the values, but which standard deviation(s) should we divide by what mean(s)?
+
+A two-sample coefficient of variation is usually called a 'within-subject' coefficient of variation (${cv}_{ws}$), not only to differentiate it from a one-sample coefficient of variation but also to reflect the fact that in scientific studies you are measuring the variation of repeated measurements on one subject.
+
+Bland (2006)
+------------
+Martin Bland (he of Bland-Altman fame) talks about how to calculate a within-subject coefficient of variation [on his website](https://www-users.york.ac.uk/~mb55/meas/cv.htm#:~:text=In%20the%20study%20of%20measurement,within%2Dsubject%20coefficient%20of%20variation). He used Stata to do the calculations on his page, but here is his analysis translated into R.
+
+Let's start by creating fake data for the purpose of this example: 100 repeated measurements (so 200 numbers in total) created using random sampling of the Normal distribution:
+
+```{r}
+# Use a seed so that the random numbers are the same each time
+set.seed(20201126)
+# Create fake data
+t <- 6 + rnorm(100)
+x <- t + rnorm(100) * t / 20
+y <- t + rnorm(100) * t / 20
+# Plot
+par(pty="s")
+plot(x, y, main = "Visualisation of the Example Data")
+```
+
+**Method 1:** the root-mean-square approach  
+Taken from [here](https://www-users.york.ac.uk/~mb55/meas/cv.htm#:~:text=In%20the%20study%20of%20measurement,within%2Dsubject%20coefficient%20of%20variation).  
+
+```{r}
+# Calculate the within-subject variance for the natural scale values. Within-subject variance is
+# given by 'difference squared over 2' when we have pairs of subjects:
+s2 <- (x - y)**2 / 2
+# Calculate subject mean and s squared / mean squared, ie CV squared:
+m <- (x + y) / 2
+s2m2 <- s2 / m**2
+# Calculate mean of s squared / mean squared:
+ms2m2 <- mean(s2m2)
+# The within-subject CV is the square root of the mean of s squared / mean squared:
+cv_ws <- sqrt(ms2m2)
+print(sprintf("The within-subject CV is estimated to be %5.3f or %3.1f%%.", cv_ws, cv_ws * 100))
+```
+
+This isn't exactly the same as Bland's results because his random data would have been slightly different.
+
+**Method 2:** the logarithmic approach  
+Taken from [here](https://www-users.york.ac.uk/~mb55/meas/cv.htm#:~:text=In%20the%20study%20of%20measurement,within%2Dsubject%20coefficient%20of%20variation).  
+
+```{r}
+# First we log transform:
+lx <- log(x)
+ly <- log(y)
+# Calculate the within-subject variance for the log values:
+s2l <- (lx - ly)**2 / 2
+# The within-subject standard deviation on the log scale is the square root of
+# the mean within-subject variance. The CV is the antilog (exponent, since we
+# are using natural logarithms) minus one.
+ms2l <- mean(s2l)
+cv_ws <- exp(sqrt(ms2l)) - 1
+print(sprintf("The within-subject CV is estimated to be %5.3f or %3.1f%%.", cv_ws, cv_ws * 100))
+```
+
+**Method 3:** the whole dataset approach  
+Taken from [here](https://www-users.york.ac.uk/~mb55/meas/cv.htm#:~:text=In%20the%20study%20of%20measurement,within%2Dsubject%20coefficient%20of%20variation).  
+
+```{r}
+# Estimate the within-subject CV using the mean and within-subject standard
+# deviation for the whole dataset:
+s2 <- (x - y)**2 / 2
+ms2 <- mean(s2)
+mx <- mean(x)
+my <- mean(y)
+cv_ws <- sqrt(ms2) / ((mx + my) / 2)
+print(sprintf("The within-subject CV is estimated to be %5.3f or %3.1f%%.", cv_ws, cv_ws * 100))
+```
+
+A Function Based On Bland-Altman Analysis
+-----------------------------------------
+Usually, when you are calculating within-subject coefficient of variation it will form part of a larger Bland-Altman analysis. It thus makes sense to work in the familiar Bland-Altman variables. Have a look at the [page on Bland-Altman analysis](bland_altman_giavarina.html) for more info, but for this example we will just use the function provided by the BlandAltmanLeh package for convenience:
+
+```{r}
+library(BlandAltmanLeh)
+
+# Perform a Bland-Altman analysis
+stats <- bland.altman.stats(x, y)
+
+
+calculate_within_subject_cv <- function(stats, method = "root_mean") {
+    if (method == "root_mean") {
+        n <- stats$based.on
+        sum_squares <- sum((stats$diffs / stats$means)^2, na.rm = T)
+        cv_ws <- sqrt(sum_squares / (2 * n))
+    } else if (method == "logarithmic") {
+        n <- stats$based.on
+        sl <- sum((log(stats$group$group1) - log(stats$group$group2))^2, na.rm = T)
+        cv_ws <- exp(sqrt(sl / (2 * n))) - 1
+    } else if (method == "whole_dataset") {
+        n <- stats$based.on
+        sd <- sqrt(sum(stats$diffs^2) / (2 * n))
+        cv_ws <- sd / mean(stats$means)
+    }
+
+    return(cv_ws)
+}
+
+
+cv_ws <- calculate_within_subject_cv(stats)
+print(sprintf("The within-subject CV is estimated to be %5.3f or %3.1f%%.", cv_ws, cv_ws * 100))
+cv_ws <- calculate_within_subject_cv(stats, "logarithmic")
+print(sprintf("The within-subject CV is estimated to be %5.3f or %3.1f%%.", cv_ws, cv_ws * 100))
+cv_ws <- calculate_within_subject_cv(stats, "whole_dataset")
+print(sprintf("The within-subject CV is estimated to be %5.3f or %3.1f%%.", cv_ws, cv_ws * 100))
+```
+
+It isn't obvious that the code used for the three methods in the above function is the same as that used for the three methods described in the Bland (2006) section, but they are mathematically equivalent.
+
+Here's the above function applied to the data used in [the original Bland-Altman (1986) paper](https://pubmed.ncbi.nlm.nih.gov/2868172/):
+
+```{r}
+df <- data.frame(
+    "Wright Mini" = c(
+        512, 430, 520, 428, 500, 600, 364, 380, 658,
+        445, 432, 626, 260, 477, 259, 350, 451
+    ),
+    "Wright Large" = c(
+        494, 395, 516, 434, 476, 557, 413, 442, 650,
+        433, 417, 656, 267, 478, 178, 423, 427
+    ), check.names = F
+)
+
+stats <- bland.altman.stats(df[["Wright Mini"]], df[["Wright Large"]])
+cv_ws <- calculate_within_subject_cv(stats)
+print(sprintf("The within-subject CV is estimated to be %5.3f or %3.1f%%.", cv_ws, cv_ws * 100))
+```
+
+[⇦ Back](../../../R.html)
+
+</font>

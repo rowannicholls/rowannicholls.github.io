@@ -508,9 +508,11 @@ df <- mutate(spotify, Days.at.no1 = Weeks_at_no1 * 7)
 print(df[c("Song", "Artist", "Weeks_at_no1", "Days.at.no1")])
 ```
 
-Iterate over a Column
-=====================
+Iterate over a Data Frame
+=========================
 
+Iterate over a Column
+---------------------
 Sometimes, instead of performing an operation on an entire column you want to go row-by-row and do something different in each. For this we can iterate over all values in order. For example, if we want to get the average number of streams for each artist:
 
 ```{r}
@@ -547,6 +549,23 @@ kable_styling(
     kable_input, bootstrap_options = c("striped", "hover", "condensed"),
     full_width = F
 )
+```
+
+Iterate over a Column in Place
+------------------------------
+In this example we will iterate over the cells in a column without extracting the column from the data frame it is in:
+
+```{r}
+for (i in 1:nrow(spotify)) {
+    artist <- spotify[i, "Artist"]
+    if (is.na(spotify[i, "Featuring"])) {
+        spotify[i, "Performed By"] <- artist
+    } else {
+        featuring <- spotify[i, "Featuring"]
+        spotify[i, "Performed By"] <- sprintf("%s ft %s", artist, featuring)
+    }
+}
+print(spotify[["Performed By"]])
 ```
 
 Iterate over Two Columns
