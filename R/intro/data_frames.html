@@ -226,8 +226,10 @@ summary {
 <li><a href="#concatenate-strings"><span class="toc-section-number">9.1</span> Concatenate Strings</a></li>
 <li><a href="#perform-calculations"><span class="toc-section-number">9.2</span> Perform Calculations</a></li>
 </ul></li>
-<li><a href="#iterate-over-a-column"><span class="toc-section-number">10</span> Iterate over a Column</a><ul>
-<li><a href="#iterate-over-two-columns"><span class="toc-section-number">10.1</span> Iterate over Two Columns</a></li>
+<li><a href="#iterate-over-a-data-frame"><span class="toc-section-number">10</span> Iterate over a Data Frame</a><ul>
+<li><a href="#iterate-over-a-column"><span class="toc-section-number">10.1</span> Iterate over a Column</a></li>
+<li><a href="#iterate-over-a-column-in-place"><span class="toc-section-number">10.2</span> Iterate over a Column in Place</a></li>
+<li><a href="#iterate-over-two-columns"><span class="toc-section-number">10.3</span> Iterate over Two Columns</a></li>
 </ul></li>
 <li><a href="#summary"><span class="toc-section-number">11</span> Summary</a></li>
 </ul>
@@ -962,8 +964,10 @@ print(df[c(&quot;Song&quot;, &quot;Artist&quot;, &quot;Weeks_at_no1&quot;, &quot
 ## 10 Say You Won't Let Go     James Arthur           NA          NA</code></pre>
 </div>
 </div>
-<div id="iterate-over-a-column" class="section level1">
-<h1><span class="header-section-number">10</span> Iterate over a Column</h1>
+<div id="iterate-over-a-data-frame" class="section level1">
+<h1><span class="header-section-number">10</span> Iterate over a Data Frame</h1>
+<div id="iterate-over-a-column" class="section level2">
+<h2><span class="header-section-number">10.1</span> Iterate over a Column</h2>
 <p>Sometimes, instead of performing an operation on an entire column you want to go row-by-row and do something different in each. For this we can iterate over all values in order. For example, if we want to get the average number of streams for each artist:</p>
 <pre class="r"><code># Initialise a new vector to contain the output
 average_streams &lt;- vector()
@@ -1076,8 +1080,27 @@ James Arthur
 </tr>
 </tbody>
 </table>
+</div>
+<div id="iterate-over-a-column-in-place" class="section level2">
+<h2><span class="header-section-number">10.2</span> Iterate over a Column in Place</h2>
+<p>In this example we will iterate over the cells in a column without extracting the column from the data frame it is in:</p>
+<pre class="r"><code>for (i in 1:nrow(spotify)) {
+    artist &lt;- spotify[i, &quot;Artist&quot;]
+    if (is.na(spotify[i, &quot;Featuring&quot;])) {
+        spotify[i, &quot;Performed By&quot;] &lt;- artist
+    } else {
+        featuring &lt;- spotify[i, &quot;Featuring&quot;]
+        spotify[i, &quot;Performed By&quot;] &lt;- sprintf(&quot;%s ft %s&quot;, artist, featuring)
+    }
+}
+print(spotify[[&quot;Performed By&quot;]])</code></pre>
+<pre><code>##  [1] &quot;Ed Sheeran&quot;                   &quot;Post Malone ft 21 Savage&quot;     &quot;Drake ft Wizkid, Kyla&quot;       
+##  [4] &quot;The Chainsmokers ft Halsey&quot;   &quot;Ed Sheeran&quot;                   &quot;Drake&quot;                       
+##  [7] &quot;Camila Cabello ft Young Thug&quot; &quot;Post Malone ft Swae Lee&quot;      &quot;Ed Sheeran&quot;                  
+## [10] &quot;James Arthur&quot;</code></pre>
+</div>
 <div id="iterate-over-two-columns" class="section level2">
-<h2><span class="header-section-number">10.1</span> Iterate over Two Columns</h2>
+<h2><span class="header-section-number">10.3</span> Iterate over Two Columns</h2>
 <pre class="r"><code># Initialise new vectors to contain the output
 groups &lt;- vector()
 averages &lt;- vector()
