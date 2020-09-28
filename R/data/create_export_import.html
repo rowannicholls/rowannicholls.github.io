@@ -252,8 +252,13 @@ close(fileConn)</code></pre>
 <div id="data-frames-1" class="section level2">
 <h2><span class="header-section-number">2.3</span> Data Frames</h2>
 <p>Export data frame as comma-separated values (.csv):</p>
-<pre class="r"><code>utils::write.csv(df, &quot;csv/data frame.csv&quot;)
-readr::write_csv(df, &quot;csv/data frame.csv&quot;)</code></pre>
+<pre class="r"><code># Option 1
+utils::write.csv(df, &quot;csv/data frame.csv&quot;)
+# Option 2
+readr::write_csv(df, &quot;csv/data frame.csv&quot;)
+
+# Include the row names (this is only an option with write.csv() from utils)
+write.csv(df, &quot;csv/data frame.csv&quot;, row.names = TRUE)</code></pre>
 <p>Export data frame as tab-separated values (.tsv):</p>
 <pre class="r"><code>write.table(df, file = &quot;tsv/data frame.tsv&quot;, sep = &quot;\t&quot;, row.names = FALSE)</code></pre>
 <p>Export data frame as tab-separated values (.tab):</p>
