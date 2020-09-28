@@ -78,8 +78,17 @@ Data Frames
 -----------
 Export data frame as comma-separated values (.csv):
 ```{r}
+# Option 1
 utils::write.csv(df, "csv/data frame.csv")
+# Option 2
 readr::write_csv(df, "csv/data frame.csv")
+
+# Include the row names (this is only an option with write.csv() from utils)
+write.csv(df, "csv/data frame.csv", row.names = TRUE)
+```
+
+```{r, echo = FALSE}
+write.csv(df, "csv/data frame.csv", row.names = FALSE)
 ```
 
 Export data frame as tab-separated values (.tsv):
