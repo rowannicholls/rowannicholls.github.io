@@ -299,6 +299,9 @@ sink()</code></pre>
 df &lt;- readr::read_csv(&quot;csv/data frame.csv&quot;, col_types = cols())</code></pre>
 <p>If there are blank rows at the top of the CSV, skip them when importing it:</p>
 <pre class="r"><code>df &lt;- read.csv(&quot;csv/data frame.csv&quot;, skip = 2)</code></pre>
+<p>Import from the internet:</p>
+<pre class="r"><code>data_url &lt;- &quot;https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/gapminder.csv&quot;
+gapminder &lt;- read.csv(url(data_url))</code></pre>
 <p>Import all CSVs in a folder as a list of data frames:</p>
 <pre class="r"><code>filenames &lt;- list.files(path = &quot;csv&quot;, pattern = &quot;*.csv&quot;)
 filepaths &lt;- file.path(&quot;csv&quot;, filenames)

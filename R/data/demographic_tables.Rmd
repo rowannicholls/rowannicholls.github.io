@@ -1,0 +1,276 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Demographic Data Tables'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+Demographic tables are used to summarise the data that is being used in a study and quickly show differences between subgroups.
+
+Example Data
+============
+For this example, use the "Gapminder" data set. This contains a whole bunch of economic data like GDP, population and life expectancy from countries around the world. Conveniently, an R package has been written to interface with the data, and this can be installed and imported in the same way as any other R package:
+
+```{r}
+library(gapminder)
+```
+
+Note that the data is in tibble format by default, so convert it into a data frame to make things less complicated:
+
+```{r}
+gapminder <- as.data.frame(gapminder)
+```
+
+Alternatively, you can import the data directly from my website (which will save you from installing the package yourself):
+
+```{r, echo = FALSE, eval = FALSE}
+write.csv(gapminder, "../../gapminder.csv", row.names = FALSE)
+```
+
+```{r}
+data_url <- "https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/gapminder.csv"
+gapminder <- read.csv(url(data_url))
+```
+
+As this data set is quite large (it has 1,704 rows) filter it down a bit to make it easier to work with. You can do this by only extracting the data from 2002 and 2007:
+
+```{r}
+gapminder <- subset(gapminder, year == 2002 | year == 2007)
+```
+
+Let's take a look at the first 15 rows:
+
+```{r}
+library(kableExtra)
+
+kable_input <- kable(head(gapminder, 15))
+kable_styling(kable_input, bootstrap_options = c("striped", "hover", "condensed"))
+```
+
+As you can see, we have life expectancy, population and per-capita GDP data for a whole bunch of countries for multiple timepoints. For more information about the Gapminder data set itself see [here](https://www.gapminder.org/data/documentation/) and for more information about the Gapminder R package, see its CRAN [readme](https://cran.r-project.org/web/packages/gapminder/README.html) and [documentation](https://cran.r-project.org/web/packages/gapminder/gapminder.pdf), its [R Documentation page](https://www.rdocumentation.org/packages/gapminder/versions/0.3.0) or its [GitHub page](https://github.com/jennybc/gapminder).
+
+The Data's Format
+=================
+Currently this data is in what's known as **wide format**. This is when each variable has its own column and each row represents a 'entry' into the data set. The other standard format is **long** (or **narrow**) format, which is when all variables are in one column and all values are in another, and each row represents one *measurement* or *reading*. You can convert from wide to long format using the `melt()` function:
+
+```{r}
+# The melt() function from the reshape package converts the format from wide to long
+library(reshape)
+df <- melt(gapminder, id.vars = c("country", "continent", "year"))
+print(head(df, 10))
+```
+
+...and you can convert back to wide format using the `cast()` function:
+
+```{r}
+# The cast() function from the reshape package converts a table from long to wide
+df <- cast(df, country + continent + year ~ variable, value = "value")
+print(head(df, 10))
+```
+
+If we use the `cast()` function on this data frame again we get a **pivot table** which is where each value of a particular variable has its own column. For example, we can have each year be its own column wherein the population of each country in that year is shown:
+
+```{r}
+# The cast() function from the reshape package pivots a table that is in wide format
+library(reshape)
+df <- cast(gapminder, country ~ year, value = "pop")
+print(head(df, 10))
+```
+
+Notice that the above data frame contains only the countries, years and populations. We have lost the continent, life expectancy and GDP data when changing to this format!
+
+In summary:
+
+- `melt()` converts:
+    + A **pivot table** to **wide format**
+    + **Wide format** to **long format**
+- `cast()` does the opposite as it converts:
+    + **Long format** to **wide format**
+    + **Wide format** into a **pivot table**
+
+In general, and for this tutorial in particular, **long format is best!** Additionally, *always* make sure that the columns correspond to the variables as opposed to the rows. Functions don't expect data to be in a **transposed format**:
+
+```{r}
+transposed <- t(gapminder)
+print(transposed[, c(1:5)])
+```
+
+In other words, all the data in each column should always be of the same type (all numbers or all strings).
+
+For more info, see the [page on pivot tables](pivot_tables.html) and the [Wikipedia page on wide vs narrow data](https://en.wikipedia.org/wiki/Wide_and_narrow_data).
+
+```{r, echo = FALSE}
+# The format for the rest of the tutorial
+gapminder <- melt(gapminder, id.vars = c("country", "continent", "year"))
+print(head(gapminder))
+```
+
+Counts
+======
+Now that the data's in the right format, let's take a look at how to create demographic table rows by counting values. The dplyr package will be useful for this so let's import it (and suppress its loading messages while we're at it):
+
+```{r}
+suppressMessages(library(dplyr))
+```
+
+We will mostly be using the `summarise()` function which will allow us to summarise the data in a data frame and display it in a newly-constructed data frame more easily than, for example, the `data.frame()` function. This is because the `summarise()` function takes in a data frame as an input and then assumes the summarising functions you are running are meant for that, whereas with `data.frame()` you need to specify what data you are using in every single function.
+
+Sample size
+-----------
+Get the total n for the data you are working with:
+
+```{r}
+df <- summarise(gapminder, n = n())
+print(df)
+```
+
+The original Gapminder data set has 1,704 rows but we filtered out all but 2 years' worth of data (reducing the size by five-sixths) then converted to long format (which increased the length by a factor of three because there are three variables). Thus we expect to be left with 852 rows because $1704 \div 6 \times 3 = 852$.
+
+Groups
+------
+If we consider each continent to be a group of countries' data and implement this by using the `group_by()` function, we can get the sample size for each:
+
+```{r, message = FALSE}
+df <- group_by(gapminder, continent)
+groups <- summarise(df, n = n())
+print(groups)
+```
+
+Note that this counts each country twice because we have data from each country for two years. So the number of countries in each continent is actually half the numbers shown above.
+
+Expressing these as percentages by dividing by the total number of rows:
+
+```{r, message = FALSE}
+groups <- summarise(df, n = n() / nrow(gapminder) * 100)
+print(as.data.frame(groups))
+```
+
+Changing the number formatting using the `round()` function:
+
+```{r, message = FALSE}
+groups <- summarise(df, n = round(n() / nrow(gapminder) * 100, 1))
+print(as.data.frame(groups))
+```
+
+And use string formatting with the `sprintf()` function:
+
+```{r, message = FALSE}
+groups <- summarise(df, n = sprintf("%d (%.1f%%)", n(), n() / nrow(gapminder) * 100, 2))
+print(as.data.frame(groups))
+```
+
+Missing Data
+------------
+A similar process can be used to count missing data in the data set. The Gapminder data set doesn't actually have any missing data, so let's delete some for the sake of this example:
+
+```{r, message = FALSE}
+gapminder[c(50, 51, 52), "value"] <- NA
+gapminder[c(351, 352, 353), "value"] <- NA
+gapminder[c(698, 699, 700, 701), "value"] <- NA
+```
+
+Now we can use the same functions as above:
+
+```{r, message = FALSE}
+df <- group_by(gapminder, variable)
+missing_data <- summarise(df, `Missing Values` = sum(is.na(value)))
+```
+
+As percentages:
+
+```{r, message = FALSE}
+missing_data <- summarise(df, `Missing Values` = sum(is.na(value)) / n() * 100)
+```
+
+Number formatting
+
+```{r, message = FALSE}
+missing_data <- summarise(df, `Missing Values` = signif(sum(is.na(value)) / n() * 100, 2))
+```
+
+String formatting:
+
+```{r, message = FALSE}
+missing_data <- summarise(df, `Missing Values` = sprintf("%d (%.1f%%)", sum(is.na(value)), sum(is.na(value)) / n() * 100))
+print(as.data.frame(missing_data))
+```
+
+Summary Statistics
+==================
+If your data seems to be symmetrically-distributed, you might report its means and standard deviations. Use the `na.rm = TRUE` flag to remove missing data before performing the calculation (if you don't do this and you have missing data, your results will be `NA`):
+
+```{r, message = FALSE}
+summary_statistics <- summarise(df, `Summary Statistics` = round(mean(value, na.rm = T)))
+print(as.data.frame(summary_statistics))
+```
+
+```{r, message = FALSE}
+summary_statistics <- summarise(
+    df,
+    `Summary Statistics` = sprintf("%.0f (%.0f)", round(mean(value, na.rm = T)), round(sd(value, na.rm = T)))
+)
+print(as.data.frame(summary_statistics))
+```
+
+If your data is not symmetrically-distributed, you might report its medians and inter-quartile ranges:
+
+```{r, message = FALSE}
+summary_statistics <- summarise(df, `Summary Statistics` = round(median(value, na.rm = T)))
+print(as.data.frame(summary_statistics))
+```
+
+```{r, message = FALSE}
+summary_statistics <- summarise(
+    df,
+    `Summary Statistics` = sprintf("%.0f (%.0f)", round(median(value, na.rm = T)), round(IQR(value, na.rm = T)))
+)
+print(as.data.frame(summary_statistics))
+```
+
+Multiple Columns
+================
+An alternative way of presenting the demographic data is to have a separate column for each thing you want to show as opposed to displaying it all in one column. Here's the means and standard deviations in their own columns:
+
+```{r, message = FALSE}
+summary_total <- summarise(
+    df,
+    `Mean` = round(mean(value, na.rm = T)),
+    `Std Dev` = round(sd(value, na.rm = T))
+)
+print(as.data.frame(summary_total))
+```
+
+This can lead to a complication if we want to display multiple groups in a table side-by-side. As an example, here's a demographics table with the subset of the that comes from Europe next to the subset that comes from Asia:
+
+```{r, message = FALSE}
+europe <- subset(df, continent == "Europe")
+summary_europe <- summarise(europe, `Mean` = round(mean(value, na.rm = T)), `Std Dev` = round(sd(value, na.rm = T)))
+
+asia <- subset(df, continent == "Asia")
+summary_asia <- summarise(asia, `Mean` = round(mean(value, na.rm = T)), `Std Dev` = round(sd(value, na.rm = T)))
+
+output <- merge(summary_europe, summary_asia, by = "variable")
+print(output)
+```
+
+How can we include headers to show that columns two and three are "Europe" whilst four and five are "Asia"? It's not really feasible to do this in the data frame itself but we can instead change how it's rendered by using the `add_header_above()` function together with the `kable()` function:
+
+```{r, results = "asis"}
+library(kableExtra)
+
+kable_input <- kable(head(output))
+kable_input <- add_header_above(kable_input, c(" ", "Europe" = 2, "Asia" = 2))
+kable_styling(kable_input, bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+```
+
+
+
+[⇦ Back](../../R.html)
+
+</font>

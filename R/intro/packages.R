@@ -45,7 +45,7 @@
 # install.packages("pROC", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("psych", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("readtext", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
-# install.packages("reshape", repos = "http://cran.us.r-project.org")
+# install.packages("reshape", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("reshape2", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
 # install.packages("Rmisc", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("R.utils", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -59,7 +59,7 @@
 # install.packages("titanic", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("utf8", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("writexl", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
-install.packages("WriteXLS", repos = "http://cran.us.r-project.org")
+# install.packages("WriteXLS", repos = "http://cran.us.r-project.org")
 # install.packages("xlsx", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 0r 20.04 with R 4.0.2
 # install.packages("xtable", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 
