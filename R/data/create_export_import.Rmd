@@ -159,6 +159,12 @@ If there are blank rows at the top of the CSV, skip them when importing it:
 df <- read.csv("csv/data frame.csv", skip = 2)
 ```
 
+Import from the internet:
+```{r}
+data_url <- "https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/gapminder.csv"
+gapminder <- read.csv(url(data_url))
+```
+
 Import all CSVs in a folder as a list of data frames:
 ```{r}
 filenames <- list.files(path = "csv", pattern = "*.csv")
