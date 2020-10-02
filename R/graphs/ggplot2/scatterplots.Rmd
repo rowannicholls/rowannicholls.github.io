@@ -1,0 +1,226 @@
+---
+title: '<font size="5">Graphs in R using ggplot2:</font><br>Scatter Plots'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+The Data
+========
+For this example, we will use the built-in Anscombe data set (specifically, we will use the first of [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet)):
+
+```{r, eval = FALSE}
+# Our x-data
+anscombe$x1
+# Our y-data
+anscombe$y1
+```
+
+```{r, results = "hold", echo = FALSE}
+library(kableExtra)
+
+kable_input <- kable(t(anscombe[c("x1", "y1")]))
+kable_styling(kable_input, bootstrap_options = c("striped", "scale_down", "condensed"), full_width = F)
+```
+
+In general, *any two columns of a data frame that have numerical data can work*.
+
+How Do I Create a Scatter Plot?
+===============================
+In order to create a graph with ggplot you first need to create the plot area (with the `ggplot()` function) and the aesthetic mapping (with the `aes()` function):
+
+```{r}
+library(ggplot2)
+
+p <- ggplot(anscombe, aes(x = x1, y = y1))
+print(p)
+```
+
+Then add your data. In this case, they will be added as **points**:
+
+```{r}
+p <- p + geom_point()
+print(p)
+```
+
+Axis Titles
+===========
+Titles can be added to the plot by using the following functions:
+
+- `ggtitle()` sets the main title of the graph
+- `xlab()` sets the x-axis label
+- `ylab()` sets the y-axis label
+
+Here's what it looks like:
+
+```{r}
+p <- p + ggtitle("Anscombe's Quartet: First Data Set")
+p <- p + ylab("y-values")
+p <- p + xlab("x-values")
+print(p)
+```
+
+Unicode in Axis Titles
+----------------------
+If you are plotting scientific or mathematical results you might need to use units or symbols that are outside of the normal Latin alphabet. In these instances you can incorporate Unicode by using the `\U` Unicode indicator:
+
+```{r}
+q <- p + ggtitle("Demonstration of Unicode in Axis Titles: \U03B6 \U03B5 \U03C9")
+q <- q + ylab("Pi: \U03C0")
+q <- q + xlab("Microseconds (\U03BCs)")
+print(q)
+```
+
+Axis Options
+============
+The limits of the x- and y-axes can be changed with the `xlim` and `ylim` functions. Decide what you want the max and min values of the axes to be and specify these as arguments:
+
+```{r}
+p <- p + xlim(0, 20)
+p <- p + ylim(0, 13)
+print(p)
+```
+
+You can also plot on a log axis if you want. Use the `scale_y_continuous` function:
+
+```{r, message = FALSE}
+q <- p + scale_y_continuous(trans = "log10")
+print(q)
+```
+
+Plot Symbols
+============
+The symbol that is used for the plot points can be changed using the `shape` keyword argument in the `geom_point()` function. There are 26 symbols that can be used this way. For example, if we want to use hollow circles for the plot we can do that by setting `shape` to 1:
+
+```{r}
+p <- ggplot(anscombe, aes(x = x1, y = y1))
+p <- p + geom_point(shape = 1)
+p <- p + ggtitle("Anscombe's Quartet: First Dataset")
+p <- p + ylab("y-values")
+p <- p + xlab("x-values")
+p <- p + xlim(0, 20)
+p <- p + ylim(0, 13)
+print(p)
+```
+
+For a full list of what symbols can be used, click [here](../base/symbols_linetypes_colours.html).
+
+Plot Colours and Size
+=====================
+Change the look of the plot symbols using keyword arguments in the `geom_point()` function:
+
+- `colour` sets either the colour of the symbol (if it only has one colour) or its border colour
+- `fill` sets the fill colour of the symbol if it has a fill colour
+- `size` sets the size of the symbol, not including the border if there is one
+- `stroke` sets the size of the border if there is one
+
+```{r}
+p <- p + geom_point(shape = 21, colour = "skyblue", fill = "white", size = 1.5, stroke = 1.5)
+print(p)
+```
+
+There are three different ways of specifying which colour you want to use:
+
+- Type out the colour's **name**, eg `colour = "blue"` will make the symbols blue. There are 657 colours that can be specified by name in this way, see them all [here](../base/symbols_linetypes_colours.html).
+- Use the **RGB value** of the colour you want by using the format `colour = "#RRGGBB"`. Each pair RR, GG, BB is a hexadecimal number (from 00 to FF) that specifies how much red, green and blue is in the colour of your plot symbol, respectively. For example, '‎#002147' would make your plot Oxford Blue.
+- If you specify a **number** then ggplot will use the corresponding colour from the colour palette that is currently loaded; for example, `colour = 4` will make your symbols blue. This is because the default colour palette is: black, red, green3, blue, cyan, magenta, yellow and grey (in that order), and blue is the 4th element of that list. If you specify a number larger than 8 it will wrap around and start from the beginning again, so `colour = 8` will make your symbols grey (the 8th and final colour in the default colour palette) while `colour = 9` will make your symbols black (the 1st colour). If you are creating a plot that has multiple colours in it then using palettes is a good idea: instead of wasting time trying to find colours that go well together you can just use a palette and cycle through the colours in that. There are many colour palettes available although they need to be 'loaded' before you can use them.
+
+Multiple Plots on the Same Axes
+===============================
+The easiest way to plot multiple data sets on the same axes is to convert your data into **long format** before plotting. Here is one way to do this using the first two data sets within the `anscombe` data frame:
+
+```{r}
+# Extract the first data set
+group1 <- anscombe[c("x1", "y1")]
+# Add the name of this group
+group1$group <- "First data set"
+# Standardise the column names
+colnames(group1) <- c("x", "y", "group")
+
+# Extract the second data set
+group2 <- anscombe[c("x2", "y2")]
+# Add the name of this group
+group2$group <- "Second data set"
+# Standardise the column names
+colnames(group2) <- c("x", "y", "group")
+
+# Combine the data
+data <- rbind(group1, group2)
+print(data)
+```
+
+Now you can plot it. The fact that we're using long format means that ggplot will use different colours and add a legend automatically:
+
+```{r}
+p <- ggplot(data, aes(x, y, group = group, col = group))
+p <- p + geom_point()
+p <- p + ggtitle("Anscombe's Quartet: First and Second Data Sets")
+p <- p + ylab("y-values")
+p <- p + xlab("x-values")
+p <- p + xlim(0, 20)
+p <- p + ylim(0, 13)
+print(p)
+```
+
+This is where the usefulness of having different plot symbols and different plot colours becomes apparent. If both of these data sets were plotted with the same colour and had the same symbol, it would be impossible to tell them apart!
+
+Add a Regression Line
+=====================
+To add a 'line of best fit', use the `geom_smooth()` function with the `lm` (<b>l</b>inear <b>m</b>odel) method. Let's not include the `se` (<b>s</b>tandard <b>e</b>rror) option:
+
+```{r, message = FALSE}
+p <- ggplot(data, aes(x, y, group = group, col = group))
+p <- p + geom_point()
+p <- p + geom_smooth(method = "lm", se = FALSE)
+p <- p + ggtitle("Anscombe's Quartet: First and Second Data Sets")
+p <- p + ylab("y-values")
+p <- p + xlab("x-values")
+p <- p + xlim(0, 20)
+p <- p + ylim(0, 11.5)
+print(p)
+```
+
+Notice that you can only see a blue line. This is because both data sets have the same line of best fit, and so the orange one is hidden underneath the blue one! This is why the Anscombe Quartet of data sets is interesting; despite the fact that they look so different when plotted, [the statistics that describe them are almost identical](../../statistics/descriptive_statistics.html)!
+
+Annotate a Line
+===============
+Add an annotation that is a straight line with its label outside of the plot area. This can obviously be placed at whatever position you want it to, but we will place it at the height of the average value of the data (which, for both of the data sets, is at y = 7.50). This can be done using 'Grobs' - text and line objects from the 'grid' package:
+
+```{r, message = FALSE}
+library(grid)
+
+# Add annotation text in the y-axis labels area
+gtext <- textGrob("Mean", x = -0.04, gp = gpar(col = "red", fontsize = 8))
+p <- p + annotation_custom(gtext, xmin = -Inf, xmax = Inf, ymin = 7.50, ymax = 7.50)
+# Add annotation line
+gline <- linesGrob(x = c(-0.005, 1), gp = gpar(col = "red", lwd = 2))
+p <- p + annotation_custom(gline, xmin = -Inf, xmax = Inf, ymin = 7.50, ymax = 7.50)
+# Add annotations to the plot
+g <- ggplotGrob(p)
+# Turn clipping off
+g$layout$clip[g$layout$name == "panel"] <- "off"
+grid.draw(g)
+```
+
+Save Plot
+=========
+Save your plot to your computer as an image using `ggsave()`. Set the dimensions and quality of the image using keyword arguments:
+
+```{r, eval = FALSE}
+ggsave(
+    filename = "Name of Plot.png", plot = last_plot(),
+    width = 148, height = 105,  # A6 paper size
+    units = "mm",
+    dpi = 150
+)
+```
+
+[⇦ Back](../../../R.html)
+
+</font>

@@ -14,8 +14,8 @@ output:
 How Do I Create a Scatter Plot?
 ===============================
 
-Using Vetors
-------------
+Using Vectors
+-------------
 The easiest way to create a scatter plot in R is by using the `plot()` function:
 
 ```{r}
@@ -85,7 +85,7 @@ plot(
 
 Axis Options
 ============
-The limits of the x- and y-axis can be changed with the `xlim` and `ylim` keyword arguments. Decide what you want the max and min values of the axes to be and specify these as vectors:
+The limits of the x- and y-axes can be changed with the `xlim` and `ylim` keyword arguments. Decide what you want the max and min values of the axes to be and specify these as vectors:
 
 ```{r}
 plot(
@@ -135,9 +135,9 @@ plot(
 
 There are three different ways of specifying which colour you want to use:
 
-- Type out the colour's name, eg `col = "blue"` will make the symbols blue. There are 657 colours that can be specified by name in this way, see them all [here](symbols_linetypes_colours.html).
-- Use the RGB value of the colour you want by using the format `col = "#RRGGBB"`. Each pair RR, GG, BB is a hexadecimal number (from 00 to FF) that specifies how much red, green and blue is in the colour of your plot symbol, respectively. For example, '‎#002147' would make your plot Oxford Blue.
-- Use a colour from a defined palette of colours. If you are creating a plot that has multiple colours in it then using palettes is a good idea: instead of wasting time finding colours that go well together you can just use a palette and cycle through the colours in that. The default colour palette is black, red, green3, blue, cyan, magenta, yellow, gray (in that order) although there are many others and you can load any one that you want. If you specify a symbol colour by using a number, eg `col = 5`, it will look up the 5th colour of whatever palette you have loaded and use that (so if you are using the default palette this will be cyan).
+- Type out the colour's **name**, eg `colour = "blue"` will make the symbols blue. There are 657 colours that can be specified by name in this way, see them all [here](../base/symbols_linetypes_colours.html).
+- Use the **RGB value** of the colour you want by using the format `colour = "#RRGGBB"`. Each pair RR, GG, BB is a hexadecimal number (from 00 to FF) that specifies how much red, green and blue is in the colour of your plot symbol, respectively. For example, '‎#002147' would make your plot Oxford Blue.
+- If you specify a **number** then ggplot will use the corresponding colour from the colour palette that is currently loaded; for example, `colour = 4` will make your symbols blue. This is because the default colour palette is: black, red, green3, blue, cyan, magenta, yellow and grey (in that order), and blue is the 4th element of that list. If you specify a number larger than 8 it will wrap around and start from the beginning again, so `colour = 8` will make your symbols grey (the 8th and final colour in the default colour palette) while `colour = 9` will make your symbols black (the 1st colour). If you are creating a plot that has multiple colours in it then using palettes is a good idea: instead of wasting time trying to find colours that go well together you can just use a palette and cycle through the colours in that. There are many colour palettes available although they need to be 'loaded' before you can use them.
 
 Multiple Plots on the Same Axes
 ===============================
