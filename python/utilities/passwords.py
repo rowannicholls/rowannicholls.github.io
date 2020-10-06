@@ -4,7 +4,7 @@ Generic strong passwords.
 Often when websites require a strong password they want something that contains:
 
 - Alphanumerics (numbers and letters)
-- At least 12 characters
+- At least 10 characters
 - At least one lowercase character
 - At least one uppercase character
 - At least one special character
@@ -19,7 +19,7 @@ import string
 
 alphabet = string.ascii_letters + string.digits + string.punctuation
 while True:
-    password = ''.join(secrets.choice(alphabet) for i in range(12))
+    password = ''.join(secrets.choice(alphabet) for i in range(10))
     if (
         any(c.islower() for c in password) and
         any(c.isupper() for c in password) and
