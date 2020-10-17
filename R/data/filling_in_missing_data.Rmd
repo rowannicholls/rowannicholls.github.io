@@ -1,0 +1,81 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Filling in Missing Data'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+---
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+The Problem
+===========
+Let's say we have the following *incomplete* dataset:
+
+```{r}
+main <- data.frame(
+    Record.Id = c(100, 200, 300, 400, 500, 600),
+    Name = c("Alpha", "Bravo", NA, NA, "Echo", "Foxtrot"),
+    Age = c(NA, NA, NA, NA, 25, 26),
+    Height = c(NA, NA, 173, 174, NA, NA)
+)
+print(main)
+```
+
+There are a whole bunch of `NA` values where data is missing.
+
+Now let's say that we have a *supplementary* dataset that contains some data that the main dataset doesn't:
+
+```{r}
+supplementary <- data.frame(
+    Record.Id = c(300, 400, 500, 600, 100),
+    Name = c("Charlie", "Delta", NA, NA, "Alpha"),
+    Age = c(23, 24, NA, NA, 21),
+    Height = c(173, 174, NA, 176, 171)
+)
+print(supplementary)
+```
+
+We could use this supplementary data to fill in some of the gaps, except that we have two problems:
+
+- The supplementary dataset is not in the same order as the main dataset
+- It is not the same size as the main dataset
+
+So we can't just put the data frames on top of each other and create a simple combination of the two. Essentially, what we want to do is *merge* the two data frames, but "merge" has a very specific definition in R and it's not what we want in this situation.
+
+The Solution
+============
+We need to go row-by-row and column-by-column and assess for each cell of the main data frame that contains a null whether or not the supplementary data frame contains data that could be used to fill the gap. Then, of course, we need to perform the replacement:
+
+```{r}
+# For each column in main
+for (i in seq_len(length(colnames(main)))) {
+    # For each row in main
+    for (j in seq_len(nrow(main))) {
+        # Name of the column
+        col <- colnames(main)[i]
+        # Get the Record.Id from main
+        record_id <- main[[j, "Record.Id"]]
+        # Find the row corresponding to this Record.Id in supplementary
+        idx <- match(record_id, supplementary$"Record.Id")
+        tryCatch({
+            # If the cell in main is NA, replace it with the corresponding cell
+            # in supplementary
+            main[[j, col]] <- ifelse(
+                is.na(main[[j, col]]), supplementary[[idx, col]], main[[j, col]]
+            )
+        }, error = function(e) {
+        })
+    }
+}
+print(main)
+```
+
+This final data frame contains all the data we have available to us.
+
+[⇦ Back](../../R.html)
+
+</font>
