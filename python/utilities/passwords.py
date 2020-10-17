@@ -19,7 +19,7 @@ import string
 
 alphabet = string.ascii_letters + string.digits + string.punctuation
 while True:
-    password = ''.join(secrets.choice(alphabet) for i in range(12))
+    password = ''.join(secrets.choice(alphabet) for i in range(15))
     if (
         any(c.islower() for c in password) and
         any(c.isupper() for c in password) and

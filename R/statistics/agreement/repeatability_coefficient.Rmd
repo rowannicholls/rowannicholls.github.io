@@ -12,12 +12,11 @@ output:
 
 [⇦ Back](../../../R.html)
 
-In theory, if you measure the same thing twice you should get the same reading both times. In reality, however, all measurements will show some *variability* if repeated. The term
-**repeatability** refers to:
+In theory, if you measure the same thing twice you should get the same reading both times. In reality, however, all measurements will show some *variability* if repeated. The term **repeatability** refers to:
 
 > The closeness of agreement between measurements when measured under the same conditions<sup>[1, 2, 3]</sup>
 
-The **repeatability coefficient (RC)** is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases<sup>[4, 5]</sup>. The *smaller* the repeatability coefficient is, the better.
+The **repeatability coefficient (RC)** is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases.<sup>[4, 5]</sup> The *smaller* the repeatability coefficient is, the better.
 
 When we say that the repeated measurements need to be done under "the same conditions", what we mean is that they need to be done with the same:
 
@@ -27,30 +26,30 @@ When we say that the repeated measurements need to be done under "the same condi
 - Operating conditions
 - Physical location
 
-and be done using the same units and over a short period of time<sup>[3, 6]</sup>.
+and be done using the same units and over a short period of time.<sup>[3, 6]</sup>
 
 Quantifying Repeatability
 =========================
-As mentioned, the repeatability coefficient is the value under which the difference between any two repeat measurements of the same measurand acquired under repeatability conditions (aka identical conditions) should fall with 95% probability<sup>[5]</sup>. If we assume Normality (ie if multiple measurements of the same thing will produce values that are Normally distributed around its true value) then this can be mathematically
+As mentioned, the repeatability coefficient is the value under which the difference between any two repeat measurements of the same measurand acquired under repeatability conditions (aka identical conditions) should fall with 95% probability.<sup>[5]</sup> If we assume Normality (ie if multiple measurements of the same thing will produce values that are Normally distributed around its true value) then this can be mathematically
 represented as:
 
 $RC = 1.96 \times \sqrt{2\sigma_w^2} = 2.77\sigma_w$
 
 where $\sigma_w$ is the *within-subject standard deviation* - the standard deviation of the values you will get if you measure the same thing multiple times. In practice, it is not always feasible to attempt to calculate the within-subject standard deviation exactly (as it might require too many repeats, which can be expensive) and it isn't always possible either (ie it might be a function instead of a single number) so it is usually *approximated* as the average (mean) sample standard deviation of multiple sets of repeated measurements. When approximating in this way, we use the symbol $s_w$ to differentiate from the true value of the within-subject standard deviation (which is always $\sigma_w$).
 
-In the special case where the measurements are performed exactly twice on each measurand, then the above equation can be re-written as the following:
+In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows:
 
 $RC = 1.96 \times \sqrt{\frac{\Sigma\left(m_2 - m_1\right)^2}{n}}$
 
-where $m_1$ and $m_2$ are the two measurements taken for each of the $n$ measurands<sup>[7, 8]</sup>. Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because the variance of two observations is half the square of their difference<sup>[9]</sup>.
+where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands.<sup>[7, 8]</sup> Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*.<sup>[9]</sup>
 
 Repeatability vs Reproducibility
 ================================
-Reproducibility is the closeness of agreement between measurements when measured under _**different**_ conditions<sup>[2, 3, 6]</sup>.
+Reproducibility is the closeness of agreement between measurements when measured under _**different**_ conditions.<sup>[2, 3, 6]</sup>
 
 Like repeatability, it involves the same measurement being performed multiple times except now with *different* locations, operators or measuring systems (aka under **reproducibility conditions**).
 
-Similar to the repeatability coefficient, a **reproducibility coefficient (RDC)** can be used. The equation for this is $RDC = 1.96 \times \sqrt{2\sigma_w^2 + \nu^2}$ which is exactly the same as RC with the addition of the $\nu^2$ term (which is the variability attributed to the differing conditions). The value of $\nu^2$ depends on what variables change between measurements<sup>[5]</sup>.
+Similar to the repeatability coefficient, a **reproducibility coefficient (RDC)** can be used. The equation for this is $RDC = 1.96 \times \sqrt{2\sigma_w^2 + \nu^2}$ which is exactly the same as RC with the addition of the $\nu^2$ term (which is the variability attributed to the differing conditions). The value of $\nu^2$ depends on what variables change between measurements.<sup>[5]</sup>
 
 Calculating the Repeatability Coefficient
 =========================================
@@ -263,7 +262,7 @@ print(output$summary)
 
 Bland-Altman (1999)
 -------------------
-Now that we have a function, let's use it on the data from Bland and Altman's 1999 paper<sup>[10]</sup>. These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:
+Now that we have a function, let's use it on the data from Bland and Altman's 1999 paper.<sup>[10]</sup> These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:
 
 ```{r}
 # Raw data

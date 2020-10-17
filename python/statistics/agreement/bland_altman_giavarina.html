@@ -582,17 +582,13 @@ plt.show()</code></pre>
     &quot;&quot;&quot;Calculate agreement statistics.&quot;&quot;&quot;
     tests = list(df)
 
-    #
     # Individual sample calculations
-    #
     df['Mean'] = df[tests].mean(axis=1)
     df['Diff'] = df[tests].diff(axis=1)[tests[-1]]
     df['SD'] = df[tests].std(axis=1, ddof=1)
     df['Variance'] = df['SD']**2
 
-    #
     # Whole sample calculations
-    #
     summary = pd.DataFrame()
     means = ['Mean of ' + test for test in tests]
     for i, mean in enumerate(means):
@@ -610,15 +606,13 @@ plt.show()</code></pre>
     summary.loc[1, 'Lower LoA'] = mean_diff - 1.96 * st_dev_diff
     summary.loc[1, 'Upper LoA'] = mean_diff + 1.96 * st_dev_diff
     # Within-subject standard deviation
-    Sw = np.sqrt(df['Variance'].mean())
-    summary.loc[1, 'Within-Subject SD (Sw)'] = Sw
+    s_w = np.sqrt(df['Variance'].mean())
+    summary.loc[1, 'Within-Subject SD (Sw)'] = s_w
     # Coefficient of repeatability
     col = 'Repeatability Coefficient (RC)'
-    summary.loc[1, col] = np.sqrt(2) * 1.96 * Sw
+    summary.loc[1, col] = np.sqrt(2) * 1.96 * s_w
 
-    #
     # Return
-    #
     return df, summary</code></pre>
 <p>...and here is how it can be used:</p>
 <div id="obrien-and-kaisers-repeated-measures-data" class="section level2">
@@ -627,17 +621,17 @@ plt.show()</code></pre>
 <pre class="python"><code>from pydataset import data
 
 OBrienKaiser = data('OBrienKaiser')
-df = OBrienKaiser[['pre.1', 'pre.2', 'pre.3', 'pre.4']]
+df = OBrienKaiser[['pre.3', 'pre.4']]
 df, summary = bland_altman_analysis(df)
 print(summary)</code></pre>
-<pre><code>##    Mean of pre.1  Mean of pre.2  Mean of pre.3  Mean of pre.4     N   DoF  \
-## 1         3.8125         4.1875         5.3125            4.5  16.0  15.0   
+<pre><code>##    Mean of pre.3  Mean of pre.4     N   DoF  Mean Diff (Bias)  SD Diffs  \
+## 1         5.3125            4.5  16.0  15.0           -0.8125  1.775484   
 ## 
-##    Mean Diff (Bias)  SD Diffs  Lower LoA  Upper LoA  Within-Subject SD (Sw)  \
-## 1           -0.8125  1.775484  -4.292449   2.667449                1.087332   
+##    Lower LoA  Upper LoA  Within-Subject SD (Sw)  \
+## 1  -4.292449   2.667449                 1.38067   
 ## 
 ##    Repeatability Coefficient (RC)  
-## 1                        3.013932</code></pre>
+## 1                        3.827022</code></pre>
 </div>
 <div id="statsmodels" class="section level2">
 <h2><span class="header-section-number">3.2</span> Statsmodels</h2>
