@@ -1,0 +1,160 @@
+---
+title: '<font size="5">Advanced Git:</font><br>Shrink a Git Repository'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+The larger a Git repository, the slower it is. After a certain point, it starts to become frustrating to have such a large folder taking up unnecessary space and causing each Git command to take multiple minutes to execute. More importantly, cloud storage sites such as GitHub and Bitbucket have limits as to how large a repo can be, so there is plenty enough reason to want to reduce bloat.
+
+More often than not, the problem is caused by someone having committed a *binary file*. **Git is designed for code** and plain text files in general, not files such as PDFs, DOCs, JPEGs, etc. The latter are known as binary files because they can only be treated as 'blobs' that have either changed or not. If you commit a Word doc to a Git repo and change just one letter, Git will only be able to tell that the file has changed, not *what* has changed. It will have to commit the changed file as a completely new thing and, as a result, you will have two complete copies of the document stored in your Git history. With plain text files, however, changing one letter will only result in Git storing *that one change*. Much less information needs to be stored and hence the repo stays small and quick to clone and interact with.
+
+So, best practice is to not add large files to repos and to keep it small, but what if someone has? The answer is to:
+
+- Find the large files
+- Remove them from the repo
+- Erase them from the Git history
+- Replicate the changes in the remote (GitHub/Bitbucket) to make them permanent
+
+This tutorial is based heavily on one created by Steve Lorek which seems to have been deleted, but is still available from [the web archive](https://web.archive.org/web/20190207210108/http://stevelorek.com/how-to-shrink-a-git-repository.html).
+
+Deep Clone the Repository
+=========================
+This all needs to be done on a fresh clone of the repository in question, so start by doing that. From the terminal, run the following
+
+```{bash, eval = FALSE}
+git clone <remote-url>
+```
+
+where the `<remote-url>` is the Github/Bitbucket URL of your repo.
+
+Now that you've cloned the remote repository, you have the master branch checked out to your local machine but none of the other branches. That's not going to work for what you want to do; you want to remove the large files from *all* the branches. What you need to do is track all of them, which can be done by running the following bash script from the terminal:
+
+```{bash, eval = FALSE}
+#!/bin/bash
+for branch in `git branch -a | grep remotes | grep -v HEAD | grep -v master`; do
+    git branch --track ${branch##*/} $branch
+done
+```
+
+Thanks to [bigfish on StackOverflow](https://stackoverflow.com/questions/67699/how-to-clone-all-remote-branches-in-git/4754797#4754797) for this script, which is copied verbatim. Copy this code into a new file, save it, make it executable by running `chmod +x <filename>.sh` and then execute it by running `./<filename>.sh`. You will now have all of the remote branches in your local repo (it's a shame that Git doesn't provide the functionality to do this without the need for a script).
+
+Find the Large Files
+====================
+Credit is due to Antony Stubbs here - [his Bash script](https://stubbisms.wordpress.com/2009/07/10/git-script-to-show-largest-pack-objects-and-trim-your-waist-line/) identifies the largest files in a local Git repository, and is reproduced verbatim below:
+
+```{bash, eval = FALSE}
+#!/bin/bash
+#set -x 
+
+# Shows you the largest objects in your repo's pack file.
+# Written for osx.
+#
+# @see http://stubbisms.wordpress.com/2009/07/10/git-script-to-show-largest-pack-objects-and-trim-your-waist-line/
+# @author Antony Stubbs
+
+# set the internal field spereator to line break, so that we can iterate easily over the verify-pack output
+IFS=$'\n';
+
+# list all objects including their size, sort by size, take top 10
+objects=`git verify-pack -v .git/objects/pack/pack-*.idx | grep -v chain | sort -k3nr | head`
+
+echo "All sizes are in kB. The pack column is the size of the object, compressed, inside the pack file."
+
+output="size,pack,SHA,location"
+for y in $objects
+do
+    # extract the size in bytes
+    size=$((`echo $y | cut -f 5 -d ' '`/1024))
+    # extract the compressed size in bytes
+    compressedSize=$((`echo $y | cut -f 6 -d ' '`/1024))
+    # extract the SHA
+    sha=`echo $y | cut -f 1 -d ' '`
+    # find the objects location in the repository tree
+    other=`git rev-list --all --objects | grep $sha`
+    #lineBreak=`echo -e "\n"`
+    output="${output}\n${size},${compressedSize},${other}"
+done
+
+echo -e $output | column -t -s ', '
+```
+
+Execute this script as before, and you'll see some output similar to the below:
+
+```
+All sizes are in kB. The pack column is the size of the object, compressed, inside the pack file.
+size     pack    SHA                                       location
+1111686  132987  a561d25105c79aa4921fb742745de0e791483afa  08-05-2012.sql
+5002     392     e501b79448b9e970ab89b048b3218c2853fdfc88  foo.sql
+266      249     73fa731bb90b04dcf79eeea8fdd637ba7df4c089  app/assets/images/fw/iphone.fw.png
+265      43      939b31c563bd40b1ca70e4f4a9f7d67c27c936c0  doc/models_complete.svg
+247      39      03514d9e84418573f26b205bae7e4e57057c036f  unprocessed_email_replies.sql
+193      49      6e601c4067aaddb26991c4bd5fbddef003800e70  public/assets/jquery-ui.min-0424e108178defa1cc794eefc92d24.js
+178      30      c014b20b6fed9f17a0b2809ac410d74f291da26e  foo.sql
+158      158     15f9e56bc0865f4f303deff053e21909661a716b  app/assets/images/iphone.png
+103      36      3135e15c5cec75a4c85a0636b154b83221020c97  public/assets/application-c65733a4a64a1a885b1c32694574b12a.js
+99       85      c1c80bc4c09e692d5e2127e39c87ecacdb1e816f  app/assets/images/fw/lovethis_logo_sprint.fw.png
+```
+
+Yep - looks like someone has been pushing some rather unnecessary files somewhere! Including a lovely 1.1GB present in the form of a SQL dump file.
+
+Clean the Files
+===============
+This part can take a while, especially if your repo has a large history. You will be removing all traces of the file called `<filename>` from all branches and commit history:
+
+```{bash, eval = FALSE}
+git filter-branch --tag-name-filter cat --index-filter 'git rm -r --cached --ignore-unmatch filename' --prune-empty -f -- --all
+```
+
+Note that `filter-branch` is being used here, as opposed to the 'better' `filter-repo` command. This is because a lot of the shortcomings of the command are being dealt with by the various flags. For example, `--tag-name-filter cat` ensures that tags are rewritten as well.
+
+After this command has finished executing, your repository should now have been cleaned and have all branches and tags in tact.
+
+Reclaim Space
+=============
+While we may have rewritten the history of the repository, those files still exist in there. They need to be deleted:
+
+```{bash, eval = FALSE}
+rm -rf .git/refs/original/
+git reflog expire --expire=now --all
+git gc --prune=now
+git gc --aggressive --prune=now
+```
+
+Now we have a fresh, clean repository. In this example, it went from 180MB to 7MB.
+
+Push the Cleaned Repository
+===========================
+Now we need to push the changes back to the remote repository, so that the changes we have made are kept permanently:
+
+```{bash, eval = FALSE}
+git push origin --force --all
+```
+
+The `--all` argument pushes all your branches as well. That's why we needed to clone them at the start of the process.
+
+Now push the newly-rewritten tags:
+
+```{bash, eval = FALSE}
+git push origin --force --tags
+```
+
+Tell your Teammates
+===================
+When you and your teammates next look at the status of your local repos it will say that they are multiple commits behind and ahead of the remote. This can be fixed by running:
+
+```{bash, eval = FALSE}
+`git rebase`
+```
+
+or just cloning a fresh copy. If they don't do this and then push again, those large files are going to get pushed up again and the repository will be reset into the state it was before.
+
+[⇦ Back](../../git.html)
+
+</font>
