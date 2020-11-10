@@ -210,7 +210,10 @@ summary {
 <li><a href="#filtering"><span class="toc-section-number">6.3</span> Filtering</a><ul>
 <li><a href="#filter-using-subset"><span class="toc-section-number">6.3.1</span> Filter Using <code>subset()</code></a></li>
 <li><a href="#filter-using-filter-from-the-dplyr-library"><span class="toc-section-number">6.3.2</span> Filter Using <code>filter()</code> from the <code>dplyr</code> library</a></li>
-<li><a href="#find-the-proportion-of-rows-that-meet-a-criteria"><span class="toc-section-number">6.3.3</span> Find the Proportion of Rows That Meet a Criteria</a></li>
+</ul></li>
+<li><a href="#counting"><span class="toc-section-number">6.4</span> Counting</a><ul>
+<li><a href="#count-rows-with-or-without-missing-data"><span class="toc-section-number">6.4.1</span> Count Rows with (or without) Missing Data</a></li>
+<li><a href="#find-the-proportion-of-rows-that-meet-a-criteria"><span class="toc-section-number">6.4.2</span> Find the Proportion of Rows That Meet a Criteria</a></li>
 </ul></li>
 </ul></li>
 <li><a href="#cleaning"><span class="toc-section-number">7</span> Cleaning</a><ul>
@@ -833,18 +836,34 @@ df &lt;- filter(spotify, Artist == &quot;Ed Sheeran&quot; | Streams_Millions &gt
 df &lt;- filter(spotify, xor(Artist == &quot;Post Malone&quot;, Featuring == &quot;Swae Lee&quot;))</code></pre>
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
 </div>
+</div>
+<div id="counting" class="section level2">
+<h2><span class="header-section-number">6.4</span> Counting</h2>
+<p>How many cells, columns or rows meet certain criteria?</p>
+<div id="count-rows-with-or-without-missing-data" class="section level3">
+<h3><span class="header-section-number">6.4.1</span> Count Rows with (or without) Missing Data</h3>
+<p>How many rows have no featuring artist and have never been at number 1?</p>
+<pre class="r"><code>bool &lt;- (is.na(spotify$Featuring) &amp; is.na(spotify$Weeks_at_no1))
+count &lt;- length(bool[bool == TRUE])
+print(count)</code></pre>
+<pre><code>## [1] 2</code></pre>
+<p>How many rows have a featuring artist and have been at number 1?</p>
+<pre class="r"><code>bool &lt;- (!is.na(spotify$Featuring) &amp; !is.na(spotify$Weeks_at_no1))
+count &lt;- length(bool[bool == TRUE])
+print(count)</code></pre>
+<pre><code>## [1] 5</code></pre>
+</div>
 <div id="find-the-proportion-of-rows-that-meet-a-criteria" class="section level3">
-<h3><span class="header-section-number">6.3.3</span> Find the Proportion of Rows That Meet a Criteria</h3>
+<h3><span class="header-section-number">6.4.2</span> Find the Proportion of Rows That Meet a Criteria</h3>
 <p>What proportion of the top 10 songs have over 1 700 million streams?</p>
 <pre class="r"><code>df &lt;- subset(spotify, Streams_Millions &gt;= 1700)
 proportion &lt;- nrow(df) / nrow(spotify)
 percentage &lt;- nrow(df) / nrow(spotify) * 100
-printf(
+sprintf(
     &quot;Number of songs with over 1 700 million streams: %s (%3.1f or %3.1f%%)&quot;,
     nrow(df), proportion, percentage
 )</code></pre>
-<pre><code>## Number of songs with over 1 700 million streams: 4 (0.4 or 40.0%)</code></pre>
-<p>Note that the <code>printf()</code> function that was used above comes from the R.utils library.</p>
+<pre><code>## [1] &quot;Number of songs with over 1 700 million streams: 4 (0.4 or 40.0%)&quot;</code></pre>
 </div>
 </div>
 </div>
@@ -919,13 +938,45 @@ print(c(typeof(spotify$Weeks_at_no1), typeof(spotify$Streams_Millions)))</code><
 <p>This section is pretty self-explanatory.</p>
 <div id="ascending-order" class="section level2">
 <h2><span class="header-section-number">8.1</span> Ascending Order</h2>
-<p>First sort alphabetically by artist name, then in order of number of streams:</p>
-<pre class="r"><code>df &lt;- dplyr::arrange(spotify, Artist, Streams_Millions)</code></pre>
+<p>Sort alphabetically by artist name using <code>order()</code> together with indexing:</p>
+<pre class="r"><code>df &lt;- spotify[order(spotify$Artist),]
+print(df)</code></pre>
+<pre><code>##    Rank                 Song           Artist    Featuring     Label Streams_Millions Release_Date Weeks_at_no1
+## 7     7               Havana   Camila Cabello   Young Thug      Sony             1407   03/08/2017            1
+## 3     3            One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
+## 6     6           God's Plan            Drake         &lt;NA&gt; Universal             1495   19/01/2018           11
+## 1     1         Shape of You       Ed Sheeran         &lt;NA&gt;    Warner             2449   06/01/2017           14
+## 5     5    Thinking Out Loud       Ed Sheeran         &lt;NA&gt;    Warner             1504   20/06/2014            2
+## 9     9              Perfect       Ed Sheeran         &lt;NA&gt;    Warner             1366   03/03/2017           NA
+## 10   10 Say You Won't Let Go     James Arthur         &lt;NA&gt;      Sony             1360   09/09/2016           NA
+## 2     2             Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
+## 8     8            Sunflower      Post Malone     Swae Lee Universal             1400   18/10/2018            2
+## 4     4               Closer The Chainsmokers       Halsey      Sony             1734   29/07/2016           11</code></pre>
+<p>Sort twice - first alphabetically by artist name, then in order of number of streams - using <code>arrange()</code> from dplyr:</p>
+<pre class="r"><code>library(dplyr)
+
+df &lt;- arrange(spotify, Artist, Streams_Millions)</code></pre>
 </div>
 <div id="descending-order" class="section level2">
 <h2><span class="header-section-number">8.2</span> Descending Order</h2>
-<p>Sort into reverse alphabetical order:</p>
-<pre class="r"><code>df &lt;- dplyr::arrange(spotify, desc(Artist))</code></pre>
+<p>Sort into reverse alphabetical order using the <code>decreasing = TRUE</code> option:</p>
+<pre class="r"><code>df &lt;- spotify[order(spotify$Artist, decreasing = TRUE),]
+print(df)</code></pre>
+<pre><code>##    Rank                 Song           Artist    Featuring     Label Streams_Millions Release_Date Weeks_at_no1
+## 4     4               Closer The Chainsmokers       Halsey      Sony             1734   29/07/2016           11
+## 2     2             Rockstar      Post Malone    21 Savage Universal             1851   15/09/2017           17
+## 8     8            Sunflower      Post Malone     Swae Lee Universal             1400   18/10/2018            2
+## 10   10 Say You Won't Let Go     James Arthur         &lt;NA&gt;      Sony             1360   09/09/2016           NA
+## 1     1         Shape of You       Ed Sheeran         &lt;NA&gt;    Warner             2449   06/01/2017           14
+## 5     5    Thinking Out Loud       Ed Sheeran         &lt;NA&gt;    Warner             1504   20/06/2014            2
+## 9     9              Perfect       Ed Sheeran         &lt;NA&gt;    Warner             1366   03/03/2017           NA
+## 3     3            One Dance            Drake Wizkid, Kyla Universal             1824   05/04/2016           14
+## 6     6           God's Plan            Drake         &lt;NA&gt; Universal             1495   19/01/2018           11
+## 7     7               Havana   Camila Cabello   Young Thug      Sony             1407   03/08/2017            1</code></pre>
+<p>Sort into reverse alphabetical order using <code>arrange()</code> and <code>desc()</code> from dplyr:</p>
+<pre class="r"><code>library(dplyr)
+
+df &lt;- arrange(spotify, desc(Artist))</code></pre>
 </div>
 </div>
 <div id="creating-new-columns-from-existing-columns" class="section level1">
