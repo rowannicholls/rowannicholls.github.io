@@ -22,13 +22,13 @@ To render R Markdown:
 - Create an R Markdown build system:
     - Tools > Build System > New Build System...
     - In the "untitled.sublime-build" that appears, replace everything with:
-    ```json
+    ```{json}
     {
         "cmd"       : ["Rscript", "-e", "rmarkdown::render('$file')"],
-        "selector"  : "source.shell",
+        "selector"  : "source.shell, source.Rmd",
     }
     ```
-    - Save as "Rmarkdown.sublime-build" in the default location. For the record, the default locations are:
+    - Save as "Rmarkdown.sublime-build" in the default location. For the record, these default locations are:
         - *Ubuntu:* `/home/<username>/.config/sublime-text-3/Packages/User`
         - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`
 - Render with the Build System:

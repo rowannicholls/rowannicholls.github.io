@@ -26,7 +26,8 @@
 # install.packages("DiagrammeR", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("dplyr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("emmeans", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
-install.packages("epiR", repos = "http://cran.us.r-project.org")
+# install.packages("epiR", repos = "http://cran.us.r-project.org")
+# install.packages("exact2x2", repos = "http://cran.us.r-project.org")
 # install.packages("forestplot", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("formatR", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("gapminder", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -42,6 +43,7 @@ install.packages("epiR", repos = "http://cran.us.r-project.org")
 # install.packages("maps", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("matrixStats", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on macOS Catalina or Ubuntu 18.04 with R 4.0.2
 # install.packages("mcr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("openxlsx", repos = "http://cran.us.r-project.org")
 # install.packages("pdftools", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
 # install.packages("pROC", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("psych", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -62,6 +64,7 @@ install.packages("epiR", repos = "http://cran.us.r-project.org")
 # install.packages("writexl", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("WriteXLS", repos = "http://cran.us.r-project.org")
 # install.packages("xlsx", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 0r 20.04 with R 4.0.2
+# install.packages("Xmisc", repos = "http://cran.us.r-project.org")
 # install.packages("xtable", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 
 library(BlandAltmanLeh)
@@ -72,6 +75,7 @@ library(DiagrammeR)
 library(dplyr)
 library(emmeans)
 library(epiR)
+library(exact2x2)
 library(forestplot)
 library(formatR)
 library(gapminder)
@@ -87,6 +91,7 @@ library(logging)
 library(maps)
 library(matrixStats)  # Could not install on macOS Catalina or Ubuntu 18.04 with R 4.0.2
 library(mcr)
+library(openxlsx)
 # library(pdftools)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(pROC)
 library(psych)
@@ -107,6 +112,7 @@ library(utf8)
 # library(writexl)
 # library(WriteXLS)
 # library(xlsx)  # Could not install on Ubuntu 18.04 0r 20.04 with R 4.0.2
+library(Xmisc)
 library(xtable)
 
 # Couldn't install with R 4.x.x

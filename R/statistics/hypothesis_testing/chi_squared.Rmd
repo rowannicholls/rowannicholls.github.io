@@ -143,21 +143,9 @@ Wikipedia Example
 -----------------
 The following example comes from [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit#Pearson's_chi-squared_test). If you randomly picked 100 people out of a population and 44 were male, is that population 50% male? You would have *observed* 44 males and 56 females, but your *expectation* would have been 50 males and 50 females. There are more than 5 samples in each group and the data is categorical (in this case it is *binary* - either male or female), as opposed to each data point being a measurement, so a chi-squared test can be considered. Take a look at how the information is entered into the `chisquare()` function in order to test the goodness-of-fit of your sample to the expected distribution:
 
-```{r eval = FALSE}
-# THE R.utils LIBRARY IS NEEDED FOR printf()
-library(R.utils)
-
+```{r}
 result <- chisq.test(c(44, 56), p = c(1 / 2, 1 / 2))
-printf("p = %.2f", round(result$p.value, 2))
-```
-
-```{r message = FALSE, echo = FALSE}
-library(R.utils)
-```
-
-```{r echo = FALSE}
-result <- chisq.test(c(44, 56), p = c(1 / 2, 1 / 2))
-printf("p = %.2f", round(result$p.value, 2))
+sprintf("p = %.2f", round(result$p.value, 2))
 ```
 
 As you can see, the `chisq.test()` statement takes the numbers that were *observed* in a vector as the first argument and the proportions that were *expected* in a vector as the "p" keyword argument. The p-value of 0.23 suggests that there is a 23% chance that the population is 50% male/female.
@@ -166,25 +154,25 @@ As it happens, if you omit the "p" keyword argument the `chisq.test()` function 
 
 ```{r}
 result <- chisq.test(c(44, 56))
-printf("p = %.2f", round(result$p.value, 2))
+sprintf("p = %.2f", round(result$p.value, 2))
 ```
 
 If we observed 50 males and 50 females, the test would tell use that there is a 100% chance that the population is 50% male/female:
 
 ```{r}
 result <- chisq.test(c(50, 50))
-printf("p = %.2f", round(result$p.value, 2))
+sprintf("p = %.2f", round(result$p.value, 2))
 ```
 
 Note that the test does __NOT__ work properly if you give it your data as proportions or percentages:
 
 ```{r eval = FALSE}
 result <- chisq.test(c(0.44, 0.56))
-printf("p = %.2f", round(result$p.value, 2))
+sprintf("p = %.2f", round(result$p.value, 2))
 ```
 
 ```{r echo = FALSE}
-printf("p = %.2f", round(0.90, 2))
+sprintf("p = %.2f", round(0.90, 2))
 ```
 
 You must always provide the *actual numbers* observed and the *proportions* expected.
@@ -203,7 +191,7 @@ Again, the data is categorical and each 'bin' (cell in the table) has more than 
 ```{r}
 n <- 30 + 40 + 40 + 90
 result <- chisq.test(c(25, 35, 50, 90), p = c(30 / n, 40 / n, 40 / n, 90 / n))
-printf("p = %.1f", round(result$p.value, 1))
+sprintf("p = %.1f", round(result$p.value, 1))
 ```
 
 Note that this example has 3 degrees of freedom. In general, the formula for degrees of freedom is `(nrows - 1) * (ncols - 1)`:
@@ -212,7 +200,7 @@ Note that this example has 3 degrees of freedom. In general, the formula for deg
 nrows <- 2
 ncols <- 4
 df <- (nrows - 1) * (ncols - 1)
-printf("Degrees of freedom = %d", df)
+sprintf("Degrees of freedom = %d", df)
 ```
 
 This example can also be done manually by calculating the chi-square test statistic by hand:
@@ -222,14 +210,14 @@ $\chi^2 = \sum\frac{\left(observed - expected\right)^2}{expected}$
 ```{r}
 chisq <- (25 - 30)^2 / 30 + (35 - 40)^2 / 40 + (50 - 40)^2 / 40 +
     (90 - 90)^2 / 90
-printf("chi-square = %.2f", round(chisq, 2))
+sprintf("chi-square = %.2f", round(chisq, 2))
 ```
 
 Then the chi-square test statistic can be converted into a p-value using the chi-distribution for 3 degrees of freedom:
 
 ```{r}
 p <- pchisq(chisq, df = 3, lower.tail = FALSE)
-printf("p = %.1f", round(p, 1))
+sprintf("p = %.1f", round(p, 1))
 ```
 
 As the p-value is above 0.05 we *fail to reject the null hypothesis* that the distribution of characters chosen by players is as the developers claimed.
@@ -264,7 +252,7 @@ df <- data.frame(
     Yes = c(82, 130, 240, 69)
 )
 result <- chisq.test(df)
-printf("p = %.1f", round(result$p.value, 1))
+sprintf("p = %.1f", round(result$p.value, 1))
 ```
 
 As p is larger than 0.05 we *fail to reject the null hypothesis* that the distribution of Hogwarts houses is the same for both pineapple-on-pizza lovers and haters.
@@ -286,10 +274,57 @@ df <- data.frame(
     Female = c(250, 300, 50)
 )
 result <- chisq.test(df)
-printf("p = %.4f", round(result$p.value, 4))
+sprintf("p = %.4f", round(result$p.value, 4))
 ```
 
 To quote: "since the p-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference".
+
+A Function for Running Multiple Independence Tests
+--------------------------------------------------
+If we want to perform the independence test multiple times (eg for multiple subsets of your dataset) then it might be more efficient to write a function to do this.
+
+As an example, we will use the same data from section 2.2 above, although we will first transpose it (swap the columns and rows, effectively 'rotating' the data frame):
+
+```{r}
+df <- data.frame(
+    Rep = c(200, 250),
+    Dem = c(150, 300),
+    Ind = c(50, 50)
+)
+result <- chisq.test(df)
+sprintf("p = %.4f", round(result$p.value, 4))
+```
+
+As you can see, transposing the data frame has no effect on the calculation (the p-value is still 0.0003029775, or 0.0003 when rounded). However, in this format it is easier to compare *pairs of columns*. This allows use to look for relationships between gender and voting preferences for pairs of parties, as opposed to all three parties together:
+
+```{r, results = "hold"}
+# Republicans and Democrats only
+result <- chisq.test(df[c("Rep", "Dem")])
+sprintf("p = %.4f", round(result$p.value, 4))
+# Republicans and Independents only
+result <- chisq.test(df[c("Rep", "Ind")])
+sprintf("p = %.4f", round(result$p.value, 4))
+# Democrats and Independents only
+result <- chisq.test(df[c("Dem", "Ind")])
+sprintf("p = %.4f", round(result$p.value, 4))
+```
+
+Now we can write a function to do the above combinations of comparisons automatically:
+
+```{r}
+chisq.test_twocolumns <- function(df) {
+    colnames <- colnames(df)
+    combinations <- utils::combn(colnames, 2)
+    for (i in seq_len(dim(combinations)[2])) {
+        name1 <- combinations[1, i]
+        name2 <- combinations[2, i]
+        result <- chisq.test(df[c(name1, name2)])
+        cat(sprintf("p = %.4f\n", round(result$p.value, 4)))
+    }
+}
+
+chisq.test_twocolumns(df)
+```
 
 Homogeneity Test
 ================
@@ -319,7 +354,7 @@ df <- data.frame(
     Living_with_others = c(2, 23, 7)
 )
 result <- chisq.test(df)
-printf("p = %.3f", round(result$p.value, 3))
+sprintf("p = %.3f", round(result$p.value, 3))
 ```
 
 To quote: "as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a 'line ball' conclusion."
@@ -367,7 +402,7 @@ result <- perform_chi_squared(observations, expected)
 p <- result[1]
 sig <- result[2]
 int <- result[3]
-printf("p = %.3f%s. %s", p, sig, int)
+sprintf("p = %.3f%s. %s", p, sig, int)
 ```
 
 Thus, at a 99% confidence level, we can say that the new equipment has a different distribution of overweight-underweight widget production compared to the old equipment.

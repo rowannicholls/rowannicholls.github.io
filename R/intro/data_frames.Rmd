@@ -376,24 +376,39 @@ df <- filter(spotify, xor(Artist == "Post Malone", Featuring == "Swae Lee"))
 
 <!-- Lookup: find a value in one column and return the value in a corresponding column -->
 
+Counting
+--------
+How many cells, columns or rows meet certain criteria?
+
+### Count Rows with (or without) Missing Data
+How many rows have no featuring artist and have never been at number 1?
+
+```{r}
+bool <- (is.na(spotify$Featuring) & is.na(spotify$Weeks_at_no1))
+count <- length(bool[bool == TRUE])
+print(count)
+```
+
+How many rows have a featuring artist and have been at number 1?
+
+```{r}
+bool <- (!is.na(spotify$Featuring) & !is.na(spotify$Weeks_at_no1))
+count <- length(bool[bool == TRUE])
+print(count)
+```
+
 ### Find the Proportion of Rows That Meet a Criteria
 What proportion of the top 10 songs have over 1 700 million streams?
-
-```{r, echo=FALSE, include=FALSE}
-library(R.utils)
-```
 
 ```{r}
 df <- subset(spotify, Streams_Millions >= 1700)
 proportion <- nrow(df) / nrow(spotify)
 percentage <- nrow(df) / nrow(spotify) * 100
-printf(
+sprintf(
     "Number of songs with over 1 700 million streams: %s (%3.1f or %3.1f%%)",
     nrow(df), proportion, percentage
 )
 ```
-
-Note that the `printf()` function that was used above comes from the R.utils library.
 
 Cleaning
 ========
@@ -474,18 +489,36 @@ This section is pretty self-explanatory.
 
 Ascending Order
 ---------------
-First sort alphabetically by artist name, then in order of number of streams:
+Sort alphabetically by artist name using `order()` together with indexing:
 
 ```{r}
-df <- dplyr::arrange(spotify, Artist, Streams_Millions)
+df <- spotify[order(spotify$Artist),]
+print(df)
+```
+
+Sort twice - first alphabetically by artist name, then in order of number of streams - using `arrange()` from dplyr:
+
+```{r}
+library(dplyr)
+
+df <- arrange(spotify, Artist, Streams_Millions)
 ```
 
 Descending Order
 ----------------
-Sort into reverse alphabetical order:
+Sort into reverse alphabetical order using the `decreasing = TRUE` option:
 
 ```{r}
-df <- dplyr::arrange(spotify, desc(Artist))
+df <- spotify[order(spotify$Artist, decreasing = TRUE),]
+print(df)
+```
+
+Sort into reverse alphabetical order using `arrange()` and `desc()` from dplyr:
+
+```{r}
+library(dplyr)
+
+df <- arrange(spotify, desc(Artist))
 ```
 
 Creating New Columns From Existing Columns
