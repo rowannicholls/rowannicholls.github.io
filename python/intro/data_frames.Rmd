@@ -1152,7 +1152,7 @@ As an example, here is the data of the United States athletes only:
 
 ```{python, echo = FALSE}
 # Undo
-df = df.drop(['e in name?', 'Sub-10'], axis=1)
+df = df.drop(['e in name?'], axis=1)
 ```
 
 ```{python}
@@ -1210,6 +1210,15 @@ print(subset)
 ```
 
 Of course, *all* the above filtering examples work with both strings and numbers as the criteria.
+
+**Filter using a column of Booleans:**  
+If one of the columns consists of Booleans you can filter by it. In other words, all the rows with 'False' get removed and all the ones with 'True' remain:
+
+```{python}
+# Filter by who ran sub-10 seconds
+subset = df[df['Sub-10']]
+print(subset)
+```
 
 **Filter out nulls:**  
 Filter out all rows that have a null value in a particular column:

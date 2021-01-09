@@ -326,7 +326,7 @@ print(bool)
 
 Finding
 -------
-'Finding' is similar to 'searching' except you get the locations of the matches, not just whether or not they exist. For example, what position in the top 10 is Camila Cabello's song "Havana"?
+'Finding' is similar to 'searching' except you get the _locations_ of the matches, not just whether or not they exist. For example, what position in the top 10 is Camila Cabello's song "Havana"?
 
 ```{r}
 idx <- match("Havana", spotify$"Song")
@@ -336,6 +336,38 @@ print(idx)
 Filtering
 ---------
 Filtering removes all rows whose values do not meet certain criteria.
+
+### Filter Using Indexing
+Square bracket notation can be used in a similar way to the "Select Certain Rows" section above. This time, however, instead of knowing what rows we are interested in beforehand and simply _selecting_ them, we only know the **criteria** we are interested in and so need to _filter_ for that. For example, if I want to get all songs with more than 1 500 million streams my criteria is that the value in the 'Streams_Millions' column must be greater than 1 500:
+
+```{r}
+# Return all rows where the number of streams is greater than 1 500 million and all columns
+df <- spotify[spotify$Streams_Millions > 1500, ]
+print(df)
+```
+
+The expression `spotify$Streams_Millions > 1500` looks at all values in the Streams_Millions column and evaluates to either `TRUE` or `FALSE` depending on whether each value is larger than 1 500 or not. The result is a 'Boolean vector' - a vector of Booleans corresponding to which rows in the column meet your criteria:
+
+```{r}
+# For each column, is the number of streams greater than 1 500 million?
+vc <- spotify$Streams_Millions > 1500
+print(vc)
+```
+
+This vector can then be used to index the full data frame using square bracket notation, but remember that this notation requires you to enter both the rows **and** columns you are interested in. Because we want all the columns we can leave this blank, which is why there is a comma followed by just a blank space:
+
+```{r}
+# Return all rows where the number of streams is greater than 1 500 million and all columns
+df <- spotify[spotify$Streams_Millions > 1500, ]
+```
+
+If you forget this comma it will assume you are filtering by _column_, not by row. Thus, the following code will use the Boolean vector created by the `colnames(spotify) == "Streams_Millions"` expression to filter for columns called "Streams_Millions":
+
+```{r}
+# Return all columns with a certain name
+df <- spotify[colnames(spotify) == "Streams_Millions"]
+print(df)
+```
 
 ### Filter Using `subset()`
 You can filter out rows that do not meet a single condition, eg if I am only interested in Ed Sheeran (which I am <3):
