@@ -265,10 +265,11 @@ Save Plot
 =========
 Finally, save your plot to your computer as an image using one of the following (depending on what format you want the image to be in):
 
-- `png("Name of Plot.png")`
-- `pdf("Name of Plot.pdf")`
+- `png("File Name.png")`
+- `pdf("File Name.pdf")`
+- `ggsave("File Name.png")`
 
-Regardless of which of the above you choose, it must come __*before*__ you start plotting the graph (ie before you call `ggplot()`).
+If you use one of the first two, it must come __*before*__ you start plotting the graph (ie before you call `ggplot()`). If you use the last one (`ggsave()`) it must come __*after*__ you've plotted the graph.
 
 [⇦ Back](../../../R.html)
 

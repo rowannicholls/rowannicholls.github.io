@@ -560,7 +560,13 @@ print(p)</code></pre>
 </div>
 <div id="save-plot" class="section level1" number="5">
 <h1 number="5"><span class="header-section-number">5</span> Save Plot</h1>
-<p>Finally, use <code>ggsave(&quot;File Name.png&quot;)</code> to save the plot to your computer.</p>
+<p>Finally, save your plot to your computer as an image using one of the following (depending on what format you want the image to be in):</p>
+<ul>
+<li><code>png(&quot;File Name.png&quot;)</code></li>
+<li><code>pdf(&quot;File Name.pdf&quot;)</code></li>
+<li><code>ggsave(&quot;File Name.png&quot;)</code></li>
+</ul>
+<p>If you use one of the first two, it must come <strong><em>before</em></strong> you start plotting the graph (ie before you call <code>ggplot()</code>). If you use the last one (<code>ggsave()</code>) it must come <strong><em>after</em></strong> you’ve plotted the graph.</p>
 <p><a href="../../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
