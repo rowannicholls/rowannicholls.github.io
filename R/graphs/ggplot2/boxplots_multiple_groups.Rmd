@@ -158,7 +158,13 @@ print(p)
 
 Save Plot
 =========
-Finally, use `ggsave("File Name.png")` to save the plot to your computer.
+Finally, save your plot to your computer as an image using one of the following (depending on what format you want the image to be in):
+
+- `png("File Name.png")`
+- `pdf("File Name.pdf")`
+- `ggsave("File Name.png")`
+
+If you use one of the first two, it must come __*before*__ you start plotting the graph (ie before you call `ggplot()`). If you use the last one (`ggsave()`) it must come __*after*__ you've plotted the graph.
 
 [⇦ Back](../../../R.html)
 
