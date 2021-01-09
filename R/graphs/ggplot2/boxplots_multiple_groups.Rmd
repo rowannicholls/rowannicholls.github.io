@@ -1,0 +1,165 @@
+---
+title: '<font size="5">Graphs in R using ggplot2:</font><br>Box Plots (aka Box-and-Whisker Plots) with Multiple Groups'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+For this page we will use data from the finals of various Olympic events, available on Wikipedia.
+
+This page functions as a follow-on from [Boxplots with One Group of Data](boxplots_single_group.html).
+
+Too Simple
+==========
+If we try to plot multiple datasets (eg the results from more than one Olympic Games) with two groups within each dataset (men and women), things start to become confusing:
+
+```{r}
+library(ggplot2)
+
+long_jump <- data.frame(
+    olympics = c(
+        rep("London 2012 (Men)", 8), rep("Rio 2016 (Men)", 8),
+        rep("London 2012 (Women)", 8), rep("Rio 2016 (Women)", 8)
+    ),
+    distance = c(
+        8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93,
+        8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05,
+        7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67,
+        7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69
+    )
+)
+
+p <- ggplot(long_jump, aes(olympics, distance))
+p <- p + geom_boxplot()
+print(p)
+```
+
+In the above figure we just have four distinct box plots without the groups having been separated out.
+
+A Better Approach
+=================
+It's a good idea to use **colour**, a **legend** and the **ordering** of the box plots to show the different data sets. This will help to make things as clear as possible:
+
+```{r}
+long_jump <- data.frame(
+    olympics = c(
+        rep("London 2012", 8), rep("Rio 2016", 8),
+        rep("London 2012", 8), rep("Rio 2016", 8)
+    ),
+    men_women = c(rep("Men", 16), rep("Women", 16)),
+    distance = c(
+        8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93,
+        8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05,
+        7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67,
+        7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69
+    )
+)
+
+p <- ggplot(long_jump, aes(olympics, distance))
+p <- p + geom_boxplot(aes(fill = men_women))
+print(p)
+```
+
+Alternate Grouping
+------------------
+An improvement to the above graph would be to swap the grouping: plot by gender first and then by Olympics rather than Olympics first and gender second:
+
+```{r}
+long_jump <- data.frame(
+    olympics = c(
+        rep("Athen 2004", 8), rep("Beijing 2008", 8), rep("London 2012", 8), rep("Rio 2016", 8),
+        rep("Athen 2004", 8), rep("Beijing 2008", 8), rep("London 2012", 8), rep("Rio 2016", 8)
+    ),
+    men_women = c(rep("Men", 32), rep("Women", 32)),
+    distance = c(
+        8.59, 8.47, 8.32, 8.31, 8.25, 8.24, 8.23, 8.21,
+        8.34, 8.24, 8.20, 8.19, 8.19, 8.16, 8.07, 8.00,
+        8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93,
+        8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05,
+        7.07, 7.05, 7.05, 6.96, 6.85, 6.83, 6.80, 6.73,
+        7.04, 7.03, 6.91, 6.79, 6.76, 6.70, 6.64, 6.58,
+        7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67,
+        7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69
+    )
+)
+
+p <- ggplot(long_jump, aes(men_women, distance))
+p <- p + geom_boxplot(aes(fill = olympics))
+print(p)
+```
+
+Adding Labels and Customising Colour
+====================================
+Improve the graph further by adding a title and changing the labels and colours:
+
+- `ggtitle()` controls the graph title
+- `ylab()` sets the y-axis label
+- `xlab()` sets the x-axis label
+- `labs()` can be used to change the title of the legend
+- `scale_fill_manual()` will manually change the fill colours in both the boxes themselves and also in the corresponding icons in the legend
+
+```{r}
+p <- ggplot(long_jump, aes(men_women, distance))
+p <- p + geom_boxplot(aes(fill = olympics))
+p <- p + ggtitle("Long Jump Finals at the Last Four Olympic Games")
+p <- p + ylab("Distance [m]")
+p <- p + xlab("")
+p <- p + labs(fill = "Olympics")
+p <- p + scale_fill_manual(values = c("#0074c5", "#d71921", "#e400a3", "#00a650"))
+print(p)
+```
+
+Annotate the Sample Size and Mean Values
+========================================
+It can be very useful to include summary statistics right on the plot as opposed to hidden away in a paragraph of text. This requires custom functions which then get called from within the `stat_summary()` function:
+
+```{r}
+# Custom functions
+sample_size <- function(x) {
+    # Sample size labels
+    return(
+        data.frame(y = median(x) * 1.06, label = paste0("n=", length(x)))
+    )
+}
+sample_mean <- function(x) {
+    # Sample mean labels
+    return(
+        data.frame(
+            y = median(x) * 1.05,
+            label = paste0("\U00B5=", round(mean(x), 2), "m")
+        )
+    )
+}
+
+
+p <- ggplot(long_jump, aes(men_women, distance, fill = olympics))
+p <- p + geom_boxplot()
+p <- p + ggtitle("Long Jump Finals at the Last Four Olympic Games")
+p <- p + ylab("Distance [m]")
+p <- p + xlab("")
+p <- p + labs(fill = "Olympics")
+p <- p + scale_fill_manual(values = c("#0074c5", "#d71921", "#e400a3", "#00a650"))
+p <- p + stat_summary(
+    fun.data = sample_size, geom = "text", fun = median,
+    position = position_dodge(width = 0.75), size = 3
+)
+p <- p + stat_summary(
+    fun.data = sample_mean, geom = "text", fun = median,
+    position = position_dodge(width = 0.75), size = 3
+)
+print(p)
+```
+
+Save Plot
+=========
+Finally, use `ggsave("File Name.png")` to save the plot to your computer.
+
+[⇦ Back](../../../R.html)
+
+</font>
