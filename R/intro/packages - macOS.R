@@ -21,6 +21,7 @@
 
 # install.packages("BlandAltmanLeh", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("brglm2", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("Cairo", repos = "http://cran.us.r-project.org")
 # install.packages("chron", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("devtools", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
 # install.packages("DiagrammeR", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -28,11 +29,13 @@
 # install.packages("emmeans", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("epiR", repos = "http://cran.us.r-project.org")
 # install.packages("exact2x2", repos = "http://cran.us.r-project.org")
+# install.packages("extrafont", repos = "http://cran.us.r-project.org")
 # install.packages("forestplot", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("formatR", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("gapminder", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("ggplot2", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("ggpubr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
+# install.packages("grDevices", repos = "http://cran.us.r-project.org")
 # install.packages("gtools", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("Hmisc", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
 # install.packages("ini", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -40,6 +43,7 @@
 # install.packages("knitr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("lintr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 18.04 with R 4.0.2
 # install.packages("logging", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("magick", repos = "http://cran.us.r-project.org")
 # install.packages("maps", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("matrixStats", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on macOS Catalina or Ubuntu 18.04 with R 4.0.2
 # install.packages("mcr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -58,6 +62,7 @@
 # install.packages("stringi", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("stringr", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("styler", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
+# install.packages("survminer", repos = "http://cran.us.r-project.org")
 # install.packages("tidyverse", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")  # Could not install on Ubuntu 20.04 with R 4.0.2
 # install.packages("titanic", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
 # install.packages("utf8", lib = "~/R/x86_64-pc-linux-gnu-library/4.0", repos = "http://cran.us.r-project.org")
@@ -69,6 +74,7 @@
 
 library(BlandAltmanLeh)
 library(brglm2)
+# library(Cairo)
 library(chron)
 # library(devtools)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(DiagrammeR)
@@ -76,11 +82,13 @@ library(dplyr)
 library(emmeans)
 library(epiR)
 library(exact2x2)
+library(extrafont)
 library(forestplot)
 library(formatR)
 library(gapminder)
 library(ggplot2)
 # library(ggpubr)  # Could not install on Ubuntu 20.04 with R 4.0.2
+library(grDevices)
 library(gtools)
 library(Hmisc)
 library(ini)
@@ -88,6 +96,7 @@ library(kableExtra)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(knitr)
 # library(lintr)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(logging)
+library(magick)
 library(maps)
 library(matrixStats)  # Could not install on macOS Catalina or Ubuntu 18.04 with R 4.0.2
 library(mcr)
@@ -106,6 +115,7 @@ library(rmarkdown)
 library(stringi)
 library(stringr)
 library(styler)
+library(survminer)
 # library(tidyverse)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(titanic)
 library(utf8)

@@ -745,7 +745,8 @@ Import text file (.txt) as a list:
 ls = []
 with open('txt/list - multiple lines.txt') as file:
     for line in file:
-        ls.append(line[:-1])
+        # Remove newline characters
+        ls.append(line.strip('\n'))
 ```
 
 Import text file (.txt) as a list of lines:
@@ -753,7 +754,8 @@ Import text file (.txt) as a list of lines:
 ls = []
 with open('txt/string - all together.txt') as file:
     for line in file:
-        ls.append(line[:-1])
+        # Remove newline characters
+        ls.append(line.strip('\n'))
 ```
 
 Import text file (.txt) as a string:
@@ -1044,6 +1046,16 @@ for row in ls_of_ls[1:]:
         except ValueError:
             pass
 # print(Age['Charles Babbage'])
+```
+
+Convert list-of-lists to a data frame:
+```{python}
+df = pd.DataFrame(ls_of_ls)
+```
+
+Convert list-of-lists to a data frame using the first element as the column names:
+```{python}
+df = pd.DataFrame(ls_of_ls[1:], columns=ls_of_ls[0])
 ```
 
 Arrays

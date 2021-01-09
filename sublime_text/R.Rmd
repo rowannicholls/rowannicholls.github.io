@@ -36,14 +36,14 @@ Ubuntu
 
 Linting
 =======
-- What is linting? Why should I do it in R? Read more about that kind of stuff [here](../R/intro/linting.html)
-- If you know what linting is and want to implement it for R in Sublime Text, take a look at the follow steps (I could get it working on macOS Catalina but not on Ubuntu 18.04):
+- 'Linting' is the process of **standardising the format of how your code looks** and this can be achieved by using a _linter_. To read more about this and why it's a good idea to have a linter, take a look [here](../R/intro/linting.html)
+- You can download a linter for Sublime Text that will work with R code - along with many other languages - although I haven't been able to get it working on Ubuntu 18.04 or 20.04 (it works fine on macOS Catalina though):
 
-1. Install the **SublimeLinter** package from Package Control (install that if you have not already done so) in Sublime Text:
+1. Install the **SublimeLinter** package from Package Control (read [here](packages.html) if you don't have Package Control) in Sublime Text:
     - Using the mouse: Preferences > Package Control > Install Package > search for "SublimeLinter" > enter
     - Using the keyboard: Ctrl+Shift+P (Cmd+Shift+P on macOS) to open the Command Palette > search for "Package Control: Install Package" > enter > search for "SublimeLinter" > enter
 2. Because SublimeLinter is a linter *framework* and not a linter itself, you now need to install an R linter separately. And you need to install this linter *both* in R and in Sublime Text:
-    - In R (eg in RStudio), install the `lintr` package with `install.packages("lintr", repos = "http://cran.us.r-project.org")`
+    - In R (eg in RStudio), install the `lintr` package with `install.packages("lintr")`
     - In Sublime Text, install the `SublimeLinter-contrib-lintr` package
         - Note that this is not always available in Package Control, so you can download it manually from [here](https://github.com/jimhester/SublimeLinter-contrib-lintr). Unzip it and move the folder into your packages folder (find where this is by opening Preferences > Browse Packages...).
 3. You now need to tell Sublime Text where your `lintr` R package is installed:
@@ -56,7 +56,7 @@ Linting
         "windows": []
     }
     ```
-    - Paste the path to your R packages in next to the relevant OS name
+    - Paste the path to your R packages in as a string (ie with quotation marks around it) next to the relevant OS name
 3. To see the results of the linting every time you press save:
     - Open Preferences > Package Settings > SublimeLinter > Settings
     - Add to the user settings (on the right-hand-side): `"show_panel_on_save": "view"`
