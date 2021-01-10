@@ -1,0 +1,214 @@
+---
+title: '<font size="5">Graphs in Base R:</font><br>Line Plots'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+One Line in a Plot
+==================
+To plot a line graph in Base R you need:
+
+- x- and y-values
+- The `plot()` function
+- The `type` keyword argument set to 'l' for *line*
+
+Here's a simple example:
+
+```{r}
+x = c(0, 1, 2, 3, 4, 5, 6)
+y = c(0, 1, 4, 9, 16, 25, 36)
+plot(x, y, type = "l")
+```
+
+In the above example, the y-values were simply the x-values squared, so we could have achieved the same thing with an **equation** as opposed to explicit values:
+
+```{r}
+x = 0:6
+y = x**2
+plot(x, y, type = "l")
+```
+
+Multiple Lines in a Plot
+========================
+If you want to plot additional lines on the same set of axes you will need to use `plot()` for the _first_ line and `lines()` for the _additional_ lines:
+
+```{r}
+x = 0:6
+# Plot a parabola
+y = x**2
+plot(x, y, type = "l")
+# Plot a straight line
+y = x
+lines(x, y)
+```
+
+Axis Labels
+===========
+The function `plot()` can take __keyword arguments__, some of which are:
+
+- `main` which sets the main title of the graph
+- `xlab` which sets the x-axis label
+- `ylab` which sets the y-axis label
+
+Here's what it looks like:
+
+```{r}
+x = 0:6
+# Plot a parabola
+y = x**2
+plot(
+    x, y, type = "l", main = "y = x and y = x^2",
+    xlab = "x-values", ylab = "y-values"
+)
+# Plot a straight line
+y = x
+lines(x, y)
+```
+
+Latex in Labels
+---------------
+By using the `latex2exp` package, you can use the full power of Latex to generate proper-looking labels:
+
+```{r}
+library(latex2exp)
+
+x = 0:6
+# Plot a parabola
+y = x**2
+plot(
+    x, y, type = "l", main = TeX("y = x and y = x^2"),
+    xlab = "x-values", ylab = "y-values"
+)
+# Plot a straight line
+y = x
+lines(x, y)
+```
+
+Line Sizes
+==========
+Specify the **l**ine **w**i**d**th with the `lwd` keyword argument:
+
+```{r}
+age = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+
+large_dog = c(15, 24, 28, 32, 36, 45, 50, 55, 61, 66, 72, 77, 82, 88, 93, 120)
+med_dog = c(15, 24, 28, 32, 36, 42, 47, 51, 56, 60, 65, 69, 74, 78, 83, 87)
+small_dog = c(15, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80)
+
+plot(
+    age, large_dog, type = "l", lwd = 5,
+    main = "How Old is a Dog in Dog Years?",
+    xlab = "Age in Human Years", ylab = "Age in Dog Years"
+)
+lines(age, med_dog, lwd = 3)
+lines(age, small_dog, lwd = 1)
+```
+
+FYI, the above plot comes from [this](https://pets.webmd.com/dogs/how-to-calculate-your-dogs-age) page.
+
+Line width is specified in _pixels_:
+
+- A pixel is 1/96 of an inch (~0.26 mm)
+- A point is 1/72 of an inch (~0.35 mm)
+
+So `lwd = 1` implies a line width of one pixel, 0.75 points or 0.26 mm.
+
+Symbols, Line Types and Colours
+===============================
+For more details on customising lines, see [here](symbols_linetypes_colours.html).
+
+Legend
+======
+A legend can be added by using the `legend()` function:
+
+```{r}
+age = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16)
+
+large_dog = c(15, 24, 28, 32, 36, 45, 50, 55, 61, 66, 72, 77, 82, 88, 93, 120)
+med_dog = c(15, 24, 28, 32, 36, 42, 47, 51, 56, 60, 65, 69, 74, 78, 83, 87)
+small_dog = c(15, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80)
+
+plot(
+    age, large_dog, type = "l", lwd = 5,
+    main = "How Old is a Dog in Dog Years?",
+    xlab = "Age in Human Years", ylab = "Age in Dog Years"
+)
+lines(age, med_dog, lwd = 3)
+lines(age, small_dog, lwd = 1)
+legend(
+    "topleft", legend = c("Large dog", "Medium dog", "Small dog"),
+    lwd = c(1, 3, 5)
+)
+```
+
+Using Data Frames
+=================
+Up until now all the plots have been plotting **vectors** of data. If we instead use **data frames** it can sometimes make things easier, but note that a data frame's columns are vector objects anyway so it doesn't make much difference.
+
+```{r}
+data = data.frame(
+    matchweek = 1:38,
+    points = c(
+        3, 6, 7, 10, 13, 16, 19, 20, 23, 26, 29, 32, 35, 38, 41, 41, 44, 44,
+        44, 47, 50, 53, 56, 56, 62, 65, 65, 68, 71, 74, 74, 80, 80, 83, 89, 92,
+        95, 98
+    )
+)
+
+plot(
+    x = data$matchweek, y = data$points, type = "l", col = "#6CADDF",
+    main = "Premier League 2018-19 Log Points",
+    xlab = "Match Week", ylab = "Points", lwd = 3
+)
+legend("topleft", legend = "Manchester City", col = "#6CADDF", lwd = 3)
+```
+
+Multiple Data Sets
+==================
+For this example, the raw data will be imported from a CSV file:
+
+```{r}
+# Import raw data
+data = read.csv("Week-by-Week Points.csv", check.names = FALSE)
+```
+
+Now, instead of just plotting Manchester City's points we can plot all the teams' points for each match week of the 2018-19 season:
+
+```{r}
+# Initialise the plot
+plot(
+    x = 1:38, y = data[["Man City"]], type = "l", col = "#6CADDF",
+    main = "Premier League 2018-19 Log Points",
+    xlab = "Match Week", ylab = "Points", lwd = 3
+)
+# Create the named list of team colours
+teams = c(
+    "Arsenal", "Bournemouth", "Brighton", "Burnley", "Cardiff", "Chelsea",
+    "Crystal Palace", "Everton", "Fulham", "Huddersfield", "Leicester",
+    "Liverpool", "Man City", "Man Utd", "Newcastle", "Southampton", "Spurs",
+    "Watford", "West Ham", "Wolves"
+)
+team_colours = c(
+    "#ff0000", "#8b0304", "#005daa", "#80bfff", "#224781", "#0000dd",
+    "#0a4af5", "#274488", "#000000", "#176fc0", "#0101e8", "#dd0000",
+    "#6caddf", "#e80909", "#000000", "#ed1a3b", "#132257", "#fbee23",
+    "#7f0000", "#fdbc02"
+)
+names(team_colours) = teams
+# Plot
+for (team in colnames(data)) {
+    lines(1:38, data[[team]], lwd = 3, col = team_colours[[team]])
+}
+legend("topleft", legend = teams, col = team_colours, lwd = 3, cex = 0.6)
+```
+
+[⇦ Back](../../../R.html)
+
+</font>
