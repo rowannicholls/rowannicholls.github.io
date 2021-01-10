@@ -201,7 +201,7 @@ library(pROC)
 
 # Receiver Operating Characteristic Curve
 # =======================================
-# A ROC curve illustrates how the diagnostic accuracy (ie the sensitivity and specificity) of a binary classification test (eg predicting whether a passenger survived or died) changes as it threshold changes. Fortunately for us, there is a function that can do most of the work for us (hint: this function calculates the receiver operating characteristic):
+# A ROC curve illustrates how the diagnostic accuracy (ie the sensitivity and specificity) of a binary classification test (eg predicting whether a passenger survived or died) changes as its threshold changes. Fortunately for us, there is a function that can do most of the work for us (hint: this function calculates the receiver operating characteristic):
 
 
 # Have a look at some of the thresholds (ie values for fare that will be taken as cut-offs) that this function produced:

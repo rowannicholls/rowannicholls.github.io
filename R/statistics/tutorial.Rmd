@@ -47,7 +47,7 @@ Install Packages
 When you want to use functionality that is part of a particular package, you need to import the package as a library in the script:
 
 ### RStudio
-- Packages → Install → search & install
+- Packages > Install > search & install
 - Check that it appears in the list of packages
 
 ### Manually
@@ -319,7 +319,7 @@ Unfortunately these values aren't very good! Maybe it's because the cut-off we c
 
 Receiver Operating Characteristic Curve
 =======================================
-A ROC curve illustrates how the diagnostic accuracy (ie the sensitivity and specificity) of a binary classification test (eg predicting whether a passenger survived or died) changes as it threshold changes. Fortunately for us, there is a function that can do most of the work for us (hint: this function calculates the receiver operating characteristic):
+A ROC curve illustrates how the diagnostic accuracy (ie the sensitivity and specificity) of a binary classification test (eg predicting whether a passenger survived or died) changes as its threshold changes. Fortunately for us, there is a function that can do most of the work for us (hint: this function calculates the receiver operating characteristic):
 
 ```{r message = FALSE}
 r <- roc(Survived~Fare, data = df)
