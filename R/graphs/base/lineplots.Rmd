@@ -176,7 +176,10 @@ For this example, the raw data will be imported from a CSV file:
 
 ```{r}
 # Import raw data
-data = read.csv("Week-by-Week Points.csv", check.names = FALSE)
+data = read.csv(
+    "https://github.com/rowannicholls/rowannicholls.github.io/blob/master/R/graphs/base/Week-by-Week%20Points.csv?raw=true",
+    check.names = FALSE
+)
 ```
 
 Now, instead of just plotting Manchester City's points we can plot all the teams' points for each match week of the 2018-19 season:

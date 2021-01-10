@@ -572,7 +572,10 @@ legend(&quot;topleft&quot;, legend = &quot;Manchester City&quot;, col = &quot;#6
 <h1 number="8"><span class="header-section-number">8</span> Multiple Data Sets</h1>
 <p>For this example, the raw data will be imported from a CSV file:</p>
 <pre class="r"><code># Import raw data
-data = read.csv(&quot;Week-by-Week Points.csv&quot;, check.names = FALSE)</code></pre>
+data = read.csv(
+    &quot;https://github.com/rowannicholls/rowannicholls.github.io/blob/master/R/graphs/base/Week-by-Week%20Points.csv?raw=true&quot;,
+    check.names = FALSE
+)</code></pre>
 <p>Now, instead of just plotting Manchester City’s points we can plot all the teams’ points for each match week of the 2018-19 season:</p>
 <pre class="r"><code># Initialise the plot
 plot(
