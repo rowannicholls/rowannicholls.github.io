@@ -1,0 +1,206 @@
+---
+title: '<font size="5">Graphs in Base R:</font><br>Box Plots (aka Box-and-Whisker Plots) with Multiple Groups'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+For this page we will use data from the finals of various Olympic events, available on Wikipedia.
+
+This page functions as a follow-on from [Boxplots with One Group of Data](boxplots_single_group.html).
+
+Too Simple
+==========
+If we try to plot multiple datasets (eg the results from more than one Olympic Games) with two groups within each dataset (men and women), things start to become confusing:
+
+```{r}
+long_jump <- data.frame(
+    olympics = c(
+        rep("London 2012 (Men)", 8), rep("Rio 2016 (Men)", 8),
+        rep("London 2012 (Women)", 8), rep("Rio 2016 (Women)", 8)
+    ),
+    distance = c(
+        8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93,
+        8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05,
+        7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67,
+        7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69
+    )
+)
+
+boxplot(
+    distance ~ olympics, data = long_jump,
+    main = "Long Jump Finals",
+    xlab = "Olympic Games", ylab = "Distance [m]",
+    names = c("2012 (Men)", "2012 (Women)", "2016 (Men)", "2016 (Women)")
+)
+```
+
+In the above figure we just have four distinct box plots without the groups having been separated out.
+
+A Better Approach
+=================
+It's a good idea to use the **ordering** of the box plots to show the different data sets. This will help to make things as clear as possible. This can be achieved by creating a separate column in the data frame for the 'group' or 'category' of the data - in this case men and women - and 'multiplying' by this column with the `*` symbol. For example, take a column called `men_women` and use `distance ~ olympics * men_women` as the input to the `boxplot()` function:
+
+```{r}
+long_jump <- data.frame(
+    olympics = c(
+        rep("London 2012", 8), rep("Rio 2016", 8),
+        rep("London 2012", 8), rep("Rio 2016", 8)
+    ),
+    men_women = c(rep("Men", 16), rep("Women", 16)),
+    distance = c(
+        8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93,
+        8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05,
+        7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67,
+        7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69
+    )
+)
+
+boxplot(
+    distance ~ olympics * men_women, data = long_jump,
+    main = "Long Jump Finals",
+    xlab = "Olympic Games", ylab = "Distance [m]",
+    names = c("2012 (Men)", "2012 (Women)", "2016 (Men)", "2016 (Women)")
+)
+```
+
+Re-label the x-Axis
+-------------------
+The solution above still has four distinct boxplots, so edit the x-axis labels to clean things up:
+
+```{r}
+boxplot(
+    distance ~ olympics * men_women, data = long_jump, xaxt = "n",
+    main = "Long Jump Finals", xlab = "", ylab = "Distance [m]"
+)
+axis(side = 1, at = c(1.5, 3.5), labels = c("Men", "Women"))
+```
+
+Colours and Legend
+------------------
+Now edit the colours and add a legend:
+
+```{r}
+boxplot(
+    distance ~ olympics * men_women, data = long_jump, xaxt = "n",
+    main = "Long Jump Finals", xlab = "", ylab = "Distance [m]",
+    col = c("red", "blue")
+)
+axis(side = 1, at = c(1.5, 3.5), labels = c("Men", "Women"))
+legend(
+    "topright", title = "Olympics",
+    legend = c("London 2012", "Rio 2016"), fill = c("red", "blue")
+)
+```
+
+Scaling Up
+==========
+If more data is added the graph can be updated with minimal changes to the code:
+
+```{r}
+long_jump <- data.frame(
+    olympics = c(
+        rep("Athens 2004", 8), rep("Beijing 2008", 8), rep("London 2012", 8), rep("Rio 2016", 8),
+        rep("Athens 2004", 8), rep("Beijing 2008", 8), rep("London 2012", 8), rep("Rio 2016", 8)
+    ),
+    men_women = c(rep("Men", 32), rep("Women", 32)),
+    distance = c(
+        8.59, 8.47, 8.32, 8.31, 8.25, 8.24, 8.23, 8.21,
+        8.34, 8.24, 8.20, 8.19, 8.19, 8.16, 8.07, 8.00,
+        8.31, 8.16, 8.12, 8.11, 8.10, 8.07, 8.01, 7.93,
+        8.38, 8.37, 8.29, 8.25, 8.17, 8.10, 8.06, 8.05,
+        7.07, 7.05, 7.05, 6.96, 6.85, 6.83, 6.80, 6.73,
+        7.04, 7.03, 6.91, 6.79, 6.76, 6.70, 6.64, 6.58,
+        7.12, 7.07, 6.89, 6.88, 6.77, 6.76, 6.72, 6.67,
+        7.17, 7.15, 7.08, 6.95, 6.81, 6.79, 6.74, 6.69
+    )
+)
+
+boxplot(
+    distance ~ olympics * men_women, data = long_jump,
+    main = "Long Jump Finals at the Last Four Olympic Games",
+    xlab = "", ylab = "Distance [m]", xaxt = "n",
+    col = c("#0074c5", "#d71921", "#e400a3", "#00a650")
+)
+axis(side = 1, at = c(2.5, 6.5), labels = c("Men", "Women"))
+legend(
+    "topright", title = "Olympics",
+    legend = c("Athens 2004", "Beijing 2008", "London 2012", "Rio 2016"),
+    fill = c("#0074c5", "#d71921", "#e400a3", "#00a650")
+)
+```
+
+Annotate the Summary Statistics
+===============================
+It can be very useful to include summary statistics right on the plot as opposed to hidden away in a paragraph of text.
+
+Sample Sizes
+------------
+
+```{r}
+boxplot(
+    distance ~ olympics * men_women, data = long_jump,
+    main = "Long Jump Finals at the Last Four Olympic Games",
+    xlab = "", ylab = "Distance [m]", xaxt = "n",
+    col = c("#0074c5", "#d71921", "#e400a3", "#00a650"),
+    ylim = c(6.5, 8.6)
+)
+axis(side = 1, at = c(2.5, 6.5), labels = c("Men", "Women"))
+legend(
+    "topright", title = "Olympics",
+    legend = c("Athens 2004", "Beijing 2008", "London 2012", "Rio 2016"),
+    fill = c("#0074c5", "#d71921", "#e400a3", "#00a650")
+)
+sample_sizes <- aggregate(
+    long_jump$distance, list(long_jump$olympics, long_jump$men_women), length
+)
+text(
+    1:length(sample_sizes$x), 6.5,
+    labels = paste0("n=", signif(sample_sizes$x, digits = 3))
+)
+```
+
+Sample Means
+------------
+
+```{r}
+boxplot(
+    distance ~ olympics * men_women, data = long_jump,
+    main = "Long Jump Finals at the Last Four Olympic Games",
+    xlab = "", ylab = "Distance [m]", xaxt = "n",
+    col = c("#0074c5", "#d71921", "#e400a3", "#00a650"),
+    ylim = c(6.5, 8.8)
+)
+axis(side = 1, at = c(2.5, 6.5), labels = c("Men", "Women"))
+legend(
+    "topright", title = "Olympics",
+    legend = c("Athens 2004", "Beijing 2008", "London 2012", "Rio 2016"),
+    fill = c("#0074c5", "#d71921", "#e400a3", "#00a650")
+)
+means <- aggregate(
+    long_jump$distance, list(long_jump$olympics, long_jump$men_women), mean
+)
+text(
+    1:length(means$x), means$x + 0.4,
+    labels = paste0("\U00B5=", signif(means$x, digits = 3))
+)
+```
+
+Save Plot
+=========
+Finally, save your plot to your computer as an image using one of the following (depending on what format you want the image to be in):
+
+- `png("File Name.png")`
+- `pdf("File Name.pdf")`
+
+Whichever one you use, it must come __*before*__ you start plotting the graph (ie before you call `boxplot()`).
+
+[⇦ Back](../../../R.html)
+
+</font>
