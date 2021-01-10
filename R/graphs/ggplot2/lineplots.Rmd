@@ -1,0 +1,331 @@
+---
+title: '<font size="5">Graphs in R using ggplot2:</font><br>Line Plots'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+One Line in a Plot
+==================
+To plot a line graph in ggplot2, you need:
+
+- A data frame
+- A `ggplot()` object
+- A `geom_line()` object with a defined aesthetic mapping (`aes()`)
+
+Here's an example:
+
+```{r}
+library(ggplot2)
+
+df <- data.frame(
+    x = c(0, 1, 2, 3, 4, 5, 6),
+    y = c(0, 1, 4, 9, 16, 25, 36)
+)
+
+p <- ggplot()
+p <- p + geom_line(data = df, aes(x = x, y = y))
+print(p)
+```
+
+In the above example, the y-values were simply the x-values squared, so we could have achieved the same thing with an *equation* as opposed to explicit values:
+
+```{r}
+df <- data.frame(
+    x = c(0, 1, 2, 3, 4, 5, 6)
+)
+
+p <- ggplot()
+p <- p + geom_line(data = df, aes(x = x, y = x**2))
+print(p)
+```
+
+Multiple Lines in a Plot
+========================
+If you want to plot additional lines on the same set of axes, add more `geom_line()` objects:
+
+```{r}
+df <- data.frame(
+    x = c(0, 1, 2, 3, 4, 5, 6)
+)
+
+p <- ggplot()
+# Add a straight line
+p <- p + geom_line(data = df, aes(x = x, y = x))
+# Add a parabola
+p <- p + geom_line(data = df, aes(x = x, y = x**2))
+print(p)
+```
+
+Axis Labels
+===========
+To change the title and labels, create `ggtitle()`, `ylab()` and `xlab()` objects:
+
+```{r}
+df <- data.frame(
+    x = c(0, 1, 2, 3, 4, 5, 6)
+)
+
+p <- ggplot()
+p <- p + geom_line(data = df, aes(x = x, y = x))
+p <- p + geom_line(data = df, aes(x = x, y = x**2))
+p <- p + ggtitle("y = x and y = x^2")
+p <- p + ylab("y-values")
+p <- p + xlab("x-values")
+print(p)
+```
+
+Latex in Labels
+---------------
+By using the `latex2exp` package, you can use the full power of Latex to generate proper-looking titles and labels:
+
+```{r}
+library(latex2exp)
+
+df <- data.frame(
+    x = c(0, 1, 2, 3, 4, 5, 6)
+)
+
+p <- ggplot()
+p <- p + geom_line(data = df, aes(x = x, y = x))
+p <- p + geom_line(data = df, aes(x = x, y = x**2))
+p <- p + ggtitle(TeX("y = x and y = x^2"))
+p <- p + ylab("y-values")
+p <- p + xlab("x-values")
+print(p)
+```
+
+Colours and Legend
+==================
+Colours and legends are added automatically by ggplot2:
+
+```{r}
+df <- data.frame(
+    human_age = c(1:16, 1:16, 1:16),
+    dog_age = c(
+        15, 24, 28, 32, 36, 45, 50, 55, 61, 66, 72, 77, 82, 88, 93, 120,
+        15, 24, 28, 32, 36, 42, 47, 51, 56, 60, 65, 69, 74, 78, 83, 87,
+        15, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80
+    ),
+    dog_size = c(rep("Large", 16), rep("Medium", 16), rep("Small", 16))
+)
+
+p <- ggplot(
+    df, aes(x = human_age, y = dog_age, group = dog_size, col = dog_size)
+)
+p <- p + geom_line()
+p <- p + ggtitle("How Old is a Dog in Dog Years?")
+p <- p + ylab("Age in Dog Years")
+p <- p + xlab("Age in Human Years")
+p <- p + labs(colour = "Dog Size")
+print(p)
+```
+
+FYI, the above plot comes from [this](https://pets.webmd.com/dogs/how-to-calculate-your-dogs-age) page.
+
+Edit the Default Colours
+------------------------
+If you don't like the colours ggplot2 chooses for you, you can change them with the `scale_color_manual()` function:
+
+```{r}
+p <- ggplot(
+    df, aes(x = human_age, y = dog_age, group = dog_size, col = dog_size)
+)
+p <- p + geom_line()
+p <- p + ggtitle("How Old is a Dog in Dog Years?")
+p <- p + ylab("Age in Dog Years")
+p <- p + xlab("Age in Human Years")
+p <- p + labs(colour = "Dog Size")
+p <- p + scale_color_manual(values = c("blue", "red", "orange"))
+print(p)
+```
+
+Line Sizes
+==========
+The thicknesses of the lines can be changed with the `scale_size_manual()` function:
+
+```{r}
+p <- ggplot(
+    df, aes(
+        x = human_age, y = dog_age,
+        group = dog_size, colour = dog_size, size = dog_size
+    )
+)
+p <- p + geom_line()
+p <- p + ggtitle("How Old is a Dog in Dog Years?")
+p <- p + ylab("Age in Dog Years")
+p <- p + xlab("Age in Human Years")
+p <- p + labs(colour = "Dog Size", size = "Dog Size")
+p <- p + scale_color_manual(values = c("blue", "red", "orange"))
+p <- p + scale_size_manual(values = c(3, 2, 1))
+print(p)
+```
+
+Line Types
+==========
+The style of the lines can be changed with the `scale_linetype_manual()` function:
+
+```{r}
+p <- ggplot(
+    df, aes(
+        x = human_age, y = dog_age,
+        group = dog_size, colour = dog_size,
+        size = dog_size, linetype = dog_size
+    )
+)
+p <- p + geom_line()
+p <- p + ggtitle("How Old is a Dog in Dog Years?")
+p <- p + ylab("Age in Dog Years")
+p <- p + xlab("Age in Human Years")
+p <- p + labs(colour = "Dog Size", size = "Dog Size", linetype = "Dog Size")
+p <- p + scale_color_manual(values = c("blue", "red", "orange"))
+p <- p + scale_size_manual(values = c(1, 1, 1))
+p <- p + scale_linetype_manual(values = c("twodash", "longdash", "dotted"))
+print(p)
+```
+
+Editing Axes and Gridlines
+==========================
+
+```{r}
+p <- ggplot(
+    df, aes(
+        x = human_age, y = dog_age,
+        group = dog_size, colour = dog_size,
+        size = dog_size, linetype = dog_size
+    )
+)
+p <- p + geom_line()
+p <- p + ggtitle("How Old is a Dog in Dog Years?")
+p <- p + ylab("Age in Dog Years")
+p <- p + xlab("Age in Human Years")
+p <- p + labs(colour = "Dog Size", size = "Dog Size", linetype = "Dog Size")
+p <- p + scale_color_manual(values = c("blue", "red", "orange"))
+p <- p + scale_size_manual(values = c(1, 1, 1))
+p <- p + scale_linetype_manual(values = c("twodash", "longdash", "dotted"))
+p <- p + theme(panel.grid.major = element_blank())
+p <- p + theme(panel.grid.minor = element_blank())
+p <- p + scale_y_continuous(limits = c(0, 120))
+p <- p + scale_x_continuous(limits = c(0, 16))
+print(p)
+```
+
+Multiple Data Sets
+==================
+For this example, the raw data will be imported from a CSV file:
+
+```{r}
+# Import raw data
+df <- read.csv(
+    "https://github.com/rowannicholls/rowannicholls.github.io/blob/master/R/graphs/ggplot2/Points.csv?raw=true",
+    check.names = FALSE
+)
+```
+
+This CSV contains the number of log points for each team in the English Premier League for each match week of the 2018-19 season:
+
+```{r}
+p <- ggplot(df, aes(x = matchweek, y = points, group = team, col = team))
+p <- p + geom_line()
+p <- p + ggtitle("Premier League 2018-19 Log Points")
+p <- p + ylab("Points")
+p <- p + xlab("Match Week")
+p <- p + labs(colour = "")
+p <- p + scale_color_manual(
+    values = c(
+        "#ff0000", "#8b0304", "#005daa", "#80bfff", "#224781", "#0000dd",
+        "#0a4af5", "#274488", "#000000", "#176fc0", "#0101e8", "#dd0000",
+        "#6caddf", "#e80909", "#000000", "#ed1a3b", "#132257", "#fbee23",
+        "#7f0000", "#fdbc02"
+    )
+)
+print(p)
+```
+
+Error Bars
+==========
+For this example, use the pre-installed 'ToothGrowth' data set. This has data from a study on the effect of vitamin C on tooth growth in guinea pigs. Here's what the head of the data frame looks like:
+
+```{r}
+head(ToothGrowth)
+```
+
+...and here is the data plotted with its associated error bars:
+
+```{r}
+df <- ToothGrowth
+
+# Initialise vector to store maximums for each group
+upper <- vector()
+# Initialise vector to store minimums for each group
+lower <- vector()
+# Initialise vector to store averages for each group
+average <- vector()
+# Initialise vector to store sample sizes for each group
+n <- vector()
+# Analyse each dosage group
+doses <- unique(df$dose)
+for (dosage in doses) {
+    sub <- subset(df, dose == dosage)
+    upper <- c(upper, max(sub$len))
+    lower <- c(lower, min(sub$len))
+    average <- c(average, mean(sub$len))
+    n <- c(n, length(sub$len))
+}
+# Get values of error bars
+ytop <- max(upper)
+ybottom <- min(lower)
+yrange <- ytop - ybottom
+df <- data.frame(doses, average, upper, lower)
+
+# Plot
+p <- ggplot(df, aes(x = doses, y = average))
+p <- p + geom_point(size = 4)
+p <- p + geom_line()
+p <- p + geom_errorbar(aes(ymin = lower, ymax = upper), width=0.2)
+p <- p + annotate(
+    'text', x = doses, y = average - 0.1 * yrange,
+    label = paste('mean =', average)
+)
+p <- p + annotate(
+    'text', x = doses, y = ybottom - 0.1 * yrange, label = paste('n =', n)
+)
+# Add more space at the bottom in order to fit the annotations
+p <- p + ylim(ybottom - 0.1 * yrange, ytop)
+
+print(p)
+```
+
+Automatic Methods
+-----------------
+A similar graph can be plotted with help from the `ggpubr` package. This approach can be useful for certain plots but can make it more difficult to control its look.
+
+```{r}
+library(ggpubr)
+
+ggline(
+    ToothGrowth, x = "dose", y = "len", add = c("mean_ci"), color = "supp",
+    palette = "jco"
+)
+```
+
+Save Plot
+=========
+Finally, save your plot to your computer as an image using one of the following (depending on what format you want the image to be in):
+
+- `png("File Name.png")`
+- `pdf("File Name.pdf")`
+- `ggsave("File Name.png")`
+
+If you use one of the first two, it must come __*before*__ you start plotting the graph (ie before you call `ggplot()`). If you use the last one (`ggsave()`) it must come __*after*__ you've plotted the graph.
+
+[⇦ Back](../../../R.html)
+
+</font>
