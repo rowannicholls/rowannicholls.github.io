@@ -1,0 +1,95 @@
+---
+title: '<font size="5">Graphs in R using ggplot2:</font><br>Receiver Operating Characteristic Curves'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+This page just talks about how to _plot_ receiver operating characteristic (ROC) curves. For more on what they are and how to use them, see [this tutorial](../../statistics/tutorial.html). Briefly, a ROC curve illustrates how the diagnostic accuracy (ie the sensitivity and specificity) of a binary classification test (eg predicting whether something did or didn't happen) changes as its threshold changes.
+
+Example Data
+============
+A good data set to use is the training data subset from the `Titanic` package. This contains information about the passengers on board the Titanic, how much they paid for their fare and whether or not they survived:
+
+```{r}
+# Load the package
+library(titanic)
+# Change the width of the console
+options("width" = 200)
+# Take a look at the first 6 rows of the data
+head(titanic_train[c("Survived", "Pclass", "Name", "Sex", "Age", "Fare", "Cabin", "Embarked")])
+```
+
+Calculating Thresholds
+======================
+Fortunately for us, there is a function that can do most of the work: the unsurprisingly named `roc()` function:
+
+```{r message = FALSE}
+library(pROC)
+
+r <- roc(Survived ~ Fare, data = titanic_train)
+```
+
+Have a look at some of the thresholds (ie values for fare that will be taken as cut-offs) that this function produced:
+
+```{r}
+head(r$thresholds)
+```
+
+Plot
+====
+
+```{r fig.height = 5, fig.width = 5, message = FALSE}
+library(ggplot2)
+
+p <- ggroc(r)
+p <- p + ggtitle("Receiver Operating Characteristic Curve")
+p <- p + ylab("Sensitivity")
+p <- p + xlab("Specificity")
+p <- p + geom_segment(
+    aes(x = 1, xend = 0, y = 0, yend = 1), color = "grey", linetype = "dashed"
+)
+p <- p + scale_y_continuous(expand = c(0, 0))
+p <- p + scale_x_reverse(expand = c(0, 0))
+print(p)
+```
+
+Get the area under the curve and the 95% confidence interval of this area (which should be rounded off to 2 decimal places):
+
+```{r}
+auc <- auc(r)
+ci <- ci.auc(r)
+ci_l <- round(ci[1], 2)
+ci_u <- round(ci[3], 2)
+```
+
+Add this information to the graph:
+
+```{r fig.height = 5, fig.width = 5, message = FALSE}
+p <- ggroc(r)
+p <- p + ggtitle("Receiver Operating Characteristic Curve")
+p <- p + ylab("Sensitivity")
+p <- p + xlab("Specificity")
+p <- p + geom_segment(
+    aes(x = 1, xend = 0, y = 0, yend = 1), color = "grey", linetype = "dashed"
+)
+p <- p + scale_y_continuous(expand = c(0, 0))
+p <- p + scale_x_reverse(expand = c(0, 0))
+legend_text <- paste0(
+    "AUC = ", round(auc, 2), " (95% CI = ", ci_l, " - ", ci_u, ")"
+)
+p <- p + annotate("text", x = 0.3, y = 0.05, label = legend_text)
+print(p)
+```
+
+The area under the curve is 0.69; not particularly high! It seems that fare can't be used as an accurate predictor of passenger survival.
+
+[⇦ Back](../../../R.html)
+
+</font>

@@ -328,7 +328,7 @@ r <- roc(Survived~Fare, data = df)
 Have a look at some of the thresholds (ie values for fare that will be taken as cut-offs) that this function produced:
 
 ```{r}
-print(head(r$thresholds))
+head(r$thresholds)
 ```
 
 Plot Using Base R
@@ -368,6 +368,10 @@ p <- p + geom_segment(
 )
 p <- p + scale_y_continuous(expand = c(0, 0))
 p <- p + scale_x_reverse(expand = c(0, 0))
+legend_text <- paste0(
+    "AUC = ", round(auc, 2), " (95% CI = ", ci_l, " - ", ci_u, ")"
+)
+p <- p + annotate("text", x = 0.3, y = 0.05, label = legend_text)
 print(p)
 ```
 

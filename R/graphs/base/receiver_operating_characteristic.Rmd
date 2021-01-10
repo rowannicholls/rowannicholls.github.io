@@ -39,7 +39,7 @@ r <- roc(Survived ~ Fare, data = titanic_train)
 Have a look at some of the thresholds (ie values for fare that will be taken as cut-offs) that this function produced:
 
 ```{r}
-print(head(r$thresholds))
+head(r$thresholds)
 ```
 
 Plot
