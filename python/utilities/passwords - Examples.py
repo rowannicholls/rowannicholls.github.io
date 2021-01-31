@@ -137,3 +137,13 @@ with open('/usr/share/dict/words') as f:
     words = [word.strip() for word in f]
     password = ' '.join(secrets.choice(words) for i in range(4))
 # print(password)
+
+# Blinding codes
+codes = []
+while len(codes) < 20:
+    code = ''.join(
+        secrets.choice(string.ascii_letters).upper() for i in range(4)
+    )
+    if code not in codes:
+        codes.append(code)
+print(codes)
