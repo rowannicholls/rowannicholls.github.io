@@ -424,26 +424,26 @@ summary {
 </ul></li>
 <li><a href="#export"><span class="toc-section-number">2</span> Export</a>
 <ul>
-<li><a href="#data-frames"><span class="toc-section-number">2.1</span> Data Frames</a></li>
-<li><a href="#dictionaries-1"><span class="toc-section-number">2.2</span> Dictionaries</a></li>
-<li><a href="#lists-1"><span class="toc-section-number">2.3</span> Lists</a></li>
-<li><a href="#strings-1"><span class="toc-section-number">2.4</span> Strings</a></li>
-<li><a href="#sql-table"><span class="toc-section-number">2.5</span> SQL Table</a></li>
+<li><a href="#export-data-frames"><span class="toc-section-number">2.1</span> Export Data Frames</a></li>
+<li><a href="#export-dictionaries"><span class="toc-section-number">2.2</span> Export Dictionaries</a></li>
+<li><a href="#export-lists"><span class="toc-section-number">2.3</span> Export Lists</a></li>
+<li><a href="#export-strings"><span class="toc-section-number">2.4</span> Export Strings</a></li>
+<li><a href="#export-sql-tables"><span class="toc-section-number">2.5</span> Export SQL Tables</a></li>
 </ul></li>
 <li><a href="#import"><span class="toc-section-number">3</span> Import</a>
 <ul>
-<li><a href="#comma-separated-values-csvs"><span class="toc-section-number">3.1</span> Comma-Separated Values (CSVs)</a></li>
-<li><a href="#tab-separated-values-tsvs"><span class="toc-section-number">3.2</span> Tab-Separated Values (TSVs)</a></li>
-<li><a href="#tab-separated-values-tabs"><span class="toc-section-number">3.3</span> Tab-Separated Values (TABs)</a></li>
-<li><a href="#matlab-data-files"><span class="toc-section-number">3.4</span> MATLAB Data Files</a></li>
-<li><a href="#text-files"><span class="toc-section-number">3.5</span> Text Files</a></li>
-<li><a href="#numpy-objects"><span class="toc-section-number">3.6</span> Numpy Objects</a></li>
-<li><a href="#html"><span class="toc-section-number">3.7</span> HTML</a></li>
-<li><a href="#json"><span class="toc-section-number">3.8</span> JSON</a></li>
-<li><a href="#open-document-spreadsheet"><span class="toc-section-number">3.9</span> Open Document Spreadsheet</a></li>
-<li><a href="#excel-97-2004-workbooks"><span class="toc-section-number">3.10</span> Excel 97-2004 Workbooks</a></li>
-<li><a href="#excel-2007-onwards-workbooks-aka-office-open-xml-workbooks"><span class="toc-section-number">3.11</span> Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)</a></li>
-<li><a href="#all-spreadsheet-types"><span class="toc-section-number">3.12</span> All Spreadsheet Types</a></li>
+<li><a href="#import-comma-separated-values-csvs"><span class="toc-section-number">3.1</span> Import Comma-Separated Values (CSVs)</a></li>
+<li><a href="#import-tab-separated-values-tsvs"><span class="toc-section-number">3.2</span> Import Tab-Separated Values (TSVs)</a></li>
+<li><a href="#import-tab-separated-values-tabs"><span class="toc-section-number">3.3</span> Import Tab-Separated Values (TABs)</a></li>
+<li><a href="#import-matlab-data-files"><span class="toc-section-number">3.4</span> Import MATLAB Data Files</a></li>
+<li><a href="#import-text-files"><span class="toc-section-number">3.5</span> Import Text Files</a></li>
+<li><a href="#import-numpy-objects"><span class="toc-section-number">3.6</span> Import Numpy Objects</a></li>
+<li><a href="#import-html"><span class="toc-section-number">3.7</span> Import HTML</a></li>
+<li><a href="#import-json"><span class="toc-section-number">3.8</span> Import JSON</a></li>
+<li><a href="#import-open-document-spreadsheets"><span class="toc-section-number">3.9</span> Import Open Document Spreadsheets</a></li>
+<li><a href="#import-excel-97-2004-workbooks"><span class="toc-section-number">3.10</span> Import Excel 97-2004 Workbooks</a></li>
+<li><a href="#import-excel-2007-onwards-workbooks-aka-office-open-xml-workbooks"><span class="toc-section-number">3.11</span> Import Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)</a></li>
+<li><a href="#import-any-spreadsheet-type"><span class="toc-section-number">3.12</span> Import Any Spreadsheet Type</a></li>
 </ul></li>
 <li><a href="#convert"><span class="toc-section-number">4</span> Convert</a>
 <ul>
@@ -579,8 +579,8 @@ cur.execute(f&quot;INSERT INTO Example VALUES (&#39;Lovelace&#39;, &#39;1815-12-
 </div>
 <div id="export" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> Export</h1>
-<div id="data-frames" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> Data Frames</h2>
+<div id="export-data-frames" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Export Data Frames</h2>
 <p>Import Pandas:</p>
 <pre class="python"><code>import pandas as pd</code></pre>
 <p>Export data frame to comma-separated values (.csv):</p>
@@ -607,8 +607,8 @@ np.savetxt(&#39;txt/data frame - space-separated values.txt&#39;, df, fmt=&#39;%
 <pre class="python"><code>output = [df.columns.tolist()] + df.values.tolist()
 np.savetxt(&#39;txt/data frame - tab-separated values.txt&#39;, output, fmt=&#39;%s&#39;, delimiter=&#39;\t&#39;)</code></pre>
 </div>
-<div id="dictionaries-1" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> Dictionaries</h2>
+<div id="export-dictionaries" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Export Dictionaries</h2>
 <p>Export dictionary as a MATLAB object (.mat):</p>
 <pre class="python"><code>import scipy.io
 
@@ -687,8 +687,8 @@ json.dump(dct, open(&#39;txt/dictionary.txt&#39;, &#39;w&#39;))</code></pre>
 with open(&#39;json/dictionary.json&#39;, &#39;w&#39;) as file:
     json.dump(dct, file)</code></pre>
 </div>
-<div id="lists-1" class="section level2" number="2.3">
-<h2 number="2.3"><span class="header-section-number">2.3</span> Lists</h2>
+<div id="export-lists" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Export Lists</h2>
 <p>Export list to comma-separated values (.csv):</p>
 <pre class="python"><code>import numpy as np
 
@@ -709,19 +709,24 @@ sheet1 = book.add_sheet(&#39;sheet1&#39;)
 for i, v in enumerate(ls):
     sheet1.write(i, 0, v)
 book.save(&#39;xls/list.xls&#39;)</code></pre>
-<p>Export list to text file as a single line:</p>
+<p>Export list to text file (.txt) as a single line:</p>
 <pre class="python"><code>with open(&#39;txt/list - single line.txt&#39;, &#39;w&#39;) as file:
     file.write(str(ls))</code></pre>
-<p>Export list to text file with each element on a new line:</p>
+<p>Export list to text file (.txt) with each element on a new line:</p>
 <pre class="python"><code>with open(&#39;txt/list - multiple lines.txt&#39;, &#39;w&#39;) as file:
     for v in ls:
         file.write(str(v) + &#39;\n&#39;)</code></pre>
-<p>Export list to HTML:</p>
+<p>Export list to HTML file (.html):</p>
 <pre class="python"><code>file = open(&#39;html/list.html&#39;, &#39;w&#39;)
 for item in ls:
     file.write(str(item) + &#39;\n&#39;)
 file.close()</code></pre>
-<p>Export list-of-lists to text file:</p>
+<p>Export list to JavaScript Object Notation (JSON) file (.json):</p>
+<pre class="python"><code>import json
+
+with open(&#39;json/list.json&#39;, &#39;w&#39;) as file:
+    json.dump(ls, file)</code></pre>
+<p>Export list-of-lists to text file (.txt):</p>
 <pre class="python"><code>with open(&#39;txt/list-of-lists.txt&#39;, &#39;w&#39;) as file:
     json.dump(ls_of_ls, file)</code></pre>
 <p>Export list-of-lists to comma-separated values (.csv):</p>
@@ -730,21 +735,26 @@ file.close()</code></pre>
     a.writerows(ls_of_ls)</code></pre>
 <p>Export list-of-lists to comma-separated values (.csv) (one-liner):</p>
 <pre class="python"><code>csv.writer(open(&#39;csv/list-of-lists.csv&#39;, &#39;w&#39;)).writerows(ls_of_ls)</code></pre>
-<p>Export list-of-lists to text file as comma-separated values:</p>
+<p>Export list-of-lists to text file (.txt) as comma-separated values (csv):</p>
 <pre class="python"><code>with open(&#39;txt/list-of-lists - comma-separated values.txt&#39;, &#39;w&#39;, newline=&#39;&#39;) as file:
     a = csv.writer(file, delimiter=&#39;,&#39;)
     a.writerows(ls_of_ls)</code></pre>
-<p>Export list-of-lists to tab-separated values (.tsv):</p>
+<p>Export list-of-lists to tab-separated values file (.tsv):</p>
 <pre class="python"><code>with open(&#39;tsv/list-of-lists.tsv&#39;, &#39;w&#39;, newline=&#39;&#39;) as file:
     a = csv.writer(file, delimiter=&#39;\t&#39;)
     a.writerows(ls_of_ls)</code></pre>
-<p>Export list-of-lists to tab-separated values (.tab):</p>
+<p>Export list-of-lists to tab-separated values file (.tab):</p>
 <pre class="python"><code>with open(&#39;tab/list-of-lists.tab&#39;, &#39;w&#39;, newline=&#39;&#39;) as file:
     a = csv.writer(file, delimiter=&#39;\t&#39;)
     a.writerows(ls_of_ls)</code></pre>
-<p>Export list-of-lists to text file as tab-separated values:</p>
+<p>Export list-of-lists to text file (.txt) as tab-separated values (tsv):</p>
 <pre class="python"><code>with open(&#39;txt/list-of-lists - tab-separated values.txt&#39;, &#39;w&#39;, newline=&#39;&#39;) as file:
     csv.writer(file, delimiter=&#39;\t&#39;).writerows(ls_of_ls)</code></pre>
+<p>Export list-of-lists to JavaScript Object Notation (JSON) file (.json):</p>
+<pre class="python"><code>import json
+
+with open(&#39;json/list-of-lists.json&#39;, &#39;w&#39;) as file:
+    json.dump(ls_of_ls, file)</code></pre>
 <p>Export list-of-lists to sheets of an Excel 97-2004 workbook (.xls):</p>
 <pre class="python"><code>wb = xlwt.Workbook()
 ws = wb.add_sheet(&#39;Sheet1&#39;)
@@ -778,8 +788,8 @@ wb.close()</code></pre>
 }
 pyexcel_ods.save_data(&#39;ods/list-of-lists.ods&#39;, data)</code></pre>
 </div>
-<div id="strings-1" class="section level2" number="2.4">
-<h2 number="2.4"><span class="header-section-number">2.4</span> Strings</h2>
+<div id="export-strings" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Export Strings</h2>
 <p>Export string to text file - one line at a time:</p>
 <pre class="python"><code>lines = [y for y in st_multi.splitlines()]
 file = open(&#39;txt/string - one line at a time.txt&#39;, &#39;w&#39;)
@@ -791,8 +801,8 @@ file.close()</code></pre>
 file.write(st_multi)
 file.close()</code></pre>
 </div>
-<div id="sql-table" class="section level2" number="2.5">
-<h2 number="2.5"><span class="header-section-number">2.5</span> SQL Table</h2>
+<div id="export-sql-tables" class="section level2" number="2.5">
+<h2 number="2.5"><span class="header-section-number">2.5</span> Export SQL Tables</h2>
 <p>Export SQL table to a spreadsheet:</p>
 <pre class="python"><code>def export_table(tablename, filename):
     &quot;&quot;&quot;
@@ -856,8 +866,8 @@ export_table(&#39;Example&#39;, &#39;ods/SQL table.ods&#39;)</code></pre>
 </div>
 <div id="import" class="section level1" number="3">
 <h1 number="3"><span class="header-section-number">3</span> Import</h1>
-<div id="comma-separated-values-csvs" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Comma-Separated Values (CSVs)</h2>
+<div id="import-comma-separated-values-csvs" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Import Comma-Separated Values (CSVs)</h2>
 <p>Import comma-separated values (.csv) as a data frame:</p>
 <pre class="python"><code>import pandas as pd
 
@@ -904,8 +914,8 @@ with open(&#39;txt/list-of-lists - comma-separated values.txt&#39;, newline=&#39
     for row in csv.reader((line.replace(&#39;\0&#39;, &#39;&#39;) for line in file)):
         tupl_of_lists = tuple(list(tupl_of_lists) + [row])</code></pre>
 </div>
-<div id="tab-separated-values-tsvs" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> Tab-Separated Values (TSVs)</h2>
+<div id="import-tab-separated-values-tsvs" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Import Tab-Separated Values (TSVs)</h2>
 <p>Import tab-separated values (.tsv) as a data frame:</p>
 <pre class="python"><code>df = pd.read_csv(&#39;tsv/data frame.tsv&#39;, sep=&#39;\t&#39;)</code></pre>
 <p>Import tab-separated values (.tsv) as a list:</p>
@@ -921,20 +931,20 @@ with open(&#39;txt/list-of-lists - tab-separated values.txt&#39;, newline=&#39;&
     for row in csv.reader(file, delimiter=&#39;\t&#39;):
         tupl_of_lists.append(row)</code></pre>
 </div>
-<div id="tab-separated-values-tabs" class="section level2" number="3.3">
-<h2 number="3.3"><span class="header-section-number">3.3</span> Tab-Separated Values (TABs)</h2>
+<div id="import-tab-separated-values-tabs" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Import Tab-Separated Values (TABs)</h2>
 <p>Import tab-separated values (.tab) as a data frame:</p>
 <pre class="python"><code>df = pd.read_csv(&#39;tab/data frame.tab&#39;, sep=&#39;\t&#39;)</code></pre>
 </div>
-<div id="matlab-data-files" class="section level2" number="3.4">
-<h2 number="3.4"><span class="header-section-number">3.4</span> MATLAB Data Files</h2>
+<div id="import-matlab-data-files" class="section level2" number="3.4">
+<h2 number="3.4"><span class="header-section-number">3.4</span> Import MATLAB Data Files</h2>
 <p>Import MATLAB data files (.mat) as a dictionary:</p>
 <pre class="python"><code>import scipy.io
 
 dct = scipy.io.loadmat(&#39;mat/dictionary.mat&#39;)</code></pre>
 </div>
-<div id="text-files" class="section level2" number="3.5">
-<h2 number="3.5"><span class="header-section-number">3.5</span> Text Files</h2>
+<div id="import-text-files" class="section level2" number="3.5">
+<h2 number="3.5"><span class="header-section-number">3.5</span> Import Text Files</h2>
 <p>Import text file (.txt) as a list:</p>
 <pre class="python"><code>ls = []
 with open(&#39;txt/list - multiple lines.txt&#39;) as file:
@@ -960,31 +970,31 @@ with open(&#39;txt/list-of-lists.txt&#39;, &#39;r&#39;) as file:
 
 dct = json.load(open(&#39;txt/dictionary.txt&#39;))</code></pre>
 </div>
-<div id="numpy-objects" class="section level2" number="3.6">
-<h2 number="3.6"><span class="header-section-number">3.6</span> Numpy Objects</h2>
+<div id="import-numpy-objects" class="section level2" number="3.6">
+<h2 number="3.6"><span class="header-section-number">3.6</span> Import Numpy Objects</h2>
 <p>Import Numpy object (.npy) as a dictionary:</p>
 <pre class="python"><code>import numpy as np
 
 dct = np.load(&#39;npy/dictionary.npy&#39;, allow_pickle=True).item()</code></pre>
 </div>
-<div id="html" class="section level2" number="3.7">
-<h2 number="3.7"><span class="header-section-number">3.7</span> HTML</h2>
+<div id="import-html" class="section level2" number="3.7">
+<h2 number="3.7"><span class="header-section-number">3.7</span> Import HTML</h2>
 <p>Import HTML as a list:</p>
 <pre class="python"><code>ls = []
 for line in open(&#39;html/list.html&#39;, &#39;r&#39;, encoding=&#39;utf8&#39;):
     # Remove the newline character from the end of each line
     ls.append(line[:-1])</code></pre>
 </div>
-<div id="json" class="section level2" number="3.8">
-<h2 number="3.8"><span class="header-section-number">3.8</span> JSON</h2>
+<div id="import-json" class="section level2" number="3.8">
+<h2 number="3.8"><span class="header-section-number">3.8</span> Import JSON</h2>
 <p>Import JSON as a dictionary:</p>
 <pre class="python"><code>import json
 
 with open(&#39;json/dictionary.json&#39;) as file:
     dct = json.load(file)</code></pre>
 </div>
-<div id="open-document-spreadsheet" class="section level2" number="3.9">
-<h2 number="3.9"><span class="header-section-number">3.9</span> Open Document Spreadsheet</h2>
+<div id="import-open-document-spreadsheets" class="section level2" number="3.9">
+<h2 number="3.9"><span class="header-section-number">3.9</span> Import Open Document Spreadsheets</h2>
 <p>Import open document spreadsheet (.ods) as a list-of-lists:</p>
 <pre class="python"><code>def import_ods(filename):
     from pyexcel_ods import get_data
@@ -999,8 +1009,8 @@ with open(&#39;json/dictionary.json&#39;) as file:
 
 ls_of_ls = import_ods(&#39;ods/list-of-lists.ods&#39;)</code></pre>
 </div>
-<div id="excel-97-2004-workbooks" class="section level2" number="3.10">
-<h2 number="3.10"><span class="header-section-number">3.10</span> Excel 97-2004 Workbooks</h2>
+<div id="import-excel-97-2004-workbooks" class="section level2" number="3.10">
+<h2 number="3.10"><span class="header-section-number">3.10</span> Import Excel 97-2004 Workbooks</h2>
 <p>Import Excel 97-2004 workbook (.xls) as a list-of-lists:</p>
 <pre class="python"><code>def import_xls(filename):
     &quot;&quot;&quot;Import Excel 97-2004 workbook (.xls) as a list-of-lists.&quot;&quot;&quot;
@@ -1019,8 +1029,8 @@ ls_of_ls = import_xls(&#39;xls/list-of-lists.xls&#39;)</code></pre>
 
 df = pd.read_excel(&#39;xls/data frame.xls&#39;, index_col=0)</code></pre>
 </div>
-<div id="excel-2007-onwards-workbooks-aka-office-open-xml-workbooks" class="section level2" number="3.11">
-<h2 number="3.11"><span class="header-section-number">3.11</span> Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)</h2>
+<div id="import-excel-2007-onwards-workbooks-aka-office-open-xml-workbooks" class="section level2" number="3.11">
+<h2 number="3.11"><span class="header-section-number">3.11</span> Import Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)</h2>
 <p>Import Excel 2007 workbook (.xlsx) as a list-of-lists:</p>
 <pre class="python"><code>def import_xlsx(filename):
     &quot;&quot;&quot;Import Excel 2007 workbook (.xlsx) as a list-of-lists.&quot;&quot;&quot;
@@ -1039,8 +1049,8 @@ ls_of_ls = import_xlsx(&#39;xlsx/list-of-lists.xlsx&#39;)</code></pre>
 
 df = pd.read_excel(&#39;xlsx/data frame.xlsx&#39;, index_col=None, sheet_name=0)</code></pre>
 </div>
-<div id="all-spreadsheet-types" class="section level2" number="3.12">
-<h2 number="3.12"><span class="header-section-number">3.12</span> All Spreadsheet Types</h2>
+<div id="import-any-spreadsheet-type" class="section level2" number="3.12">
+<h2 number="3.12"><span class="header-section-number">3.12</span> Import Any Spreadsheet Type</h2>
 <p>Import spreadsheet as a list-of-lists:</p>
 <pre class="python"><code>def import_spreadsheet_list(filename):
     &quot;&quot;&quot;Import a spreadsheet and convert it to a list-of-lists.&quot;&quot;&quot;

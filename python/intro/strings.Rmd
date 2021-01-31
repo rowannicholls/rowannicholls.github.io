@@ -256,6 +256,17 @@ boolean = filename.endswith('.png')
 print(boolean)
 ```
 
+You can test for multiple prefixes or suffixes by creating a 'tuple' of sub-strings to search for:
+
+```{python}
+# Is this file a PNG or a JPG?
+filename = 'My File.docx'
+# Create a tuple of sub-strings to search for
+image_file_extensions = ('.png', '.jpg')
+boolean = filename.endswith(image_file_extensions)
+print(boolean)
+```
+
 Find a Character or Sub-string
 ------------------------------
 Now that we know our string contains the letter(s) we are looking for, get the **indices** (positions) where they are by using the correct method. You have two options here - `.index()` and `.find()` - with the difference being how they behave if they do not find what they are looking for:

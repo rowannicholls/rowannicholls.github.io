@@ -193,8 +193,8 @@ cur.execute(f"INSERT INTO Example VALUES ('Lovelace', '1815-12-10', {1852 - 1815
 Export
 ======
 
-Data Frames
------------
+Export Data Frames
+------------------
 Import Pandas:
 ```{python}
 import pandas as pd
@@ -250,8 +250,8 @@ output = [df.columns.tolist()] + df.values.tolist()
 np.savetxt('txt/data frame - tab-separated values.txt', output, fmt='%s', delimiter='\t')
 ```
 
-Dictionaries
-------------
+Export Dictionaries
+-------------------
 
 Export dictionary as a MATLAB object (.mat):
 ```{python}
@@ -360,8 +360,8 @@ with open('json/dictionary.json', 'w') as file:
     json.dump(dct, file)
 ```
 
-Lists
------
+Export Lists
+------------
 
 Export list to comma-separated values (.csv):
 ```{python}
@@ -398,20 +398,20 @@ for i, v in enumerate(ls):
 book.save('xls/list.xls')
 ```
 
-Export list to text file as a single line:
+Export list to text file (.txt) as a single line:
 ```{python, results = "hide"}
 with open('txt/list - single line.txt', 'w') as file:
     file.write(str(ls))
 ```
 
-Export list to text file with each element on a new line:
+Export list to text file (.txt) with each element on a new line:
 ```{python, results = "hide"}
 with open('txt/list - multiple lines.txt', 'w') as file:
     for v in ls:
         file.write(str(v) + '\n')
 ```
 
-Export list to HTML:
+Export list to HTML file (.html):
 ```{python, eval = FALSE}
 file = open('html/list.html', 'w')
 for item in ls:
@@ -426,7 +426,16 @@ for item in ls:
 file.close()
 ```
 
-Export list-of-lists to text file:
+Export list to JavaScript Object Notation (JSON) file (.json):
+
+```{python}
+import json
+
+with open('json/list.json', 'w') as file:
+    json.dump(ls, file)
+```
+
+Export list-of-lists to text file (.txt):
 ```{python}
 with open('txt/list-of-lists.txt', 'w') as file:
     json.dump(ls_of_ls, file)
@@ -444,31 +453,40 @@ Export list-of-lists to comma-separated values (.csv) (one-liner):
 csv.writer(open('csv/list-of-lists.csv', 'w')).writerows(ls_of_ls)
 ```
 
-Export list-of-lists to text file as comma-separated values:
+Export list-of-lists to text file (.txt) as comma-separated values (csv):
 ```{python}
 with open('txt/list-of-lists - comma-separated values.txt', 'w', newline='') as file:
     a = csv.writer(file, delimiter=',')
     a.writerows(ls_of_ls)
 ```
 
-Export list-of-lists to tab-separated values (.tsv):
+Export list-of-lists to tab-separated values file (.tsv):
 ```{python}
 with open('tsv/list-of-lists.tsv', 'w', newline='') as file:
     a = csv.writer(file, delimiter='\t')
     a.writerows(ls_of_ls)
 ```
 
-Export list-of-lists to tab-separated values (.tab):
+Export list-of-lists to tab-separated values file (.tab):
 ```{python}
 with open('tab/list-of-lists.tab', 'w', newline='') as file:
     a = csv.writer(file, delimiter='\t')
     a.writerows(ls_of_ls)
 ```
 
-Export list-of-lists to text file as tab-separated values:
+Export list-of-lists to text file (.txt) as tab-separated values (tsv):
 ```{python}
 with open('txt/list-of-lists - tab-separated values.txt', 'w', newline='') as file:
     csv.writer(file, delimiter='\t').writerows(ls_of_ls)
+```
+
+Export list-of-lists to JavaScript Object Notation (JSON) file (.json):
+
+```{python}
+import json
+
+with open('json/list-of-lists.json', 'w') as file:
+    json.dump(ls_of_ls, file)
 ```
 
 Export list-of-lists to sheets of an Excel 97-2004 workbook (.xls):
@@ -527,8 +545,8 @@ data = {
 pyexcel_ods.save_data('ods/list-of-lists.ods', data)
 ```
 
-Strings
--------
+Export Strings
+--------------
 Export string to text file - one line at a time:
 ```{python, eval = FALSE}
 lines = [y for y in st_multi.splitlines()]
@@ -559,8 +577,8 @@ file.write(st_multi)
 file.close()
 ```
 
-SQL Table
----------
+Export SQL Tables
+-----------------
 Export SQL table to a spreadsheet:
 ```{python}
 def export_table(tablename, filename):
@@ -626,8 +644,8 @@ export_table('Example', 'ods/SQL table.ods')
 Import
 ======
 
-Comma-Separated Values (CSVs)
------------------------------
+Import Comma-Separated Values (CSVs)
+------------------------------------
 Import comma-separated values (.csv) as a data frame:
 ```{python}
 import pandas as pd
@@ -694,8 +712,8 @@ with open('txt/list-of-lists - comma-separated values.txt', newline='') as file:
         tupl_of_lists = tuple(list(tupl_of_lists) + [row])
 ```
 
-Tab-Separated Values (TSVs)
----------------------------
+Import Tab-Separated Values (TSVs)
+----------------------------------
 Import tab-separated values (.tsv) as a data frame:
 ```{python}
 df = pd.read_csv('tsv/data frame.tsv', sep='\t')
@@ -722,15 +740,15 @@ with open('txt/list-of-lists - tab-separated values.txt', newline='') as file:
         tupl_of_lists.append(row)
 ```
 
-Tab-Separated Values (TABs)
----------------------------
+Import Tab-Separated Values (TABs)
+----------------------------------
 Import tab-separated values (.tab) as a data frame:
 ```{python}
 df = pd.read_csv('tab/data frame.tab', sep='\t')
 ```
 
-MATLAB Data Files
------------------
+Import MATLAB Data Files
+------------------------
 Import MATLAB data files (.mat) as a dictionary:
 ```{python}
 import scipy.io
@@ -738,8 +756,8 @@ import scipy.io
 dct = scipy.io.loadmat('mat/dictionary.mat')
 ```
 
-Text Files
-----------
+Import Text Files
+-----------------
 Import text file (.txt) as a list:
 ```{python}
 ls = []
@@ -779,8 +797,8 @@ import json
 dct = json.load(open('txt/dictionary.txt'))
 ```
 
-Numpy Objects 
--------------
+Import Numpy Objects 
+--------------------
 Import Numpy object (.npy) as a dictionary:
 ```{python}
 import numpy as np
@@ -788,8 +806,8 @@ import numpy as np
 dct = np.load('npy/dictionary.npy', allow_pickle=True).item()
 ```
 
-HTML
-----
+Import HTML
+-----------
 Import HTML as a list:
 ```{python}
 ls = []
@@ -798,8 +816,8 @@ for line in open('html/list.html', 'r', encoding='utf8'):
     ls.append(line[:-1])
 ```
 
-JSON
-----
+Import JSON
+-----------
 Import JSON as a dictionary:
 ```{python}
 import json
@@ -808,8 +826,8 @@ with open('json/dictionary.json') as file:
     dct = json.load(file)
 ```
 
-Open Document Spreadsheet
--------------------------
+Import Open Document Spreadsheets
+---------------------------------
 Import open document spreadsheet (.ods) as a list-of-lists:
 ```{python}
 def import_ods(filename):
@@ -826,8 +844,8 @@ def import_ods(filename):
 ls_of_ls = import_ods('ods/list-of-lists.ods')
 ```
 
-Excel 97-2004 Workbooks
------------------------
+Import Excel 97-2004 Workbooks
+------------------------------
 Import Excel 97-2004 workbook (.xls) as a list-of-lists:
 ```{python}
 def import_xls(filename):
@@ -851,8 +869,8 @@ import pandas as pd
 df = pd.read_excel('xls/data frame.xls', index_col=0)
 ```
 
-Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)
-------------------------------------------------------------
+Import Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)
+-------------------------------------------------------------------
 Import Excel 2007 workbook (.xlsx) as a list-of-lists:
 ```{python}
 def import_xlsx(filename):
@@ -876,8 +894,8 @@ import pandas as pd
 df = pd.read_excel('xlsx/data frame.xlsx', index_col=None, sheet_name=0)
 ```
 
-All Spreadsheet Types
----------------------
+Import Any Spreadsheet Type
+---------------------------
 Import spreadsheet as a list-of-lists:
 ```{python}
 def import_spreadsheet_list(filename):
