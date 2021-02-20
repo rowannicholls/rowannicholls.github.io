@@ -22,6 +22,7 @@ import platform
 import subprocess
 import sys
 import time
+import pwd
 
 # General implementation
 today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
@@ -56,7 +57,7 @@ py = platform.python_version()
 print(f'Its Python version is {py}')
 path = sys.executable
 print(f'Python is being run from {path}')
-user = os.getcwd().split("/")[2]
+user = pwd.getpwuid(os.getuid())[0]
 print(f'The user is {user}')
 process = subprocess.Popen(
     ['git', 'rev-parse', 'HEAD'], shell=False, stdout=subprocess.PIPE

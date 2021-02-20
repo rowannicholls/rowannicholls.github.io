@@ -62,7 +62,7 @@ Strings
 Export string to a text file (.txt):
 ```{r}
 cat("Hello", file = "txt/string.txt", sep = "\n")
-cat("World", file = "txt/string.txt", append = TRUE)
+cat("World", file = "txt/string.txt", append = TRUE, sep = "\n")
 ```
 
 Vectors
@@ -76,7 +76,7 @@ close(fileConn)
 
 Data Frames
 -----------
-Export data frame as comma-separated values (.csv):
+Export a data frame as comma-separated values (.csv):
 ```{r}
 # Option 1
 utils::write.csv(df, "csv/data frame.csv")
@@ -91,28 +91,28 @@ write.csv(df, "csv/data frame.csv", row.names = TRUE)
 write.csv(df, "csv/data frame.csv", row.names = FALSE)
 ```
 
-Export data frame as tab-separated values (.tsv):
+Export a data frame as tab-separated values (.tsv):
 ```{r}
 write.table(df, file = "tsv/data frame.tsv", sep = "\t", row.names = FALSE)
 ```
 
-Export data frame as tab-separated values (.tab):
+Export a data frame as tab-separated values (.tab):
 ```{r}
 write.table(df, file = "tab/data frame.tab", sep = "\t", row.names = FALSE)
 ```
 
-Export data frame as tab-separated values to a text file (.txt):
+Export a data frame as tab-separated values to a text file (.txt):
 ```{r}
 write.table(df, file = "txt/data frame.txt", sep = "\t", row.names = FALSE)
 ```
 
-Export data frame to an Excel 97-2004 workbook (.xls):
+Export a data frame to an Excel 97-2004 workbook (.xls):
 ```{r}
 library(WriteXLS)
 WriteXLS(df, "xls/data frame.xls")
 ```
 
-Export data frame to an Excel 2007 workbook (.xlsx):
+Export a data frame to an Excel 2007 workbook (.xlsx):
 ```{r}
 library(openxlsx)
 wb <- createWorkbook()
@@ -121,12 +121,36 @@ writeData(wb, "Sheet 1", df)
 saveWorkbook(wb, "xlsx/data frame.xlsx", overwrite = TRUE)
 ```
 
-Export data frame as a kable table to a Latex file (.tex):
+Export a data frame as a kable table to a Latex file (.tex):
 ```{r}
 library(kableExtra)
 kable_input <- kable(df, "latex", booktabs = TRUE, escape = FALSE)
 kable_output <- kable_styling(kable_input, latex_options = c("striped"))
 cat(kable_output, file = "tex/kable table.tex", append = FALSE)
+```
+
+JSON Objects
+------------
+The "rjson" library is useful for working with JavaScript Object Notation (JSON) data:
+
+```{r}
+library(rjson)
+```
+
+Export a data frame as a JSON object to a JSON file (.json):
+```{r}
+json <- rjson::toJSON(df)
+file <- file("json/json object.json")
+writeLines(json, file)
+close(file)
+```
+
+Export a data frame as a JSON object to a text file (.txt):
+```{r}
+json <- rjson::toJSON(df)
+file <- file("txt/json object.txt")
+writeLines(json, file)
+close(file)
 ```
 
 Console Output
@@ -175,8 +199,10 @@ ls <- lapply(filepaths, read.csv)
 Use the file names to create a named list which can then be indexed with either a number or the file names themselves:
 ```{r}
 names(ls) <- filenames
-# print(ls[["data frame.csv"]])
-# print(ls[[1]])
+
+# These two will now both work to extract the same data frame
+df <- ls[["data frame.csv"]]
+df <- ls[[1]]
 ```
 
 Tab-Separated Values (TSVs)
@@ -202,8 +228,8 @@ Text Files
 ----------
 Import text file (.txt) as a string:
 ```{r}
-library(readtext)
-st <- readtext("txt/string.txt")$text
+st <- readLines("txt/string.txt")
+print(st)
 ```
 
 Import text file (.txt) as a data frame:
@@ -214,34 +240,29 @@ df <- read.table("txt/data frame.txt", header = TRUE)
 JSON files
 ----------
 The "rjson" library is useful for working with JavaScript Object Notation (JSON) data:
-
 ```{r}
-library("rjson")
+library(rjson)
 ```
 
 Import a single JSON file:
-
 ```{r}
-file_location <- "json/JavaScript Object Notation.json"
+file_location <- "json/json object.json"
 json_data <- rjson::fromJSON(file = file_location)
 ```
 
 Import a single JSON file that has been saved as a txt:
-
 ```{r}
-file_location <- "txt/JavaScript Object Notation.txt"
+file_location <- "txt/json object.txt"
 json_data <- rjson::fromJSON(paste(readLines(file_location), collapse=""))
 ```
 
 Import all JSON files in a folder:
-
 ```{r}
 files = list.files(pattern = "*.json")
 json_files = lapply(files, fromJSON, file = files)
 ```
 
 Import JSON data from a web address:
-
 ```{r}
 json_file <- "http://api.worldbank.org/country?per_page=10&region=OED&lendingtype=LNX&format=json"
 json_data <- rjson::fromJSON(file = json_file)
@@ -272,6 +293,17 @@ tib <- readxl::read_excel("xlsx/data frame.xlsx")
 Then convert it to a data frame:
 ```{r}
 df <- as.data.frame(tib)
+```
+
+To import a specific worksheet, use the `sheet` keyword argument and either the sheet's name or index:
+```{r}
+tib <- readxl::read_excel("xlsx/data frame.xlsx", sheet = "Sheet 1")
+tib <- readxl::read_excel("xlsx/data frame.xlsx", sheet = 1)
+```
+
+Use `skip` to only import the rows below a certain point:
+```{r}
+tib <- readxl::read_excel("xlsx/data frame.xlsx", skip = 3)
 ```
 
 [⇦ Back](../../R.html)
