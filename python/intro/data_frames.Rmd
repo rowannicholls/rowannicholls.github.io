@@ -186,6 +186,13 @@ df_empty = pd.DataFrame({'A': []})
 print(df_empty.empty)
 ```
 
+Get a list of the **unique** values in a column (ie show the countries that were represented in the 100m final, without repeats):
+
+```{python}
+unique = pd.unique(df['Country'])
+print(unique)
+```
+
 Rows in a Data Frame
 ====================
 

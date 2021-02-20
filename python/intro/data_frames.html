@@ -661,6 +661,10 @@ print(rownames)</code></pre>
 df_empty = pd.DataFrame({&#39;A&#39;: []})
 print(df_empty.empty)</code></pre>
 <pre><code>## True</code></pre>
+<p>Get a list of the <strong>unique</strong> values in a column (ie show the countries that were represented in the 100m final, without repeats):</p>
+<pre class="python"><code>unique = pd.unique(df[&#39;Country&#39;])
+print(unique)</code></pre>
+<pre><code>## [&#39;Jamaica&#39; &#39;United States&#39; &#39;Canada&#39; &#39;South Africa&#39; &#39;Ivory Coast&#39; &#39;France&#39;]</code></pre>
 </div>
 <div id="rows-in-a-data-frame" class="section level1" number="5">
 <h1 number="5"><span class="header-section-number">5</span> Rows in a Data Frame</h1>
