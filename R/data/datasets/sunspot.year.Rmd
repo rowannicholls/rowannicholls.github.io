@@ -1,7 +1,10 @@
 ---
 title: sunspot.year
 subtitle: Yearly Sunspot Data, 1700--1988
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

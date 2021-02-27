@@ -1,7 +1,10 @@
 ---
 title: EuStockMarkets
 subtitle: Daily Closing Prices Of Major European Stock Indices, 1991--1998
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

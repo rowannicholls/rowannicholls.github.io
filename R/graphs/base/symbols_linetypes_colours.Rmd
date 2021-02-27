@@ -6,14 +6,16 @@ output:
         highlight: textmate
         number_sections: true
         toc: true
+        includes:
+            before_body: ../../../google_analytics.html
 ---
+
 <font size="3">
 
 [⇦ Back](../../../R.html)
 
 Symbols
 =======
-
 By default, there are 26 symbols that can be used for the data points of a scatter plot. These are set using the `pch` keyword argument and are numbered from 0 to 25, for example:  
 `plot(x, y, pch = 0)`  
 will plot with squares while  

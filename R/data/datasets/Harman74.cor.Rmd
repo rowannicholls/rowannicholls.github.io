@@ -1,7 +1,10 @@
 ---
 title: Harman74.cor
 subtitle: Harman Example 7.4
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

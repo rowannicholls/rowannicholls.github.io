@@ -1,7 +1,10 @@
 ---
 title: state
 subtitle: US State Facts And Figures
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

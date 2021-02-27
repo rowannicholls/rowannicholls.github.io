@@ -1,7 +1,10 @@
 ---
 title: USAccDeaths
 subtitle: Accidental Deaths In The US 1973--1978
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

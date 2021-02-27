@@ -1,7 +1,10 @@
 ---
 title: UKDriverDeaths
 subtitle: Road Casualties In Great Britain 1969--84
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

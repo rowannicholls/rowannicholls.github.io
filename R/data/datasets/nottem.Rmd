@@ -1,7 +1,10 @@
 ---
 title: nottem
 subtitle: Average Monthly Temperatures At Nottingham, 1920--1939
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

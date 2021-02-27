@@ -1,7 +1,10 @@
 ---
 title: airmiles
 subtitle: Passenger Miles On Commercial US Airlines, 1937--1960
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

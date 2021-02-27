@@ -1,7 +1,10 @@
 ---
 title: sunspots
 subtitle: Monthly Sunspot Numbers, 1749--1983
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

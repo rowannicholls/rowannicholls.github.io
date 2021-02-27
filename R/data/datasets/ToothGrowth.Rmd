@@ -1,7 +1,10 @@
 ---
 title: ToothGrowth
 subtitle: The Effect Of Vitamin C On Tooth Growth In Guinea Pigs
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

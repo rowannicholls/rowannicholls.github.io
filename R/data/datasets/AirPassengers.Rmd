@@ -1,7 +1,10 @@
 ---
 title: AirPassengers
 subtitle: Monthly Airline Passenger Numbers 1949-1960
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

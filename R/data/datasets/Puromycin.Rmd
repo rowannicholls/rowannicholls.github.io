@@ -1,7 +1,10 @@
 ---
 title: Puromycin
 subtitle: Reaction Velocity Of An Enzymatic Reaction
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

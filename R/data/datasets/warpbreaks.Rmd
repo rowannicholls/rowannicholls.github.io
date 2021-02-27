@@ -1,7 +1,10 @@
 ---
 title: warpbreaks
 subtitle: The Number Of Breaks In Yarn During Weaving
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

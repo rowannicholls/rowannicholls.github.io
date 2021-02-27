@@ -1,7 +1,10 @@
 ---
 title: precip
 subtitle: Annual Precipitation In US Cities
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

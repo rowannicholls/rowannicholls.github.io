@@ -1,7 +1,10 @@
 ---
 title: eurodist
 subtitle: Distances Between European Cities And Between US Cities
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*

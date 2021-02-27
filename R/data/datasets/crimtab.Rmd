@@ -1,7 +1,10 @@
 ---
 title: crimtab
 subtitle: Student's 3000 Criminals Data
-output: html_document
+output:
+    html_document:
+        includes:
+            before_body: ../../../google_analytics.html
 ---
 
 #### *A pre-loaded example dataset in R*
