@@ -131,6 +131,18 @@ Create space-separated values:
 st_ssv = '30 40 50'
 ```
 
+Create multi-line space-separated values:
+```{python}
+st_multi_ssv = """
+Year NDay Pos0 Pos1 Pos2 Pos3 Pos4
+2015    4    8   11   13   14   18
+2016    4   18   18   19   18   17
+2017    4   17   20   25   26   27
+2018    4   27   26   26   26   25
+2019    4   25   24   23   22   21
+"""
+```
+
 Dictionaries
 ------------
 Create dictionary:
@@ -1144,14 +1156,16 @@ ls_of_ls = [list(i) for i in tupl_of_tupl]
 
 Text
 ----
-Convert text to list, removing empty lines:
+Convert text to a list, removing empty lines:
 ```{python}
 ls = [y for y in (x.strip() for x in st_multi.splitlines()) if y]
+print(ls)
 ```
 
-Convert text to list, keeping empty lines:
+Convert text to a list, keeping empty lines:
 ```{python}
 ls = [y for y in st_multi.splitlines()]
+print(ls)
 ```
 
 Convert text to dictionary:
@@ -1161,7 +1175,24 @@ dct = {}
 for i in range(len(ls)):
     if i % 2 == 0:
         dct[ls[i]] = ls[i + 1]
-# print(dct['Paragraph 1:'])
+print(dct['Paragraph 1:'])
+```
+
+Convert text formatted as a table to a data frame:
+```{python}
+import pandas as pd
+from io import StringIO
+
+# Remove duplicate whitespace and convert to list of strings
+text = [' '.join(row.split()) for row in st_multi_ssv.split('\n')]
+# Remove first and last rows
+text = text[1:-1]
+# Add line end characters back in
+text = [row + '\n' for row in text]
+# Collapse to string
+text = ''.join(text)
+df = pd.read_csv(StringIO(text), sep=' ')
+print(df)
 ```
 
 Lists with Strings Only
@@ -1172,7 +1203,7 @@ dct = {}
 for i in range(len(ls)):
     if i % 2 == 0:
         dct[ls[i]] = ls[i + 1]
-# print(dct['Paragraph 1:'])
+print(dct['Paragraph 1:'])
 ```
 
 [⇦ Back](../../python.html)

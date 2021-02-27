@@ -432,6 +432,50 @@ st = st.strip()
 print('|' + st + '|')
 ```
 
+Remove Duplicated White Space
+-----------------------------
+Here's a string that is formatted to look like a table:
+
+```{python}
+st = """
+Year NDay Pos0 Pos1 Pos2 Pos3 Pos4
+2015    4    8   11   13   14   18
+2016    4   18   18   19   18   17
+2017    4   17   20   25   26   27
+2018    4   27   26   26   26   25
+2019    4   25   24   23   22   21
+"""
+```
+
+Replace the duplicated spaces with single spaces by using a combination of `.join()` and `.split()` like so:
+
+```{python, echo = FALSE}
+st = """Year NDay Pos0 Pos1 Pos2 Pos3 Pos4
+2015    4    8   11   13   14   18
+2016    4   18   18   19   18   17
+2017    4   17   20   25   26   27
+2018    4   27   26   26   26   25
+2019    4   25   24   23   22   21
+"""
+```
+
+```{python}
+line = ' '.join(st.split())
+print(line)
+```
+
+Here's how to do it while keeping the linebreaks in:
+
+```{python}
+# Remove duplicate whitespace and convert to list of strings
+st = [' '.join(row.split()) for row in st.split('\n')]
+# Add linebreak characters back in
+st = [row + '\n' for row in st]
+# Collapse to string
+st = ''.join(st)
+print(st)
+```
+
 Change the Case
 ===============
 A string can be UPPERCASE, lowercase, Sentence case or Title Case:
