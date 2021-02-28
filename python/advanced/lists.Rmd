@@ -1,0 +1,283 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Lists-of-Lists and List Comprehensions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+This page is a follow-on from the [introduction to lists](../intro/lists.html).
+
+Lists-of-Lists
+==============
+A list can contain any combination of object types:
+
+```{python}
+# A list with an int, float, string, Boolean and null
+ls = [0, 1.2, 'Two', True, None]
+```
+
+So, naturally, it can also contain lists:
+
+```{python}
+# Create a list-of-lists
+ls_of_ls = [
+    ['A', 'B', 'C'],
+    ['One', 'Two'],
+    [100, 200, 300, 400, 500]
+]
+print(ls_of_ls)
+```
+
+Indexing
+--------
+A list-of-lists is, of course, a list and so can be indexed like one, using integers or slices:
+
+```{python}
+# Index using an integer
+print(ls_of_ls[2])
+```
+
+```{python}
+# Index using a slice
+print(ls_of_ls[2:3])
+```
+
+As per normal, indexing with an integer returns the value itself (in this case, a list) whereas indexing with a slice returns a list (in this case a list-of-list).
+
+Iterating
+---------
+Each sub-list can be accessed individually by iterating through the macro list via a **for loop**:
+
+```{python}
+ls_of_ls = [
+    ['A', 'B', 'C'],
+    ['One', 'Two'],
+    [100, 200, 300, 400, 500]
+]
+# Iterate through the list
+for row in ls_of_ls:
+    print(row)
+```
+
+Searching and Finding
+---------------------
+As an example, let's take a list of pairs of x-y coordinates:
+
+```{python}
+coordinates = [
+    [1, 2],
+    [7, 4],
+    [9, 9]
+]
+```
+
+If there is a 'target' located at one of the coordinates:
+
+```{python}
+target_location = [7, 4]
+```
+
+We can find which of the coordinates have hit the target:
+
+```{python}
+for x_y in coordinates:
+    if x_y == target_location:
+        print('Hit')
+    else:
+        print('Miss')
+```
+
+This is the start of a Battleships-type game.
+
+Appending
+---------
+To add another list to the list-of-lists, use the `.append()` method:
+
+```{python}
+ls_of_ls.append(['Jan', 'Feb', 'Mar'])
+print(ls_of_ls)
+```
+
+To add extra elements to each of the lists *individually*, use the `.append()` method on each sub-list while iterating though the macro list:
+
+```{python}
+for row in ls_of_ls:
+    row.append('Extra')
+print(ls_of_ls)
+```
+
+This can also be used as a rough way of **transposing** the list-of-lists:
+
+```{python}
+# Initialise the list-of-lists
+ls_of_ls = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+# Initialise the output lists
+first = []
+second = []
+third = []
+# Iterate over the macro list
+for row in ls_of_ls:
+    first.append(row[0])
+    second.append(row[1])
+    third.append(row[2])
+print(first)
+print(second)
+print(third)
+```
+
+However, a better way to do this might be to convert it to an array:
+
+Converting to a Numpy Array
+---------------------------
+If the list-of-lists contains only numbers it can be converted to an array with the `array()` function from the `numpy` package:
+
+```{python}
+import numpy as np
+
+ar = np.array(ls_of_ls)
+print(ar)
+```
+
+It can then be transposed and sliced as per any array:
+
+```{python}
+# Transpose the array
+ar_transposed = np.transpose(ar)
+print(ar_transposed)
+```
+
+```{python}
+# Slice the array - extract all columns and the zeroth row
+print(ar[:, 0])
+```
+
+List Comprehension
+==================
+As mentioned in the [introductory page on lists](../intro/lists.html#finding-in-lists), the way to find a value in a list is to use the `.index()` method:
+
+```{python}
+ls = ['A', 'B', 'C', 'A', 'B', 'C']
+# Find the letter C
+print(ls.index('C'))
+```
+
+This has two drawbacks:
+
+- You can only look for one value at a time
+- It only returns the index of the first occurrence of a value; if there are duplicates, you won't know about them
+
+Another option is to use the `next()` function, as discussed [here](../intro/lists.html#more-advanced-finding), although the limitations are similar: while you can indeed search for multiple values at a time only the first occurrence of any match is returned:
+
+```{python}
+ls = ['A', 'B', 'C', 'A', 'B', 'C']
+# Find the letter A or C
+print(next(index for index, value in enumerate(ls) if (value == 'A') or (value == 'C')))
+```
+
+In order to find *multiple* things you need to **construct a list** of the elements that match your condition(s). Constructing a list via a conditional search like this is called **list comprehension** and is performed using a similar syntax to the `next()` function, except with square brackets (which indicate that a list is being made). This syntax is relatively close to an English sentence so it can be useful to think of it as such:
+
+> **For** the **values** **in** a **given list**, **if** a **value** meets a **condition**, add it to your list
+
+...and here's how the above English sentence gets translated into Python:
+
+> [value **for value in given_list if value == condition**]
+
+The above Python code is an example of a *list comprehension*. List comprehensions are very powerful because they combine **for loops** and **conditionals** which gives a wide variety of options when constructing a search. Now, here's how to use this 'list comprehension syntax' to find values in a list:
+
+Find Values
+-----------
+This example finds all numbers in a list that are larger than a certain value:
+
+```{python}
+ls = [1, 2, 3, 4, 5, 6]
+# Find all numbers larger than 2
+print([value for value in ls if value > 2])
+```
+
+The above code translates into English as "for the values in the given list 'ls', if a value is greater than 2, add it to the output list".
+
+Find Indexes
+------------
+To find indexes you need to use the `enumerate()` function. This splits each element in a list into its index and its value, which is different from the default behaviour which just returns the value (as demonstrated in the previous example). Once you've split the elements with `enumerate()` you then need to specify that it's each *index* you want to have returned:
+
+```{python}
+ls = ['A', 'B', 'C', 'A', 'B', 'C']
+# Find the letter B or C
+print([index for index, value in enumerate(ls) if (value == 'B') or (value == 'C')])
+```
+
+The above code translates into English as "for each index and value pair in the list 'ls', if the value is 'B' or 'C' then add the index to the output list".
+
+Find both Values and Indexes
+----------------------------
+Similarly, you can find all values that do (or don't) meet one or more criteria, and get the indexes *and* values of the elements that match at the same time:
+
+```{python}
+ls = ['Zeroth', 'First', 'Second', 'Third', 'Fourth']
+# Return a tuple for each matching element
+print([(i, v) for i, v in enumerate(ls) if v != 'Second'])
+```
+
+The above code translates into English as "for each index and value pair in the list 'ls', if the value is not 'Second' then add the index and value as a tuple to the output list".
+
+Extract Subsets
+---------------
+As list comprehensions are effectively lists constructed using for loops, they can be used to iterate through a list-of-lists to create subsets:
+
+```{python}
+ls_of_ls = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+# Extract the first element of each row
+print([row[0] for row in ls_of_ls])
+```
+
+Number Series
+-------------
+You can also generate lists of numbers according to rules:
+
+```{python}
+# Return the even numbers from 0 to 50, doubled
+print([2 * i for i in range(51) if i % 2 == 0])
+```
+
+Element-wise Operations
+-----------------------
+As mentioned in the [first page on lists](../intro/lists.html#concatenating-lists), when the "+" operation is performed on two lists it *concatenates* them:
+
+```{python}
+ls_1 = [1, 2, 3]
+ls_2 = [4]
+ls = ls_1 + ls_2
+print(ls)
+```
+
+If, instead, you want to *mathematically* add the element(s) of the second list to those of the first you can do so with a list comprehension:
+
+```{python}
+ls_1 = [1, 2, 3]
+ls_2 = [4]
+ls = [x + y for x in ls_1 for y in ls_2]
+print(ls)
+```
+
+This translates into English as "for each value 'x' in list 1, and for each value 'y' in list 2, add x and y".
+
+[⇦ Back](../../python.html)
+
+</font>

@@ -11,7 +11,7 @@
 
 
 
-<title>Introduction to Python: Lists</title>
+<title>Advanced Python: Lists-of-Lists and List Comprehensions</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -693,298 +693,243 @@ data:{scriptSource:bd,resume:function(){a()}}}):a()})(xq);
 
 
 
-<h1 class="title toc-ignore"><font size="5">Introduction to Python:</font><br>Lists</h1>
+<h1 class="title toc-ignore"><font size="5">Advanced Python:</font><br>Lists-of-Lists and List Comprehensions</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#introduction-to-lists"><span class="toc-section-number">1</span> Introduction to Lists</a></li>
-<li><a href="#creating-lists"><span class="toc-section-number">2</span> Creating Lists</a></li>
-<li><a href="#indexing-lists"><span class="toc-section-number">3</span> Indexing Lists</a></li>
-<li><a href="#finding-in-lists"><span class="toc-section-number">4</span> Finding in Lists</a>
+<li><a href="#lists-of-lists"><span class="toc-section-number">1</span> Lists-of-Lists</a>
 <ul>
-<li><a href="#searching-in-lists"><span class="toc-section-number">4.1</span> Searching in Lists</a></li>
+<li><a href="#indexing"><span class="toc-section-number">1.1</span> Indexing</a></li>
+<li><a href="#iterating"><span class="toc-section-number">1.2</span> Iterating</a></li>
+<li><a href="#searching-and-finding"><span class="toc-section-number">1.3</span> Searching and Finding</a></li>
+<li><a href="#appending"><span class="toc-section-number">1.4</span> Appending</a></li>
+<li><a href="#converting-to-a-numpy-array"><span class="toc-section-number">1.5</span> Converting to a Numpy Array</a></li>
 </ul></li>
-<li><a href="#more-advanced-finding"><span class="toc-section-number">5</span> More Advanced Finding</a></li>
-<li><a href="#concatenating-lists"><span class="toc-section-number">6</span> Concatenating Lists</a>
+<li><a href="#list-comprehension"><span class="toc-section-number">2</span> List Comprehension</a>
 <ul>
-<li><a href="#adding-to-lists"><span class="toc-section-number">6.1</span> Adding to Lists</a></li>
+<li><a href="#find-values"><span class="toc-section-number">2.1</span> Find Values</a></li>
+<li><a href="#find-indexes"><span class="toc-section-number">2.2</span> Find Indexes</a></li>
+<li><a href="#find-both-values-and-indexes"><span class="toc-section-number">2.3</span> Find both Values and Indexes</a></li>
+<li><a href="#extract-subsets"><span class="toc-section-number">2.4</span> Extract Subsets</a></li>
+<li><a href="#number-series"><span class="toc-section-number">2.5</span> Number Series</a></li>
+<li><a href="#element-wise-operations"><span class="toc-section-number">2.6</span> Element-wise Operations</a></li>
 </ul></li>
-<li><a href="#removing-from-lists"><span class="toc-section-number">7</span> Removing from Lists</a>
-<ul>
-<li><a href="#specifying-indexes"><span class="toc-section-number">7.1</span> Specifying Indexes</a></li>
-<li><a href="#specifying-values"><span class="toc-section-number">7.2</span> Specifying Values</a></li>
-</ul></li>
-<li><a href="#sorting"><span class="toc-section-number">8</span> Sorting</a></li>
-<li><a href="#sets"><span class="toc-section-number">9</span> Sets</a></li>
 </ul>
 </div>
 
 <p><font size="3"></p>
 <p><a href="../../python.html">⇦ Back</a></p>
-<div id="introduction-to-lists" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Introduction to Lists</h1>
-<p>As introduced in <a href="data_types.html#lists">the data types page</a>, ‘lists’ are collections of objects:</p>
-<ul>
-<li>They have <strong>square brackets</strong> at the start and end of them and <strong>commas</strong> separating each item, eg <code>[0, 1, 2, 3, 4]</code>
-<ul>
-<li>This makes them easy to spot in Python - if you see square brackets and commas you’re looking at a list!</li>
-</ul></li>
-<li>The proper word to use when referring to the things/objects/items in a list is <strong>elements</strong> - a <em>list</em> is made up of <em>elements</em></li>
-<li>A list’s elements do not all have to be of the same type, there can be a <strong>mixture of data types</strong>, eg <code>[0, 1.2, &#39;two&#39;, True, None]</code> contains an integer, a float, a string, a Boolean and a null object</li>
-<li>A list can contain <strong>duplicates</strong>, eg <code>[1, 2, 2, 3, 3, 3]</code></li>
-<li>A list has an <strong>order</strong>: <code>[0, 1, 2]</code> is different to <code>[0, 2, 1]</code></li>
-<li>The elements are numbered in their order, starting with 0: the list <code>[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]</code> has <code>&#39;A&#39;</code> as its <em>zeroth</em> element, <code>&#39;B&#39;</code> as its <em>first</em> element and <code>&#39;C&#39;</code> as its <em>second</em> element
-<ul>
-<li>The elements are also numbered backwards: “-1” refers to the last element, “-2” refers to the second last element and so on</li>
-<li>The number associated with an element is its <strong>index</strong>, eg in the list <code>[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]</code> the element <code>&#39;A&#39;</code> has index 0, <code>&#39;B&#39;</code> has index 1 and <code>&#39;C&#39;</code> has index 2</li>
-</ul></li>
-<li>A list can be of any length, and can also be empty: <code>[]</code> is an <strong>empty list</strong> (it’s a list with zero elements in it), but it’s still a list
-<ul>
-<li>In other words, <code>[]</code> is not the same as <code>[None]</code> which is a list with a null object in it (which thus has a length of one - not zero - because it has one object in it!)</li>
-</ul></li>
-</ul>
+<p>This page is a follow-on from the <a href="../intro/lists.html">introduction to lists</a>.</p>
+<div id="lists-of-lists" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Lists-of-Lists</h1>
+<p>A list can contain any combination of object types:</p>
+<pre class="python"><code># A list with an int, float, string, Boolean and null
+ls = [0, 1.2, &#39;Two&#39;, True, None]</code></pre>
+<p>So, naturally, it can also contain lists:</p>
+<pre class="python"><code># Create a list-of-lists
+ls_of_ls = [
+    [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;],
+    [&#39;One&#39;, &#39;Two&#39;],
+    [100, 200, 300, 400, 500]
+]
+print(ls_of_ls)</code></pre>
+<pre><code>## [[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;], [&#39;One&#39;, &#39;Two&#39;], [100, 200, 300, 400, 500]]</code></pre>
+<div id="indexing" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Indexing</h2>
+<p>A list-of-lists is, of course, a list and so can be indexed like one, using integers or slices:</p>
+<pre class="python"><code># Index using an integer
+print(ls_of_ls[2])</code></pre>
+<pre><code>## [100, 200, 300, 400, 500]</code></pre>
+<pre class="python"><code># Index using a slice
+print(ls_of_ls[2:3])</code></pre>
+<pre><code>## [[100, 200, 300, 400, 500]]</code></pre>
+<p>As per normal, indexing with an integer returns the value itself (in this case, a list) whereas indexing with a slice returns a list (in this case a list-of-list).</p>
 </div>
-<div id="creating-lists" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Creating Lists</h1>
-<p>As mentioned above, a list is created by using square brackets and commas between elements. This then needs to be assigned to a variable name using “=” in order to be used:</p>
-<pre class="python"><code>ls = [&#39;zero&#39;, &#39;one&#39;, &#39;two&#39;, 3, 4, 5]
-print(ls)</code></pre>
-<pre><code>## [&#39;zero&#39;, &#39;one&#39;, &#39;two&#39;, 3, 4, 5]</code></pre>
-<p>Note that you cannot use the word “list” as a variable name (we used “ls” in the example above). This is because “list” is the name of a function in Python: it’s a function that creates a list out of another object. Here, then, is how to use this <em>list function</em> to create a list:</p>
-<pre class="python"><code>natural_numbers = list(range(15))
-print(natural_numbers)</code></pre>
-<pre><code>## [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]</code></pre>
-<pre class="python"><code>counting_numbers = list(range(1, 21))
-print(counting_numbers)</code></pre>
-<pre><code>## [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]</code></pre>
-<pre class="python"><code>every_second_number = list(range(1, 19, 2))
-print(every_second_number)</code></pre>
-<pre><code>## [1, 3, 5, 7, 9, 11, 13, 15, 17]</code></pre>
-<p>In the above examples, the <code>list()</code> function is used to convert objects of the <em>range</em> type into objects that are of the <em>list</em> type.</p>
-<p>You can find out the length of a list (ie how many elements are in it) but using the <code>len()</code> function:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(len(ls))</code></pre>
-<pre><code>## 5</code></pre>
+<div id="iterating" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Iterating</h2>
+<p>Each sub-list can be accessed individually by iterating through the macro list via a <strong>for loop</strong>:</p>
+<pre class="python"><code>ls_of_ls = [
+    [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;],
+    [&#39;One&#39;, &#39;Two&#39;],
+    [100, 200, 300, 400, 500]
+]
+# Iterate through the list
+for row in ls_of_ls:
+    print(row)</code></pre>
+<pre><code>## [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
+## [&#39;One&#39;, &#39;Two&#39;]
+## [100, 200, 300, 400, 500]</code></pre>
 </div>
-<div id="indexing-lists" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Indexing Lists</h1>
-<p>You can access a <em>single</em>, specific element of a list by referring to its index. This is known as <strong>indexing a list</strong> and is done by placing the index of the element you are interested in inside of square brackets immediately after the variable name:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(ls[2])</code></pre>
-<pre><code>## C</code></pre>
-<p>You can access <em>multiple</em> elements by using a <strong>slice</strong>. With a slice, you tell Python where within a list it should start giving you elements and where it should stop. This is done by specifying a start index and a stop index, separated by a colon:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(ls[1:4])</code></pre>
-<pre><code>## [&#39;B&#39;, &#39;C&#39;, &#39;D&#39;]</code></pre>
-<p>Note that, in the above example, we sliced the list from index 1 to index 4. In other words, we were left with the elements 1, 2 and 3; the element associated with the second index number we provide is NOT included in the output. A slice <code>[a:b]</code> will give you the elements from <code>a</code> to <code>b</code> including <code>a</code> but not including <code>b</code> - Python <em>starts</em> at index <code>a</code> and <em>stops</em> at index <code>b</code>. This also works when you use negative numbers as the indexes:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(ls[-4:-1])</code></pre>
-<pre><code>## [&#39;B&#39;, &#39;C&#39;, &#39;D&#39;]</code></pre>
-<p>Also note that when you index a list with a single integer you get <em>that elements on its own</em>, whereas when you index using a slice you get <em>a list</em>, even if that slice only gives you one element:</p>
-<pre class="python"><code># The element at index 3, on its own
-print(ls[3])</code></pre>
-<pre><code>## D</code></pre>
-<pre class="python"><code># The element at index 3, in a list
-print(ls[3:4])</code></pre>
-<pre><code>## [&#39;D&#39;]</code></pre>
-<p>By default, a slice will start at the beginning of a list and end at the end. This means that if you don’t provide a start and/or stop index it will assume you want all the elements. This means that the slice <code>[:]</code> is the same as slice <code>[0:len(ls)]</code> (where <code>len(ls)</code> is the length of the list) in that both will return the entire list:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(ls[:])</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre>
-<pre class="python"><code>print(ls[0:len(ls)])</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre>
-<p>Similarly, you can leave out a start or stop index to get all elements to or from a certain index, respectively:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(ls[2:])</code></pre>
-<pre><code>## [&#39;C&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre>
-<pre class="python"><code>print(ls[:-3])</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;B&#39;]</code></pre>
-<p>If you include a third number in a slice, that will be its ‘stride’ (how many elements it will skip between each element it returns):</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;, &#39;G&#39;, &#39;H&#39;, &#39;I&#39;, &#39;J&#39;]
-# Every second element from the second to the eighth
-print(ls[2:9:2])</code></pre>
-<pre><code>## [&#39;C&#39;, &#39;E&#39;, &#39;G&#39;, &#39;I&#39;]</code></pre>
-<p>A negative stride goes through the list backwards:</p>
-<pre class="python"><code># Every second element from the eighth to the second
-print(ls[8:1:-2])</code></pre>
-<pre><code>## [&#39;I&#39;, &#39;G&#39;, &#39;E&#39;, &#39;C&#39;]</code></pre>
-<blockquote>
-<p>Note that an <em>integer</em> or a <em>slice</em> can be used to index a list but a <em>list</em> <strong>cannot</strong> be used to index a list. In other words, <code>ls[1, 2, 3]</code> will return an error.</p>
-</blockquote>
+<div id="searching-and-finding" class="section level2" number="1.3">
+<h2 number="1.3"><span class="header-section-number">1.3</span> Searching and Finding</h2>
+<p>As an example, let’s take a list of pairs of x-y coordinates:</p>
+<pre class="python"><code>coordinates = [
+    [1, 2],
+    [7, 4],
+    [9, 9]
+]</code></pre>
+<p>If there is a ‘target’ located at one of the coordinates:</p>
+<pre class="python"><code>target_location = [7, 4]</code></pre>
+<p>We can find which of the coordinates have hit the target:</p>
+<pre class="python"><code>for x_y in coordinates:
+    if x_y == target_location:
+        print(&#39;Hit&#39;)
+    else:
+        print(&#39;Miss&#39;)</code></pre>
+<pre><code>## Miss
+## Hit
+## Miss</code></pre>
+<p>This is the start of a Battleships-type game.</p>
 </div>
-<div id="finding-in-lists" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Finding in Lists</h1>
-<p>The opposite to <strong>indexing</strong> a list (whereby you provide an <em>index number</em> and get the corresponding <em>element</em> returned to you) is <strong>finding</strong> in a list (whereby you provide an <em>element</em> and get the corresponding <em>index</em> returned to you). You can lookup an element’s index in this way by using the the <code>.index()</code> <strong>method</strong>:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(ls.index(&#39;B&#39;))</code></pre>
-<pre><code>## 1</code></pre>
-<p>Note that you can only lookup one element at a time in this way. Also, if there are multiple instances of the same element <em>you will only get the index of the first one</em>. To do more advanced finding you will need to use either a <strong>list comprehension</strong> or a <strong>for loop</strong> depending on what exactly you want to do with the output (see <a href="../advanced/lists.html#list-comprehension">the page on list comprehensions</a> for more).</p>
-<div id="searching-in-lists" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Searching in Lists</h2>
-<p>If you are only interested in knowing <em>if</em> a certain value exists as an element in a list or not, as opposed to <em>where</em> that element is, you can <strong>search</strong> for it using the <code>in</code> statement and get a <em>Boolean</em> (True or False) as an output:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(&#39;B&#39; in ls)</code></pre>
-<pre><code>## True</code></pre>
-<pre class="python"><code>print(&#39;F&#39; in ls)</code></pre>
-<pre><code>## False</code></pre>
+<div id="appending" class="section level2" number="1.4">
+<h2 number="1.4"><span class="header-section-number">1.4</span> Appending</h2>
+<p>To add another list to the list-of-lists, use the <code>.append()</code> method:</p>
+<pre class="python"><code>ls_of_ls.append([&#39;Jan&#39;, &#39;Feb&#39;, &#39;Mar&#39;])
+print(ls_of_ls)</code></pre>
+<pre><code>## [[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;], [&#39;One&#39;, &#39;Two&#39;], [100, 200, 300, 400, 500], [&#39;Jan&#39;, &#39;Feb&#39;, &#39;Mar&#39;]]</code></pre>
+<p>To add extra elements to each of the lists <em>individually</em>, use the <code>.append()</code> method on each sub-list while iterating though the macro list:</p>
+<pre class="python"><code>for row in ls_of_ls:
+    row.append(&#39;Extra&#39;)
+print(ls_of_ls)</code></pre>
+<pre><code>## [[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;Extra&#39;], [&#39;One&#39;, &#39;Two&#39;, &#39;Extra&#39;], [100, 200, 300, 400, 500, &#39;Extra&#39;], [&#39;Jan&#39;, &#39;Feb&#39;, &#39;Mar&#39;, &#39;Extra&#39;]]</code></pre>
+<p>This can also be used as a rough way of <strong>transposing</strong> the list-of-lists:</p>
+<pre class="python"><code># Initialise the list-of-lists
+ls_of_ls = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9],
+]
+# Initialise the output lists
+first = []
+second = []
+third = []
+# Iterate over the macro list
+for row in ls_of_ls:
+    first.append(row[0])
+    second.append(row[1])
+    third.append(row[2])
+print(first)</code></pre>
+<pre><code>## [1, 4, 7]</code></pre>
+<pre class="python"><code>print(second)</code></pre>
+<pre><code>## [2, 5, 8]</code></pre>
+<pre class="python"><code>print(third)</code></pre>
+<pre><code>## [3, 6, 9]</code></pre>
+<p>However, a better way to do this might be to convert it to an array:</p>
 </div>
-</div>
-<div id="more-advanced-finding" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> More Advanced Finding</h1>
-<p>The <code>next()</code> function can be used as a more powerful alternative to indexing/finding/searching a list. This function looks at each element in a list in turn, starting at the beginning, and for each one determines if it matches a given criterion. The first element it finds that does so will be returned in the manner of your asking. For example, you can ask the function to return the “next value, out of all the values in the list, where the value is equal to ‘B’”. This looks as follows:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-print(next(value for value in ls if value == &#39;B&#39;))</code></pre>
-<pre><code>## B</code></pre>
-<p>Alternatively, if your list is made up of numbers, you can ask the function to return the “next value, out of all the values in the list, if the value is greater than 5”:</p>
-<pre class="python"><code>ls = [2, 4, 6, 8, 10]
-print(next(value for value in ls if value &gt; 5))</code></pre>
-<pre><code>## 6</code></pre>
-<p>In this case, the first value that matched was “6”, which is what was returned. You also have the option to ask the function to return the element to you in an augmented manner, eg as a string:</p>
-<pre class="python"><code>ls = [2, 4, 6, 8, 10]
-print(next(f&#39;The next number &gt;5 is: {value}&#39; for value in ls if value &gt; 5))</code></pre>
-<pre><code>## The next number &gt;5 is: 6</code></pre>
-<p>It is also possible to get the <em>index</em> of the element that first matches your criterion as opposed to the <em>value</em>. This requires the <code>enumerate()</code> function, which splits each element in a list up into its index and its value. As such, you need to ask for the “next index, given each index and value in the list, if the value is greater than 5”:</p>
-<pre class="python"><code>ls = [2, 4, 6, 8, 10]
-print(next(index for index, value in enumerate(ls) if value &gt; 5))</code></pre>
-<pre><code>## 2</code></pre>
-<p>The element at index position 2 (which has the value “6”) was the first to match the criterion of being greater than 5.</p>
-<p>As the name suggests, the <code>next()</code> function only finds the <em>next</em> element that meets the given criterion and, as such, can only ever return one element (or zero elements if there are none that meet the criterion). If you are instead interested in finding <strong>all</strong> the elements in the list you will need to use a <a href="../advanced/lists.html#list-comprehension">list comprehension</a> .</p>
-</div>
-<div id="concatenating-lists" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Concatenating Lists</h1>
-<p>Adding two lists together is very easy in Python: just use the “+” sign!</p>
-<pre class="python"><code>ls_1 = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
-ls_2 = [&#39;D&#39;, &#39;E&#39;]
-ls = ls_1 + ls_2
-print(ls)</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre>
-<p>This happens even if the lists’ contents are numbers:</p>
-<pre class="python"><code>ls_1 = [1, 2, 3]
-ls_2 = [4, 5]
-ls = ls_1 + ls_2
-print(ls)</code></pre>
-<pre><code>## [1, 2, 3, 4, 5]</code></pre>
-<p>If you want to add the <em>elements</em> of the lists together you need to use a <a href="../advanced/lists.html#element-wise-operations">list comprehension</a> (or convert the lists to <a href="arrays.html">arrays</a> and add those together, in which case it will perform matrix addition). Those topics are covered on different pages but, in the meantime, here’s how to add specific elements of lists together using the “+” sign for <em>addition</em> and then append the answer onto the end of a string using the “+” sign for <em>concatenation</em>:</p>
-<pre class="python"><code>ls_1 = [1, 2, 3]
-ls_2 = [4, 5]
-print(&#39;Adding the numbers at indexes 0 and 1 = &#39; + str(ls_1[0] + ls_2[1]))</code></pre>
-<pre><code>## Adding the numbers at indexes 0 and 1 = 6</code></pre>
-<p>While concatenating two lists together is possible using the “+” sign, it is <strong>not</strong> possible to remove the values in one list from another list using a “-” sign! It <strong>is</strong>, however, possible to do this with <em>sets</em>, which are discussed below.</p>
-<div id="adding-to-lists" class="section level2" number="6.1">
-<h2 number="6.1"><span class="header-section-number">6.1</span> Adding to Lists</h2>
-<p>If you just want to add single elements to lists as opposed to concatenating entire lists together, you can use the <code>.append()</code> or <code>.insert()</code> methods:</p>
-<pre class="python"><code>ls = [1, 2, 3]
-# Add an element to the end of the list
-ls.append(4)
-print(ls)</code></pre>
-<pre><code>## [1, 2, 3, 4]</code></pre>
-<pre class="python"><code>ls = [1, 2, 4]
-# At the given index, insert the given element
-ls.insert(2, 3)
-print(ls)</code></pre>
-<pre><code>## [1, 2, 3, 4]</code></pre>
-<p>Note that these two operations occur <strong>in-place</strong>: they augment the list immediately and don’t return anything:</p>
-<pre class="python"><code>ls = [1, 2, 3]
-# This is NOT what you want
-ls = ls.append(4)
-print(ls)</code></pre>
-<pre><code>## None</code></pre>
-<pre class="python"><code>ls = [1, 2, 4]
-# This is NOT what you want
-ls = ls.insert(2, 3)
-print(ls)</code></pre>
-<pre><code>## None</code></pre>
+<div id="converting-to-a-numpy-array" class="section level2" number="1.5">
+<h2 number="1.5"><span class="header-section-number">1.5</span> Converting to a Numpy Array</h2>
+<p>If the list-of-lists contains only numbers it can be converted to an array with the <code>array()</code> function from the <code>numpy</code> package:</p>
+<pre class="python"><code>import numpy as np
+
+ar = np.array(ls_of_ls)
+print(ar)</code></pre>
+<pre><code>## [[1 2 3]
+##  [4 5 6]
+##  [7 8 9]]</code></pre>
+<p>It can then be transposed and sliced as per any array:</p>
+<pre class="python"><code># Transpose the array
+ar_transposed = np.transpose(ar)
+print(ar_transposed)</code></pre>
+<pre><code>## [[1 4 7]
+##  [2 5 8]
+##  [3 6 9]]</code></pre>
+<pre class="python"><code># Slice the array - extract all columns and the zeroth row
+print(ar[:, 0])</code></pre>
+<pre><code>## [1 4 7]</code></pre>
 </div>
 </div>
-<div id="removing-from-lists" class="section level1" number="7">
-<h1 number="7"><span class="header-section-number">7</span> Removing from Lists</h1>
-<p>You can either remove elements from lists by specifying which <strong>indexes</strong> to take out or by specifying which <strong>values</strong> to take out:</p>
-<div id="specifying-indexes" class="section level2" number="7.1">
-<h2 number="7.1"><span class="header-section-number">7.1</span> Specifying Indexes</h2>
-<p>The first option is to just use indexing: use an integer or slice to return a subset of the original list:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-subset = ls[1:-1]
-print(subset)</code></pre>
-<pre><code>## [&#39;B&#39;, &#39;C&#39;, &#39;D&#39;]</code></pre>
-<p>The second option is to use the <code>del</code> statement (short for “delete”). This is the <strong>inverse</strong> of indexing: you use an integer or slice to specify which indexes to <em>remove</em> instead of which to <em>keep</em> as we have been doing up until now:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-del ls[1:-1]
-print(ls)</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;E&#39;]</code></pre>
-<p>Note that this is another <em>in-place</em> operation: the elements are deleted from the list and no new list is created.</p>
-<p>The third option is the <code>.pop()</code> method which removes the element at the given index from the list in-place and returns the element that was removed (or ‘popped-out’ as it were):</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
-removed = ls.pop(2)
-print(removed)</code></pre>
-<pre><code>## C</code></pre>
-<pre class="python"><code>print(ls)</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;B&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre>
-</div>
-<div id="specifying-values" class="section level2" number="7.2">
-<h2 number="7.2"><span class="header-section-number">7.2</span> Specifying Values</h2>
-<p>To remove a value from a list, use the <code>.remove()</code> method:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;B&#39;, &#39;A&#39;]
-ls.remove(&#39;B&#39;)
-print(ls)</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;C&#39;, &#39;B&#39;, &#39;A&#39;]</code></pre>
-<p>Again, this has acted <em>in-place</em> and only on the <em>first</em> occurrence of the value.</p>
-</div>
-</div>
-<div id="sorting" class="section level1" number="8">
-<h1 number="8"><span class="header-section-number">8</span> Sorting</h1>
-<p>To sort the elements in a list in alphabetical order you have two options:</p>
-<ol style="list-style-type: decimal">
-<li>The <code>sorted()</code> function, which creates a new list (leaving the old one intact, unless you overwrite it):</li>
-</ol>
-<pre class="python"><code>vowels = [&#39;e&#39;, &#39;a&#39;, &#39;u&#39;, &#39;o&#39;, &#39;i&#39;]
-# Sort using the sorted() function
-vowels_sorted = sorted(vowels)
-# Here&#39;s the new order
-print(vowels_sorted)</code></pre>
-<pre><code>## [&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;]</code></pre>
-<pre class="python"><code># But the old order is still accessible
-print(vowels)</code></pre>
-<pre><code>## [&#39;e&#39;, &#39;a&#39;, &#39;u&#39;, &#39;o&#39;, &#39;i&#39;]</code></pre>
-<ol start="2" style="list-style-type: decimal">
-<li>The <code>.sort()</code> method, which sorts in-place and thus augments the list (meaning the original order cannot be restored):</li>
-</ol>
-<pre class="python"><code>vowels = [&#39;e&#39;, &#39;a&#39;, &#39;u&#39;, &#39;o&#39;, &#39;i&#39;]
-# Sort using the .sort() method
-vowels.sort()
-print(vowels)</code></pre>
-<pre><code>## [&#39;a&#39;, &#39;e&#39;, &#39;i&#39;, &#39;o&#39;, &#39;u&#39;]</code></pre>
-<p>In the second example, the old order is forgotten.</p>
-</div>
-<div id="sets" class="section level1" number="9">
-<h1 number="9"><span class="header-section-number">9</span> Sets</h1>
-<p>Sets are <em>NOT</em> lists! But they are similar, which is why they are getting discussed on this page about lists. The main differences are that:</p>
-<ul>
-<li>A set is <strong>immutable</strong> which means that it <em>cannot be changed once created</em></li>
-<li>A set cannot have duplicates; all of its elements are <strong>unique</strong></li>
-<li>A set is <strong>unordered</strong>: the order of the elements is not remembered by Python</li>
-</ul>
-<p>Sets are either created by using curly brackets (note that the elements in the output are not necessarily in the same order as in the input, due to sets being unordered):</p>
-<pre class="python"><code>st = {&#39;A&#39;, &#39;B&#39;, &#39;C&#39;}
-print(st)</code></pre>
-<pre><code>## {&#39;C&#39;, &#39;A&#39;, &#39;B&#39;}</code></pre>
-<p>…or by converting a list into a set using the <code>set()</code> function:</p>
+<div id="list-comprehension" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> List Comprehension</h1>
+<p>As mentioned in the <a href="../intro/lists.html#finding-in-lists">introductory page on lists</a>, the way to find a value in a list is to use the <code>.index()</code> method:</p>
 <pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
-# Convert list to set
-st = set(ls)
-print(st)</code></pre>
-<pre><code>## {&#39;C&#39;, &#39;A&#39;, &#39;B&#39;}</code></pre>
-<p>Notice that in the second example the duplicate values were removed. This is because of the second property of sets, as listed above: they cannot have duplicates. <strong>Conversion to a set is thus a useful way to find out what the unique values in a list are</strong>.</p>
-<p>Another useful property of sets is that they can be subtracted from each other, which is not true of lists. Here’s an example:</p>
-<pre class="python"><code>st_1 = {&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;}
-st_2 = {&#39;A&#39;, &#39;B&#39;, &#39;C&#39;}
-# Subtract the sets from each other
-st = st_1 - st_2
-print(st)</code></pre>
-<pre><code>## {&#39;F&#39;, &#39;D&#39;, &#39;E&#39;}</code></pre>
+# Find the letter C
+print(ls.index(&#39;C&#39;))</code></pre>
+<pre><code>## 2</code></pre>
+<p>This has two drawbacks:</p>
+<ul>
+<li>You can only look for one value at a time</li>
+<li>It only returns the index of the first occurrence of a value; if there are duplicates, you won’t know about them</li>
+</ul>
+<p>Another option is to use the <code>next()</code> function, as discussed <a href="../intro/lists.html#more-advanced-finding">here</a>, although the limitations are similar: while you can indeed search for multiple values at a time only the first occurrence of any match is returned:</p>
+<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
+# Find the letter A or C
+print(next(index for index, value in enumerate(ls) if (value == &#39;A&#39;) or (value == &#39;C&#39;)))</code></pre>
+<pre><code>## 0</code></pre>
+<p>In order to find <em>multiple</em> things you need to <strong>construct a list</strong> of the elements that match your condition(s). Constructing a list via a conditional search like this is called <strong>list comprehension</strong> and is performed using a similar syntax to the <code>next()</code> function, except with square brackets (which indicate that a list is being made). This syntax is relatively close to an English sentence so it can be useful to think of it as such:</p>
+<blockquote>
+<p><strong>For</strong> the <strong>values</strong> <strong>in</strong> a <strong>given list</strong>, <strong>if</strong> a <strong>value</strong> meets a <strong>condition</strong>, add it to your list</p>
+</blockquote>
+<p>…and here’s how the above English sentence gets translated into Python:</p>
+<blockquote>
+<p>[value <strong>for value in given_list if value == condition</strong>]</p>
+</blockquote>
+<p>The above Python code is an example of a <em>list comprehension</em>. List comprehensions are very powerful because they combine <strong>for loops</strong> and <strong>conditionals</strong> which gives a wide variety of options when constructing a search. Now, here’s how to use this ‘list comprehension syntax’ to find values in a list:</p>
+<div id="find-values" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Find Values</h2>
+<p>This example finds all numbers in a list that are larger than a certain value:</p>
+<pre class="python"><code>ls = [1, 2, 3, 4, 5, 6]
+# Find all numbers larger than 2
+print([value for value in ls if value &gt; 2])</code></pre>
+<pre><code>## [3, 4, 5, 6]</code></pre>
+<p>The above code translates into English as “for the values in the given list ‘ls’, if a value is greater than 2, add it to the output list”.</p>
+</div>
+<div id="find-indexes" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Find Indexes</h2>
+<p>To find indexes you need to use the <code>enumerate()</code> function. This splits each element in a list into its index and its value, which is different from the default behaviour which just returns the value (as demonstrated in the previous example). Once you’ve split the elements with <code>enumerate()</code> you then need to specify that it’s each <em>index</em> you want to have returned:</p>
+<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
+# Find the letter B or C
+print([index for index, value in enumerate(ls) if (value == &#39;B&#39;) or (value == &#39;C&#39;)])</code></pre>
+<pre><code>## [1, 2, 4, 5]</code></pre>
+<p>The above code translates into English as “for each index and value pair in the list ‘ls’, if the value is ‘B’ or ‘C’ then add the index to the output list”.</p>
+</div>
+<div id="find-both-values-and-indexes" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Find both Values and Indexes</h2>
+<p>Similarly, you can find all values that do (or don’t) meet one or more criteria, and get the indexes <em>and</em> values of the elements that match at the same time:</p>
+<pre class="python"><code>ls = [&#39;Zeroth&#39;, &#39;First&#39;, &#39;Second&#39;, &#39;Third&#39;, &#39;Fourth&#39;]
+# Return a tuple for each matching element
+print([(i, v) for i, v in enumerate(ls) if v != &#39;Second&#39;])</code></pre>
+<pre><code>## [(0, &#39;Zeroth&#39;), (1, &#39;First&#39;), (3, &#39;Third&#39;), (4, &#39;Fourth&#39;)]</code></pre>
+<p>The above code translates into English as “for each index and value pair in the list ‘ls’, if the value is not ‘Second’ then add the index and value as a tuple to the output list”.</p>
+</div>
+<div id="extract-subsets" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Extract Subsets</h2>
+<p>As list comprehensions are effectively lists constructed using for loops, they can be used to iterate through a list-of-lists to create subsets:</p>
+<pre class="python"><code>ls_of_ls = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+]
+# Extract the first element of each row
+print([row[0] for row in ls_of_ls])</code></pre>
+<pre><code>## [1, 4, 7]</code></pre>
+</div>
+<div id="number-series" class="section level2" number="2.5">
+<h2 number="2.5"><span class="header-section-number">2.5</span> Number Series</h2>
+<p>You can also generate lists of numbers according to rules:</p>
+<pre class="python"><code># Return the even numbers from 0 to 50, doubled
+print([2 * i for i in range(51) if i % 2 == 0])</code></pre>
+<pre><code>## [0, 4, 8, 12, 16, 20, 24, 28, 32, 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80, 84, 88, 92, 96, 100]</code></pre>
+</div>
+<div id="element-wise-operations" class="section level2" number="2.6">
+<h2 number="2.6"><span class="header-section-number">2.6</span> Element-wise Operations</h2>
+<p>As mentioned in the <a href="../intro/lists.html#concatenating-lists">first page on lists</a>, when the “+” operation is performed on two lists it <em>concatenates</em> them:</p>
+<pre class="python"><code>ls_1 = [1, 2, 3]
+ls_2 = [4]
+ls = ls_1 + ls_2
+print(ls)</code></pre>
+<pre><code>## [1, 2, 3, 4]</code></pre>
+<p>If, instead, you want to <em>mathematically</em> add the element(s) of the second list to those of the first you can do so with a list comprehension:</p>
+<pre class="python"><code>ls_1 = [1, 2, 3]
+ls_2 = [4]
+ls = [x + y for x in ls_1 for y in ls_2]
+print(ls)</code></pre>
+<pre><code>## [5, 6, 7]</code></pre>
+<p>This translates into English as “for each value ‘x’ in list 1, and for each value ‘y’ in list 2, add x and y”.</p>
 <p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 

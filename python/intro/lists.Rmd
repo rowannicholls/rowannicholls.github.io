@@ -136,7 +136,7 @@ ls = ['A', 'B', 'C', 'D', 'E']
 print(ls.index('B'))
 ```
 
-Note that you can only lookup one element at a time in this way. Also, if there are multiple instances of the same element *you will only get the index of the first one*. To do more advanced finding you will need to use either a **list comprehension** or a **for loop** depending on what exactly you want to do with the output.
+Note that you can only lookup one element at a time in this way. Also, if there are multiple instances of the same element *you will only get the index of the first one*. To do more advanced finding you will need to use either a **list comprehension** or a **for loop** depending on what exactly you want to do with the output (see [the page on list comprehensions](../advanced/lists.html#list-comprehension) for more).
 
 Searching in Lists
 ------------------
@@ -183,7 +183,7 @@ print(next(index for index, value in enumerate(ls) if value > 5))
 
 The element at index position 2 (which has the value "6") was the first to match the criterion of being greater than 5.
 
-As the name suggests, the `next()` function only finds the *next* element that meets the given criterion and, as such, can only ever return one element (or zero elements if there are none that meet the criterion). If you are instead interested in finding **all** the elements in the list you will need to use a list comprehension.
+As the name suggests, the `next()` function only finds the *next* element that meets the given criterion and, as such, can only ever return one element (or zero elements if there are none that meet the criterion). If you are instead interested in finding **all** the elements in the list you will need to use a [list comprehension](../advanced/lists.html#list-comprehension) .
 
 Concatenating Lists
 ===================
@@ -205,7 +205,7 @@ ls = ls_1 + ls_2
 print(ls)
 ```
 
-If you want to add the *elements* of the lists together you need to use a **list comprehension** (or convert the lists to [arrays](arrays.html) and add those together, in which case it will perform matrix addition). Those topics are covered on different pages but, in the meantime, here's how to add specific elements of lists together using the "+" sign for *addition* and then append the answer onto the end of a string using the "+" sign for *concatenation*:
+If you want to add the *elements* of the lists together you need to use a [list comprehension](../advanced/lists.html#element-wise-operations) (or convert the lists to [arrays](arrays.html) and add those together, in which case it will perform matrix addition). Those topics are covered on different pages but, in the meantime, here's how to add specific elements of lists together using the "+" sign for *addition* and then append the answer onto the end of a string using the "+" sign for *concatenation*:
 
 ```{python}
 ls_1 = [1, 2, 3]
