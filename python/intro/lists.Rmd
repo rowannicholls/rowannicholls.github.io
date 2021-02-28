@@ -1,0 +1,373 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Lists'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Introduction to Lists
+=====================
+As introduced in [the data types page](data_types.html#lists), 'lists' are collections of objects:
+
+- They have **square brackets** at the start and end of them and **commas** separating each item, eg `[0, 1, 2, 3, 4]`
+    + This makes them easy to spot in Python - if you see square brackets and commas you're looking at a list!
+- The proper word to use when referring to the things/objects/items in a list is **elements** - a *list* is made up of *elements*
+- A list's elements do not all have to be of the same type, there can be a **mixture of data types**, eg `[0, 1.2, 'two', True, None]` contains an integer, a float, a string, a Boolean and a null object
+- A list can contain **duplicates**, eg `[1, 2, 2, 3, 3, 3]`
+- A list has an **order**: `[0, 1, 2]` is different to `[0, 2, 1]`
+- The elements are numbered in their order, starting with 0: the list `['A', 'B', 'C']` has `'A'` as its *zeroth* element, `'B'` as its *first* element and `'C'` as its *second* element
+    - The elements are also numbered backwards: "-1" refers to the last element, "-2" refers to the second last element and so on
+    - The number associated with an element is its **index**, eg in the list `['A', 'B', 'C']` the element `'A'` has index 0, `'B'` has index 1 and `'C'` has index 2
+- A list can be of any length, and can also be empty: `[]` is an **empty list** (it's a list with zero elements in it), but it's still a list
+    + In other words, `[]` is not the same as `[None]` which is a list with a null object in it (which thus has a length of one - not zero - because it has one object in it!)
+
+Creating Lists
+==============
+As mentioned above, a list is created by using square brackets and commas between elements. This then needs to be assigned to a variable name using "=" in order to be used:
+
+```{python}
+ls = ['zero', 'one', 'two', 3, 4, 5]
+print(ls)
+```
+
+Note that you cannot use the word "list" as a variable name (we used "ls" in the example above). This is because "list" is the name of a function in Python: it's a function that creates a list out of another object. Here, then, is how to use this *list function* to create a list:
+
+```{python}
+natural_numbers = list(range(15))
+print(natural_numbers)
+counting_numbers = list(range(1, 21))
+print(counting_numbers)
+every_second_number = list(range(1, 19, 2))
+print(every_second_number)
+```
+
+In the above examples, the `list()` function is used to convert objects of the *range* type into objects that are of the *list* type.
+
+You can find out the length of a list (ie how many elements are in it) but using the `len()` function:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(len(ls))
+```
+
+Indexing Lists
+==============
+You can access a *single*, specific element of a list by referring to its index. This is known as **indexing a list** and is done by placing the index of the element you are interested in inside of square brackets immediately after the variable name:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(ls[2])
+```
+
+You can access *multiple* elements by using a **slice**. With a slice, you tell Python where within a list it should start giving you elements and where it should stop. This is done by specifying a start index and a stop index, separated by a colon:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(ls[1:4])
+```
+
+Note that, in the above example, we sliced the list from index 1 to index 4. In other words, we were left with the elements 1, 2 and 3; the element associated with the second index number we provide is NOT included in the output. A slice `[a:b]` will give you the elements from `a` to `b` including `a` but not including `b` - Python *starts* at index `a` and *stops* at index `b`. This also works when you use negative numbers as the indexes:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(ls[-4:-1])
+```
+
+Also note that when you index a list with a single integer you get *that elements on its own*, whereas when you index using a slice you get *a list*, even if that slice only gives you one element:
+
+```{python}
+# The element at index 3, on its own
+print(ls[3])
+```
+
+```{python}
+# The element at index 3, in a list
+print(ls[3:4])
+```
+
+By default, a slice will start at the beginning of a list and end at the end. This means that if you don't provide a start and/or stop index it will assume you want all the elements. This means that the slice `[:]` is the same as slice `[0:len(ls)]` (where `len(ls)` is the length of the list) in that both will return the entire list:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(ls[:])
+print(ls[0:len(ls)])
+```
+
+Similarly, you can leave out a start or stop index to get all elements to or from a certain index, respectively:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(ls[2:])
+print(ls[:-3])
+```
+
+If you include a third number in a slice, that will be its 'stride' (how many elements it will skip between each element it returns):
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+# Every second element from the second to the eighth
+print(ls[2:9:2])
+```
+
+A negative stride goes through the list backwards:
+
+```{python}
+# Every second element from the eighth to the second
+print(ls[8:1:-2])
+```
+
+> Note that an *integer* or a *slice* can be used to index a list but a *list* **cannot** be used to index a list. In other words, `ls[1, 2, 3]` will return an error.
+
+Finding in Lists
+================
+The opposite to **indexing** a list (whereby you provide an *index number* and get the corresponding *element* returned to you) is **finding** in a list (whereby you provide an *element* and get the corresponding *index* returned to you). You can lookup an element's index in this way by using the the `.index()` **method**:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(ls.index('B'))
+```
+
+Note that you can only lookup one element at a time in this way. Also, if there are multiple instances of the same element *you will only get the index of the first one*. To do more advanced finding you will need to use either a **list comprehension** or a **for loop** depending on what exactly you want to do with the output.
+
+Searching in Lists
+------------------
+If you are only interested in knowing *if* a certain value exists as an element in a list or not, as opposed to *where* that element is, you can **search** for it using the `in` statement and get a *Boolean* (True or False) as an output:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print('B' in ls)
+```
+
+```{python}
+print('F' in ls)
+```
+
+More Advanced Finding
+=====================
+The `next()` function can be used as a more powerful alternative to indexing/finding/searching a list. This function looks at each element in a list in turn, starting at the beginning, and for each one determines if it matches a given criterion. The first element it finds that does so will be returned in the manner of your asking. For example, you can ask the function to return the "next value, out of all the values in the list, where the value is equal to 'B'". This looks as follows:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(next(value for value in ls if value == 'B'))
+```
+
+Alternatively, if your list is made up of numbers, you can ask the function to return the "next value, out of all the values in the list, if the value is greater than 5":
+
+```{python}
+ls = [2, 4, 6, 8, 10]
+print(next(value for value in ls if value > 5))
+```
+
+In this case, the first value that matched was "6", which is what was returned. You also have the option to ask the function to return the element to you in an augmented manner, eg as a string:
+
+```{python}
+ls = [2, 4, 6, 8, 10]
+print(next(f'The next number >5 is: {value}' for value in ls if value > 5))
+```
+
+It is also possible to get the *index* of the element that first matches your criterion as opposed to the *value*. This requires the `enumerate()` function, which splits each element in a list up into its index and its value. As such, you need to ask for the "next index, given each index and value in the list, if the value is greater than 5":
+
+```{python}
+ls = [2, 4, 6, 8, 10]
+print(next(index for index, value in enumerate(ls) if value > 5))
+```
+
+The element at index position 2 (which has the value "6") was the first to match the criterion of being greater than 5.
+
+As the name suggests, the `next()` function only finds the *next* element that meets the given criterion and, as such, can only ever return one element (or zero elements if there are none that meet the criterion). If you are instead interested in finding **all** the elements in the list you will need to use a list comprehension.
+
+Concatenating Lists
+===================
+Adding two lists together is very easy in Python: just use the "+" sign!
+
+```{python}
+ls_1 = ['A', 'B', 'C']
+ls_2 = ['D', 'E']
+ls = ls_1 + ls_2
+print(ls)
+```
+
+This happens even if the lists' contents are numbers:
+
+```{python}
+ls_1 = [1, 2, 3]
+ls_2 = [4, 5]
+ls = ls_1 + ls_2
+print(ls)
+```
+
+If you want to add the *elements* of the lists together you need to use a **list comprehension** (or convert the lists to [arrays](arrays.html) and add those together, in which case it will perform matrix addition). Those topics are covered on different pages but, in the meantime, here's how to add specific elements of lists together using the "+" sign for *addition* and then append the answer onto the end of a string using the "+" sign for *concatenation*:
+
+```{python}
+ls_1 = [1, 2, 3]
+ls_2 = [4, 5]
+print('Adding the numbers at indexes 0 and 1 = ' + str(ls_1[0] + ls_2[1]))
+```
+
+While concatenating two lists together is possible using the "+" sign, it is **not** possible to remove the values in one list from another list using a "-" sign! It **is**, however, possible to do this with *sets*, which are discussed below.
+
+Adding to Lists
+---------------
+If you just want to add single elements to lists as opposed to concatenating entire lists together, you can use the `.append()` or `.insert()` methods:
+
+```{python}
+ls = [1, 2, 3]
+# Add an element to the end of the list
+ls.append(4)
+print(ls)
+```
+
+```{python}
+ls = [1, 2, 4]
+# At the given index, insert the given element
+ls.insert(2, 3)
+print(ls)
+```
+
+Note that these two operations occur **in-place**: they augment the list immediately and don't return anything:
+
+```{python}
+ls = [1, 2, 3]
+# This is NOT what you want
+ls = ls.append(4)
+print(ls)
+```
+
+```{python}
+ls = [1, 2, 4]
+# This is NOT what you want
+ls = ls.insert(2, 3)
+print(ls)
+```
+
+Removing from Lists
+===================
+You can either remove elements from lists by specifying which **indexes** to take out or by specifying which **values** to take out:
+
+Specifying Indexes
+------------------
+The first option is to just use indexing: use an integer or slice to return a subset of the original list:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+subset = ls[1:-1]
+print(subset)
+```
+
+The second option is to use the `del` statement (short for "delete"). This is the **inverse** of indexing: you use an integer or slice to specify which indexes to *remove* instead of which to *keep* as we have been doing up until now:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+del ls[1:-1]
+print(ls)
+```
+
+Note that this is another *in-place* operation: the elements are deleted from the list and no new list is created.
+
+The third option is the `.pop()` method which removes the element at the given index from the list in-place and returns the element that was removed (or 'popped-out' as it were):
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+removed = ls.pop(2)
+print(removed)
+print(ls)
+```
+
+Specifying Values
+-----------------
+To remove a value from a list, use the `.remove()` method:
+
+```{python}
+ls = ['A', 'B', 'C', 'B', 'A']
+ls.remove('B')
+print(ls)
+```
+
+Again, this has acted *in-place* and only on the *first* occurrence of the value.
+
+Sorting
+=======
+To sort the elements in a list in alphabetical order you have two options:
+
+1. The `sorted()` function, which creates a new list (leaving the old one intact, unless you overwrite it):
+
+```{python}
+vowels = ['e', 'a', 'u', 'o', 'i']
+# Sort using the sorted() function
+vowels_sorted = sorted(vowels)
+# Here's the new order
+print(vowels_sorted)
+```
+
+```{python}
+# But the old order is still accessible
+print(vowels)
+```
+
+2. The `.sort()` method, which sorts in-place and thus augments the list (meaning the original order cannot be restored):
+
+```{python}
+vowels = ['e', 'a', 'u', 'o', 'i']
+# Sort using the .sort() method
+vowels.sort()
+print(vowels)
+```
+
+In the second example, the old order is forgotten.
+
+Sets
+====
+Sets are *NOT* lists! But they are similar, which is why they are getting discussed on this page about lists. The main differences are that:
+
+- A set is **immutable** which means that it *cannot be changed once created*
+- A set cannot have duplicates; all of its elements are **unique**
+- A set is **unordered**: the order of the elements is not remembered by Python
+
+Sets are either created by using curly brackets (note that the elements in the output are not necessarily in the same order as in the input, due to sets being unordered):
+
+```{python, eval = FALSE}
+st = {'A', 'B', 'C'}
+print(st)
+```
+
+```{python, echo = FALSE}
+print("{'C', 'A', 'B'}")
+```
+
+...or by converting a list into a set using the `set()` function:
+
+```{python, eval = FALSE}
+ls = ['A', 'B', 'C', 'A', 'B', 'C']
+# Convert list to set
+st = set(ls)
+print(st)
+```
+
+```{python, echo = FALSE}
+print("{'C', 'A', 'B'}")
+```
+
+Notice that in the second example the duplicate values were removed. This is because of the second property of sets, as listed above: they cannot have duplicates. **Conversion to a set is thus a useful way to find out what the unique values in a list are**.
+
+Another useful property of sets is that they can be subtracted from each other, which is not true of lists. Here's an example:
+
+```{python}
+st_1 = {'A', 'B', 'C', 'D', 'E', 'F'}
+st_2 = {'A', 'B', 'C'}
+# Subtract the sets from each other
+st = st_1 - st_2
+print(st)
+``` 
+
+[⇦ Back](../../python.html)
+
+</font>
