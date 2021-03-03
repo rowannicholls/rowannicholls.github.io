@@ -152,7 +152,9 @@ Then find the average difference and the standard deviation of the differences. 
 ```{python}
 import numpy as np
 
+# Average difference (aka the bias)
 bias = np.mean(diffs)
+# Sample standard deviation
 sd = np.std(diffs, ddof=1)
 ```
 
@@ -237,17 +239,17 @@ Confidence Intervals
 --------------------
 Neither the bias line nor the limits of agreement are known with certainty. The standard error of the bias can be estimate as:
 
-${se} = \sqrt{\frac{ {sd}^2}{n}}$
+${se}_{bias} = \sqrt{\frac{ {sd}^2}{n}}$
 
-where $sd$ is the standard deviation and $n$ is the sample size. Similarly, the standard errors of the limits of agreement are approximately:
+where $sd$ is the sample standard deviation and $n$ is the sample size. Similarly, the standard errors of the limits of agreement are approximately:
 
-${se} = \sqrt{\frac{3{sd}^2}{n}}$
+${se}_{LOA} = \sqrt{\frac{3{sd}^2}{n}}$
 
 If we use the Student's t distribution we can calculate a "t-statistic" that corresponds to a 95% confidence interval given $n-1$ degrees of freedom. This will then give us the confidence intervals on the bias and LOA lines as follows:
 
 ${CI} = y\pm\left(t\times{se}\right)$
 
-In Python, these calculations look as follows:
+where $y$ is the horizontal line in question (bias, upper LOA or lower LOA) and $t$ is the t-statistic. In Python, these calculations look as follows:
 
 ```{python}
 import scipy.stats as stats
@@ -346,8 +348,115 @@ ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--', alpha=0.5)
 plt.show()
 ```
 
-Use Percentage Differences: Giavarina Analysis
-==============================================
+How Does the Accuracy of the Test Change with Sample Size?
+----------------------------------------------------------
+The widths of the 95% confidence intervals depend on two factors: the standard deviation and the sample size. Obviously, when designing an experiment, you can't control what the deviation of you data will be, but you CAN control the number of samples you test. Hence, it's useful to know how this number will affect the confidence you will have in your result.
+
+As mentioned above, the confidence intervals are calculated as:
+
+${CI} = y\pm\left(t\times{se}\right)$
+
+which implies that the half-widths of the confidence intervals are:
+
+$t\times{se}$
+
+which means that the full-widths of the confidence intervals for the bias and LOA lines, respectively, are twice these:
+
+${CI}^{width}_{bias} = 2\times t\times \sqrt{\frac{ {sd}^2}{n}}$
+
+${CI}^{width}_{LOA} = 2\times t\times \sqrt{\frac{3 {sd}^2}{n}}$
+
+so the widths of the confidence intervals *relative to the sample standard deviations* are:
+
+${CI}^{width}_{bias} = 2\times t\times \sqrt{\frac{1}{n}}$
+
+${CI}^{width}_{LOA} = 2\times t\times \sqrt{\frac{3}{n}}$
+
+In Python, these are calculated as:
+
+```{python, eval = FALSE}
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+```
+
+and they can be plotted as follows:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set(
+    title=r'The widths of the confidence intervals (relative to the\\sample standard deviation) decrease if there are more samples',
+    xlabel='Sample Size (n)',
+    ylabel=r'Width of Confidence Intervals\\(Relative to Sample Standard Deviation)'
+)
+# Scatter plots
+n = np.arange(5, 51)
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
+ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
+# Smooth curves
+n = np.arange(5, 50, 0.1)
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+ax.plot(n, width, label=r'LOAs $\left(2\times t\times\sqrt{\frac{3}{n}}\right)$')
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
+ax.plot(n, width, c='tab:blue', alpha=0.2, label=r'Bias $\left(2\times t\times\sqrt{\frac{1}{n}}\right)$')
+# Set y-axis limits
+bottom, top = plt.ylim()
+ax.set_ylim(0, top)
+# Set x-axis limits
+ax.set_xlim(5, 50)
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set(
+    title=r'The widths of the confidence intervals (relative to the\\sample standard deviation) decrease if there are more samples',
+    xlabel='Sample Size (n)',
+    ylabel=r'Width of Confidence Intervals\\(Relative to Sample Standard Deviation)'
+)
+# Scatter plots
+n = np.arange(5, 51)
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
+ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
+# Smooth curves
+n = np.arange(5, 50, 0.1)
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+ax.plot(n, width, label=r'LOAs $\left(2\times t\times\sqrt{\frac{3}{n}}\right)$')
+width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
+ax.plot(n, width, c='tab:blue', alpha=0.2, label=r'Bias $\left(2\times t\times\sqrt{\frac{1}{n}}\right)$')
+# Set y-axis limits
+bottom, top = plt.ylim()
+ax.set_ylim(0, top)
+# Set x-axis limits
+ax.set_xlim(5, 50)
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+As an example, if you decrease your sample size from 40 to 30, the widths of the confidence intervals of your limits of agreement will increase by 16.8%:
+
+```{python}
+n = 40
+width_40 = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+n = 30
+width_30 = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+increase = (width_30 - width_40) / width_40 * 100
+print(
+    f"Your confidence intervals' widths have gone from {width_40:4.2f} standard deviations to " +
+    f"{width_30:4.2f} standard deviations, an increase of {increase:4.1f}%"
+)
+```
+
+Using Percentage Differences: Giavarina Analysis
+================================================
 This example reproduces the one used in Giavarina (2015).
 
 Imagine a situation where two methods are used to measure something in particular and the two readings differ by 10 units. If this represents a large proportional difference - eg if one reading was 10 and the other was 20 - then this implies that the agreement between the methods is poor. On the other hand, if this only represents a small proportional difference - eg if one reading was 1000 and the other was 1010  - then we might not care. We could say that the agreement is good. Traditional Bland-Altman analysis does not capture this possibility: it assumes that all differences are equally consequential to the overall agreement. Giavarina analysis addresses this and, as a result, is more appropriate for data that is *heteroscedastic* - ie it becomes more spread out as the readings become larger.
