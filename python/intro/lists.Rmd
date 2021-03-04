@@ -292,10 +292,10 @@ ls.remove('B')
 print(ls)
 ```
 
-Again, this has acted *in-place* and only on the *first* occurrence of the value.
+Again, this has acted *in-place* and only on the *first* occurrence of the value. To remove multiple values from a list at a time, see [the section below](#removing-multiple-values-from-lists) where this is covered.
 
-Sorting
-=======
+Sorting Lists
+=============
 To sort the elements in a list in alphabetical order you have two options:
 
 1. The `sorted()` function, which creates a new list (leaving the old one intact, unless you overwrite it):
@@ -356,8 +356,36 @@ print(st)
 print("{'C', 'A', 'B'}")
 ```
 
-Notice that in the second example the duplicate values were removed. This is because of the second property of sets, as listed above: they cannot have duplicates. **Conversion to a set is thus a useful way to find out what the unique values in a list are**.
+Notice that in the second example the duplicate values were removed. This is because of the second property of sets, as listed above: they cannot have duplicates. **Conversion to a set is thus a useful way to find out what the unique values in a list are**:
 
+Finding the Unique Values in Lists
+----------------------------------
+To remove duplicate values from a list, convert it to a set:
+
+```{python, eval = FALSE}
+ls = ['A', 'B', 'C', 'A', 'B', 'C']
+# Convert list to set
+st = set(ls)
+print(st)
+```
+
+```{python, echo = FALSE}
+ls = ['A', 'B', 'C', 'A', 'B', 'C']
+# Convert list to set
+st = set(ls)
+print("{'C', 'A', 'B'}")
+```
+
+...then convert it back into a list:
+
+```{python}
+# Convert set to list
+ls = list(st)
+print(ls)
+```
+
+Removing Multiple Values from Lists
+-----------------------------------
 Another useful property of sets is that they can be subtracted from each other, which is not true of lists. Here's an example:
 
 ```{python}
@@ -366,7 +394,46 @@ st_2 = {'A', 'B', 'C'}
 # Subtract the sets from each other
 st = st_1 - st_2
 print(st)
-``` 
+```
+
+We are left with the elements from set 1 *minus* the elements from set 2. This can be used to remove multiple values from a list at a time:
+
+```{python}
+ls_1 = ['A', 'B', 'C', 'D', 'E', 'F']
+ls_2 = ['A', 'B', 'C']
+# Convert lists to sets, subtract them, convert result into a list
+ls = list(set(ls_1) - set(ls_2))
+print(ls)
+```
+
+Checking if Two Lists are the Same
+----------------------------------
+If two lists have the same elements in the same order, Python will recognise that they are equivalent:
+
+```{python}
+ls_1 = ['A', 'B', 'C']
+ls_2 = ['A', 'B', 'C']
+# Are the lists the same?
+print(ls_1 == ls_2)
+```
+
+However, if the elements are in a different order, a human might consider the lists to be the same but Python will not:
+
+```{python}
+ls_1 = ['A', 'C', 'B']
+ls_2 = ['A', 'B', 'C']
+# Are the lists the same?
+print(ls_1 == ls_2)
+```
+
+Converting the lists to sets can be used to determine if they contain the same unique values (ie whether or not one list contains a value that the other does not, ignoring duplicate values):
+
+```{python}
+st_1 = set(['A', 'C', 'B'])
+st_2 = set(['A', 'B', 'C'])
+# Are the sets the same?
+print(st_1 == st_2)
+```
 
 [⇦ Back](../../python.html)
 

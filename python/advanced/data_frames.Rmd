@@ -113,7 +113,7 @@ Any data object on the internet that could be interpreted as a data frame can be
 
 ```{python}
 # Import comma-separated values (.csv file) as a data frame
-data_url = 'https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/intro/data%20frame.csv'
+data_url = 'https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/advanced/data%20frame.csv'
 df = pd.read_csv(data_url)
 ```
 
@@ -829,7 +829,7 @@ print(columns)
 
 Extract one column
 ------------------
-Extracting just one column uses the same process as extracting multiple columns, except this time only one column is specified. Any of the three aforementioned methods can be used (`.loc[]`, `.iloc[]` and direct indexing).
+Extracting just one column uses the same process as extracting multiple columns, except this time only one column is specified. Any of the three aforementioned methods can be used: `.loc[]`, `.iloc[]` and direct indexing.
 
 To extract the column as a **data frame** (ie as a spreadsheet with only one column), use a list (ie have square brackets around the column name/index):
 
@@ -860,6 +860,13 @@ print(age)
 ```{python}
 # Format is [:][col_name] to get all rows and one column as a series
 age = df.loc[:]['Age']
+print(age)
+```
+
+To extract the column as a **list** (ie get *just the values* in the column) use the `.tolist()` method:
+
+```{python}
+age = df['Age'].tolist()
 print(age)
 ```
 
