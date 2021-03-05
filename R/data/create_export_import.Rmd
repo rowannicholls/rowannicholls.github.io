@@ -261,8 +261,20 @@ json_data <- rjson::fromJSON(paste(readLines(file_location), collapse=""))
 
 Import all JSON files in a folder:
 ```{r}
-files = list.files(pattern = "*.json")
-json_files = lapply(files, fromJSON, file = files)
+dir <- "json_files"
+# List all JSON files in a folder and its sub-folders
+files <- list.files(dir, pattern = "*.json", recursive = TRUE)
+# Construct the relative paths to the JSON files
+filepaths <- file.path(dir, files)
+# Initialise list of JSON data
+all_json_data <- vector(mode = "list")
+# Import all the files
+for (filepath in filepaths) {
+    # Import files
+    json_data <- rjson::fromJSON(file = filepath)
+    # Append to list
+    all_json_data[[length(all_json_data) + 1]] <- json_data
+}
 ```
 
 Import JSON data from a web address:

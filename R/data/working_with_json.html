@@ -11,7 +11,7 @@
 
 
 
-<title>R</title>
+<title>Data Handling in R: Working with JSON Files</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -483,7 +483,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},je=function(a){var b=I.createElement("
 e=je(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var le=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),me=new RegExp(/support|noreply/i),ne=["SCRIPT","IMG","SVG","PATH","BR"],oe=["BR"];function pe(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=pe(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 var se=function(){var a=!0;var b=a,c;var d=[],e=I.body;if(e){for(var f=e.querySelectorAll("*"),h=0;h<f.length&&1E4>h;h++){var k=f[h];if(!(0<=ne.indexOf(k.tagName.toUpperCase()))){for(var l=!1,n=0;n<k.childElementCount&&1E4>n;n++)if(!(0<=oe.indexOf(k.children[n].tagName.toUpperCase()))){l=!0;break}l||d.push(k)}}c={elements:d,status:1E4<f.length?"2":"1"}}else c=
 {elements:d,status:"4"};for(var q=c,p=q.elements,r=[],u=0;u<p.length;u++){var t=p[u],v=t.textContent;t.value&&(v=t.value);if(v){var x=v.match(le);if(x){var y=x[0],w;if(G.location){var z=ge(G.location,"host",!0);w=0<=y.toLowerCase().indexOf(z)}else w=!1;w||r.push({element:t,Ic:y})}}}var A;for(var B=[],F=10<r.length?"3":q.status,E=0;E<r.length&&
-10>E;E++){var H=r[E].element,M=r[E].Ic,N=!1;B.push({Ic:M,querySelector:pe(H),tagName:H.tagName,isVisible:!Ud(H),type:1,xc:!!N})}return{elements:B,status:F}};var Ge={},L=null,He=Math.random();Ge.D="UA-156468188-1";Ge.ic="2o0";Ge.Eh="";Ge.zf="ChEIgMqHggYQsOr4yZmjnLaQARInACsk0U5Lf388snrVfE+9LgsSPQ6cs3fUc8PBloeUhDCM0JGtVhTYGgJ2BQ\x3d\x3d";var Ie={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Je={__paused:!0,__tg:!0},Ke;for(Ke in Ie)Ie.hasOwnProperty(Ke)&&(Je[Ke]=!0);var Le="www.googletagmanager.com/gtm.js";Le="www.googletagmanager.com/gtag/js";
+10>E;E++){var H=r[E].element,M=r[E].Ic,N=!1;B.push({Ic:M,querySelector:pe(H),tagName:H.tagName,isVisible:!Ud(H),type:1,xc:!!N})}return{elements:B,status:F}};var Ge={},L=null,He=Math.random();Ge.D="UA-156468188-1";Ge.ic="2o0";Ge.Eh="";Ge.zf="ChEIgMqHggYQsOr4yZmjnLaQARInACsk0U48hmisGxYZBlyK4zYdXJrmtYvaicgoIycH69vWDs/XmV8EGgKXzA\x3d\x3d";var Ie={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Je={__paused:!0,__tg:!0},Ke;for(Ke in Ie)Ie.hasOwnProperty(Ke)&&(Je[Ke]=!0);var Le="www.googletagmanager.com/gtm.js";Le="www.googletagmanager.com/gtag/js";
 var Me=Le,Ne=Ua(""),Oe=null,Pe=null,Qe="//www.googletagmanager.com/a?id="+Ge.D+"&cv=1",Re={},Se={},Te=function(){var a=L.sequence||1;L.sequence=a+1;return a};var Ue={},Ve=new La,We={},Xe={},$e={name:"dataLayer",set:function(a,b){m(hb(a,b),We);Ye()},get:function(a){return Ze(a,2)},reset:function(){Ve=new La;We={};Ye()}},Ze=function(a,b){return 2!=b?Ve.get(a):af(a)},af=function(a){var b,c=a.split(".");b=b||[];for(var d=We,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ha(b,d))return}return d},bf=function(a,b){Xe.hasOwnProperty(a)||(Ve.set(a,b),m(hb(a,b),We),Ye())},Ye=function(a){Na(Xe,function(b,c){Ve.set(b,c);m(hb(b,
 void 0),We);m(hb(b,c),We);a&&delete Xe[b]})},cf=function(a,b,c){Ue[a]=Ue[a]||{};var d=1!==c?af(b):Ve.get(b);"array"===kb(d)||"object"===kb(d)?Ue[a][b]=m(d):Ue[a][b]=d},df=function(a,b){if(Ue[a])return Ue[a][b]},ef=function(a,b){Ue[a]&&delete Ue[a][b]};var hf={},jf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===hf[a]&&(hf[a]=Math.floor(Math.random()*b));return hf[a]};var kf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function lf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};var nf=function(a,b,c,d){return mf(d)?lf(a,String(b||document.cookie),c):[]},tf=function(a,b,c,d,e){if(mf(e)){var f=of(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=sf(f,function(h){return h.qc},b);if(1===f.length)return f[0].id;f=sf(f,function(h){return h.Lb},c);return f[0]?f[0].id:void 0}}};function uf(a,b,c,d){var e=document.cookie;document.cookie=a;var f=document.cookie;return e!=f||void 0!=c&&0<=nf(b,f,!1,d).indexOf(c)}
 var yf=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!mf(c.va))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=vf(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Oh);f=d(f,"samesite",
@@ -691,98 +691,151 @@ data:{scriptSource:cd,resume:function(){a()}}}):a()})(wq);
 
 
 
-<h1 class="title toc-ignore">R</h1>
+<h1 class="title toc-ignore"><font size="5">Data Handling in R:</font><br>Working with JSON Files</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#importing-and-exporting-json">Importing and Exporting JSON</a></li>
+<li><a href="#converting-json-files-to-csv">Converting JSON Files to CSV</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-r" class="section level2">
-<h2>Introduction to R</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/intro/data_types.html">Comments, Variables and Data Types</a></li>
-<li><a href="R/intro/packages.html">Packages and Libraries</a></li>
-<li><a href="R/intro/maths.html">Maths and Numbers</a></li>
-<li><a href="R/intro/strings.html">Strings and Characters</a></li>
-<li><a href="R/intro/vectors.html">Vectors</a></li>
-<li><a href="R/intro/named_vectors_lists.html">Named Vectors and Lists (aka Dictionaries)</a></li>
-<li><a href="R/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="R/intro/data_frames.html">Data Frames</a></li>
-<li><a href="R/intro/loops.html">For and While Loops</a></li>
-<li><a href="R/intro/functions.html">Functions</a></li>
-<li><a href="R/intro/exceptions.html">Exception Handling</a></li>
-<li><a href="R/intro/linting.html">Linting</a></li>
-</ol>
+<p><a href="../../R.html">⇦ Back</a></p>
+<p>“JSON” stands for JavaScript Object Notation. It’s a type of plaintext file that contains data, like a CSV except more complex:</p>
+<ul>
+<li>A CSV file contains information stored in rows and columns with one piece of data in each cell; it’s two-dimensional</li>
+<li>A JSON file can have multiple levels of information stored in a hierarchy; it’s multi-dimensional</li>
+</ul>
+<p>More importantly, a JSON file stores information in a format that can be easily read by both computer programmes <em>and</em> humans. If a programme starts at the beginning of a file and moves through it character by character it will know exactly where within the overall data structure it is at all times, similar to how you are able to move from cell to cell in a spreadsheet and always know where you are from the row and column numbers.</p>
+<p>Here’s an example of a JSON file, taken from <a href="https://en.wikipedia.org/wiki/JSON">the Wikipedia page</a> on JSON files:</p>
+<pre class="json"><code>{
+  &quot;firstName&quot;: &quot;John&quot;,
+  &quot;lastName&quot;: &quot;Smith&quot;,
+  &quot;isAlive&quot;: true,
+  &quot;age&quot;: 27,
+  &quot;address&quot;: {
+    &quot;streetAddress&quot;: &quot;21 2nd Street&quot;,
+    &quot;city&quot;: &quot;New York&quot;,
+    &quot;state&quot;: &quot;NY&quot;,
+    &quot;postalCode&quot;: &quot;10021-3100&quot;
+  },
+  &quot;phoneNumbers&quot;: [
+    {
+      &quot;type&quot;: &quot;home&quot;,
+      &quot;number&quot;: &quot;212 555-1234&quot;
+    },
+    {
+      &quot;type&quot;: &quot;office&quot;,
+      &quot;number&quot;: &quot;646 555-4567&quot;
+    }
+  ],
+  &quot;children&quot;: [],
+  &quot;spouse&quot;: null
+}</code></pre>
+<p>As you can see, we have information about a fictional person. As promised, the data is human-readable and the syntax has a number of standard elements:</p>
+<ul>
+<li>Attribute–value pairs: a string that gives a name of an attribute followed by a colon and then the value of the attribute itself, eg <code>&quot;firstName&quot;: &quot;John&quot;</code>. In this case the attribute is <code>&quot;firstName&quot;</code> and the value is <code>&quot;John&quot;</code>
+<ul>
+<li>A structure of attribute–value pairs like this can also be called a ‘dictionary’ and they always start and end with curly brackets: <code>{ }</code></li>
+</ul></li>
+<li>Lists: these are pieces of information separated by commas. The values in lists do <em>not</em> need an attribute name. Lists are started and ended by square brackets: <code>[ ]</code></li>
+<li>A value in a list or a dictionary can be a string, a number, a Boolean or, indeed, another list or dictionary. In other words, you can have things like dictionaries within dictionaries (eg the <code>&quot;address&quot;</code> attribute in the example) or dictionaries within lists within dictionaries (eg the <code>&quot;phoneNumbers&quot;</code> attribute in the example) and so on.</li>
+</ul>
+<div id="importing-and-exporting-json" class="section level1">
+<h1>Importing and Exporting JSON</h1>
+<p>The <code>rjson</code> library is a useful one when working with JSON files:</p>
+<pre class="r"><code>library(rjson)</code></pre>
+<p>It contains a function <code>fromJSON()</code> that allows JSON files to be imported as data frames:</p>
+<ul>
+<li>Import a single JSON file:</li>
+</ul>
+<pre class="r"><code>file_location &lt;- &quot;json/json object.json&quot;
+json_data &lt;- rjson::fromJSON(file = file_location)</code></pre>
+<ul>
+<li>Import a single JSON file that has been saved as a txt:</li>
+</ul>
+<pre class="r"><code>file_location &lt;- &quot;txt/json object.txt&quot;
+json_data &lt;- rjson::fromJSON(paste(readLines(file_location), collapse=&quot;&quot;))</code></pre>
+<ul>
+<li>Import all JSON files in a folder:</li>
+</ul>
+<pre class="r"><code>dir &lt;- &quot;json_files&quot;
+# List all JSON files in a folder and its sub-folders
+files &lt;- list.files(dir, pattern = &quot;*.json&quot;, recursive = TRUE)
+# Construct the relative paths to the JSON files
+filepaths &lt;- file.path(dir, files)
+# Initialise list of JSON data
+all_json_data &lt;- vector(mode = &quot;list&quot;)
+# Import all the files
+for (filepath in filepaths) {
+    # Import files
+    json_data &lt;- rjson::fromJSON(file = filepath)
+    # Append to list
+    all_json_data[[length(all_json_data) + 1]] &lt;- json_data
+}</code></pre>
+<ul>
+<li>Import JSON data from a web address:</li>
+</ul>
+<pre class="r"><code>json_file &lt;- &quot;http://api.worldbank.org/country?per_page=10&amp;region=OED&amp;lendingtype=LNX&amp;format=json&quot;
+json_data &lt;- rjson::fromJSON(file = json_file)</code></pre>
+<p>Similarly, the <code>rjson</code> library contains a <code>toJSON()</code> function that allows data frames to be exported as JSON files:</p>
+<ul>
+<li>Export a data frame to a JSON file:</li>
+</ul>
+<pre class="r"><code>json &lt;- rjson::toJSON(df)
+file &lt;- file(&quot;json/json object.json&quot;)
+writeLines(json, file)
+close(file)</code></pre>
+<ul>
+<li>Export a data frame to a text file:</li>
+</ul>
+<pre class="r"><code>json &lt;- rjson::toJSON(df)
+file &lt;- file(&quot;txt/json object.txt&quot;)
+writeLines(json, file)
+close(file)</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/data/pre_loaded_datasets.html">Pre-Loaded Datasets</a></li>
-<li><a href="R/data/create_unique_identifiers.html">Create Unique Identifiers</a></li>
-<li><a href="R/data/stratification.html">Data Stratification</a></li>
-<li><a href="R/data/descriptive_summary_statistics.html">Descriptive and Summary Statistics</a></li>
-<li><a href="R/data/pivot_tables.html">Pivot Tables</a></li>
-<li><a href="R/data/demographic_tables.html">Demographic Data Tables</a></li>
-<li><a href="R/data/merging.html">Merging</a></li>
-<li><a href="R/data/create_export_import.html">File IO: Create, Export and Import Data</a></li>
-<li><a href="R/data/filling_in_missing_data.html">Filling in Missing Data</a></li>
-<li><a href="R/data/working_with_json.html">Working with JSON Files</a></li>
-</ol>
-</div>
-<div id="graphs" class="section level2">
-<h2>Graphs</h2>
-<ol style="list-style-type: decimal">
-<li>Using Base R
-<ul>
-<li><a href="R/graphs/base/symbols_linetypes_colours.html">Symbols, Line Types and Colours</a></li>
-<li><a href="R/graphs/base/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/base/scatterplots.html">Scatter Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/base/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/base/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li><a href="R/graphs/base/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Using ggplot2
-<ul>
-<li><a href="R/graphs/ggplot2/cheat_sheet.html">Cheat Sheet</a></li>
-<li><a href="R/graphs/ggplot2/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/ggplot2/scatterplots.html">Scatter Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/ggplot2/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/ggplot2/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/ggplot2/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/ggplot2/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/ggplot2/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/statistics/descriptive_statistics.html">Descriptive Statistics</a></li>
-<li><a href="R/statistics/tutorial.html">Diagnostic Accuracy Tutorial</a> (<a href="R/statistics/tutorial_completescript.R">complete</a>, <a href="R/statistics/tutorial_emptyscript.R">empty</a>)</li>
-<li><a href="R/statistics/principal_component_analysis.html">Principal Component Analysis</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="R/statistics/hypothesis_testing/kruskal_wallis.html">Kruskal-Wallis Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/friedman.html">Friedman Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="R/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="R/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="R/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="R/statistics/agreement/coefficient_of_variation.html">Coefficient of Variation</a></li>
-</ul></li>
-</ol>
+<div id="converting-json-files-to-csv" class="section level1">
+<h1>Converting JSON Files to CSV</h1>
+<p>Generally, in R, you want to be working with traditional row-and-column data frames, the type that can be exported to CSV. So it’s often useful to be able to import a JSON, convert it to a single row of a data frame and then export it as a spreadsheet. Even more so, it’s useful to be able to do this on a whole folder of JSON files at a time, importing each one and adding it as a single row to a data frame which can then be exported as a CSV:</p>
+<pre class="r"><code>library(rjson)
+
+# Walk through a directory to find JSON files
+dir &lt;- &quot;json_files&quot;
+files &lt;- list.files(dir, pattern = &quot;*.json&quot;, recursive = TRUE)
+filepaths &lt;- file.path(dir, files)
+
+# Initialise output data frame
+df &lt;- data.frame()
+# Iterate over all JSON files
+for (filepath in filepaths) {
+    # Import files
+    json_data &lt;- rjson::fromJSON(file = filepath)
+    # Construct new row for output data frame
+    new_row &lt;- data.frame(
+        firstName = json_data[[&quot;firstName&quot;]],
+        lastName = json_data[[&quot;lastName&quot;]],
+        isAlive = json_data[[&quot;isAlive&quot;]],
+        age = json_data[[&quot;age&quot;]],
+        streetAddress = json_data[[&quot;address&quot;]][[&quot;streetAddress&quot;]],
+        city = json_data[[&quot;address&quot;]][[&quot;city&quot;]],
+        state = json_data[[&quot;address&quot;]][[&quot;state&quot;]],
+        postalCode = json_data[[&quot;address&quot;]][[&quot;postalCode&quot;]]
+    )
+    # Add new row to output data frame
+    df &lt;- rbind(df, new_row)
+}
+
+# Export
+utils::write.csv(df, &quot;json_files/json_data.csv&quot;, row.names = FALSE)</code></pre>
+<p>Here’s what the data frame that is created looks like:</p>
+<pre class="r"><code>print(df)</code></pre>
+<pre><code>##   firstName lastName isAlive age streetAddress     city     state postalCode
+## 1      John    Smith    TRUE  27 21 2nd Street New York        NY 10021-3100
+## 2      Jane      Doe    TRUE  28 21 3rd Street     York Yorkshire    YO1 8QG</code></pre>
+<p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 

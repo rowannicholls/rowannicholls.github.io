@@ -1,0 +1,183 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Working with JSON Files'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+"JSON" stands for JavaScript Object Notation. It's a type of plaintext file that contains data, like a CSV except more complex:
+
+- A CSV file contains information stored in rows and columns with one piece of data in each cell; it's two-dimensional
+- A JSON file can have multiple levels of information stored in a hierarchy; it's multi-dimensional
+
+More importantly, a JSON file stores information in a format that can be easily read by both computer programmes *and* humans. If a programme starts at the beginning of a file and moves through it character by character it will know exactly where within the overall data structure it is at all times, similar to how you are able to move from cell to cell in a spreadsheet and always know where you are from the row and column numbers.
+
+Here's an example of a JSON file, taken from [the Wikipedia page](https://en.wikipedia.org/wiki/JSON) on JSON files:
+
+```json
+{
+  "firstName": "John",
+  "lastName": "Smith",
+  "isAlive": true,
+  "age": 27,
+  "address": {
+    "streetAddress": "21 2nd Street",
+    "city": "New York",
+    "state": "NY",
+    "postalCode": "10021-3100"
+  },
+  "phoneNumbers": [
+    {
+      "type": "home",
+      "number": "212 555-1234"
+    },
+    {
+      "type": "office",
+      "number": "646 555-4567"
+    }
+  ],
+  "children": [],
+  "spouse": null
+}
+```
+
+As you can see, we have information about a fictional person. As promised, the data is human-readable and the syntax has a number of standard elements:
+
+- Attribute–value pairs: a string that gives a name of an attribute followed by a colon and then the value of the attribute itself, eg `"firstName": "John"`. In this case the attribute is `"firstName"` and the value is `"John"`
+    - A structure of attribute–value pairs like this can also be called a 'dictionary' and they always start and end with curly brackets: `{ }`
+- Lists: these are pieces of information separated by commas. The values in lists do *not* need an attribute name. Lists are started and ended by square brackets: `[ ]`
+- A value in a list or a dictionary can be a string, a number, a Boolean or, indeed, another list or dictionary. In other words, you can have things like dictionaries within dictionaries (eg the `"address"` attribute in the example) or dictionaries within lists within dictionaries (eg the `"phoneNumbers"` attribute in the example) and so on.
+
+Importing and Exporting JSON
+============================
+The `rjson` library is a useful one when working with JSON files:
+
+```{r}
+library(rjson)
+```
+
+It contains a function `fromJSON()` that allows JSON files to be imported as data frames:
+
+- Import a single JSON file:
+
+```{r}
+file_location <- "json/json object.json"
+json_data <- rjson::fromJSON(file = file_location)
+```
+
+- Import a single JSON file that has been saved as a txt:
+
+```{r}
+file_location <- "txt/json object.txt"
+json_data <- rjson::fromJSON(paste(readLines(file_location), collapse=""))
+```
+
+- Import all JSON files in a folder:
+
+```{r}
+dir <- "json_files"
+# List all JSON files in a folder and its sub-folders
+files <- list.files(dir, pattern = "*.json", recursive = TRUE)
+# Construct the relative paths to the JSON files
+filepaths <- file.path(dir, files)
+# Initialise list of JSON data
+all_json_data <- vector(mode = "list")
+# Import all the files
+for (filepath in filepaths) {
+    # Import files
+    json_data <- rjson::fromJSON(file = filepath)
+    # Append to list
+    all_json_data[[length(all_json_data) + 1]] <- json_data
+}
+```
+
+- Import JSON data from a web address:
+
+```{r}
+json_file <- "http://api.worldbank.org/country?per_page=10&region=OED&lendingtype=LNX&format=json"
+json_data <- rjson::fromJSON(file = json_file)
+```
+
+Similarly, the `rjson` library contains a `toJSON()` function that allows data frames to be exported as JSON files:
+
+```{r, echo = FALSE}
+df <- data.frame(
+    Name = c("Charles Babbage", "Ada Lovelace", "Alan Turing", "Mary Somerville", "John Conway", "Katherine Johnson"),
+    Age = c(79, 36, 41, 91, 82, 101),
+    DOB = c("1791-12-26", "1815-12-10", "1912-06-23", "1780-12-26", "1937-12-26", "1918-08-26")
+)
+```
+
+- Export a data frame to a JSON file:
+
+```{r}
+json <- rjson::toJSON(df)
+file <- file("json/json object.json")
+writeLines(json, file)
+close(file)
+```
+
+- Export a data frame to a text file:
+
+```{r}
+json <- rjson::toJSON(df)
+file <- file("txt/json object.txt")
+writeLines(json, file)
+close(file)
+```
+
+Converting JSON Files to CSV
+============================
+Generally, in R, you want to be working with traditional row-and-column data frames, the type that can be exported to CSV. So it's often useful to be able to import a JSON, convert it to a single row of a data frame and then export it as a spreadsheet. Even more so, it's useful to be able to do this on a whole folder of JSON files at a time, importing each one and adding it as a single row to a data frame which can then be exported as a CSV:
+
+```{r}
+library(rjson)
+
+# Walk through a directory to find JSON files
+dir <- "json_files"
+files <- list.files(dir, pattern = "*.json", recursive = TRUE)
+filepaths <- file.path(dir, files)
+
+# Initialise output data frame
+df <- data.frame()
+# Iterate over all JSON files
+for (filepath in filepaths) {
+    # Import files
+    json_data <- rjson::fromJSON(file = filepath)
+    # Construct new row for output data frame
+    new_row <- data.frame(
+        firstName = json_data[["firstName"]],
+        lastName = json_data[["lastName"]],
+        isAlive = json_data[["isAlive"]],
+        age = json_data[["age"]],
+        streetAddress = json_data[["address"]][["streetAddress"]],
+        city = json_data[["address"]][["city"]],
+        state = json_data[["address"]][["state"]],
+        postalCode = json_data[["address"]][["postalCode"]]
+    )
+    # Add new row to output data frame
+    df <- rbind(df, new_row)
+}
+
+# Export
+utils::write.csv(df, "json_files/json_data.csv", row.names = FALSE)
+```
+
+Here's what the data frame that is created looks like:
+
+```{r}
+print(df)
+```
+
+[⇦ Back](../../R.html)
+
+</font>
