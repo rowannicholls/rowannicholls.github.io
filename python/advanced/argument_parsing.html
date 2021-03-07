@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Advanced Python: Parsing Command-Line Arguments</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -483,7 +483,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},je=function(a){var b=I.createElement("
 e=je(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var le=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),me=new RegExp(/support|noreply/i),ne=["SCRIPT","IMG","SVG","PATH","BR"],oe=["BR"];function pe(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=pe(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 var se=function(){var a=!0;var b=a,c;var d=[],e=I.body;if(e){for(var f=e.querySelectorAll("*"),h=0;h<f.length&&1E4>h;h++){var k=f[h];if(!(0<=ne.indexOf(k.tagName.toUpperCase()))){for(var l=!1,n=0;n<k.childElementCount&&1E4>n;n++)if(!(0<=oe.indexOf(k.children[n].tagName.toUpperCase()))){l=!0;break}l||d.push(k)}}c={elements:d,status:1E4<f.length?"2":"1"}}else c=
 {elements:d,status:"4"};for(var q=c,p=q.elements,r=[],u=0;u<p.length;u++){var t=p[u],v=t.textContent;t.value&&(v=t.value);if(v){var x=v.match(le);if(x){var y=x[0],w;if(G.location){var z=ge(G.location,"host",!0);w=0<=y.toLowerCase().indexOf(z)}else w=!1;w||r.push({element:t,Ic:y})}}}var A;for(var B=[],F=10<r.length?"3":q.status,E=0;E<r.length&&
-10>E;E++){var H=r[E].element,M=r[E].Ic,N=!1;B.push({Ic:M,querySelector:pe(H),tagName:H.tagName,isVisible:!Ud(H),type:1,xc:!!N})}return{elements:B,status:F}};var Ge={},L=null,He=Math.random();Ge.D="UA-156468188-1";Ge.ic="2o0";Ge.Eh="";Ge.zf="ChEIgJCSggYQudfAsbqQj/SsARInAABkYaw4rXb9GC7i+RdepqQAoVWd/MExckq8oOD2umICAmgNNUX9GgJ6CQ\x3d\x3d";var Ie={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Je={__paused:!0,__tg:!0},Ke;for(Ke in Ie)Ie.hasOwnProperty(Ke)&&(Je[Ke]=!0);var Le="www.googletagmanager.com/gtm.js";Le="www.googletagmanager.com/gtag/js";
+10>E;E++){var H=r[E].element,M=r[E].Ic,N=!1;B.push({Ic:M,querySelector:pe(H),tagName:H.tagName,isVisible:!Ud(H),type:1,xc:!!N})}return{elements:B,status:F}};var Ge={},L=null,He=Math.random();Ge.D="UA-156468188-1";Ge.ic="2o0";Ge.Eh="";Ge.zf="ChEIgJCSggYQudfAsbqQj/SsARInAABkYawJQkYmJUEXvF0+nFzIU2clmfgOVj91nAtushm71MUpxlkpGgKxeg\x3d\x3d";var Ie={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Je={__paused:!0,__tg:!0},Ke;for(Ke in Ie)Ie.hasOwnProperty(Ke)&&(Je[Ke]=!0);var Le="www.googletagmanager.com/gtm.js";Le="www.googletagmanager.com/gtag/js";
 var Me=Le,Ne=Ua(""),Oe=null,Pe=null,Qe="//www.googletagmanager.com/a?id="+Ge.D+"&cv=1",Re={},Se={},Te=function(){var a=L.sequence||1;L.sequence=a+1;return a};var Ue={},Ve=new La,We={},Xe={},$e={name:"dataLayer",set:function(a,b){m(hb(a,b),We);Ye()},get:function(a){return Ze(a,2)},reset:function(){Ve=new La;We={};Ye()}},Ze=function(a,b){return 2!=b?Ve.get(a):af(a)},af=function(a){var b,c=a.split(".");b=b||[];for(var d=We,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ha(b,d))return}return d},bf=function(a,b){Xe.hasOwnProperty(a)||(Ve.set(a,b),m(hb(a,b),We),Ye())},Ye=function(a){Na(Xe,function(b,c){Ve.set(b,c);m(hb(b,
 void 0),We);m(hb(b,c),We);a&&delete Xe[b]})},cf=function(a,b,c){Ue[a]=Ue[a]||{};var d=1!==c?af(b):Ve.get(b);"array"===kb(d)||"object"===kb(d)?Ue[a][b]=m(d):Ue[a][b]=d},df=function(a,b){if(Ue[a])return Ue[a][b]},ef=function(a,b){Ue[a]&&delete Ue[a][b]};var hf={},jf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===hf[a]&&(hf[a]=Math.floor(Math.random()*b));return hf[a]};var kf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function lf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};var nf=function(a,b,c,d){return mf(d)?lf(a,String(b||document.cookie),c):[]},tf=function(a,b,c,d,e){if(mf(e)){var f=of(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=sf(f,function(h){return h.qc},b);if(1===f.length)return f[0].id;f=sf(f,function(h){return h.Lb},c);return f[0]?f[0].id:void 0}}};function uf(a,b,c,d){var e=document.cookie;document.cookie=a;var f=document.cookie;return e!=f||void 0!=c&&0<=nf(b,f,!1,d).indexOf(c)}
 var yf=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!mf(c.va))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=vf(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Oh);f=d(f,"samesite",
@@ -691,100 +691,329 @@ data:{scriptSource:cd,resume:function(){a()}}}):a()})(wq);
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Advanced Python:</font><br>Parsing Command-Line Arguments</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#why-get-inputs-from-the-terminal"><span class="toc-section-number">1</span> Why Get Inputs from the Terminal?</a></li>
+<li><a href="#passing-an-argument-to-a-script"><span class="toc-section-number">2</span> Passing an Argument to a Script</a></li>
+<li><a href="#the-basic-option-sys.argv"><span class="toc-section-number">3</span> The Basic Option: <code>sys.argv</code></a>
+<ul>
+<li><a href="#checking-if-arguments-have-been-passed"><span class="toc-section-number">3.1</span> Checking If Arguments Have Been Passed</a></li>
+</ul></li>
+<li><a href="#the-advanced-option-argparse"><span class="toc-section-number">4</span> The Advanced Option: <code>argparse</code></a>
+<ul>
+<li><a href="#optional-arguments"><span class="toc-section-number">4.1</span> Optional Arguments</a></li>
+<li><a href="#argument-options"><span class="toc-section-number">4.2</span> Argument Options</a>
+<ul>
+<li><a href="#default"><span class="toc-section-number">4.2.1</span> <code>default</code></a></li>
+<li><a href="#type"><span class="toc-section-number">4.2.2</span> <code>type</code></a></li>
+<li><a href="#action"><span class="toc-section-number">4.2.3</span> <code>action</code></a></li>
+<li><a href="#choices"><span class="toc-section-number">4.2.4</span> <code>choices</code></a></li>
+<li><a href="#nargs"><span class="toc-section-number">4.2.5</span> <code>nargs</code></a></li>
+<li><a href="#const"><span class="toc-section-number">4.2.6</span> <code>const</code></a></li>
+<li><a href="#required"><span class="toc-section-number">4.2.7</span> <code>required</code></a></li>
+</ul></li>
+<li><a href="#help-messages"><span class="toc-section-number">4.3</span> Help Messages</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../python.html">⇦ Back</a></p>
+<div id="why-get-inputs-from-the-terminal" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Why Get Inputs from the Terminal?</h1>
+<p>If we have a file called <code>script.py</code> with the following simple script in it:</p>
+<pre class="python"><code>message = &#39;Hello, World&#39;
+print(message)</code></pre>
+<p>…and we run it from the terminal via the following command (assuming the terminal is pointing to the folder where <code>script.py</code> is located):</p>
+<pre class="bash"><code>python3 script.py</code></pre>
+<p>…we will get the following output:</p>
+<pre><code>## Hello, World</code></pre>
+<p>…and we will get that output <em>every time</em>. In other words, a Python script like this is ‘set in stone’ - it will execute the lines of code that are inside it and you as a user can’t change what it does (unless you open up the file and edit it). However, often you will be in a position where you don’t want this to be the case; you will want to have a script that has <strong>options</strong> as to what it does. For example, you might want to change what the message is that the above script prints. This can be achieved by <em>passing an argument to a script:</em></p>
+</div>
+<div id="passing-an-argument-to-a-script" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Passing an Argument to a Script</h1>
+<p>In Python, it’s possible to <strong>pass</strong> a value into a script when you run it. This means that you set what one of the variables in the script is equal to at the same time as you tell it to run.</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
+<li>The value you pass into the script is called an <strong>argument</strong></li>
+<li>The script needs to <strong>parse</strong> the argument(s) that are passed into it before they can be used. Note that while the words “pass” and “parse” sound the same they are actually different actions (they roughly mean “give” and “receive”, respectively)</li>
+</ul>
+<p>You have two main options of how to do this: either use the <code>.argv</code> method from the <code>sys</code> module or use the <code>argparse</code> library:</p>
 <ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/lists.html">Lists</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-</ol>
+<li><code>sys.argv</code> is the basic option: it merely provides you with a list of the arguments that have been passed into a script</li>
+<li><code>argparse</code> is the advanced option: it’s a library that uses <code>sys.argv</code> to create a user-friendly way to create and work with arguments</li>
+</ul>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/data_frames.html">Data Frames</a></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="the-basic-option-sys.argv" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> The Basic Option: <code>sys.argv</code></h1>
+<p>As mentioned above, the <code>.argv</code> method of the built-in <code>sys</code> module lists what was on the command-line when the script was run. So if a file called <code>script.py</code> contains the following code:</p>
+<pre class="python"><code>import sys
+
+print(sys.argv)
+print(sys.argv[0])
+print(sys.argv[1])
+print(sys.argv[2])</code></pre>
+<p>…and it is run from the terminal with:</p>
+<pre class="bash"><code>python3 script.py &quot;Hello, World&quot; &quot;How are you?&quot;</code></pre>
+<p>…it will display the following:</p>
+<pre><code>## [&#39;argument_parsing_script2.py&#39;, &#39;Hello, World&#39;, &#39;How are you?&#39;]
+## argument_parsing_script2.py
+## Hello, World
+## How are you?</code></pre>
+<p>As you can see, the text that followed the <code>python3</code> command in the command-line has now been turned into a list and passed into the script, where it has been printed. The list has three elements - the name of the script (which is always assigned to <code>sys.argv[0]</code>) and the two strings that were created using quotation marks - with each element having been separated by a space on the command-line. This can be used to set options for how the script runs: for example, if we have a <code>script.py</code> as follows:</p>
+<pre class="python"><code>import sys
+
+if len(sys.argv) &gt; 1:
+    print(&#39;Data was received from the terminal&#39;)
+    for argument in sys.argv[1:]:
+        if argument == &#39;Option 1&#39;:
+            print(&#39;Running the script as per Option 1&#39;)
+        else:
+            print(&#39;Running the script as per a different option&#39;)
+else:
+    print(&#39;Nothing was received from the terminal&#39;)</code></pre>
+<p>…and run it from the terminal with:</p>
+<pre class="bash"><code>python3 script.py &quot;Option 1&quot;</code></pre>
+<p>…it will display the following:</p>
+<pre><code>## Data was received from the terminal
+## Running the script as per Option 1</code></pre>
+<p>However, if we run it with <code>python3 script.py &quot;Option 2&quot;</code> we get:</p>
+<pre><code>## Data was received from the terminal
+## Running the script as per a different option</code></pre>
+<p>And if we run it with just <code>python3 script.py</code> we get:</p>
+<pre><code>## Nothing was received from the terminal</code></pre>
+<div id="checking-if-arguments-have-been-passed" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Checking If Arguments Have Been Passed</h2>
+<p>Sometimes it’s useful to check if any arguments have been passed at all and go from there:</p>
+<pre class="python"><code># Check if arguments have been passed
+if len(sys.argv) &gt; 1:
+    # Arguments found
+    print(&#39;Data was received from the command-line&#39;)
+else:
+    # Arguments not found
+    print(&#39;No data was received from the command-line&#39;)</code></pre>
+<pre><code>## No data was received from the command-line</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a> <!-- 4. Graphing using pyplot (quicker for simple plots but gives you less control over how they look)
-    - Box Plots (aka box-and-whisker plots)
-        + One Group of Data
-        + Multiple Groups of Data
-    + Bar Plots
-        + One Group of Data
-        + Multiple Groups of Data --> <!-- 5. Graphing using axes (more complicated but gives you more control) --></li>
-<li>Graphing using axes
+<div id="the-advanced-option-argparse" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> The Advanced Option: <code>argparse</code></h1>
+<p>There is a library called <code>argparse</code> that includes a lot more functionality to do with argument parsing and it’s already included in the Python Standard Library (so you don’t need to worry about installing it)! This library contains the <code>.ArgumentParser()</code> method which allows you to create a parser object that will do the actual parsing of arguments (importing values from the command-line). Once that’s done you will need to use the parser object’s <code>.add_argument()</code> method to add an argument and, finally, its <code>.parse_args()</code> method will be needed to actually parse the arguments. In other words, you need to do at least these four things in your script:</p>
 <ul>
-<li>Box Plots (aka box-and-whisker plots)
+<li>Import the <code>argparse</code> library</li>
+<li>Create the parser object with <code>argparse.ArgumentParser()</code></li>
+<li>Use the parser object to add arguments with <code>parser.add_argument()</code></li>
+<li>Use the parser object to parse the arguments with <code>parser.parse_args()</code></li>
+</ul>
+<p>Here’s a file called <code>script.py</code> that contains a minimum working example of the above functionality:</p>
+<pre class="python"><code>import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser()
+# Add positional argument
+parser.add_argument(&#39;message&#39;)
+# Parse arguments from terminal
+args = parser.parse_args()
+
+# Access the arguments
+message = args.message
+print(message)</code></pre>
+<p>If we run it from the terminal via the following command:</p>
+<pre class="bash"><code>python3 script.py &quot;The World says &#39;Hello&#39; back&quot;</code></pre>
+<p>We will get the following output:</p>
+<pre><code>## The World says &#39;Hello&#39; back</code></pre>
+<p>The text <code>&quot;The World says &#39;Hello&#39; back&quot;</code> has been passed into the script from the command-line as an argument called <code>message</code> and saved as the variable <code>args.message</code>. This is how a user can control what a script does; in this case we decided what message was printed without editing the code itself.</p>
+<p>For the complete documentation on how <code>argparse</code> works, click <a href="https://docs.python.org/3/library/argparse.html">here</a>.</p>
+<div id="optional-arguments" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Optional Arguments</h2>
+<p>In the above example we used <code>parser.add_argument(&#39;message&#39;)</code> to create an argument. This is an example of a <strong>positional argument</strong> because it works by assigning the value of the first argument that appears on the command-line to the variable “message”. If we had added a second positional argument with <code>parser.add_argument(&#39;recipient&#39;)</code> then the second argument on the command-line would have been assigned to the variable “recipient”. These are positional arguments because their position (order) on the command-line determines which variable name they get assigned to. A positional argument is also a <em>required</em> argument by default; if it is omitted it will create an error.</p>
+<p>Alternatively, you can create <strong>optional arguments</strong> by using <em>flags</em>. These are, as the name suggests, optional and will <em>not</em> cause the script to crash if they are omitted. When the name of an argument starts with a dash <em>it will automatically be interpreted as an optional argument</em> and, within the programming world, argument names that start with a dash are known as “flags”:</p>
+<pre class="python"><code>parser.add_argument(&#39;--message&#39;, &#39;-m&#39;)</code></pre>
+<p>The above code creates <strong>one</strong> optional argument called <code>message</code> which can be set from the command-line either using <code>--message</code> or the shorthand alternative <code>-m</code>. In other words, the following two terminal commands will both do exactly the same thing:</p>
+<pre class="bash"><code>python3 script.py --message &quot;Hello, World&quot;
+python3 script.py -m &quot;Hello, World&quot;</code></pre>
+<p>Note also that optional arguments <em>need the flag to be included</em> when called. This is different from positional arguments where the name of the variable is not included and instead their positions are used to determine which argument is assigned to which variable.</p>
+<blockquote>
+<p>By convention, flags that start with two dashes are the full names of the arguments while flags that start with only one dash are the shorthand versions of those names.</p>
+</blockquote>
+<p>Here’s a script that defines three optional arguments (<code>message</code>, <code>recipient</code> and <code>extra</code>):</p>
+<pre class="python"><code>import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser()
+# Add optional arguments
+parser.add_argument(&#39;--message&#39;, &#39;-m&#39;)
+parser.add_argument(&#39;--recipient&#39;, &#39;-r&#39;)
+parser.add_argument(&#39;--extra&#39;, &#39;-e&#39;)
+# Parse arguments from terminal
+args = parser.parse_args()
+
+# Access the arguments
+message = args.message
+print(message)
+recipient = args.recipient
+print(recipient)</code></pre>
+<p>Calling it with <code>python3 script.py -r &quot;World&quot; --message &quot;Hello&quot;</code> gives:</p>
+<pre><code>## Hello
+## World</code></pre>
+<p>Notice that the arguments were:</p>
 <ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
+<li>Not called in the order that they were defined in the script</li>
+<li>Called using a mixture of long- and shorthand flags</li>
+<li>Were not all called (<code>extra</code> was omitted)</li>
+</ul>
+<p>This shows how versatile optional arguments can be.</p>
+</div>
+<div id="argument-options" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Argument Options</h2>
+<p>The following keyword arguments can be used with the <code>parser.add_argument()</code> function to alter how <code>argparse</code> arguments are handled:</p>
+<div id="default" class="section level3" number="4.2.1">
+<h3 number="4.2.1"><span class="header-section-number">4.2.1</span> <code>default</code></h3>
+<p>Sets a default value for an optional argument. In other words, if the argument is omitted, this is the value that the variable will take, for example:</p>
+<pre class="python"><code>parser.add_argument(&#39;--colour&#39;, &#39;-c&#39;, default=&#39;blue&#39;)</code></pre>
+<p>…will cause the variable <code>colour</code> to have the value “blue” if it is not specified in the call.</p>
+<p>Although it is possible to set a default value for a positional argument it doesn’t make much sense to do so: a positional argument is a compulsory input so it will overwrite any default value it has.</p>
+</div>
+<div id="type" class="section level3" number="4.2.2">
+<h3 number="4.2.2"><span class="header-section-number">4.2.2</span> <code>type</code></h3>
+<p>All arguments are parsed as strings, unless this keyword argument is used to convert them to another type:</p>
+<pre class="python"><code>parser.add_argument(&#39;integer&#39;, type=int)</code></pre>
+<p>The above will cause the inputted argument to be converted to an integer. The other common type option is <code>float</code>. If you are trying to parse a multi-element object such as a list, you will probably want to use the <code>nargs=&#39;*&#39;</code> keyword argument discussed below rather than doing <code>type=list</code>. While the latter will work in the sense that it won’t cause an error, it will convert your single-string input argument into a list of its characters which probably isn’t what you want to do.</p>
+<blockquote>
+<p>Note that it’s not recommended to use <code>type=bool</code> to convert inputs to Booleans because it will consider all non-empty strings to be <code>True</code> and the empty string to be <code>False</code>. In other words, “False” will be evaluated as <code>True</code>, which is not something you want your code to be able to do. Rather use <code>action=store_true</code>.</p>
+</blockquote>
+</div>
+<div id="action" class="section level3" number="4.2.3">
+<h3 number="4.2.3"><span class="header-section-number">4.2.3</span> <code>action</code></h3>
+<p>Specifies what action to take when an argument is received. The most common use for this is for giving optional arguments Boolean values via <code>action=&#39;store_true&#39;</code>:</p>
+<pre class="python"><code>parser.add_argument(&#39;--is_alive&#39;, action=&#39;store_true&#39;)</code></pre>
+<p>Running <code>python3 script.py</code> will set <code>is_alive</code> to <code>False</code> while running <code>python3 script.py --is_alive</code> will set <code>is_alive</code> to <code>True</code>.</p>
+</div>
+<div id="choices" class="section level3" number="4.2.4">
+<h3 number="4.2.4"><span class="header-section-number">4.2.4</span> <code>choices</code></h3>
+<p>Allows you to specify a finite list of options for the values that your argument can take:</p>
+<pre class="python"><code>parser.add_argument(&#39;move&#39;, choices=[&#39;rock&#39;, &#39;paper&#39;, &#39;scissors&#39;])</code></pre>
+<p>In a game of rock-paper-scissors you want a move that isn’t one of the titular three to raise an error.</p>
+</div>
+<div id="nargs" class="section level3" number="4.2.5">
+<h3 number="4.2.5"><span class="header-section-number">4.2.5</span> <code>nargs</code></h3>
+<p>Up until now, every argument call has taken one input value and assigned it to one variable. This can be changed with <code>nargs</code> which sets the <strong>n</strong>umber of <strong>arg</strong>ument<strong>s</strong> that will be consumed:</p>
 <ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
+<li><code>nargs=N</code> where N is an integer will result in N arguments being consumed. These will be collected up into a list and assigned to the variable:</li>
+</ul>
+<pre class="python"><code>parser.add_argument(&#39;parent_names&#39;, nargs=2)</code></pre>
+<p>Running <code>python3 script.py &quot;Jack&quot; &quot;Jill&quot;</code> will set <code>parent_names</code> equal to <code>[&#39;Jack&#39;, &#39;Jill&#39;]</code>.</p>
+<ul>
+<li><code>nargs=&#39;?&#39;</code> for an optional argument will cause:
+<ul>
+<li>The argument’s value to be used if one is present (ie the normal behaviour)</li>
+<li>The <code>default</code> value to be used if the flag is not present (ie the normal behaviour)</li>
+<li>The <code>const</code> value to be used if the flag is present with no argument (up until now, this would have caused an error)</li>
 </ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+</ul>
+<p>See the <code>const</code> section below for an example.</p>
+<blockquote>
+<p><code>nargs=&#39;?&#39;</code> can be used with a positional argument but it is not recommended as it causes it to no longer be compulsory. Optional arguments should be used when you want an argument to not be compulsory.</p>
+</blockquote>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<div id="hypothesis-testing" class="section level4">
-<h4>Hypothesis Testing</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ol>
+<div id="const" class="section level3" number="4.2.6">
+<h3 number="4.2.6"><span class="header-section-number">4.2.6</span> <code>const</code></h3>
+<p>As mentioned above, <code>const</code> together with <code>nargs=&#39;?&#39;</code> allows for standalone flags to be used (ie without an argument). For example, if you are entering information about whether or not an Olympic athlete won a medal:</p>
+<pre class="python"><code>parser.add_argument(&#39;--medallist&#39;, &#39;-m&#39;, nargs=&#39;?&#39;, default=&#39;no&#39;, const=&#39;yes&#39;)</code></pre>
+<p>For the above example, running:</p>
+<ul>
+<li><code>python3 script.py</code> will set <code>medallist</code> to <code>no</code></li>
+<li><code>python3 script.py --medallist</code> will set <code>medallist</code> to <code>yes</code></li>
+<li><code>python3 script.py --medallist &quot;gold&quot;</code> will set <code>medallist</code> to <code>gold</code></li>
+</ul>
+<p>The middle example shows a <strong>standalone flag</strong>. Just having the flag on its own without an argument will still work.</p>
 </div>
-<div id="agreement-accuracy-precision" class="section level4">
-<h4>Agreement (Accuracy &amp; Precision)</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-</ol>
+<div id="required" class="section level3" number="4.2.7">
+<h3 number="4.2.7"><span class="header-section-number">4.2.7</span> <code>required</code></h3>
+<p>For optional arguments, <code>required=True</code> can be used to make it compulsory. An error will now be raised if it is omitted. However, this is not recommended; rather use a positional argument if you want it to be compulsory.</p>
 </div>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="help-messages" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Help Messages</h2>
+<p>To make things easier for the people using your Python script, <code>argparse</code> can automatically create a help message to guide them along. It can be accessed by running <code>python3 script.py -h</code> or <code>python3 script.py --help</code>, and you don’t need to set it up:</p>
+<pre class="python"><code>import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser()
+# Add positional arguments
+parser.add_argument(&#39;message&#39;,)
+parser.add_argument(&#39;number&#39;, type=int)
+# Add optional arguments
+parser.add_argument(&#39;--recipient&#39;, &#39;-r&#39;)
+# Parse arguments from terminal
+args = parser.parse_args()</code></pre>
+<p>When the above script is run with <code>python3 script.py --help</code> you get:</p>
+<pre><code>## usage: script.py [-h] [--recipient RECIPIENT] message number
+## 
+## positional arguments:
+##   message
+##   number
+## 
+## optional arguments:
+##   -h, --help            show this help message and exit
+##   --recipient RECIPIENT, -r RECIPIENT</code></pre>
+<p>As you can see, you are given:</p>
+<ul>
+<li>A usage guide on how to run the script</li>
+<li>A list of the positional arguments</li>
+<li>A list of the optional arguments, the shorthand versions of their names and their variable names</li>
+</ul>
+<p>However, we can do better! We have a couple of options for improving this message:</p>
+<ul>
+<li>Adding a <code>description</code> keyword argument to <code>argparse.ArgumentParser()</code> will add text to the start of the help message</li>
+<li>Adding a <code>epilog</code> keyword argument to <code>argparse.ArgumentParser()</code> will add text to the end of the help message</li>
+<li>Adding the <code>help</code> keyword argument to one or more of the <code>parser.add_argument()</code> functions will add information about what each argument is for</li>
+</ul>
+<p>Here’s what it can look like when fleshed out:</p>
+<pre class="python"><code>import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser(
+    # Add a helpful description that will be displayed at the start of the help message
+    description=&quot;A script that takes a text message and sends it to a recipient&#39;s phone.&quot;,
+    # Add a helpful description that will be displayed at the end of the help message
+    epilog=&#39;Written by rowannicholls.github.io&#39;
+)
+# Add positional arguments
+parser.add_argument(
+    &#39;message&#39;,
+    help=&#39;The message that you want to be sent.&#39;
+)
+parser.add_argument(
+    &#39;number&#39;, type=int,
+    help=&#39;The phone number of the recipient&#39;
+)
+# Add optional arguments
+parser.add_argument(
+    &#39;--recipient&#39;, &#39;-r&#39;,
+    help=&#39;The name of the recipient.&#39;
+)
+# Parse arguments from terminal
+args = parser.parse_args()</code></pre>
+<pre><code>## usage: script.py [-h] [--recipient RECIPIENT] message number
+## 
+## A script that takes a text message and sends it to a recipient&#39;s phone.
+## 
+## positional arguments:
+##   message               The message that you want to be sent.
+##   number                The phone number of the recipient
+## 
+## optional arguments:
+##   -h, --help            show this help message and exit
+##   --recipient RECIPIENT, -r RECIPIENT
+##                         The name of the recipient.
+## 
+## Written by rowannicholls.github.io</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 

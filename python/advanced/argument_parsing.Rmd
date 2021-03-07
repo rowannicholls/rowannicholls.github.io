@@ -1,0 +1,404 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Parsing Command-Line Arguments'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Why Get Inputs from the Terminal?
+=================================
+If we have a file called `script.py` with the following simple script in it:
+
+```{python, eval = FALSE}
+message = 'Hello, World'
+print(message)
+```
+
+...and we run it from the terminal via the following command (assuming the terminal is pointing to the folder where `script.py` is located):
+
+```{bash, eval = FALSE}
+python3 script.py
+```
+
+...we will get the following output:
+
+```{bash, echo = FALSE}
+python3 argument_parsing_script1.py
+```
+
+...and we will get that output *every time*. In other words, a Python script like this is 'set in stone' - it will execute the lines of code that are inside it and you as a user can't change what it does (unless you open up the file and edit it). However, often you will be in a position where you don't want this to be the case; you will want to have a script that has **options** as to what it does. For example, you might want to change what the message is that the above script prints. This can be achieved by *passing an argument to a script:*
+
+Passing an Argument to a Script
+===============================
+In Python, it's possible to **pass** a value into a script when you run it. This means that you set what one of the variables in the script is equal to at the same time as you tell it to run.
+
+- The value you pass into the script is called an **argument**
+- The script needs to **parse** the argument(s) that are passed into it before they can be used. Note that while the words "pass" and "parse" sound the same they are actually different actions (they roughly mean "give" and "receive", respectively)
+
+You have two main options of how to do this: either use the `.argv` method from the `sys` module or use the `argparse` library:
+
+- `sys.argv` is the basic option: it merely provides you with a list of the arguments that have been passed into a script
+- `argparse` is the advanced option: it's a library that uses `sys.argv` to create a user-friendly way to create and work with arguments
+
+The Basic Option: `sys.argv`
+============================
+As mentioned above, the `.argv` method of the built-in `sys` module lists what was on the command-line when the script was run. So if a file called `script.py` contains the following code:
+
+```{python, eval = FALSE}
+import sys
+
+print(sys.argv)
+print(sys.argv[0])
+print(sys.argv[1])
+print(sys.argv[2])
+```
+
+...and it is run from the terminal with:
+
+```{bash, eval = FALSE}
+python3 script.py "Hello, World" "How are you?"
+```
+
+...it will display the following:
+
+```{bash, echo = FALSE}
+python3 argument_parsing_script2.py "Hello, World" "How are you?"
+```
+
+As you can see, the text that followed the `python3` command in the command-line has now been turned into a list and passed into the script, where it has been printed. The list has three elements - the name of the script (which is always assigned to `sys.argv[0]`) and the two strings that were created using quotation marks - with each element having been separated by a space on the command-line. This can be used to set options for how the script runs: for example, if we have a `script.py` as follows:
+
+```{python, eval = FALSE}
+import sys
+
+if len(sys.argv) > 1:
+    print('Data was received from the terminal')
+    for argument in sys.argv[1:]:
+        if argument == 'Option 1':
+            print('Running the script as per Option 1')
+        else:
+            print('Running the script as per a different option')
+else:
+    print('Nothing was received from the terminal')
+```
+
+...and run it from the terminal with:
+
+```{bash, eval = FALSE}
+python3 script.py "Option 1"
+```
+
+...it will display the following:
+
+```{bash, echo = FALSE}
+python3 argument_parsing_script3.py "Option 1"
+```
+
+However, if we run it with `python3 script.py "Option 2"` we get:
+
+```{bash, echo = FALSE}
+python3 argument_parsing_script3.py "Option 2"
+```
+
+And if we run it with just `python3 script.py` we get:
+
+```{bash, echo = FALSE}
+python3 argument_parsing_script3.py
+```
+
+Checking If Arguments Have Been Passed
+--------------------------------------
+Sometimes it's useful to check if any arguments have been passed at all and go from there:
+
+```{python}
+# Check if arguments have been passed
+if len(sys.argv) > 1:
+    # Arguments found
+    print('Data was received from the command-line')
+else:
+    # Arguments not found
+    print('No data was received from the command-line')
+```
+
+The Advanced Option: `argparse`
+===============================
+There is a library called `argparse` that includes a lot more functionality to do with argument parsing and it's already included in the Python Standard Library (so you don't need to worry about installing it)! This library contains the `.ArgumentParser()` method which allows you to create a parser object that will do the actual parsing of arguments (importing values from the command-line). Once that's done you will need to use the parser object's `.add_argument()` method to add an argument and, finally, its `.parse_args()` method will be needed to actually parse the arguments. In other words, you need to do at least these four things in your script:
+
+- Import the `argparse` library
+- Create the parser object with `argparse.ArgumentParser()`
+- Use the parser object to add arguments with `parser.add_argument()`
+- Use the parser object to parse the arguments with `parser.parse_args()`
+
+Here's a file called `script.py` that contains a minimum working example of the above functionality:
+
+```{python, eval = FALSE}
+import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser()
+# Add positional argument
+parser.add_argument('message')
+# Parse arguments from terminal
+args = parser.parse_args()
+
+# Access the arguments
+message = args.message
+print(message)
+```
+
+If we run it from the terminal via the following command:
+
+```{bash, eval = FALSE}
+python3 script.py "The World says 'Hello' back"
+```
+
+We will get the following output:
+
+```{bash, echo = FALSE}
+python3 argument_parsing_script4.py "The World says 'Hello' back"
+```
+
+The text `"The World says 'Hello' back"` has been passed into the script from the command-line as an argument called `message` and saved as the variable `args.message`. This is how a user can control what a script does; in this case we decided what message was printed without editing the code itself.
+
+For the complete documentation on how `argparse` works, click [here](https://docs.python.org/3/library/argparse.html).
+
+Optional Arguments
+------------------
+In the above example we used `parser.add_argument('message')` to create an argument. This is an example of a **positional argument** because it works by assigning the value of the first argument that appears on the command-line to the variable "message". If we had added a second positional argument with `parser.add_argument('recipient')` then the second argument on the command-line would have been assigned to the variable "recipient". These are positional arguments because their position (order) on the command-line determines which variable name they get assigned to. A positional argument is also a *required* argument by default; if it is omitted it will create an error.
+
+Alternatively, you can create **optional arguments** by using *flags*. These are, as the name suggests, optional and will *not* cause the script to crash if they are omitted. When the name of an argument starts with a dash *it will automatically be interpreted as an optional argument* and, within the programming world, argument names that start with a dash are known as "flags":
+
+```{python, eval = FALSE}
+parser.add_argument('--message', '-m')
+```
+
+The above code creates **one** optional argument called `message` which can be set from the command-line either using `--message` or the shorthand alternative `-m`. In other words, the following two terminal commands will both do exactly the same thing:
+
+```{bash, eval = FALSE}
+python3 script.py --message "Hello, World"
+python3 script.py -m "Hello, World"
+```
+
+Note also that optional arguments *need the flag to be included* when called. This is different from positional arguments where the name of the variable is not included and instead their positions are used to determine which argument is assigned to which variable.
+
+> By convention, flags that start with two dashes are the full names of the arguments while flags that start with only one dash are the shorthand versions of those names.
+
+Here's a script that defines three optional arguments (`message`, `recipient` and `extra`):
+
+```{python, eval = FALSE}
+import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser()
+# Add optional arguments
+parser.add_argument('--message', '-m')
+parser.add_argument('--recipient', '-r')
+parser.add_argument('--extra', '-e')
+# Parse arguments from terminal
+args = parser.parse_args()
+
+# Access the arguments
+message = args.message
+print(message)
+recipient = args.recipient
+print(recipient)
+```
+
+Calling it with `python3 script.py -r "World" --message "Hello"` gives:
+
+```{bash, echo = FALSE}
+python3 argument_parsing_script5.py -r "World" --message "Hello"
+```
+
+Notice that the arguments were:
+
+- Not called in the order that they were defined in the script
+- Called using a mixture of long- and shorthand flags
+- Were not all called (`extra` was omitted)
+
+This shows how versatile optional arguments can be.
+
+Argument Options
+----------------
+The following keyword arguments can be used with the `parser.add_argument()` function to alter how `argparse` arguments are handled:
+
+### `default`
+Sets a default value for an optional argument. In other words, if the argument is omitted, this is the value that the variable will take, for example:
+
+```{python, eval = FALSE}
+parser.add_argument('--colour', '-c', default='blue')
+```
+
+...will cause the variable `colour` to have the value "blue" if it is not specified in the call.
+
+Although it is possible to set a default value for a positional argument it doesn't make much sense to do so: a positional argument is a compulsory input so it will overwrite any default value it has.
+
+### `type`
+All arguments are parsed as strings, unless this keyword argument is used to convert them to another type:
+
+```{python, eval = FALSE}
+parser.add_argument('integer', type=int)
+```
+
+The above will cause the inputted argument to be converted to an integer. The other common type option is `float`. If you are trying to parse a multi-element object such as a list, you will probably want to use the `nargs='*'` keyword argument discussed below rather than doing `type=list`. While the latter will work in the sense that it won't cause an error, it will convert your single-string input argument into a list of its characters which probably isn't what you want to do.
+
+> Note that it's not recommended to use `type=bool` to convert inputs to Booleans because it will consider all non-empty strings to be `True` and the empty string to be `False`. In other words, "False" will be evaluated as `True`, which is not something you want your code to be able to do. Rather use `action=store_true`.
+
+### `action`
+Specifies what action to take when an argument is received. The most common use for this is for giving optional arguments Boolean values via `action='store_true'`:
+
+```{python, eval = FALSE}
+parser.add_argument('--is_alive', action='store_true')
+```
+
+Running `python3 script.py` will set `is_alive` to `False` while running `python3 script.py --is_alive` will set `is_alive` to `True`.
+
+### `choices`
+Allows you to specify a finite list of options for the values that your argument can take:
+
+```{python, eval = FALSE}
+parser.add_argument('move', choices=['rock', 'paper', 'scissors'])
+```
+
+In a game of rock-paper-scissors you want a move that isn't one of the titular three to raise an error.
+
+### `nargs`
+Up until now, every argument call has taken one input value and assigned it to one variable. This can be changed with `nargs` which sets the **n**umber of **arg**ument**s** that will be consumed:
+
+- `nargs=N` where N is an integer will result in N arguments being consumed. These will be collected up into a list and assigned to the variable:
+
+```{python, eval = FALSE}
+parser.add_argument('parent_names', nargs=2)
+```
+
+Running `python3 script.py "Jack" "Jill"` will set `parent_names` equal to `['Jack', 'Jill']`.
+
+- `nargs='?'` for an optional argument will cause:
+    - The argument's value to be used if one is present (ie the normal behaviour)
+    - The `default` value to be used if the flag is not present (ie the normal behaviour)
+    - The `const` value to be used if the flag is present with no argument (up until now, this would have caused an error)
+
+See the `const` section below for an example.
+
+> `nargs='?'` can be used with a positional argument but it is not recommended as it causes it to no longer be compulsory. Optional arguments should be used when you want an argument to not be compulsory.
+
+### `const`
+As mentioned above, `const` together with `nargs='?'` allows for standalone flags to be used (ie without an argument). For example, if you are entering information about whether or not an Olympic athlete won a medal:
+
+```{python, eval = FALSE}
+parser.add_argument('--medallist', '-m', nargs='?', default='no', const='yes')
+```
+
+For the above example, running:
+
+- `python3 script.py` will set `medallist` to `no`
+- `python3 script.py --medallist` will set `medallist` to `yes`
+- `python3 script.py --medallist "gold"` will set `medallist` to `gold`
+
+The middle example shows a **standalone flag**. Just having the flag on its own without an argument will still work.
+
+### `required`
+For optional arguments, `required=True` can be used to make it compulsory. An error will now be raised if it is omitted. However, this is not recommended; rather use a positional argument if you want it to be compulsory.
+
+Help Messages
+-------------
+To make things easier for the people using your Python script, `argparse` can automatically create a help message to guide them along. It can be accessed by running `python3 script.py -h` or `python3 script.py --help`, and you don't need to set it up:
+
+```{python, eval = FALSE}
+import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser()
+# Add positional arguments
+parser.add_argument('message',)
+parser.add_argument('number', type=int)
+# Add optional arguments
+parser.add_argument('--recipient', '-r')
+# Parse arguments from terminal
+args = parser.parse_args()
+```
+
+When the above script is run with `python3 script.py --help` you get:
+
+```
+## usage: script.py [-h] [--recipient RECIPIENT] message number
+## 
+## positional arguments:
+##   message
+##   number
+## 
+## optional arguments:
+##   -h, --help            show this help message and exit
+##   --recipient RECIPIENT, -r RECIPIENT
+```
+
+As you can see, you are given:
+
+- A usage guide on how to run the script
+- A list of the positional arguments
+- A list of the optional arguments, the shorthand versions of their names and their variable names
+
+However, we can do better! We have a couple of options for improving this message:
+
+- Adding a `description` keyword argument to `argparse.ArgumentParser()` will add text to the start of the help message
+- Adding a `epilog` keyword argument to `argparse.ArgumentParser()` will add text to the end of the help message
+- Adding the `help` keyword argument to one or more of the `parser.add_argument()` functions will add information about what each argument is for
+
+Here's what it can look like when fleshed out:
+
+```{python, eval = FALSE}
+import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser(
+    # Add a helpful description that will be displayed at the start of the help message
+    description="A script that takes a text message and sends it to a recipient's phone.",
+    # Add a helpful description that will be displayed at the end of the help message
+    epilog='Written by rowannicholls.github.io'
+)
+# Add positional arguments
+parser.add_argument(
+    'message',
+    help='The message that you want to be sent.'
+)
+parser.add_argument(
+    'number', type=int,
+    help='The phone number of the recipient'
+)
+# Add optional arguments
+parser.add_argument(
+    '--recipient', '-r',
+    help='The name of the recipient.'
+)
+# Parse arguments from terminal
+args = parser.parse_args()
+```
+
+```
+## usage: script.py [-h] [--recipient RECIPIENT] message number
+## 
+## A script that takes a text message and sends it to a recipient's phone.
+## 
+## positional arguments:
+##   message               The message that you want to be sent.
+##   number                The phone number of the recipient
+## 
+## optional arguments:
+##   -h, --help            show this help message and exit
+##   --recipient RECIPIENT, -r RECIPIENT
+##                         The name of the recipient.
+## 
+## Written by rowannicholls.github.io
+```
+
+[⇦ Back](../../python.html)
+
+</font>
