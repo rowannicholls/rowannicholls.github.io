@@ -32,8 +32,7 @@ import os
 
 # Create folders if they do not already exist
 for folder in ['csv', 'html', 'json', 'mat', 'npy', 'ods', 'tab', 'tsv', 'txt', 'xls', 'xlsx']:
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+    os.makedirs(folder, exist_ok=True)
 ```
 
 Create Data
@@ -665,8 +664,16 @@ Import comma-separated values (.csv) as a data frame:
 ```{python}
 import pandas as pd
 
-df = pd.read_csv('csv/data frame.csv', parse_dates=True)
+df = pd.read_csv('csv/data frame.csv')
 ```
+
+Import comma-separated values (.csv) as a data frame, interpreting certain values as missing data:
+```{python, eval = FALSE}
+import pandas as pd
+
+df = pd.read_csv('csv/data frame.csv', na_values=['Missing', 'None'])
+```
+In addition to whatever you manually define using `na_values` as demonstrated above, the following will all be considered 'missing data': ‘’, ‘#N/A’, ‘#N/A N/A’, ‘#NA’, ‘-1.#IND’, ‘-1.#QNAN’, ‘-NaN’, ‘-nan’, ‘1.#IND’, ‘1.#QNAN’, ‘<NA>’, ‘N/A’, ‘NA’, ‘NULL’, ‘NaN’, ‘n/a’, ‘nan’ and ‘null’
 
 Import comma-separated values (.csv) as a data frame using a custom date parser:
 ```{python}
