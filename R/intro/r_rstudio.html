@@ -11,7 +11,7 @@
 
 
 
-<title>R</title>
+<title>Introduction to R: R and RStudio</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -483,7 +483,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},je=function(a){var b=I.createElement("
 e=je(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var le=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),me=new RegExp(/support|noreply/i),ne=["SCRIPT","IMG","SVG","PATH","BR"],oe=["BR"];function pe(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=pe(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 var se=function(){var a=!0;var b=a,c;var d=[],e=I.body;if(e){for(var f=e.querySelectorAll("*"),h=0;h<f.length&&1E4>h;h++){var k=f[h];if(!(0<=ne.indexOf(k.tagName.toUpperCase()))){for(var l=!1,n=0;n<k.childElementCount&&1E4>n;n++)if(!(0<=oe.indexOf(k.children[n].tagName.toUpperCase()))){l=!0;break}l||d.push(k)}}c={elements:d,status:1E4<f.length?"2":"1"}}else c=
 {elements:d,status:"4"};for(var q=c,p=q.elements,r=[],u=0;u<p.length;u++){var t=p[u],v=t.textContent;t.value&&(v=t.value);if(v){var x=v.match(le);if(x){var y=x[0],w;if(G.location){var z=ge(G.location,"host",!0);w=0<=y.toLowerCase().indexOf(z)}else w=!1;w||r.push({element:t,Ic:y})}}}var A;for(var B=[],F=10<r.length?"3":q.status,E=0;E<r.length&&
-10>E;E++){var H=r[E].element,M=r[E].Ic,N=!1;B.push({Ic:M,querySelector:pe(H),tagName:H.tagName,isVisible:!Ud(H),type:1,xc:!!N})}return{elements:B,status:F}};var Ge={},L=null,He=Math.random();Ge.D="UA-156468188-1";Ge.ic="2o0";Ge.Eh="";Ge.zf="ChEIgLOXggYQz+b5/8y4p+T5ARInAN8aAmZWB/kYY3eATaVXYeajCsbROs91AhNmn1u6AjKE5QqfZxzqGgIP2g\x3d\x3d";var Ie={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Je={__paused:!0,__tg:!0},Ke;for(Ke in Ie)Ie.hasOwnProperty(Ke)&&(Je[Ke]=!0);var Le="www.googletagmanager.com/gtm.js";Le="www.googletagmanager.com/gtag/js";
+10>E;E++){var H=r[E].element,M=r[E].Ic,N=!1;B.push({Ic:M,querySelector:pe(H),tagName:H.tagName,isVisible:!Ud(H),type:1,xc:!!N})}return{elements:B,status:F}};var Ge={},L=null,He=Math.random();Ge.D="UA-156468188-1";Ge.ic="2o0";Ge.Eh="";Ge.zf="ChEIgLOXggYQz+b5/8y4p+T5ARInAN8aAmZxuB/G1kLfzXT3QGzpSrlAHMXlxQDQ63y0EhHPHVDG46WeGgIYTw\x3d\x3d";var Ie={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Je={__paused:!0,__tg:!0},Ke;for(Ke in Ie)Ie.hasOwnProperty(Ke)&&(Je[Ke]=!0);var Le="www.googletagmanager.com/gtm.js";Le="www.googletagmanager.com/gtag/js";
 var Me=Le,Ne=Ua(""),Oe=null,Pe=null,Qe="//www.googletagmanager.com/a?id="+Ge.D+"&cv=1",Re={},Se={},Te=function(){var a=L.sequence||1;L.sequence=a+1;return a};var Ue={},Ve=new La,We={},Xe={},$e={name:"dataLayer",set:function(a,b){m(hb(a,b),We);Ye()},get:function(a){return Ze(a,2)},reset:function(){Ve=new La;We={};Ye()}},Ze=function(a,b){return 2!=b?Ve.get(a):af(a)},af=function(a){var b,c=a.split(".");b=b||[];for(var d=We,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ha(b,d))return}return d},bf=function(a,b){Xe.hasOwnProperty(a)||(Ve.set(a,b),m(hb(a,b),We),Ye())},Ye=function(a){Na(Xe,function(b,c){Ve.set(b,c);m(hb(b,
 void 0),We);m(hb(b,c),We);a&&delete Xe[b]})},cf=function(a,b,c){Ue[a]=Ue[a]||{};var d=1!==c?af(b):Ve.get(b);"array"===kb(d)||"object"===kb(d)?Ue[a][b]=m(d):Ue[a][b]=d},df=function(a,b){if(Ue[a])return Ue[a][b]},ef=function(a,b){Ue[a]&&delete Ue[a][b]};var hf={},jf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===hf[a]&&(hf[a]=Math.floor(Math.random()*b));return hf[a]};var kf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function lf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};var nf=function(a,b,c,d){return mf(d)?lf(a,String(b||document.cookie),c):[]},tf=function(a,b,c,d,e){if(mf(e)){var f=of(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=sf(f,function(h){return h.qc},b);if(1===f.length)return f[0].id;f=sf(f,function(h){return h.Lb},c);return f[0]?f[0].id:void 0}}};function uf(a,b,c,d){var e=document.cookie;document.cookie=a;var f=document.cookie;return e!=f||void 0!=c&&0<=nf(b,f,!1,d).indexOf(c)}
 var yf=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!mf(c.va))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=vf(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Oh);f=d(f,"samesite",
@@ -553,7 +553,8 @@ d=0),c()}};xj.prototype.removeEventListener=function(a){a&&a.listenerId&&Aj(this
 var Cj=function(a,b,c){var d;d=void 0===d?"755":d;var e;a:{if(a.publisher&&a.publisher.restrictions){var f=a.publisher.restrictions[b];if(void 0!==f){e=f[void 0===d?"755":d];break a}}e=void 0}var h=e;if(0===h)return!1;var k=c;2===c?(k=0,2===h&&(k=1)):3===c&&(k=1,1===h&&(k=0));var l;if(0===k)if(a.purpose&&a.vendor){var n=Bj(a.vendor.consents,void 0===d?"755":d);l=n&&"1"===b&&a.purposeOneTreatment&&"DE"===a.publisherCC?!0:n&&Bj(a.purpose.consents,b)}else l=!0;else l=1===k?a.purpose&&a.vendor?Bj(a.purpose.legitimateInterests,
 b)&&Bj(a.vendor.legitimateInterests,void 0===d?"755":d):!0:!0;return l},Bj=function(a,b){return!(!a||!a[b])},Aj=function(a,b,c,d){c||(c=function(){});if("function"===typeof a.o.__tcfapi){var e=a.o.__tcfapi;e(b,2,c,d)}else if(yj(a)){Dj(a);var f=++a.Y;a.H[f]=c;if(a.m){var h={};a.m.postMessage((h.__tcfapiCall={command:b,version:2,callId:f,parameter:d},h),"*")}}else c({},!1)},yj=function(a){if(a.m)return a.m;a.m=uj(a.o,"__tcfapiLocator");return a.m},Dj=function(a){a.C||(a.C=function(b){try{var c;c=("string"===
 typeof b.data?JSON.parse(b.data):b.data).__tcfapiReturn;a.H[c.callId](c.returnValue,c.success)}catch(d){}},rj(a.o,a.C))};var Ej=!0;var Fj={1:0,3:0,4:0,7:3,9:3,10:3};function Gj(a,b){if(""===a)return b;var c=Number(a);return isNaN(c)?b:c}var Hj=Gj("",550),Ij=Gj("",500);function Jj(){var a=L.tcf||{};return L.tcf=a}
-var Kj=function(a,b){this.C=a;this.m=b;this.o=Ya();},Lj=function(a){},Mj=function(a){},Sj=function(){var a=Jj(),b=new xj(G,Ej?3E3:-1),c=new Kj(b,a);if((Nj()?!0===G.gtag_enable_tcf_support:!1!==G.gtag_enable_tcf_support)&&!a.active&&("function"===typeof G.__tcfapi||zj(b))){a.active=!0;a.Mb={};Oj();var d=null;Ej?d=G.setTimeout(function(){Pj(a);Qj(a);d=null},Ij):a.tcString="tcunavailable";try{b.addEventListener(function(e){d&&(clearTimeout(d),d=null);if(0!==e.internalErrorState)Pj(a),Qj(a),Lj(c);
+var Kj=function(a,b){this.C=a;this.m=b;this.o=Ya();var c="x";"function"===typeof G.__tcfapi?c="s":zj(this.C)?c="i":"function"===typeof G.__cmp?c="c":uj(G,"__cmpLocator")&&(c="d");this.m.type=c;},Lj=function(a){void 0===a.m.loadTime&&(a.m.loadTime=Ya()-a.o);},Mj=function(a){
+void 0!==a.m.loadTime&&(a.m.loadTime=0);},Sj=function(){var a=Jj(),b=new xj(G,Ej?3E3:-1),c=new Kj(b,a);if((Nj()?!0===G.gtag_enable_tcf_support:!1!==G.gtag_enable_tcf_support)&&!a.active&&("function"===typeof G.__tcfapi||zj(b))){a.active=!0;a.Mb={};Oj();var d=null;Ej?d=G.setTimeout(function(){Pj(a);Qj(a);d=null},Ij):a.tcString="tcunavailable";try{b.addEventListener(function(e){d&&(clearTimeout(d),d=null);if(0!==e.internalErrorState)Pj(a),Qj(a),Lj(c);
 else{var f;a.gdprApplies=e.gdprApplies;if(!1===e.gdprApplies)f=Rj(),b.removeEventListener(e);else if("tcloaded"===e.eventStatus||"useractioncomplete"===e.eventStatus||"cmpuishown"===e.eventStatus){var h={},k;for(k in Fj)if(Fj.hasOwnProperty(k))if("1"===k){var l=e,n=!0;n=void 0===n?!1:n;var q;var p=l;!1===p.gdprApplies?q=!0:(void 0===p.internalErrorState&&(p.internalErrorState=wj(p)),q="error"===p.cmpStatus||0!==p.internalErrorState||"loaded"===p.cmpStatus&&("tcloaded"===p.eventStatus||"useractioncomplete"===
 p.eventStatus)?!0:!1);h["1"]=q?!1===l.gdprApplies||"tcunavailable"===l.tcString||void 0===l.gdprApplies&&!n||"string"!==typeof l.tcString||!l.tcString.length?!0:Cj(l,"1",0):!1}else h[k]=Cj(e,k,Fj[k]);f=h}f&&(a.tcString=e.tcString||"tcempty",a.Mb=f,Qj(a),Lj(c))}}),Mj(c)}catch(e){d&&(clearTimeout(d),d=null),Pj(a),Qj(a)}}};function Pj(a){a.type="e";a.tcString="tcunavailable";Ej&&(a.Mb=Rj())}function Oj(){var a={};Kd((a.ad_storage="denied",a.wait_for_update=Hj,a))}
 var Nj=function(){var a=!1;a=!0;return a};function Rj(){var a={},b;for(b in Fj)Fj.hasOwnProperty(b)&&(a[b]=!0);return a}function Qj(a){var b={};Ld((b.ad_storage=a.Mb["1"]?"granted":"denied",b))}
@@ -562,7 +563,8 @@ function Zj(a){function b(u){var t;L.reported_gclid||(L.reported_gclid={});t=L.r
 ""+Cf());y("rnd",L.dedupe_gclid);if((!l||n&&"aw.ds"!==n)&&Md(C.B)){var A=zg("_gcl_aw");y("gclaw",A.join("."))}y("url",String(G.location).split(/[?#]/)[0]);y("dclid",ak(d,q));var B=!1;z||!d&&!B||(w="https://pagead2.googlesyndication.com")}
 y("gdpr_consent",Uj()),y("gdpr",Vj());"1"===jg(!1)._up&&y("gtm_up","1");y("gclid",ak(d,l));y("gclsrc",n);y("gtm",qj(!e));Xj&&h&&Md(C.B)&&(Of(f||{}),y("auid",Jf[Kf(f.prefix)]||""));var F=w+"/pagead/landing?"+x.join("&");pd(F)}}var c=!!a.ld,d=!!a.la,e=a.R,f=void 0===a.nc?{}:a.nc,h=void 0===a.wc?!0:a.wc,k=Fg(),l=k.gclid||"",n=k.gclsrc,
 q=k.dclid||"",p=!c&&(!l||n&&"aw.ds"!==n?!1:!0),r=Dd();if(p||r)r?Od(function(){b();Md(C.B)||Hd(function(u){return b(!0,u.Te)},C.B)},[C.B]):b()}function ak(a,b){var c=a&&!Md(C.B);return b&&c?"0":b}
-var bk=function(a){var b=aj(a,"/pagead/conversion_async.js");if(b)return b;var c=-1!==navigator.userAgent.toLowerCase().indexOf("firefox"),d=eh("https://","http://","www.googleadservices.com");if(c||1===th())d="https://www.google.com";return d+"/pagead/conversion_async.js"},ck=!1,dk=[],ek=["aw","dc"],fk=function(a){var b=G.google_trackConversion,c=a.gtm_onFailure;"function"==typeof b?b(a)||c():c()},gk=function(){for(;0<dk.length;)fk(dk.shift())},hk=function(a,b){var c=!1;var d=ck;c&&(d=b.getContainerTypeLoaded("AW"));if(!d){ck=!0;Xh();var e=function(){c&&b.setContainerTypeLoaded("AW",!0);gk();dk={push:fk}};ch()?e():fd(a,e,function(){gk();ck=!1;c&&b.setContainerTypeLoaded("AW",!1)})}},ik=function(a){if(a){for(var b=[],c=0;c<a.length;++c){var d=a[c];d&&b.push({item_id:d.id,quantity:d.quantity,value:d.price,start_date:d.start_date,end_date:d.end_date})}return b}},jk=function(a,b,c,d){function e(){Ca("gdpr_consent",Uj()),Ca("gdpr",Vj());}function f(){var la=[];return la}function h(la){var za=!0,Ga=[];if(la){Ga=f();}
+var bk=function(a){var b=aj(a,"/pagead/conversion_async.js");if(b)return b;var c=-1!==navigator.userAgent.toLowerCase().indexOf("firefox"),d=eh("https://","http://","www.googleadservices.com");if(c||1===th())d="https://www.google.com";return d+"/pagead/conversion_async.js"},ck=!1,dk=[],ek=["aw","dc"],fk=function(a){var b=G.google_trackConversion,c=a.gtm_onFailure;"function"==typeof b?b(a)||c():c()},gk=function(){for(;0<dk.length;)fk(dk.shift())},hk=function(a,b){var c=!1;var d=ck;c&&(d=b.getContainerTypeLoaded("AW"));if(!d){ck=!0;Xh();var e=function(){c&&b.setContainerTypeLoaded("AW",!0);gk();dk={push:fk}};ch()?e():fd(a,e,function(){gk();ck=!1;c&&b.setContainerTypeLoaded("AW",!1)})}},ik=function(a){if(a){for(var b=[],c=0;c<a.length;++c){var d=a[c];d&&b.push({item_id:d.id,quantity:d.quantity,value:d.price,start_date:d.start_date,end_date:d.end_date})}return b}},jk=function(a,b,c,d){function e(){
+Ca("tc",Jj().type),Ca("tct",Tj());Ca("gdpr_consent",Uj()),Ca("gdpr",Vj());}function f(){var la=[];return la}function h(la){var za=!0,Ga=[];if(la){Ga=f();}
 u&&(Y("delopc",t(C.$c)),Y("oedeld",t(C.qe)),Y("delc",t(C.fe)),Y("shf",t(C.ne)),Y("iedeld",uh(t(C.V))));za&&dk.push(Q)}function k(){return function(la){v&&(la=sh(la));return la}}function l(){}var n=
 $g(a),q=b==C.Z;n.containerId!==Ge.D&&D(61);var p=n.F[0],r=n.F[1],u=void 0!==r,t=function(la){return d.getWithConfig(la)},v=void 0!=t(C.M)&&!1!==t(C.M),x=!1!==t(C.pb),y=t(C.ob)||t(C.aa),w=t(C.W),z=t(C.ia),A=t(C.na),B=t(C.Of),F=ib(pb(B)?B:{}),E=t(C.Ca),H=bk(E);hk(H,d);var M={prefix:y,domain:w,Kb:z,flags:A};if(q){var N=t(C.ka)||{};if(x){var S=t(C.qb),ia=void 0===S?!0:!!S;rg(N[C.Za],!!N[C.I])&&Kg(ek,M);Ig(M);Mg(["aw","dc"],M);}t(C.Da)&&
 Og();N[C.I]&&Lg(ek,N[C.I],N[C.ab],!!N[C.$a],y);ph(n,d);Zj({ld:!1,la:v,R:a,eventId:d.eventId,nc:x?M:void 0,wc:x,We:F})}if(b===C.ya){var P=t(C.Aa),K=t(C.za),T=t(P);if(P===C.Tb&&void 0===T){var V=Ug("aw",M.prefix,v);0===V.length?K(void 0):1===V.length?K(V[0]):K(V)}else K(T)}else{var ja=!1===t(C.$d)||!1===t(C.tb);if(!q||!u&&!ja)if(!0===t(C.ae)&&(u=!1),!1!==t(C.fa)||u){var Q={google_conversion_id:p,google_remarketing_only:!u,onload_callback:d.onSuccess,gtm_onFailure:d.onFailure,google_conversion_format:"3",
@@ -604,7 +606,8 @@ Vk={cookie_name:1,cookie_expires:"duration",levels:1},bl={anonymize_ip:1,fatal:1
 C.Ua,C.Yd,C.Ja,"checkout_progress",C.ma,C.Wa,C.Va,"set_checkout_option"],a)?b="ecommerce":0<=Ha("generate_lead login search select_content share sign_up view_item view_item_list view_promotion view_search_results".split(" "),a)?b="engagement":"exception"===a&&(b="error");return b},Uk=function(a,b,c){a.hasOwnProperty(b)||(a[b]=c)},dl=function(a){if(Fa(a)){for(var b=[],c=0;c<a.length;c++){var d=a[c];if(void 0!=d){var e=d.id,f=d.variant;void 0!=e&&void 0!=f&&b.push(String(e)+"."+String(f))}}return 0<
 b.length?b.join("!"):void 0}},Pk=function(a,b,c,d){function e(E,H){void 0!==H&&(k[E]=H)}a!==Ge.D&&D(60);var f=function(E){return d.getWithConfig(E)},h={},k={},l={},n=dl(f(C.Uf));n&&Uk(k,"exp",n);Dd()&&(l._cs=$k);var q=f("custom_map");if(pb(q))for(var p in q)if(q.hasOwnProperty(p)&&/^(dimension|metric)\d+$/.test(p)&&void 0!=q[p]){var r=f(String(q[p]));void 0!==r&&Uk(k,p,r)}for(var u=mj(d),t=0;t<u.length;++t){var v=u[t],x=f(v);if(al.hasOwnProperty(v))Wk(al[v],v,x,h);else if(Mk.hasOwnProperty(v))Wk(Mk[v],
 v,x,k);else if(Lk.hasOwnProperty(v))Wk(Lk[v],v,x,l);else if(/^(dimension|metric|content_group)\d+$/.test(v))Wk(1,v,x,k);else if("developer_id"===v){var y=ib(x);y&&(k["&did"]=y)}else v===C.aa&&0>Ha(u,C.Ub)&&(l.cookieName=x+"_ga")}Uk(l,"cookieDomain","auto");Uk(k,"forceSSL",!0);Uk(h,"eventCategory",cl(c));0<=Ha(["view_item","view_item_list","view_promotion","view_search_results"],c)&&Uk(k,"nonInteraction",!0);"login"===c||"sign_up"===c||"share"===c?Uk(h,"eventLabel",f(C.Xf)):"search"===c||"view_search_results"===
-c?Uk(h,"eventLabel",f(C.eg)):"select_content"===c&&Uk(h,"eventLabel",f(C.Nf));var w=h[C.ka]||{},z=w[C.Za];z||0!=z&&w[C.I]?l.allowLinker=!0:!1===z&&Uk(l,"useAmpClientId",!1);f(C.Da)&&(l._useUp=!0);!1!==f(C.Mf)&&!1!==f(C.nb)&&Kk()||(k.allowAdFeatures=!1);if(!1===f(C.fa)||!Jk()){var A="allowAdFeatures";A="allowAdPersonalizationSignals";k[A]=!1}l.name=b;k["&gtm"]=qj(!0);k.hitCallback=d.onSuccess;Dd()&&(k["&gcs"]=Nd(),Md(C.J)||(l.storage="none"),Md(C.B)||(k.allowAdFeatures=!1,l.storeGac=!1));var B=f(C.Ca)||f(C.Wf)||Ze("gtag.remote_config."+a+".url",2),F=f(C.Vf)||Ze("gtag.remote_config."+a+".dualId",2);if(B&&null!=cd){l._x_19=B;}F&&(l._x_20=F);h.Ga=k;h.Fa=l;return h},
+c?Uk(h,"eventLabel",f(C.eg)):"select_content"===c&&Uk(h,"eventLabel",f(C.Nf));var w=h[C.ka]||{},z=w[C.Za];z||0!=z&&w[C.I]?l.allowLinker=!0:!1===z&&Uk(l,"useAmpClientId",!1);f(C.Da)&&(l._useUp=!0);!1!==f(C.Mf)&&!1!==f(C.nb)&&Kk()||(k.allowAdFeatures=!1);if(!1===f(C.fa)||!Jk()){var A="allowAdFeatures";A="allowAdPersonalizationSignals";k[A]=!1}l.name=b;k["&gtm"]=qj(!0);
+e("&tc",Jj().type),e("&tct",Tj());k.hitCallback=d.onSuccess;Dd()&&(k["&gcs"]=Nd(),Md(C.J)||(l.storage="none"),Md(C.B)||(k.allowAdFeatures=!1,l.storeGac=!1));var B=f(C.Ca)||f(C.Wf)||Ze("gtag.remote_config."+a+".url",2),F=f(C.Vf)||Ze("gtag.remote_config."+a+".dualId",2);if(B&&null!=cd){l._x_19=B;}F&&(l._x_20=F);h.Ga=k;h.Fa=l;return h},
 Sk=function(a,b){function c(v){function x(w,z){for(var A=0;A<z.length;A++){var B=z[A];if(v[B]){y[w]=v[B];break}}}var y=m(v);
 x("listPosition",["list_position"]);x("creative",["creative_name"]);x("list",["list_name"]);x("position",["list_position","creative_slot"]);return y}function d(v){for(var x=[],y=0;v&&y<v.length;y++)v[y]&&x.push(c(v[y]));return x.length?x:void 0}function e(v){return{id:f(C.vb),affiliation:f(C.Rf),revenue:f(C.Ea),tax:f(C.oe),shipping:f(C.ne),coupon:f(C.Sf),list:f(C.Oc)||v}}for(var f=function(v){return b.getWithConfig(v)},h=f(C.V),k,l=0;h&&l<h.length&&!(k=h[l][C.Oc]);l++);var n=f("custom_map");if(pb(n))for(var q=
 0;h&&q<h.length;++q){var p=h[q],r;for(r in n)n.hasOwnProperty(r)&&/^(dimension|metric)\d+$/.test(r)&&void 0!=n[r]&&Uk(p,r,p[n[r]])}var u=null,t=f(C.Tf);a===C.ma||a===C.Wa?u={action:a,Bb:e(),gb:d(h)}:a===C.Ua?u={action:"add",gb:d(h)}:a===C.Va?u={action:"remove",gb:d(h)}:a===C.xa?u={action:"detail",Bb:e(k),gb:d(h)}:a===C.Sb?u={action:"impressions",Yg:d(h)}:"view_promotion"===a?u={action:"promo_view",Dd:d(t)}:"select_content"===a&&t&&0<t.length?u={action:"promo_click",Dd:d(t)}:"select_content"===a?u=
@@ -691,99 +694,183 @@ data:{scriptSource:cd,resume:function(){a()}}}):a()})(wq);
 
 
 
-<h1 class="title toc-ignore">R</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to R:</font><br>R and RStudio</h1>
 
 </div>
 
 
 <p><font size="3"></p>
-<div id="introduction-to-r" class="section level2">
-<h2>Introduction to R</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/intro/r_rstudio.html">R and RStudio</a></li>
-<li><a href="R/intro/data_types.html">Comments, Variables and Data Types</a></li>
-<li><a href="R/intro/packages.html">Packages and Libraries</a></li>
-<li><a href="R/intro/maths.html">Maths and Numbers</a></li>
-<li><a href="R/intro/strings.html">Strings and Characters</a></li>
-<li><a href="R/intro/vectors.html">Vectors</a></li>
-<li><a href="R/intro/named_vectors_lists.html">Named Vectors and Lists (aka Dictionaries)</a></li>
-<li><a href="R/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="R/intro/data_frames.html">Data Frames</a></li>
-<li><a href="R/intro/loops.html">For and While Loops</a></li>
-<li><a href="R/intro/functions.html">Functions</a></li>
-<li><a href="R/intro/exceptions.html">Exception Handling</a></li>
-<li><a href="R/intro/linting.html">Linting</a></li>
-</ol>
+<p><a href="../../R.html">⇦ Back</a></p>
+<p><strong>RStudio</strong> is an IDE (integrated development environment) for the <strong>R</strong> programming language:</p>
+<ul>
+<li><strong>R</strong> is the name of the <em>language</em> that is used to write commands and scripts and also the <em>programme</em> that runs these. There’s no icon on your computer to open up R and it doesn’t have a window with menu options; you can’t <em>see</em> R.</li>
+<li><strong>Editors</strong> are programmes that allow you to create, open and edit files. Within a file, you can write commands in a programming language of your choice and then save that file as a <em>script</em>.</li>
+<li>An <strong>IDE</strong> is a programme-that-runs-a-programme. IDEs are editors that <em>also have the ability to run the scripts</em> that are open in them. When a file is run, the commands that are written in it are executed by the programme that it has been run with. IDEs are <em>applications</em>, they can be opened from icons and will have windows and menu options; you <em>can</em> see IDEs.</li>
+<li><strong>RStudio</strong> is an IDE especially made for the R programming language. It’s not the only one, but it’s the main one and arguably the best.</li>
+</ul>
+<p>So RStudio is a programme that can be used to create and edit R scripts, and also to run them. It’s an IDE and so has an editor as one of its features.</p>
+<div id="download-and-install" class="section level1">
+<h1>Download and Install</h1>
+<ul>
+<li>First, install R <a href="https://cran.rstudio.com/">from CRAN</a> (the Comprehensive R Archive Network)
+<ul>
+<li>On Ubuntu, an alternative is to install it from the terminal with:</li>
+</ul></li>
+</ul>
+<pre class="bash"><code>sudo apt-get update
+sudo apt-get install r-base</code></pre>
+<ul>
+<li>Then, install RStudio: go to <a href="https://rstudio.com/">the RStudio website</a> &gt; Download &gt; download RStudio Desktop
+<ul>
+<li>On macOS, drag the RStudio icon to the Applications folder so it can be accessed easily</li>
+<li>On Ubuntu, download the .deb installer rather than the .tar.gz one (unless you have a particular reason for wanting it)</li>
+</ul></li>
+</ul>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/data/pre_loaded_datasets.html">Pre-Loaded Datasets</a></li>
-<li><a href="R/data/create_unique_identifiers.html">Create Unique Identifiers</a></li>
-<li><a href="R/data/stratification.html">Data Stratification</a></li>
-<li><a href="R/data/descriptive_summary_statistics.html">Descriptive and Summary Statistics</a></li>
-<li><a href="R/data/pivot_tables.html">Pivot Tables</a></li>
-<li><a href="R/data/demographic_tables.html">Demographic Data Tables</a></li>
-<li><a href="R/data/merging.html">Merging</a></li>
-<li><a href="R/data/create_export_import.html">File IO: Create, Export and Import Data</a></li>
-<li><a href="R/data/filling_in_missing_data.html">Filling in Missing Data</a></li>
-<li><a href="R/data/working_with_json.html">Working with JSON Files</a></li>
-</ol>
+<div id="update" class="section level1">
+<h1>Update</h1>
+<ul>
+<li>To update R, see <a href="packages.html#updating-r">here</a></li>
+<li>To update RStudio, download <a href="https://rstudio.com/products/rstudio/download/#download">the latest version</a>
+<ul>
+<li>On macOS, install it as per normal (ie replace the version you currently have in the Applications folder; any configurations you have will be carried over from the old version to the new version)</li>
+<li>On Ubuntu, point your terminal at your Downloads folder and install the .deb file:</li>
+</ul></li>
+</ul>
+<pre class="bash"><code>cd Downloads
+sudo apt install ./rstudio-1.4.1106-amd64.deb</code></pre>
 </div>
-<div id="graphs" class="section level2">
-<h2>Graphs</h2>
-<ol style="list-style-type: decimal">
-<li>Using Base R
+<div id="configure-rstudio" class="section level1">
+<h1>Configure RStudio</h1>
 <ul>
-<li><a href="R/graphs/base/symbols_linetypes_colours.html">Symbols, Line Types and Colours</a></li>
-<li><a href="R/graphs/base/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/base/scatterplots.html">Scatter Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/base/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/base/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li><a href="R/graphs/base/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Using ggplot2
-<ul>
-<li><a href="R/graphs/ggplot2/cheat_sheet.html">Cheat Sheet</a></li>
-<li><a href="R/graphs/ggplot2/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/ggplot2/scatterplots.html">Scatter Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/ggplot2/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/ggplot2/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/ggplot2/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/ggplot2/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/ggplot2/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<li>Add a ruler as a guideline to help keep your scripts the standard width: Tools &gt; Global Options… &gt; Code &gt; Display &gt; check “Show margin” &gt; use a Margin column of 80 characters. This causes a vertical grey line to appear in your scripts at a distance of 80 characters from the left-hand side. This is the standard limit for how wide your scripts should be.</li>
+<li>In RStudio v1.4+, add another pane so you can view scripts side-by-side: Tools &gt; Global Options… &gt; Pane Layout &gt; Add Column</li>
+</ul>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/statistics/descriptive_statistics.html">Descriptive Statistics</a></li>
-<li><a href="R/statistics/tutorial.html">Diagnostic Accuracy Tutorial</a> (<a href="R/statistics/tutorial_completescript.R">complete</a>, <a href="R/statistics/tutorial_emptyscript.R">empty</a>)</li>
-<li><a href="R/statistics/principal_component_analysis.html">Principal Component Analysis</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="R/statistics/hypothesis_testing/kruskal_wallis.html">Kruskal-Wallis Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/friedman.html">Friedman Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="R/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="R/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="R/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="R/statistics/agreement/coefficient_of_variation.html">Coefficient of Variation</a></li>
-</ul></li>
-</ol>
+<div id="keyboard-shortcuts" class="section level1">
+<h1>Keyboard Shortcuts</h1>
+<p>All the keyboard shortcuts for RStudio can be found by going to Tools &gt; Keyboard Shortcuts Help (Shift+Alt+K). Here is a selection of the most useful ones:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Action</th>
+<th align="left">macOS</th>
+<th align="left">Windows &amp; Linux</th>
+<th align="left">Same?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">New R Script</td>
+<td align="left">Shift+Cmd+N</td>
+<td align="left">Ctrl+Shift+N</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="even">
+<td align="left">Save</td>
+<td align="left">Cmd+S</td>
+<td align="left">Ctrl+S</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="odd">
+<td align="left">Save all</td>
+<td align="left">Alt+Cmd+S</td>
+<td align="left">Ctrl+Alt+S</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="even">
+<td align="left">Find</td>
+<td align="left">Cmd+F</td>
+<td align="left">Ctrl+F</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="odd">
+<td align="left">Next tab</td>
+<td align="left">Ctrl+Tab</td>
+<td align="left">Ctrl+Tab</td>
+<td align="left">Yes</td>
+</tr>
+<tr class="even">
+<td align="left">Previous tab</td>
+<td align="left">Ctrl+Shift+Tab</td>
+<td align="left">Ctrl+Shift+Tab</td>
+<td align="left">Yes</td>
+</tr>
+<tr class="odd">
+<td align="left">Close tab</td>
+<td align="left">Cmd+W</td>
+<td align="left">Ctrl+W</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="even">
+<td align="left">Comment/uncomment</td>
+<td align="left">Shift+Cmd+C</td>
+<td align="left">Ctrl+Shift+C</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="odd">
+<td align="left">Re-indent lines</td>
+<td align="left">Cmd+I</td>
+<td align="left">Ctrl+I</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="even">
+<td align="left">Indent</td>
+<td align="left">Ctrl+]</td>
+<td align="left">Ctrl+]</td>
+<td align="left">Yes</td>
+</tr>
+<tr class="odd">
+<td align="left">Outdent</td>
+<td align="left">Ctrl+[</td>
+<td align="left">Ctrl+[</td>
+<td align="left">Yes</td>
+</tr>
+<tr class="even">
+<td align="left">Run current line or selection</td>
+<td align="left">Cmd+Enter</td>
+<td align="left">Ctrl+Enter</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="odd">
+<td align="left">Run line(s) without moving cursor</td>
+<td align="left">Alt+Enter</td>
+<td align="left">Alt+Enter</td>
+<td align="left">Yes</td>
+</tr>
+<tr class="even">
+<td align="left">Run all lines</td>
+<td align="left">Alt+Cmd+R</td>
+<td align="left">Ctrl+Alt+R</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="odd">
+<td align="left">Run from beginning to line</td>
+<td align="left">Alt+Cmd+B</td>
+<td align="left">Ctrl+Alt+B</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="even">
+<td align="left">Run from line to end</td>
+<td align="left">Alt+Cmd+E</td>
+<td align="left">Ctrl+Alt+E</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="odd">
+<td align="left">Source the current file</td>
+<td align="left">Shift+Cmd+S</td>
+<td align="left">Ctrl+Shift+S</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+<tr class="even">
+<td align="left">Knit document</td>
+<td align="left">Shift+Cmd+K</td>
+<td align="left">Ctrl+Shift+W</td>
+<td align="left">Cmd/Ctrl swap</td>
+</tr>
+</tbody>
+</table>
+<p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 

@@ -1,0 +1,84 @@
+---
+title: '<font size="5">Introduction to R:</font><br>R and RStudio'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+**RStudio** is an IDE (integrated development environment) for the **R** programming language:
+
+- **R** is the name of the *language* that is used to write commands and scripts and also the *programme* that runs these. There's no icon on your computer to open up R and it doesn't have a window with menu options; you can't *see* R.
+- **Editors** are programmes that allow you to create, open and edit files. Within a file, you can write commands in a programming language of your choice and then save that file as a *script*.
+- An **IDE** is a programme-that-runs-a-programme. IDEs are editors that *also have the ability to run the scripts* that are open in them. When a file is run, the commands that are written in it are executed by the programme that it has been run with. IDEs are *applications*, they can be opened from icons and will have windows and menu options; you *can* see IDEs.
+- **RStudio** is an IDE especially made for the R programming language. It's not the only one, but it's the main one and arguably the best.
+
+So RStudio is a programme that can be used to create and edit R scripts, and also to run them. It's an IDE and so has an editor as one of its features.
+
+Download and Install
+====================
+- First, install R [from CRAN](https://cran.rstudio.com/) (the Comprehensive R Archive Network)
+    - On Ubuntu, an alternative is to install it from the terminal with:
+
+```{bash, eval = FALSE}
+sudo apt-get update
+sudo apt-get install r-base
+```
+
+- Then, install RStudio: go to [the RStudio website](https://rstudio.com/) > Download > download RStudio Desktop
+    - On macOS, drag the RStudio icon to the Applications folder so it can be accessed easily
+    - On Ubuntu, download the .deb installer rather than the .tar.gz one (unless you have a particular reason for wanting it)
+
+Update
+======
+- To update R, see [here](packages.html#updating-r)
+- To update RStudio, download [the latest version](https://rstudio.com/products/rstudio/download/#download)
+    - On macOS, install it as per normal (ie replace the version you currently have in the Applications folder; any configurations you have will be carried over from the old version to the new version)
+    - On Ubuntu, point your terminal at your Downloads folder and install the .deb file:
+
+```{bash, eval = FALSE}
+cd Downloads
+sudo apt install ./rstudio-1.4.1106-amd64.deb
+```
+
+Configure RStudio
+=================
+- Add a ruler as a guideline to help keep your scripts the standard width: Tools > Global Options... > Code > Display > check "Show margin" > use a Margin column of 80 characters. This causes a vertical grey line to appear in your scripts at a distance of 80 characters from the left-hand side. This is the standard limit for how wide your scripts should be.
+- In RStudio v1.4+, add another pane so you can view scripts side-by-side: Tools > Global Options... > Pane Layout > Add Column
+
+Keyboard Shortcuts
+==================
+All the keyboard shortcuts for RStudio can be found by going to Tools > Keyboard Shortcuts Help (Shift+Alt+K). Here is a selection of the most useful ones:
+
+| Action                            | macOS          | Windows & Linux | Same?         |
+|:----------------------------------|:---------------|:----------------|:--------------|
+| New R Script                      | Shift+Cmd+N    | Ctrl+Shift+N    | Cmd/Ctrl swap |
+| Save                              | Cmd+S          | Ctrl+S          | Cmd/Ctrl swap |
+| Save all                          | Alt+Cmd+S      | Ctrl+Alt+S      | Cmd/Ctrl swap |
+| Find                              | Cmd+F          | Ctrl+F          | Cmd/Ctrl swap |
+| Next tab                          | Ctrl+Tab       | Ctrl+Tab        | Yes           |
+| Previous tab                      | Ctrl+Shift+Tab | Ctrl+Shift+Tab  | Yes           |
+| Close tab                         | Cmd+W          | Ctrl+W          | Cmd/Ctrl swap |
+| Comment/uncomment                 | Shift+Cmd+C    | Ctrl+Shift+C    | Cmd/Ctrl swap |
+| Re-indent lines                   | Cmd+I          | Ctrl+I          | Cmd/Ctrl swap |
+| Indent                            | Ctrl+]         | Ctrl+]          | Yes           |
+| Outdent                           | Ctrl+[         | Ctrl+[          | Yes           |
+| Run current line or selection     | Cmd+Enter      | Ctrl+Enter      | Cmd/Ctrl swap |
+| Run line(s) without moving cursor | Alt+Enter      | Alt+Enter       | Yes           |
+| Run all lines                     | Alt+Cmd+R      | Ctrl+Alt+R      | Cmd/Ctrl swap |
+| Run from beginning to line        | Alt+Cmd+B      | Ctrl+Alt+B      | Cmd/Ctrl swap |
+| Run from line to end              | Alt+Cmd+E      | Ctrl+Alt+E      | Cmd/Ctrl swap |
+| Source the current file           | Shift+Cmd+S    | Ctrl+Shift+S    | Cmd/Ctrl swap |
+| Knit document                     | Shift+Cmd+K    | Ctrl+Shift+W    | Cmd/Ctrl swap |
+
+[⇦ Back](../../R.html)
+
+</font>
