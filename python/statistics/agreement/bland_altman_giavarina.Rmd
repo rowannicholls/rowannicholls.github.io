@@ -191,12 +191,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left, left + domain * 1.1)
 # Add the annotations
-ax.annotate('+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
-ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
-ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
-ax.annotate(f'{bias:+4.2f}', (right, bias), xytext=(0, -25), textcoords='offset pixels')
-ax.annotate('-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
-ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('+2×SD', (right, upper_loa), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), (0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -25), textcoords='offset pixels')
+ax.annotate('-2×SD', (right, lower_loa), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), (0, -25), textcoords='offset pixels')
 # Show plot
 plt.show()
 ```
@@ -225,12 +225,12 @@ ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 domain = right - left
 ax.set_xlim(left, left + domain * 1.1)
 # Add the annotations
-ax.annotate('+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels')
-ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25), textcoords='offset pixels')
-ax.annotate('Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels')
-ax.annotate(f'{bias:+4.2f}', (right, bias), xytext=(0, -25), textcoords='offset pixels')
-ax.annotate('-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels')
-ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25), textcoords='offset pixels')
+ax.annotate('+2×SD', (right, upper_loa), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), (0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -25), textcoords='offset pixels')
+ax.annotate('-2×SD', (right, lower_loa), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), (0, -25), textcoords='offset pixels')
 # Show plot
 plt.show()
 ```
