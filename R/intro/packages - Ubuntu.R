@@ -1,30 +1,34 @@
-# Install R and R packages on Ubuntu machines.
-#
-# Ubuntu 20.04
-# R version 4.0.3
+# Install R and R packages on Ubuntu machines
+# ===========================================
+# - Ubuntu 20.04
+# - R version 4.0.4
 # 
 # Install R
-# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-# sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
-# sudo apt update
-# sudo apt install r-base
-# Run with `R`
+# ---------
+# - Don't use `sudo apt install r-base-core` as it will install version 3.6.3
+# - `sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9`
+# - `sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'`
+# - `sudo apt update`
+# - `sudo apt install r-base`
+# - Run from the terminal with `R`
 #
 # Install packages
+# ----------------
 # The default library location (/usr/local/lib/R/site-library) is not writable.
 # Instead, open R in a terminal and run install.packages() there. It will offer
 # to create a personal library for you. Use that to install all your packages.
 #
 # Keyword arguments that may be needed:
-# lib = "~/R/x86_64-pc-linux-gnu-library/4.0"
-# repos = "http://cran.us.r-project.org"
-
+# - lib = "~/R/x86_64-pc-linux-gnu-library/4.0"
+# - repos = "http://cran.us.r-project.org"
+#
 # Needed by Debian:
-# sudo apt-get install libssl-dev
-# sudo apt-get install libxml2-dev
-# sudo apt-get install libcurl4-openssl-dev
-# sudo apt-get install libcairo2-dev
-# REPO FOR UBUNTU
+# - sudo apt install libssl-dev
+# - sudo apt install libxml2-dev
+# - sudo apt install libcurl4-openssl-dev
+# - sudo apt install libcairo2-dev
+#
+# Repo for Ubuntu:
 # https://cloud.r-project.org/bin/linux/ubuntu
 
 # install.packages("beeswarm")
@@ -85,9 +89,9 @@
 library(beeswarm)
 library(BlandAltmanLeh)
 library(brglm2)
-# library(Cairo)  # Could not install on Ubuntu 20.04 with R 4.0.2
+# library(Cairo)  # Could not install on Ubuntu 20.04 with R 4.0.2 or 4.0.4
 library(chron)
-# library(devtools)  # Could not install on Ubuntu 20.04 with R 4.0.2
+library(devtools)  # Could not install on Ubuntu 20.04 with R 4.0.2
 library(DiagrammeR)
 library(dplyr)
 library(emmeans)
@@ -108,15 +112,15 @@ library(knitr)
 library(latex2exp)
 library(lintr)
 library(logging)
-library(magick)
+# library(magick)  # Could not install on Ubuntu 20.04 with R 4.0.4
 library(maps)
 library(matrixStats)
 library(mcr)
 library(openxlsx)
-# library(pdftools)  # Could not install on Ubuntu 20.04 with R 4.0.2
+# library(pdftools)  # Could not install on Ubuntu 20.04 with R 4.0.2 or 4.0.4
 library(pROC)
 library(psych)
-# library(readtext)  # Could not install on Ubuntu 20.04 with R 4.0.2
+# library(readtext)  # Could not install on Ubuntu 20.04 with R 4.0.2 or 4.0.4
 library(reshape)
 library(reshape2)
 library(Rmisc)

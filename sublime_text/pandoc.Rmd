@@ -14,10 +14,15 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
-> Tested on Windows 7
+> Tested on Windows 7 and Ubuntu 20.04
 
-Create a Pandoc Build System:
+Install Pandoc
+==============
+- See [here](https://pandoc.org/installing.html)
+- Ubuntu: `sudo apt-get install pandoc`
 
+Create a Pandoc Build System in Sublime Text
+============================================
 - Create a new Sublime-Build file:
     - Sublime-Build files tell Sublime Text how you want to build a document when you hit Ctrl+B
     - Tools > Build System > New Build System...

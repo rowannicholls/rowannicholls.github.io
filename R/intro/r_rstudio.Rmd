@@ -27,12 +27,14 @@ Download and Install
 ====================
 - First, install R [from CRAN](https://cran.rstudio.com/) (the Comprehensive R Archive Network)
     - On Ubuntu, an alternative is to install it from the terminal with:
-
-```{bash, eval = FALSE}
-sudo apt-get update
-sudo apt-get install r-base
-```
-
+    ```{bash, eval = FALSE}
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
+sudo apt update
+sudo apt install r-base
+    ```
+    - Check that it's worked by opening the terminal/command prompt and running `R --version`. This should show the start-up message (including the version number so you can double check that you've installed the latest stable release).
+    - Open R in the terminal by running `R`. This will open an interactive command line where you can enter and run R code manually. Close it by running `q()` and then `n` to not save the workspace image.
 - Then, install RStudio: go to [the RStudio website](https://rstudio.com/) > Download > download RStudio Desktop
     - On macOS, drag the RStudio icon to the Applications folder so it can be accessed easily
     - On Ubuntu, download the .deb installer rather than the .tar.gz one (unless you have a particular reason for wanting it)

@@ -14,19 +14,22 @@ output:
 
 [⇦ Back](../../R.html)
 
-# Synopsis
+Synopsis
+========
 - A 'package' is the same as a 'library'
 - Increase the number of functions you can call by installing __*packages*__
 - Once installed, you still need to __*import*__ the library into your script
 
-# What are Packages and Libraries, and Why Do I Need Them?
+What are Packages and Libraries, and Why Do I Need Them?
+========================================================
 When you download and install R or RStudio you get access to what is known as __*base*__ R. It's very powerful and can do a lot of things but, as the name suggests, it's very basic. In order to add functionality and be able to use other functions you need to __*install packages*__ and __*import libraries*__.
 
 > **What's the difference between a library and a package?**  
 > Nothing. They are two names for the same thing. For some reason you *install* a package and *import* a library but I don't know why.
 
-# Install a Package
-Packages can be installed by running the `install.packages()` function. Specify the name of the package you want to install as a string and the repository you want to install it from by using the `repos` __*keyword argument*__:
+Install a Package
+=================
+Packages can be installed by running the `install.packages()` function in R. Specify the name of the package you want to install as a string and the repository you want to install it from by using the `repos` __*keyword argument*__:
 
 ```{r message=FALSE, warning=FALSE, results='hide', eval=FALSE}
 install.packages("BlandAltmanLeh", repos = "http://cran.us.r-project.org")
@@ -58,8 +61,34 @@ The "cran" part of the repos URL refers to "CRAN", the Comprehensive R Archive N
 
 You can find out where on your computer the packages are installed by running `.libPaths()` and see what packages you've installed with `print(as.data.frame(installed.packages()))`.
 
+Install a Package for the First Time in Ubuntu
+----------------------------------------------
+If you are on an Ubuntu machine and you get an error message along the lines of:
+
+```
+Warning in install.packages :
+  'lib = "/usr/local/lib/R/site-library"' is not writable`
+```
+
+It is because the default folder location where your packages get installed (/usr/local/lib/R/site-library) is not writable on your computer. Fix this by creating a **personal library** and downloading packages to that instead. Helpfully, R will offer to do this for you if you try to install a package from the terminal:
+
+- Open your terminal
+- Open R by running `R`
+- Run `install.packages(<name>)` where `<name>` is the name of a package you want to install
+- You should see the message `Would you like to use a personal library instead?  (y/n)`
+- Respond with `y` to this and the next message. From now on you should be able to install packages normally (both in an IDE and in the terminal).
+
+Some other programmes might be needed by Debian in order for certain packages to work. Install them from the terminal with:
+
+```{bash, eval = FALSE}
+sudo apt install libssl-dev
+sudo apt install libxml2-dev
+sudo apt install libcurl4-openssl-dev
+sudo apt install libcairo2-dev
+```
+
 Updating R
-----------
+==========
 Sometimes you can only download a package if it's compatible with the version of R you have installed. In general, you always want to work with the latest version of R and latest versions of packages. If you're on a macOS or Linux machine (eg Ubuntu) you can check what version of R you have installed from the terminal with:
 
 ```{bash, eval = FALSE}
@@ -73,7 +102,8 @@ To update R manually, download and install the latest version from [the R websit
 
 If you are using Ubuntu, you have the option of updating R from the terminal (there is a package called `updateR` that allows you to update R from the terminal on macOS but it doesn't always work). Instructions on how to do this are below. Note that you will still need to re-install your packages if you are moving to a new major version number.
 
-### Updating R from the Terminal on Ubuntu
+Updating R from the Terminal on Ubuntu
+--------------------------------------
 If you are using Ubuntu and aren't using RStudio, update R by first opening `/etc/apt/sources.list` and adding whichever of the following lines corresponds to your Ubuntu version:
 
 ```{bash eval = FALSE}
@@ -94,7 +124,8 @@ sudo apt-get install r-base r-base-dev
 sudo apt-get upgrade
 ```
 
-# Import a Library
+Import a Library
+================
 When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.
 
 **Note:** it's best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:
@@ -116,7 +147,8 @@ square_root <- x %>% sqrt()
 square_root
 ```
 
-# Call a Function From a Library
+Call a Function From a Library
+==============================
 You can call a function that comes from a particular library in one of two ways. Here's an example with the `str_length()` function, which comes from the 'stringr' library and finds the number of characters in a string. The first way is to just call the function as you would any other:
 
 ```{r}
@@ -137,7 +169,8 @@ length <- stringr::str_length("Hello, World")
 print(length)
 ```
 
-# Alternative Methods of Importing Libraries
+Alternative Methods of Importing Libraries
+==========================================
 If your script is going to be run on someone else's computer and you don't know if they will have a particular package installed, import it into your script with the `require()` function. If the package is installed, it will import it. If it isn't, it will first download and install it, then import it.
 
 ```{r message = FALSE}
@@ -152,7 +185,8 @@ suppressPackageStartupMessages(require(ggplot2))
 suppressPackageStartupMessages(library(logging))
 ```
 
-# Summary
+Summary
+=======
 - A 'package' is the same as a 'library'
 - Increase the number of functions you can call by installing __*packages*__
 - Once installed, you still need to __*import*__ the library into your script
