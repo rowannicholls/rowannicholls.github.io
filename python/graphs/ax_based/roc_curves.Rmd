@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Graphs in Python:</font><br>Receiver Operating Characteristic Curves'
+title: '<font size="5">Graphs in Python:</font><br>Receiver Operating Characteristic Curves<font size="5"> <br>_using explicitly defined axes in Matplotlib_</font>'
 output:
     html_document:
         theme: paper
@@ -118,9 +118,9 @@ First, import the necessary libraries and customise the settings you will use fo
 import matplotlib.pyplot as plt
 import numpy as np
 
-# Want figures to be A6
-x = 6
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+# Make images A6
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
 # Use latex for the plot labels
 plt.rc('text', usetex=True)
 # Use a serif font for the plot labels

@@ -57,14 +57,34 @@ The Python code then looks like this:
 ```{python dpi = 50}
 import matplotlib.pyplot as plt
 
-x = 6  # We want figures to be A6
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
-
+# Data
 x = [0, 1, 2, 3, 4, 5, 6]
 y = [0, 1, 4, 9, 16, 25, 36]
+
+# Plot
+A = 6  # We want figures to be A6
+plt.figure(figsize=(46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)))
 plt.plot(x, y)
 plt.title('This image is A6, dpi=100')
 plt.show()
+```
+
+Alternatively, you can use `plt.rc('figure', figsize=(x, y))` to set the size for any and all figures created by your code:
+
+```{python dpi = 50}
+import matplotlib.pyplot as plt
+
+# We want figures to be A6
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+
+# Data
+x = [0, 1, 2, 3, 4, 5, 6]
+y = [0, 1, 4, 9, 16, 25, 36]
+
+# Plot
+plt.plot(x, y)
+plt.title('This image is A6, dpi=100')
 ```
 
 By default, Matplotlib renders images at 100 dpi (dots per inch) where 1 dot is one pixel so the above image is 585 x 413 pixels in size (corresponding to an A6 image's dimensions of 5.85 x 4.13 inches) when run in Python.
@@ -76,10 +96,15 @@ If we double the 'quality' (ie set the dpi to 200 instead of the default 100) we
 Consider the below example. At default quality (100 dpi) an A5 image is ~1.41 times larger than an A6 image, so if we create an A6 image at 141 dpi it will be the same *size* as an A5 image but the elements in the image will be larger:
 
 ```{python dpi = 70}
-x = 6  # We want figures to be A6
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)], dpi=141)
+# We want figures to be A6
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)], dpi=141)
+
+# Data
 x = [0, 1, 2, 3, 4, 5, 6]
 y = [0, 1, 4, 9, 16, 25, 36]
+
+# Plot
 plt.plot(x, y)
 plt.title('This image is A6, dpi=141')
 plt.show()
@@ -90,10 +115,15 @@ plt.close()
 ```
 
 ```{python dpi = 50}
-x = 5  # We want figures to be A5
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)], dpi=100)
+# We want figures to be A5
+A = 5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)], dpi=100)
+
+# Data
 x = [0, 1, 2, 3, 4, 5, 6]
 y = [0, 1, 4, 9, 16, 25, 36]
+
+# Plot
 plt.plot(x, y)
 plt.title('This image is A5, dpi=100')
 plt.show()
