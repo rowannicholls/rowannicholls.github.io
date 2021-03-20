@@ -39,7 +39,7 @@ plt.xlabel(r'Time, $t$ [\textmu s]')
 plt.text(70, 7000, r'$R = t^2$')
 ```
 
-Notice that we can use both Latex's math mode for equations (eg "$R = t^2$"") and text mode for upright text (eg "&mu;s" in the x-axis label). To use upright Greek letters in text mode, as has been done here, the only letter that will work out-of-the-box is mu (&mu;). This is because the command that does this (`\textmu`) is included in the `textcomp` package which is loaded by default. To use other upright Greek letter in text mode we need to use the `textgreek` package which can be loaded in the Latex preamble by changing another rc parameter:
+Notice that we can use both Latex's math mode for equations (eg `r'$R = t^2$'`) and text mode for upright text (eg "&mu;s" in the x-axis label). To use upright Greek letters in text mode, as has been done here, the only letter that will work out-of-the-box is mu (&mu;). This is because the command that does this (`\textmu`) is included in the `textcomp` package which is loaded by default. To use other upright Greek letter in text mode we need to use the `textgreek` package which can be loaded in the Latex preamble by changing another rc parameter:
 
 - `text.latex.preamble` sets what commands are run in Latex's preamble
 

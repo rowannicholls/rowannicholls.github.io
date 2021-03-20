@@ -1,0 +1,407 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Working with Time-Based Data'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+---
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+In Python, there are five main 'formats' that time data can be in and these five formats are provided by two different built-in modules: **time** and **datetime**:
+
+- The `time` module can be used when working with:
+    + Timestamps that are represented as **seconds since the Unix epoch**. In practice, these are simply *numbers* (specifically, they are usually floating-point numbers or *floats*).
+    + **struct_time** objects. These objects are sequences of 9 integers that represent a specific moment in time. The 9 integers that make up a `struct_time` object correspond to the year, month, day, hour, minute, second, day of the week, day of the year and daylight savings information relevant to that moment (timezone and/or longitudinal offset information can also be stored). Note that, because `struct_time` objects only consist of integers, fractions of a second are ignored.
+- The `datetime` module can be used when working with:
+    + **time** objects, more properly called `datetime.time` objects because they come from the `datetime` module. These objects contain hour, minute, second, microsecond and time zone information.
+    + **date** objects, more properly called `datetime.date` objects. These objects contain year, month and day information.
+    + **datetime** objects, more properly called `datetime.datetime` objects. These are a combination of `datetime.date` and `datetime.time` objects, and contain the same type of information as both combined.
+
+There are other objects that can be relevant when working with time (eg `datetime.timedelta` objects which represent a *change* in time) but the five listed above are the main ones for representing **timestamps** (ie standalone moments in time). Only two of these 5 can be used when plotting a graph (seconds-since-epoch and `datetime.datetime`) while the other three types first need to be converted into one of these two types before they can be used.
+
+Read the full documentation for the `time` module [here](https://docs.python.org/3/library/time.html) and for the `datetime` module [here](https://docs.python.org/3/library/datetime.html).
+
+Plotting Time Data Using the `time` Module
+==========================================
+
+Seconds Since the Epoch
+-----------------------
+The Unix *epoch* is defined as being midnight on the 1st of January 1970 (UTC). If Python is instructed to interpret a number as a time, it will assume that the number represents the number of seconds since this moment (and that negative numbers represent the number of seconds before that moment).
+
+As an example of a graph plotted against time, we will use the goals scored during the [2018 FIFA World Cup Final](https://en.wikipedia.org/wiki/2018_FIFA_World_Cup_Final) between France and Croatia. The timestamps of the start of the match plus the 6 goals that were scored (represented as seconds-since-the-epoch) are:
+
+```{python, eval = FALSE, echo = FALSE}
+import calendar
+import time
+
+time_strings = [
+    '2018-07-15 15:00', '2018-07-15 15:18', '2018-07-15 15:28',
+    '2018-07-15 15:38', '2018-07-15 16:05', '2018-07-15 16:11',
+    '2018-07-15 16:15'
+]
+time_structs = [time.strptime(s, '%Y-%m-%d %H:%M') for s in time_strings]
+seconds_since_epoch = [calendar.timegm(ts) for ts in time_structs]
+```
+
+```{python}
+seconds_since_epoch = [1531666800, 1531667880, 1531668480, 1531669080, 1531670700, 1531671060, 1531671300]
+```
+
+...and these can be plotted in the same way as any other numbers. After being plotted, the format of the x-axis can be converted to `struct_time` to look more appropriate for time data:
+
+```{python}
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import time
+
+goals = [0, 1, 2, 3, 4, 5, 6]
+
+ax = plt.axes()
+ax.plot(seconds_since_epoch, goals)
+ax.set_title('2018 FIFA World Cup Final')
+ax.set_ylabel('Goals')
+ax.set_xlabel('Time of Day (UTC)')
+# Convert seconds-since-epoch numbers into struct_time objects and then to
+# strings (you can use time.localtime() instead of time.gmtime() to get the
+# time in your local timezone)
+fmt = ticker.FuncFormatter(lambda x, pos: time.strftime('%H:%M', time.gmtime(x)))
+ax.xaxis.set_major_formatter(fmt)
+
+plt.show()
+```
+
+This example was done using UTC as opposed to the local time (MSK), which explains why the graph starts at 3pm when kickoff in Moscow (UTC+3) was actually 6pm. Incorporating time zone information when using the `time` module is a little tricky, and you should probably use the `datetime` module if this is what you want to do.
+
+`struct_time` Objects
+---------------------
+Similarly, the date and time of the start of the match and the six goals can be represented as `struct_time` objects. Remember, this object type is a 9-tuple of information: the year, month, day, hour, minute, second, day of the week, day of the year and daylight savings information:
+
+```{python, eval = FALSE, echo = FALSE}
+import time
+
+time_strings = [
+    '2018-07-15 15:00', '2018-07-15 15:18', '2018-07-15 15:28',
+    '2018-07-15 15:38', '2018-07-15 16:05', '2018-07-15 16:11',
+    '2018-07-15 16:15'
+]
+time_structs = [time.strptime(s, '%Y-%m-%d %H:%M') for s in time_strings]
+```
+
+```{python}
+time_structs = [
+    time.struct_time((2018, 7, 15, 15, 0, 0, 6, 196, -1)),
+    time.struct_time((2018, 7, 15, 15, 18, 0, 6, 196, -1)),
+    time.struct_time((2018, 7, 15, 15, 28, 0, 6, 196, -1)),
+    time.struct_time((2018, 7, 15, 15, 38, 0, 6, 196, -1)),
+    time.struct_time((2018, 7, 15, 16, 5, 0, 6, 196, -1)),
+    time.struct_time((2018, 7, 15, 16, 11, 0, 6, 196, -1)),
+    time.struct_time((2018, 7, 15, 16, 15, 0, 6, 196, -1))
+]
+```
+
+These cannot be plotted immediately, but first need to be converted into seconds-since-the-epoch numbers:
+
+```{python}
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
+import time
+import calendar
+
+goals = [0, 1, 2, 3, 4, 5, 6]
+
+ax = plt.axes()
+# Convert struct_time object in UTC to seconds-since-epoch
+seconds_since_epoch = [calendar.timegm(ts) for ts in time_structs]
+ax.plot(seconds_since_epoch, goals)
+ax.set_title('2018 FIFA World Cup Final')
+ax.set_ylabel('Goals')
+ax.set_xlabel('Time of Day (UTC)')
+# Convert seconds-since-epoch numbers into struct_time objects and then to
+# strings (you can use time.localtime() instead of time.gmtime() to get the
+# time in your local timezone)
+fmt = ticker.FuncFormatter(lambda x, pos: time.strftime('%H:%M', time.gmtime(x)))
+ax.xaxis.set_major_formatter(fmt)
+
+plt.show()
+```
+
+This example was again done using UTC as opposed to the local time (MSK), so the graph still starts at 3pm when kickoff in Moscow (UTC+3) was actually 6pm. If you are wanting to work with 'aware' objects (ie objects which include timezone information, as opposed to 'naive' objects) you should probably use the `datetime` module.
+
+Plotting Time Data Using the `datetime` Module
+==============================================
+
+`datetime.time` Objects
+-----------------------
+These objects contain only the time at which something occurred (not the date):
+
+```{python, eval = FALSE, echo = FALSE}
+import datetime
+
+time_strings = ['18:00', '18:18', '18:28', '18:38', '19:05', '19:11', '19:15']
+times = [datetime.datetime.strptime(s, '%H:%M').time() for s in time_strings]
+```
+
+```{python}
+import datetime
+
+times = [
+    datetime.time(18, 0), datetime.time(18, 18), datetime.time(18, 28),
+    datetime.time(18, 38), datetime.time(19, 5), datetime.time(19, 11),
+    datetime.time(19, 15)
+]
+```
+
+Unfortunately, these objects cannot immediately be plotted on a graph; they first need to be converted into `datetime.datetime` objects. This can be done by adding arbitrary date information to the time information via the `datetime.datetime.combine()` function:
+
+```{python}
+import matplotlib.pyplot as plt
+import datetime
+import matplotlib.dates as mdates
+
+goals = [0, 1, 2, 3, 4, 5, 6]
+
+ax = plt.axes()
+# Convert datetime.time objects into datetime.datetime objects by adding a date
+# to the time
+datetimes = [datetime.datetime.combine(datetime.date.today(), t) for t in times]
+ax.plot(datetimes, goals)
+ax.set_title('2018 FIFA World Cup Final')
+ax.set_ylabel('Goals')
+ax.set_xlabel('Time of Day (MSK; UTC+3)')
+# Re-format the x-axis
+fmt = mdates.DateFormatter('%H:%M')
+ax.xaxis.set_major_formatter(fmt)
+
+plt.show()
+```
+
+`datetime.date` Objects
+-----------------------
+These objects contain only the date on which something occurred (not the time). As an example, let's use the number of runs scored on each day of [the final match of the 2005 Ashes series](https://www.espncricinfo.com/series/australia-tour-of-england-and-scotland-2005-139019/england-vs-australia-5th-test-218383/full-scorecard):
+
+```{python, eval = FALSE, echo = FALSE}
+import datetime
+
+date_strings = [
+    '2005-09-08', '2005-09-09', '2005-09-10', '2005-09-11', '2005-09-12'
+]
+dates = [datetime.datetime.strptime(s, '%Y-%m-%d').date() for s in date_strings]
+```
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+import datetime
+import matplotlib.dates as mdates
+
+dates = [
+    datetime.date(2005, 9, 8), datetime.date(2005, 9, 9), datetime.date(2005, 9, 10),
+    datetime.date(2005, 9, 11), datetime.date(2005, 9, 12)
+]
+runs = [319, 166, 165, 124, 305]
+
+ax = plt.axes()
+# Convert to datetime.datetime object by adding a time to the date
+datetimes = [datetime.datetime.combine(d, datetime.datetime.min.time()) for d in dates]
+ax.plot(datetimes, runs)
+ax.set_title('Eng vs Aus, 5th Ashes Test, 2005')
+ax.set_ylabel('Runs Scored')
+ax.set_xlabel('Date')
+ax.set_xticks(dates)
+# Re-format the x-axis
+fmt = mdates.DateFormatter('%Y-%m-%d')
+ax.xaxis.set_major_formatter(fmt)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+import datetime
+import matplotlib.dates as mdates
+
+dates = [
+    datetime.date(2005, 9, 8), datetime.date(2005, 9, 9), datetime.date(2005, 9, 10),
+    datetime.date(2005, 9, 11), datetime.date(2005, 9, 12)
+]
+runs = [319, 166, 165, 124, 305]
+
+ax = plt.axes()
+# Convert to datetime.datetime object by adding a time to the date
+datetimes = [datetime.datetime.combine(d, datetime.datetime.min.time()) for d in dates]
+ax.plot(datetimes, runs)
+ax.set_title('Eng vs Aus, 5th Ashes Test, 2005')
+ax.set_ylabel('Runs Scored')
+ax.set_xlabel('Date')
+ax.set_xticks(dates)
+# Re-format the x-axis
+fmt = mdates.DateFormatter('%Y-%m-%d')
+ax.xaxis.set_major_formatter(fmt)
+
+plt.show()
+```
+
+`datetime.datetime` Objects
+-----------------------
+These objects contain both the time and the date information for when something occurred. These are perhaps the easiest of the time objects to work with because they can be plotted immediately and have the most versatility when it comes to adjusting for time zones. As an example, let's use the number of runs scored during each session of the two days of [the 4th test between England and India, 2021](https://www.espncricinfo.com/series/england-tour-of-india-2020-21-1243364/india-vs-england-4th-test-1243387/full-scorecard):
+
+```{python, eval = FALSE, echo = FALSE}
+import datetime
+
+datetime_strings = [
+    '2021-02-24 14:30', '2021-02-24 16:30', '2021-02-24 18:50', '2021-02-24 21:30',
+    '2021-02-25 14:30', '2021-02-25 16:30', '2021-02-25 18:50', '2021-02-25 21:30'
+]
+datetimes = [datetime.datetime.strptime(s, '%Y-%m-%d %H:%M') for s in datetime_strings]
+```
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+import datetime
+import matplotlib.dates as mdates
+
+datetimes = [
+    datetime.datetime(2021, 2, 24, 14, 30), datetime.datetime(2021, 2, 24, 16, 30),
+    datetime.datetime(2021, 2, 24, 18, 50), datetime.datetime(2021, 2, 24, 21, 30),
+    datetime.datetime(2021, 2, 25, 14, 30), datetime.datetime(2021, 2, 25, 16, 30),
+    datetime.datetime(2021, 2, 25, 18, 50), datetime.datetime(2021, 2, 25, 21, 30)
+]
+runs = [0, 81, 117, 211, 211, 257, 349, 387]
+
+ax = plt.axes()
+ax.plot(datetimes, runs)
+ax.set_title('Eng vs Ind, 3rd Test, Ahmedabad')
+ax.set_ylabel('Runs Scored')
+ax.set_xlabel('Time of Day')
+# Re-format the x-axis
+ax.set_xticks(datetimes)
+ax.set_xticklabels(datetimes, rotation=30, ha='right')
+fmt = mdates.DateFormatter('%H:%M')
+ax.xaxis.set_major_formatter(fmt)
+plt.subplots_adjust(bottom=0.15)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+import datetime
+import matplotlib.dates as mdates
+
+datetimes = [
+    datetime.datetime(2021, 2, 24, 14, 30), datetime.datetime(2021, 2, 24, 16, 30),
+    datetime.datetime(2021, 2, 24, 18, 50), datetime.datetime(2021, 2, 24, 21, 30),
+    datetime.datetime(2021, 2, 25, 14, 30), datetime.datetime(2021, 2, 25, 16, 30),
+    datetime.datetime(2021, 2, 25, 18, 50), datetime.datetime(2021, 2, 25, 21, 30)
+]
+runs = [0, 81, 117, 211, 211, 257, 349, 387]
+
+ax = plt.axes()
+ax.plot(datetimes, runs)
+ax.set_title('Eng vs Ind, 3rd Test, Ahmedabad')
+ax.set_ylabel('Runs Scored')
+ax.set_xlabel('Time of Day')
+# Re-format the x-axis
+ax.set_xticks(datetimes)
+ax.set_xticklabels(datetimes, rotation=30, ha='right')
+fmt = mdates.DateFormatter('%H:%M')
+ax.xaxis.set_major_formatter(fmt)
+plt.subplots_adjust(bottom=0.15)
+
+plt.show()
+```
+
+Double Axes
+===========
+When working with time data, it's sometimes useful to display it in two different formats. Here's an example that does this by creating a second, twinned set of the axes and changing the format of the second one:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import host_subplot
+import mpl_toolkits.axisartist as AA
+import numpy as np
+import math
+import matplotlib.ticker as ticker
+import time
+
+# Set image size to A5
+A = 5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Enable Latex
+plt.rc('font', family='serif')
+plt.rc('text', usetex=True)
+
+# Fake up some data
+x = np.linspace(0, 30 * math.tau, 100)
+y = np.sin(x / 30)
+
+#
+# Plot
+#
+ax1 = host_subplot(111, axes_class=AA.Axes)
+ax1.plot(x, y)
+ax1.set_ylabel(r'Amplitude, $A$ [\textmu m]')
+ax1.set_xlabel(r'Time, $t$ [s]')
+ax1.set_xlim(0, 30 * math.tau)
+# Twin the axes
+ax2 = ax1.twin()
+# Edit the second set of axes
+ax2.set_xlabel(r'Time, $t$ [min:sec]')
+fmt = ticker.FuncFormatter(lambda x, pos: time.strftime('%M:%S', time.gmtime(x)))
+ax2.xaxis.set_major_formatter(fmt)
+ax2.axis['right'].major_ticklabels.set_visible(False)
+ax2.axis['top'].major_ticklabels.set_visible(True)
+ax2.axis['top'].label.set_visible(True)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+from mpl_toolkits.axes_grid1 import host_subplot
+import mpl_toolkits.axisartist as AA
+import numpy as np
+import math
+import matplotlib.ticker as ticker
+import time
+
+# Set image size to A5
+A = 5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Enable Latex
+plt.rc('font', family='serif')
+plt.rc('text', usetex=True)
+
+# Fake up some data
+x = np.linspace(0, 30 * math.tau, 100)
+y = np.sin(x / 30)
+
+#
+# Plot
+#
+ax1 = host_subplot(111, axes_class=AA.Axes)
+ax1.plot(x, y)
+ax1.set_ylabel(r'Amplitude, $A$ [\textmu m]')
+ax1.set_xlabel(r'Time, $t$ [s]')
+ax1.set_xlim(0, 30 * math.tau)
+# Twin the axes
+ax2 = ax1.twin()
+# Edit the second set of axes
+ax2.set_xlabel(r'Time, $t$ [min:sec]')
+fmt = ticker.FuncFormatter(lambda x, pos: time.strftime('%M:%S', time.gmtime(x)))
+ax2.xaxis.set_major_formatter(fmt)
+ax2.axis['right'].major_ticklabels.set_visible(False)
+ax2.axis['top'].major_ticklabels.set_visible(True)
+ax2.axis['top'].label.set_visible(True)
+
+plt.show()
+```
+
+Notice that this example plots *numbers* on the x-axis, and as such they get interpreted as seconds-since-the-epoch when they are being re-formatted into time. The axis at the top of the image is thus actually showing time in minutes and seconds *after midnight on 1 January 1970*, which isn't really what the data is representing. It doesn't matter though, because it doesn't affect the plot itself.
+
+[⇦ Back](../../python.html)
+
+</font>
