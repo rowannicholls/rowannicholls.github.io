@@ -6,7 +6,10 @@ output:
         highlight: textmate
         number_sections: true
         toc: true
+        includes:
+            before_body: ../../../google_analytics.html
 ---
+
 <font size="3">
 
 [⇦ Back](../../../python.html)
@@ -1055,7 +1058,7 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 # Plot
 ax = plt.axes()
 ax.plot(week, log_points, c='#6caddf')
-ax.set_title(r'How to Include \LaTeX\ in Labels')
+# ax.set_title(r'How to Include \LaTeX\ in Labels')
 ax.set_ylabel(r'Output, $L$ [\textlambda]')
 ax.set_ylim(0, 100)
 ax.set_xlabel(r'Input, $t$ [\textmu s]')
