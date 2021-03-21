@@ -84,13 +84,16 @@ We're going to make a number of formatting changes to improve how this graph loo
 - Use Latex for the labels (see [here](../latex_in_labels.html) for more info)
 - Edit the boxplot itself to:
     - Remove fliers (`sym=''`)
-    - Extend the whiskers to cover the whole range of the data (`whis='range'`)
+    - Extend the whiskers to cover the whole range of the data (`whis=[0, 100]`)
     - Change the widths (`widths=0.4`)
 - Change the y-axis limits (`ylim()`)
-- Turn minor tick markers on (`minorticks_on()`) but then turn them off for the x-axis (`tick_params()`)
+- Turn minor tick markers on (`minorticks_on()`)
+- Customise the positions of the minor tick markers on the x-axis with `plt.gca().xaxis.set_minor_locator()` so as to position a tick on either side of each of the x-axis labels (`np.array(range(len(labels) + 1)) + 0.5`)
+- Make the minor ticks visible (`plt.gca().tick_params(axis='x', which='minor', length=4)`)
+- Make the major ticks invisible (`plt.gca().tick_params(axis='x', which='major', length=0)`)
 
 ```{python, eval = FALSE}
-import numpy as np
+import matplotlib.ticker as ticker
 
 # Make figures A6
 A = 6
@@ -106,13 +109,17 @@ plt.ylabel('Distance [m]')
 plt.ylim(7.9, 8.6)
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 
 plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
-import numpy as np
+import matplotlib.ticker as ticker
 
 # Make figures A6
 A = 6
@@ -128,7 +135,11 @@ plt.ylabel('Distance [m]')
 plt.ylim(7.9, 8.6)
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 
 plt.show()
 ```
@@ -155,7 +166,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Colour the outlines
 colours = ['blue', 'red', 'blue', 'green']
 for i, box in enumerate(bp['boxes']):
@@ -194,7 +209,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Colour the outlines
 colours = ['blue', 'red', 'blue', 'green']
 for i, box in enumerate(bp['boxes']):
@@ -247,7 +266,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -289,7 +312,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -335,7 +362,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -384,7 +415,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -441,7 +476,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0', lw=2)
 # Set the colour of the median lines
@@ -488,7 +527,11 @@ plt.title("Men's Long Jump Finals")
 plt.ylabel('Distance [m]')
 plt.xlabel('Olympics')
 plt.minorticks_on()
-plt.tick_params(axis='x', which='minor', bottom=False)
+plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+    np.array(range(len(labels) + 1)) + 0.5
+))
+plt.gca().tick_params(axis='x', which='minor', length=4)
+plt.gca().tick_params(axis='x', which='major', length=0)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0', lw=2)
 # Set the colour of the median lines
@@ -615,7 +658,11 @@ def plot_boxplots(data, labels, title):
     plt.ylabel('Distance [m]')
     plt.xlabel('Olympics')
     plt.minorticks_on()
-    plt.tick_params(axis='x', which='minor', bottom=False)
+    plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+        np.array(range(len(labels) + 1)) + 0.5
+    ))
+    plt.gca().tick_params(axis='x', which='minor', length=4)
+    plt.gca().tick_params(axis='x', which='major', length=0)
     # Set the fill colour
     plt.setp(bp['boxes'], facecolor='C0')
     # Set the colour of the median lines
@@ -646,7 +693,7 @@ for i, v in enumerate(range(321, 327)):
     plt.subplot(v)
     plot_boxplots(data[i], labels[i], titles[i])
 plt.subplots_adjust(
-    left=0.1, right=0.98, top=0.95, bottom=0.1, wspace=0.5, hspace=0.5
+    left=0.1, right=0.98, top=0.97, bottom=0.06, wspace=0.2, hspace=0.25
 )
 
 plt.show()
@@ -669,7 +716,11 @@ def plot_boxplots(data, labels, title):
     plt.ylabel('Distance [m]')
     plt.xlabel('Olympics')
     plt.minorticks_on()
-    plt.tick_params(axis='x', which='minor', bottom=False)
+    plt.gca().xaxis.set_minor_locator(ticker.FixedLocator(
+        np.array(range(len(labels) + 1)) + 0.5
+    ))
+    plt.gca().tick_params(axis='x', which='minor', length=4)
+    plt.gca().tick_params(axis='x', which='major', length=0)
     # Set the fill colour
     plt.setp(bp['boxes'], facecolor='C0')
     # Set the colour of the median lines
@@ -701,7 +752,7 @@ for i, v in enumerate(range(321, 327)):
     plt.subplot(v)
     plot_boxplots(data[i], labels[i], titles[i])
 plt.subplots_adjust(
-    left=0.1, right=0.98, top=0.97, bottom=0.06, wspace=0.3, hspace=0.25
+    left=0.1, right=0.98, top=0.97, bottom=0.06, wspace=0.2, hspace=0.25
 )
 
 plt.show()
