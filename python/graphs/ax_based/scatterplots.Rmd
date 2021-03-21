@@ -37,7 +37,7 @@ Change the look of the plot with the following options:
 - Set the **title** with `ax.set_title()`
 - Set the **axis labels** with `ax.set_ylabel()` and `ax.set_xlabel()`
 - Change the **axis limits** with `ax.set_ylim()` and `ax.set_xlim()`
-- Change the **marker colour and type** using the `c` and `m` keyword arguments in the `ax.scatter()` call (see [this page](../symbols_linestyles_colours.html) for all the colour and marker options)
+- Change the **marker colour and type** using the `c` and `marker` keyword arguments in the `ax.scatter()` call (see [this page](../symbols_linestyles_colours.html) for all the colour and marker options)
 
 ```{python, eval = FALSE}
 ax = plt.axes()
@@ -88,7 +88,7 @@ ax.set_xlabel('X-Values')
 ax.set_xlim(3, 15)
 ax.set_facecolor((232 / 255, 232 / 255, 232 / 256))
 # Gridlines
-plt.grid(b=True, which='major', color='w', linestyle='-')
+plt.grid(which='major', color='w', linestyle='-')
 ax.set_axisbelow(True)
 for spine in ax.spines:
     ax.spines[spine].set_color('white')
@@ -112,7 +112,7 @@ ax.set_xlabel('X-Values')
 ax.set_xlim(3, 15)
 ax.set_facecolor((232 / 255, 232 / 255, 232 / 256))
 # Gridlines
-plt.grid(b=True, which='major', color='w', linestyle='-')
+plt.grid(which='major', color='w', linestyle='-')
 ax.set_axisbelow(True)
 for spine in ax.spines:
     ax.spines[spine].set_color('white')
@@ -187,8 +187,8 @@ The graph looks exactly the same as before except the values on the x-axis are n
 fmt = ticker.FuncFormatter(lambda x, _: int(x * 60))
 ```
 
-Log Scale
----------
+Using Log Scale
+---------------
 If you want to use logarithmic scales, take a look at the `ax.set_yscale('log')` or the `ax.set_xscale('log')` function, depending on which axis you want to change.
 
 We're again going to use a lambda function to format the tick marker labels, except this time on the y-axis. The lambda function here is simply creating a formatted string (an [f-string](../../intro/f_strings.html) that uses the `g` or **g**eneral format). If we don't do this it might make the labels look strange, depending on what exactly the values are.
@@ -227,6 +227,142 @@ ax.yaxis.set_major_formatter(ticker.FuncFormatter(lambda y, _: f'{y:g}'))
 plt.show()
 ```
 
+Rotating Axis Labels
+--------------------
+This can be done using the `ax.tick_params()` method:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.scatter(x, y, c='g', marker='x')
+ax.set_title("Anscombe's First Data Set")
+ax.set_ylabel('Y-Values')
+ax.set_ylim(4, 11)
+ax.set_xlabel('X-Values')
+ax.set_xlim(3, 15)
+ax.tick_params('x', labelrotation=30)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.scatter(x, y, c='g', marker='x')
+ax.set_title("Anscombe's First Data Set")
+ax.set_ylabel('Y-Values')
+ax.set_ylim(4, 11)
+ax.set_xlabel('X-Values')
+ax.set_xlim(3, 15)
+ax.tick_params('x', labelrotation=30)
+
+plt.show()
+```
+
+Sub-Plots
+---------
+To create two (or more) completely separate plots in the same figure you still need to create axes objects, but now these objects need to be **sub-plots** as opposed to multiple sets of axes on the same plot:
+
+- `plt.subplot(rcn)` will create a sub-plot object where `r` is the total number of rows of plots you intend to make, `c` is the number of columns of plots you intend to make and `n` is the number that this plot will be within the grid of plots. For example, `plt.subplot(321)` will divide your figure into a grid with 3 rows and 2 columns (ie space for 6 plots) and then create an axes object for the first (top-left) of these plots. The plots are numbered using 'reading order' (left-to-right, top-to-bottom), ie plot 2 will be top-right, plot 3 will be middle-left and so on.
+- In order to create enough space for all of these plots, it's a good idea to re-size your figure. This topic is discussed on it's own [separate page](../image_size.html) but, in short, your options are:
+    - `plt.figure(figsize=(w, h))` to set the width and height of the figure you are currently working on
+    - `plt.rc('figure', figsize=(w, h))` to set the same figsize parameter as above but for *all* the figures in your code
+- Because `ax.set_title()` creates the title for the individual plot referenced by `ax`, in order to create a title for the entire figure you need to use `plt.suptitle()`
+- By default, the layout of the plots in a grid of sub-plots doesn't use up the available space particularly well. This can be improved by using `plt.tight_layout()`
+
+```{python, eval = FALSE}
+# Create data
+x_1 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_1 = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+x_2 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_2 = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74]
+x_3 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_3 = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73]
+x_4 = [8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 19.0, 8.0, 8.0, 8.0]
+y_4 = [6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89]
+
+#
+# Plot
+#
+plt.figure(figsize=(12, 10))
+plt.suptitle("Anscombe's Quartet")
+plt.tight_layout()
+# First sub-plot
+ax1 = plt.subplot(221)
+ax1.scatter(x_1, y_1)
+ax1.set_title('First Dataset')
+ax1.set_ylabel('Y-Values')
+ax1.set_xlabel('X-Values')
+# Second sub-plot
+ax2 = plt.subplot(222)
+ax2.scatter(x_2, y_2)
+ax2.set_title('Second Dataset')
+ax2.set_ylabel('Y-Values')
+ax2.set_xlabel('X-Values')
+# Third sub-plot
+ax3 = plt.subplot(223)
+ax3.scatter(x_3, y_3)
+ax3.set_title('Third Dataset')
+ax3.set_ylabel('Y-Values')
+ax3.set_xlabel('X-Values')
+# Fourth sub-plot
+ax4 = plt.subplot(224)
+ax4.scatter(x_4, y_4)
+ax4.set_title('Fourth Dataset')
+ax4.set_ylabel('Y-Values')
+ax4.set_xlabel('X-Values')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create data
+x_1 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_1 = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+x_2 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_2 = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74]
+x_3 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_3 = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73]
+x_4 = [8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 19.0, 8.0, 8.0, 8.0]
+y_4 = [6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89]
+
+#
+# Plot
+#
+plt.figure(figsize=(12, 10))
+plt.suptitle("Anscombe's Quartet")
+plt.tight_layout()
+# First sub-plot
+ax1 = plt.subplot(221)
+ax1.scatter(x_1, y_1)
+ax1.set_title('First Dataset')
+ax1.set_ylabel('Y-Values')
+ax1.set_xlabel('X-Values')
+# Second sub-plot
+ax2 = plt.subplot(222)
+ax2.scatter(x_2, y_2)
+ax2.set_title('Second Dataset')
+ax2.set_ylabel('Y-Values')
+ax2.set_xlabel('X-Values')
+# Third sub-plot
+ax3 = plt.subplot(223)
+ax3.scatter(x_3, y_3)
+ax3.set_title('Third Dataset')
+ax3.set_ylabel('Y-Values')
+ax3.set_xlabel('X-Values')
+# Fourth sub-plot
+ax4 = plt.subplot(224)
+ax4.scatter(x_4, y_4)
+ax4.set_title('Fourth Dataset')
+ax4.set_ylabel('Y-Values')
+ax4.set_xlabel('X-Values')
+
+plt.show()
+```
+
+```{python, echo = FALSE}
+# Reset figsize for the next figure
+plt.close()
+```
+
 Latex and Image Size
 --------------------
 See [here](../latex_in_labels.html) for more about using Latex formatting in the title and axes’ labels and see [here](../image_size.html) for more about changing the image size.
@@ -246,8 +382,8 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 ax = plt.axes()
 ax.scatter(x, y, c='g', marker='x')
 ax.set_title(r'How to Include \LaTeX\ in Labels')
-ax.set_ylabel(r'Output, $L$ [\textlambda]')
-ax.set_xlabel(r'Time, $t$ [\textmu s]')
+ax.set_ylabel(r'Output, $T$ [\textdegree C]')
+ax.set_xlabel(r'Input, $t$ [\textmu s]')
 ax.text(9, 6, r'\textAlpha\textBeta\textGamma\textDelta\textEpsilon\textZeta\textEta\textTheta\textIota\textKappa\textLambda\textMu\textNu\textXi\textOmikron\textPi\textRho\textSigma\textTau\textUpsilon\textPhi\textChi\textPsi\textOmega')
 ax.text(9, 5.5, r'\textalpha\textbeta\textgamma\textdelta\textepsilon\textzeta\texteta\texttheta\textiota\textkappa\textlambda\textmu\textmugreek\textnu\textxi\textomikron\textpi\textrho\textsigma\texttau\textupsilon\textphi\textchi\textpsi\textomega')
 ax.text(9, 5, r'\textvarsigma\straightphi\scripttheta\straighttheta\straightepsilon')

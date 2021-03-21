@@ -38,15 +38,18 @@ output:
 2. [Latex in Labels](python/graphs/latex_in_labels.html)
 3. [Symbols, Line Styles and Colours](python/graphs/symbols_linestyles_colours.html)
 4. [Working with Time-Based Data](python/graphs/time_data.html)
-<!-- 5. Graphing using plot objects (quicker for simple plots but gives you less control over how they look)
-    - Box Plots (aka box-and-whisker plots)
-        + One Group of Data
-        + Multiple Groups of Data
-    + Bar Plots
-        + One Group of Data
-        + Multiple Groups of Data -->
-<!-- 6. Graphing using axes objects (more complicated but gives you more control) -->
-6. Graphing using axes objects
+5. Graphing using the 'state machine interface' (aka the pyplot style) _- This is quicker than the object-orientated style for simple plots but it gives you less control_
+    - [Line Plots](python/graphs/plt_based/lineplots.html)
+    - [Scatter Plots](python/graphs/plt_based/scatterplots.html)
+    <!-- - [Bland-Altman Plots](python/graphs/plt_based/bland_altman.html) -->
+    <!-- - Box Plots (aka box-and-whisker plots) -->
+        <!-- + [One Group of Data](python/graphs/plt_based/boxplots_single_group.html) -->
+        <!-- + [Multiple Groups of Data](python/graphs/plt_based/boxplots_multiple_groups.html) -->
+    <!-- + Bar Plots -->
+        <!-- + [One Group of Data](python/graphs/plt_based/barplots_single_group.html) -->
+        <!-- + [Multiple Groups of Data](python/graphs/plt_based/barplots_multiple_groups.html) -->
+    <!-- - [Receiver Operating Characteristic (ROC) Curves](python/graphs/plt_based/roc_curves.html) -->
+6. Graphing using axes objects (aka the object-orientated style) _- This is more complicated than the pyplot style but it gives you more control_
     - [Line Plots](python/graphs/ax_based/lineplots.html)
     - [Scatter Plots](python/graphs/ax_based/scatterplots.html)
     - [Bland-Altman Plots](python/graphs/ax_based/bland_altman.html)

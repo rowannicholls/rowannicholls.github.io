@@ -1,0 +1,609 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Scatter Plots<br><font size="5">_without using axes objects_</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+One Independent Variable, One Dependent Variable
+================================================
+To create a simple scatter plot:
+
+- Import the **pyplot** module from the **Matplotlib** library and give it the shorthand name **plt**
+- Create a plot with the `scatter()` function
+
+Here's an example using one of [Anscombe's quartet](https://en.wikipedia.org/wiki/Anscombe%27s_quartet) of data sets:
+
+```{python}
+import matplotlib.pyplot as plt
+
+x = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+
+plt.scatter(x, y)
+```
+
+Formatting Options
+------------------
+Change the look of the plot with the following options:
+
+- Change the **marker colour and type** using the `c` and `marker` keyword arguments in the `scatter()` call (see [this page](../symbols_linestyles_colours.html) for all the colour and marker options)
+- Set the **title** with `title()`
+- Set the **axis labels** with `ylabel()` and `xlabel()`
+- Change the **axis limits** with `ylim()` and `xlim()`
+
+```{python, eval = FALSE}
+plt.scatter(x, y, c='g', marker='x')
+plt.title("Anscombe's First Data Set")
+plt.ylabel('Y-Values')
+plt.ylim(4, 11)
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = "hide"}
+plt.scatter(x, y, c='g', marker='x')
+plt.title("Anscombe's First Data Set")
+plt.ylabel('Y-Values')
+plt.ylim(4, 11)
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+
+plt.show()
+```
+
+More Options
+------------
+Some more options that can be tinkered with:
+
+- **Transparency of the markers**: use the `alpha` keyword argument within `scatter()`
+- **Gridlines**: use the `grid()` function in which you can set `which` gridlines to mark (major, minor or both) and the `axis` to apply the lines to (x, y or both), along with other keyword arguments related to line plots
+    - If you want minor gridlines and axis ticks you will also need to use `plt.minorticks_on()`
+- Add **text labels** with `text()`, specifying the x- and y-coordinates of the label along with the string that will appear there (read the full documentation for text labels [here](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.text.html))
+
+```{python, eval = FALSE}
+plt.scatter(x, y, alpha=0.5)
+plt.title("Anscombe's First Data Set")
+plt.ylabel('Y-Values')
+plt.ylim(4, 11)
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+plt.grid(which='major', color='gray', linestyle='-')
+plt.text(7, 4.82, '  (7; 4.82)')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = "hide"}
+plt.scatter(x, y, alpha=0.5)
+plt.title("Anscombe's First Data Set")
+plt.ylabel('Y-Values')
+plt.ylim(4, 11)
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+plt.grid(which='major', color='gray', linestyle='-')
+plt.text(7, 4.82, '  (7; 4.82)')
+
+plt.show()
+```
+
+Multiple Groups
+---------------
+To plot multiple data series on the same axes, simply use the `scatter()` function multiple times. When doing this, it's usually best to include a **legend**. This is created via `legend()` after having specified the `label` keyword argument in the `scatter()` calls:
+
+```{python}
+x_1 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_1 = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+x_2 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_2 = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74]
+x_3 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_3 = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73]
+x_4 = [8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 19.0, 8.0, 8.0, 8.0]
+y_4 = [6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89]
+
+plt.scatter(x_1, y_1, label='First data set')
+plt.scatter(x_2, y_2, label='Second data set')
+plt.scatter(x_3, y_3, label='Third data set')
+plt.scatter(x_4, y_4, label='Fourth data set')
+plt.title("Anscombe's Quartet")
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+plt.legend()
+```
+
+Scaling and Formatting Tick Labels
+----------------------------------
+If you want to change the scale on an axis, the best practice is to edit the values right as they are being passed into the function as opposed to creating a new variable. For example, if the numbers that make up our x-data are in 'minutes' but we want to scale them up to 'seconds' we merely need to convert the list into an array and then multiply it by 60. This should be done right in the argument of the `scatter()` call instead of defining a new variable:
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+minutes = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+
+plt.scatter(np.array(minutes) * 60, y)
+plt.title('Output vs Time')
+plt.ylabel(r'Output')
+plt.xlabel(r'Time, $t$ [s]')
+
+plt.show()
+```
+
+The above is better than doing the following if all you want to do is re-scale the axis:
+
+```{python, eval = FALSE}
+seconds = np.array(minutes) * 60
+plt.scatter(seconds, y)
+```
+
+Note that the format of the numbers on the axes can be changed to scientific notation by using the `ticklabel_format(<axis>, <style>)` function.
+
+Using Log Scale
+---------------
+If you want to use logarithmic scales, take a look at the `yscale('log')` or the `xscale('log')` function, depending on which axis you want to change:
+
+```{python, eval = FALSE}
+plt.scatter(x, [p * 1000 for p in y], c='g', marker='x')
+plt.title("Anscombe's First Data Set (Log Scale)")
+plt.ylabel('Y-Values')
+plt.ylim(4, 20000)
+plt.yscale('log')
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = "hide"}
+plt.scatter(x, [p * 1000 for p in y], c='g', marker='x')
+plt.title("Anscombe's First Data Set (Log Scale)")
+plt.ylabel('Y-Values')
+plt.ylim(4, 20000)
+plt.yscale('log')
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+
+plt.show()
+```
+
+Rotating Axis Labels
+--------------------
+This can be done using the `tick_params()` function:
+
+```{python, eval = FALSE}
+plt.scatter(x, y, c='g', marker='x')
+plt.title("Anscombe's First Data Set")
+plt.ylabel('Y-Values')
+plt.ylim(4, 11)
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+plt.tick_params('x', labelrotation=30)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+plt.scatter(x, y, c='g', marker='x')
+plt.title("Anscombe's First Data Set")
+plt.ylabel('Y-Values')
+plt.ylim(4, 11)
+plt.xlabel('X-Values')
+plt.xlim(3, 15)
+plt.tick_params('x', labelrotation=30)
+
+plt.show()
+```
+
+Sub-Plots
+---------
+To create two (or more) completely separate plots in the same figure you will need to create **sub-plots**:
+
+- `subplot(rcn)` will create a sub-plot object where `r` is the total number of rows of plots you intend to make, `c` is the number of columns of plots you intend to make and `n` is the number that this plot will be within the grid of plots. For example, `subplot(321)` will divide your figure into a grid with 3 rows and 2 columns (ie space for 6 plots) and then create an empty sub-plot for the first (top-left) of these plots. The plots are numbered using 'reading order' (left-to-right, top-to-bottom), ie plot 2 will be top-right, plot 3 will be middle-left and so on.
+- In order to create enough space for all of these plots, it's a good idea to re-size your figure. This topic is discussed on it's own [separate page](../image_size.html) but, in short, your options are:
+    - `figure(figsize=(w, h))` to set the width and height of the figure you are currently working on
+    - `rc('figure', figsize=(w, h))` to set the same figsize parameter as above but for *all* the figures in your code
+- Because `title()` creates a title for one individual plot, in order to create a title for the entire figure you need to use `suptitle()`
+- By default, the layout of the plots in a grid of sub-plots doesn't use up the available space particularly well. This can be improved by using `tight_layout()`
+
+```{python, eval = FALSE}
+# Create data
+x_1 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_1 = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+x_2 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_2 = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74]
+x_3 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_3 = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73]
+x_4 = [8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 19.0, 8.0, 8.0, 8.0]
+y_4 = [6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89]
+
+#
+# Plot
+#
+plt.figure(figsize=(12, 10))
+plt.tight_layout()
+plt.suptitle("Anscombe's Quartet", size='xx-large')
+# First sub-plot
+plt.subplot(221)
+plt.scatter(x_1, y_1)
+plt.title('First Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+# Second sub-plot
+plt.subplot(222)
+plt.scatter(x_2, y_2)
+plt.title('Second Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+# Third sub-plot
+plt.subplot(223)
+plt.scatter(x_3, y_3)
+plt.title('Third Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+# Fourth sub-plot
+plt.subplot(224)
+plt.scatter(x_4, y_4)
+plt.title('Fourth Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create data
+x_1 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_1 = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+x_2 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_2 = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74]
+x_3 = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+y_3 = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73]
+x_4 = [8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 8.0, 19.0, 8.0, 8.0, 8.0]
+y_4 = [6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89]
+
+#
+# Plot
+#
+plt.figure(figsize=(12, 10))
+plt.tight_layout()
+plt.suptitle("Anscombe's Quartet", size='xx-large')
+# First sub-plot
+plt.subplot(221)
+plt.scatter(x_1, y_1)
+plt.title('First Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+# Second sub-plot
+plt.subplot(222)
+plt.scatter(x_2, y_2)
+plt.title('Second Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+# Third sub-plot
+plt.subplot(223)
+plt.scatter(x_3, y_3)
+plt.title('Third Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+# Fourth sub-plot
+plt.subplot(224)
+plt.scatter(x_4, y_4)
+plt.title('Fourth Dataset')
+plt.ylabel('Y-Values')
+plt.xlabel('X-Values')
+
+plt.show()
+```
+
+```{python, echo = FALSE}
+# Reset figsize for the next figure
+plt.close()
+```
+
+Latex and Image Size
+--------------------
+See [here](../latex_in_labels.html) for more about using Latex formatting in the title and axes’ labels and see [here](../image_size.html) for more about changing the image size.
+
+```{python}
+# Make figures A5 in size
+A = 5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Image quality
+plt.rc('figure', dpi=141)
+# Be able to add Latex
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.scatter(x, y, c='g', marker='x')
+plt.title(r'How to Include \LaTeX\ in Labels')
+plt.ylabel(r'Output, $T$ [\textdegree C]')
+plt.xlabel(r'Time, $t$ [\textmu s]')
+plt.text(9, 6, r'\textAlpha\textBeta\textGamma\textDelta\textEpsilon\textZeta\textEta\textTheta\textIota\textKappa\textLambda\textMu\textNu\textXi\textOmikron\textPi\textRho\textSigma\textTau\textUpsilon\textPhi\textChi\textPsi\textOmega')
+plt.text(9, 5.5, r'\textalpha\textbeta\textgamma\textdelta\textepsilon\textzeta\texteta\texttheta\textiota\textkappa\textlambda\textmu\textmugreek\textnu\textxi\textomikron\textpi\textrho\textsigma\texttau\textupsilon\textphi\textchi\textpsi\textomega')
+plt.text(9, 5, r'\textvarsigma\straightphi\scripttheta\straighttheta\straightepsilon')
+plt.text(9, 4.5, r'$$\lim_{n \to \infty} \left(1+\frac{1}{n}\right)^n$$')
+```
+
+```{python, echo = FALSE}
+import matplotlib as mpl
+
+# Reset the rcParams
+mpl.rcParams.update(mpl.rcParamsDefault)
+```
+
+Finished?
+---------
+Finally, save the plot as a PNG, JPG, PDF or other type of image with `savefig()` or display it in a pop-up window with `show()`:
+
+```{python, eval = FALSE}
+plt.savefig('Scatter Plot.png')
+```
+
+If you are plotting more than one figure in the same Python script use `figure()` and `close()` before and after each, respectively, in order to tell Python when one plot ends and the next one starts.
+
+One Independent Variable, Two Dependent Variables
+=================================================
+With two dependent variables you will often want **two y-axes**.
+
+One Data Series
+---------------
+It's not common to represent one series of data with two dependent variables on a 2D graph, but it can be useful when there is a constant relationship between the dependent variables. For example, if we take the force and pressure exerted on a piston, the relationship between the two ($P = \frac{F}{A}$) remains constant because the area of the piston head ($A$) doesn't change. Here's what the force vs time graph might look like:
+
+```{python}
+import math
+import matplotlib.pyplot as plt
+
+# Fake up some data
+time = [10.0, 8.0, 13.0, 9.0, 11.0, 14.0, 6.0, 4.0, 12.0, 7.0, 5.0]
+force = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+area = (math.tau * 0.04**2) / 2
+
+# Plot
+plt.scatter(time, force)
+plt.title('Force vs Time')
+plt.ylabel(r'Force, $F$ [N]')
+plt.xlabel(r'Time, $t$ [s]')
+
+plt.show()
+```
+
+Now, to add in the pressure, we need another whole set of axes. This can be achieved by 'twinning' the current x-axis (because the second y-axis will use the same x-axis as the first) via `twinx()` to create a new set of axes. This set won't have any data on it yet, so we need to have calculated the pressure values in order to now plot them. It will also make sense to scale the pressure values by a factor of 1,000 so that they are in kilopascals instead of pascals:
+
+```{python}
+import numpy as np
+
+# Calculate
+pressure = [f / area for f in force]
+
+# Plot
+plt.scatter(time, force)
+plt.title('Force and Pressure vs Time')
+plt.ylabel(r'Force, $F$ [N]')
+plt.xlabel(r'Time, $t$ [s]')
+plt.twinx()
+plt.scatter(time, np.array(pressure) / 1000)
+plt.ylabel(r'Pressure, $P$ [kPa]')
+
+plt.show()
+```
+
+Two Data Series
+---------------
+In the previous example, the two axes both related to the same series of data. If, however, you want to plot two different but related series you will need to separate them more clearly:
+
+- Use different colours for the **labels**, the **markers** and the **tick labels**
+    + The tick labels can be edited by accessing them through the `yticks()` or `xticks()` function
+
+```{python, eval = FALSE}
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+
+# Fake up some data
+np.random.seed(20210316)
+x = np.linspace(0, 0.4 * math.tau, 20)
+y_1 = np.sin(x) + np.random.normal(size=20) * 0.08
+y_2 = 5 * np.sin(x * 0.75) + np.random.normal(size=20) * 0.08
+
+#
+# Plot
+#
+plt.title('Measurements vs Time')
+plt.xlabel(r'Time, $t$ [s]')
+# First dependent variable
+plt.scatter(x, y_1, c='b', marker='x')
+plt.ylabel(r'Measurement 1, $m_1$ [m]', color='b')
+plt.ylim(0, )
+plt.yticks(c='b')
+plt.xlim(0, )
+# Create a second set of axes, twinned with the first x-axis
+plt.twinx()
+# Second dependent variable
+plt.scatter(x, y_2, c='r', marker='x')
+plt.ylabel(r'Measurement 2, $m_2$ [m]', color='r')
+plt.ylim(0, )
+plt.yticks(c='r')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+
+# Fake up some data
+np.random.seed(20210316)
+x = np.linspace(0, 0.4 * math.tau, 20)
+y_1 = np.sin(x) + np.random.normal(size=20) * 0.08
+y_2 = 5 * np.sin(x * 0.75) + np.random.normal(size=20) * 0.08
+
+#
+# Plot
+#
+plt.title('Measurements vs Time')
+plt.xlabel(r'Time, $t$ [s]')
+# First dependent variable
+plt.scatter(x, y_1, c='b', marker='x')
+plt.ylabel(r'Measurement 1, $m_1$ [m]', color='b')
+plt.ylim(0, )
+plt.yticks(c='b')
+plt.xlim(0, )
+# Create a second set of axes, twinned with the first x-axis
+plt.twinx()
+# Second dependent variable
+plt.scatter(x, y_2, c='r', marker='x')
+plt.ylabel(r'Measurement 2, $m_2$ [m]', color='r')
+plt.ylim(0, )
+plt.yticks(c='r')
+
+plt.show()
+```
+
+Label Each Point
+----------------
+Here's an example where each data point from a fictional experiment is labelled with which sample it was taken from. It uses the `annotate()` function to do this (read the full documentation for annotations [here](https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.annotate.html)):
+
+```{python, eval = FALSE}
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(20210316)
+
+# Create a list of samples
+samplelist = ['Sample 1', 'Sample 2', 'Sample 3']
+
+# Dimensions of the plot
+y_top = 160
+y_bottom = 90
+x_top = 20
+x_bottom = -10
+x_range = x_top - x_bottom
+y_range = y_top - y_bottom
+
+# Create axes
+plt.title(r'Experimental Results')
+plt.xlabel(r'Time, $t$ [s]')
+
+# Blue samples
+for sample in samplelist:
+    # Create the data to plot
+    x = np.linspace(0, 10, 3) + np.random.normal(size=3) * 5
+    y = np.linspace(100, 150, 3) + np.random.normal(size=3) * 5
+    # Plot the data
+    plt.scatter(x, y, c='b', marker='x')
+    # Annotate the data
+    for i in range(len(x)):
+        plt.annotate(
+            sample, (x[i] + 0.02 * x_range, y[i] - 0.013 * y_range), color='b'
+        )
+plt.ylabel(r'Experimental Group 1', color='b')
+plt.ylim(y_bottom, y_top)
+plt.yticks(c='b')
+# Set the axis limits
+plt.xlim(x_bottom, x_top)
+
+# Create second axis
+plt.twinx()
+
+# Red samples
+for sample in samplelist:
+    # Create the data to plot
+    x = np.linspace(0, 10, 3) + np.random.normal(size=3) * 5
+    y = np.linspace(100, 150, 3) + np.random.normal(size=3) * 5
+    # Plot the data
+    plt.scatter(x, y, c='r', marker='x')
+    # Annotate the data
+    for i in range(len(x)):
+        plt.annotate(
+            sample, (x[i] + 0.02 * x_range, y[i] - 0.013 * y_range), color='r'
+        )
+plt.ylabel(r'Experimental Group 2', color='r')
+plt.ylim(y_bottom, y_top)
+plt.yticks(c='r')
+# Set the axis limits
+plt.xlim(x_bottom, x_top)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(20210316)
+
+# Create a list of samples
+samplelist = ['Sample 1', 'Sample 2', 'Sample 3']
+
+# Dimensions of the plot
+y_top = 160
+y_bottom = 90
+x_top = 20
+x_bottom = -10
+x_range = x_top - x_bottom
+y_range = y_top - y_bottom
+
+# Create axes
+plt.title(r'Experimental Results')
+plt.xlabel(r'Time, $t$ [s]')
+
+# Blue samples
+for sample in samplelist:
+    # Create the data to plot
+    x = np.linspace(0, 10, 3) + np.random.normal(size=3) * 5
+    y = np.linspace(100, 150, 3) + np.random.normal(size=3) * 5
+    # Plot the data
+    plt.scatter(x, y, c='b', marker='x')
+    # Annotate the data
+    for i in range(len(x)):
+        plt.annotate(
+            sample, (x[i] + 0.02 * x_range, y[i] - 0.013 * y_range), color='b'
+        )
+plt.ylabel(r'Experimental Group 1', color='b')
+plt.ylim(y_bottom, y_top)
+plt.yticks(c='b')
+# Set the axis limits
+plt.xlim(x_bottom, x_top)
+
+# Create second axis
+plt.twinx()
+
+# Red samples
+for sample in samplelist:
+    # Create the data to plot
+    x = np.linspace(0, 10, 3) + np.random.normal(size=3) * 5
+    y = np.linspace(100, 150, 3) + np.random.normal(size=3) * 5
+    # Plot the data
+    plt.scatter(x, y, c='r', marker='x')
+    # Annotate the data
+    for i in range(len(x)):
+        plt.annotate(
+            sample, (x[i] + 0.02 * x_range, y[i] - 0.013 * y_range), color='r'
+        )
+plt.ylabel(r'Experimental Group 2', color='r')
+plt.ylim(y_bottom, y_top)
+plt.yticks(c='r')
+# Set the axis limits
+plt.xlim(x_bottom, x_top)
+
+plt.show()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>

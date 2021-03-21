@@ -127,7 +127,7 @@ More Options
 ------------
 Some more options that can be tinkered with:
 
-- **Transparency of the line**: use the `alpha` keyword argument within `plt.plot()`
+- **Transparency of the line**: use the `alpha` keyword argument within `ax.plot()`
 - **Colour of the graph area**: use the `ax.set_facecolor((R, G, B))` function where R, G and B are the red, green and blue colour proportions on a scale of 0 to 1
 - **Gridlines**: use the `plt.grid()` function in which you can set `which` gridlines to mark (major, minor or both) and the `axis` to apply the lines to (x, y or both), along with other keyword arguments related to line plots
     - If you want minor gridlines and axis ticks you will also need to use `plt.minorticks_on()`
@@ -217,6 +217,7 @@ ax.annotate(
 ax.annotate(
     'Dropped from top spot', (22 / 38, -0.12), xycoords='axes fraction', ha='center'
 )
+
 plt.show()
 ```
 
@@ -244,6 +245,7 @@ ax.annotate(
 ax.annotate(
     'Dropped from top spot', (22 / 38, -0.12), xycoords='axes fraction', ha='center'
 )
+
 plt.show()
 ```
 
@@ -730,6 +732,37 @@ ax.set_xticklabels(['Aug', 'Sep', 'Oct', 'Nov', 'Dec', 'Jan', 'Feb', 'Mar', 'Apr
 plt.show()
 ```
 
+### Plotting Text
+In the previous example, the plot was created using numbers on the x-axis which were then replaced by text labels manually via the `ax.set_xticklabels()` function. In this example, however, we 'cut out the middleman' and use text strings as the x-data from the start:
+
+```{python}
+plt.rc('text', usetex=True)
+
+month = [
+    'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+]
+temp = [
+    6.7, 6.8, 8.8, 11.9, 14.7, 18.2,
+    19.5, 19.3, 17.3, 13.5, 9.9, 7.0
+]
+
+ax = plt.axes()
+ax.plot(month, temp, 'k')
+ax.set_title('Climate of London')
+ax.set_ylabel(r'Mean Daily Temperature [\textdegree C]')
+ax.set_xlabel('Month')
+```
+
+The above data comes from [Wikipedia](https://en.wikipedia.org/wiki/Climate_of_London).
+
+```{python, echo = FALSE}
+import matplotlib as mpl
+
+# Reset the rcParams
+mpl.rcParams.update(mpl.rcParamsDefault)
+```
+
 ### Scaling an Axis
 If you want to change the scale on an axis (eg show the x-axis in units of days when the original data is in weeks) you can edit its format using the following:
 
@@ -829,6 +862,7 @@ ax.set_xlim(1, 38)
 fmt = ticker.FuncFormatter(lambda x, _: int(x * 7))
 ax.xaxis.set_major_formatter(fmt)
 ax.xaxis.set_tick_params(rotation=30)
+
 plt.show()
 ```
 
@@ -843,6 +877,7 @@ ax.set_xlim(1, 38)
 fmt = ticker.FuncFormatter(lambda x, _: int(x * 7))
 ax.xaxis.set_major_formatter(fmt)
 ax.xaxis.set_tick_params(rotation=30)
+
 plt.show()
 ```
 
@@ -930,7 +965,7 @@ To create two (or more) completely separate plots in the same figure you still n
 - `plt.subplot(rcn)` will create a sub-plot object where `r` is the total number of rows of plots you intend to make, `c` is the number of columns of plots you intend to make and `n` is the number that this plot will be within the grid of plots. For example, `plt.subplot(321)` will divide your figure into a grid with 3 rows and 2 columns (ie space for 6 plots) and then create an axes object for the first (top-left) of these plots. The plots are numbered using 'reading order' (left-to-right, top-to-bottom), ie plot 2 will be top-right, plot 3 will be middle-left and so on.
 - In order to create enough space for all of these plots, it's a good idea to re-size your figure. This topic is discussed on it's own [separate page](../image_size.html) but, in short, your options are:
     - `plt.figure(figsize=(w, h))` to set the width and height of the figure you are currently working on
-    - `plt.rc('figure', figsize=(w, h))` set the same figsize parameter as above but for *all* the figures in your code
+    - `plt.rc('figure', figsize=(w, h))` to set the same figsize parameter as above but for *all* the figures in your code
 - Because `ax.set_title()` creates the title for the individual plot referenced by `ax`, in order to create a title for the entire figure you need to use `plt.suptitle()`
 - By default, the layout of the plots in a grid of sub-plots doesn't use up the available space particularly well. This can be improved by using `plt.tight_layout()`
 
@@ -967,8 +1002,8 @@ ax2.set_xticks([0, 0.25 * math.tau, 0.5 * math.tau, 0.75 * math.tau, math.tau])
 ax2.set_xticklabels(
     ['$0$', r'$\frac{1}{4}\tau$', r'$\frac{1}{2}\tau$', r'$\frac{3}{4}\tau$', r'$\tau$']
 )
-
 plt.tight_layout()
+
 plt.show()
 ```
 
@@ -1005,8 +1040,8 @@ ax2.set_xticks([0, 0.25 * math.tau, 0.5 * math.tau, 0.75 * math.tau, math.tau])
 ax2.set_xticklabels(
     ['$0$', r'$\frac{1}{4}\tau$', r'$\frac{1}{2}\tau$', r'$\frac{3}{4}\tau$', r'$\tau$']
 )
-
 plt.tight_layout()
+
 plt.show()
 ```
 
@@ -1034,7 +1069,7 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 ax = plt.axes()
 ax.plot(week, log_points, c='#6caddf')
 ax.set_title(r'How to Include \LaTeX\ in Labels')
-ax.set_ylabel(r'Output, $L$ [\textlambda]')
+ax.set_ylabel(r'Output, $T$ [\textdegree C]')
 ax.set_ylim(0, 100)
 ax.set_xlabel(r'Input, $t$ [\textmu s]')
 ax.set_xlim(1, 38)
@@ -1058,8 +1093,8 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 # Plot
 ax = plt.axes()
 ax.plot(week, log_points, c='#6caddf')
-# ax.set_title(r'How to Include \LaTeX\ in Labels')
-ax.set_ylabel(r'Output, $L$ [\textlambda]')
+ax.set_title(r'How to Include \LaTeX\ in Labels')
+ax.set_ylabel(r'Output, $T$ [\textdegree C]')
 ax.set_ylim(0, 100)
 ax.set_xlabel(r'Input, $t$ [\textmu s]')
 ax.set_xlim(1, 38)
@@ -1162,22 +1197,22 @@ ax2.axis['top'].major_ticklabels.set_visible(True)
 plt.show()
 ```
 
-Finished?
----------
-Finally, save the plot as a PNG, JPG, PDF or other type of image with `plt.savefig()` or display it in a pop-up window with `plt.show()`:
-
-```{python, eval = FALSE}
-plt.savefig('Scatter Plot.png')
-```
-
-If you are plotting multiple images you will also need functions like `plt.figure()` when creating a new figure and `plt.close()` before moving on to the next one. Otherwise, Matplotlib will keep plotting on the same axes.
-
 ```{python, echo = FALSE}
 import matplotlib as mpl
 
 # Reset the rcParams
 mpl.rcParams.update(mpl.rcParamsDefault)
 ```
+
+Finished?
+---------
+Finally, save the plot as a PNG, JPG, PDF or other type of image with `plt.savefig()` or display it in a pop-up window with `plt.show()`:
+
+```{python, eval = FALSE}
+plt.savefig('Line Plot.png')
+```
+
+If you are plotting more than one figure in the same Python script use `plt.figure()` and `plt.close()` before and after each, respectively, in order to tell Python when one plot ends and the next one starts.
 
 One Independent Variable, Two Dependent Variables
 =================================================
