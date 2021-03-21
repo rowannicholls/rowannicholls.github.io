@@ -652,7 +652,7 @@ plt.subplots_adjust(
 plt.show()
 ```
 
-```{python, fig.height=23.4, fig.width=8.8, echo=FALSE}
+```{python, fig.height = 23.4, fig.width = 8.8, echo = FALSE}
 # Make the figure A4
 A = 4
 plt.rc('figure', figsize=[33.11 * .5**(.5 * A), 46.82 * .5**(.5 * A)])
