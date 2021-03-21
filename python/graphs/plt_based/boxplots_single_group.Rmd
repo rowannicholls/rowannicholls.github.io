@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Graphs in Python:</font><br>Boxplots with One Group of Data<br><font size="5">_using explicitly defined axes in Matplotlib_</font>'
+title: '<font size="5">Graphs in Python:</font><br>Boxplots with One Group of Data<br><font size="5">_without using axes objects_</font>'
 output:
     html_document:
         theme: paper
@@ -54,21 +54,24 @@ Both of these methods will work with the code that follows. However, the advanta
 
 A Simple Boxplot
 ================
-The plotting is going to be done in two lines: one to create the plot and the axes:  
-`ax = plt.axes()`  
-and one to create the boxplot:  
-`bp = ax.boxplot(data, labels=labels)`
+The plotting is going to be done using one function: `boxplot()` from the Matplotlib library. Specifically, it comes from the pyplot module within the Matplotlib library, so that can be imported and given the shorthand name **plt**:
 
-```{python}
+```{python, eval = FALSE}
 import matplotlib.pyplot as plt
 
-# Plot
-ax = plt.axes()
-bp = ax.boxplot(data, labels=labels)
-# Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
+plt.boxplot(data, labels=labels)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+plt.boxplot(data, labels=labels)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
 ```
 
 Note that this method is robust to the number of datasets you have. We could easily comment out some of the sets of results (or add more) and still have it work.
@@ -79,38 +82,54 @@ We're going to make a number of formatting changes to improve how this graph loo
 
 - Make the figure size A6 (see [here](../image_size.html) for more info)
 - Use Latex for the labels (see [here](../latex_in_labels.html) for more info)
-- Change the amount of white space around the plot with `plt.axes()`
-    + The format for this function is `plt.axes([left, bottom, width, height])`
-    + This allows you to edit the amount of white space to the left of the plot, at the bottom of the plot, the width of the plot and the height of the plot respectively.
-    + The units for this function are 'proportion of the relevant plot dimension'
-    + The default is `[0.125, 0.11, 0.775, 0.77]`
 - Edit the boxplot itself to:
     - Remove fliers (`sym=''`)
     - Extend the whiskers to cover the whole range of the data (`whis='range'`)
     - Change the widths (`widths=0.4`)
-- Change the y-axis limits and the x-axis tick marks
+- Change the y-axis limits (`ylim()`)
+- Turn minor tick markers on (`minorticks_on()`) but then turn them off for the x-axis (`tick_params()`)
 
-```{python}
+```{python, eval = FALSE}
 import numpy as np
 
-# Settings
-x = 6  # Want figures to be A6
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+# Make figures A6
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Use Latex
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 
 # Plot
-# plt.axes([left, bottom, width, height])
-# default = [0.125, 0.11, 0.775, 0.77]
-ax = plt.axes([0.1, 0.08, 0.79, 0.86])
-bp = ax.boxplot(data, sym='', whis=[0, 100], widths=0.4, labels=labels)
-# Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ylim = ax.set_ylim(7.9, 8.6)
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.boxplot(data, sym='', whis=[0, 100], widths=0.4, labels=labels)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.ylim(7.9, 8.6)
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import numpy as np
+
+# Make figures A6
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Use Latex
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+
+# Plot
+plt.boxplot(data, sym='', whis=[0, 100], widths=0.4, labels=labels)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.ylim(7.9, 8.6)
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
+
 plt.show()
 ```
 
@@ -118,29 +137,27 @@ Change the Colours
 ==================
 It might be cool to colour each boxplot in the colours of the host country. Let's see how to do that:
 
-- When calling `ax.boxplot()` you need to add `patch_artist=True`
-- The colours of the lines of the boxplots are controlled with `plt.setp()`:
-    + `plt.setp(bp['boxes'], color='red')` will set the box outlines to red
-    + `plt.setp(bp['boxes'], facecolor='red')` will set the box fills to red
-    + `plt.setp(bp['medians'], color='red')` will set the median lines to red
-    + `plt.setp(bp['whiskers'], color='red')` will set the vertical whiskers to red
-    + `plt.setp(bp['caps'], color='red')` will set the horizontal caps to red
+- When calling `boxplot()` you need to add `patch_artist=True` and assign the output of the function to a variable `bp` which creates a **boxplot object**
+- The colours of the lines of the boxplots are controlled with `setp()`:
+    + `setp(bp['boxes'], color='red')` will set the box outlines to red
+    + `setp(bp['boxes'], facecolor='red')` will set the box fills to red
+    + `setp(bp['medians'], color='red')` will set the median lines to red
+    + `setp(bp['whiskers'], color='red')` will set the vertical whiskers to red
+    + `setp(bp['caps'], color='red')` will set the horizontal caps to red
 
 ```{python, eval=FALSE}
 # Plot
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
-    patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Colour the outlines
-colours = ['blue', 'yellow', 'red', 'yellow']
+colours = ['blue', 'red', 'blue', 'green']
 for i, box in enumerate(bp['boxes']):
     # Iterate over the colours
     j = i % len(colours)
@@ -157,30 +174,29 @@ for i, box in enumerate(bp['boxes']):
     # Set the colour of the upper caps
     plt.setp(bp['caps'][2 * i + 1], color=colours[j])
 # Fill the boxes with colours (requires patch_artist=True)
-colours = ['white', 'red', 'blue', 'green']
+colours = ['white', 'yellow', 'red', 'yellow']
 for i, box in enumerate(bp['boxes']):
     # Iterate over the colours
     j = i % len(colours)
     # Set the colour of the box
     plt.setp(bp['boxes'][i], facecolor=colours[j])
+
 plt.show()
 ```
 
 ```{python, echo=FALSE, results='hide'}
 # Plot
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
-    patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Colour the outlines
-colours = ['blue', 'yellow', 'red', 'yellow']
+colours = ['blue', 'red', 'blue', 'green']
 for i, box in enumerate(bp['boxes']):
     # Iterate over the colours
     j = i % len(colours)
@@ -197,12 +213,13 @@ for i, box in enumerate(bp['boxes']):
     # Set the colour of the upper caps
     plt.setp(bp['caps'][2 * i + 1], color=colours[j])
 # Fill the boxes with colours (requires patch_artist=True)
-colours = ['white', 'red', 'blue', 'green']
+colours = ['white', 'yellow', 'red', 'yellow']
 for i, box in enumerate(bp['boxes']):
     # Iterate over the colours
     j = i % len(colours)
     # Set the colour of the box
     plt.setp(bp['boxes'][i], facecolor=colours[j])
+
 plt.show()
 ```
 
@@ -210,29 +227,27 @@ Unfortunately, that doesn't look so good, so we'll remove it going forward and j
 
 Show the Median Values on the Plot
 ==================================
-It's pretty useful to be able to see the median values of each dataset right there on the graph, and this feature can be added by using the `ax.text()` function.
+It's pretty useful to be able to see the median values of each dataset right there on the graph, and this feature can be added by using the `text()` function.
 
 - Get the median value of each dataset with `bp['medians'][i].get_ydata()[0]`
 - Round the medians off to two decimal places and convert them to strings (so they can easily be used as text labels) using `str(round(s, 2))`
 - The x-positions for the text annotations are the same as the x-positions of the boxplots themselves (ie 1, 2, 3, 4) so you can use `np.arange(len(data)) + 1`
 - The y-position of the annotations is a little bit more tricky. You first want to extend the plot downwards to create space for the text, and when you do this you should use a percent (eg increase the height by 5%) rather than a nominal amount in order for the code to be robust to any set of data. This way, every graph you plot will have a consistent 5% more space for text regardless of what actual numbers you are using.
-- Create the annotations with `ax.text(x_pos, y_pos, 'text')`
+- Create the annotations with `text(x_pos, y_pos, 'text')`
 
 ```{python, eval=FALSE}
 #
 # Plot
 #
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
-    patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -247,16 +262,16 @@ medians = [str(round(s, 2)) for s in medians]
 # Get the x-positions for the labels
 x_pos = np.arange(len(labels)) + 1
 # Get the y-axis limits and range
-y_lim = ax.get_ylim()
+y_lim = plt.ylim()
 y_range = y_lim[1] - y_lim[0]
 # Increase the height of the plot by 5% to fit the labels
-ax.set_ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
+plt.ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
 # Set the y-positions for the labels
 y_pos = y_lim[0] - 0.025 * y_range
 # Create the annotations
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
         horizontalalignment='center', size='small'
     )
@@ -266,17 +281,15 @@ for i in range(len(labels)):
 #
 # Plot
 #
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
-    patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -291,16 +304,16 @@ medians = [str(round(s, 2)) for s in medians]
 # Get the x-positions for the labels
 x_pos = np.arange(len(labels)) + 1
 # Get the y-axis limits and range
-y_lim = ax.get_ylim()
+y_lim = plt.ylim()
 y_range = y_lim[1] - y_lim[0]
 # Increase the height of the plot by 5% to fit the labels
-ax.set_ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
+plt.ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
 # Set the y-positions for the labels
 y_pos = y_lim[0] - 0.025 * y_range
 # Create the annotations
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
         horizontalalignment='center', size='small'
     )
@@ -314,17 +327,15 @@ As you start adding more annotations to the plot area you quickly begin to run o
 #
 # Plot
 #
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
-    patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -337,16 +348,16 @@ sample_sizes = [f'{s:,}' for s in sample_sizes]
 # Get the x-positions for the labels
 x_pos = np.arange(len(labels)) + 1
 # Get the y-axis limits and range
-y_lim = ax.get_ylim()
+y_lim = plt.ylim()
 y_range = y_lim[1] - y_lim[0]
 # Increase the height of the plot by 10% to fit the labels
-ax.set_ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
+plt.ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
 # Set the y-positions for the median labels
 y_pos = y_lim[1] + 0.04 * y_range
 # Create the annotations for the medians
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
         horizontalalignment='center', size='small'
     )
@@ -355,7 +366,7 @@ y_pos = y_lim[1]
 # Create the annotations for the sample sizes
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$n =' + fr' {sample_sizes[i]}$',
         horizontalalignment='center', size='small'
     )
@@ -365,17 +376,15 @@ for i in range(len(labels)):
 #
 # Plot
 #
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
-    patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Set the fill colour
 plt.setp(bp['boxes'], facecolor='C0')
 # Set the colour of the median lines
@@ -388,16 +397,16 @@ sample_sizes = [f'{s:,}' for s in sample_sizes]
 # Get the x-positions for the labels
 x_pos = np.arange(len(labels)) + 1
 # Get the y-axis limits and range
-y_lim = ax.get_ylim()
+y_lim = plt.ylim()
 y_range = y_lim[1] - y_lim[0]
 # Increase the height of the plot by 10% to fit the labels
-ax.set_ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
+plt.ylim([y_lim[0], y_lim[1] + 0.10 * y_range])
 # Set the y-positions for the median labels
 y_pos = y_lim[1] + 0.04 * y_range
 # Create the annotations for the medians
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
         horizontalalignment='center', size='small'
     )
@@ -406,59 +415,61 @@ y_pos = y_lim[1]
 # Create the annotations for the sample sizes
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$n =' + fr' {sample_sizes[i]}$',
         horizontalalignment='center', size='small'
     )
 ```
 
-Change the Background
-=====================
-A background can help make the plot look more professional and gridlines can aid in interpretation.
+Add Gridlines
+=============
+Gridlines can aid in interpreting a graph.
 
-- A background colour is set with `ax.set_facecolor()`. A specific colour can be set (eg 'red', 'blue', etc) while a number between 0 and 1 in string format (eg '0.9') will invoke a shade of grey ('0' being black, '1' being white)
-- Show the major axis gridlines using `plt.grid()`
-- Plot horizontal lines to aid in interpretation using `ax.axhline()`
+- Show the major axis gridlines using `grid()`
+- Plot horizontal lines using `axhline()`
 
 ```{python, eval=FALSE}
 #
 # Plot
 #
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
+    patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Set the fill colour
-plt.setp(bp['boxes'], facecolor='C0')
+plt.setp(bp['boxes'], facecolor='C0', lw=2)
 # Set the colour of the median lines
-plt.setp(bp['medians'], color='black')
-# Background
-ax.set_facecolor('0.9')
-plt.grid(color='white')
-ax.axhline(8, color='black', alpha=0.4)
-ax.axhline(8.5, color='black', alpha=0.4)
+plt.setp(bp['medians'], color='black', lw=2)
+# Set the width of the whiskers
+plt.setp(bp['whiskers'], lw=2)
+# Set the width of the caps
+plt.setp(bp['caps'], lw=2)
+# Lines
+plt.grid(color='grey', alpha = 0.6)
+plt.axhline(8, color='grey', zorder=1)
+plt.axhline(8.5, color='grey', zorder=1)
 # Get the samples' medians
 medians = [bp['medians'][i].get_ydata()[0] for i in range(len(labels))]
 medians = [str(round(s, 2)) for s in medians]
 # Get the x-positions for the labels
 x_pos = np.arange(len(labels)) + 1
 # Get the y-axis limits and range
-y_lim = ax.get_ylim()
+y_lim = plt.ylim()
 y_range = y_lim[1] - y_lim[0]
 # Increase the height of the plot by 5% to fit the labels
-ax.set_ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
+plt.ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
 # Set the y-positions for the labels
 y_pos = y_lim[0] - 0.025 * y_range
 # Create the annotations
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
         horizontalalignment='center', size='small'
     )
@@ -468,41 +479,44 @@ for i in range(len(labels)):
 #
 # Plot
 #
-ax = plt.axes()
-bp = ax.boxplot(
-    data, sym='', whis=[0, 100], widths=0.4, labels=labels, patch_artist=True
+bp = plt.boxplot(
+    data, sym='', whis=[0, 100], widths=0.4, labels=labels,
+    patch_artist=True
 )
 # Axis details
-ax.set_title("Men's Long Jump Finals")
-ax.set_ylabel('Distance [m]')
-ax.set_xlabel('Olympics')
-ax.tick_params(axis='x', bottom=False)
-xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+plt.title("Men's Long Jump Finals")
+plt.ylabel('Distance [m]')
+plt.xlabel('Olympics')
+plt.minorticks_on()
+plt.tick_params(axis='x', which='minor', bottom=False)
 # Set the fill colour
-plt.setp(bp['boxes'], facecolor='C0')
+plt.setp(bp['boxes'], facecolor='C0', lw=2)
 # Set the colour of the median lines
-plt.setp(bp['medians'], color='black')
-# Background
-ax.set_facecolor('0.9')
-plt.grid(color='white')
-ax.axhline(8, color='black', alpha=0.4)
-ax.axhline(8.5, color='black', alpha=0.4)
+plt.setp(bp['medians'], color='black', lw=2)
+# Set the width of the whiskers
+plt.setp(bp['whiskers'], lw=2)
+# Set the width of the caps
+plt.setp(bp['caps'], lw=2)
+# Lines
+plt.grid(color='grey', alpha = 0.6)
+plt.axhline(8, color='grey', zorder=1)
+plt.axhline(8.5, color='grey', zorder=1)
 # Get the samples' medians
 medians = [bp['medians'][i].get_ydata()[0] for i in range(len(labels))]
 medians = [str(round(s, 2)) for s in medians]
 # Get the x-positions for the labels
 x_pos = np.arange(len(labels)) + 1
 # Get the y-axis limits and range
-y_lim = ax.get_ylim()
+y_lim = plt.ylim()
 y_range = y_lim[1] - y_lim[0]
 # Increase the height of the plot by 5% to fit the labels
-ax.set_ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
+plt.ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
 # Set the y-positions for the labels
 y_pos = y_lim[0] - 0.025 * y_range
 # Create the annotations
 for i in range(len(labels)):
     k = i % 2
-    ax.text(
+    plt.text(
         x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
         horizontalalignment='center', size='small'
     )
@@ -513,9 +527,8 @@ Subplots
 The easiest way to plots multiple graphs that all have the same format is to create a function and call that repeatedly on each dataset. Some changes do need to be made, however:
 
 - Increase the size of the image so that all plots can fit onto it. Generally speaking, six plots can fit onto an A4 page.
-- Subplots need to be created using `fig, axes = plt.subplots(nrows, ncols)`
-- Change the spacing between graphs and the edges of the image with `fig.subplots_adjust()`
-- Iterate though the datasets you want to plot using `for i, ax in enumerate(axes.flat):`
+- Subplots need to be created using `subplot(rcn)` where `r` is the total number of rows of plots you intend to make, `c` is the number of columns of plots you intend to make and `n` is the number that this plot will be within the grid of plots. For example, `subplot(321)` will divide your figure into a grid with 3 rows and 2 columns (ie space for 6 plots) and then create an empty sub-plot for the first (top-left) of these plots. The plots are numbered using 'reading order' (left-to-right, top-to-bottom), ie plot 2 will be top-right, plot 3 will be middle-left and so on.
+- Change the spacing between graphs and the edges of the image with `subplots_adjust()`
 - Certain elements that change from plot-to-plot now become arguments of the function:
     + The datasets themselves
     + The axes themselves
@@ -591,18 +604,18 @@ A = 4
 plt.rc('figure', figsize=[33.11 * .5**(.5 * A), 46.82 * .5**(.5 * A)])
 
 
-def plot_boxplots(data, labels, ax, title):
+def plot_boxplots(data, labels, title):
     """Plot multiple boxplots."""
-    bp = ax.boxplot(
+    bp = plt.boxplot(
         data, sym='', whis=[0, 100], widths=0.4, labels=labels,
         patch_artist=True
     )
     # Axis details
-    ax.set_title(title)
-    ax.set_ylabel('Distance [m]')
-    ax.set_xlabel('Olympics')
-    ax.tick_params(axis='x', bottom=False)
-    xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+    plt.title(title)
+    plt.ylabel('Distance [m]')
+    plt.xlabel('Olympics')
+    plt.minorticks_on()
+    plt.tick_params(axis='x', which='minor', bottom=False)
     # Set the fill colour
     plt.setp(bp['boxes'], facecolor='C0')
     # Set the colour of the median lines
@@ -613,49 +626,50 @@ def plot_boxplots(data, labels, ax, title):
     # Get the x-positions for the labels
     x_pos = np.arange(len(labels)) + 1
     # Get the y-axis limits and range
-    y_lim = ax.get_ylim()
+    y_lim = plt.ylim()
     y_range = y_lim[1] - y_lim[0]
     # Increase the height of the plot by 5% to fit the labels
-    ax.set_ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
+    plt.ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
     # Set the y-positions for the labels
     y_pos = y_lim[0] - 0.025 * y_range
     # Create the annotations
     for i in range(len(labels)):
         k = i % 2
-        ax.text(
+        plt.text(
             x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
             horizontalalignment='center', size='small'
         )
 
 
 # Call function
-fig, axes = plt.subplots(3, 2)
-fig.subplots_adjust(
-    left=0.1, right=0.98, top=0.97, bottom=0.06, wspace=0.3, hspace=0.25
+for i, v in enumerate(range(321, 327)):
+    plt.subplot(v)
+    plot_boxplots(data[i], labels[i], titles[i])
+plt.subplots_adjust(
+    left=0.1, right=0.98, top=0.95, bottom=0.1, wspace=0.5, hspace=0.5
 )
-for i, ax in enumerate(axes.flat):
-    plot_boxplots(data[i], labels[i], ax, titles[i])
+
 plt.show()
 ```
 
-```{python, fig.height=11.7, fig.width=8.8, echo=FALSE}
+```{python, fig.height=23.4, fig.width=8.8, echo=FALSE}
 # Make the figure A4
 A = 4
 plt.rc('figure', figsize=[33.11 * .5**(.5 * A), 46.82 * .5**(.5 * A)])
 
 
-def plot_boxplots(data, labels, ax, title):
+def plot_boxplots(data, labels, title):
     """Plot multiple boxplots."""
-    bp = ax.boxplot(
+    bp = plt.boxplot(
         data, sym='', whis=[0, 100], widths=0.4, labels=labels,
         patch_artist=True
     )
     # Axis details
-    ax.set_title(title)
-    ax.set_ylabel('Distance [m]')
-    ax.set_xlabel('Olympics')
-    ax.tick_params(axis='x', bottom=False)
-    xticks = ax.set_xticks(np.arange(len(labels) + 1) + 0.5, minor=True)
+    plt.title(title)
+    plt.ylabel('Distance [m]')
+    plt.xlabel('Olympics')
+    plt.minorticks_on()
+    plt.tick_params(axis='x', which='minor', bottom=False)
     # Set the fill colour
     plt.setp(bp['boxes'], facecolor='C0')
     # Set the colour of the median lines
@@ -666,16 +680,16 @@ def plot_boxplots(data, labels, ax, title):
     # Get the x-positions for the labels
     x_pos = np.arange(len(labels)) + 1
     # Get the y-axis limits and range
-    y_lim = ax.get_ylim()
+    y_lim = plt.ylim()
     y_range = y_lim[1] - y_lim[0]
     # Increase the height of the plot by 5% to fit the labels
-    ax.set_ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
+    plt.ylim([y_lim[0] - 0.05 * y_range, y_lim[1]])
     # Set the y-positions for the labels
     y_pos = y_lim[0] - 0.025 * y_range
     # Create the annotations
     for i in range(len(labels)):
         k = i % 2
-        ax.text(
+        plt.text(
             x_pos[i], y_pos, r'$\tilde{x} =' + fr' {medians[i]}$ m',
             horizontalalignment='center', size='small'
         )
@@ -683,11 +697,13 @@ def plot_boxplots(data, labels, ax, title):
 
 # Call function
 fig, axes = plt.subplots(3, 2)
-fig.subplots_adjust(
+for i, v in enumerate(range(321, 327)):
+    plt.subplot(v)
+    plot_boxplots(data[i], labels[i], titles[i])
+plt.subplots_adjust(
     left=0.1, right=0.98, top=0.97, bottom=0.06, wspace=0.3, hspace=0.25
 )
-for i, ax in enumerate(axes.flat):
-    plot_boxplots(data[i], labels[i], ax, titles[i])
+
 plt.show()
 ```
 
