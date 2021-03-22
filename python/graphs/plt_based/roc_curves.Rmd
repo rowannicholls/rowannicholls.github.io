@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Graphs in Python:</font><br>Receiver Operating Characteristic Curves<font size="5"><br>_using explicitly defined axes in Matplotlib_</font>'
+title: '<font size="5">Graphs in Python:</font><br>Receiver Operating Characteristic Curves<font size="5"><br>_without using axes objects_</font>'
 output:
     html_document:
         theme: paper
@@ -26,7 +26,7 @@ As such, the **fare** that they paid will be used as the *score* data and whethe
 
 The data can be downloaded from the Stanford website using Pandas:
 
-```{python, results='hide'}
+```{python, results = 'hide'}
 import pandas as pd
 
 # Settings for displaying pandas data frames
@@ -189,61 +189,53 @@ AUC = -np.trapz(spec, tpr)
 
 Now we can use Matplotlib to create the plot:
 
-```{python, results='hide', eval=FALSE}
+```{python, results = 'hide', eval = FALSE}
 #
 # Plot
 #
-ax = plt.axes()
 # Use an f-string to include the AUC in the title
-ax.set_title(
-    'Receiver Operating Characteristic Curve\n'
-    f'(AUC = {AUC:4.2})'
-)
+plt.title('Receiver Operating Characteristic Curve\n' f'(AUC = {AUC:4.2})')
 # Plot the ROC curve
-ax.plot(spec, tpr, 'k-')
+plt.plot(spec, tpr, 'k-')
 # Plot the diagonal line (be careful to not start at the origin)
-ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
+plt.plot([1, 0], [0, 1], 'k-', alpha=0.3)
 # Reverse the x-axis
-ax.set_xlim([1, 0])
-ax.set_ylim([0, 1])
-ax.set_xlabel('Specificity')
-ax.set_ylabel('Sensitivity')
+plt.ylabel('Sensitivity')
+plt.ylim([0, 1])
+plt.xlabel('Specificity')
+plt.xlim([1, 0])
 # Make the plot square
-ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+plt.gca().set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+
 plt.show()
-plt.close()
 ```
 
-```{python, results='hide', echo=FALSE}
+```{python, results = 'hide', echo = FALSE}
 #
 # Plot
 #
-ax = plt.axes()
 # Use an f-string to include the AUC in the title
-ax.set_title(
-    'Receiver Operating Characteristic Curve\n'
-    f'(AUC = {AUC:4.2})'
-)
+plt.title('Receiver Operating Characteristic Curve\n' f'(AUC = {AUC:4.2})')
 # Plot the ROC curve
-ax.plot(spec, tpr, 'k-')
+plt.plot(spec, tpr, 'k-')
 # Plot the diagonal line (be careful to not start at the origin)
-ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
+plt.plot([1, 0], [0, 1], 'k-', alpha=0.3)
 # Reverse the x-axis
-ax.set_xlim([1, 0])
-ax.set_ylim([0, 1])
-ax.set_xlabel('Specificity')
-ax.set_ylabel('Sensitivity')
+plt.ylabel('Sensitivity')
+plt.ylim([0, 1])
+plt.xlabel('Specificity')
+plt.xlim([1, 0])
 # Make the plot square
-ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+plt.gca().set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+
 plt.show()
-plt.close()
 ```
 
 Create ROC Curve Using scikit-learn
 ===================================
 Now repeat the process using the functions provided by the `sklearn` package. This is not only quicker in terms of number of lines of code but it also runs quicker:
 
-```{python, results='hide', eval=FALSE}
+```{python, results = 'hide', eval = FALSE}
 import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn.metrics as metrics
@@ -265,28 +257,24 @@ spec = [1 - x for x in fpr]
 #
 # Plot
 #
-ax = plt.axes()
 # Use an f-string to include the AUC in the title
-ax.set_title(
-    'Receiver Operating Characteristic Curve\n'
-    f'(AUC = {AUC:4.2})'
-)
+plt.title('Receiver Operating Characteristic Curve\n' f'(AUC = {AUC:4.2})')
 # Plot the ROC curve
-ax.plot(spec, tpr, 'k-')
+plt.plot(spec, tpr, 'k-')
 # Plot the diagonal line (be careful to not start at the origin)
-ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
+plt.plot([1, 0], [0, 1], 'k-', alpha=0.3)
 # Reverse the x-axis
-ax.set_xlim([1, 0])
-ax.set_ylim([0, 1])
-ax.set_xlabel('Specificity')
-ax.set_ylabel('Sensitivity')
+plt.ylabel('Sensitivity')
+plt.ylim([0, 1])
+plt.xlabel('Specificity')
+plt.xlim([1, 0])
 # Make the plot square
-ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+plt.gca().set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+
 plt.show()
-plt.close()
 ```
 
-```{python, results='hide', echo=FALSE}
+```{python, results = 'hide', echo = FALSE}
 import pandas as pd
 import matplotlib.pyplot as plt
 import sklearn.metrics as metrics
@@ -308,25 +296,21 @@ spec = [1 - x for x in fpr]
 #
 # Plot
 #
-ax = plt.axes()
 # Use an f-string to include the AUC in the title
-ax.set_title(
-    'Receiver Operating Characteristic Curve\n'
-    f'(AUC = {AUC:4.2})'
-)
+plt.title('Receiver Operating Characteristic Curve\n' f'(AUC = {AUC:4.2})')
 # Plot the ROC curve
-ax.plot(spec, tpr, 'k-')
+plt.plot(spec, tpr, 'k-')
 # Plot the diagonal line (be careful to not start at the origin)
-ax.plot([1, 0], [0, 1], 'k-', alpha=0.3)
+plt.plot([1, 0], [0, 1], 'k-', alpha=0.3)
 # Reverse the x-axis
-ax.set_xlim([1, 0])
-ax.set_ylim([0, 1])
-ax.set_xlabel('Specificity')
-ax.set_ylabel('Sensitivity')
+plt.ylabel('Sensitivity')
+plt.ylim([0, 1])
+plt.xlabel('Specificity')
+plt.xlim([1, 0])
 # Make the plot square
-ax.set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+plt.gca().set_aspect(abs(max(fpr) - min(fpr)) / abs(max(tpr) - min(tpr)))
+
 plt.show()
-plt.close()
 ```
 
 [⇦ Back](../../../python.html)
