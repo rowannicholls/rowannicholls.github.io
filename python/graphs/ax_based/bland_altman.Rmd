@@ -33,7 +33,7 @@ df = pd.DataFrame({
 })
 ```
 
-This data shows the maximum speed of expiration (the 'peak expiratory flow rate' or PEFR) of 17 people. It was collected using two different measurement devices: a large and a mini Wright peak flow meter.
+This data shows the maximum speed of expiration (the 'peak expiratory flow rate', or PEFR) of 17 people. It was collected using two different measurement devices: a large and a mini Wright peak flow meter.
 
 Value-Value Plot
 ================
@@ -61,8 +61,11 @@ Now let's add a **line of equality**. This shows *ideal agreement*: the closer t
 - `plt.show()` is an explicit instruction to (re-)show the plot
 
 ```{python, eval = FALSE}
+# Get the axis limits
 left, right = ax.get_xlim()
+# Plot the line of equality
 ax.plot([0, right], [0, right])
+# Set the axis limits
 ax.set_ylim(0, right)
 ax.set_xlim(0, right)
 
@@ -75,8 +78,11 @@ ax.scatter(df['Wright Large'], df['Wright Mini'])
 ax.set_title('Peak Expiratory Flow Rate')
 ax.set_ylabel('Mini Meter (L/min)')
 ax.set_xlabel('Large Meter (L/min)')
+# Get the axis limits
 left, right = ax.get_xlim()
+# Plot the line of equality
 ax.plot([0, right], [0, right])
+# Set the axis limits
 ax.set_ylim(0, right)
 ax.set_xlim(0, right)
 
