@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Graphs in Python:</font><br>Bar Plots with One Group of Data<br><font size="5">_using explicitly defined axes in Matplotlib_</font>'
+title: '<font size="5">Graphs in Python:</font><br>Bar Plots with One Group of Data<br><font size="5">_without using axes objects_</font>'
 output:
     html_document:
         theme: paper
@@ -16,7 +16,7 @@ output:
 
 The Basics
 ==========
-A bar plot is created on a set of axes in Python by using the `ax.bar()` function from Matplotlib. The first argument passed to this function is the x-positions of the bars and the second argument is the heights:
+A bar plot is created in Python by using the `bar()` function from Matplotlib's pyplot module (which gets imported and re-named to a shorthand name: `plt`). The first argument passed to this function is the x-positions of the bars and the second argument is the heights. The function `show()` will then display the graph:
 
 ```{python, eval = FALSE}
 import matplotlib.pyplot as plt
@@ -24,10 +24,8 @@ import matplotlib.pyplot as plt
 x_positions = [0, 1, 2]
 heights = [6, 12, 9]
 
-ax = plt.axes()
-ax.bar(x_positions, heights)
+plt.bar(x_positions, heights)
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -36,28 +34,25 @@ import matplotlib.pyplot as plt
 x_positions = [0, 1, 2]
 heights = [6, 12, 9]
 
-ax = plt.axes()
-ax.bar(x_positions, heights)
+plt.bar(x_positions, heights)
 plt.show()
-plt.close()
 ```
 
 Plot Title, Axis Labels, Bar Widths
 -----------------------------------
-Titles and labels are added using `set_title()`, `set_xlabel()` and `set_ylabel()` while the width of the bars is defined by the third argument in the `ax.bar()` function:
+Titles and labels are added using `title()`, `xlabel()` and `ylabel()` while the width of the bars is defined by the third argument in the `bar()` function:
 
 ```{python, eval = FALSE}
 x_positions = [0, 1, 2]
 heights = [6, 12, 9]
 width = 0.5
 
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('How bar plots work in Matplotlib')
-ax.set_xlabel('The first argument of the ax.bar() function')
-ax.set_ylabel('The second argument of the ax.bar() function')
+plt.bar(x_positions, heights, width)
+plt.title('How bar plots work in Matplotlib')
+plt.xlabel('The first argument of the bar() function')
+plt.ylabel('The second argument of the bar() function')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -65,13 +60,12 @@ x_positions = [0, 1, 2]
 heights = [6, 12, 9]
 width = 0.5
 
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('How bar plots work in Matplotlib')
-ax.set_xlabel('The first argument of the ax.bar() function')
-ax.set_ylabel('The second argument of the ax.bar() function')
+plt.bar(x_positions, heights, width)
+plt.title('How bar plots work in Matplotlib')
+plt.xlabel('The first argument of the bar() function')
+plt.ylabel('The second argument of the bar() function')
+
 plt.show()
-plt.close()
 ```
 
 Automatically Get the x-Positions
@@ -85,13 +79,12 @@ heights = [6, 12, 9]
 x_positions = np.arange(len(heights))
 width = 0.5
 
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('How bar plots work in Matplotlib')
-ax.set_xlabel('The first argument of the ax.bar() function')
-ax.set_ylabel('The second argument of the ax.bar() function')
+plt.bar(x_positions, heights, width)
+plt.title('How bar plots work in Matplotlib')
+plt.xlabel('The first argument of the bar() function')
+plt.ylabel('The second argument of the bar() function')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -101,13 +94,60 @@ heights = [6, 12, 9]
 x_positions = np.arange(len(heights))
 width = 0.5
 
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('How bar plots work in Matplotlib')
-ax.set_xlabel('The first argument of the ax.bar() function')
-ax.set_ylabel('The second argument of the ax.bar() function')
+plt.bar(x_positions, heights, width)
+plt.title('How bar plots work in Matplotlib')
+plt.xlabel('The first argument of the bar() function')
+plt.ylabel('The second argument of the bar() function')
+
 plt.show()
-plt.close()
+```
+
+Offset the Bars
+---------------
+In this example, a fictitious exercise session is plotted. The x-axis represents time, so it makes sense to not have any gaps between the bars. It also makes sense to offset them: if something starts at minute 3, that means it runs from 3 to 4 so you would want the bar that relates to minute 3 to be centred on 3.5, not 3.
+
+```{python, eval = FALSE}
+import numpy as np
+
+speed = [
+    20, 24, 28, 32, 36, 32, 28, 24, 20, 24, 28, 32, 36,
+    32, 28, 24, 20, 24, 28, 32, 36, 32, 28, 24, 20
+]
+minute = np.arange(len(speed))
+offset = 0.5
+width = 1
+
+plt.bar(minute + offset, speed, width)
+plt.title('Speed Interval Training')
+plt.ylabel('Speed')
+plt.ylim(17, 39)
+plt.yticks(sorted(set(speed)))
+plt.xlabel('Minute')
+plt.xlim(0, len(minute))
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import numpy as np
+
+speed = [
+    20, 24, 28, 32, 36, 32, 28, 24, 20, 24, 28, 32, 36,
+    32, 28, 24, 20, 24, 28, 32, 36, 32, 28, 24, 20
+]
+minute = np.arange(len(speed))
+offset = 0.5
+width = 1
+
+plt.bar(minute + offset, speed, width)
+plt.title('Speed Interval Training')
+plt.ylabel('Speed')
+plt.ylim(17, 39)
+plt.yticks(sorted(set(speed)))
+plt.xlabel('Minute')
+plt.xlim(0, len(minute))
+
+plt.show()
 ```
 
 Plotting a Dataset
@@ -164,13 +204,12 @@ heights = petal_length
 x_positions = np.arange(len(heights))
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights)
-ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
-ax.set_xlabel('')
-ax.set_ylabel('Length (cm)')
+plt.bar(x_positions, heights)
+plt.title('The lengths of the petals of 50 iris versicolor flowers')
+plt.ylabel('Length (cm)')
+plt.xlabel('')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -179,13 +218,12 @@ heights = petal_length
 x_positions = np.arange(len(heights))
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights)
-ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
-ax.set_xlabel('')
-ax.set_ylabel('Length (cm)')
+plt.bar(x_positions, heights)
+plt.title('The lengths of the petals of 50 iris versicolor flowers')
+plt.ylabel('Length (cm)')
+plt.xlabel('')
+
 plt.show()
-plt.close()
 ```
 
 This code has worked as expected, but it's probably not the graph that we want. It would be much more useful to have a bar plot of the *number* of petals of each length. For that we need to plot the *counts*, ie the number of occurrences of each petal length:
@@ -204,13 +242,12 @@ heights = cnts
 width = 0.1
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
-ax.set_xlabel('Length (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width)
+plt.title('The lengths of the petals of 50 iris versicolor flowers')
+plt.xlabel('Length (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -223,18 +260,17 @@ heights = cnts
 width = 0.1
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('The lengths of the petals of 50 iris versicolor flowers')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width)
+plt.title('The lengths of the petals of 50 iris versicolor flowers')
+plt.xlabel('Length (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 Data Types
 ==========
-The first examples used **lists** while the last examples (the ones that used the iris dataset) used **arrays**. It makes no difference; the `ax.bar()` function treats them both the same. It also treats Pandas data frames and series the same, as shown in this example where the iris dataset is first converted into a data frame before being plotted:
+The first examples used **lists** while the last examples (the ones that used the iris dataset) used **arrays**. It makes no difference; the `bar()` function treats them both the same. It also treats Pandas data frames and series the same, as shown in this example where the iris dataset is first converted into a data frame before being plotted:
 
 ```{python, eval = FALSE}
 import pandas as pd
@@ -260,13 +296,12 @@ heights = cnts
 width = 0.1
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('Bar plot using a Pandas data frame')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width)
+plt.title('Bar plot using a Pandas data frame')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -293,13 +328,12 @@ heights = cnts
 width = 0.1
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title('Bar plot using a Pandas data frame')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width)
+plt.title('Bar plot using a Pandas data frame')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 Using Latex and Annotations
@@ -307,43 +341,43 @@ Using Latex and Annotations
 It's possible to use Latex for the text in the plot, which brings with it the ability to use Greek letters, equations, Unicode symbols and the like. See [here](https://rowannicholls.github.io/python/graphs/latex_in_labels.html) for more info.
 
 ```{python, eval = FALSE}
-# Settings
-x = 6  # Want figure to be A6
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+# Make figures A6 in size
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Use Latex
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title(r'Using \LaTeX')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel(r'Count (\textSigma)')
+plt.bar(x_positions, heights, width)
+plt.title(r'Using \LaTeX')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel(r'Count (\textSigma)')
 plt.annotate(r'We can create equations if we want:', (3, 6))
 plt.annotate(r'$\Sigma = \frac{x}{2}$', (3, 5.5))
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide', dpi = 300}
-# Settings
-x = 5  # Want figure to be A5
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+# Make figures A6 in size
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Use Latex
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width)
-ax.set_title(r'Using \LaTeX')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel(r'Count (\textSigma)')
+plt.bar(x_positions, heights, width)
+plt.title(r'Using \LaTeX')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel(r'Count (\textSigma)')
 plt.annotate(r'We can create equations if we want:', (3, 6))
 plt.annotate(r'$\Sigma = \frac{x}{2}$', (3, 5.5))
+
 plt.show()
-plt.close()
 ```
 
 Using Colours
@@ -358,13 +392,12 @@ Defined Colours
 colours = ['red', 'green']
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width, color=colours)
-ax.set_title('Customising the Colours')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width, color=colours)
+plt.title('Customising the Colours')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide', dpi = 300}
@@ -372,13 +405,12 @@ plt.close()
 colours = ['red', 'green']
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width, color=colours)
-ax.set_title('Customising the Colours')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width, color=colours)
+plt.title('Customising the Colours')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 Colour Palette
@@ -386,24 +418,22 @@ Colour Palette
 
 ```{python, eval = FALSE}
 # Colour Palette
-ax = plt.axes()
-ax.bar(x_positions, heights, width, color=['C0', 'C1', 'C2'])
-ax.set_title('Customising the Colours')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width, color=['C0', 'C1', 'C2'])
+plt.title('Customising the Colours')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide', dpi = 300}
 # Colour Palette
-ax = plt.axes()
-ax.bar(x_positions, heights, width, color=['C0', 'C1', 'C2'])
-ax.set_title('Customising the Colours')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width, color=['C0', 'C1', 'C2'])
+plt.title('Customising the Colours')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 Custom Colours
@@ -420,13 +450,12 @@ dgrey = '#43454C'
 colours = [pink, green, blue, yellow, lgrey, dgrey]
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width, color=colours)
-ax.set_title('Customising the Colours')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width, color=colours)
+plt.title('Customising the Colours')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 ```{python, echo = FALSE, results = 'hide', dpi = 300}
@@ -440,13 +469,12 @@ dgrey = '#43454C'
 colours = [pink, green, blue, yellow, lgrey, dgrey]
 
 # Plot
-ax = plt.axes()
-ax.bar(x_positions, heights, width, color=colours)
-ax.set_title('Customising the Colours')
-ax.set_xlabel('Petal Lengths (cm)')
-ax.set_ylabel('Count')
+plt.bar(x_positions, heights, width, color=colours)
+plt.title('Customising the Colours')
+plt.xlabel('Petal Lengths (cm)')
+plt.ylabel('Count')
+
 plt.show()
-plt.close()
 ```
 
 Save Plot
