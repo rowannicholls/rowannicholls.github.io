@@ -16,11 +16,45 @@ output:
 
 > This tutorial is about *plotting* Bland-Altman graphs. For a more complete tutorial on Bland-Altman analysis as a whole, see [here](../../statistics/agreement/bland_altman_giavarina.html). For a tutorial on scatter plots in general, see [here](scatterplots.html), and for line plots in general, see [here](lineplots.html).
 
-**Bland-Altman plots** are used to assess the agreement between two methods of measuring something, usually clinical information. They were discussed in [Bland & Altman's 1986 paper](https://pubmed.ncbi.nlm.nih.gov/2868172/) and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). Here is the example data that was used in the 1986 paper in **data frame** format (note that, in order to use data frames, the `pandas` library first needs to be imported):
+**Bland-Altman plots** are used to assess the agreement between two methods of measuring something, usually clinical information. They were discussed in Bland & Altman's 1986 paper (available [here](https://www-users.york.ac.uk/~mb55/meas/ba.pdf) and/or [here](https://pubmed.ncbi.nlm.nih.gov/2868172/)) and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). Here is the example data that was used in the 1986 paper in **data frame** format (note that, in order to use data frames, the `pandas` library first needs to be imported):
+
+```{python, eval = FALSE, echo = FALSE}
+import pandas as pd
+
+# Peak expiratory flow rate measurements made using a Wright peak flow meter
+# and a mini Wright peak flow meter.
+# - https://www-users.york.ac.uk/~mb55/datasets/pefr.dct
+# - https://www-users.york.ac.uk/~mb55/datasets/datasets.htm
+# - https://www-users.york.ac.uk/~mb55/meas/ba.pdf
+df = pd.DataFrame({
+    'subject': [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+    'Wright Large 1': [
+        494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656, 267, 478,
+        178, 423, 427
+    ],
+    'Wright Large 2': [
+        490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633, 275, 492,
+        165, 372, 421
+    ],
+    'Wright Mini 1': [
+        512, 430, 520, 428, 500, 600, 364, 380, 658, 445, 432, 626, 260, 477,
+        259, 350, 451
+    ],
+    'Wright Mini 2': [
+        525, 415, 508, 444, 500, 625, 460, 390, 642, 432, 420, 605, 227, 467,
+        268, 370, 443
+    ]
+})
+```
 
 ```{python}
 import pandas as pd
 
+# Peak expiratory flow rate measurements made using a Wright peak flow meter
+# and a mini Wright peak flow meter.
+# - https://www-users.york.ac.uk/~mb55/datasets/pefr.dct
+# - https://www-users.york.ac.uk/~mb55/datasets/datasets.htm
+# - https://www-users.york.ac.uk/~mb55/meas/ba.pdf
 df = pd.DataFrame({
     'Wright Mini': [
         512, 430, 520, 428, 500, 600, 364, 380, 658,
@@ -494,6 +528,90 @@ plt.show()
 ```
 
 Finish by saving the figure as a PNG, JPG, PDF or other type of image with `savefig(<filename>)` where `<filename>` is the name you want the image file to have *with the extension included*. If you are plotting more than one figure in the same Python script, use `figure()` and `close()` before and after each, respectively, in order to tell Python when one plot ends and the next one starts.
+
+Using a Custom Function
+=======================
+Now that we have the code we need to plot both a value-value plot and a Bland-Altman plot we can put it into a function and call it on any dataset we want. Here's another example from the Bland-Altman 1986 paper: the repeatability of the large measurement device (two rounds of measurements on the same participants, compared to each other):
+
+```{python}
+def bland_altman_analysis(x, y):
+    """Perform Bland-Altman analysis."""
+    diffs = x - y
+    means = (x + y) / 2
+    # Average difference (aka the bias)
+    bias = np.mean(diffs)
+    # Sample standard deviation
+    sd = np.std(diffs, ddof=1)
+    # Limits of agreement
+    lower_loa = bias - 1.96 * sd
+    upper_loa = bias + 1.96 * sd
+    # Within-subject sample variances
+    var_w = np.var((x, y), axis=0, ddof=1)
+    # Mean within-subject sample variance
+    var_w = np.mean(var_w)
+    # Within-subject sample standard deviation
+    s_w = np.sqrt(var_w)
+    # Coefficient of repeatability
+    rc = 1.96 * np.sqrt(2) * s_w
+    print(f'Coefficient of repeatability: {rc}')
+
+    # Value-value plot
+    plt.figure()
+    plt.scatter(x, y, c='k', s=20, alpha=0.6, marker='o')
+    plt.title('Peak Expiratory Flow Rate using a Large Wright Peak Flow Meter')
+    plt.ylabel('Second Measurement (L/min)')
+    plt.xlabel('First Measurement (L/min)')
+    # Get axis limits
+    left, right = plt.xlim()
+    # Reference line
+    plt.plot([0, right], [0, right], c='grey', ls='--', label='Line of Equality')
+    # Set axis limits
+    plt.ylim(0, right)
+    plt.xlim(0, right)
+    # Set aspect ratio
+    plt.gca().set_aspect('equal')
+    # Legend
+    plt.legend(frameon=False)
+    # Finish
+    plt.show()
+    plt.close()
+
+    # Bland-Altman plot
+    plt.figure()
+    plt.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+    plt.title('Repeatability of the Large Wright Peak Flow Meter')
+    plt.ylabel('Difference (L/min)')
+    plt.xlabel('Mean (L/min)')
+    # Get axis limits
+    left, right = plt.xlim()
+    bottom, top = plt.ylim()
+    # Set y-axis limits
+    max_y = max(abs(bottom), abs(top))
+    plt.ylim(-max_y * 1.1, max_y * 1.1)
+    # Set x-axis limits
+    domain = right - left
+    plt.xlim(left, left + domain * 1.1)
+    # Plot the zero line
+    plt.axhline(y=0, c='k', lw=0.5)
+    # Plot the bias and the limits of agreement
+    plt.axhline(y=upper_loa, c='grey', ls='--')
+    plt.axhline(y=bias, c='grey', ls='--')
+    plt.axhline(y=lower_loa, c='grey', ls='--')
+    # Finish
+    plt.show()
+    plt.close()
+
+
+x = np.array([
+    494, 395, 516, 434, 476, 557, 413, 442, 650,
+    433, 417, 656, 267, 478, 178, 423, 427
+])
+y = np.array([
+    490, 397, 512, 401, 470, 611, 415, 431, 638,
+    429, 420, 633, 275, 492, 165, 372, 421
+])
+bland_altman_analysis(x, y)
+```
 
 [⇦ Back](../../../python.html)
 
