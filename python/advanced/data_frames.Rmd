@@ -139,8 +139,8 @@ Change the amount of information that gets shown in your console when you print 
 pd.set_option('display.max_rows', 3)
 pd.set_option('display.max_columns', 20)
 pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.width', 200)
 pd.set_option('display.precision', 3)
-pd.set_option('display.width', 1000)
 print(df)
 ```
 
