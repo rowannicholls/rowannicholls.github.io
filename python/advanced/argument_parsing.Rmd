@@ -399,6 +399,33 @@ args = parser.parse_args()
 ## Written by rowannicholls.github.io
 ```
 
+Manually Catching Mistakes
+--------------------------
+You can **manually throw an error** if an incorrect combination of arguments is passed. Let's use a similar example to the one above where we're imagining a programme that can send messages:
+
+- With most apps and programmes like this, if you write a message but don't send it it will be saved to your drafts. Thus, it's not compulsory to include a recipient's name and address every time you write a message.
+- However, if you **do** want to send it, you will usually need to specify *both* a name and an address (in practice, these can usually be stored together in an address book, but *the programme as a whole* will still need both). Thus, if you include a name, you also need to include an address. This means that an error should be thrown if only one is provided:
+
+```{python, eval = FALSE}
+import argparse
+
+# Create command-line argument parser
+parser = argparse.ArgumentParser()
+# Add positional argument
+parser.add_argument('message')
+# Add optional arguments
+parser.add_argument('--recipient', '-r')
+parser.add_argument('--address', '-a')
+# Parse arguments from terminal
+args = parser.parse_args()
+
+# If you include a name, you also need to include an address. Throw an error if this is not the case
+if args.recipient is not None and args.address is None:
+    parser.error("A 'recipient' and an 'address' are both needed.")
+if args.recipient is None and args.address is not None:
+    parser.error("A 'recipient' and an 'address' are both needed.")
+```
+
 [⇦ Back](../../python.html)
 
 </font>
