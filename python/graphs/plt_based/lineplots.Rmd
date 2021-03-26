@@ -633,6 +633,61 @@ plt.fill_between(week, man_city, wolves, facecolor='gray', alpha=0.5)
 plt.show()
 ```
 
+- Use `plt.fill_betweenx(y, x)` to do the same thing as above but between two **vertical curves** (or between a curve and the y-axis)
+- Use the `hatch` keyword argument to **apply a pattern** to the shaded area. To increase the density of the shading, increase the number of characters when setting the hatch pattern (see [here](../symbols_linestyles_colours.html#hatching) for more examples):
+
+```{python, eval = FALSE}
+week = np.arange(1, 39)
+man_city = [
+    3, 6, 7, 10, 13, 16, 19, 20, 23, 26, 29, 32, 35, 38, 41, 41, 44, 44, 44,
+    47, 50, 53, 56, 56, 62, 65, 65, 68, 71, 74, 74, 80, 80, 83, 89, 92, 95, 98
+]
+wolves = [
+    1, 1, 2, 5, 8, 9, 12, 15, 15, 15, 15, 16, 16, 16, 19, 22, 25, 25, 26, 29,
+    29, 29, 32, 35, 38, 39, 40, 40, 43, 44, 44, 47, 47, 47, 51, 54, 57, 57
+]
+
+# Plot
+plt.plot(week, man_city, c='#6caddf', label='Man City', lw=3)
+plt.plot(week, wolves, c='#fdbc02', label='Wolves', lw=3)
+plt.title('2018-19 English Premier League Season')
+plt.ylabel('Log Points')
+plt.ylim(0, 100)
+plt.xlabel('Week')
+plt.xlim(1, 38)
+plt.legend(framealpha=1)
+plt.fill_betweenx(man_city, week, facecolor='#6caddf', alpha=0.5, hatch='++')
+plt.fill_between(week, wolves, facecolor='#fdbc02', alpha=0.5, hatch='...')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+week = np.arange(1, 39)
+man_city = [
+    3, 6, 7, 10, 13, 16, 19, 20, 23, 26, 29, 32, 35, 38, 41, 41, 44, 44, 44,
+    47, 50, 53, 56, 56, 62, 65, 65, 68, 71, 74, 74, 80, 80, 83, 89, 92, 95, 98
+]
+wolves = [
+    1, 1, 2, 5, 8, 9, 12, 15, 15, 15, 15, 16, 16, 16, 19, 22, 25, 25, 26, 29,
+    29, 29, 32, 35, 38, 39, 40, 40, 43, 44, 44, 47, 47, 47, 51, 54, 57, 57
+]
+
+# Plot
+plt.plot(week, man_city, c='#6caddf', label='Man City', lw=3)
+plt.plot(week, wolves, c='#fdbc02', label='Wolves', lw=3)
+plt.title('2018-19 English Premier League Season')
+plt.ylabel('Log Points')
+plt.ylim(0, 100)
+plt.xlabel('Week')
+plt.xlim(1, 38)
+plt.legend(framealpha=1)
+plt.fill_betweenx(man_city, week, facecolor='#6caddf', alpha=0.5, hatch='++')
+plt.fill_between(week, wolves, facecolor='#fdbc02', alpha=0.5, hatch='...')
+
+plt.show()
+```
+
 Customising Axis Labels
 -----------------------
 

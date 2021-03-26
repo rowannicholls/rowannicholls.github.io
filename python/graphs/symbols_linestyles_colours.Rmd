@@ -306,6 +306,78 @@ plt.close()
 
 The Matplotlib documentation is [here](https://matplotlib.org/3.1.0/gallery/color/named_colors.html).
 
+Hatching
+========
+If you have a shaded area, a **hatching** can be applied by using the `hatch` keyword argument. For example, `hatch='/'` will create a diagonal pattern. Here's a demonstration of all the options:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+hatchings = ['/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*']
+for i, hatch in enumerate(hatchings):
+    plt.bar(i, 1, hatch=hatch)
+plt.title('Hatching Options - Large')
+plt.yticks([])
+plt.xticks(range(len(hatchings)), hatchings)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+hatchings = ['/', '\\', '|', '-', '+', 'x', 'o', 'O', '.', '*']
+for i, hatch in enumerate(hatchings):
+    plt.bar(i, 1, hatch=hatch)
+plt.title('Hatching Options - Large')
+plt.yticks([])
+plt.xticks(range(len(hatchings)), hatchings)
+plt.show()
+```
+
+If you want the hatching pattern to be smaller, simply *double the character* when setting the argument. For example, `hatch='//'` will create a diagonal pattern where the lines are closer together than in the previous example where `hatch='/'` was used.
+
+```{python, eval = FALSE}
+hatchings_x2 = [h + h for h in hatchings]
+for i, hatch in enumerate(hatchings_x2):
+    plt.bar(i, 1, hatch=hatch)
+plt.title('Hatching Options - Medium')
+plt.yticks([])
+plt.xticks(range(len(hatchings)), hatchings)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+hatchings_x2 = [h + h for h in hatchings]
+for i, hatch in enumerate(hatchings_x2):
+    plt.bar(i, 1, hatch=hatch)
+plt.title('Hatching Options - Medium')
+plt.yticks([])
+plt.xticks(range(len(hatchings)), hatchings)
+plt.show()
+```
+
+The same principle applies for three repeated characters: `hatch='///'` will make the lines closer together than `hatch='//'` will.
+
+```{python, eval = FALSE}
+hatchings_x3 = [h + h + h for h in hatchings]
+for i, hatch in enumerate(hatchings_x3):
+    plt.bar(i, 1, hatch=hatch)
+plt.title('Hatching Options - Small')
+plt.yticks([])
+plt.xticks(range(len(hatchings)), hatchings_x3)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+hatchings_x3 = [h + h + h for h in hatchings]
+for i, hatch in enumerate(hatchings_x3):
+    plt.bar(i, 1, hatch=hatch)
+plt.title('Hatching Options - Small')
+plt.yticks([])
+plt.xticks(range(len(hatchings)), hatchings_x3)
+plt.show()
+```
+
 [⇦ Back](../../python.html)
 
 </font>
