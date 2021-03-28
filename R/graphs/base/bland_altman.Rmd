@@ -1,0 +1,354 @@
+---
+title: '<font size="5">Graphs in Base R:</font><br>Bland-Altman Plots'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+> This tutorial is about *plotting* Bland-Altman graphs. For a more complete tutorial on Bland-Altman analysis as a whole, see [here](../../statistics/agreement/bland_altman_giavarina.html). For a tutorial on scatter plots in general, see [here](scatterplots.html) and, for line plots in general, see [here](lineplots.html).
+
+**Bland-Altman plots** are used to assess the agreement between two methods of measuring something, usually clinical information. They were discussed in Bland & Altman's 1986 paper (available [here](https://www-users.york.ac.uk/~mb55/meas/ba.pdf) and/or [here](https://pubmed.ncbi.nlm.nih.gov/2868172/)) and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). Here is the example data that was used in the 1986 paper in **data frame** format:
+
+```{r, eval = FALSE, echo = FALSE}
+# Peak expiratory flow rate measurements made using a Wright peak flow meter
+# and a mini Wright peak flow meter
+# - https://www-users.york.ac.uk/~mb55/datasets/pefr.dct
+# - https://www-users.york.ac.uk/~mb55/datasets/datasets.htm
+# - https://www-users.york.ac.uk/~mb55/meas/ba.pdf
+df <- data.frame(
+    `subject` = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17),
+    `Wright Large 1` = c(
+        494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656, 267, 478,
+        178, 423, 427
+    ),
+    `Wright Large 2` = c(
+        490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633, 275, 492,
+        165, 372, 421
+    ),
+    `Wright Mini 1` = c(
+        512, 430, 520, 428, 500, 600, 364, 380, 658, 445, 432, 626, 260, 477,
+        259, 350, 451
+    ),
+    `Wright Mini 2` = c(
+        525, 415, 508, 444, 500, 625, 460, 390, 642, 432, 420, 605, 227, 467,
+        268, 370, 443
+    )
+)
+```
+
+```{r}
+# Peak expiratory flow rate measurements made using a Wright peak flow meter
+# and a mini Wright peak flow meter
+# - https://www-users.york.ac.uk/~mb55/datasets/pefr.dct
+# - https://www-users.york.ac.uk/~mb55/datasets/datasets.htm
+# - https://www-users.york.ac.uk/~mb55/meas/ba.pdf
+df <- data.frame(
+    `Wright Mini` = c(
+        512, 430, 520, 428, 500, 600, 364, 380, 658,
+        445, 432, 626, 260, 477, 259, 350, 451
+    ),
+    `Wright Large` = c(
+        494, 395, 516, 434, 476, 557, 413, 442, 650,
+        433, 417, 656, 267, 478, 178, 423, 427
+    ),
+    check.names = FALSE
+)
+```
+
+This data shows the maximum speed of expiration (the 'peak expiratory flow rate', or PEFR) of 17 people. It was collected using two different measurement devices: a large and a mini Wright peak flow meter.
+
+Value-Value Plot
+================
+The data can be plotted as a scatter graph using the `plot()` function. Remember to use **double square brackets** when indexing the data frame to get your x- and y-data out because you want the numbers as *vectors* not as *data frames*:
+
+```{r}
+x <- df[["Wright Large"]]
+y <- df[["Wright Mini"]]
+plot(x, y)
+```
+
+Add a title and axis labels with the `main()`, `xlab()` and `ylab()` keyword arguments:
+
+```{r}
+x <- df[["Wright Large"]]
+y <- df[["Wright Mini"]]
+plot(
+    x, y, main = "Peak Expiratory Flow Rate",
+    xlab = "Large Meter (L/min)", ylab = "Mini Meter (L/min)"
+)
+```
+
+Now let's add a **line of equality**. This shows *ideal agreement*: the closer the points are to the line the better the two measurement methods agree with each other.
+
+- Add a **straight line** with the `abline()` function (to create a line 'from a to b'). Use the arguments `0` and `1` to give the line a y-intercept of 0 and a slope/gradient of 1. Set the `lty` and `col` keyword arguments to customise the line type and colour, respectively (for more on the customisation options, see [here](symbols_linetypes_colours.html)).
+- Add a **legend** to explain what the line is for. Use the `legend()` function for this, specifying the name, line type and colour of the line to appear inside it. You will also need to specify its position which can be done in one of two ways:
+    1. Provide the x- and y-coordinates of the top-left corner of the legend's box as two numbers
+    2. Provide its position in the plot area as a string, eg `"bottomright"`, `"top"` or`"center"`
+
+```{r}
+# Plot
+plot(
+    x, y, main = "Peak Expiratory Flow Rate",
+    xlab = "Large Meter (L/min)", ylab = "Mini Meter (L/min)"
+)
+# Reference line
+abline(0, 1, lty = "dashed", col = "gray18")
+# Include a legend
+legend("topleft", "Line of Equality", lty = "dashed", col = "gray18")
+```
+
+Finally, let's make some aesthetic improvements:
+
+- Change the marker shape, colour and fill colour using *keyword arguments* inside the `plot()` function:
+    + `pch` changes the marker **shape**, see all the available options [here](symbols_linetypes_colours.html#symbols)
+    + `col` changes the **colour** (options are [here](symbols_linetypes_colours.html#colours))
+    + `bg` changes the background colour of the marker (aka the **fill colour**)
+- Manually set the **axis limits** with `xlim` and `ylim` inside the `plot()` call. By default, the axes will actually be 6% larger than what you specify; this is usually a good thing because it ensures that all the data that has been plotted is visible. However, this behaviour can be overridden by using `xaxs = "i"` and `yaxs = "i"` which forces the axis limits to be *exactly* what was specified. For the record, `i` stands for "internal" and you can revert back to the default behaviour by using `xaxs = "r"` and `yaxs = "r"` where `r` is for "regular".
+- Change the **aspect ratio** of the plot with `par(pty="s")` which changes the **par**ameters of the plot to make it **s**quare. This function needs to be provided *before* the `plot()` call:
+
+```{r}
+# Make the plot square
+par(pty = "s")
+# Plot
+plot(
+    # Data to plot
+    x, y, pch = 21, col = "black", bg="gray",
+    # Graph labels
+    main = "Peak Expiratory Flow Rate",
+    xlab = "Large Meter (L/min)", ylab = "Mini Meter (L/min)",
+    # Axis control
+    xlim = c(0, 700), ylim = c(0, 700), xaxs = "i", yaxs = "i"
+)
+# Reference line
+abline(0, 1, lty = "dashed", col = "gray18")
+# Include a legend
+legend(0, 700, "Line of Equality", lty = "dashed", col = "gray18")
+```
+
+Bland-Altman Plot
+=================
+The Bland-Altman analysis is discussed [here](../../statistics/agreement/bland_altman_giavarina.html), but it can be replicated using the following code:
+
+```{r}
+df$means <- (df[["Wright Large"]] + df[["Wright Mini"]]) / 2
+df$diffs <- df[["Wright Large"]] - df[["Wright Mini"]]
+# Average difference (aka the bias)
+bias <- mean(df$diffs)
+# Sample standard deviation
+sd <- sd(df$diffs)
+# Limits of agreement
+upper_loa <- bias + 2 * sd
+lower_loa <- bias - 2 * sd
+```
+
+The results can now be plotted in a new scatter graph (we're using `par(pty = "m")` here to **m**aximise the size of the plot):
+
+```{r}
+# Maximise the size of the plot
+par(pty = "m")
+# Get domain and range
+top <- max(df$diffs)
+bottom <- min(df$diffs)
+left <- min(df$means)
+right <- max(df$means)
+domain <- right - left
+range <- top - bottom
+# Scatter plot
+plot(
+    # Data to plot
+    df$means, df$diffs, pch = 21, col = "black", bg="gray",
+    # Axis labels
+    main = "Bland-Altman Plot for Two Methods of Measuring PEFR",
+    xlab = "Mean (L/min)", ylab = "Difference (L/min)",
+    # Axis control
+    xlim = c(left - 0.1 * domain, right + 0.2 * domain),
+    ylim = c(bottom - 0.1 * range, top + 0.1 * range),
+    xaxs = "i", yaxs = "i"
+)
+```
+
+We should add in the zero line, the bias line and the limits of agreement to give these points some context. Horizontal lines that span the entire width like these can be added easily using `abline()` as before:
+
+```{r}
+# Maximise the size of the plot
+par(pty = "m")
+# Get domain and range
+top <- max(df$diffs)
+bottom <- min(df$diffs)
+left <- min(df$means)
+right <- max(df$means)
+domain <- right - left
+range <- top - bottom
+# Scatter plot
+plot(
+    # Data to plot
+    df$means, df$diffs, pch = 21, col = "black", bg="gray",
+    # Axis labels
+    main = "Bland-Altman Plot for Two Methods of Measuring PEFR",
+    xlab = "Mean (L/min)", ylab = "Difference (L/min)",
+    # Axis control
+    xlim = c(left - 0.1 * domain, right + 0.2 * domain),
+    ylim = c(bottom - 0.1 * range, top + 0.1 * range),
+    xaxs = "i", yaxs = "i"
+)
+# Zero line
+abline(h = 0, col = "darkgrey")
+# Upper confidence interval
+abline(h = upper_loa, lty = "dashed", col = "gray18")
+# Bias
+abline(h = bias, lty = "dashed", col = "gray18")
+# Lower confidence interval
+abline(h = lower_loa, lty = "dashed", col = "gray18")
+```
+
+Next, let's add the values of the limits of agreement and of the bias right onto the graph. This can be done using **annotations** created by the `text()` function. Annotations consist of three elements:
+
+- The **x**- and **y**-coordinates of the text label
+    - It's a good idea to locate the labels at an *offset* from the data itself; in the example below, offsets equal to 4% of the height of the plot (loosely, the 'range' of the data) are being used
+    - Additionally, the plot's width (loosely, the 'domain') is being enlarged by 20% to the right (and 10% to the left) via the `xlim()` argument to accommodate the labels
+- The **label** text itself
+    + The `signif()` or `sprintf()` function can be used to set the number of significant figures or the number of decimal places being displayed in a number
+
+```{r}
+# Maximise the size of the plot
+par(pty = "m")
+# Get domain and range
+top <- max(df$diffs)
+bottom <- min(df$diffs)
+left <- min(df$means)
+right <- max(df$means)
+domain <- right - left
+range <- top - bottom
+# Scatter plot
+plot(
+    # Data to plot
+    df$means, df$diffs, pch = 21, col = "black", bg="gray",
+    # Axis labels
+    main = "Bland-Altman Plot for Two Methods of Measuring PEFR",
+    xlab = "Mean (L/min)", ylab = "Difference (L/min)",
+    # Axis control
+    xlim = c(left - 0.1 * domain, right + 0.2 * domain),
+    ylim = c(bottom - 0.1 * range, top + 0.1 * range),
+    xaxs = "i", yaxs = "i"
+)
+# Zero line
+abline(h = 0, col = "darkgrey")
+# Upper confidence interval
+abline(h = upper_loa, lty = "dashed", col = "gray18")
+# Bias
+abline(h = bias, lty = "dashed", col = "gray18")
+# Lower confidence interval
+abline(h = lower_loa, lty = "dashed", col = "gray18")
+# Upper confidence interval labels
+text(right + 0.13 * domain, upper_loa + 0.04 * range, labels = "+2×SD")
+text(right + 0.13 * domain, upper_loa - 0.04 * range, labels = sprintf("%+4.2f", upper_loa))
+# Bias labels
+text(right + 0.13 * domain, bias + 0.04 * range, labels = "Bias")
+text(right + 0.13 * domain, bias - 0.04 * range, labels = sprintf("%+4.2f", bias))
+# Lower confidence interval labels
+text(right + 0.13 * domain, lower_loa + 0.04 * range, labels = "-2×SD")
+text(right + 0.13 * domain, lower_loa - 0.04 * range, labels = sprintf("%+4.2f", lower_loa))
+```
+
+Confidence Intervals
+--------------------
+Again, we will just replicate the code for calculating these here:
+
+```{r}
+# Sample size
+n <- nrow(df)
+# We want 95% confidence intervals
+conf_int <- 0.95
+# Endpoints of the range that contains 95% of the Student’s t distribution
+t1 <- qt((1 - conf_int) / 2, df = n - 1)
+t2 <- qt((conf_int + 1) / 2, df = n - 1)
+# Variance
+var <- sd**2
+# Standard error of the bias
+se_bias <- sqrt(var / n)
+# Standard error of the limits of agreement
+se_loas <- sqrt(3 * var / n)
+# Confidence intervals
+upper_loa_ci_lower <- upper_loa + t1 * se_loas
+upper_loa_ci_upper <- upper_loa + t2 * se_loas
+bias_ci_lower <- bias + t1 * se_bias
+bias_ci_upper <- bias + t2 * se_bias
+lower_loa_ci_lower <- lower_loa + t1 * se_loas
+lower_loa_ci_upper <- lower_loa + t2 * se_loas
+```
+
+These can now be added to our plot. This is done by plotting a series of straight lines with `segments()` and carefully controlling the positions of their left and right edges:
+
+```{r}
+# Maximise the size of the plot
+par(pty = "m")
+# Get domain and range
+max_y <- abs(max(upper_loa_ci_upper, lower_loa_ci_lower))
+top <- max_y
+bottom <- -max_y
+range <- top - bottom
+left <- min(df$means)
+right <- max(df$means)
+domain <- right - left
+# Scatter plot
+plot(
+    # Data to plot
+    df$means, df$diffs, pch = 21, col = "black", bg="gray",
+    # Axis labels
+    main = "Bland-Altman Plot for Two Methods of Measuring PEFR",
+    xlab = "Mean (L/min)", ylab = "Difference (L/min)",
+    # Axis control
+    xlim = c(left - 0.1 * domain, right + 0.2 * domain), xaxs = "i",
+    ylim = c(bottom, top),
+)
+# Zero line
+abline(h = 0, col = "darkgrey")
+# Upper confidence interval
+abline(h = upper_loa, lty = "dashed", col = "gray18")
+# Bias
+abline(h = bias, lty = "dashed", col = "gray18")
+# Lower confidence interval
+abline(h = lower_loa, lty = "dashed", col = "gray18")
+# Upper confidence interval labels
+text(right + 0.13 * domain, upper_loa + 0.04 * range, labels = "+2×SD")
+text(right + 0.13 * domain, upper_loa - 0.04 * range, labels = sprintf("%+4.2f", upper_loa))
+# Bias labels
+text(right + 0.13 * domain, bias + 0.04 * range, labels = "Bias")
+text(right + 0.13 * domain, bias - 0.04 * range, labels = sprintf("%+4.2f", bias))
+# Lower confidence interval labels
+text(right + 0.13 * domain, lower_loa + 0.04 * range, labels = "-2×SD")
+text(right + 0.13 * domain, lower_loa - 0.04 * range, labels = sprintf("%+4.2f", lower_loa))
+# x-Values for confidence interval lines
+left <- min(df$means) - 0.08 * domain
+mid <- min(df$means) - 0.05 * domain
+right <- min(df$means) - 0.02 * domain
+# Upper confidence interval lines
+segments(left, upper_loa_ci_upper, x1 = right, y1 = upper_loa_ci_upper, lty = "dashed", col = "gray68")
+segments(mid, upper_loa_ci_lower, x1 = mid, y1 = upper_loa_ci_upper, lty = "dashed", col = "gray68")
+segments(left, upper_loa_ci_lower, x1 = right, y1 = upper_loa_ci_lower, lty = "dashed", col = "gray68")
+# Bias confidence interval lines
+segments(left, bias_ci_upper, x1 = right, y1 = bias_ci_upper, lty = "dashed", col = "gray68")
+segments(mid, bias_ci_lower, x1 = mid, y1 = bias_ci_upper, lty = "dashed", col = "gray68")
+segments(left, bias_ci_lower, x1 = right, y1 = bias_ci_lower, lty = "dashed", col = "gray68")
+# Lower confidence interval lines
+segments(left, lower_loa_ci_upper, x1 = right, y1 = lower_loa_ci_upper, lty = "dashed", col = "gray68")
+segments(mid, lower_loa_ci_lower, x1 = mid, y1 = lower_loa_ci_upper, lty = "dashed", col = "gray68")
+segments(left, lower_loa_ci_lower, x1 = right, y1 = lower_loa_ci_lower, lty = "dashed", col = "gray68")
+```
+
+Save Plot
+=========
+Finally, use `png("Name of Plot.png")` to save the plot as a PNG file to your computer.
+
+[⇦ Back](../../../R.html)
+
+</font>

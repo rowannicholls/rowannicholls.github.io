@@ -101,6 +101,37 @@ ytext <- ytext[1:num_colours]
 text(xtext, ytext, colors()[1:num_colours], cex = 1.2, font = 2)
 ```
 
+Transparency
+============
+The easiest way to edit the transparency of an element is to use the `rgb()` function when setting its colour. Instead of `col = "colour_name"` as is being demonstrated above, this would involve using `col = rgb()` and specifying the amounts of red, green and blue (on scales of 0 to 1) in the colour you want. The advantage of this method is that `rgb()` also has an `alpha` keyword argument which, when given a number between 0 and 1, sets the transparency of the colour:
+
+```{r}
+height <- c(1, 1, 1, 1, 1, 1)
+alpha <- c(0.0, 0.2, 0.4, 0.6, 0.8, 1.0)
+barplot(height, col = rgb(red = 1, green = 0, blue = 0, alpha = alpha), yaxt = "n")
+```
+
+Marker Size
+===========
+This is a **par**ameter of the plot and so it needs to be set with the `par()` function. Specifically, use the `cex` keyword argument as you are changing the **c**haracter **ex**pansion relative to the default (which is 1):
+
+```{r}
+par(cex = 1)
+x <- c(1, 2, 3, 4, 5)
+y <- c(1, 1, 1, 1, 1)
+plot(x, y, ylim = c(1, 3))
+
+par(cex = 2)
+x <- c(1, 2, 3, 4, 5)
+y <- c(2, 2, 2, 2, 2)
+points(x, y)
+
+par(cex = 3)
+x <- c(1, 2, 3, 4, 5)
+y <- c(3, 3, 3, 3, 3)
+points(x, y)
+```
+
 [⇦ Back](../../../R.html)
 
 </font>
