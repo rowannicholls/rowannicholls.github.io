@@ -1,0 +1,287 @@
+---
+title: '<font size="5">Graphs in Base R:</font><br>Bar Plots (Single Factor)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+Plotting Values
+===============
+To create a bar plot we can use the `barplot()` function in one of two ways:
+
+1. `barplot(height)` where `height` is a **list of numbers** (eg a vector or the column of a data frame). This will create a plot where the height of each bar corresponds to its respective number in the list.
+2. `barplot(formula, data)` where `formula` is a **statement** of the form `y ~ x` with y being numerical data and x being categorical data, both of which come from a data set `data`
+
+Here is an example of each:
+
+Numerical Data
+--------------
+For this example, we're going to use the built-in dataset "trees" which contains the diameter, height and volume of 31 black cherry trees (only the first 6 of which are shown here):
+
+```{r}
+print(head(trees))
+```
+
+We can use `barplot(height)` to create a bar plot where, appropriately, the height of each bar corresponds to the height of each tree:
+
+```{r}
+height <- trees$Height
+barplot(height)
+```
+
+Numerical and Categorical Data
+------------------------------
+This example uses the built-in dataset "swiss" which has economic data from different Swiss provinces in 1888. We're going to use the 'Agriculture' column (the % of the male population working in agriculture) from six of those provinces:
+
+```{r}
+swiss$Province <- rownames(swiss)
+rownames(swiss) <- 1:nrow(swiss)
+print(head(swiss[c("Province", "Agriculture")]))
+```
+
+We have numerical data (`Agriculture`) and categorical data (`Province`) so we can use the second format for the `barplot()` function, namely `barplot(formula, data)`:
+
+```{r, fig.width = 10}
+barplot(Agriculture ~ Province, data = head(swiss))
+```
+
+Plotting the Frequencies of Values (Histograms)
+==================================
+A bar plot where the heights are the *frequencies* at which values appear in the dataset (as opposed to the values themselves) are called **histograms**. These can be plotted using the `hist()` function. Here's an example using the same `Height` data from the "trees" dataset that was used before:
+
+```{r}
+hist(trees$Height)
+```
+
+This can be changed to a *probability density* plot (where the total area of the histogram's bars is 1) by specifying `freq = FALSE`:
+
+```{r}
+hist(trees$Height, freq = FALSE)
+```
+
+Plotting the Mean Values of Groups of Data
+==========================================
+If we use the "chickwts" dataset we get the weights of 71 chicks, measured six weeks after hatching, that were each fed one of six different diets (first 15 data points shown):
+
+```{r}
+print(head(chickwts, 15))
+```
+
+Even though we have both categorical and numerical data we can't immediately plot it with `barplot(weight ~ feed, data = chickwts)` because *there are multiple data points in each group*. R would try to plot one bar for each row of the data frame and it would fail because multiple data points would have the same x-value ("horsebean", "linseed", etc). We first need to **aggregate** it to get, for example, the mean value of each group:
+
+```{r}
+data <- aggregate(weight ~ feed, data = chickwts, mean)
+print(data)
+```
+
+Now we can plot it:
+
+```{r}
+barplot(weight ~ feed, data = data)
+```
+
+Formatting
+==========
+Let’s make the plot look a little better:
+
+Titles and Labels
+-----------------
+- Change the bar labels with `names.arg`
+- Set the x- and y-axis labels with `xlab` and `ylab`
+- Set the graph title with `main`
+
+```{r}
+barplot(
+    # Plot data
+    weight ~ feed, data = data,
+    # Bar labels
+    names.arg = c("Casein", "Horsebean", "Linseed", "Meatmeal", "Soybean", "Sunflower"),
+    # Axis labels
+    ylab = "Weight [g]", xlab = "Feed Type",
+    # Graph title
+    main = "Chicken Weights By Feed Type"
+)
+```
+
+Remember that you can include Unicode in your axis titles using the `\U` Unicode indicator (eg `"Pi: \U03C0"` renders as "Pi: π").
+
+Distinguish Groups
+------------------
+Now that we have our labelling sorted out for the graph as a whole let's improve how we label the different groups:
+
+### Use Colour
+Colour can be added in `barplot()` with the `col` keyword argument (see [here](symbols_linetypes_colours.html#colours) for options):
+
+```{r}
+# Custom Colours
+pink <- "#FB4188"
+green <- "#87C94A"
+blue <- "#39C2F3"
+yellow <- "#FADB39"
+lgrey <- "#798287"
+dgrey <- "#43454C"
+colours <- c(pink, green, blue, yellow, lgrey, dgrey)
+
+# Create bar plot
+barplot(
+    # Plot data
+    weight ~ feed, data = data,
+    # Bar labels
+    names.arg = c("Casein", "Horsebean", "Linseed", "Meatmeal", "Soybean", "Sunflower"),
+    # Axis labels
+    ylab = "Weight [g]", xlab = "Feed Type",
+    # Graph title
+    main = "Chicken Weights By Feed Type",
+    # Add colour
+    col = colours
+)
+```
+
+### Use Colour *and* a Legend
+- A legend can be added with the `legend()` function, specifying:
+    - The location of the box as a positional argument
+    - Its title with `title`
+    - The text labels to display using `legend`
+    - The type of markers to display in the legend with `pch` (the options for this are [here](symbols_linetypes_colours.html#symbols))
+    - The colours to attach to the labels using `col`
+    - We want to place the legend outside of the plot area, so we need to create an 'inset' for it to sit in. This is done using the `inset` keyword argument.
+- In order for the legend to be placed outside of the plot area, we need to tweak the **par**ameters of the graph with the `par()` function:
+    - Create extra space on the right for the legend to sit in by changing the **mar**gins of the graph with the `mar` argument. The default for the margins is `c(bottom, left, top, right) = c(5, 4, 4, 2) + 0.1` so we are adding 6 units of space between the right edge of the graph and the side of the figure (and we are also removing 4 units of space from beneath the plot).
+    - `xpd = TRUE` allows elements (eg our legend) to be drawn outside of the plot area
+- Lastly, we want to turn off the x-axis labels (as they have been moved to the legend) with `xaxt = 'n'` and `xlab = ""`
+
+```{r}
+# Custom Colours
+pink <- "#FB4188"
+green <- "#87C94A"
+blue <- "#39C2F3"
+yellow <- "#FADB39"
+lgrey <- "#798287"
+dgrey <- "#43454C"
+colours <- c(pink, green, blue, yellow, lgrey, dgrey)
+# Custom labels
+labels <- c("Casein", "Horsebean", "Linseed", "Meatmeal", "Soybean", "Sunflower")
+
+# Add extra space to the right of the plot and enable drawing outside of the plot area
+par(mar = c(1.1, 4.1, 4.1, 8.1), xpd = TRUE)
+# Create bar plot
+barplot(
+    # Plot data
+    weight ~ feed, data = data,
+    # Bar labels
+    xaxt = 'n',
+    # Axis labels
+    ylab = "Weight [g]", xlab = "",
+    # Graph title
+    main = "Chicken Weights By Feed Type",
+    # Add colour
+    col = colours
+)
+# Add a legend
+legend("right", title = "Feed Type", legend = labels, pch = 16, col = colours, inset=c(-0.3,0))
+```
+
+Show Individual Points
+----------------------
+This is a little tricky. In the first instance, see what happens if you simply add a scatter plot on top of the bar plot with `points()`:
+
+```{r}
+# Create bar plot
+barplot(
+    # Plot data
+    weight ~ feed, data = data,
+    # Bar labels
+    names.arg = c("Casein", "Horsebean", "Linseed", "Meatmeal", "Soybean", "Sunflower"),
+    # Axis labels
+    ylab = "Weight [g]", xlab = "Feed Type",
+    # Graph title
+    main = "Chicken Weights By Feed Type"
+)
+# Add a scatter plot
+points(chickwts$feed, chickwts$weight)
+```
+
+The data is correct but it's offset from the bars! The reason this happens is because R doesn't plot the bars at exactly x = 1, x = 2, etc. This can be seen by looking up the exact x-values R uses when creating the bars: assign the barplot to a variable and print its value:
+
+```{r, eval = FALSE}
+bp <- barplot(weight ~ feed, data = data)
+print(bp)
+```
+
+```
+##      [,1]
+## [1,]  0.7
+## [2,]  1.9
+## [3,]  3.1
+## [4,]  4.3
+## [5,]  5.5
+## [6,]  6.7
+```
+
+This has produced a matrix with six values which correspond to the x-values of each of the six bars. As you can see, they are not 1, 2, 3, etc! One way to solve this problem is to replace the x-data we want to use in our scatter plot (which, at the moment is the categorical `feed` data: casein, horsebean, linseed, etc) with these x-values. The first step to doing this is to convert the `chickwts$feed` column to numerical data:
+
+```{r}
+# Convert categorical data to numerical
+chickwts$feed <- as.numeric(chickwts$feed)
+print(chickwts$feed)
+```
+
+These numbers correspond to which of the six bars the data in that row will be plotted on. We can use these to look-up the actual x-value of these bars from the matrix we got earlier:
+
+```{r, eval = FALSE}
+# Replace ordinal data with the x-values of the bars
+for (i in 1:nrow(chickwts)) {
+    chickwts$feed[i] <- bp[chickwts$feed[i]]
+}
+print(chickwts$feed)
+```
+
+```
+##  [1] 1.9 1.9 1.9 1.9 1.9 1.9 1.9 1.9 1.9 1.9 3.1 3.1 3.1 3.1 3.1 3.1 3.1 3.1 3.1
+## [20] 3.1 3.1 3.1 5.5 5.5 5.5 5.5 5.5 5.5 5.5 5.5 5.5 5.5 5.5 5.5 5.5 5.5 6.7 6.7
+## [39] 6.7 6.7 6.7 6.7 6.7 6.7 6.7 6.7 6.7 6.7 4.3 4.3 4.3 4.3 4.3 4.3 4.3 4.3 4.3
+## [58] 4.3 4.3 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0.7 0.7
+```
+
+Now we can plot this as a normal x-y scatter plot on top of the bar plot using `points()`. It's a good idea to increase the y-axis limits (using `ylim()`) when doing this to ensure that all of the points can fit:
+
+```{r}
+# Create bar plot
+bp <- barplot(
+    # Plot data
+    weight ~ feed, data = data,
+    # Bar labels
+    names.arg = c("Casein", "Horsebean", "Linseed", "Meatmeal", "Soybean", "Sunflower"),
+    # Axis labels
+    ylab = "Weight [g]", xlab = "Feed Type",
+    # Axis limits
+    ylim = c(0, max(chickwts$weight) * 1.1),
+    # Graph title
+    main = "Chicken Weights By Feed Type"
+)
+# Convert categorical data to numerical
+chickwts$feed <- as.numeric(chickwts$feed)
+# Replace ordinal data with the x-values of the bars
+for (i in 1:nrow(chickwts)) {
+    chickwts$feed[i] <- bp[chickwts$feed[i]]
+}
+# Add a scatter plot
+points(chickwts$feed, chickwts$weight)
+```
+
+Save Plot
+=========
+Finally, use `png("Name of Plot.png")` to save the plot as a PNG file to your computer.
+
+[⇦ Back](../../../R.html)
+
+</font>

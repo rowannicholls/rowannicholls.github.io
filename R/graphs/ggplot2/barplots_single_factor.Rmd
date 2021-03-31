@@ -48,8 +48,8 @@ print(wide)
 Wide-format data can be converted to long-format with the below code:
 
 ```{r}
-# USE gather() FROM tidyr TO CONVERT
-# FROM WIDE TO LONG FORMAT
+# Use gather() from tidyr to convert
+# from wide to long format
 library(tidyr)
 long <- gather(wide, group, extra, c("1", "2"))
 ```
