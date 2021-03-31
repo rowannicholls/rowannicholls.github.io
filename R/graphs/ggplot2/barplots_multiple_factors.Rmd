@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../R.html)
 
-> This page is a follow-on from the one about [bar plots with single factors](barplots_single_factor.html).
+> This page is a follow-on from the one about [bar plots with single factors](barplots_single_factor.html)
 
 Initial Step
 ============
@@ -117,7 +117,7 @@ titanic <- as.data.frame(Titanic)
 print(head(titanic, 15))
 ```
 
-There are too many factors to plot all at once; on a 2D graph only two can be shown at once. That's no problem though because we can just make four:
+There are too many factors to plot all at once; on a 2D graph only two can be shown at once. That's no problem though because we can just make four graphs:
 
 <style>
     .col2 {

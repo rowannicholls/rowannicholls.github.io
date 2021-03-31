@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../R.html)
 
-> This page is a follow-on from the one about [bar plots with single factors](barplots_single_factor.html).
+> This page is a follow-on from the one about [bar plots with single factors](barplots_single_factor.html)
 
 Data with Two Factors
 =====================
@@ -36,7 +36,7 @@ This is unhelpful because the results from each participant are not next to each
 barplot(extra ~ group + ID, data = sleep)
 ```
 
-An better approach is to show the bars side-by-side:
+A better approach is to show the bars side-by-side:
 
 ```{r}
 barplot(extra ~ group + ID, data = sleep, beside = TRUE)
@@ -50,7 +50,7 @@ Let's improve how the plot looks:
     + Set axis labels via `xlab` and `ylab`
     + Set the title with `main`
     + Add colour with `col`
-- `legend()` will add a legend with the contents thereof being set by its keyword arguments
+- `legend()` will add a legend with the contents thereof being set by its keyword arguments:
     + `title` sets the label for the legend
     + `legend` sets the text that appears for each series being labelled
     + `pch` controls what symbols are displayed
@@ -135,7 +135,7 @@ titanic <- as.data.frame(Titanic)
 print(head(titanic, 15))
 ```
 
-There are too many factors to plot all at once; on a 2D graph only two can be shown at once. That's no problem though because we can just make four:
+There are too many factors to plot all at once; on a 2D graph only two can be shown at once. That's no problem though because we can just make four graphs:
 
 <style>
     .col2 {
