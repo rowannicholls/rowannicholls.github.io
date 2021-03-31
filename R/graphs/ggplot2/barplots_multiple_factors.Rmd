@@ -83,8 +83,8 @@ If we calculate the summary statistics for each factor, however, that will reduc
 ```{r, message=FALSE}
 library(Rmisc)
 
-# "measurevar" IS THE VARIABLE BEING MEASURED
-# "groupvars" ARE THE VARIABLES REPRESENTING THE GROUPS
+# "measurevar" is the variable being measured
+# "groupvars" are the variables representing the groups
 sleep_summ <- summarySE(sleep, measurevar = "extra", groupvars = "group")
 print(sleep_summ)
 ```
@@ -95,14 +95,14 @@ As you can see from the above data frame, we now only have one factor (group) wi
 p <- ggplot(sleep_summ, aes(x = group, y = extra, fill = factor(group)))
 p <- p + geom_bar(stat = "identity", position = position_dodge())
 p <- p + geom_errorbar(aes(ymax = extra + se, ymin = extra - se), width = 0.2)
-# BAR FILL COLOURS
+# Bar fill colours
 p <- p + scale_fill_manual(values = c("#F4A582", "#92C5DE"))
-# TITLES AND LABELS
+# Titles and labels
 p <- p + xlab("Medicine")
 p <- p + labs(
     title = "Student's Sleep Experiment", y = "Additional Sleep Time [hr]"
 )
-# REMOVE LEGEND
+# Remove legend
 p <- p + theme(legend.position = "none")
 print(p)
 ```
@@ -112,12 +112,12 @@ Data with More Than Two Factors
 The Titanic dataset details the number of passengers that were on board the famous passenger ship that sunk in 1912. It contains one 'result' ("Freq" - the number of each type of passenger) and four 'factors' ("Class", "Sex", "Age" and "Survived"). The first 15 rows are as follows:
 
 ```{r}
-# CONVERT TO DATA FRAME
+# Convert to data frame
 titanic <- as.data.frame(Titanic)
 print(head(titanic, 15))
 ```
 
-There are too many factors to plot all at once: on a 2D graph only two can be shown at once:
+There are too many factors to plot all at once; on a 2D graph only two can be shown at once. That's no problem though because we can just make four:
 
 <style>
     .col2 {

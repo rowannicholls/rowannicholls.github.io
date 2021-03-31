@@ -1,0 +1,254 @@
+---
+title: '<font size="5">Graphs in Base R:</font><br>Bar Plots (Multiple Factors)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+> This page is a follow-on from the one about [bar plots with single factors](barplots_single_factor.html).
+
+Data with Two Factors
+=====================
+Take a look at the dataset below which contains the results of a sleep experiment (it shows the number of extra hours of sleep - relative to a control group - that 10 participants experienced after taking medicine "1" compared to after taking medicine "2"):
+
+```{r}
+print(sleep)
+```
+
+The 'results' of the experiment are in column "extra", namely the number of extra hours of sleep for each participant for each medicine. The 'factors' are in the other two columns, "group" (ie which medicine was taken) and "ID" (ie the ID of the participant). If we try to plot this as a bar plot using the `barplot(height)` method we do not get the full picture of the experiment:
+
+```{r}
+barplot(sleep$extra)
+```
+
+This is unhelpful because the results from each participant are not next to each other! What we need to do is use the `barplot(y ~ x, data)` format, but something like `barplot(extra ~ group, data = sleep)` would cause R to throw an error because "group" does not contain unique values. Instead, we need to use "group" AND "ID" as the factors, as *together* these columns uniquely define each row (there is only one row where group = 1 and ID = 1, and so on). This can be achieved simply by using the '+' sign to indicate that these are being combined to create the x-data in our formula:
+
+```{r}
+barplot(extra ~ group + ID, data = sleep)
+```
+
+An better approach is to show the bars side-by-side:
+
+```{r}
+barplot(extra ~ group + ID, data = sleep, beside = TRUE)
+```
+
+Format
+------
+Let's improve how the plot looks:
+
+- Keyword arguments in `barplot()` can be used to:
+    + Set axis labels via `xlab` and `ylab`
+    + Set the title with `main`
+    + Add colour with `col`
+- `legend()` will add a legend with the contents thereof being set by its keyword arguments
+    + `title` sets the label for the legend
+    + `legend` sets the text that appears for each series being labelled
+    + `pch` controls what symbols are displayed
+    + `col` gives the colours of the symbols
++ `box()` gives the plot an outline
++ `abline(h=0)` draws a line on the x-axis
+
+```{r}
+barplot(
+    # Plot data
+    extra ~ group + ID, data = sleep, beside = TRUE,
+    # Axis labels
+    ylab = "Additional Sleep Time [hr]", xlab = "Participant ID",
+    # Graph title
+    main = "Student's Sleep Experiment",
+    # Add colour
+    col = c("lightsalmon", "lightskyblue2")
+)
+# Add a legend
+legend(
+    "topleft", title = "Medicine", legend = c("1", "2"), pch = 15,
+    col = c("lightsalmon", "lightskyblue2")
+)
+# Draw a box outline
+box()
+# Include the x-axis
+abline(h=0)
+```
+
+Using Errors Bars
+-----------------
+Firstly, in order to use error bars, the bar plot needs to represent multiple data points that have been grouped together. Secondly, we need to know what the 'error' actually is. In this example, we will use the 'standard error' (the standard deviation of a sampling distribution) which can be calculated using the `summarySE()` function from the `Rmisc` library:
+
+```{r, eval = FALSE}
+library(Rmisc)
+
+sleep_summ <- summarySE(sleep, measurevar = "extra", groupvars = "group")
+print(sleep_summ)
+```
+
+```{r, echo = FALSE}
+suppressMessages(library(Rmisc))
+
+sleep_summ <- summarySE(sleep, measurevar = "extra", groupvars = "group")
+print(sleep_summ)
+```
+
+Creating a bar plot using the `extra` column from above will result in two bars, each representing the mean of 10 individual data points. The standard error of each of these 10 (the `se` column of the `sleep_summ` data frame shown above) can be plotted as line **segments** using `segments()` where:
+
+- The x-values of the line segments are the same as those of the bars. We can get these from the bar plot itself by setting it equal to a variable `bp`
+- The y-values of the line segments are the heights of the two bars plus and minus the values of the standard error. Both of these can be retrieved from the result of the `summarySE()` function, which we have called `sleep_summ`.
+- `lwd` sets the **l**ine **w**i**d**th
+
+```{r}
+bp <- barplot(
+    # Plot data
+    sleep_summ$extra,
+    # Bar labels
+    names.arg = c("1", "2"),
+    # Axis labels
+    ylab = "Additional Sleep Time [hr]", xlab = "Medicine",
+    # Graph title
+    main = "Student's Sleep Experiment",
+    # Add colour
+    col = c("lightsalmon", "lightskyblue2"),
+    # y-Axis limits
+    ylim = c(0, max(sleep_summ$extra + sleep_summ$se) + 0.5)
+)
+# Draw a box outline
+box()
+# Add error bars
+segments(bp, sleep_summ$extra - sleep_summ$se, bp, sleep_summ$extra + sleep_summ$se, lwd = 1.5)
+```
+
+Data with More Than Two Factors
+===============================
+The Titanic dataset details the number of passengers that were on board the famous passenger ship that sunk in 1912. It contains one 'result' ("Freq" - the number of each type of passenger) and four 'factors' ("Class", "Sex", "Age" and "Survived"). The first 15 rows are as follows:
+
+```{r}
+# Convert to data frame
+titanic <- as.data.frame(Titanic)
+print(head(titanic, 15))
+```
+
+There are too many factors to plot all at once; on a 2D graph only two can be shown at once. That's no problem though because we can just make four:
+
+<style>
+    .col2 {
+        columns: 2 200px;         /* number of columns and width in pixels*/
+        -webkit-columns: 2 200px; /* chrome, safari */
+        -moz-columns: 2 200px;    /* firefox */
+    }
+</style>
+
+<div class='col2'>
+
+```{r}
+data <- aggregate(
+    Freq ~ Class + Age, data = titanic, sum
+)
+print(data)
+barplot(
+    # Plot data
+    Freq ~ Class + Age, data = data, beside = TRUE,
+    # Axis labels
+    ylab = "Count", xlab = "Age",
+    # Graph title
+    main = "Age of passengers on the Titanic",
+    # Add colour
+    col = factor(data$Class)
+)
+# Add a legend
+legend(
+    "topleft", title = "Class", legend = c("1st", "2nd", "3rd", "Crew"),
+    pch = 15, col = factor(data$Class)
+)
+# Draw a box outline
+box()
+```
+
+```{r}
+data <- aggregate(
+    Freq ~ Survived + Sex, data = titanic, sum
+)
+print(data)
+barplot(
+    # Plot data
+    Freq ~ Survived + Sex, data = data, beside = TRUE,
+    # Axis labels
+    ylab = "Count", xlab = "Gender",
+    # Graph title
+    main = "Gender of passengers on the Titanic",
+    # Add colour
+    col = factor(data$Survived)
+)
+# Add a legend
+legend(
+    "topright", title = "Survived", legend = c("No", "Yes"),
+    pch = 15, col = factor(data$Survived)
+)
+# Draw a box outline
+box()
+```
+
+```{r}
+data <- aggregate(
+    Freq ~ Sex + Class, data = titanic, sum
+)
+print(data)
+barplot(
+    # Plot data
+    Freq ~ Sex + Class, data = data, beside = TRUE,
+    # Axis labels
+    ylab = "Count", xlab = "Class",
+    # Graph title
+    main = "Class of passengers on the Titanic",
+    # Add colour
+    col = factor(data$Sex)
+)
+# Add a legend
+legend(
+    "topleft", title = "Gender", legend = c("Male", "Female"),
+    pch = 15, col = factor(data$Sex)
+)
+# Draw a box outline
+box()
+```
+
+```{r}
+data <- aggregate(
+    Freq ~ Age + Survived, data = titanic, sum
+)
+print(data)
+barplot(
+    # Plot data
+    Freq ~ Age + Survived, data = data, beside = TRUE,
+    # Axis labels
+    ylab = "Count", xlab = "Survival",
+    # Graph title
+    main = "Survival of passengers on the Titanic",
+    # Add colour
+    col = factor(data$Age)
+)
+# Add a legend
+legend(
+    "topright", title = "Age", legend = c("Child", "Adult"),
+    pch = 15, col = factor(data$Age)
+)
+# Draw a box outline
+box()
+```
+
+</div>
+
+Save Plot
+=========
+Finally, use `ggsave("File Name.png")` to save the plot to your computer.
+
+[⇦ Back](../../../R.html)
+
+</font>
