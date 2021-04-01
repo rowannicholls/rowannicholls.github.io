@@ -1,0 +1,438 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Calculations with Data Frames'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+> This page follows on from [Introduction to Data Frames](data_frames_intro.html) and [Searching, Finding & Filtering Data Frames](data_frames_searching.html)
+
+Example Data
+============
+For this tutorial, use the results of the Rio 2016 Olympics men's 100m finals in data frame format:
+
+```{python}
+import pandas as pd
+
+rio_100m_men = {
+    'Athlete': [
+        'Usain Bolt', 'Justin Gatlin', 'Andre De Grasse', 'Yohan Blake', 'Akani Simbine', 'Ben Youssef Meïté',
+        'Jimmy Vicaut', 'Trayvon Bromell'
+    ],
+    'Country': [
+        'Jamaica', 'United States', 'Canada', 'Jamaica', 'South Africa', 'Ivory Coast', 'France', 'United States'
+    ],
+    'Age': [29, 34, 21, 26, 22, 29, 24, 21],
+    'Heat': [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+    'Semi-Final': [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+    'Final': [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+}
+df = pd.DataFrame(rio_100m_men)
+print(df)
+```
+
+Performing Calculations on a Data Frame
+=======================================
+
+Perform standard calculations
+-----------------------------
+
+**Perform standard calculations on rows:**  
+Pandas has a number of common statistical operations built-in as methods. For example, calculate the mean time each athlete took to run 100m across their heat, semi-final and final
+(ie calculate the mean of each row):
+
+```{python}
+# Calculate means
+means = df[['Heat', 'Semi-Final', 'Final']].mean(axis=1)
+# or
+means = df.loc[:, ['Heat', 'Semi-Final', 'Final']].mean(axis=1)
+print(list(round(means, 2)))
+```
+
+And calculate the total time each athlete was running for (calculate the total of each row):
+
+```{python}
+# Calculate totals
+total_time = df[['Heat', 'Semi-Final', 'Final']].sum(axis=1)
+print(list(round(total_time, 2)))
+```
+
+**Perform standard calculations on columns:**  
+The built-in methods work similarly on columns as to how they work on rows. The difference is which 'axis' they operate on: axis=0 is for columns and axis=1 is for rows.
+By default these methods work over columns (axis=0). For example, calculate the mean time that these athletes took to complete their heat, semi-final and final respectively
+(ie calculate the mean of each column):
+
+```{python}
+# Calculate means
+means = df[['Heat', 'Semi-Final', 'Final']].mean()
+print(list(round(means, 2)))
+```
+
+```{python}
+# or
+means = df.loc[:, ['Heat', 'Semi-Final', 'Final']].mean()
+print(list(round(means, 2)))
+```
+
+And the total time they took to complete the heats, semi-finals and final (calculate the total of each column):
+
+```{python}
+# Calculate totals
+total_time = df[['Heat', 'Semi-Final', 'Final']].sum()
+print(list(round(total_time, 2)))
+```
+
+**Perform standard calculations on columns using subsetting:**  
+If we search a column for values and subset the column to extract just those values we can then use them in a calculation. For example, here is how to calculate how many Americans were in the race by
+counting the number of occurrences of "United States" in the Country column:
+
+```{python}
+n_americans = len([v for v in df['Country'] if v == 'United States'])
+print(n_americans)
+```
+
+Perform direct calculations
+---------------------------
+
+**Perform direct calculations using columns:**  
+We aren't limited to just using the built-in methods, we can actually perform whatever operations we want **directly** on the values in each row.
+For example, here's a more 'direct' way of calculating the total of all the times in each row:
+
+```{python}
+# Calculate totals
+total_time = df['Heat'] + df['Semi-Final'] + df['Final']
+print([round(x, 2) for x in total_time])
+```
+
+**Perform direct calculations using rows:**  
+Similarly, here's a more 'direct' way to sum up all the times in each column. It is, however, more fiddly as you need to extract just the numerical data and convert each row to an array:
+
+```{python}
+# Extract only the numerical data
+times = df[['Heat', 'Semi-Final', 'Final']]
+# Add the rows
+total_time = times.values[0] + times.values[1] + times.values[2] + times.values[3] + times.values[4] + times.values[5] + times.values[6] + times.values[7]
+print(total_time)
+```
+
+**Perform direct calculations by iterating over rows:**  
+Yet another way to sum up all the values in a column is to iterate over each row in that column:
+
+```{python}
+import numpy as np
+
+# Initialise output array
+total_time = np.zeros([1, 3])
+# Iterate over rows
+for i, row in df.iterrows():
+    total_time = total_time + row[['Heat', 'Semi-Final', 'Final']].values
+print(total_time)
+```
+
+Iteration over rows can also be used to sum up the values in each row:
+
+```{python}
+# Initialise the output column
+df['Total Time'] = np.nan
+for i, row in df.iterrows():
+    df.loc[i, 'Total Time'] = row['Heat'] + row['Semi-Final'] + row['Final']
+print(list(round(df['Total Time'], 2)))
+```
+
+Here's another example using iteration over each row in a column, this time in order to **update** it:
+
+```{python}
+# Increase the ages of all athletes by 1 year
+new_age = []
+for v in df['Age']:
+    new_age.append(v + 1)
+df['New age'] = new_age
+print(list(df['New age']))
+```
+
+Note that the above example can also be done using **list comprehension**:
+
+```{python}
+df['New age'] = [v + 1 for v in df['Age']]
+print(list(df['New age']))
+```
+
+Perform lambda calculations
+---------------------------
+
+**Perform lambda calculations on rows:**  
+**Lambda calculations** are useful when you want to perform operations on *each cell* in a particular row as opposed to on *all* cells in that row or on the row as a whole. For example, if we want to round Yohan Blake's times to three significant figures each, there is no single, pre-defined function that we can apply to all cells in his row that will do this. There is the `round()` function, but that would round all his times to a given number of *decimal places* not to a given number of *significant figures*:
+
+```{python}
+# Extract only the numerical data
+times = df[['Heat', 'Semi-Final', 'Final']]
+# Round all values to one decimal place
+rounded = round(times, 1)
+# Extract Yohan Blake's times
+rounded = rounded.loc[[4], :]
+print(rounded)
+```
+
+As you can see, the method above resulted in 3, 3 and 2 significant figures. The reason this is difficult is because the times he ran (10.11, 10.01 and 9.93) have
+4, 4 and 3 digits respectively, so they need to be rounded to 1, 1 and 2 decimal places to leave 3 sig figs in each. Hence we need to apply a function differently to each cell, and a lambda function does exactly this:
+
+```{python}
+# Apply a function differently to each cell in one row
+sig_figs = times.apply(lambda x: str(x[4])[:4])
+print(list(sig_figs))
+```
+
+And now we have three significant figures as desired.
+
+**Perform lambda calculations on columns:**  
+Similar to the above, lambda calculations can be used on columns to apply a function differently to each cell in that column. For example, if we want to extract just the the first name of each athlete, we will need to look up where the first space is in each of their names and extract the letters that come before it:
+
+```{python}
+# Find the first name of each athlete
+first_name = df.apply(lambda x: x['Athlete'][:x['Athlete'].find(' ')], axis=1)
+print(list(first_name))
+```
+
+Notice that we had to specify `axis=1` to apply the function to a column as opposed to a row (`axis=0`) which is the default.
+
+**Perform lambda calculations on data frames:**  
+Lambda functions can also be performed on entire data frames, which enables us to perform calculations using **multiple** rows or columns. This example uses multiple columns to find the average time for all of each athlete's races (there are simpler ways to do this calculation, this is just for demonstration!):
+
+```{python}
+df['Mean Time'] = df.apply(lambda df: (df['Heat'] + df['Semi-Final'] + df['Final']) / 3, axis=1)
+print(list(round(df['Mean Time'], 2)))
+```
+
+Perform custom calculations
+---------------------------
+
+**Perform custom calculations on columns:**  
+If you want to perform a function that is complex or specific enough to make lambda functions cumbersome, the best option is to create a custom function and `.apply()` it to the column. Here's an example that stratifies the final times into categories:
+
+```{python}
+def stratify(time):
+    """Assign a categorical description to a time."""
+    if time <= 9.9:
+        category = 'Sub-9.9'
+    elif time <= 10.0:
+        category = 'Sub-10'
+    else:
+        category = 'Not sub-10'
+    return category
+
+
+# Apply a function to a column
+df['Category'] = df['Final'].apply(stratify)
+print(df[['Athlete', 'Final', 'Category']])
+```
+
+**Alternative ways to stratify data into two categories:**  
+If your aim is to sort your data into categories then another option, besides applying custom functions, is to just index the data:
+
+```{python}
+df['Category'] = 'Not sub-10'
+df.loc[df['Final'] <= 10.0, 'Category'] = 'Sub-10'
+print(list(df['Category']))
+```
+
+...or you could use Numpy's `where()` function:
+
+```{python}
+df['Category'] = np.where(df['Final'] <= 10.0, 'Sub-10', 'Not sub-10')
+print(list(df['Category']))
+```
+
+The `np.where()` function is equivalent to the `ifelse()` function in R.
+
+**Alternative ways to stratify data into three categories:**  
+Repeating the above methods with three categories give this:
+
+```{python}
+df['Category'] = 'Not sub-10'
+df.loc[df['Final'] <= 10.0, 'Category'] = 'Sub-10'
+df.loc[df['Final'] <= 9.9, 'Category'] = 'Sub-9.9'
+print(list(df['Category']))
+```
+
+...and using `where()`:
+
+```{python}
+df['Category'] = np.where(
+    df['Final'] <= 9.9, 'Sub-9.9', np.where(df['Final'] <= 10.0, 'Sub-10', 'Not sub-10')
+)
+print(list(df['Category']))
+```
+
+However, the **most correct** way to stratify data into three or more categories is by using Numpy's `select()` function:
+
+```{python}
+conditions = [
+    (df['Final'] <= 9.9),
+    (df['Final'] <= 10.0),
+]
+categories = ['Sub-9.9', 'Sub-10']
+df['Category'] = np.select(conditions, categories, default='Not sub-10')
+print(list(df['Category']))
+```
+
+Here's a similar example using multiple columns to do the stratification:
+
+```{python}
+conditions = [
+    (df['Semi-Final'] <= 9.9) & (df['Final'] <= 9.9),
+    (df['Semi-Final'] <= 10.0) & (df['Final'] <= 10.0)
+]
+categories = ['Sub-9.9', 'Sub-10']
+df['Category'] = np.select(conditions, categories, default='Not sub-10')
+print(list(df['Category']))
+```
+
+Cleaning a Data Frame
+=====================
+Data cleaning is done to handle incomplete or partially incorrect datasets:
+
+- An **incomplete** dataset will have missing values in some places
+- A **partially incorrect** dataset might have misspelled column headings or similar
+
+```{python, echo = FALSE}
+# Reset the data frame
+df = pd.read_csv('data frame.csv')
+```
+
+Replace NaNs
+------------
+If you have missing data (an **incomplete** dataset) these cells will contain Numpy's "not-a-number" object, NaN. These can be replaced with any other value you want.
+
+**Sanitise whole data frame:**  
+
+```{python}
+# Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    'Athlete': ['Usain Bolt', 'Justin Gatlin', 'Andre De Grasse'],
+    'Country': [np.nan, 'United States', np.nan],
+    'Age': [29, np.nan, 21]
+})
+# Replace NaNs
+df_sanitised = df_unsanitised.fillna('Unknown')
+print(df_sanitised)
+```
+
+**Sanitise one column:**  
+If you want to replace missing data in one column only the default behaviour is for *only that column* to be returned. This usually isn't what you want,
+so use the 'inplace' keyword argument to perform the replacement in the data frame immediately without needing to assign a return to anything:
+
+```{python}
+# Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    'Athlete': ['Usain Bolt', 'Justin Gatlin', 'Andre De Grasse'],
+    'Country': [np.nan, 'United States', np.nan],
+    'Age': [29, np.nan, 21]
+})
+# Replace NaNs in one column
+df_unsanitised['Country'].fillna('Unknown', inplace=True)
+print(df_unsanitised)
+```
+
+Replace values
+--------------
+
+**Sanitise whole data frame:**  
+If you known there are some values that are misspelled you can replace all of them in the data frame in one go:
+
+```{python}
+# Replace all occurrences of a value
+df_replaced = df.replace(['United States', 'South Africa'], ['USA', 'RSA'])
+print(list(df_replaced['Country']))
+```
+
+If you want to replace incorrect data with "None" values you will need to use Numpy's "not-a-number" objects rather that Python's built-in "None" objects. This is because when Python inserts a "None" values it will actually remove that cell, the space will be filled with the value in the cell above!
+
+```{python}
+df_replaced = df.replace('United States', None)  # This does not work as expected!
+print(df_replaced)
+```
+
+Justin Gatlin does not come from Jamaica and Trayvon Bromell does not come from France! Rather do this:
+
+```{python}
+df_replaced = df.replace('United States', np.nan)
+print(df_replaced)
+```
+
+**Sanitise one column:**  
+If you want to only replace values in one column, you can use indexing:
+
+```{python}
+df.loc[df['Age'] == 22, 'Age'] = 'twenty-two'
+print(list(df['Age']))
+```
+
+```{python, echo = FALSE}
+# Undo
+df.loc[df['Age'] == 'twenty-two', 'Age'] = 22
+```
+
+Use lambda functions
+--------------------
+If you want to do more complicated searches and replaces that require functions to be run on cells as individual values (as opposed to being run on columns as a whole), you will need to use lambda functions.
+
+```{python}
+# Create a column with data that has inconsistent formatting
+df['Time'] = ['+9.81', '9.89', '9.91s', '9.93s', '9.94', '-9.96', '+10.04', '10.06s']
+print(list(df['Time']))
+```
+
+```{python}
+# Sanitise column
+df['Time'] = df['Time'].map(lambda x: x.lstrip('+-').rstrip('s'))
+print(list(df['Time']))
+```
+
+```{python, echo = FALSE}
+# Undo
+df = df.drop('Time', axis=1)
+```
+
+Convert data type
+-----------------
+If you have values that are numbers instead of strings, or values that are strings instead of integers or floats, you should convert them to the correct data type. The below method using a lambda function is able to handle missing data:
+
+```{python}
+# Convert integers to strings
+df['Age'] = df['Age'].apply(lambda x: str(x) if pd.notnull(x) else x)
+
+# Convert strings to floats
+df['Age'] = df['Age'].notnull().astype(float)
+
+# Convert objects to numbers
+df['Age'] = df['Age'].astype(str).astype(float)
+
+# Convert objects to Booleans
+df['Age'] = df['Age'].astype('bool')
+```
+
+```{python, echo = FALSE}
+# Undo
+df['Age'] = [29, 34, 21, 26, 22, 29, 24, 21]
+```
+
+Sanitise data using RegEx
+-------------------------
+If you're replacing values with special characters you may need to use regular expressions (RegEx):
+
+```{python}
+df = df.replace({'\n': '<br>'}, regex=True)
+```
+
+[⇦ Back](../../python.html)
+
+</font>

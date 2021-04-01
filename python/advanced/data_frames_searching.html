@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Advanced Python: Data Frames Searching, Finding, Filtering</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -685,119 +685,315 @@ data:{scriptSource:ed,resume:function(){a()},containerProduct:"GTM"}};q.data.con
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Advanced Python:</font><br>Data Frames<br><font size="5"><em>Searching, Finding, Filtering</em></font></h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#intro"><span class="toc-section-number">1</span> Intro</a>
+<ul>
+<li><a href="#example-data"><span class="toc-section-number">1.1</span> Example Data</a></li>
+</ul></li>
+<li><a href="#searching"><span class="toc-section-number">2</span> Searching</a></li>
+<li><a href="#finding"><span class="toc-section-number">3</span> Finding</a></li>
+<li><a href="#filtering"><span class="toc-section-number">4</span> Filtering</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../python.html">⇦ Back</a></p>
+<blockquote>
+<p>This page follows on from <a href="data_frames_intro.html">Introduction to Data Frames</a> and is followed by <a href="data_frames_calculations.html">Calculations with Data Frames</a></p>
+</blockquote>
+<div id="intro" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Intro</h1>
+<p>While ‘indexing’ is something you do when you know exactly which row(s) and column(s) you want, sometimes you do NOT know exact what you want. Instead, you first need to search through the data frame to find the information you are looking for. Then you can subset the data frame to filter out any information you don’t want:</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
+<li>‘Search’ the data frame to see if the data you are looking for exists
 <ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
+<li>The result will be a <strong>boolean</strong> (ie True/False): the data was either found or it wasn’t</li>
 </ul></li>
-<li><a href="python/intro/lists.html">Lists</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-</ol>
-</div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li>Data Frames:
+<li>‘Find’ the data if it does exist
 <ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
+<li>The result will be the <strong>location</strong> of the data</li>
 </ul></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
-</div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
-</div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
+<li>‘Filter’ the data frame so that it only contains what you want
 <ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
+<li>The result will be a <strong>new data frame</strong>, smaller than the original one, containing only the data you want</li>
 </ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<div id="hypothesis-testing" class="section level4">
-<h4>Hypothesis Testing</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ol>
-</div>
-<div id="agreement-accuracy-precision" class="section level4">
-<h4>Agreement (Accuracy &amp; Precision)</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-</ol>
+</ul>
+<div id="example-data" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Example Data</h2>
+<p>We will again use the results from the Rio 2016 Olympics men’s 100m finals as our example data:</p>
+<pre class="python"><code>import pandas as pd
+
+rio_100m_men = {
+    &#39;Athlete&#39;: [
+        &#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;,
+        &#39;Jimmy Vicaut&#39;, &#39;Trayvon Bromell&#39;
+    ],
+    &#39;Country&#39;: [
+        &#39;Jamaica&#39;, &#39;United States&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;South Africa&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;United States&#39;
+    ],
+    &#39;Age&#39;: [29, 34, 21, 26, 22, 29, 24, 21],
+    &#39;Heat&#39;: [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+    &#39;Semi-Final&#39;: [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+    &#39;Final&#39;: [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+}
+df = pd.DataFrame(rio_100m_men)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
 </div>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="searching" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Searching</h1>
+<p><strong>Search a column:</strong><br />
+Does a column contain a certain value? For example, was Yohan Blake in the final?</p>
+<pre class="python"><code># Search for a value
+result = &#39;Yohan Blake&#39; in df[&#39;Athlete&#39;].values
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<p>Alternatively, this type of search can be done using the <code>.any()</code> and <code>.all()</code> methods:</p>
+<pre class="python"><code># Search for any occurrence of a value
+result = (df[&#39;Athlete&#39;] == &#39;Yohan Blake&#39;).any()
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<pre class="python"><code># Check if all values in a column meet a criteria
+result = (df[&#39;Age&#39;] &lt;= 34).all()
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<p><strong>Search the values in a column individually:</strong><br />
+You can also get the results of the search for each row: for each athlete, do they come from Jamaica?</p>
+<pre class="python"><code># Search each row for a value
+result = df[&#39;Country&#39;] == &#39;Jamaica&#39;
+print(list(result))</code></pre>
+<pre><code>## [True, False, False, True, False, False, False, False]</code></pre>
+<p>The same thing can be done with a function: the <code>where()</code> function from Numpy:</p>
+<pre class="python"><code>import numpy as np
+
+result = np.where(df[&#39;Country&#39;] == &#39;Jamaica&#39;, True, False)
+print(list(result))</code></pre>
+<pre><code>## [True, False, False, True, False, False, False, False]</code></pre>
+<p><strong>Search for substrings:</strong><br />
+Instead of just searching for athletes with certain names, we can search <code>within</code> the names for athletes who have the letter “e” in their name, for example:</p>
+<pre class="python"><code># Search for a substring
+result = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
+print(result)</code></pre>
+<pre><code>## [False, False, True, True, True, True, False, True]</code></pre>
+<p>Note that the specific task of searching for a letter within a column of strings can also be performed using the <code>.contains()</code> method:</p>
+<pre class="python"><code># Search for a substring
+result = df[&#39;Athlete&#39;].str.contains(&#39;e&#39;)
+print(list(result))</code></pre>
+<pre><code>## [False, False, True, True, True, True, False, True]</code></pre>
+<p><strong>Append the results of a search as a column:</strong><br />
+It’s a small extra step to add the results of a search to the data frame itself:</p>
+<pre class="python"><code># Search for a substring
+df[&#39;e in name?&#39;] = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
+print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
+<pre><code>##              Athlete  e in name?
+## 0         Usain Bolt       False
+## 1      Justin Gatlin       False
+## 2    Andre De Grasse        True
+## 3        Yohan Blake        True
+## 4      Akani Simbine        True
+## 5  Ben Youssef Meïté        True
+## 6       Jimmy Vicaut       False
+## 7    Trayvon Bromell        True</code></pre>
+<p>Do the same thing but using a loop:</p>
+<pre class="python"><code># Search for a substring
+df[&#39;e in name?&#39;] = False
+for i, row in df.iterrows():
+    if &#39;e&#39; in df.at[i, &#39;Athlete&#39;]:
+        df.at[i, &#39;e in name?&#39;] = True
+    else:
+        df.at[i, &#39;e in name?&#39;] = False
+print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
+<pre><code>##              Athlete  e in name?
+## 0         Usain Bolt       False
+## 1      Justin Gatlin       False
+## 2    Andre De Grasse        True
+## 3        Yohan Blake        True
+## 4      Akani Simbine        True
+## 5  Ben Youssef Meïté        True
+## 6       Jimmy Vicaut       False
+## 7    Trayvon Bromell        True</code></pre>
+<p><strong>Search through multiple columns:</strong><br />
+The logical operators ‘and’ (<code>&amp;</code>) and ‘or’ (<code>|</code>) can be used to find rows that match very specific criteria. Notice the round brackets that are being used to group the logical evaluations together:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Semi-Final&#39;] == 10.01) | ((df[&#39;Final&#39;] == 9.89) &amp; (df[&#39;Country&#39;] == &#39;United States&#39;))
+print(list(results))</code></pre>
+<pre><code>## [False, True, False, True, False, False, False, True]</code></pre>
+<p><strong>Search using inequalities:</strong><br />
+In addition to the logical operators, the following inequality symbols can be mixed and matched:</p>
+<ul>
+<li>Greater than: <code>&gt;</code></li>
+<li>Less than: <code>&lt;</code></li>
+<li>Greater than or equal to: <code>&gt;=</code></li>
+<li>Less than or equal to: <code>&lt;=</code></li>
+<li>not equal to: <code>!=</code></li>
+</ul>
+<pre class="python"><code>df[&#39;Sub-10&#39;] = df[&#39;Final&#39;] &lt; 10.00
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Sub-10&#39;]])</code></pre>
+<pre><code>##              Athlete  Final  Sub-10
+## 0         Usain Bolt   9.81    True
+## 1      Justin Gatlin   9.89    True
+## 2    Andre De Grasse   9.91    True
+## 3        Yohan Blake   9.93    True
+## 4      Akani Simbine   9.94    True
+## 5  Ben Youssef Meïté   9.96    True
+## 6       Jimmy Vicaut  10.04   False
+## 7    Trayvon Bromell  10.06   False</code></pre>
+<p>Similar to a previous example, the same thing can be done with the <code>where()</code> function from Numpy:</p>
+<pre class="python"><code>import numpy as np
+
+df[&#39;Sub-10&#39;] = np.where(df[&#39;Final&#39;] &lt; 10.00, True, False)
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Sub-10&#39;]])</code></pre>
+<pre><code>##              Athlete  Final  Sub-10
+## 0         Usain Bolt   9.81    True
+## 1      Justin Gatlin   9.89    True
+## 2    Andre De Grasse   9.91    True
+## 3        Yohan Blake   9.93    True
+## 4      Akani Simbine   9.94    True
+## 5  Ben Youssef Meïté   9.96    True
+## 6       Jimmy Vicaut  10.04   False
+## 7    Trayvon Bromell  10.06   False</code></pre>
+<p><strong>Search using inequalities across multiple columns:</strong><br />
+For example, which non-American athletes ran sub-10 in the final?</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
+print(list(results))</code></pre>
+<pre><code>## [True, False, True, True, True, True, False, False]</code></pre>
+<p>…or:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = np.where((df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00), True, False)
+print(list(results))</code></pre>
+<pre><code>## [True, False, True, True, True, True, False, False]</code></pre>
+<p><strong>Search through column names:</strong><br />
+Instead of searching through the <em>data in a column</em> you can also search through the <em>names of the columns</em> to see if the one you are looking for has been created yet. For example, has a column been created that contains the time the athletes ran in the final?</p>
+<pre class="python"><code># Search for a column name
+result = &#39;Final&#39; in list(df)
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+</div>
+<div id="finding" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Finding</h1>
+<p>‘Finding’ is similar to ‘searching’ except you get the <em>indices</em> of the matches, not just whether they exist or not. For example, what row in the data frame is occupied by Andre De Grasse?</p>
+<pre class="python"><code># Find
+idx = df[df[&#39;Athlete&#39;] == &#39;Andre De Grasse&#39;].index
+print(f&#39;As an index object: {idx}\nAs a list: {list(idx)}&#39;)</code></pre>
+<pre><code>## As an index object: Int64Index([2], dtype=&#39;int64&#39;)
+## As a list: [2]</code></pre>
+<p>Now that we can find indices, let’s use them to look up data in the table:</p>
+<p><strong>VLOOKUP using index:</strong><br />
+Find a value in a column corresponding to a value in a different column. For example, what was Akani Simbine’s time in his heat?</p>
+<pre class="python"><code># Look up
+idx = df[df[&#39;Athlete&#39;] == &#39;Akani Simbine&#39;].index
+value = df.loc[idx, &#39;Heat&#39;]
+print(f&quot;Akani Simbine&#39;s time in his heat: {list(value)[0]}s&quot;)</code></pre>
+<pre><code>## Akani Simbine&#39;s time in his heat: 10.14s</code></pre>
+<p><strong>VLOOKUP using Booleans:</strong><br />
+Instead of using indices, can search a data frame or column using any of the methods described above to generate Booleans. Those can then be used to index the data frame or column to leave only those that were ‘found in the search’. As an example, here’s how to find the non-American athletes who ran sub-10 <strong>and</strong> get their names:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
+# Index a column with the results of the search
+non_american_sub_10 = df[&#39;Athlete&#39;][results]
+print(list(non_american_sub_10))</code></pre>
+<pre><code>## [&#39;Usain Bolt&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;]</code></pre>
+</div>
+<div id="filtering" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Filtering</h1>
+<p>Filtering removes all rows whose values do not meet certain criteria.</p>
+<p><strong>Filter using a single criteria:</strong><br />
+As an example, here is the data of the United States athletes only:</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;] == &#39;United States&#39;]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 1    Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06   False</code></pre>
+<p>…and of the non-United States athletes only:</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;] != &#39;United States&#39;]
+print(subset)</code></pre>
+<pre><code>##              Athlete       Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt       Jamaica   29  10.07        9.86   9.81    True
+## 2    Andre De Grasse        Canada   21  10.04        9.92   9.91    True
+## 3        Yohan Blake       Jamaica   26  10.11       10.01   9.93    True
+## 4      Akani Simbine  South Africa   22  10.14        9.98   9.94    True
+## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96    True
+## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04   False</code></pre>
+<p>Let’s take another look at the above code. It starts off as a search: <code>df[&#39;Country&#39;] == &#39;United States&#39;</code> will search for all rows in the “Country” column that are equal to “United States” and return a <strong>series of Booleans</strong> (True, False, etc, corresponding to the rows in which the “United States” text was found). That series of Booleans is then used to <strong>index</strong> the data frame, and only the rows corresponding to the “Trues” in the Boolean series ‘survive’ the indexing.</p>
+<p><strong>Filter using a list of criteria:</strong><br />
+Instead of matching only one criteria, here is how to filter out all rows that do not match either of two criteria: what is the data for athletes who came from either the United States or South Africa?</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;])]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 1    Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94    True
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06   False</code></pre>
+<p>…and all athletes who came from <em>neither</em> the US or SA:</p>
+<pre class="python"><code># Filter
+subset = df[~df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;])]
+print(subset)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt      Jamaica   29  10.07        9.86   9.81    True
+## 2    Andre De Grasse       Canada   21  10.04        9.92   9.91    True
+## 3        Yohan Blake      Jamaica   26  10.11       10.01   9.93    True
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97   9.96    True
+## 6       Jimmy Vicaut       France   24  10.19        9.95  10.04   False</code></pre>
+<p><strong>Filter using multiple lists of criteria/multiple columns:</strong><br />
+Using ‘and not’ logic:</p>
+<pre class="python"><code>subset = df[
+    df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;, &#39;Jamaica&#39;]) &amp; ~
+    df[&#39;Age&#39;].isin([26, 34])
+]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0       Usain Bolt        Jamaica   29  10.07        9.86   9.81    True
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94    True
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06   False</code></pre>
+<p>Using ‘or’ logic:</p>
+<pre class="python"><code>subset = df[
+    df[&#39;Country&#39;].isin([&#39;South Africa&#39;]) |
+    df[&#39;Age&#39;].isin([26, 34])
+]
+print(subset)</code></pre>
+<pre><code>##          Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 1  Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 3    Yohan Blake        Jamaica   26  10.11       10.01   9.93    True
+## 4  Akani Simbine   South Africa   22  10.14        9.98   9.94    True</code></pre>
+<p>Of course, <em>all</em> the above filtering examples work with both strings and numbers as the criteria.</p>
+<p><strong>Filter using a column of Booleans:</strong><br />
+If one of the columns consists of Booleans you can filter by it. In other words, all the rows with ‘False’ get removed and all the ones with ‘True’ remain:</p>
+<pre class="python"><code># Filter by who ran sub-10 seconds
+subset = df[df[&#39;Sub-10&#39;]]
+print(subset)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81    True
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91    True
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93    True
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94    True
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96    True</code></pre>
+<p><strong>Filter out nulls:</strong><br />
+Filter out all rows that have a null value in a particular column:</p>
+<pre class="python"><code>subset = df[df[&#39;Age&#39;].notnull()]</code></pre>
+<p>Filter out all rows that contain any null values in any columns:</p>
+<pre class="python"><code>subset = df.dropna()</code></pre>
+<p><strong>Removing duplicates:</strong><br />
+Remove all rows that appear more than once:</p>
+<pre class="python"><code>df.drop_duplicates()</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 

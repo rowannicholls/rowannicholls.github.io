@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Advanced Python: Calculations with Data Frames</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -484,7 +484,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},le=function(a){var b=I.createElement("
 e=le(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var ne=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),oe=new RegExp(/support|noreply/i),pe=["SCRIPT","IMG","SVG","PATH","BR"],qe=["BR"];function re(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=re(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 function se(a,b){if(1>=a.length)return a;var c=a.filter(b);return 0==c.length?a:c}function te(a){if(0==a.length)return null;var b;b=se(a,function(c){return!oe.test(c.Kc)});b=se(b,function(c){return"INPUT"===c.element.tagName.toUpperCase()});b=se(b,function(c){return!Wd(c.element)});return b[0]}
 function ue(){var a;var b=[],c=I.body;if(c){for(var d=c.querySelectorAll("*"),e=0;e<d.length&&1E4>e;e++){var f=d[e];if(!(0<=pe.indexOf(f.tagName.toUpperCase()))){for(var h=!1,k=0;k<f.childElementCount&&1E4>k;k++)if(!(0<=qe.indexOf(f.children[k].tagName.toUpperCase()))){h=!0;break}h||b.push(f)}}a={elements:b,status:1E4<d.length?"2":"1"}}else a={elements:b,status:"4"};for(var l=a,n=l.elements,q=[],p=0;p<n.length;p++){var r=n[p],u=r.textContent;r.value&&(u=r.value);if(u){var t=u.match(ne);if(t){var v=
-t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ef:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3o0";Ie.Hh="";Ie.Df="ChEI8N6VgwYQq6mfna71upvZARInAOq4ohFN0Qq0JddDFfHM9jJYgt383OVWDth/2+StgTTzcfAauWZAGgIDqw\x3d\x3d";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
+t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ef:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3o0";Ie.Hh="";Ie.Df="ChEI8N6VgwYQq6mfna71upvZARInAOq4ohGupiG/gRcsDgfBr3HpXe2qGHwZFCcFfEwC3ai4RAechaK5GgKNVw\x3d\x3d";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
 var Oe=Ne,Pe=Qa(""),Qe=null,Re=null,Se="//www.googletagmanager.com/a?id="+Ie.D+"&cv=1",Te={},Ue={},Ve=function(){var a=L.sequence||1;L.sequence=a+1;return a};Ie.Cf="";var We={},Xe=new Ka,Ye={},Ze={},bf={name:"dataLayer",set:function(a,b){m(gb(a,b),Ye);$e()},get:function(a){return af(a,2)},reset:function(){Xe=new Ka;Ye={};$e()}},af=function(a,b){return 2!=b?Xe.get(a):cf(a)},cf=function(a){var b,c=a.split(".");b=b||[];for(var d=Ye,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ga(b,d))return}return d},df=function(a,b){Ze.hasOwnProperty(a)||(Xe.set(a,b),m(gb(a,b),Ye),$e())},$e=function(a){Ma(Ze,function(b,c){Xe.set(b,c);m(gb(b,
 void 0),Ye);m(gb(b,c),Ye);a&&delete Ze[b]})},ef=function(a,b,c){We[a]=We[a]||{};var d=1!==c?cf(b):Xe.get(b);"array"===kb(d)||"object"===kb(d)?We[a][b]=m(d):We[a][b]=d},ff=function(a,b){if(We[a])return We[a][b]},gf=function(a,b){We[a]&&delete We[a][b]};var kf={},lf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===kf[a]&&(kf[a]=Math.floor(Math.random()*b));return kf[a]};var mf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function nf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};var of=function(a){of[" "](a);return a};of[" "]=function(){};function pf(a){if(!ud(1937))return!0;try{return of(a.cookie),!0}catch(b){return!1}};var sf=function(a,b,c,d){return qf(d)?nf(a,String(b||rf()),c):[]},vf=function(a,b,c,d,e){if(qf(e)){var f=tf(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=uf(f,function(h){return h.vc},b);if(1===f.length)return f[0].id;f=uf(f,function(h){return h.Mb},c);return f[0]?f[0].id:void 0}}};function wf(a,b,c,d){var e=rf(),f=document;pf(f)&&(f.cookie=a);var h=rf();return e!=h||void 0!=c&&0<=sf(b,h,!1,d).indexOf(c)}
 var Df=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!qf(c.ya))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=Af(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Sh);f=d(f,"samesite",
@@ -685,120 +685,370 @@ data:{scriptSource:ed,resume:function(){a()},containerProduct:"GTM"}};q.data.con
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Advanced Python:</font><br>Calculations with Data Frames</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#example-data"><span class="toc-section-number">1</span> Example Data</a></li>
+<li><a href="#performing-calculations-on-a-data-frame"><span class="toc-section-number">2</span> Performing Calculations on a Data Frame</a>
+<ul>
+<li><a href="#perform-standard-calculations"><span class="toc-section-number">2.1</span> Perform standard calculations</a></li>
+<li><a href="#perform-direct-calculations"><span class="toc-section-number">2.2</span> Perform direct calculations</a></li>
+<li><a href="#perform-lambda-calculations"><span class="toc-section-number">2.3</span> Perform lambda calculations</a></li>
+<li><a href="#perform-custom-calculations"><span class="toc-section-number">2.4</span> Perform custom calculations</a></li>
+</ul></li>
+<li><a href="#cleaning-a-data-frame"><span class="toc-section-number">3</span> Cleaning a Data Frame</a>
+<ul>
+<li><a href="#replace-nans"><span class="toc-section-number">3.1</span> Replace NaNs</a></li>
+<li><a href="#replace-values"><span class="toc-section-number">3.2</span> Replace values</a></li>
+<li><a href="#use-lambda-functions"><span class="toc-section-number">3.3</span> Use lambda functions</a></li>
+<li><a href="#convert-data-type"><span class="toc-section-number">3.4</span> Convert data type</a></li>
+<li><a href="#sanitise-data-using-regex"><span class="toc-section-number">3.5</span> Sanitise data using RegEx</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/lists.html">Lists</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-</ol>
+<p><a href="../../python.html">⇦ Back</a></p>
+<blockquote>
+<p>This page follows on from <a href="data_frames_intro.html">Introduction to Data Frames</a> and <a href="data_frames_searching.html">Searching, Finding &amp; Filtering Data Frames</a></p>
+</blockquote>
+<div id="example-data" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Example Data</h1>
+<p>For this tutorial, use the results of the Rio 2016 Olympics men’s 100m finals in data frame format:</p>
+<pre class="python"><code>import pandas as pd
+
+rio_100m_men = {
+    &#39;Athlete&#39;: [
+        &#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;,
+        &#39;Jimmy Vicaut&#39;, &#39;Trayvon Bromell&#39;
+    ],
+    &#39;Country&#39;: [
+        &#39;Jamaica&#39;, &#39;United States&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;South Africa&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;United States&#39;
+    ],
+    &#39;Age&#39;: [29, 34, 21, 26, 22, 29, 24, 21],
+    &#39;Heat&#39;: [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+    &#39;Semi-Final&#39;: [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+    &#39;Final&#39;: [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+}
+df = pd.DataFrame(rio_100m_men)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-</ul></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="performing-calculations-on-a-data-frame" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Performing Calculations on a Data Frame</h1>
+<div id="perform-standard-calculations" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Perform standard calculations</h2>
+<p><strong>Perform standard calculations on rows:</strong><br />
+Pandas has a number of common statistical operations built-in as methods. For example, calculate the mean time each athlete took to run 100m across their heat, semi-final and final (ie calculate the mean of each row):</p>
+<pre class="python"><code># Calculate means
+means = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean(axis=1)
+# or
+means = df.loc[:, [&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean(axis=1)
+print(list(round(means, 2)))</code></pre>
+<pre><code>## [9.91, 9.95, 9.96, 10.02, 10.02, 9.99, 10.06, 10.07]</code></pre>
+<p>And calculate the total time each athlete was running for (calculate the total of each row):</p>
+<pre class="python"><code># Calculate totals
+total_time = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].sum(axis=1)
+print(list(round(total_time, 2)))</code></pre>
+<pre><code>## [29.74, 29.84, 29.87, 30.05, 30.06, 29.96, 30.18, 30.2]</code></pre>
+<p><strong>Perform standard calculations on columns:</strong><br />
+The built-in methods work similarly on columns as to how they work on rows. The difference is which ‘axis’ they operate on: axis=0 is for columns and axis=1 is for rows. By default these methods work over columns (axis=0). For example, calculate the mean time that these athletes took to complete their heat, semi-final and final respectively (ie calculate the mean of each column):</p>
+<pre class="python"><code># Calculate means
+means = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean()
+print(list(round(means, 2)))</code></pre>
+<pre><code>## [10.09, 9.96, 9.94]</code></pre>
+<pre class="python"><code># or
+means = df.loc[:, [&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].mean()
+print(list(round(means, 2)))</code></pre>
+<pre><code>## [10.09, 9.96, 9.94]</code></pre>
+<p>And the total time they took to complete the heats, semi-finals and final (calculate the total of each column):</p>
+<pre class="python"><code># Calculate totals
+total_time = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].sum()
+print(list(round(total_time, 2)))</code></pre>
+<pre><code>## [80.72, 79.64, 79.54]</code></pre>
+<p><strong>Perform standard calculations on columns using subsetting:</strong><br />
+If we search a column for values and subset the column to extract just those values we can then use them in a calculation. For example, here is how to calculate how many Americans were in the race by counting the number of occurrences of “United States” in the Country column:</p>
+<pre class="python"><code>n_americans = len([v for v in df[&#39;Country&#39;] if v == &#39;United States&#39;])
+print(n_americans)</code></pre>
+<pre><code>## 2</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
+<div id="perform-direct-calculations" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Perform direct calculations</h2>
+<p><strong>Perform direct calculations using columns:</strong><br />
+We aren’t limited to just using the built-in methods, we can actually perform whatever operations we want <strong>directly</strong> on the values in each row. For example, here’s a more ‘direct’ way of calculating the total of all the times in each row:</p>
+<pre class="python"><code># Calculate totals
+total_time = df[&#39;Heat&#39;] + df[&#39;Semi-Final&#39;] + df[&#39;Final&#39;]
+print([round(x, 2) for x in total_time])</code></pre>
+<pre><code>## [29.74, 29.84, 29.87, 30.05, 30.06, 29.96, 30.18, 30.2]</code></pre>
+<p><strong>Perform direct calculations using rows:</strong><br />
+Similarly, here’s a more ‘direct’ way to sum up all the times in each column. It is, however, more fiddly as you need to extract just the numerical data and convert each row to an array:</p>
+<pre class="python"><code># Extract only the numerical data
+times = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]]
+# Add the rows
+total_time = times.values[0] + times.values[1] + times.values[2] + times.values[3] + times.values[4] + times.values[5] + times.values[6] + times.values[7]
+print(total_time)</code></pre>
+<pre><code>## [80.72 79.64 79.54]</code></pre>
+<p><strong>Perform direct calculations by iterating over rows:</strong><br />
+Yet another way to sum up all the values in a column is to iterate over each row in that column:</p>
+<pre class="python"><code>import numpy as np
+
+# Initialise output array
+total_time = np.zeros([1, 3])
+# Iterate over rows
+for i, row in df.iterrows():
+    total_time = total_time + row[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]].values
+print(total_time)</code></pre>
+<pre><code>## [[80.72 79.64 79.54]]</code></pre>
+<p>Iteration over rows can also be used to sum up the values in each row:</p>
+<pre class="python"><code># Initialise the output column
+df[&#39;Total Time&#39;] = np.nan
+for i, row in df.iterrows():
+    df.loc[i, &#39;Total Time&#39;] = row[&#39;Heat&#39;] + row[&#39;Semi-Final&#39;] + row[&#39;Final&#39;]
+print(list(round(df[&#39;Total Time&#39;], 2)))</code></pre>
+<pre><code>## [29.74, 29.84, 29.87, 30.05, 30.06, 29.96, 30.18, 30.2]</code></pre>
+<p>Here’s another example using iteration over each row in a column, this time in order to <strong>update</strong> it:</p>
+<pre class="python"><code># Increase the ages of all athletes by 1 year
+new_age = []
+for v in df[&#39;Age&#39;]:
+    new_age.append(v + 1)
+df[&#39;New age&#39;] = new_age
+print(list(df[&#39;New age&#39;]))</code></pre>
+<pre><code>## [30, 35, 22, 27, 23, 30, 25, 22]</code></pre>
+<p>Note that the above example can also be done using <strong>list comprehension</strong>:</p>
+<pre class="python"><code>df[&#39;New age&#39;] = [v + 1 for v in df[&#39;Age&#39;]]
+print(list(df[&#39;New age&#39;]))</code></pre>
+<pre><code>## [30, 35, 22, 27, 23, 30, 25, 22]</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="perform-lambda-calculations" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Perform lambda calculations</h2>
+<p><strong>Perform lambda calculations on rows:</strong><br />
+<strong>Lambda calculations</strong> are useful when you want to perform operations on <em>each cell</em> in a particular row as opposed to on <em>all</em> cells in that row or on the row as a whole. For example, if we want to round Yohan Blake’s times to three significant figures each, there is no single, pre-defined function that we can apply to all cells in his row that will do this. There is the <code>round()</code> function, but that would round all his times to a given number of <em>decimal places</em> not to a given number of <em>significant figures</em>:</p>
+<pre class="python"><code># Extract only the numerical data
+times = df[[&#39;Heat&#39;, &#39;Semi-Final&#39;, &#39;Final&#39;]]
+# Round all values to one decimal place
+rounded = round(times, 1)
+# Extract Yohan Blake&#39;s times
+rounded = rounded.loc[[4], :]
+print(rounded)</code></pre>
+<pre><code>##    Heat  Semi-Final  Final
+## 4  10.1        10.0    9.9</code></pre>
+<p>As you can see, the method above resulted in 3, 3 and 2 significant figures. The reason this is difficult is because the times he ran (10.11, 10.01 and 9.93) have 4, 4 and 3 digits respectively, so they need to be rounded to 1, 1 and 2 decimal places to leave 3 sig figs in each. Hence we need to apply a function differently to each cell, and a lambda function does exactly this:</p>
+<pre class="python"><code># Apply a function differently to each cell in one row
+sig_figs = times.apply(lambda x: str(x[4])[:4])
+print(list(sig_figs))</code></pre>
+<pre><code>## [&#39;10.1&#39;, &#39;9.98&#39;, &#39;9.94&#39;]</code></pre>
+<p>And now we have three significant figures as desired.</p>
+<p><strong>Perform lambda calculations on columns:</strong><br />
+Similar to the above, lambda calculations can be used on columns to apply a function differently to each cell in that column. For example, if we want to extract just the the first name of each athlete, we will need to look up where the first space is in each of their names and extract the letters that come before it:</p>
+<pre class="python"><code># Find the first name of each athlete
+first_name = df.apply(lambda x: x[&#39;Athlete&#39;][:x[&#39;Athlete&#39;].find(&#39; &#39;)], axis=1)
+print(list(first_name))</code></pre>
+<pre><code>## [&#39;Usain&#39;, &#39;Justin&#39;, &#39;Andre&#39;, &#39;Yohan&#39;, &#39;Akani&#39;, &#39;Ben&#39;, &#39;Jimmy&#39;, &#39;Trayvon&#39;]</code></pre>
+<p>Notice that we had to specify <code>axis=1</code> to apply the function to a column as opposed to a row (<code>axis=0</code>) which is the default.</p>
+<p><strong>Perform lambda calculations on data frames:</strong><br />
+Lambda functions can also be performed on entire data frames, which enables us to perform calculations using <strong>multiple</strong> rows or columns. This example uses multiple columns to find the average time for all of each athlete’s races (there are simpler ways to do this calculation, this is just for demonstration!):</p>
+<pre class="python"><code>df[&#39;Mean Time&#39;] = df.apply(lambda df: (df[&#39;Heat&#39;] + df[&#39;Semi-Final&#39;] + df[&#39;Final&#39;]) / 3, axis=1)
+print(list(round(df[&#39;Mean Time&#39;], 2)))</code></pre>
+<pre><code>## [9.91, 9.95, 9.96, 10.02, 10.02, 9.99, 10.06, 10.07]</code></pre>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<div id="hypothesis-testing" class="section level4">
-<h4>Hypothesis Testing</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ol>
+<div id="perform-custom-calculations" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Perform custom calculations</h2>
+<p><strong>Perform custom calculations on columns:</strong><br />
+If you want to perform a function that is complex or specific enough to make lambda functions cumbersome, the best option is to create a custom function and <code>.apply()</code> it to the column. Here’s an example that stratifies the final times into categories:</p>
+<pre class="python"><code>def stratify(time):
+    &quot;&quot;&quot;Assign a categorical description to a time.&quot;&quot;&quot;
+    if time &lt;= 9.9:
+        category = &#39;Sub-9.9&#39;
+    elif time &lt;= 10.0:
+        category = &#39;Sub-10&#39;
+    else:
+        category = &#39;Not sub-10&#39;
+    return category
+
+
+# Apply a function to a column
+df[&#39;Category&#39;] = df[&#39;Final&#39;].apply(stratify)
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Category&#39;]])</code></pre>
+<pre><code>##              Athlete  Final    Category
+## 0         Usain Bolt   9.81     Sub-9.9
+## 1      Justin Gatlin   9.89     Sub-9.9
+## 2    Andre De Grasse   9.91      Sub-10
+## 3        Yohan Blake   9.93      Sub-10
+## 4      Akani Simbine   9.94      Sub-10
+## 5  Ben Youssef Meïté   9.96      Sub-10
+## 6       Jimmy Vicaut  10.04  Not sub-10
+## 7    Trayvon Bromell  10.06  Not sub-10</code></pre>
+<p><strong>Alternative ways to stratify data into two categories:</strong><br />
+If your aim is to sort your data into categories then another option, besides applying custom functions, is to just index the data:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = &#39;Not sub-10&#39;
+df.loc[df[&#39;Final&#39;] &lt;= 10.0, &#39;Category&#39;] = &#39;Sub-10&#39;
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>…or you could use Numpy’s <code>where()</code> function:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = np.where(df[&#39;Final&#39;] &lt;= 10.0, &#39;Sub-10&#39;, &#39;Not sub-10&#39;)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>The <code>np.where()</code> function is equivalent to the <code>ifelse()</code> function in R.</p>
+<p><strong>Alternative ways to stratify data into three categories:</strong><br />
+Repeating the above methods with three categories give this:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = &#39;Not sub-10&#39;
+df.loc[df[&#39;Final&#39;] &lt;= 10.0, &#39;Category&#39;] = &#39;Sub-10&#39;
+df.loc[df[&#39;Final&#39;] &lt;= 9.9, &#39;Category&#39;] = &#39;Sub-9.9&#39;
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>…and using <code>where()</code>:</p>
+<pre class="python"><code>df[&#39;Category&#39;] = np.where(
+    df[&#39;Final&#39;] &lt;= 9.9, &#39;Sub-9.9&#39;, np.where(df[&#39;Final&#39;] &lt;= 10.0, &#39;Sub-10&#39;, &#39;Not sub-10&#39;)
+)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>However, the <strong>most correct</strong> way to stratify data into three or more categories is by using Numpy’s <code>select()</code> function:</p>
+<pre class="python"><code>conditions = [
+    (df[&#39;Final&#39;] &lt;= 9.9),
+    (df[&#39;Final&#39;] &lt;= 10.0),
+]
+categories = [&#39;Sub-9.9&#39;, &#39;Sub-10&#39;]
+df[&#39;Category&#39;] = np.select(conditions, categories, default=&#39;Not sub-10&#39;)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
+<p>Here’s a similar example using multiple columns to do the stratification:</p>
+<pre class="python"><code>conditions = [
+    (df[&#39;Semi-Final&#39;] &lt;= 9.9) &amp; (df[&#39;Final&#39;] &lt;= 9.9),
+    (df[&#39;Semi-Final&#39;] &lt;= 10.0) &amp; (df[&#39;Final&#39;] &lt;= 10.0)
+]
+categories = [&#39;Sub-9.9&#39;, &#39;Sub-10&#39;]
+df[&#39;Category&#39;] = np.select(conditions, categories, default=&#39;Not sub-10&#39;)
+print(list(df[&#39;Category&#39;]))</code></pre>
+<pre><code>## [&#39;Sub-9.9&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Sub-10&#39;, &#39;Sub-10&#39;, &#39;Not sub-10&#39;, &#39;Not sub-10&#39;]</code></pre>
 </div>
-<div id="agreement-accuracy-precision" class="section level4">
-<h4>Agreement (Accuracy &amp; Precision)</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-</ol>
 </div>
+<div id="cleaning-a-data-frame" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Cleaning a Data Frame</h1>
+<p>Data cleaning is done to handle incomplete or partially incorrect datasets:</p>
+<ul>
+<li>An <strong>incomplete</strong> dataset will have missing values in some places</li>
+<li>A <strong>partially incorrect</strong> dataset might have misspelled column headings or similar</li>
+</ul>
+<div id="replace-nans" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Replace NaNs</h2>
+<p>If you have missing data (an <strong>incomplete</strong> dataset) these cells will contain Numpy’s “not-a-number” object, NaN. These can be replaced with any other value you want.</p>
+<p><strong>Sanitise whole data frame:</strong></p>
+<pre class="python"><code># Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    &#39;Athlete&#39;: [&#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;],
+    &#39;Country&#39;: [np.nan, &#39;United States&#39;, np.nan],
+    &#39;Age&#39;: [29, np.nan, 21]
+})
+# Replace NaNs
+df_sanitised = df_unsanitised.fillna(&#39;Unknown&#39;)
+print(df_sanitised)</code></pre>
+<pre><code>##            Athlete        Country      Age
+## 0       Usain Bolt        Unknown       29
+## 1    Justin Gatlin  United States  Unknown
+## 2  Andre De Grasse        Unknown       21</code></pre>
+<p><strong>Sanitise one column:</strong><br />
+If you want to replace missing data in one column only the default behaviour is for <em>only that column</em> to be returned. This usually isn’t what you want, so use the ‘inplace’ keyword argument to perform the replacement in the data frame immediately without needing to assign a return to anything:</p>
+<pre class="python"><code># Create data frame that has missing data
+df_unsanitised = pd.DataFrame({
+    &#39;Athlete&#39;: [&#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;],
+    &#39;Country&#39;: [np.nan, &#39;United States&#39;, np.nan],
+    &#39;Age&#39;: [29, np.nan, 21]
+})
+# Replace NaNs in one column
+df_unsanitised[&#39;Country&#39;].fillna(&#39;Unknown&#39;, inplace=True)
+print(df_unsanitised)</code></pre>
+<pre><code>##            Athlete        Country   Age
+## 0       Usain Bolt        Unknown  29.0
+## 1    Justin Gatlin  United States   NaN
+## 2  Andre De Grasse        Unknown  21.0</code></pre>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="replace-values" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Replace values</h2>
+<p><strong>Sanitise whole data frame:</strong><br />
+If you known there are some values that are misspelled you can replace all of them in the data frame in one go:</p>
+<pre class="python"><code># Replace all occurrences of a value
+df_replaced = df.replace([&#39;United States&#39;, &#39;South Africa&#39;], [&#39;USA&#39;, &#39;RSA&#39;])
+print(list(df_replaced[&#39;Country&#39;]))</code></pre>
+<pre><code>## [&#39;Jamaica&#39;, &#39;USA&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;RSA&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;USA&#39;]</code></pre>
+<p>If you want to replace incorrect data with “None” values you will need to use Numpy’s “not-a-number” objects rather that Python’s built-in “None” objects. This is because when Python inserts a “None” values it will actually remove that cell, the space will be filled with the value in the cell above!</p>
+<pre class="python"><code>df_replaced = df.replace(&#39;United States&#39;, None)  # This does not work as expected!
+print(df_replaced)</code></pre>
+<pre><code>##              Athlete       Country  Age  ...  Final  Reaction Time  Finish Position
+## 0         Usain Bolt       Jamaica   29  ...   9.81          0.155             Gold
+## 1      Justin Gatlin       Jamaica   34  ...   9.89          0.152           Silver
+## 2    Andre De Grasse        Canada   21  ...   9.91          0.141           Bronze
+## 3        Yohan Blake       Jamaica   26  ...   9.93          0.145              4th
+## 4      Akani Simbine  South Africa   22  ...   9.94          0.128              5th
+## 5  Ben Youssef Meïté   Ivory Coast   29  ...   9.96          0.156              6th
+## 6       Jimmy Vicaut        France   24  ...  10.04          0.140              7th
+## 7    Trayvon Bromell        France   21  ...  10.06          0.135              8th
+## 
+## [8 rows x 8 columns]</code></pre>
+<p>Justin Gatlin does not come from Jamaica and Trayvon Bromell does not come from France! Rather do this:</p>
+<pre class="python"><code>df_replaced = df.replace(&#39;United States&#39;, np.nan)
+print(df_replaced)</code></pre>
+<pre><code>##              Athlete       Country  Age  ...  Final  Reaction Time  Finish Position
+## 0         Usain Bolt       Jamaica   29  ...   9.81          0.155             Gold
+## 1      Justin Gatlin           NaN   34  ...   9.89          0.152           Silver
+## 2    Andre De Grasse        Canada   21  ...   9.91          0.141           Bronze
+## 3        Yohan Blake       Jamaica   26  ...   9.93          0.145              4th
+## 4      Akani Simbine  South Africa   22  ...   9.94          0.128              5th
+## 5  Ben Youssef Meïté   Ivory Coast   29  ...   9.96          0.156              6th
+## 6       Jimmy Vicaut        France   24  ...  10.04          0.140              7th
+## 7    Trayvon Bromell           NaN   21  ...  10.06          0.135              8th
+## 
+## [8 rows x 8 columns]</code></pre>
+<p><strong>Sanitise one column:</strong><br />
+If you want to only replace values in one column, you can use indexing:</p>
+<pre class="python"><code>df.loc[df[&#39;Age&#39;] == 22, &#39;Age&#39;] = &#39;twenty-two&#39;
+print(list(df[&#39;Age&#39;]))</code></pre>
+<pre><code>## [29, 34, 21, 26, &#39;twenty-two&#39;, 29, 24, 21]</code></pre>
+</div>
+<div id="use-lambda-functions" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Use lambda functions</h2>
+<p>If you want to do more complicated searches and replaces that require functions to be run on cells as individual values (as opposed to being run on columns as a whole), you will need to use lambda functions.</p>
+<pre class="python"><code># Create a column with data that has inconsistent formatting
+df[&#39;Time&#39;] = [&#39;+9.81&#39;, &#39;9.89&#39;, &#39;9.91s&#39;, &#39;9.93s&#39;, &#39;9.94&#39;, &#39;-9.96&#39;, &#39;+10.04&#39;, &#39;10.06s&#39;]
+print(list(df[&#39;Time&#39;]))</code></pre>
+<pre><code>## [&#39;+9.81&#39;, &#39;9.89&#39;, &#39;9.91s&#39;, &#39;9.93s&#39;, &#39;9.94&#39;, &#39;-9.96&#39;, &#39;+10.04&#39;, &#39;10.06s&#39;]</code></pre>
+<pre class="python"><code># Sanitise column
+df[&#39;Time&#39;] = df[&#39;Time&#39;].map(lambda x: x.lstrip(&#39;+-&#39;).rstrip(&#39;s&#39;))
+print(list(df[&#39;Time&#39;]))</code></pre>
+<pre><code>## [&#39;9.81&#39;, &#39;9.89&#39;, &#39;9.91&#39;, &#39;9.93&#39;, &#39;9.94&#39;, &#39;9.96&#39;, &#39;10.04&#39;, &#39;10.06&#39;]</code></pre>
+</div>
+<div id="convert-data-type" class="section level2" number="3.4">
+<h2 number="3.4"><span class="header-section-number">3.4</span> Convert data type</h2>
+<p>If you have values that are numbers instead of strings, or values that are strings instead of integers or floats, you should convert them to the correct data type. The below method using a lambda function is able to handle missing data:</p>
+<pre class="python"><code># Convert integers to strings
+df[&#39;Age&#39;] = df[&#39;Age&#39;].apply(lambda x: str(x) if pd.notnull(x) else x)
+
+# Convert strings to floats
+df[&#39;Age&#39;] = df[&#39;Age&#39;].notnull().astype(float)
+
+# Convert objects to numbers
+df[&#39;Age&#39;] = df[&#39;Age&#39;].astype(str).astype(float)
+
+# Convert objects to Booleans
+df[&#39;Age&#39;] = df[&#39;Age&#39;].astype(&#39;bool&#39;)</code></pre>
+</div>
+<div id="sanitise-data-using-regex" class="section level2" number="3.5">
+<h2 number="3.5"><span class="header-section-number">3.5</span> Sanitise data using RegEx</h2>
+<p>If you’re replacing values with special characters you may need to use regular expressions (RegEx):</p>
+<pre class="python"><code>df = df.replace({&#39;\n&#39;: &#39;&lt;br&gt;&#39;}, regex=True)</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 
