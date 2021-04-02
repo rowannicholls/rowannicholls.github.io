@@ -1,0 +1,169 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Multi-Level Data Frames'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+> This page is the fourth in a series on data frames:
+> 
+> 1. [Introduction to Data Frames](data_frames_intro.html)
+> 2. [Searching, Finding & Filtering Data Frames](data_frames_searching.html)
+> 3. [Calculations with Data Frames](data_frames_calculations.html)
+> 4. Multi-Level Data Frames
+
+Single-Level vs Multi-Level Data Frames
+=======================================
+A 'normal' data frame has rows and columns, meaning that every cell can be uniquely identified by its row name and column name. As an example, take the results of the men's sprint final from the Rio 2016 Olympics:
+
+```{python}
+import pandas as pd
+
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.width', 200)
+
+index = ['Gold', 'Silver', 'Bronze', '4th', '5th', '6th', '7th', '8th']
+rio_men = {
+    '100m': [
+        'Usain Bolt', 'Justin Gatlin', 'Andre De Grasse', 'Yohan Blake', 'Akani Simbine', 'Ben Youssef Meïté',
+        'Jimmy Vicaut', 'Trayvon Bromell'
+    ],
+    '200m': [
+        'Usain Bolt', 'Andre De Grasse', 'Christophe Lemaitre', 'Adam Gemili', 'Churandy Martina',
+        'LaShawn Merritt', 'Alonso Edward', 'Ramil Guliyev'
+    ],
+}
+df = pd.DataFrame(rio_men, index=index)
+print(df)
+```
+
+From the above data frame it's clear that the person who came **4th** in the **200m** was Adam Gemili; specifying *one* row name and *one* column name identifies one cell:
+
+```{python}
+print(df.loc['4th', '200m'])
+```
+
+However, it's also possible to have a *multi-level index* (or **MultiIndex**) object as the row or column names. This creates a *hierarchy* of names:
+
+```{python, eval = FALSE, echo = FALSE}
+columns = [
+    ('100m', 'Women'), ('100m', 'Men'), ('200m', 'Women'), ('200m', 'Men'), ('400m', 'Women'), ('400m', 'Men')
+]
+columns = pd.MultiIndex.from_tuples(columns)
+index = ['Gold', 'Silver', 'Bronze', '4th', '5th', '6th', '7th', '8th']
+data = [
+    ['Elaine Thompson', 'Usain Bolt', 'Elaine Thompson', 'Usain Bolt', 'Shaunae Miller', 'Wayde van Niekerk'],
+    ['Tori Bowie', 'Justin Gatlin', 'Dafne Schippers', 'Andre De Grasse', 'Allyson Felix', 'Kirani James'],
+    ['Shelly-Ann Fraser-Pryce', 'Andre De Grasse', 'Tori Bowie', 'Christophe Lemaitre', 'Shericka Jackson', 'LaShawn Merritt'],
+    ['Marie-Josee Ta Lou', 'Yohan Blake', 'Marie Josée Ta Lou', 'Adam Gemili', 'Natasha Hastings', 'Machel Cedenio'],
+    ['Dafne Schippers', 'Akani Simbine', 'Dina Asher-Smith', 'Churandy Martina', 'Phyllis Francis', 'Karabo Sibanda'],
+    ['Michelle-Lee Ahye', 'Ben Youssef Meïté', 'Michelle-Lee Ahye', 'LaShawn Merritt', 'Stephenie Ann McPherson', 'Ali Khamis'],
+    ['English Gardner', 'Jimmy Vicaut', 'Deajah Stevens', 'Alonso Edward', 'Olha Zemlyak', 'Bralon Taplin'],
+    ['Christania Williams', 'Trayvon Bromell', 'Ivet Lalova-Collio', 'Ramil Guliyev', 'Libania Grenot', 'Matthew Hudson-Smith']
+]
+df = pd.DataFrame(data=data, columns=columns, index=index)
+print(df)
+```
+
+```{python}
+columns = [
+    ('100m', 'Women'), ('100m', 'Men'), ('200m', 'Women'), ('200m', 'Men')
+]
+columns = pd.MultiIndex.from_tuples(columns)
+index = ['Gold', 'Silver', 'Bronze', '4th', '5th', '6th', '7th', '8th']
+data = [
+    ['Elaine Thompson', 'Usain Bolt', 'Elaine Thompson', 'Usain Bolt'],
+    ['Tori Bowie', 'Justin Gatlin', 'Dafne Schippers', 'Andre De Grasse'],
+    ['Shelly-Ann Fraser-Pryce', 'Andre De Grasse', 'Tori Bowie', 'Christophe Lemaitre'],
+    ['Marie-Josee Ta Lou', 'Yohan Blake', 'Marie Josée Ta Lou', 'Adam Gemili'],
+    ['Dafne Schippers', 'Akani Simbine', 'Dina Asher-Smith', 'Churandy Martina'],
+    ['Michelle-Lee Ahye', 'Ben Youssef Meïté', 'Michelle-Lee Ahye', 'LaShawn Merritt'],
+    ['English Gardner', 'Jimmy Vicaut', 'Deajah Stevens', 'Alonso Edward'],
+    ['Christania Williams', 'Trayvon Bromell', 'Ivet Lalova-Collio', 'Ramil Guliyev']
+]
+df = pd.DataFrame(data=data, columns=columns, index=index)
+print(df)
+```
+
+Now, in order to extract the Adam Gemili cell we need to provide *three* pieces of information: **4th**, **200m** and **Men**. The latter two are the two components of this cell's multi-level column name and can be specified using a *tuple* - two comma-separated pieces of information enclosed with round brackets:
+
+```{python}
+print(df.loc['4th', ('200m', 'Men')])
+```
+
+Re-Structuring Multi-Level Data Frames
+======================================
+The `.stack()` method takes the column names (or the inner-most column names if there are multiple
+levels) and 'stacks' them on top of the row names to create *multi-level **row** names*:
+
+```{python}
+df = df.stack()
+print(df)
+```
+
+In this example, the inner-most level of the column names ("Women" and "Men") got moved to become the inner-most level of the row names. It is not the *row* that needs to be specified using a tuple:
+
+```{python}
+print(df.loc[('4th', 'Men'), '200m'])
+```
+
+Searching for Values
+--------------------
+This re-structuring can be used to search for values. Let's start with a single-level data frame:
+
+```{python}
+index = ['Gold', 'Silver', 'Bronze', '4th', '5th', '6th', '7th', '8th']
+rio_men = {
+    '100m': [
+        'Usain Bolt', 'Justin Gatlin', 'Andre De Grasse', 'Yohan Blake', 'Akani Simbine', 'Ben Youssef Meïté',
+        'Jimmy Vicaut', 'Trayvon Bromell'
+    ],
+    '200m': [
+        'Usain Bolt', 'Andre De Grasse', 'Christophe Lemaitre', 'Adam Gemili', 'Churandy Martina',
+        'LaShawn Merritt', 'Alonso Edward', 'Ramil Guliyev'
+    ],
+    '400m': [
+        'Wayde van Niekerk', 'Kirani James', 'LaShawn Merritt', 'Machel Cedenio', 'Karabo Sibanda',
+        'Ali Khamis', 'Bralon Taplin', 'Matthew Hudson-Smith'
+    ]
+}
+df = pd.DataFrame(rio_men, index=index)
+print(df)
+```
+
+What happens when we stack a single-level data frame? Let's find out:
+
+```{python}
+print(df.stack())
+```
+
+The column names have been stacked on top of the row names (which you might have expected) but note that *the result is a **series**, not a data frame!* This is important because we can now search the entire data frame as if it was one column (which it now is):
+
+```{python}
+search_result = df[df.isin(['Adam Gemili'])].stack()
+row = search_result.index[0][0]
+col = search_result.index[0][1]
+print(f'Adam Gemili came {row} in the {col}')
+```
+
+Unstacking
+----------
+Perhaps unsurprisingly, the reverse of the `.stack()` method is the `.unstack()` method:
+
+```{python}
+print(df.stack().unstack())
+```
+
+[⇦ Back](../../python.html)
+
+</font>

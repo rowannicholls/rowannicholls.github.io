@@ -484,7 +484,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},le=function(a){var b=I.createElement("
 e=le(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var ne=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),oe=new RegExp(/support|noreply/i),pe=["SCRIPT","IMG","SVG","PATH","BR"],qe=["BR"];function re(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=re(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 function se(a,b){if(1>=a.length)return a;var c=a.filter(b);return 0==c.length?a:c}function te(a){if(0==a.length)return null;var b;b=se(a,function(c){return!oe.test(c.Kc)});b=se(b,function(c){return"INPUT"===c.element.tagName.toUpperCase()});b=se(b,function(c){return!Wd(c.element)});return b[0]}
 function ue(){var a;var b=[],c=I.body;if(c){for(var d=c.querySelectorAll("*"),e=0;e<d.length&&1E4>e;e++){var f=d[e];if(!(0<=pe.indexOf(f.tagName.toUpperCase()))){for(var h=!1,k=0;k<f.childElementCount&&1E4>k;k++)if(!(0<=qe.indexOf(f.children[k].tagName.toUpperCase()))){h=!0;break}h||b.push(f)}}a={elements:b,status:1E4<d.length?"2":"1"}}else a={elements:b,status:"4"};for(var l=a,n=l.elements,q=[],p=0;p<n.length;p++){var r=n[p],u=r.textContent;r.value&&(u=r.value);if(u){var t=u.match(ne);if(t){var v=
-t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ef:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3o0";Ie.Hh="";Ie.Df="ChEI8N6VgwYQq6mfna71upvZARInAOq4ohFN0Qq0JddDFfHM9jJYgt383OVWDth/2+StgTTzcfAauWZAGgIDqw\x3d\x3d";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
+t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ef:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3o0";Ie.Hh="";Ie.Df="ChEI8N6VgwYQq6mfna71upvZARInAOq4ohFkze7I3iWZ/SqFltLl6ggCTHXwQIJWqMBWXC7KTNDShl/hGgLVsg\x3d\x3d";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
 var Oe=Ne,Pe=Qa(""),Qe=null,Re=null,Se="//www.googletagmanager.com/a?id="+Ie.D+"&cv=1",Te={},Ue={},Ve=function(){var a=L.sequence||1;L.sequence=a+1;return a};Ie.Cf="";var We={},Xe=new Ka,Ye={},Ze={},bf={name:"dataLayer",set:function(a,b){m(gb(a,b),Ye);$e()},get:function(a){return af(a,2)},reset:function(){Xe=new Ka;Ye={};$e()}},af=function(a,b){return 2!=b?Xe.get(a):cf(a)},cf=function(a){var b,c=a.split(".");b=b||[];for(var d=Ye,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ga(b,d))return}return d},df=function(a,b){Ze.hasOwnProperty(a)||(Xe.set(a,b),m(gb(a,b),Ye),$e())},$e=function(a){Ma(Ze,function(b,c){Xe.set(b,c);m(gb(b,
 void 0),Ye);m(gb(b,c),Ye);a&&delete Ze[b]})},ef=function(a,b,c){We[a]=We[a]||{};var d=1!==c?cf(b):Xe.get(b);"array"===kb(d)||"object"===kb(d)?We[a][b]=m(d):We[a][b]=d},ff=function(a,b){if(We[a])return We[a][b]},gf=function(a,b){We[a]&&delete We[a][b]};var kf={},lf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===kf[a]&&(kf[a]=Math.floor(Math.random()*b));return kf[a]};var mf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function nf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};var of=function(a){of[" "](a);return a};of[" "]=function(){};function pf(a){if(!ud(1937))return!0;try{return of(a.cookie),!0}catch(b){return!1}};var sf=function(a,b,c,d){return qf(d)?nf(a,String(b||rf()),c):[]},vf=function(a,b,c,d,e){if(qf(e)){var f=tf(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=uf(f,function(h){return h.vc},b);if(1===f.length)return f[0].id;f=uf(f,function(h){return h.Mb},c);return f[0]?f[0].id:void 0}}};function wf(a,b,c,d){var e=rf(),f=document;pf(f)&&(f.cookie=a);var h=rf();return e!=h||void 0!=c&&0<=sf(b,h,!1,d).indexOf(c)}
 var Df=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!qf(c.ya))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=Af(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Sh);f=d(f,"samesite",
@@ -695,16 +695,45 @@ data:{scriptSource:ed,resume:function(){a()},containerProduct:"GTM"}};q.data.con
 <ul>
 <li><a href="#example-data"><span class="toc-section-number">1.1</span> Example Data</a></li>
 </ul></li>
-<li><a href="#searching"><span class="toc-section-number">2</span> Searching</a></li>
-<li><a href="#finding"><span class="toc-section-number">3</span> Finding</a></li>
-<li><a href="#filtering"><span class="toc-section-number">4</span> Filtering</a></li>
+<li><a href="#searching"><span class="toc-section-number">2</span> Searching</a>
+<ul>
+<li><a href="#search-a-column"><span class="toc-section-number">2.1</span> Search a Column</a></li>
+<li><a href="#search-the-values-in-a-column-individually"><span class="toc-section-number">2.2</span> Search the Values in a Column Individually</a></li>
+<li><a href="#search-for-substrings"><span class="toc-section-number">2.3</span> Search for Substrings</a></li>
+<li><a href="#append-the-results-of-a-search-as-a-column"><span class="toc-section-number">2.4</span> Append the Results of a Search as a Column</a></li>
+<li><a href="#search-through-multiple-columns"><span class="toc-section-number">2.5</span> Search Through Multiple Columns</a></li>
+<li><a href="#search-using-inequalities"><span class="toc-section-number">2.6</span> Search Using Inequalities</a></li>
+<li><a href="#search-using-inequalities-across-multiple-columns"><span class="toc-section-number">2.7</span> Search Using Inequalities Across Multiple Columns</a></li>
+<li><a href="#search-through-column-names"><span class="toc-section-number">2.8</span> Search Through Column Names</a></li>
+</ul></li>
+<li><a href="#finding"><span class="toc-section-number">3</span> Finding</a>
+<ul>
+<li><a href="#vlookup-using-index"><span class="toc-section-number">3.1</span> VLOOKUP Using Index</a></li>
+<li><a href="#vlookup-using-booleans"><span class="toc-section-number">3.2</span> VLOOKUP Using Booleans</a></li>
+<li><a href="#find-anywhere"><span class="toc-section-number">3.3</span> Find Anywhere</a></li>
+</ul></li>
+<li><a href="#filtering"><span class="toc-section-number">4</span> Filtering</a>
+<ul>
+<li><a href="#filter-using-a-single-criteria"><span class="toc-section-number">4.1</span> Filter Using a Single Criteria</a></li>
+<li><a href="#filter-using-a-list-of-criteria"><span class="toc-section-number">4.2</span> Filter Using a List of Criteria</a></li>
+<li><a href="#filter-using-multiple-lists-of-criteriamultiple-columns"><span class="toc-section-number">4.3</span> Filter Using Multiple lists of Criteria/Multiple Columns</a></li>
+<li><a href="#filter-using-a-column-of-booleans"><span class="toc-section-number">4.4</span> Filter Using a Column of Booleans</a></li>
+<li><a href="#filter-out-nulls"><span class="toc-section-number">4.5</span> Filter Out Nulls</a></li>
+<li><a href="#removing-duplicates"><span class="toc-section-number">4.6</span> Removing Duplicates</a></li>
+</ul></li>
 </ul>
 </div>
 
 <p><font size="3"></p>
 <p><a href="../../python.html">⇦ Back</a></p>
 <blockquote>
-<p>This page follows on from <a href="data_frames_intro.html">Introduction to Data Frames</a> and is followed by <a href="data_frames_calculations.html">Calculations with Data Frames</a></p>
+<p>This page is the second part of a series on data frames:</p>
+<ol style="list-style-type: decimal">
+<li><a href="data_frames_intro.html">Introduction to Data Frames</a></li>
+<li>Searching, Finding &amp; Filtering Data Frames</li>
+<li><a href="data_frames_calculations.html">Calculations with Data Frames</a></li>
+<li><a href="data_frames_multi_level.html">Multi-Level Data Frames</a></li>
+</ol>
 </blockquote>
 <div id="intro" class="section level1" number="1">
 <h1 number="1"><span class="header-section-number">1</span> Intro</h1>
@@ -756,8 +785,9 @@ print(df)</code></pre>
 </div>
 <div id="searching" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> Searching</h1>
-<p><strong>Search a column:</strong><br />
-Does a column contain a certain value? For example, was Yohan Blake in the final?</p>
+<div id="search-a-column" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Search a Column</h2>
+<p>Does a column contain a certain value? For example, was Yohan Blake in the final?</p>
 <pre class="python"><code># Search for a value
 result = &#39;Yohan Blake&#39; in df[&#39;Athlete&#39;].values
 print(result)</code></pre>
@@ -771,8 +801,10 @@ print(result)</code></pre>
 result = (df[&#39;Age&#39;] &lt;= 34).all()
 print(result)</code></pre>
 <pre><code>## True</code></pre>
-<p><strong>Search the values in a column individually:</strong><br />
-You can also get the results of the search for each row: for each athlete, do they come from Jamaica?</p>
+</div>
+<div id="search-the-values-in-a-column-individually" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Search the Values in a Column Individually</h2>
+<p>You can also get the results of the search for each row: for each athlete, do they come from Jamaica?</p>
 <pre class="python"><code># Search each row for a value
 result = df[&#39;Country&#39;] == &#39;Jamaica&#39;
 print(list(result))</code></pre>
@@ -783,8 +815,10 @@ print(list(result))</code></pre>
 result = np.where(df[&#39;Country&#39;] == &#39;Jamaica&#39;, True, False)
 print(list(result))</code></pre>
 <pre><code>## [True, False, False, True, False, False, False, False]</code></pre>
-<p><strong>Search for substrings:</strong><br />
-Instead of just searching for athletes with certain names, we can search <code>within</code> the names for athletes who have the letter “e” in their name, for example:</p>
+</div>
+<div id="search-for-substrings" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Search for Substrings</h2>
+<p>Instead of just searching for athletes with certain names, we can search <code>within</code> the names for athletes who have the letter “e” in their name, for example:</p>
 <pre class="python"><code># Search for a substring
 result = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
 print(result)</code></pre>
@@ -794,8 +828,10 @@ print(result)</code></pre>
 result = df[&#39;Athlete&#39;].str.contains(&#39;e&#39;)
 print(list(result))</code></pre>
 <pre><code>## [False, False, True, True, True, True, False, True]</code></pre>
-<p><strong>Append the results of a search as a column:</strong><br />
-It’s a small extra step to add the results of a search to the data frame itself:</p>
+</div>
+<div id="append-the-results-of-a-search-as-a-column" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> Append the Results of a Search as a Column</h2>
+<p>It’s a small extra step to add the results of a search to the data frame itself:</p>
 <pre class="python"><code># Search for a substring
 df[&#39;e in name?&#39;] = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
 print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
@@ -826,14 +862,18 @@ print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
 ## 5  Ben Youssef Meïté        True
 ## 6       Jimmy Vicaut       False
 ## 7    Trayvon Bromell        True</code></pre>
-<p><strong>Search through multiple columns:</strong><br />
-The logical operators ‘and’ (<code>&amp;</code>) and ‘or’ (<code>|</code>) can be used to find rows that match very specific criteria. Notice the round brackets that are being used to group the logical evaluations together:</p>
+</div>
+<div id="search-through-multiple-columns" class="section level2" number="2.5">
+<h2 number="2.5"><span class="header-section-number">2.5</span> Search Through Multiple Columns</h2>
+<p>The logical operators ‘and’ (<code>&amp;</code>) and ‘or’ (<code>|</code>) can be used to find rows that match very specific criteria. Notice the round brackets that are being used to group the logical evaluations together:</p>
 <pre class="python"><code># Search for values across multiple columns
 results = (df[&#39;Semi-Final&#39;] == 10.01) | ((df[&#39;Final&#39;] == 9.89) &amp; (df[&#39;Country&#39;] == &#39;United States&#39;))
 print(list(results))</code></pre>
 <pre><code>## [False, True, False, True, False, False, False, True]</code></pre>
-<p><strong>Search using inequalities:</strong><br />
-In addition to the logical operators, the following inequality symbols can be mixed and matched:</p>
+</div>
+<div id="search-using-inequalities" class="section level2" number="2.6">
+<h2 number="2.6"><span class="header-section-number">2.6</span> Search Using Inequalities</h2>
+<p>In addition to the logical operators, the following inequality symbols can be mixed and matched:</p>
 <ul>
 <li>Greater than: <code>&gt;</code></li>
 <li>Less than: <code>&lt;</code></li>
@@ -866,8 +906,10 @@ print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Sub-10&#39;]])</code></pre>
 ## 5  Ben Youssef Meïté   9.96    True
 ## 6       Jimmy Vicaut  10.04   False
 ## 7    Trayvon Bromell  10.06   False</code></pre>
-<p><strong>Search using inequalities across multiple columns:</strong><br />
-For example, which non-American athletes ran sub-10 in the final?</p>
+</div>
+<div id="search-using-inequalities-across-multiple-columns" class="section level2" number="2.7">
+<h2 number="2.7"><span class="header-section-number">2.7</span> Search Using Inequalities Across Multiple Columns</h2>
+<p>For example, which non-American athletes ran sub-10 in the final?</p>
 <pre class="python"><code># Search for values across multiple columns
 results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
 print(list(results))</code></pre>
@@ -877,12 +919,15 @@ print(list(results))</code></pre>
 results = np.where((df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00), True, False)
 print(list(results))</code></pre>
 <pre><code>## [True, False, True, True, True, True, False, False]</code></pre>
-<p><strong>Search through column names:</strong><br />
-Instead of searching through the <em>data in a column</em> you can also search through the <em>names of the columns</em> to see if the one you are looking for has been created yet. For example, has a column been created that contains the time the athletes ran in the final?</p>
+</div>
+<div id="search-through-column-names" class="section level2" number="2.8">
+<h2 number="2.8"><span class="header-section-number">2.8</span> Search Through Column Names</h2>
+<p>Instead of searching through the <em>data in a column</em> you can also search through the <em>names of the columns</em> to see if the one you are looking for has been created yet. For example, has a column been created that contains the time the athletes ran in the final?</p>
 <pre class="python"><code># Search for a column name
 result = &#39;Final&#39; in list(df)
 print(result)</code></pre>
 <pre><code>## True</code></pre>
+</div>
 </div>
 <div id="finding" class="section level1" number="3">
 <h1 number="3"><span class="header-section-number">3</span> Finding</h1>
@@ -893,15 +938,18 @@ print(f&#39;As an index object: {idx}\nAs a list: {list(idx)}&#39;)</code></pre>
 <pre><code>## As an index object: Int64Index([2], dtype=&#39;int64&#39;)
 ## As a list: [2]</code></pre>
 <p>Now that we can find indices, let’s use them to look up data in the table:</p>
-<p><strong>VLOOKUP using index:</strong><br />
-Find a value in a column corresponding to a value in a different column. For example, what was Akani Simbine’s time in his heat?</p>
+<div id="vlookup-using-index" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> VLOOKUP Using Index</h2>
+<p>Find a value in a column corresponding to a value in a different column. For example, what was Akani Simbine’s time in his heat?</p>
 <pre class="python"><code># Look up
 idx = df[df[&#39;Athlete&#39;] == &#39;Akani Simbine&#39;].index
 value = df.loc[idx, &#39;Heat&#39;]
 print(f&quot;Akani Simbine&#39;s time in his heat: {list(value)[0]}s&quot;)</code></pre>
 <pre><code>## Akani Simbine&#39;s time in his heat: 10.14s</code></pre>
-<p><strong>VLOOKUP using Booleans:</strong><br />
-Instead of using indices, can search a data frame or column using any of the methods described above to generate Booleans. Those can then be used to index the data frame or column to leave only those that were ‘found in the search’. As an example, here’s how to find the non-American athletes who ran sub-10 <strong>and</strong> get their names:</p>
+</div>
+<div id="vlookup-using-booleans" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> VLOOKUP Using Booleans</h2>
+<p>Instead of using indices, can search a data frame or column using any of the methods described above to generate Booleans. Those can then be used to index the data frame or column to leave only those that were ‘found in the search’. As an example, here’s how to find the non-American athletes who ran sub-10 <strong>and</strong> get their names:</p>
 <pre class="python"><code># Search for values across multiple columns
 results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
 # Index a column with the results of the search
@@ -909,11 +957,23 @@ non_american_sub_10 = df[&#39;Athlete&#39;][results]
 print(list(non_american_sub_10))</code></pre>
 <pre><code>## [&#39;Usain Bolt&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;]</code></pre>
 </div>
+<div id="find-anywhere" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Find Anywhere</h2>
+<p>The previous methods can be used to find values in a single column, but what about looking in the entire data frame? The <code>.stack()</code> method can be useful for this:</p>
+<pre class="python"><code>search_result = df[df.isin([&#39;Akani Simbine&#39;])].stack()
+row = search_result.index[0][0]
+col = search_result.index[0][1]
+print(f&#39;&quot;Akani Simbine&quot; is at index &quot;{row}&quot;&quot; in column &quot;{col}&quot;&#39;)</code></pre>
+<pre><code>## &quot;Akani Simbine&quot; is at index &quot;4&quot;&quot; in column &quot;Athlete&quot;</code></pre>
+<p>This method is discussed more fully on <a href="data_frames_multi_level.html#searching-for-values">the page about multi-level data frames</a>.</p>
+</div>
+</div>
 <div id="filtering" class="section level1" number="4">
 <h1 number="4"><span class="header-section-number">4</span> Filtering</h1>
 <p>Filtering removes all rows whose values do not meet certain criteria.</p>
-<p><strong>Filter using a single criteria:</strong><br />
-As an example, here is the data of the United States athletes only:</p>
+<div id="filter-using-a-single-criteria" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Filter Using a Single Criteria</h2>
+<p>As an example, here is the data of the United States athletes only:</p>
 <pre class="python"><code># Filter
 subset = df[df[&#39;Country&#39;] == &#39;United States&#39;]
 print(subset)</code></pre>
@@ -932,8 +992,10 @@ print(subset)</code></pre>
 ## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96    True
 ## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04   False</code></pre>
 <p>Let’s take another look at the above code. It starts off as a search: <code>df[&#39;Country&#39;] == &#39;United States&#39;</code> will search for all rows in the “Country” column that are equal to “United States” and return a <strong>series of Booleans</strong> (True, False, etc, corresponding to the rows in which the “United States” text was found). That series of Booleans is then used to <strong>index</strong> the data frame, and only the rows corresponding to the “Trues” in the Boolean series ‘survive’ the indexing.</p>
-<p><strong>Filter using a list of criteria:</strong><br />
-Instead of matching only one criteria, here is how to filter out all rows that do not match either of two criteria: what is the data for athletes who came from either the United States or South Africa?</p>
+</div>
+<div id="filter-using-a-list-of-criteria" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Filter Using a List of Criteria</h2>
+<p>Instead of matching only one criteria, here is how to filter out all rows that do not match either of two criteria: what is the data for athletes who came from either the United States or South Africa?</p>
 <pre class="python"><code># Filter
 subset = df[df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;])]
 print(subset)</code></pre>
@@ -951,8 +1013,10 @@ print(subset)</code></pre>
 ## 3        Yohan Blake      Jamaica   26  10.11       10.01   9.93    True
 ## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97   9.96    True
 ## 6       Jimmy Vicaut       France   24  10.19        9.95  10.04   False</code></pre>
-<p><strong>Filter using multiple lists of criteria/multiple columns:</strong><br />
-Using ‘and not’ logic:</p>
+</div>
+<div id="filter-using-multiple-lists-of-criteriamultiple-columns" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Filter Using Multiple lists of Criteria/Multiple Columns</h2>
+<p>Using ‘and not’ logic:</p>
 <pre class="python"><code>subset = df[
     df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;, &#39;Jamaica&#39;]) &amp; ~
     df[&#39;Age&#39;].isin([26, 34])
@@ -973,8 +1037,10 @@ print(subset)</code></pre>
 ## 3    Yohan Blake        Jamaica   26  10.11       10.01   9.93    True
 ## 4  Akani Simbine   South Africa   22  10.14        9.98   9.94    True</code></pre>
 <p>Of course, <em>all</em> the above filtering examples work with both strings and numbers as the criteria.</p>
-<p><strong>Filter using a column of Booleans:</strong><br />
-If one of the columns consists of Booleans you can filter by it. In other words, all the rows with ‘False’ get removed and all the ones with ‘True’ remain:</p>
+</div>
+<div id="filter-using-a-column-of-booleans" class="section level2" number="4.4">
+<h2 number="4.4"><span class="header-section-number">4.4</span> Filter Using a Column of Booleans</h2>
+<p>If one of the columns consists of Booleans you can filter by it. In other words, all the rows with ‘False’ get removed and all the ones with ‘True’ remain:</p>
 <pre class="python"><code># Filter by who ran sub-10 seconds
 subset = df[df[&#39;Sub-10&#39;]]
 print(subset)</code></pre>
@@ -985,16 +1051,21 @@ print(subset)</code></pre>
 ## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93    True
 ## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94    True
 ## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96    True</code></pre>
-<p><strong>Filter out nulls:</strong><br />
-Filter out all rows that have a null value in a particular column:</p>
+</div>
+<div id="filter-out-nulls" class="section level2" number="4.5">
+<h2 number="4.5"><span class="header-section-number">4.5</span> Filter Out Nulls</h2>
+<p>Filter out all rows that have a null value in a particular column:</p>
 <pre class="python"><code>subset = df[df[&#39;Age&#39;].notnull()]</code></pre>
 <p>Filter out all rows that contain any null values in any columns:</p>
 <pre class="python"><code>subset = df.dropna()</code></pre>
-<p><strong>Removing duplicates:</strong><br />
-Remove all rows that appear more than once:</p>
+</div>
+<div id="removing-duplicates" class="section level2" number="4.6">
+<h2 number="4.6"><span class="header-section-number">4.6</span> Removing Duplicates</h2>
+<p>Remove all rows that appear more than once:</p>
 <pre class="python"><code>df.drop_duplicates()</code></pre>
 <p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 

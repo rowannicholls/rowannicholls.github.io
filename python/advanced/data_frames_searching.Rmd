@@ -14,7 +14,12 @@ output:
 
 [⇦ Back](../../python.html)
 
-> This page follows on from [Introduction to Data Frames](data_frames_intro.html) and is followed by [Calculations with Data Frames](data_frames_calculations.html)
+> This page is the second part of a series on data frames:
+> 
+> 1. [Introduction to Data Frames](data_frames_intro.html)
+> 2. Searching, Finding & Filtering Data Frames
+> 3. [Calculations with Data Frames](data_frames_calculations.html)
+> 4. [Multi-Level Data Frames](data_frames_multi_level.html)
 
 Intro
 =====
@@ -54,7 +59,8 @@ print(df)
 Searching
 =========
 
-**Search a column:**  
+Search a Column
+---------------
 Does a column contain a certain value? For example, was Yohan Blake in the final?
 
 ```{python}
@@ -77,7 +83,8 @@ result = (df['Age'] <= 34).all()
 print(result)
 ```
 
-**Search the values in a column individually:**  
+Search the Values in a Column Individually
+------------------------------------------
 You can also get the results of the search for each row: for each athlete, do they come from Jamaica?
 
 ```{python}
@@ -95,7 +102,8 @@ result = np.where(df['Country'] == 'Jamaica', True, False)
 print(list(result))
 ```
 
-**Search for substrings:**  
+Search for Substrings
+---------------------
 Instead of just searching for athletes with certain names, we can search `within` the names for athletes who have the letter "e" in their name, for example:
 
 ```{python}
@@ -112,7 +120,8 @@ result = df['Athlete'].str.contains('e')
 print(list(result))
 ```
 
-**Append the results of a search as a column:**  
+Append the Results of a Search as a Column
+------------------------------------------
 It's a small extra step to add the results of a search to the data frame itself:
 
 ```{python}
@@ -134,7 +143,8 @@ for i, row in df.iterrows():
 print(df[['Athlete', 'e in name?']])
 ```
 
-**Search through multiple columns:**  
+Search Through Multiple Columns
+-------------------------------
 The logical operators 'and' (`&`) and 'or' (`|`) can be used to find rows that match very specific criteria. Notice the round brackets that are being used to group the logical evaluations together:
 
 ```{python}
@@ -143,7 +153,8 @@ results = (df['Semi-Final'] == 10.01) | ((df['Final'] == 9.89) & (df['Country'] 
 print(list(results))
 ```
 
-**Search using inequalities:**  
+Search Using Inequalities
+-------------------------
 In addition to the logical operators, the following inequality symbols can be mixed and matched:
 
 - Greater than: `>`
@@ -166,7 +177,8 @@ df['Sub-10'] = np.where(df['Final'] < 10.00, True, False)
 print(df[['Athlete', 'Final', 'Sub-10']])
 ```
 
-**Search using inequalities across multiple columns:**  
+Search Using Inequalities Across Multiple Columns
+-------------------------------------------------
 For example, which non-American athletes ran sub-10 in the final?
 
 ```{python}
@@ -183,7 +195,8 @@ results = np.where((df['Country'] != 'United States') & (df['Final'] <= 10.00), 
 print(list(results))
 ```
 
-**Search through column names:**  
+Search Through Column Names
+---------------------------
 Instead of searching through the *data in a column* you can also search through the *names of the columns* to see if the one you are looking for has been created yet.
 For example, has a column been created that contains the time the athletes ran in the final?
 
@@ -205,7 +218,8 @@ print(f'As an index object: {idx}\nAs a list: {list(idx)}')
 
 Now that we can find indices, let's use them to look up data in the table:
 
-**VLOOKUP using index:**  
+VLOOKUP Using Index
+-------------------
 Find a value in a column corresponding to a value in a different column. For example, what was Akani Simbine's time in his heat?
 
 ```{python}
@@ -215,7 +229,8 @@ value = df.loc[idx, 'Heat']
 print(f"Akani Simbine's time in his heat: {list(value)[0]}s")
 ```
 
-**VLOOKUP using Booleans:**  
+VLOOKUP Using Booleans
+----------------------
 Instead of using indices, can search a data frame or column using any of the methods described above to generate Booleans. Those can then be used to index the data frame or
 column to leave only those that were 'found in the search'. As an example, here's how to find the non-American athletes who ran sub-10 **and** get their names:
 
@@ -227,11 +242,25 @@ non_american_sub_10 = df['Athlete'][results]
 print(list(non_american_sub_10))
 ```
 
+Find Anywhere
+-------------
+The previous methods can be used to find values in a single column, but what about looking in the entire data frame? The `.stack()` method can be useful for this:
+
+```{python}
+search_result = df[df.isin(['Akani Simbine'])].stack()
+row = search_result.index[0][0]
+col = search_result.index[0][1]
+print(f'"Akani Simbine" is at index "{row}"" in column "{col}"')
+```
+
+This method is discussed more fully on [the page about multi-level data frames](data_frames_multi_level.html#searching-for-values).
+
 Filtering
 =========
 Filtering removes all rows whose values do not meet certain criteria.
 
-**Filter using a single criteria:**  
+Filter Using a Single Criteria
+------------------------------
 As an example, here is the data of the United States athletes only:
 
 ```{python, echo = FALSE}
@@ -255,7 +284,8 @@ print(subset)
 
 Let's take another look at the above code. It starts off as a search: `df['Country'] == 'United States'` will search for all rows in the "Country" column that are equal to "United States" and return a **series of Booleans** (True, False, etc, corresponding to the rows in which the "United States" text was found). That series of Booleans is then used to **index** the data frame, and only the rows corresponding to the "Trues" in the Boolean series 'survive' the indexing.
 
-**Filter using a list of criteria:**  
+Filter Using a List of Criteria
+-------------------------------
 Instead of matching only one criteria, here is how to filter out all rows that do not match either of two criteria: what is the data for athletes who came from either the United States or South Africa?
 
 ```{python}
@@ -272,7 +302,8 @@ subset = df[~df['Country'].isin(['United States', 'South Africa'])]
 print(subset)
 ```
 
-**Filter using multiple lists of criteria/multiple columns:**  
+Filter Using Multiple lists of Criteria/Multiple Columns
+--------------------------------------------------------
 Using 'and not' logic:
 
 ```{python}
@@ -295,7 +326,8 @@ print(subset)
 
 Of course, *all* the above filtering examples work with both strings and numbers as the criteria.
 
-**Filter using a column of Booleans:**  
+Filter Using a Column of Booleans
+---------------------------------
 If one of the columns consists of Booleans you can filter by it. In other words, all the rows with 'False' get removed and all the ones with 'True' remain:
 
 ```{python}
@@ -304,7 +336,8 @@ subset = df[df['Sub-10']]
 print(subset)
 ```
 
-**Filter out nulls:**  
+Filter Out Nulls
+----------------
 Filter out all rows that have a null value in a particular column:
 
 ```{python}
@@ -317,7 +350,8 @@ Filter out all rows that contain any null values in any columns:
 subset = df.dropna()
 ```
 
-**Removing duplicates:**  
+Removing Duplicates
+-------------------
 Remove all rows that appear more than once:
 
 ```{python, eval = FALSE}

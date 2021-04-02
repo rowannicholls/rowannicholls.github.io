@@ -484,7 +484,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},le=function(a){var b=I.createElement("
 e=le(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var ne=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),oe=new RegExp(/support|noreply/i),pe=["SCRIPT","IMG","SVG","PATH","BR"],qe=["BR"];function re(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=re(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 function se(a,b){if(1>=a.length)return a;var c=a.filter(b);return 0==c.length?a:c}function te(a){if(0==a.length)return null;var b;b=se(a,function(c){return!oe.test(c.Kc)});b=se(b,function(c){return"INPUT"===c.element.tagName.toUpperCase()});b=se(b,function(c){return!Wd(c.element)});return b[0]}
 function ue(){var a;var b=[],c=I.body;if(c){for(var d=c.querySelectorAll("*"),e=0;e<d.length&&1E4>e;e++){var f=d[e];if(!(0<=pe.indexOf(f.tagName.toUpperCase()))){for(var h=!1,k=0;k<f.childElementCount&&1E4>k;k++)if(!(0<=qe.indexOf(f.children[k].tagName.toUpperCase()))){h=!0;break}h||b.push(f)}}a={elements:b,status:1E4<d.length?"2":"1"}}else a={elements:b,status:"4"};for(var l=a,n=l.elements,q=[],p=0;p<n.length;p++){var r=n[p],u=r.textContent;r.value&&(u=r.value);if(u){var t=u.match(ne);if(t){var v=
-t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ef:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3o0";Ie.Hh="";Ie.Df="ChEI8N6VgwYQq6mfna71upvZARInAOq4ohGupiG/gRcsDgfBr3HpXe2qGHwZFCcFfEwC3ai4RAechaK5GgKNVw\x3d\x3d";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
+t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ef:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3o0";Ie.Hh="";Ie.Df="ChEI8N6VgwYQq6mfna71upvZARInAOq4ohH2pdS7IkFjBtcYPyZE+D5qUrSZDsFSf2h6VsTj3Y2dWUSsGgKziA\x3d\x3d";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
 var Oe=Ne,Pe=Qa(""),Qe=null,Re=null,Se="//www.googletagmanager.com/a?id="+Ie.D+"&cv=1",Te={},Ue={},Ve=function(){var a=L.sequence||1;L.sequence=a+1;return a};Ie.Cf="";var We={},Xe=new Ka,Ye={},Ze={},bf={name:"dataLayer",set:function(a,b){m(gb(a,b),Ye);$e()},get:function(a){return af(a,2)},reset:function(){Xe=new Ka;Ye={};$e()}},af=function(a,b){return 2!=b?Xe.get(a):cf(a)},cf=function(a){var b,c=a.split(".");b=b||[];for(var d=Ye,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ga(b,d))return}return d},df=function(a,b){Ze.hasOwnProperty(a)||(Xe.set(a,b),m(gb(a,b),Ye),$e())},$e=function(a){Ma(Ze,function(b,c){Xe.set(b,c);m(gb(b,
 void 0),Ye);m(gb(b,c),Ye);a&&delete Ze[b]})},ef=function(a,b,c){We[a]=We[a]||{};var d=1!==c?cf(b):Xe.get(b);"array"===kb(d)||"object"===kb(d)?We[a][b]=m(d):We[a][b]=d},ff=function(a,b){if(We[a])return We[a][b]},gf=function(a,b){We[a]&&delete We[a][b]};var kf={},lf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===kf[a]&&(kf[a]=Math.floor(Math.random()*b));return kf[a]};var mf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function nf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};var of=function(a){of[" "](a);return a};of[" "]=function(){};function pf(a){if(!ud(1937))return!0;try{return of(a.cookie),!0}catch(b){return!1}};var sf=function(a,b,c,d){return qf(d)?nf(a,String(b||rf()),c):[]},vf=function(a,b,c,d,e){if(qf(e)){var f=tf(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=uf(f,function(h){return h.vc},b);if(1===f.length)return f[0].id;f=uf(f,function(h){return h.Mb},c);return f[0]?f[0].id:void 0}}};function wf(a,b,c,d){var e=rf(),f=document;pf(f)&&(f.cookie=a);var h=rf();return e!=h||void 0!=c&&0<=sf(b,h,!1,d).indexOf(c)}
 var Df=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!qf(c.ya))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=Af(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Sh);f=d(f,"samesite",
@@ -713,7 +713,13 @@ data:{scriptSource:ed,resume:function(){a()},containerProduct:"GTM"}};q.data.con
 <p><font size="3"></p>
 <p><a href="../../python.html">⇦ Back</a></p>
 <blockquote>
-<p>This page follows on from <a href="data_frames_intro.html">Introduction to Data Frames</a> and <a href="data_frames_searching.html">Searching, Finding &amp; Filtering Data Frames</a></p>
+<p>This page is the third part of a series on data frames:</p>
+<ol style="list-style-type: decimal">
+<li><a href="data_frames_intro.html">Introduction to Data Frames</a></li>
+<li><a href="data_frames_searching.html">Searching, Finding &amp; Filtering Data Frames</a></li>
+<li>Calculations with Data Frames</li>
+<li><a href="data_frames_multi_level.html">Multi-Level Data Frames</a></li>
+</ol>
 </blockquote>
 <div id="example-data" class="section level1" number="1">
 <h1 number="1"><span class="header-section-number">1</span> Example Data</h1>
@@ -984,31 +990,27 @@ print(list(df_replaced[&#39;Country&#39;]))</code></pre>
 <p>If you want to replace incorrect data with “None” values you will need to use Numpy’s “not-a-number” objects rather that Python’s built-in “None” objects. This is because when Python inserts a “None” values it will actually remove that cell, the space will be filled with the value in the cell above!</p>
 <pre class="python"><code>df_replaced = df.replace(&#39;United States&#39;, None)  # This does not work as expected!
 print(df_replaced)</code></pre>
-<pre><code>##              Athlete       Country  Age  ...  Final  Reaction Time  Finish Position
-## 0         Usain Bolt       Jamaica   29  ...   9.81          0.155             Gold
-## 1      Justin Gatlin       Jamaica   34  ...   9.89          0.152           Silver
-## 2    Andre De Grasse        Canada   21  ...   9.91          0.141           Bronze
-## 3        Yohan Blake       Jamaica   26  ...   9.93          0.145              4th
-## 4      Akani Simbine  South Africa   22  ...   9.94          0.128              5th
-## 5  Ben Youssef Meïté   Ivory Coast   29  ...   9.96          0.156              6th
-## 6       Jimmy Vicaut        France   24  ...  10.04          0.140              7th
-## 7    Trayvon Bromell        France   21  ...  10.06          0.135              8th
-## 
-## [8 rows x 8 columns]</code></pre>
+<pre><code>##              Athlete       Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt       Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin       Jamaica   34  10.01        9.94   9.89
+## 2    Andre De Grasse        Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake       Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine  South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell        France   21  10.13       10.01  10.06</code></pre>
 <p>Justin Gatlin does not come from Jamaica and Trayvon Bromell does not come from France! Rather do this:</p>
 <pre class="python"><code>df_replaced = df.replace(&#39;United States&#39;, np.nan)
 print(df_replaced)</code></pre>
-<pre><code>##              Athlete       Country  Age  ...  Final  Reaction Time  Finish Position
-## 0         Usain Bolt       Jamaica   29  ...   9.81          0.155             Gold
-## 1      Justin Gatlin           NaN   34  ...   9.89          0.152           Silver
-## 2    Andre De Grasse        Canada   21  ...   9.91          0.141           Bronze
-## 3        Yohan Blake       Jamaica   26  ...   9.93          0.145              4th
-## 4      Akani Simbine  South Africa   22  ...   9.94          0.128              5th
-## 5  Ben Youssef Meïté   Ivory Coast   29  ...   9.96          0.156              6th
-## 6       Jimmy Vicaut        France   24  ...  10.04          0.140              7th
-## 7    Trayvon Bromell           NaN   21  ...  10.06          0.135              8th
-## 
-## [8 rows x 8 columns]</code></pre>
+<pre><code>##              Athlete       Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt       Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin           NaN   34  10.01        9.94   9.89
+## 2    Andre De Grasse        Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake       Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine  South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell           NaN   21  10.13       10.01  10.06</code></pre>
 <p><strong>Sanitise one column:</strong><br />
 If you want to only replace values in one column, you can use indexing:</p>
 <pre class="python"><code>df.loc[df[&#39;Age&#39;] == 22, &#39;Age&#39;] = &#39;twenty-two&#39;

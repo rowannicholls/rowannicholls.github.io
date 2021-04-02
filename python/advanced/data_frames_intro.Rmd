@@ -14,7 +14,12 @@ output:
 
 [⇦ Back](../../python.html)
 
-> This page is followed by [Searching, Finding & Filtering Data Frames](data_frames_searching.html) and [Calculations with Data Frames](data_frames_calculations.html)
+> This page is the first part of a series on data frames:
+> 
+> 1. Introduction to Data Frames
+> 2. [Searching, Finding & Filtering Data Frames](data_frames_searching.html)
+> 3. [Calculations with Data Frames](data_frames_calculations.html)
+> 4. [Multi-Level Data Frames](data_frames_multi_level.html)
 
 What's a Data Frame?
 ====================
@@ -539,15 +544,15 @@ Delete columns
 Delete column by column name:
 
 ```{python}
-df_deleted = df.drop('Athlete', axis=1)
-print(df_deleted)
+df = df.drop('Reaction Time', axis=1)
+print(df)
 ```
 
 Delete column(s) by index:
 
 ```{python}
-df_deleted = df.drop(df.columns[[5]], axis=1)
-print(df_deleted)
+df = df.drop(df.columns[[6]], axis=1)
+print(df)
 ```
 
 Iterating over a Data Frame
