@@ -1,0 +1,325 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Date and Time<br><font size="5">_using the `time` module_</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+In Python, there are six main 'formats' that date and time data can be in and these six formats are provided by two different built-in modules: **time** and **datetime**:
+
+- The `time` module can be used when working with:
+    + Unix time (seconds since the Unix epoch)
+    + `struct_time` objects (or 'structs')
+- The `datetime` module can be used when working with:
+    + `time` objects
+    + `date` objects
+    + `datetime` objects
+    + `timedelta` objects
+
+The first two are *simpler* while the latter four are *more powerful*:
+
+- Use the `time` module for time stamping, ie if you care about when something happened *relative to other things*, not the actual calendar date or clock time when it happened. This is the module that is discussed on this page.
+- Use the `datetime` module if you want to work with times and dates like you would see on a clock or on a calendar, or with durations. This module is discussed on its [own page](../advanced/date_time.html).
+
+Seconds Since the Unix Epoch
+============================
+Within the world of computing, it has been decided that **midnight on 1 January 1970** is *'time zero'.* This is known as the **Unix epoch**. Usually, if you tell a computer to interpret a number as a time or date it will assume that the number in question represents the number of seconds after this epoch:
+
+- The number "10" will be interpreted as 10 seconds past midnight on the epoch (ie 1970-01-01 00:00:10)
+- "1,000,000,000" will be interpreted as 2001-09-09 01:46:40
+- "1,617,360,270" will be interpreted as 2021-04-02 10:44:30 (which happens to be when I am writing this)
+- "-10" will be interpreted as 1969-12-31 23:59:50 (ie negative numbers become seconds *before* the epoch)
+- "10.999" will be interpreted as 1970-01-01 00:00:10.999 (ie decimals become milliseconds/fractions of a second)
+
+Note that this system ignores leap seconds, ie it assumes there are exactly 86,400 seconds in a day (60 × 60 × 24). This means that it stays in sync with our clocks - at midnight each night the Unix time will be a multiple of 86,400 - but it is not actually an accurate record of the number of seconds that have passed since the epoch. In fact, 27 more seconds have passed since the start of 1970 than Unix time would have you believe, due to the fact that there have been 27 leap seconds.
+
+Unix time is the most useful format to use when **time stamping** events because, in practice, they are simply *numbers* (specifically, they are usually floating-point numbers or *floats*). They are thus easy to work with when writing code and you don't actually care what clock time or calendar date they represent.
+
+In Python, most of the functionality for working with Unix time is contained within the `time` module, so let's start by importing that:
+
+```{python}
+import time
+```
+
+You can then get the current Unix time by using the `time()` function:
+
+```{python}
+# Current time in Unix time format
+time_unix = time.time()
+
+print(f'Number of seconds since 12:00am, 1 January 1970 (100 nanosecond precision): {time_unix}')
+```
+
+One method of getting a time stamp into a more readable format is the `ctime()` function which converts a Unix time (ie a number) into a string using the format defined in the C programming language:
+
+```{python}
+# Convert a Unix time into a formatted string
+time_ctime = time.ctime(10)
+
+print(f'10 seconds after the epoch as a formatted string: {time_ctime}')
+```
+
+If you don't include an argument, `ctime()` will default to using the current time:
+
+```{python}
+# The current time as a formatted string
+time_ctime = time.ctime()
+
+print(f'The current time in ctime format: {time_ctime}')
+```
+
+The above two examples show the time in 'C time' format (a reference to the C programming language) which is a bit odd. You don't usually see the time come in the middle of the date! Unfortunately, there is no way to do this differently: you cannot directly convert a Unix time (a number) into a formatted string using a custom format. You first need to convert it into a time structure, as is discussed in the "Converting Between the Two Formats" section below.
+
+Time Difference
+---------------
+Get the time between two time stamps by subtracting them from each other (ie literally get the difference between the two times):
+
+```{python}
+# Get the current time in Unix time
+t2 = time.time()
+# Get the time stamp of 22 November 2003 22:00 AEDT (UTC+11)
+t1 = 1069498800
+# Get the difference
+tdiff = (t2 - t1) / 60 / 60 / 24
+
+print(f'Days since England last won the Rugby World Cup: {tdiff}')
+```
+
+Time Structures
+===============
+Whereas Unix time is just a single number, a time structure (a `struct_time` object) is a sequence of 9 numbers. These correspond to the year, month, day, hour, minute, second, day of the week, day of the year and daylight savings information relevant to the moment in question (timezone and/or longitudinal offset information can also be stored). Note that each of these numbers needs to be an integer (as opposed to Unix time where floating-point numbers are okay) and therefore fractions of a second are ignored.
+
+Create Manually
+---------------
+You can manually create a `struct_time` object by specifying 9 integers in a "9-tuple":
+
+```{python}
+# Create a tuple
+nine_tuple = (2009, 8, 7, 6, 5, 4, 4, 219, 1)
+# Convert the tuple into a struct_time object
+time_struct = time.struct_time(nine_tuple)
+
+print(time_struct)
+```
+
+```{python, eval = FALSE, echo = FALSE}
+# Note: struct_time uses 1900-01-01 00:00:00 as the epoch while Unix time uses
+# 1970-01-01 00:00:00. The difference between these two is 2,208,988,800 sec
+```
+
+Note that the above method of creating a time and date is tricky because the last three numbers are dependent on the first three:
+
+- The 7th number is the day of the week. So if your first three numbers are 2009, 8, and 7 then the date in question is 7 August 2009 which was a Friday. So if your 7th number is not a 4 (the numbers run from 0 for Monday to 6 for Sunday) then you are creating a day that never existed
+- Likewise, the 8th number is the day of the year. So because 7 August 2009 was the 219th day of that year then setting the 8th number to something other than 219 again creates a day that never happened
+- The 9th number is whether or not daylight savings was in effect. If you are creating a date and time that refers to a particular event that happened in a particular location in the world then there is a correct value for this.
+
+The better way of manually creating a `struct_time` object is to parse a string that is formatted as a time and date, using the `strptime()` (**str**ing **p**arse **time**) function:
+
+```{python}
+# Create a string in C time format
+st = 'Fri Aug 7 06:05:04 2009'
+# Convert the string to a struct_time object
+time_struct = time.strptime(st)
+
+print(time_struct)
+``` 
+
+The format of the string in the above example is the 'C time' format that was discussed in the 'Seconds Since the Unix Epoch' section. This is an unusual format because the year is at the end and you *have* to specify the day of the week at the front. Fortunately, you can provide your own format constructed using the [directives](https://docs.python.org/3/library/time.html#time.strftime) to represent time and date elements as a positional argument. Here's an example that parses a date and time in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601):
+
+```{python}
+# Create a string in ISO 8601 format
+st = '2021-04-02T13:55:28+00:00'
+# Convert the string to a struct_time object
+time_struct = time.strptime(st, '%Y-%m-%dT%H:%M:%S%z')
+
+print(time_struct)
+```
+
+Note that the last element (`tm_isdst=-1`) indicates that the daylight savings information is unknown.
+
+Some more examples to demonstrate using `strptime()` with different formats:
+
+```{python, eval = FALSE}
+time_struct = time.strptime('30 Nov 00', '%d %b %y')
+time_struct = time.strptime('2018-10-04', '%Y-%m-%d')
+time_struct = time.strptime('2018-10-04 10:11:12', '%Y-%m-%d %H:%M:%S')
+```
+
+If a given string does not contain complete time and date information (eg '2018-10-04' is a date only and so does not contain any time information) then the missing elements are filled in from `(1900, 1, 1, 0, 0, 0, 0, 1, -1)`. In other words, the 'default' time struct is midnight on 1 January 1900.
+
+Create from Current Time and Date
+---------------------------------
+Alternatively, you can get your current local time in `struct_time` format using the `localtime()` function:
+
+```{python}
+# The current local time in struct_time format
+time_localtime = time.localtime()
+
+print(time_localtime)
+```
+
+For me, currently, daylight savings is in effect and so the `struct_time` object above represents that. If I instead want the current UTC time (ie with no daylight sayings or time zone offsets) I can use the `gmtime()` function to get **G**reenwich **M**ean **Time**:
+
+```{python}
+# The current GMT in struct_time format
+time_gmtime = time.gmtime()
+
+print(time_gmtime)
+```
+
+Formatting the Time
+-------------------
+Of course, while the above representation of time and date is informative it's not very readable. One method of getting `stuct_time` objects into a more user-friendly format is the `asctime()` function which represents the object **as** a **C time**:
+
+```{python}
+# Manually create a tuple representing a time and date
+nine_tuple = (2009, 8, 7, 6, 5, 4, 4, 219, 1)
+# Convert a struct_time or tuple into a string in ctime format
+time_asctime = time.asctime(nine_tuple)
+
+print(time_asctime)
+```
+
+Note that if you don't specify any argument with the `asctime()` function it will default to using the current time:
+
+```{python}
+# Get the current time and date as a formatted string
+time_asctime = time.asctime()
+
+print(f"The current time and date as a 'C time'-formatted string: {time_asctime}")
+```
+
+Unfortunately, the 'C time' format used by `asctime()` is fixed. However, a second method that you can use to get a more readable format and which *allows you to customise the format* is the `strftime()` (**str**ing **f**ormat **time**) function. See [here](https://docs.python.org/3/library/time.html#time.strftime) for all the available directives (variables that represent a part of a time or a date) that you can use to construct a format:
+
+```{python}
+# Manually create a tuple representing a time and date
+nine_tuple = (2009, 8, 7, 6, 5, 4, 4, 219, 1)
+# Convert the tuple into a struct_time object
+time_struct = time.struct_time(nine_tuple)
+# Convert a struct_time into a string with a custom format
+time_formatted = time.strftime('%Y-%m-%d %H:%M:%S', time_struct)
+
+print(time_formatted)
+```
+
+Again, omitting a time argument will cause the function to default to using the current date and time:
+
+```{python}
+# Convert a struct_time into a string with a custom format
+time_formatted = time.strftime('%Y-%m-%d %H:%M:%S')
+
+print(f'The current time in a custom format: {time_formatted}')
+```
+
+To summarise:
+
+- Use `strptime()` to *parse* a formatted string into a time struct (**convert from a string into a stuct**)
+    - The 'default' format that a formatted string is expected to be in is the 'C time format', but custom formats can be specified by using the [directives](https://docs.python.org/3/library/time.html#time.strftime)
+- Use `strftime()` to *format* a struct (**convert from a struct into a string**)
+    + There is no default format for this function; you *have* to provide a custom format. If you want to be lazy and just use the C time format then `asctime()` (or `ctime()` if you are working with Unix time) will do this
+
+Here's an example to demonstrate that `strptime()` and `strftime()` can be used as inverses of each other:
+
+```{python, eval = FALSE}
+# Start with a string formatted in C time format
+st1 = 'Fri Aug 07 06:05:04 2009'
+# Parse the string to make a struct
+time_struct = time.strptime(st1)
+# Format the strict to make a string
+st2 = time.strftime('%a %b %d %H:%M:%S %Y', time_struct)
+# Check that what we ended with is the same as what we started with
+print(st1)
+print(st2)
+```
+
+```
+## Fri Aug 07 06:05:04 2009
+## Fri Aug 07 06:05:04 2009
+```
+
+Time Difference
+---------------
+There is no way to directly get the amount of time between two time stamps in `struct_time` format. It could, however, be done by converting to Unix time, subtracting and then converting back to `struct_time`. An example of this is shown in the next section...
+
+Converting Between the Two Formats
+==================================
+
+Unix Time to Struct
+-------------------
+The `localtime()` and `gmtime()` functions were introduced above as ways to create `struct_time` objects using the current time and date:
+
+```{python}
+# Get the current time and date as a struct
+struct = time.localtime()
+
+print(struct)
+```
+
+However, if you give these functions a Unix time as an argument (as opposed to having no arguments as in the example above) they will **convert** them to `struct_time` objects:
+
+```{python}
+# Get the current time and date in Unix time and convert it to a struct
+struct = time.localtime(time.time())
+
+print(struct)
+```
+
+Here's another example where an explicit Unix time stamp is converted into a struct:
+
+```{python}
+struct = time.localtime(1603997091)
+
+print(f'Seconds-since-the-epoch as a struct: {struct}')
+```
+
+Structs to Unix Time
+--------------------
+You can convert a `struct_time` object into Unix time (ie to a `float` object) using `mktime()` which is the inverse of `localtime()`:
+
+```{python}
+time_mktime = time.mktime(struct)
+
+print(f'Time in seconds-since-the-epoch format: {time_mktime}')
+```
+
+Time Difference
+---------------
+The most useful way to get the difference in time between two time stamps is to:
+
+- Create them as structs
+- Convert them to Unix time
+- Subtract the Unix time numbers
+- Convert the result into the format you want
+
+Here's how this is done:
+
+```{python}
+# Get the date of the 2003 Rugby World Cup final as a struct
+t1 = time.strptime('22 November 2003', '%d %B %Y')
+# Get the current time and date as a struct
+t2 = time.localtime()
+
+# Convert structs to Unix time
+t1 = time.mktime(t1)
+t2 = time.mktime(t2)
+
+# Calculate the difference between the two timestamps
+tdiff = int((t2 - t1) / 60 / 60 / 24)
+
+print(f'Days since England last won the Rugby World Cup: {tdiff}')
+```
+
+Be careful not to convert this result (which is a number) into a time struct or interpret it as Unix time: doing so would cause it to be interpreted as a period of time *after the epoch* as opposed to *since the event we are interested in* which, in this example, is the 2003 Rugby World Cup final. In order to better handle differences in time we should use *timedelta objects* which are part of the `datetime` module (see [here](../advanced/date_time.html) for the page on that topic).
+
+[⇦ Back](../../python.html)
+
+</font>

@@ -1,0 +1,419 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Date and Time<br><font size="5">_using the `datetime` module_</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+In Python, there are six main 'formats' that date and time data can be in and these six formats are provided by two different built-in modules: **time** and **datetime**:
+
+- The `time` module can be used when working with:
+    + Unix time (seconds since the Unix epoch)
+    + `struct_time` objects (or 'structs')
+- The `datetime` module can be used when working with:
+    + `time` objects
+    + `date` objects
+    + `datetime` objects
+    + `timedelta` objects
+
+The first two are *simpler* while the latter four are *more powerful*:
+
+- Use the `time` module for time stamping, ie if you care about when something happened *relative to other things*, not the actual calendar date or clock time when it happened. This module is discussed on its [own page](../intro/date_time.html).
+- Use the `datetime` module if you want to work with times and dates like you would see on a clock or on a calendar, or with durations. This is the module that is discussed on this page.
+
+Time Objects
+============
+A **time object** contains *only time data*, ie there is no date information. Let's start by importing this functionality:
+
+```{python}
+from datetime import time
+```
+
+Create Manually
+---------------
+A time object can be created with the `time()` function:
+
+```{python}
+time_object = time(hour=12, minute=34, second=56, microsecond=78)
+
+print(time_object)
+```
+
+Note that including the keywords is optional but if you leave them out you need to make sure to get the order of the arguments right:
+
+```{python}
+time_object = time(12, 34, 56, 78)
+
+print(time_object)
+```
+
+Alternatively, a time object can be created from a string representation of a time in [ISO 8601 format](https://en.wikipedia.org/wiki/ISO_8601) using the `.fromisoformat()` method:
+
+```{python}
+st = '12:34:56.000078'
+time_object = time.fromisoformat(st)
+
+print(time_object)
+```
+
+There is no way to immediately create a time object from a string that is in a different format; while there is a method that does this sort of thing (`strptime()`) it creates only **datetime** objects (see the section on these objects below).
+
+Create from Current Time
+------------------------
+It isn't possible to create a time object for the current time directly; you have to create a **datetime object** (which contains the current time *and* date) and extract the time from that. Use the `datetime.today()` method to get the current date-time and then use the `.time()` method to get just the time:
+
+```{python}
+from datetime import datetime
+
+# Create a datetime object using the current time and date
+datetime_object = datetime.today()
+# Extract just the time information as a time object
+time_object = datetime_object.time()
+
+print(time_object)
+```
+
+Formatting the Time
+-------------------
+The `.isoformat()` method is the inverse of the `.fromisoformat()` method mentioned above: it converts a **time object** into a **string** with the ISO formatting:
+
+```{python, eval = FALSE}
+# Create a string representation of a time
+st1 = '12:34:56.000078'
+# Convert string to a time object
+time_object = time.fromisoformat(st1)
+# Convert time object to a string
+st2 = time.isoformat(time_object)
+
+# Check that what you end with is exactly the same as what you started with
+print(st1)
+print(st2)
+```
+
+```
+## 12:34:56.000078
+## 12:34:56.000078
+```
+
+The `.strftime()` (**str**ing **f**ormat **time**) method does the same thing as above except you can customise what format the output string takes using [format codes](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes):
+
+```{python}
+# Manually create a time object
+time_object = time(hour=12, minute=34, second=56, microsecond=78)
+# Convert it to a string with a custom format
+st = time_object.strftime('%I:%M %p')
+
+print(st)
+```
+
+Date Objects
+============
+A **date object** contains *only calendar date data*, ie there is no time information. Again, start by importing this functionality:
+
+```{python}
+from datetime import date
+```
+
+Create Manually
+---------------
+Use the `date()` function to create date objects manually:
+
+```{python}
+# Pass a year, month and day (in that order)
+date_object = date(2012, 3, 4)
+
+print(date_object)
+```
+
+Similar to time objects, you can create date objects from strings that are in ISO format with the `.fromisoformat()` method:
+
+```{python}
+date_object = date.fromisoformat('2043-02-01')
+
+print(date_object)
+```
+
+Again, there is no way to immediately create a date object from a string that is in a different format; while there is a method that does this sort of thing (`strptime()`) it creates only **datetime** objects (see the section on these objects below).
+
+Create from Current Date
+------------------------
+Get the current local date using the `.today()` method:
+
+```{python}
+today = date.today()
+
+print(today)
+```
+
+Formatting the Date
+-------------------
+Identical to time objects, there is an `.isoformat()` method which is the inverse of `.fromisoformat()` (ie it converts a date object into a string in ISO format) as well as a `.strftime()` method (which converts a date object into a string in a *custom* format):
+
+```{python, eval = FALSE}
+# Create a string representing a date in ISO format
+st1 = '2043-02-01'
+# Create a date object from a string in ISO format
+date_object = date.fromisoformat(st1)
+# Convert the date object back into a string in ISO format
+st2 = date.isoformat(date_object)
+
+# Check that what you end with is exactly the same as what you started with
+print(st1)
+print(st2)
+```
+
+```
+## 2043-02-01
+## 2043-02-01
+```
+
+```{python, echo = FALSE}
+# Create a string representing a date in ISO format
+st1 = '2043-02-01'
+# Create a date object from a string in ISO format
+date_object = date.fromisoformat(st1)
+```
+
+```{python}
+# Convert the date object back into a string using a custom format
+st2 = date_object.strftime('%d/%m/%Y')
+
+print(st2)
+```
+
+Datetime Objects
+================
+A **datetime object** contains *calendar date AND clock time data*. Import this functionality with:
+
+```{python}
+from datetime import datetime
+```
+
+A Date Object and a Time Object
+-------------------------------
+It is easiest to think about a datetime object as a date object and a time object put together; in general, a datetime object can do everything that those two objects can. Indeed, it is possible to create a datetime by combining a date and a time using the `.combine()` method:
+
+```{python}
+# Manually create a date object
+date_object = date(2012, 3, 4)
+# Manually create a time object
+time_object = time(5, 6, 7)
+# Create a datetime object by combining the two
+dt = datetime.combine(date_object, time_object)
+
+print(dt)
+```
+
+Create Manually
+---------------
+Just like date and time objects, datetime objects can be created directly (with `datetime()`) and from strings that represent a time and date in ISO format (with `datetime.fromisoformat()`):
+
+```{python}
+# Manually create a datetime object
+dt = datetime(2012, 3, 4, 5, 6, 7)
+
+print(dt)
+```
+
+```{python}
+# Create a datetime object from a string in ISO format
+dt = datetime.fromisoformat('2012-03-04 05:06:07')
+
+print(dt)
+```
+
+However, there is now also the option to use the `strptime()` (**str**ing **p**arse **time**) function to create a datetime object from a string in a *custom format*. You can define this custom format using the [format codes](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes):
+
+```{python}
+# Create a string representation of a date and time, not in ISO format
+st = '05h06 2012/03/04'
+# Parse the string to a datetime object
+dt = datetime.strptime(st, '%Hh%M %Y/%m/%d')
+
+print(dt)
+```
+
+Create from Current Date and Time
+---------------------------------
+You can either use `datetime.today()` or `datetime.now()`; the only difference is that the latter can take an optional argument `tz` which sets the timezone.
+
+```{python}
+# Get the current date and time
+dt = datetime.today()
+
+print(dt)
+```
+
+Note that `datetime.utcnow()` will do the same as above but the date and time will be that at UTC (ie in the +0 timezone).
+
+Formatting the Date and Time
+----------------------------
+Again, `.isoformat()` will format the datetime object into the ISO standard (and is the inverse of `.fromisoformat()`) while `.strftime()` will format the datetime object into a custom format (which can again be defined using the [format codes](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes)):
+
+```{python, eval = FALSE}
+# Create a string representing a date and time in ISO format
+st1 = '2012-03-04T05:06:07'
+# Create a datetime object from a string in ISO format
+dt = datetime.fromisoformat(st1)
+# Convert the datetime object back into a string in ISO format
+st2 = datetime.isoformat(dt)
+
+# Check that what you end with is exactly the same as what you started with
+print(st1)
+print(st2)
+```
+
+```
+## 2012-03-04T05:06:07
+## 2012-03-04T05:06:07
+```
+
+```{python, echo = FALSE}
+# Create a string representing a date and time in ISO format
+st1 = '2012-03-04 05:06:07'
+# Create a datetime object from a string in ISO format
+dt = datetime.fromisoformat(st1)
+```
+
+```{python}
+# Convert the datetime object back into a string using a custom format
+st2 = dt.strftime('%Hh%M %d/%m/%Y')
+
+print(st2)
+```
+
+Timedelta Objects
+=================
+A **timedelta object** represents a duration: the difference between two dates or times or the length of time that something lasted for. Import it with:
+
+```{python}
+from datetime import timedelta
+```
+
+Create Manually
+---------------
+You can use the `timedelta()` function to create a timedelta object. Note that the default order of the arguments that this function takes is weird: days, seconds, microseconds, milliseconds, minutes, hours, weeks. This means that `(1, 2, 3, 4, 5, 6, 7)` will be interpreted as 1 day, 2 seconds, 3 microseconds, etc:
+
+```{python}
+# Manually create a timedelta object
+delta = timedelta(1, 2, 3, 4, 5, 6, 7)
+
+print(delta)
+``` 
+
+If you are defining a timedelta object in this way, it is probably better to use the keyword arguments to avoid confusion:
+
+```{python}
+# Manually create a timedelta object
+delta = timedelta(days=1, hours=2, minutes=3, seconds=4)
+
+print(delta)
+``` 
+
+Create from Date and Datetime Objects
+-------------------------------------
+Subtracting two date or datetime objects from each other will return a timedelta object that represents the duration between them. Note that you **cannot**:
+
+- Subtract two **time** objects from each other (only date and datetime objects)
+- Subtract a **date** from a **datetime** or vice versa
+- **Add** objects together
+
+Subtraction is specifically a method to get the duration between two time stamps on a macro scale.
+
+```{python}
+# Manually create date objects
+date1 = date(2012, 3, 4)
+date2 = date(2012, 5, 6)
+# Subtract
+delta = date2 - date1
+
+print(f'The time between {date1} and {date2} is {delta}')
+```
+
+You can, however, add or subtract **timedelta** objects to date, time or datetime objects. The effect of doing so is as expected: adding a timedelta object will move the date/time/datetime object forward in time, while subtracting it will do the opposite:
+
+```{python}
+# Manually create datetime objects
+dt = datetime(2001, 2, 3, 4, 5, 6)
+# Manually create a timedelta object
+delta = timedelta(days=1, hours=2, minutes=3, seconds=4)
+# Subtraction
+diff = dt - delta
+
+print(f'{delta} before {dt} is {diff}')
+```
+
+```{python}
+# Addition
+total = dt + delta
+
+print(f'{delta} after {dt} is {total}')
+```
+
+Calculations
+------------
+The main advantage of timedelta objects is that they can be used for **mathematical operations**. In addition to being able to subtract two date/datetime objects to get the amount of time between them, you can:
+
+- Subtract *or add* timedelta objects
+- Divide or multiply a timedelta object by a constant to scale it (eg if something takes x minutes, how long will y repeats take?)
+
+along with some other operations (see [the documentation](https://docs.python.org/3/library/datetime.html#timedelta-objects) for more).
+
+```{python}
+# Manually create timedelta objects
+delta1 = timedelta(days=1, hours=2, minutes=3, seconds=4)
+delta2 = timedelta(days=5, hours=6, minutes=7, seconds=8)
+
+print(delta1 + delta2)
+print(delta1 * 2)
+```
+
+The one thing that is missing is the ability to divide a constant by a timedelta object. This would be used, for example, to calculate speed (which is distance divided by time). If you are looking to do this type of thing, you will instead have to convert to seconds using the `.total_seconds()` method and do the arithmetic after that:
+
+```{python}
+# Manually create a timedelta object
+delta = timedelta(hours=2, minutes=3, seconds=4)
+# Convert the timedelta object to seconds
+duration = delta.total_seconds()
+# Calculate speed
+distance = 100  # km
+speed = distance / (duration / 60 / 60)
+
+print(f'Speed in km/h: {speed}')
+```
+
+Don't Perform Calculations With Date/Time/Datetime Objects
+==========================================================
+It's not possible to multiply or divide a date/time/datetime object by a number, nor is it possible to add them together or subtract time objects from each other. The only arithmetic that *is* possible is date or datetime subtraction, and that will just create a timedelta object (which *can* be used for calculations, as discussed above). Such limitations are included **on purpose**; these objects are made to represent *a moment in time*, not a duration or a length of time over which something occurred.
+
+Thus, the only way you could actually do calculations with date, time or datetime objects directly is to first **convert them into seconds** (Unix time/seconds since the Unix epoch). Once that is done, the operation(s) can be performed and the results can be converted back into the desired object type. Two functions that will help with this are `timestamp()` and `fromtimestamp()` which convert to and from Unix time, respectively. Note, however, that neither of these work with time objects and `timestamp()` doesn't work with date objects. So here is a demonstration with datetime objects:
+
+```{python}
+# Create datetime objects from strings in ISO format
+dt1 = datetime.fromisoformat('2012-03-04 05:06:07')
+dt2 = datetime.fromisoformat('2012-09-09 10:11:12')
+# Convert to a time stamp aka Unix time aka seconds since the epoch
+timestamp1 = dt1.timestamp()
+timestamp2 = dt2.timestamp()
+# Perfprm arithmetic
+timestamp = timestamp2 - timestamp1
+# Convert back into a datetime
+dt = datetime.fromtimestamp(timestamp)
+
+print(dt)
+```
+
+The answer is a time stamp from 1970! This is almost definitely not what you want, so this is a good example to show why such an approach should not be taken.
+
+[⇦ Back](../../python.html)
+
+</font>

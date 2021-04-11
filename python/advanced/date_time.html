@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Advanced Python: Date and Time using the datetime module</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -483,7 +483,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},le=function(a){var b=I.createElement("
 e=le(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var ne=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),oe=new RegExp(/support|noreply/i),pe=["SCRIPT","IMG","SVG","PATH","BR"],qe=["BR"];function re(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=re(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 function se(a,b){if(1>=a.length)return a;var c=a.filter(b);return 0==c.length?a:c}function te(a){if(0==a.length)return null;var b;b=se(a,function(c){return!oe.test(c.Kc)});b=se(b,function(c){return"INPUT"===c.element.tagName.toUpperCase()});b=se(b,function(c){return!Wd(c.element)});return b[0]}
 function ue(){var a;var b=[],c=I.body;if(c){for(var d=c.querySelectorAll("*"),e=0;e<d.length&&1E4>e;e++){var f=d[e];if(!(0<=pe.indexOf(f.tagName.toUpperCase()))){for(var h=!1,k=0;k<f.childElementCount&&1E4>k;k++)if(!(0<=qe.indexOf(f.children[k].tagName.toUpperCase()))){h=!0;break}h||b.push(f)}}a={elements:b,status:1E4<d.length?"2":"1"}}else a={elements:b,status:"4"};for(var l=a,n=l.elements,q=[],p=0;p<n.length;p++){var r=n[p],u=r.textContent;r.value&&(u=r.value);if(u){var t=u.match(ne);if(t){var v=
-t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ff:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3v0";Ie.Ih="";Ie.Ef="ChAI8LzKgwYQ8/DqlZjQ07UeEicAnPt3vB67tchUOkLZPtjNSfeAsGRSIZpbLoeWEDxCBFdgChv70XIaAjFg";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
+t[0],x;if(G.location){var z=ie(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Kc:v})}}}var w=te(q),y=[];if(w){var A=w.element;y.push({Kc:w.Kc,querySelector:re(A),tagName:A.tagName,isVisible:!Wd(A),type:1,ff:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Ie={},L=null,Je=Math.random();Ie.D="UA-156468188-1";Ie.mc="3v0";Ie.Ih="";Ie.Ef="ChAI8LzKgwYQ8/DqlZjQ07UeEicAnPt3vHp8BBZ+/LTmxasBdTRGAx+L5jFxqmNAKMnZ7lDaFn8TnHIaAng/";var Ke={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Le={__paused:!0,__tg:!0},Me;for(Me in Ke)Ke.hasOwnProperty(Me)&&(Le[Me]=!0);var Ne="www.googletagmanager.com/gtm.js";Ne="www.googletagmanager.com/gtag/js";
 var Oe=Ne,Pe=Qa(""),Qe=null,Re=null,Se="//www.googletagmanager.com/a?id="+Ie.D+"&cv=1",Te={},Ue={},Ve=function(){var a=L.sequence||1;L.sequence=a+1;return a};Ie.Df="";var We={},Xe=new Ka,Ye={},Ze={},bf={name:"dataLayer",set:function(a,b){m(hb(a,b),Ye);$e()},get:function(a){return af(a,2)},reset:function(){Xe=new Ka;Ye={};$e()}},af=function(a,b){return 2!=b?Xe.get(a):cf(a)},cf=function(a){var b,c=a.split(".");b=b||[];for(var d=Ye,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ga(b,d))return}return d},df=function(a,b){Ze.hasOwnProperty(a)||(Xe.set(a,b),m(hb(a,b),Ye),$e())},$e=function(a){Ma(Ze,function(b,c){Xe.set(b,c);m(hb(b,
 void 0),Ye);m(hb(b,c),Ye);a&&delete Ze[b]})},ff=function(a,b,c){We[a]=We[a]||{};We[a][b]=ef(b,c)},ef=function(a,b){var c,d=1!==(void 0===b?2:b)?cf(a):Xe.get(a);"array"===lb(d)||"object"===lb(d)?c=m(d):c=d;return c},gf=function(a,b){if(We[a])return We[a][b]},hf=function(a,b){We[a]&&delete We[a][b]};var lf={},mf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===lf[a]&&(lf[a]=Math.floor(Math.random()*b));return lf[a]};var nf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function of(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};var pf=function(a){pf[" "](a);return a};pf[" "]=function(){};function qf(a){if(!ud(1937))return!0;try{return pf(a.cookie),!0}catch(b){return!1}};var tf=function(a,b,c,d){return rf(d)?of(a,String(b||sf()),c):[]},wf=function(a,b,c,d,e){if(rf(e)){var f=uf(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=vf(f,function(h){return h.vc},b);if(1===f.length)return f[0].id;f=vf(f,function(h){return h.Mb},c);return f[0]?f[0].id:void 0}}};function xf(a,b,c,d){var e=sf(),f=document;qf(f)&&(f.cookie=a);var h=sf();return e!=h||void 0!=c&&0<=tf(b,h,!1,d).indexOf(c)}
 var Ef=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!rf(c.ya))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=Bf(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Th);f=d(f,"samesite",
@@ -686,122 +686,345 @@ data:{scriptSource:ed,resume:function(){a()},containerProduct:"GTM"}};q.data.con
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Advanced Python:</font><br>Date and Time<br><font size="5"><em>using the <code>datetime</code> module</em></font></h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#time-objects"><span class="toc-section-number">1</span> Time Objects</a>
+<ul>
+<li><a href="#create-manually"><span class="toc-section-number">1.1</span> Create Manually</a></li>
+<li><a href="#create-from-current-time"><span class="toc-section-number">1.2</span> Create from Current Time</a></li>
+<li><a href="#formatting-the-time"><span class="toc-section-number">1.3</span> Formatting the Time</a></li>
+</ul></li>
+<li><a href="#date-objects"><span class="toc-section-number">2</span> Date Objects</a>
+<ul>
+<li><a href="#create-manually-1"><span class="toc-section-number">2.1</span> Create Manually</a></li>
+<li><a href="#create-from-current-date"><span class="toc-section-number">2.2</span> Create from Current Date</a></li>
+<li><a href="#formatting-the-date"><span class="toc-section-number">2.3</span> Formatting the Date</a></li>
+</ul></li>
+<li><a href="#datetime-objects"><span class="toc-section-number">3</span> Datetime Objects</a>
+<ul>
+<li><a href="#a-date-object-and-a-time-object"><span class="toc-section-number">3.1</span> A Date Object and a Time Object</a></li>
+<li><a href="#create-manually-2"><span class="toc-section-number">3.2</span> Create Manually</a></li>
+<li><a href="#create-from-current-date-and-time"><span class="toc-section-number">3.3</span> Create from Current Date and Time</a></li>
+<li><a href="#formatting-the-date-and-time"><span class="toc-section-number">3.4</span> Formatting the Date and Time</a></li>
+</ul></li>
+<li><a href="#timedelta-objects"><span class="toc-section-number">4</span> Timedelta Objects</a>
+<ul>
+<li><a href="#create-manually-3"><span class="toc-section-number">4.1</span> Create Manually</a></li>
+<li><a href="#create-from-date-and-datetime-objects"><span class="toc-section-number">4.2</span> Create from Date and Datetime Objects</a></li>
+<li><a href="#calculations"><span class="toc-section-number">4.3</span> Calculations</a></li>
+</ul></li>
+<li><a href="#dont-perform-calculations-with-datetimedatetime-objects"><span class="toc-section-number">5</span> Don’t Perform Calculations With Date/Time/Datetime Objects</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../python.html">⇦ Back</a></p>
+<p>In Python, there are six main ‘formats’ that date and time data can be in and these six formats are provided by two different built-in modules: <strong>time</strong> and <strong>datetime</strong>:</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
+<li>The <code>time</code> module can be used when working with:
 <ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
+<li>Unix time (seconds since the Unix epoch)</li>
+<li><code>struct_time</code> objects (or ‘structs’)</li>
 </ul></li>
-<li><a href="python/intro/lists.html">Lists</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/date_time.html">Date and Time (Part 1)</a></li>
-</ol>
+<li>The <code>datetime</code> module can be used when working with:
+<ul>
+<li><code>time</code> objects</li>
+<li><code>date</code> objects</li>
+<li><code>datetime</code> objects</li>
+<li><code>timedelta</code> objects</li>
+</ul></li>
+</ul>
+<p>The first two are <em>simpler</em> while the latter four are <em>more powerful</em>:</p>
+<ul>
+<li>Use the <code>time</code> module for time stamping, ie if you care about when something happened <em>relative to other things</em>, not the actual calendar date or clock time when it happened. This module is discussed on its <a href="../intro/date_time.html">own page</a>.</li>
+<li>Use the <code>datetime</code> module if you want to work with times and dates like you would see on a clock or on a calendar, or with durations. This is the module that is discussed on this page.</li>
+</ul>
+<div id="time-objects" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Time Objects</h1>
+<p>A <strong>time object</strong> contains <em>only time data</em>, ie there is no date information. Let’s start by importing this functionality:</p>
+<pre class="python"><code>from datetime import time</code></pre>
+<div id="create-manually" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Create Manually</h2>
+<p>A time object can be created with the <code>time()</code> function:</p>
+<pre class="python"><code>time_object = time(hour=12, minute=34, second=56, microsecond=78)
+
+print(time_object)</code></pre>
+<pre><code>## 12:34:56.000078</code></pre>
+<p>Note that including the keywords is optional but if you leave them out you need to make sure to get the order of the arguments right:</p>
+<pre class="python"><code>time_object = time(12, 34, 56, 78)
+
+print(time_object)</code></pre>
+<pre><code>## 12:34:56.000078</code></pre>
+<p>Alternatively, a time object can be created from a string representation of a time in <a href="https://en.wikipedia.org/wiki/ISO_8601">ISO 8601 format</a> using the <code>.fromisoformat()</code> method:</p>
+<pre class="python"><code>st = &#39;12:34:56.000078&#39;
+time_object = time.fromisoformat(st)
+
+print(time_object)</code></pre>
+<pre><code>## 12:34:56.000078</code></pre>
+<p>There is no way to immediately create a time object from a string that is in a different format; while there is a method that does this sort of thing (<code>strptime()</code>) it creates only <strong>datetime</strong> objects (see the section on these objects below).</p>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li><a href="python/advanced/date_time.html">Date and Time (Part 2)</a></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="create-from-current-time" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Create from Current Time</h2>
+<p>It isn’t possible to create a time object for the current time directly; you have to create a <strong>datetime object</strong> (which contains the current time <em>and</em> date) and extract the time from that. Use the <code>datetime.today()</code> method to get the current date-time and then use the <code>.time()</code> method to get just the time:</p>
+<pre class="python"><code>from datetime import datetime
+
+# Create a datetime object using the current time and date
+datetime_object = datetime.today()
+# Extract just the time information as a time object
+time_object = datetime_object.time()
+
+print(time_object)</code></pre>
+<pre><code>## 00:06:52.506881</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
-</div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<div id="hypothesis-testing" class="section level4">
-<h4>Hypothesis Testing</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ol>
-</div>
-<div id="agreement-accuracy-precision" class="section level4">
-<h4>Agreement (Accuracy &amp; Precision)</h4>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-</ol>
+<div id="formatting-the-time" class="section level2" number="1.3">
+<h2 number="1.3"><span class="header-section-number">1.3</span> Formatting the Time</h2>
+<p>The <code>.isoformat()</code> method is the inverse of the <code>.fromisoformat()</code> method mentioned above: it converts a <strong>time object</strong> into a <strong>string</strong> with the ISO formatting:</p>
+<pre class="python"><code># Create a string representation of a time
+st1 = &#39;12:34:56.000078&#39;
+# Convert string to a time object
+time_object = time.fromisoformat(st1)
+# Convert time object to a string
+st2 = time.isoformat(time_object)
+
+# Check that what you end with is exactly the same as what you started with
+print(st1)
+print(st2)</code></pre>
+<pre><code>## 12:34:56.000078
+## 12:34:56.000078</code></pre>
+<p>The <code>.strftime()</code> (<strong>str</strong>ing <strong>f</strong>ormat <strong>time</strong>) method does the same thing as above except you can customise what format the output string takes using <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">format codes</a>:</p>
+<pre class="python"><code># Manually create a time object
+time_object = time(hour=12, minute=34, second=56, microsecond=78)
+# Convert it to a string with a custom format
+st = time_object.strftime(&#39;%I:%M %p&#39;)
+
+print(st)</code></pre>
+<pre><code>## 12:34 pm</code></pre>
 </div>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="date-objects" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Date Objects</h1>
+<p>A <strong>date object</strong> contains <em>only calendar date data</em>, ie there is no time information. Again, start by importing this functionality:</p>
+<pre class="python"><code>from datetime import date</code></pre>
+<div id="create-manually-1" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Create Manually</h2>
+<p>Use the <code>date()</code> function to create date objects manually:</p>
+<pre class="python"><code># Pass a year, month and day (in that order)
+date_object = date(2012, 3, 4)
+
+print(date_object)</code></pre>
+<pre><code>## 2012-03-04</code></pre>
+<p>Similar to time objects, you can create date objects from strings that are in ISO format with the <code>.fromisoformat()</code> method:</p>
+<pre class="python"><code>date_object = date.fromisoformat(&#39;2043-02-01&#39;)
+
+print(date_object)</code></pre>
+<pre><code>## 2043-02-01</code></pre>
+<p>Again, there is no way to immediately create a date object from a string that is in a different format; while there is a method that does this sort of thing (<code>strptime()</code>) it creates only <strong>datetime</strong> objects (see the section on these objects below).</p>
+</div>
+<div id="create-from-current-date" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Create from Current Date</h2>
+<p>Get the current local date using the <code>.today()</code> method:</p>
+<pre class="python"><code>today = date.today()
+
+print(today)</code></pre>
+<pre><code>## 2021-04-12</code></pre>
+</div>
+<div id="formatting-the-date" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Formatting the Date</h2>
+<p>Identical to time objects, there is an <code>.isoformat()</code> method which is the inverse of <code>.fromisoformat()</code> (ie it converts a date object into a string in ISO format) as well as a <code>.strftime()</code> method (which converts a date object into a string in a <em>custom</em> format):</p>
+<pre class="python"><code># Create a string representing a date in ISO format
+st1 = &#39;2043-02-01&#39;
+# Create a date object from a string in ISO format
+date_object = date.fromisoformat(st1)
+# Convert the date object back into a string in ISO format
+st2 = date.isoformat(date_object)
+
+# Check that what you end with is exactly the same as what you started with
+print(st1)
+print(st2)</code></pre>
+<pre><code>## 2043-02-01
+## 2043-02-01</code></pre>
+<pre class="python"><code># Convert the date object back into a string using a custom format
+st2 = date_object.strftime(&#39;%d/%m/%Y&#39;)
+
+print(st2)</code></pre>
+<pre><code>## 01/02/2043</code></pre>
+</div>
+</div>
+<div id="datetime-objects" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Datetime Objects</h1>
+<p>A <strong>datetime object</strong> contains <em>calendar date AND clock time data</em>. Import this functionality with:</p>
+<pre class="python"><code>from datetime import datetime</code></pre>
+<div id="a-date-object-and-a-time-object" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> A Date Object and a Time Object</h2>
+<p>It is easiest to think about a datetime object as a date object and a time object put together; in general, a datetime object can do everything that those two objects can. Indeed, it is possible to create a datetime by combining a date and a time using the <code>.combine()</code> method:</p>
+<pre class="python"><code># Manually create a date object
+date_object = date(2012, 3, 4)
+# Manually create a time object
+time_object = time(5, 6, 7)
+# Create a datetime object by combining the two
+dt = datetime.combine(date_object, time_object)
+
+print(dt)</code></pre>
+<pre><code>## 2012-03-04 05:06:07</code></pre>
+</div>
+<div id="create-manually-2" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Create Manually</h2>
+<p>Just like date and time objects, datetime objects can be created directly (with <code>datetime()</code>) and from strings that represent a time and date in ISO format (with <code>datetime.fromisoformat()</code>):</p>
+<pre class="python"><code># Manually create a datetime object
+dt = datetime(2012, 3, 4, 5, 6, 7)
+
+print(dt)</code></pre>
+<pre><code>## 2012-03-04 05:06:07</code></pre>
+<pre class="python"><code># Create a datetime object from a string in ISO format
+dt = datetime.fromisoformat(&#39;2012-03-04 05:06:07&#39;)
+
+print(dt)</code></pre>
+<pre><code>## 2012-03-04 05:06:07</code></pre>
+<p>However, there is now also the option to use the <code>strptime()</code> (<strong>str</strong>ing <strong>p</strong>arse <strong>time</strong>) function to create a datetime object from a string in a <em>custom format</em>. You can define this custom format using the <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">format codes</a>:</p>
+<pre class="python"><code># Create a string representation of a date and time, not in ISO format
+st = &#39;05h06 2012/03/04&#39;
+# Parse the string to a datetime object
+dt = datetime.strptime(st, &#39;%Hh%M %Y/%m/%d&#39;)
+
+print(dt)</code></pre>
+<pre><code>## 2012-03-04 05:06:00</code></pre>
+</div>
+<div id="create-from-current-date-and-time" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Create from Current Date and Time</h2>
+<p>You can either use <code>datetime.today()</code> or <code>datetime.now()</code>; the only difference is that the latter can take an optional argument <code>tz</code> which sets the timezone.</p>
+<pre class="python"><code># Get the current date and time
+dt = datetime.today()
+
+print(dt)</code></pre>
+<pre><code>## 2021-04-12 00:06:52.694893</code></pre>
+<p>Note that <code>datetime.utcnow()</code> will do the same as above but the date and time will be that at UTC (ie in the +0 timezone).</p>
+</div>
+<div id="formatting-the-date-and-time" class="section level2" number="3.4">
+<h2 number="3.4"><span class="header-section-number">3.4</span> Formatting the Date and Time</h2>
+<p>Again, <code>.isoformat()</code> will format the datetime object into the ISO standard (and is the inverse of <code>.fromisoformat()</code>) while <code>.strftime()</code> will format the datetime object into a custom format (which can again be defined using the <a href="https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes">format codes</a>):</p>
+<pre class="python"><code># Create a string representing a date and time in ISO format
+st1 = &#39;2012-03-04T05:06:07&#39;
+# Create a datetime object from a string in ISO format
+dt = datetime.fromisoformat(st1)
+# Convert the datetime object back into a string in ISO format
+st2 = datetime.isoformat(dt)
+
+# Check that what you end with is exactly the same as what you started with
+print(st1)
+print(st2)</code></pre>
+<pre><code>## 2012-03-04T05:06:07
+## 2012-03-04T05:06:07</code></pre>
+<pre class="python"><code># Convert the datetime object back into a string using a custom format
+st2 = dt.strftime(&#39;%Hh%M %d/%m/%Y&#39;)
+
+print(st2)</code></pre>
+<pre><code>## 05h06 04/03/2012</code></pre>
+</div>
+</div>
+<div id="timedelta-objects" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Timedelta Objects</h1>
+<p>A <strong>timedelta object</strong> represents a duration: the difference between two dates or times or the length of time that something lasted for. Import it with:</p>
+<pre class="python"><code>from datetime import timedelta</code></pre>
+<div id="create-manually-3" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Create Manually</h2>
+<p>You can use the <code>timedelta()</code> function to create a timedelta object. Note that the default order of the arguments that this function takes is weird: days, seconds, microseconds, milliseconds, minutes, hours, weeks. This means that <code>(1, 2, 3, 4, 5, 6, 7)</code> will be interpreted as 1 day, 2 seconds, 3 microseconds, etc:</p>
+<pre class="python"><code># Manually create a timedelta object
+delta = timedelta(1, 2, 3, 4, 5, 6, 7)
+
+print(delta)</code></pre>
+<pre><code>## 50 days, 6:05:02.004003</code></pre>
+<p>If you are defining a timedelta object in this way, it is probably better to use the keyword arguments to avoid confusion:</p>
+<pre class="python"><code># Manually create a timedelta object
+delta = timedelta(days=1, hours=2, minutes=3, seconds=4)
+
+print(delta)</code></pre>
+<pre><code>## 1 day, 2:03:04</code></pre>
+</div>
+<div id="create-from-date-and-datetime-objects" class="section level2" number="4.2">
+<h2 number="4.2"><span class="header-section-number">4.2</span> Create from Date and Datetime Objects</h2>
+<p>Subtracting two date or datetime objects from each other will return a timedelta object that represents the duration between them. Note that you <strong>cannot</strong>:</p>
+<ul>
+<li>Subtract two <strong>time</strong> objects from each other (only date and datetime objects)</li>
+<li>Subtract a <strong>date</strong> from a <strong>datetime</strong> or vice versa</li>
+<li><strong>Add</strong> objects together</li>
+</ul>
+<p>Subtraction is specifically a method to get the duration between two time stamps on a macro scale.</p>
+<pre class="python"><code># Manually create date objects
+date1 = date(2012, 3, 4)
+date2 = date(2012, 5, 6)
+# Subtract
+delta = date2 - date1
+
+print(f&#39;The time between {date1} and {date2} is {delta}&#39;)</code></pre>
+<pre><code>## The time between 2012-03-04 and 2012-05-06 is 63 days, 0:00:00</code></pre>
+<p>You can, however, add or subtract <strong>timedelta</strong> objects to date, time or datetime objects. The effect of doing so is as expected: adding a timedelta object will move the date/time/datetime object forward in time, while subtracting it will do the opposite:</p>
+<pre class="python"><code># Manually create datetime objects
+dt = datetime(2001, 2, 3, 4, 5, 6)
+# Manually create a timedelta object
+delta = timedelta(days=1, hours=2, minutes=3, seconds=4)
+# Subtraction
+diff = dt - delta
+
+print(f&#39;{delta} before {dt} is {diff}&#39;)</code></pre>
+<pre><code>## 1 day, 2:03:04 before 2001-02-03 04:05:06 is 2001-02-02 02:02:02</code></pre>
+<pre class="python"><code># Addition
+total = dt + delta
+
+print(f&#39;{delta} after {dt} is {total}&#39;)</code></pre>
+<pre><code>## 1 day, 2:03:04 after 2001-02-03 04:05:06 is 2001-02-04 06:08:10</code></pre>
+</div>
+<div id="calculations" class="section level2" number="4.3">
+<h2 number="4.3"><span class="header-section-number">4.3</span> Calculations</h2>
+<p>The main advantage of timedelta objects is that they can be used for <strong>mathematical operations</strong>. In addition to being able to subtract two date/datetime objects to get the amount of time between them, you can:</p>
+<ul>
+<li>Subtract <em>or add</em> timedelta objects</li>
+<li>Divide or multiply a timedelta object by a constant to scale it (eg if something takes x minutes, how long will y repeats take?)</li>
+</ul>
+<p>along with some other operations (see <a href="https://docs.python.org/3/library/datetime.html#timedelta-objects">the documentation</a> for more).</p>
+<pre class="python"><code># Manually create timedelta objects
+delta1 = timedelta(days=1, hours=2, minutes=3, seconds=4)
+delta2 = timedelta(days=5, hours=6, minutes=7, seconds=8)
+
+print(delta1 + delta2)</code></pre>
+<pre><code>## 6 days, 8:10:12</code></pre>
+<pre class="python"><code>print(delta1 * 2)</code></pre>
+<pre><code>## 2 days, 4:06:08</code></pre>
+<p>The one thing that is missing is the ability to divide a constant by a timedelta object. This would be used, for example, to calculate speed (which is distance divided by time). If you are looking to do this type of thing, you will instead have to convert to seconds using the <code>.total_seconds()</code> method and do the arithmetic after that:</p>
+<pre class="python"><code># Manually create a timedelta object
+delta = timedelta(hours=2, minutes=3, seconds=4)
+# Convert the timedelta object to seconds
+duration = delta.total_seconds()
+# Calculate speed
+distance = 100  # km
+speed = distance / (duration / 60 / 60)
+
+print(f&#39;Speed in km/h: {speed}&#39;)</code></pre>
+<pre><code>## Speed in km/h: 48.75406283856988</code></pre>
+</div>
+</div>
+<div id="dont-perform-calculations-with-datetimedatetime-objects" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Don’t Perform Calculations With Date/Time/Datetime Objects</h1>
+<p>It’s not possible to multiply or divide a date/time/datetime object by a number, nor is it possible to add them together or subtract time objects from each other. The only arithmetic that <em>is</em> possible is date or datetime subtraction, and that will just create a timedelta object (which <em>can</em> be used for calculations, as discussed above). Such limitations are included <strong>on purpose</strong>; these objects are made to represent <em>a moment in time</em>, not a duration or a length of time over which something occurred.</p>
+<p>Thus, the only way you could actually do calculations with date, time or datetime objects directly is to first <strong>convert them into seconds</strong> (Unix time/seconds since the Unix epoch). Once that is done, the operation(s) can be performed and the results can be converted back into the desired object type. Two functions that will help with this are <code>timestamp()</code> and <code>fromtimestamp()</code> which convert to and from Unix time, respectively. Note, however, that neither of these work with time objects and <code>timestamp()</code> doesn’t work with date objects. So here is a demonstration with datetime objects:</p>
+<pre class="python"><code># Create datetime objects from strings in ISO format
+dt1 = datetime.fromisoformat(&#39;2012-03-04 05:06:07&#39;)
+dt2 = datetime.fromisoformat(&#39;2012-09-09 10:11:12&#39;)
+# Convert to a time stamp aka Unix time aka seconds since the epoch
+timestamp1 = dt1.timestamp()
+timestamp2 = dt2.timestamp()
+# Perfprm arithmetic
+timestamp = timestamp2 - timestamp1
+# Convert back into a datetime
+dt = datetime.fromtimestamp(timestamp)
+
+print(dt)</code></pre>
+<pre><code>## 1970-07-09 05:05:05</code></pre>
+<p>The answer is a time stamp from 1970! This is almost definitely not what you want, so this is a good example to show why such an approach should not be taken.</p>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
