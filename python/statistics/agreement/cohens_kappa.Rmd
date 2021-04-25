@@ -1,0 +1,603 @@
+---
+title: "<font size='5'>Statistics in Python:</font><br>Cohen's Kappa"
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+**Cohen's kappa** is a measure of how much two judges agree with each other when they are rating things *qualitatively*.
+
+- Another name for 'judges' in this context is **raters** because they are rating things, hence Cohen's kappa is used to measure *inter-rater reliability*
+- The exact same process can be used to measure the degree to which a single judge agrees with themself (ie do they get the same result when they measure the same thing twice?). This is known as *intra-rater reliability*
+- Cohen's kappa is used when things are rated *qualitatively*, meaning that they are being put into categories (classified) rather than being measured numerically
+- See [the Wikipedia page](https://en.wikipedia.org/wiki/Cohen's_kappa) for more
+
+Worked Examples - High Level
+============================
+Cohen's kappa can be quickly found using the **scikit-learn** Python package. This can be installed from the terminal with:
+
+`pip install sklearn`
+
+Here are two examples that demonstrate how to use the `cohen_kappa_score()` function from this package:
+
+Wikipedia Example
+-----------------
+The [simple example](https://en.wikipedia.org/wiki/Cohen's_kappa#Simple_example) given on the Wikipedia page involves two people each reading 50 proposals and saying either "Yes" or "No" to each. The data looks as follows:
+
+<style>
+    table td, table th {
+        padding: 5px;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th colspan=2>Reader B</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Yes</td>
+            <td padding: 6px; style="border: 1px solid #cdd0d4;"><b>No</td>
+        </tr>
+        <tr>
+            <td rowspan=2><b>Reader A</td>
+            <td style="border: 1px solid #cdd0d4;"><b>Yes</td>
+            <td style="border: 1px solid #cdd0d4;">20</td>
+            <td style="border: 1px solid #cdd0d4;">5</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #cdd0d4;"><b>No</td>
+            <td style="border: 1px solid #cdd0d4;">10</td>
+            <td style="border: 1px solid #cdd0d4;">15</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+*This type of table where the agreement between two raters or tests is being shown is known as a __confusion matrix__*
+
+Using this information, we can manually reverse-engineer the raw data: the response of each reader to each proposal must be as follows (where `Y` stands for "yes" and `N` stands for "no"):
+
+```{python}
+readerA = [
+    'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y',
+    'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y',
+    'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'N', 'N', 'N', 'N',
+    'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N',
+    'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N',
+]
+readerB = [
+    'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y',
+    'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y', 'Y',
+    'N', 'N', 'N', 'N', 'N', 'Y', 'Y', 'Y', 'Y', 'Y',
+    'Y', 'Y', 'Y', 'Y', 'Y', 'N', 'N', 'N', 'N', 'N',
+    'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N',
+]
+```
+
+Ok, we haven't *fully* reverse-engineered the raw data because we don't know *specifically* which proposals each reader accepted and rejected, but we have determined a generalised version of their responses which is all we need.
+
+> If you want to calculate Cohen's kappa directly from the confusion matrix (ie without reverse-engineering the raw data) then see the 'deeper dive' worked examples below
+
+The Python package to use is `sklearn.metrics` so import that into your script:
+
+```{python}
+import sklearn.metrics
+```
+
+The first function of use is `confusion_matrix` which, as the name suggests, re-creates the confusion matrix we reverse-engineered to get the raw data:
+
+```{python}
+cm = sklearn.metrics.confusion_matrix(readerA, readerB)
+print(cm)
+```
+
+This matrix has the same numbers as the one we were given but in a different configuration. Fortunately, we can manually re-order the labels in order to fix this, using the `labels` keyword argument:
+
+```{python}
+cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=['Y', 'N'])
+print(cm)
+```
+
+This is now the same as what we started with, which is confirmation that we correctly reverse-engineered the raw data.
+
+Now the Cohen's kappa can be calculated, using the `cohen_kappa_score` function:
+
+```{python}
+kappa = sklearn.metrics.cohen_kappa_score(readerA, readerB)
+print(kappa)
+```
+
+This value of 0.4 is the same as the solution on the original page.
+
+Real Statistics Example
+-----------------------
+Another worked example can be found on [the Real Statistics site](https://www.real-statistics.com/reliability/interrater-reliability/cohens-kappa/). This one is more complicated because the two judges are assigning observations into *three* groups as opposed to the previous example which only had two groups ("yes" and "no"). Specifically, this example involves two psychologists who are diagnosing patients as one of "psychotic", "borderline" or "neither":
+
+<style>
+    table td, table th {
+        padding: 5px;
+    }
+</style>
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th></th>
+            <th colspan=3>Psychologist 1</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td></td>
+            <td></td>
+            <td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Psychotic</td>
+            <td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Borderline</td>
+            <td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Neither</td>
+        </tr>
+        <tr>
+            <td rowspan=3><b>Psychologist 2</td>
+            <td style="border: 1px solid #cdd0d4;"><b>Psychotic</td>
+            <td style="border: 1px solid #cdd0d4;">10</td>
+            <td style="border: 1px solid #cdd0d4;">4</td>
+            <td style="border: 1px solid #cdd0d4;">1</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #cdd0d4;"><b>Borderline</td>
+            <td style="border: 1px solid #cdd0d4;">6</td>
+            <td style="border: 1px solid #cdd0d4;">16</td>
+            <td style="border: 1px solid #cdd0d4;">2</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #cdd0d4;"><b>Neither</td>
+            <td style="border: 1px solid #cdd0d4;">0</td>
+            <td style="border: 1px solid #cdd0d4;">3</td>
+            <td style="border: 1px solid #cdd0d4;">8</td>
+        </tr>
+    </tbody>
+</table>
+
+<br>
+
+Again, we can manually reverse-engineer the raw data by looking at the above confusion matrix. Create a list for each of the psychologist's diagnoses and fill them in them with 'P' for "psychotic", 'B' for "borderline" and 'N' for "neither":
+
+```{python}
+psychologist1 = [
+    'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
+    'P', 'P', 'P', 'P', 'P', 'P', 'B', 'B', 'B', 'B',
+    'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',
+    'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'N',
+    'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N', 'N',
+]
+psychologist2 = [
+    'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
+    'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',
+    'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B',
+    'B', 'B', 'P', 'P', 'P', 'P', 'N', 'N', 'N', 'N',
+    'N', 'N', 'N', 'N', 'N', 'N', 'N', 'P', 'B', 'B',
+]
+```
+
+...and re-produce the confusion matrix:
+
+```{python}
+cm = sklearn.metrics.confusion_matrix(psychologist2, psychologist1, labels=['P', 'B', 'N'])
+print(cm)
+```
+
+...and calculate the Cohen's kappa:
+
+```{python}
+kappa = sklearn.metrics.cohen_kappa_score(psychologist1, psychologist2)
+print(kappa)
+```
+
+This agrees with the value given on the original page.
+
+If you want to calculate Cohen's kappa directly from the confusion matrix (ie without reverse-engineering the raw data) then take a look at the 'deeper dive' worked examples which follow:
+
+Worked Examples - A Deeper Dive
+===============================
+While the `cohen_kappa_score()` function produces the correct result it hides how the calculation is performed. This is normally fine but sometimes we need to use the intermediate values produced by the calculation steps, for example if we want to calculate confidence intervals. So it's worthwhile being able to perform the calculation in 'long-hand'.
+
+Wikipedia/Source Code
+---------------------
+Both [the Wikipedia page](https://en.wikipedia.org/wiki/Cohen's_kappa#Simple_example) and [the scikit-learn source code](https://github.com/scikit-learn/scikit-learn/blob/95119c13a/sklearn/metrics/_classification.py#L560) detail how to calculate Cohen's kappa using essentially the same method. We start with the confusion matrix as created in the previous example:
+
+```{python}
+cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=['Y', 'N'])
+print(cm)
+```
+
+We will need to use the Numpy package for this, so remember to import that:
+
+```{python}
+import numpy as np
+```
+
+Now, we create the 'expected matrix' (the probabilities of each type of agreement and disagreement between these readers that you would expect to see due to chance alone):
+
+```{python}
+# Sample size
+n = np.sum(cm)
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+```
+
+The Wikipedia page then carries on the calculation as follows:
+
+```{python}
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate Cohen's kappa
+kappa = (p_o - p_e) / (1 - p_e)
+
+print(f'p_o = {p_o}, p_e = {p_e}, kappa = {kappa:3.1f}')
+```
+
+These results match those on the Wikipedia page itself.
+
+The method used by the `cohen_kappa_score()` function (as seen from [its source code](https://github.com/scikit-learn/scikit-learn/blob/95119c13a/sklearn/metrics/_classification.py#L560)) looks a little different because it includes the option of using weights to alter how the score is calculated. Here's how it looks when the weights are 'none' (ie when it's used equivalently to the Wikipedia method):
+
+```{python}
+# Number of classes
+n_classes = cm.shape[0]
+# The following assumes you are not using weights
+w_mat = np.ones([n_classes, n_classes], dtype=int)
+w_mat.flat[:: n_classes + 1] = 0
+k = np.sum(w_mat * cm) / np.sum(w_mat * expected)
+# Calculate Cohen's kappa
+kappa = 1 - k
+
+print(f'kappa = {kappa}')
+```
+
+Real Statistics
+---------------
+Unsurprisingly, the method used on [the Real Statistics page](https://www.real-statistics.com/reliability/interrater-reliability/cohens-kappa/) is the same as that on Wikipedia and in the scikit-learn source code. However, they go through the process a bit more slowly, so it's worthwhile re-creating their steps here. First, re-create the confusion matrix:
+
+```{python}
+cm = sklearn.metrics.confusion_matrix(psychologist2, psychologist1, labels=['P', 'B', 'N'])
+print(cm)
+```
+
+Calculate the agreement, the agreement by chance and the sample size from the confusion matrix:
+
+```{python}
+# Sample size
+n = np.sum(cm)
+# Number of classes
+n_classes = cm.shape[0]
+# Agreement
+agreement = 0
+for i in np.arange(n_classes):
+    # Sum the diagonal values
+    agreement += cm[i, i]
+# Agreement due to chance
+judge1_totals = np.sum(cm, axis=0)
+judge2_totals = np.sum(cm, axis=1)
+judge1_totals_prop = np.sum(cm, axis=0) / n
+judge2_totals_prop = np.sum(cm, axis=1) / n
+by_chance = np.sum(judge1_totals_prop * judge2_totals_prop * n)
+# Calculate Cohen's kappa
+kappa = (agreement - by_chance) / (n - by_chance)
+
+print(f'agreement = {agreement}, by_chance = {by_chance}, kappa = {kappa}')
+```
+
+These results are the same as on the original page.
+
+Confidence Intervals
+====================
+Adding a confidence interval to the Cohen's kappa value is slightly more complicated because the scikit-learn code does not do this for you and the Wikipedia and Real Statistics methods differ slightly.
+
+Wikipedia Formula
+-----------------
+This is explained on [the Wikipedia page](https://en.wikipedia.org/wiki/Cohen's_kappa#Hypothesis_testing_and_confidence_interval) and can be coded up as follows:
+
+```{python, eval = FALSE}
+se = np.sqrt((p_o * (1 - p_o)) / (n * (1 - p_e)**2))
+ci = 1.96 * se * 2
+lower = kappa - 1.96 * se
+upper = kappa + 1.96 * se
+
+print(f'standard error = {se}')
+print(f'lower confidence interval = {lower}')
+print(f'upper confidence interval = {upper}')
+```
+
+Using this formula on the data from the Wikipedia example gives:
+
+```{python}
+# Confusion matrix
+cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=['Y', 'N'])
+# Sample size
+n = np.sum(cm)
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate Cohen's kappa
+kappa = (p_o - p_e) / (1 - p_e)
+# Confidence intervals
+se = np.sqrt((p_o * (1 - p_o)) / (n * (1 - p_e)**2))
+ci = 1.96 * se * 2
+lower = kappa - 1.96 * se
+upper = kappa + 1.96 * se
+
+print(
+    f'p_o = {p_o}, p_e = {p_e}, kappa = {kappa:3.1f}\n',
+    f'standard error = {se}\n',
+    f'lower confidence interval = {lower}\n',
+    f'upper confidence interval = {upper}', sep=''
+)
+```
+
+And using this formula on the data from the Real statistics example gives:
+
+```{python, echo = FALSE}
+# Confusion matrix
+cm = sklearn.metrics.confusion_matrix(psychologist2, psychologist1, labels=['P', 'B', 'N'])
+# Sample size
+n = np.sum(cm)
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate Cohen's kappa
+kappa = (p_o - p_e) / (1 - p_e)
+# Confidence intervals
+se = np.sqrt((p_o * (1 - p_o)) / (n * (1 - p_e)**2))
+ci = 1.96 * se * 2
+lower = kappa - 1.96 * se
+upper = kappa + 1.96 * se
+
+print(
+    f'p_o = {p_o}, p_e = {p_e}, kappa = {kappa}\n',
+    f'standard error = {se}\n',
+    f'lower confidence interval = {lower}\n',
+    f'upper confidence interval = {upper}', sep=''
+)
+```
+
+Note that this confidence interval of 0.292 to 0.700 is slightly different to the one given on the original page (which was 0.288 to 0.704). However, the fact that they are the same up to the second decimal place suggests that they are generally equivalent!
+
+Real Statistics Method
+----------------------
+This come from [the Real Statistics page](https://www.real-statistics.com/reliability/interrater-reliability/cohens-kappa/):
+
+```{python, eval = FALSE}
+import scipy.stats
+
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate a
+ones = np.ones([n_classes, n_classes])
+row_sums = np.inner(cm, ones)
+col_sums = np.inner(cm.T, ones).T
+sums = row_sums + col_sums
+a_mat = cm / n * (1 - sums / n * (1 - kappa))**2
+a = np.sum(identity * a_mat)
+# Calculate b
+b_mat = cm / n * (sums / n)**2
+b_mat = b_mat * (ones - identity)
+b = (1 - kappa)**2 * np.sum(b_mat)
+# Calculate c
+c = (kappa - p_e * (1 - kappa))**2
+# Standard error
+se = np.sqrt((a + b - c) / n) / (1 - p_e)
+# Two-tailed statistical test
+alpha = 0.05
+z_crit = scipy.stats.norm.ppf(1 - alpha / 2)
+ci = se * z_crit * 2
+lower = kappa - se * z_crit
+upper = kappa + se * z_crit
+
+print(f'a = {a}, b = {b}, c = {c}')
+print(f'standard error = {se}')
+print(f'lower confidence interval = {lower}')
+print(f'upper confidence interval = {upper}')
+```
+
+Using this method on the data from the Wikipedia example gives:
+
+```{python}
+import scipy.stats
+
+# Confusion matrix
+cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=['Y', 'N'])
+
+#
+# Cohen's kappa
+#
+# Sample size
+n = np.sum(cm)
+# Number of classes
+n_classes = cm.shape[0]
+# Agreement
+agreement = 0
+for i in np.arange(n_classes):
+    # Sum the diagonal values
+    agreement += cm[i, i]
+# Agreement due to chance
+judge1_totals = np.sum(cm, axis=0)
+judge2_totals = np.sum(cm, axis=1)
+judge1_totals_prop = np.sum(cm, axis=0) / n
+judge2_totals_prop = np.sum(cm, axis=1) / n
+by_chance = np.sum(judge1_totals_prop * judge2_totals_prop * n)
+# Calculate Cohen's kappa
+kappa = (agreement - by_chance) / (n - by_chance)
+
+#
+# Confidence interval
+#
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate a
+ones = np.ones([n_classes, n_classes])
+row_sums = np.inner(cm, ones)
+col_sums = np.inner(cm.T, ones).T
+sums = row_sums + col_sums
+a_mat = cm / n * (1 - sums / n * (1 - kappa))**2
+identity = np.identity(n_classes)
+a = np.sum(identity * a_mat)
+# Calculate b
+b_mat = cm / n * (sums / n)**2
+b_mat = b_mat * (ones - identity)
+b = (1 - kappa)**2 * np.sum(b_mat)
+# Calculate c
+c = (kappa - p_e * (1 - kappa))**2
+# Standard error
+se = np.sqrt((a + b - c) / n) / (1 - p_e)
+# Two-tailed statistical test
+alpha = 0.05
+z_crit = scipy.stats.norm.ppf(1 - alpha / 2)
+ci = se * z_crit * 2
+lower = kappa - se * z_crit
+upper = kappa + se * z_crit
+
+print(
+    f'kappa = {kappa}\n',
+    f'a = {a}, b = {b}, c = {c}\n',
+    f'standard error = {se}\n',
+    f'lower confidence interval = {lower}\n',
+    f'upper confidence interval = {upper}',
+    sep=''
+)
+```
+
+And using it to do the Real Statistics example:
+
+```{python, echo = FALSE}
+# Confusion matrix
+cm = sklearn.metrics.confusion_matrix(psychologist2, psychologist1, labels=['P', 'B', 'N'])
+
+#
+# Cohen's kappa
+#
+# Sample size
+n = np.sum(cm)
+# Number of classes
+n_classes = cm.shape[0]
+# Agreement
+agreement = 0
+for i in np.arange(n_classes):
+    # Sum the diagonal values
+    agreement += cm[i, i]
+# Agreement due to chance
+judge1_totals = np.sum(cm, axis=0)
+judge2_totals = np.sum(cm, axis=1)
+judge1_totals_prop = np.sum(cm, axis=0) / n
+judge2_totals_prop = np.sum(cm, axis=1) / n
+by_chance = np.sum(judge1_totals_prop * judge2_totals_prop * n)
+# Calculate Cohen's kappa
+kappa = (agreement - by_chance) / (n - by_chance)
+
+#
+# Confidence interval
+#
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate a
+ones = np.ones([n_classes, n_classes])
+row_sums = np.inner(cm, ones)
+col_sums = np.inner(cm.T, ones).T
+sums = row_sums + col_sums
+a_mat = cm / n * (1 - sums / n * (1 - kappa))**2
+identity = np.identity(n_classes)
+a = np.sum(identity * a_mat)
+# Calculate b
+b_mat = cm / n * (sums / n)**2
+b_mat = b_mat * (ones - identity)
+b = (1 - kappa)**2 * np.sum(b_mat)
+# Calculate c
+c = (kappa - p_e * (1 - kappa))**2
+# Standard error
+se = np.sqrt((a + b - c) / n) / (1 - p_e)
+# Two-tailed statistical test
+alpha = 0.05
+z_crit = scipy.stats.norm.ppf(1 - alpha / 2)
+ci = se * z_crit * 2
+lower = kappa - se * z_crit
+upper = kappa + se * z_crit
+
+print(
+    f'kappa = {kappa}\n',
+    f'a = {a}, b = {b}, c = {c}\n',
+    f'standard error = {se}\n',
+    f'lower confidence interval = {lower}\n',
+    f'upper confidence interval = {upper}',
+    sep=''
+)
+```
+
+Now the confidence interval (0.28767 to 0.70414) exactly matches the original one.
+
+[⇦ Back](../../../python.html)
+
+</font>

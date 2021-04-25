@@ -11,7 +11,7 @@
 
 
 
-<title>Statistics in R: Repeatability Coefficient</title>
+<title>Statistics in Python: Cohen’s Kappa</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -482,7 +482,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},pe=function(a){var b=I.createElement("
 e=pe(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var re=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),se=new RegExp(/support|noreply/i),te=["SCRIPT","IMG","SVG","PATH","BR"],ue=["BR"];function ve(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=ve(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 function we(a,b){if(1>=a.length)return a;var c=a.filter(b);return 0==c.length?a:c}function xe(a){if(0==a.length)return null;var b;b=we(a,function(c){return!se.test(c.Lc)});b=we(b,function(c){return"INPUT"===c.element.tagName.toUpperCase()});b=we(b,function(c){return!Yd(c.element)});return b[0]}
 function ye(){var a;var b=[],c=I.body;if(c){for(var d=c.querySelectorAll("*"),e=0;e<d.length&&1E4>e;e++){var f=d[e];if(!(0<=te.indexOf(f.tagName.toUpperCase()))){for(var h=!1,k=0;k<f.childElementCount&&1E4>k;k++)if(!(0<=ue.indexOf(f.children[k].tagName.toUpperCase()))){h=!0;break}h||b.push(f)}}a={elements:b,status:1E4<d.length?"2":"1"}}else a={elements:b,status:"4"};for(var l=a,n=l.elements,q=[],p=0;p<n.length;p++){var r=n[p],u=r.textContent;r.value&&(u=r.value);if(u){var t=u.match(re);if(t){var v=
-t[0],x;if(G.location){var z=me(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Lc:v})}}}var w=xe(q),y=[];if(w){var A=w.element;y.push({Lc:w.Lc,querySelector:ve(A),tagName:A.tagName,isVisible:!Yd(A),type:1,hf:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Me={},L=null,Ne=Math.random();Me.D="UA-156468188-1";Me.mc="4e1";Me.Jh="";Me.Ff="ChAI8IOPhAYQp/bkooqhsMZtEicA32zavHMneJ0FM8kli/eH8vCxTvqliNNtLcXzmWPmeVjtgpkJVN4aAgeF";var Oe={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Pe={__paused:!0,__tg:!0},Qe;for(Qe in Oe)Oe.hasOwnProperty(Qe)&&(Pe[Qe]=!0);var Re="www.googletagmanager.com/gtm.js";Re="www.googletagmanager.com/gtag/js";
+t[0],x;if(G.location){var z=me(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||q.push({element:r,Lc:v})}}}var w=xe(q),y=[];if(w){var A=w.element;y.push({Lc:w.Lc,querySelector:ve(A),tagName:A.tagName,isVisible:!Yd(A),type:1,hf:!0})}return{elements:y,status:10<q.length?"3":l.status}}var Me={},L=null,Ne=Math.random();Me.D="UA-156468188-1";Me.mc="4e1";Me.Jh="";Me.Ff="ChEI8KaUhAYQsd2wyLX6o+fqARInADXiJY2+ji2lJdbYo6kbTY8yMmiOLGMvrG/CBIz1t8Jvg5/fCeJEGgK7kA\x3d\x3d";var Oe={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Pe={__paused:!0,__tg:!0},Qe;for(Qe in Oe)Oe.hasOwnProperty(Qe)&&(Pe[Qe]=!0);var Re="www.googletagmanager.com/gtm.js";Re="www.googletagmanager.com/gtag/js";
 var Se=Re,Te=Pa(""),Ue=null,Ve=null,We="//www.googletagmanager.com/a?id="+Me.D+"&cv=1",Xe={},Ye={},Ze=function(){var a=L.sequence||1;L.sequence=a+1;return a};Me.Ef="";var $e={},af=new Ja,bf={},cf={},ff={name:"dataLayer",set:function(a,b){m(eb(a,b),bf);df()},get:function(a){return ef(a,2)},reset:function(){af=new Ja;bf={};df()}},ef=function(a,b){return 2!=b?af.get(a):gf(a)},gf=function(a){var b,c=a.split(".");b=b||[];for(var d=bf,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Fa(b,d))return}return d},hf=function(a,b){cf.hasOwnProperty(a)||(af.set(a,b),m(eb(a,b),bf),df())},df=function(a){Ma(cf,function(b,c){af.set(b,c);m(eb(b,
 void 0),bf);m(eb(b,c),bf);a&&delete cf[b]})},kf=function(a,b,c){$e[a]=$e[a]||{};$e[a][b]=jf(b,c)},jf=function(a,b){var c,d=1!==(void 0===b?2:b)?gf(a):af.get(a);"array"===jb(d)||"object"===jb(d)?c=m(d):c=d;return c},lf=function(a,b){if($e[a])return $e[a][b]},mf=function(a,b){$e[a]&&delete $e[a][b]};var pf={},qf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===pf[a]&&(pf[a]=Math.floor(Math.random()*b));return pf[a]};var rf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function sf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};function tf(a){return wd(td)?"null"!==a.origin:!0};var wf=function(a,b,c,d){return uf(d)?sf(a,String(b||vf()),c):[]},zf=function(a,b,c,d,e){if(uf(e)){var f=xf(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=yf(f,function(h){return h.wc},b);if(1===f.length)return f[0].id;f=yf(f,function(h){return h.Mb},c);return f[0]?f[0].id:void 0}}};function Af(a,b,c,d){var e=vf(),f=window;tf(f)&&(f.document.cookie=a);var h=vf();return e!=h||void 0!=c&&0<=wf(b,h,!1,d).indexOf(c)}
 var Ef=function(a,b,c){function d(u,t,v){if(null==v)return delete h[t],u;h[t]=v;return u+"; "+t+"="+v}function e(u,t){if(null==t)return delete h[t],u;h[t]=!0;return u+"; "+t}if(!uf(c.Aa))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=Bf(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.Uh);f=d(f,"samesite",
@@ -664,312 +664,509 @@ else{hd(I,"DOMContentLoaded",ni);hd(I,"readystatechange",ni);if(I.createEventObj
 
 
 
-<h1 class="title toc-ignore"><font size="5">Statistics in R:</font><br>Repeatability Coefficient</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Cohen’s Kappa</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#quantifying-repeatability"><span class="toc-section-number">1</span> Quantifying Repeatability</a></li>
-<li><a href="#repeatability-vs-reproducibility"><span class="toc-section-number">2</span> Repeatability vs Reproducibility</a></li>
-<li><a href="#calculating-the-repeatability-coefficient"><span class="toc-section-number">3</span> Calculating the Repeatability Coefficient</a>
+<li><a href="#worked-examples---high-level"><span class="toc-section-number">1</span> Worked Examples - High Level</a>
 <ul>
-<li><a href="#using-the-true-standard-deviation-sigma_w"><span class="toc-section-number">3.1</span> Using the True Standard Deviation <span class="math inline">\(\sigma_w\)</span></a></li>
-<li><a href="#using-the-estimated-standard-deviation-s_w"><span class="toc-section-number">3.2</span> Using the Estimated Standard Deviation <span class="math inline">\(s_w\)</span></a></li>
-<li><a href="#bland-altman-1986"><span class="toc-section-number">3.3</span> Bland-Altman (1986)</a></li>
-<li><a href="#bland-altman-1996"><span class="toc-section-number">3.4</span> Bland-Altman (1996)</a></li>
-<li><a href="#bland-altman-1999"><span class="toc-section-number">3.5</span> Bland-Altman (1999)</a></li>
+<li><a href="#wikipedia-example"><span class="toc-section-number">1.1</span> Wikipedia Example</a></li>
+<li><a href="#real-statistics-example"><span class="toc-section-number">1.2</span> Real Statistics Example</a></li>
 </ul></li>
-<li><a href="#references"><span class="toc-section-number">4</span> References</a></li>
+<li><a href="#worked-examples---a-deeper-dive"><span class="toc-section-number">2</span> Worked Examples - A Deeper Dive</a>
+<ul>
+<li><a href="#wikipediasource-code"><span class="toc-section-number">2.1</span> Wikipedia/Source Code</a></li>
+<li><a href="#real-statistics"><span class="toc-section-number">2.2</span> Real Statistics</a></li>
+</ul></li>
+<li><a href="#confidence-intervals"><span class="toc-section-number">3</span> Confidence Intervals</a>
+<ul>
+<li><a href="#wikipedia-formula"><span class="toc-section-number">3.1</span> Wikipedia Formula</a></li>
+<li><a href="#real-statistics-method"><span class="toc-section-number">3.2</span> Real Statistics Method</a></li>
+</ul></li>
 </ul>
 </div>
 
 <p><font size="3"></p>
-<p><a href="../../../R.html">⇦ Back</a></p>
-<p>In theory, if you measure the same thing twice you should get the same reading both times. In reality, however, all measurements will show some <em>variability</em> if repeated. The term <strong>repeatability</strong> refers to:</p>
-<blockquote>
-<p>The closeness of agreement between measurements when measured under the same conditions<sup>[1, 2, 3]</sup></p>
-</blockquote>
-<p>The <strong>repeatability coefficient (RC)</strong> is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases.<sup>[4, 5]</sup> The <em>smaller</em> the repeatability coefficient is, the better.</p>
-<p>When we say that the repeated measurements need to be done under “the same conditions”, what we mean is that they need to be done with the same:</p>
+<p><a href="../../../python.html">⇦ Back</a></p>
+<p><strong>Cohen’s kappa</strong> is a measure of how much two judges agree with each other when they are rating things <em>qualitatively</em>.</p>
 <ul>
-<li>Measurement procedure</li>
-<li>Operator(s)</li>
-<li>Measuring system</li>
-<li>Operating conditions</li>
-<li>Physical location</li>
+<li>Another name for ‘judges’ in this context is <strong>raters</strong> because they are rating things, hence Cohen’s kappa is used to measure <em>inter-rater reliability</em></li>
+<li>The exact same process can be used to measure the degree to which a single judge agrees with themself (ie do they get the same result when they measure the same thing twice?). This is known as <em>intra-rater reliability</em></li>
+<li>Cohen’s kappa is used when things are rated <em>qualitatively</em>, meaning that they are being put into categories (classified) rather than being measured numerically</li>
+<li>See <a href="https://en.wikipedia.org/wiki/Cohen&#39;s_kappa">the Wikipedia page</a> for more</li>
 </ul>
-<p>and be done using the same units and over a short period of time.<sup>[3, 6]</sup></p>
-<div id="quantifying-repeatability" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Quantifying Repeatability</h1>
-<p>As mentioned, the repeatability coefficient is the value under which the difference between any two repeat measurements of the same measurand acquired under repeatability conditions (aka identical conditions) should fall with 95% probability.<sup>[5]</sup> If we assume Normality (ie if multiple measurements of the same thing will produce values that are Normally distributed around its true value) then this can be mathematically represented as:</p>
-<p><span class="math inline">\(RC = 1.96 \times \sqrt{2\sigma_w^2} = 2.77\sigma_w\)</span></p>
-<p>where <span class="math inline">\(\sigma_w\)</span> is the <em>within-subject standard deviation</em> - the standard deviation of the values you will get if you measure the same thing multiple times. In practice, it is not always feasible to attempt to calculate the within-subject standard deviation exactly (as it might require too many repeats, which can be expensive) and it isn’t always possible either (ie it might be a function instead of a single number) so it is usually <em>approximated</em> as the average (mean) sample standard deviation of multiple sets of repeated measurements. When approximating in this way, we use the symbol <span class="math inline">\(s_w\)</span> to differentiate from the true value of the within-subject standard deviation (which is always <span class="math inline">\(\sigma_w\)</span>).</p>
-<p>In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows:</p>
-<p><span class="math inline">\(RC = 1.96 \times \sqrt{\frac{\Sigma\left(m_2 - m_1\right)^2}{n}}\)</span></p>
-<p>where <span class="math inline">\(m_1\)</span> and <span class="math inline">\(m_2\)</span> are the two measurements performed on each of the <span class="math inline">\(n\)</span> measurands.<sup>[7, 8]</sup> Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that <em>the variance of two observations is equal to half the square of their difference</em>.<sup>[9]</sup></p>
-</div>
-<div id="repeatability-vs-reproducibility" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Repeatability vs Reproducibility</h1>
-<p>Reproducibility is the closeness of agreement between measurements when measured under <em><strong>different</strong></em> conditions.<sup>[2, 3, 6]</sup></p>
-<p>Like repeatability, it involves the same measurement being performed multiple times except now with <em>different</em> locations, operators or measuring systems (aka under <strong>reproducibility conditions</strong>).</p>
-<p>Similar to the repeatability coefficient, a <strong>reproducibility coefficient (RDC)</strong> can be used. The equation for this is <span class="math inline">\(RDC = 1.96 \times \sqrt{2\sigma_w^2 + \nu^2}\)</span> which is exactly the same as RC with the addition of the <span class="math inline">\(\nu^2\)</span> term (which is the variability attributed to the differing conditions). The value of <span class="math inline">\(\nu^2\)</span> depends on what variables change between measurements.<sup>[5]</sup></p>
-</div>
-<div id="calculating-the-repeatability-coefficient" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Calculating the Repeatability Coefficient</h1>
-<div id="using-the-true-standard-deviation-sigma_w" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Using the True Standard Deviation <span class="math inline">\(\sigma_w\)</span></h2>
-<p>Here’s an example that ostensibly uses the true value of the within-subject standard deviation. In reality, however, it’s impossible to known the true value unless you have an infinite number of measurements, so this is still just an estimate:</p>
-<pre class="r"><code># Fake data: 10 hypothetical measurements of some measurand
-measurements &lt;- c(13.63, 6.82, 10.76, 11.03, 11.49, 11.31, 7.33, 13.30, 9.77, 8.79)
-# Within-subject sample standard deviation
-sigma_w &lt;- sd(measurements)
-# Repeatability coefficient
-rc &lt;- 1.96 * sqrt(2) * sigma_w
-print(rc)</code></pre>
-<pre><code>## [1] 6.308008</code></pre>
-<p>The 10 numbers used in the above example were generated by selecting from a Normal distribution with mean 10 and standard deviation 2. The true value of <span class="math inline">\(\sigma_w\)</span> for this example was thus 2 and the ‘correct’ value of RC was therefore <span class="math inline">\(2.77\times 2 = 5.54\)</span>.</p>
-<p>Notice that in the above example it was the <em>sample</em> standard deviation that was calculated, not the <em>population</em> standard deviation.</p>
-</div>
-<div id="using-the-estimated-standard-deviation-s_w" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> Using the Estimated Standard Deviation <span class="math inline">\(s_w\)</span></h2>
-<p>In this example we only have two repeats of the measurements as opposed to the 10 we had in the first example. To make up for it, however, we have performed these repeats on 7 different measurands:</p>
-<pre class="r"><code># Fake data: two hypothetical measurements of seven different measurands
-repeat_1 &lt;- c(2.73, 2.01)
-repeat_2 &lt;- c(1.93, 9.10)
-repeat_3 &lt;- c(5.47, 7.36)
-repeat_4 &lt;- c(11.71, 8.26)
-repeat_5 &lt;- c(10.44, 9.05)
-repeat_6 &lt;- c(10.66, 9.97)
-repeat_7 &lt;- c(12.66, 10.01)
-# Within-subject sample variances
-var_1 &lt;- var(repeat_1)
-var_2 &lt;- var(repeat_2)
-var_3 &lt;- var(repeat_3)
-var_4 &lt;- var(repeat_4)
-var_5 &lt;- var(repeat_5)
-var_6 &lt;- var(repeat_6)
-var_7 &lt;- var(repeat_7)
-# Mean within-subject sample variance
-var_w &lt;- mean(c(var_1, var_2, var_3, var_4, var_5, var_6, var_7))
-# Within-subject sample standard deviation
-s_w &lt;- sqrt(var_w)
-# Coefficient of repeatability
-rc &lt;- 1.96 * sqrt(2) * s_w
-print(rc)</code></pre>
-<pre><code>## [1] 6.493515</code></pre>
-<p>The numbers used in this example were again taken from Normal distributions, this time with means of 5 through to 11 and all with standard deviations of 2. So the ‘correct’ answer for RC was again <span class="math inline">\(2.77\times 2 = 5.54\)</span>.</p>
-<p>Note that on this occasion we couldn’t calculate <span class="math inline">\(s_w\)</span> immediately because you can’t meaningfully take the average of a list of standard deviations. We first had to calculate the sample variances and take the average of those, before square rooting it to get <span class="math inline">\(s_w\)</span>.</p>
-</div>
-<div id="bland-altman-1986" class="section level2" number="3.3">
-<h2 number="3.3"><span class="header-section-number">3.3</span> Bland-Altman (1986)</h2>
-<p>Most journal papers will cite one of Bland &amp; Altman’s papers when they are performing repeatability analyses. Because these papers are so important in this area we will use them for the following examples. This next one uses their 1986 paper<sup>[7]</sup> and the data below comes from page 2 of that. This example also uses the data frame object type in R which makes it easier to perform calculations on tabular data:</p>
-<pre class="r"><code># Raw data
-wright_large &lt;- data.frame(
-    `First Measurement` = c(
-        494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656, 267, 478, 178, 423, 427
-    ),
-    `Second Measurement` = c(
-        490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633, 275, 492, 165, 372, 421
-    ), check.names = FALSE
-)
-# Within-subject sample variances
-var_w &lt;- apply(wright_large[c(&#39;First Measurement&#39;, &#39;Second Measurement&#39;)], 1, var)
-# Mean within-subject sample variance
-var_w &lt;- mean(var_w)
-# Within-subject sample standard deviation
-s_w &lt;- sqrt(var_w)
-# Coefficient of repeatability
-rc &lt;- 1.96 * sqrt(2) * s_w
-print(rc)</code></pre>
-<pre><code>## [1] 42.42792</code></pre>
-<p>The second example from the same paper:</p>
-<pre class="r"><code># Raw data
-wright_mini &lt;- data.frame(
-    `First Measurement` = c(
-        512, 430, 520, 428, 500, 600, 364, 380, 658, 445, 432, 626, 260, 477, 259, 350, 451
-    ),
-    `Second Measurement` = c(
-        525, 415, 508, 444, 500, 625, 460, 390, 642, 432, 420, 605, 227, 467, 268, 370, 443
-    ), check.names = FALSE
-)
-# Within-subject sample variances
-var_w &lt;- apply(wright_mini[c(&#39;First Measurement&#39;, &#39;Second Measurement&#39;)], 1, var)
-# Mean within-subject sample variance
-var_w &lt;- mean(var_w)
-# Within-subject sample standard deviation
-s_w &lt;- sqrt(var_w)
-# Coefficient of repeatability
-rc &lt;- 1.96 * sqrt(2) * s_w
-print(rc)</code></pre>
-<pre><code>## [1] 55.19001</code></pre>
-<p>Note that Bland &amp; Altman actually rounded off a bit when they did these calculations and also used a distance of 2 standard deviations from the mean instead of the more accurate 1.96. As a result, their answers are 43.2 l/min for the large meter and 56.4 l/min for the mini meter whereas ours are 42.4 and 55.2, respectively. Additionally, they used the simplified version of the calculation that only works when exactly two repeats have been performed, as mentioned above. For completeness, here is their method:</p>
-<pre class="r"><code># Measurement differences
-diffs &lt;- wright_large[[&#39;First Measurement&#39;]] - wright_large[[&#39;Second Measurement&#39;]]
-# Squared differences
-sq_diffs &lt;- diffs**2
-# Mean squared difference (aka within-subject variance)
-var_w &lt;- mean(sq_diffs)
-# Within-subject sample standard deviation
-s_w &lt;- sqrt(var_w)
-# Coefficient of repeatability
-rc &lt;- 1.96 * s_w
-print(rc)</code></pre>
-<pre><code>## [1] 42.42792</code></pre>
-<pre class="r"><code># Measurement differences
-diffs &lt;- wright_mini[[&#39;First Measurement&#39;]] - wright_mini[[&#39;Second Measurement&#39;]]
-# Squared differences
-sq_diffs &lt;- diffs**2
-# Total squared differences
-print(sum(sq_diffs))</code></pre>
-<pre><code>## [1] 13479</code></pre>
-<pre class="r"><code># Mean squared difference (aka within-subject variance)
-var_w &lt;- mean(sq_diffs)
-# Within-subject sample standard deviation
-s_w &lt;- sqrt(var_w)
-# Coefficient of repeatability
-rc &lt;- 1.96 * s_w
-print(rc)</code></pre>
-<pre><code>## [1] 55.19001</code></pre>
-<p>The above is also calculated <a href="https://www.medcalc.org/manual/blandaltman.php">on this page</a> except that they use 2 standard deviations instead of 1.96 and hence their answer is 56.3163 as opposed to 55.1900.</p>
-</div>
-<div id="bland-altman-1996" class="section level2" number="3.4">
-<h2 number="3.4"><span class="header-section-number">3.4</span> Bland-Altman (1996)</h2>
-<p>In their 1996 paper<sup>[9]</sup>, Bland and Altman demonstrate how to calculate the repeatability coefficient when multiple repeats of the same measurement have been performed on each measurand. Instead of copy-pasting the same code we used above to replicate this example, let’s create a function to do it:</p>
-<pre class="r"><code>repeatability_analysis &lt;- function(df) {
-    columns &lt;- colnames(df)
-    df[[&#39;Sample Standard Deviation&#39;]] &lt;- apply(df[columns], 1, sd)
-    df[[&#39;Sample Variance&#39;]] &lt;- df[[&#39;Sample Standard Deviation&#39;]]**2
-
-    # Create a summary
-    summary &lt;- data.frame()
-    # Mean
-    for (i in seq_len(length(columns))) {
-        mean &lt;- paste(&#39;Mean of&#39;, columns[i])
-        summary[1, mean] &lt;- mean(df[[columns[i]]])
+<div id="worked-examples---high-level" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Worked Examples - High Level</h1>
+<p>Cohen’s kappa can be quickly found using the <strong>scikit-learn</strong> Python package. This can be installed from the terminal with:</p>
+<p><code>pip install sklearn</code></p>
+<p>Here are two examples that demonstrate how to use the <code>cohen_kappa_score()</code> function from this package:</p>
+<div id="wikipedia-example" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Wikipedia Example</h2>
+<p>The <a href="https://en.wikipedia.org/wiki/Cohen&#39;s_kappa#Simple_example">simple example</a> given on the Wikipedia page involves two people each reading 50 proposals and saying either “Yes” or “No” to each. The data looks as follows:</p>
+<style>
+    table td, table th {
+        padding: 5px;
     }
-    # Sample size
-    summary[1, &#39;N&#39;] &lt;- nrow(df)
-    # Degrees of freedom
-    summary[1, &#39;DoF&#39;] &lt;- nrow(df) - 1
-    # Mean variance
-    summary[1, &#39;Mean Variance&#39;] &lt;- mean(df[[&#39;Sample Variance&#39;]])
-    # Within-subject standard deviation
-    s_w &lt;- sqrt(mean(df[[&#39;Sample Variance&#39;]]))
-    summary[1, &#39;Within-Subject SD (Sw)&#39;] &lt;- s_w
-    # Coefficient of repeatability
-    col &lt;- &#39;Repeatability Coefficient (RC)&#39;
-    summary[1, col] &lt;- sqrt(2) * 1.96 * s_w
-
-    return(list(df = df, summary = summary))
-}
-
-
-# Raw data
-df &lt;- data.frame(
-    &#39;Measurement 1&#39; = c(
-        190, 220, 260, 210, 270, 280, 260, 275, 280, 320, 300, 270, 320, 335, 350, 360, 330, 335, 400, 430
-    ),
-    &#39;Measurement 2&#39; = c(
-        220, 200, 260, 300, 265, 280, 280, 275, 290, 290, 300, 250, 330, 320, 320, 320, 340, 385, 420, 460
-    ),
-    &#39;Measurement 3&#39; = c(
-        200, 240, 240, 280, 280, 270, 280, 275, 300, 300, 310, 330, 330, 335, 340, 350, 380, 360, 425, 480
-    ),
-    &#39;Measurement 4&#39; = c(
-        200, 230, 280, 265, 270, 275, 300, 305, 290, 290, 300, 370, 330, 375, 365, 345, 390, 370, 420, 470
-    ), check.names = FALSE
-)
-# Calculate agreement statistics
-output &lt;- repeatability_analysis(df)
-print(output$summary)</code></pre>
-<pre><code>##   Mean of Measurement 1 Mean of Measurement 2 Mean of Measurement 3
-## 1                299.75                305.25                315.25
-##   Mean of Measurement 4  N DoF Mean Variance Within-Subject SD (Sw)
-## 1                   322 20  19      460.5208               21.45975
-##   Repeatability Coefficient (RC)
-## 1                       59.48339</code></pre>
+</style>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+</th>
+<th colspan="2">
+Reader B
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Yes</td>
+<td padding: 6px; style="border: 1px solid #cdd0d4;"><b>No</td>
+</tr>
+<tr>
+<td rowspan="2">
+<b>Reader A
+</td>
+<td style="border: 1px solid #cdd0d4;">
+<b>Yes
+</td>
+<td style="border: 1px solid #cdd0d4;">
+20
+</td>
+<td style="border: 1px solid #cdd0d4;">
+5
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid #cdd0d4;">
+<b>No
+</td>
+<td style="border: 1px solid #cdd0d4;">
+10
+</td>
+<td style="border: 1px solid #cdd0d4;">
+15
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p><em>This type of table where the agreement between two raters or tests is being shown is known as a <strong>confusion matrix</strong></em></p>
+<p>Using this information, we can manually reverse-engineer the raw data: the response of each reader to each proposal must be as follows (where <code>Y</code> stands for “yes” and <code>N</code> stands for “no”):</p>
+<pre class="python"><code>readerA = [
+    &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;,
+    &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;,
+    &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;,
+    &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;,
+    &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;,
+]
+readerB = [
+    &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;,
+    &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;,
+    &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;,
+    &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;Y&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;,
+    &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;,
+]</code></pre>
+<p>Ok, we haven’t <em>fully</em> reverse-engineered the raw data because we don’t know <em>specifically</em> which proposals each reader accepted and rejected, but we have determined a generalised version of their responses which is all we need.</p>
+<blockquote>
+<p>If you want to calculate Cohen’s kappa directly from the confusion matrix (ie without reverse-engineering the raw data) then see the ‘deeper dive’ worked examples below</p>
+</blockquote>
+<p>The Python package to use is <code>sklearn.metrics</code> so import that into your script:</p>
+<pre class="python"><code>import sklearn.metrics</code></pre>
+<p>The first function of use is <code>confusion_matrix</code> which, as the name suggests, re-creates the confusion matrix we reverse-engineered to get the raw data:</p>
+<pre class="python"><code>cm = sklearn.metrics.confusion_matrix(readerA, readerB)
+print(cm)</code></pre>
+<pre><code>## [[15 10]
+##  [ 5 20]]</code></pre>
+<p>This matrix has the same numbers as the one we were given but in a different configuration. Fortunately, we can manually re-order the labels in order to fix this, using the <code>labels</code> keyword argument:</p>
+<pre class="python"><code>cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=[&#39;Y&#39;, &#39;N&#39;])
+print(cm)</code></pre>
+<pre><code>## [[20  5]
+##  [10 15]]</code></pre>
+<p>This is now the same as what we started with, which is confirmation that we correctly reverse-engineered the raw data.</p>
+<p>Now the Cohen’s kappa can be calculated, using the <code>cohen_kappa_score</code> function:</p>
+<pre class="python"><code>kappa = sklearn.metrics.cohen_kappa_score(readerA, readerB)
+print(kappa)</code></pre>
+<pre><code>## 0.4</code></pre>
+<p>This value of 0.4 is the same as the solution on the original page.</p>
 </div>
-<div id="bland-altman-1999" class="section level2" number="3.5">
-<h2 number="3.5"><span class="header-section-number">3.5</span> Bland-Altman (1999)</h2>
-<p>Now that we have a function, let’s use it on the data from Bland and Altman’s 1999 paper.<sup>[10]</sup> These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:</p>
-<pre class="r"><code># Raw data
-j &lt;- data.frame(
-    &#39;Measurement 1&#39; = c(
-        100, 108, 76, 108, 124, 122, 116, 114, 100, 108, 100, 108, 112, 104, 106, 122, 100, 118, 140, 150, 166, 148,
-        174, 174, 140, 128, 146, 146, 220, 208, 94, 114, 126, 124, 110, 90, 106, 218, 130, 136, 100, 100, 124, 164, 100,
-        136, 114, 148, 160, 84, 156, 110, 100, 100, 86, 106, 108, 168, 166, 146, 204, 96, 134, 138, 134, 156, 124, 114,
-        112, 112, 202, 132, 158, 88, 170, 182, 112, 120, 110, 112, 154, 116, 108, 106, 122
-    ),
-    &#39;Measurement 2&#39; = c(
-        106, 110, 84, 104, 112, 140, 108, 110, 108, 92, 106, 112, 112, 108, 108, 122, 102, 118, 134, 148, 154, 156,
-        172, 166, 144, 134, 138, 152, 218, 200, 84, 124, 120, 124, 120, 90, 106, 202, 128, 136, 96, 98, 116, 168, 102,
-        126, 108, 120, 150, 92, 162, 98, 106, 102, 74, 100, 110, 188, 150, 142, 198, 94, 126, 144, 136, 160, 138, 110,
-        116, 116, 220, 136, 162, 76, 174, 176, 114, 118, 108, 112, 134, 112, 110, 98, 112
-    ),
-    &#39;Measurement 3&#39; = c(
-        107, 108, 82, 104, 112, 124, 102, 112, 112, 100, 104, 122, 110, 104, 102, 114, 102, 120, 138, 144, 154, 134,
-        166, 150, 144, 130, 140, 148, 220, 192, 86, 116, 122, 132, 128, 94, 110, 208, 130, 130, 88, 88, 122, 154, 100,
-        122, 122, 132, 148, 98, 152, 98, 106, 94, 76, 110, 106, 178, 154, 132, 188, 86, 124, 140, 142, 154, 138, 114,
-        122, 134, 228, 134, 152, 88, 176, 180, 124, 120, 106, 106, 130, 94, 114, 100, 112
-    ), check.names = FALSE
-)
-
-# Calculate agreement statistics
-output &lt;- repeatability_analysis(j)
-print(output$summary)</code></pre>
-<pre><code>##   Mean of Measurement 1 Mean of Measurement 2 Mean of Measurement 3  N DoF
-## 1              128.5412              127.2941              126.3882 85  84
-##   Mean Variance Within-Subject SD (Sw) Repeatability Coefficient (RC)
-## 1      37.40784               6.116195                       16.95323</code></pre>
-<pre class="r"><code># Raw data
-s &lt;- data.frame(
-    &#39;Measurement 1&#39; = c(
-        122, 121, 95, 127, 140, 139, 122, 130, 119, 126, 107, 123, 131, 123, 127, 142, 104, 117, 139, 143, 181, 149,
-        173, 160, 158, 139, 153, 138, 228, 190, 103, 131, 131, 126, 121, 97, 116, 215, 141, 153, 113, 109, 145, 192,
-        112, 152, 141, 206, 151, 112, 162, 117, 119, 136, 112, 120, 117, 194, 167, 173, 228, 77, 154, 154, 145, 200,
-        188, 149, 136, 128, 204, 184, 163, 93, 178, 202, 162, 227, 133, 202, 158, 124, 114, 137, 121
-    ),
-    &#39;Measurement 2&#39; = c(
-        128, 127, 94, 127, 131, 142, 112, 129, 122, 113, 113, 125, 129, 126, 119, 133, 116, 113, 127, 155, 170, 156,
-        170, 155, 152, 144, 150, 144, 228, 183, 99, 131, 123, 129, 114, 94, 121, 201, 133, 143, 107, 105, 102, 178,
-        116, 144, 141, 188, 147, 125, 165, 118, 131, 116, 115, 118, 118, 191, 160, 161, 218, 89, 156, 155, 154, 180,
-        147, 217, 132, 125, 222, 187, 160, 88, 181, 199, 166, 227, 127, 190, 121, 149, 118, 135, 123
-    ),
-    &#39;Measurement 3&#39; = c(
-        124, 128, 98, 135, 124, 136, 112, 135, 122, 111, 111, 125, 122, 114, 126, 137, 115, 112, 113, 133, 166, 140,
-        154, 170, 154, 141, 154, 131, 226, 184, 106, 124, 124, 125, 125, 96, 127, 207, 146, 138, 102, 97, 137, 171,
-        116, 147, 137, 166, 136, 124, 189, 109, 124, 113, 104, 132, 115, 196, 161, 154, 189, 101, 141, 148, 166, 179,
-        139, 192, 133, 142, 224, 192, 152, 88, 181, 195, 148, 219, 126, 213, 134, 137, 126, 134, 128
-    ), check.names = FALSE
-)
-
-# Calculate agreement statistics
-output &lt;- repeatability_analysis(s)
-print(output$summary)</code></pre>
-<pre><code>##   Mean of Measurement 1 Mean of Measurement 2 Mean of Measurement 3  N DoF
-## 1              144.8353              142.7412              141.5059 85  84
-##   Mean Variance Within-Subject SD (Sw) Repeatability Coefficient (RC)
-## 1      83.14118               9.118178                        25.2743</code></pre>
-<p>As the machine (S) has an RC of 25.27 mmHg while the operator (J) has an RC of 16.95 mmHg, we can say that the repeatability of the machine is 49% greater (ie worse) that operator J.</p>
+<div id="real-statistics-example" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Real Statistics Example</h2>
+<p>Another worked example can be found on <a href="https://www.real-statistics.com/reliability/interrater-reliability/cohens-kappa/">the Real Statistics site</a>. This one is more complicated because the two judges are assigning observations into <em>three</em> groups as opposed to the previous example which only had two groups (“yes” and “no”). Specifically, this example involves two psychologists who are diagnosing patients as one of “psychotic”, “borderline” or “neither”:</p>
+<style>
+    table td, table th {
+        padding: 5px;
+    }
+</style>
+<table>
+<thead>
+<tr>
+<th>
+</th>
+<th>
+</th>
+<th colspan="3">
+Psychologist 1
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+</td>
+<td>
+</td>
+<td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Psychotic</td>
+<td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Borderline</td>
+<td padding: 6px; style="border: 1px solid #cdd0d4;"><b>Neither</td>
+</tr>
+<tr>
+<td rowspan="3">
+<b>Psychologist 2
+</td>
+<td style="border: 1px solid #cdd0d4;">
+<b>Psychotic
+</td>
+<td style="border: 1px solid #cdd0d4;">
+10
+</td>
+<td style="border: 1px solid #cdd0d4;">
+4
+</td>
+<td style="border: 1px solid #cdd0d4;">
+1
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid #cdd0d4;">
+<b>Borderline
+</td>
+<td style="border: 1px solid #cdd0d4;">
+6
+</td>
+<td style="border: 1px solid #cdd0d4;">
+16
+</td>
+<td style="border: 1px solid #cdd0d4;">
+2
+</td>
+</tr>
+<tr>
+<td style="border: 1px solid #cdd0d4;">
+<b>Neither
+</td>
+<td style="border: 1px solid #cdd0d4;">
+0
+</td>
+<td style="border: 1px solid #cdd0d4;">
+3
+</td>
+<td style="border: 1px solid #cdd0d4;">
+8
+</td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<p>Again, we can manually reverse-engineer the raw data by looking at the above confusion matrix. Create a list for each of the psychologist’s diagnoses and fill them in them with ‘P’ for “psychotic”, ‘B’ for “borderline” and ‘N’ for “neither”:</p>
+<pre class="python"><code>psychologist1 = [
+    &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;,
+    &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;,
+    &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;,
+    &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;N&#39;,
+    &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;,
+]
+psychologist2 = [
+    &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;,
+    &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;,
+    &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;, &#39;B&#39;,
+    &#39;B&#39;, &#39;B&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;P&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;,
+    &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;N&#39;, &#39;P&#39;, &#39;B&#39;, &#39;B&#39;,
+]</code></pre>
+<p>…and re-produce the confusion matrix:</p>
+<pre class="python"><code>cm = sklearn.metrics.confusion_matrix(psychologist2, psychologist1, labels=[&#39;P&#39;, &#39;B&#39;, &#39;N&#39;])
+print(cm)</code></pre>
+<pre><code>## [[10  4  1]
+##  [ 6 16  2]
+##  [ 0  3  8]]</code></pre>
+<p>…and calculate the Cohen’s kappa:</p>
+<pre class="python"><code>kappa = sklearn.metrics.cohen_kappa_score(psychologist1, psychologist2)
+print(kappa)</code></pre>
+<pre><code>## 0.49590422180214233</code></pre>
+<p>This agrees with the value given on the original page.</p>
+<p>If you want to calculate Cohen’s kappa directly from the confusion matrix (ie without reverse-engineering the raw data) then take a look at the ‘deeper dive’ worked examples which follow:</p>
 </div>
 </div>
-<div id="references" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> References</h1>
-<ol style="list-style-type: decimal">
-<li>Joint Committee for Guides in Metrology. Evaluation of measurement data – Guide to the expression of uncertainty in measurement. JCGM. 2008;100. <a href="https://www.bipm.org/utils/common/documents/jcgm/JCGM_100_2008_E.pdf">Online</a>.</li>
-<li>Algorithm Comparison Working Group. Quantitative imaging biomarkers: a review of statistical methods for computer algorithm comparisons. Stat Methods Med Res. 2015;24(1):68–106. DOI: <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4263694/pdf/nihms611119.pdf">10.1177/0962280214537390</a>.</li>
-<li>QIBA Terminology Working Group. The Emerging Science of Quantitative Imaging Biomarkers: Terminology and Definitions for Scientific Studies and for Regulatory Submissions. Stat Methods Med Res. 2015;8(1):9–26. DOI: <a href="https://doi.org/10.1177/0962280214537333">10.1177/0962280214537333</a>.</li>
-<li>British Standards Institution. Precision of test methods 1: Guide for the determination and reproducibility for a standard test method. British Standards. 1975;597(Part 1)</li>
-<li>Quantitative Imaging Biomarkers Alliance (QIBA). Indices of Repeatability, Reproducibility, and Agreement. 2013. <a href="http://qibawiki.rsna.org/images/8/8c/FMRITechnicalPerformanceIndices041613.pdf">Online</a>.</li>
-<li>Barnhart HX, Haber MJ, Lin LI. An overview on assessing agreement with continuous measurements. J Biopharm Stat. 2007;17(4):529–69. DOI: <a href="https://doi.org/10.1080/10543400701376480">10.1080/10543400701376480</a>.</li>
-<li>Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: <a href="https://pubmed.ncbi.nlm.nih.gov/2868172/">10.1016/S0140-6736(86)90837-8</a>.</li>
-<li>Medcalc. Bland-Altman plot. 2020. <a href="https://www.medcalc.org/manual/blandaltman.php">Online</a>.</li>
-<li>Bland JM, Altman DG. Measurement error. BMJ. 1996;313(September):744–53. DOI: <a href="https://doi.org/10.1136/bmj.312.7047.1654">10.1136/bmj.312.7047.1654</a>.</li>
-<li>Bland JM, Altman DG. Measuring agreement in method comparison studies. Stat Methods Med Res. 1999;8(2):135–60.</li>
-</ol>
-<p><a href="../../../R.html">⇦ Back</a></p>
+<div id="worked-examples---a-deeper-dive" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Worked Examples - A Deeper Dive</h1>
+<p>While the <code>cohen_kappa_score()</code> function produces the correct result it hides how the calculation is performed. This is normally fine but sometimes we need to use the intermediate values produced by the calculation steps, for example if we want to calculate confidence intervals. So it’s worthwhile being able to perform the calculation in ‘long-hand’.</p>
+<div id="wikipediasource-code" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Wikipedia/Source Code</h2>
+<p>Both <a href="https://en.wikipedia.org/wiki/Cohen&#39;s_kappa#Simple_example">the Wikipedia page</a> and <a href="https://github.com/scikit-learn/scikit-learn/blob/95119c13a/sklearn/metrics/_classification.py#L560">the scikit-learn source code</a> detail how to calculate Cohen’s kappa using essentially the same method. We start with the confusion matrix as created in the previous example:</p>
+<pre class="python"><code>cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=[&#39;Y&#39;, &#39;N&#39;])
+print(cm)</code></pre>
+<pre><code>## [[20  5]
+##  [10 15]]</code></pre>
+<p>We will need to use the Numpy package for this, so remember to import that:</p>
+<pre class="python"><code>import numpy as np</code></pre>
+<p>Now, we create the ‘expected matrix’ (the probabilities of each type of agreement and disagreement between these readers that you would expect to see due to chance alone):</p>
+<pre class="python"><code># Sample size
+n = np.sum(cm)
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n</code></pre>
+<p>The Wikipedia page then carries on the calculation as follows:</p>
+<pre class="python"><code># Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate Cohen&#39;s kappa
+kappa = (p_o - p_e) / (1 - p_e)
+
+print(f&#39;p_o = {p_o}, p_e = {p_e}, kappa = {kappa:3.1f}&#39;)</code></pre>
+<pre><code>## p_o = 0.7, p_e = 0.5, kappa = 0.4</code></pre>
+<p>These results match those on the Wikipedia page itself.</p>
+<p>The method used by the <code>cohen_kappa_score()</code> function (as seen from <a href="https://github.com/scikit-learn/scikit-learn/blob/95119c13a/sklearn/metrics/_classification.py#L560">its source code</a>) looks a little different because it includes the option of using weights to alter how the score is calculated. Here’s how it looks when the weights are ‘none’ (ie when it’s used equivalently to the Wikipedia method):</p>
+<pre class="python"><code># Number of classes
+n_classes = cm.shape[0]
+# The following assumes you are not using weights
+w_mat = np.ones([n_classes, n_classes], dtype=int)
+w_mat.flat[:: n_classes + 1] = 0
+k = np.sum(w_mat * cm) / np.sum(w_mat * expected)
+# Calculate Cohen&#39;s kappa
+kappa = 1 - k
+
+print(f&#39;kappa = {kappa}&#39;)</code></pre>
+<pre><code>## kappa = 0.4</code></pre>
+</div>
+<div id="real-statistics" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Real Statistics</h2>
+<p>Unsurprisingly, the method used on <a href="https://www.real-statistics.com/reliability/interrater-reliability/cohens-kappa/">the Real Statistics page</a> is the same as that on Wikipedia and in the scikit-learn source code. However, they go through the process a bit more slowly, so it’s worthwhile re-creating their steps here. First, re-create the confusion matrix:</p>
+<pre class="python"><code>cm = sklearn.metrics.confusion_matrix(psychologist2, psychologist1, labels=[&#39;P&#39;, &#39;B&#39;, &#39;N&#39;])
+print(cm)</code></pre>
+<pre><code>## [[10  4  1]
+##  [ 6 16  2]
+##  [ 0  3  8]]</code></pre>
+<p>Calculate the agreement, the agreement by chance and the sample size from the confusion matrix:</p>
+<pre class="python"><code># Sample size
+n = np.sum(cm)
+# Number of classes
+n_classes = cm.shape[0]
+# Agreement
+agreement = 0
+for i in np.arange(n_classes):
+    # Sum the diagonal values
+    agreement += cm[i, i]
+# Agreement due to chance
+judge1_totals = np.sum(cm, axis=0)
+judge2_totals = np.sum(cm, axis=1)
+judge1_totals_prop = np.sum(cm, axis=0) / n
+judge2_totals_prop = np.sum(cm, axis=1) / n
+by_chance = np.sum(judge1_totals_prop * judge2_totals_prop * n)
+# Calculate Cohen&#39;s kappa
+kappa = (agreement - by_chance) / (n - by_chance)
+
+print(f&#39;agreement = {agreement}, by_chance = {by_chance}, kappa = {kappa}&#39;)</code></pre>
+<pre><code>## agreement = 34, by_chance = 18.259999999999998, kappa = 0.49590422180214244</code></pre>
+<p>These results are the same as on the original page.</p>
+</div>
+</div>
+<div id="confidence-intervals" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Confidence Intervals</h1>
+<p>Adding a confidence interval to the Cohen’s kappa value is slightly more complicated because the scikit-learn code does not do this for you and the Wikipedia and Real Statistics methods differ slightly.</p>
+<div id="wikipedia-formula" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Wikipedia Formula</h2>
+<p>This is explained on <a href="https://en.wikipedia.org/wiki/Cohen&#39;s_kappa#Hypothesis_testing_and_confidence_interval">the Wikipedia page</a> and can be coded up as follows:</p>
+<pre class="python"><code>se = np.sqrt((p_o * (1 - p_o)) / (n * (1 - p_e)**2))
+ci = 1.96 * se * 2
+lower = kappa - 1.96 * se
+upper = kappa + 1.96 * se
+
+print(f&#39;standard error = {se}&#39;)
+print(f&#39;lower confidence interval = {lower}&#39;)
+print(f&#39;upper confidence interval = {upper}&#39;)</code></pre>
+<p>Using this formula on the data from the Wikipedia example gives:</p>
+<pre class="python"><code># Confusion matrix
+cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=[&#39;Y&#39;, &#39;N&#39;])
+# Sample size
+n = np.sum(cm)
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate Cohen&#39;s kappa
+kappa = (p_o - p_e) / (1 - p_e)
+# Confidence intervals
+se = np.sqrt((p_o * (1 - p_o)) / (n * (1 - p_e)**2))
+ci = 1.96 * se * 2
+lower = kappa - 1.96 * se
+upper = kappa + 1.96 * se
+
+print(
+    f&#39;p_o = {p_o}, p_e = {p_e}, kappa = {kappa:3.1f}\n&#39;,
+    f&#39;standard error = {se}\n&#39;,
+    f&#39;lower confidence interval = {lower}\n&#39;,
+    f&#39;upper confidence interval = {upper}&#39;, sep=&#39;&#39;
+)</code></pre>
+<pre><code>## p_o = 0.7, p_e = 0.5, kappa = 0.4
+## standard error = 0.12961481396815722
+## lower confidence interval = 0.14595496462241175
+## upper confidence interval = 0.6540450353775881</code></pre>
+<p>And using this formula on the data from the Real statistics example gives:</p>
+<pre><code>## p_o = 0.68, p_e = 0.36519999999999997, kappa = 0.4959042218021425
+## standard error = 0.10392200694688494
+## lower confidence interval = 0.29221708818624803
+## upper confidence interval = 0.699591355418037</code></pre>
+<p>Note that this confidence interval of 0.292 to 0.700 is slightly different to the one given on the original page (which was 0.288 to 0.704). However, the fact that they are the same up to the second decimal place suggests that they are generally equivalent!</p>
+</div>
+<div id="real-statistics-method" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Real Statistics Method</h2>
+<p>This come from <a href="https://www.real-statistics.com/reliability/interrater-reliability/cohens-kappa/">the Real Statistics page</a>:</p>
+<pre class="python"><code>import scipy.stats
+
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate a
+ones = np.ones([n_classes, n_classes])
+row_sums = np.inner(cm, ones)
+col_sums = np.inner(cm.T, ones).T
+sums = row_sums + col_sums
+a_mat = cm / n * (1 - sums / n * (1 - kappa))**2
+a = np.sum(identity * a_mat)
+# Calculate b
+b_mat = cm / n * (sums / n)**2
+b_mat = b_mat * (ones - identity)
+b = (1 - kappa)**2 * np.sum(b_mat)
+# Calculate c
+c = (kappa - p_e * (1 - kappa))**2
+# Standard error
+se = np.sqrt((a + b - c) / n) / (1 - p_e)
+# Two-tailed statistical test
+alpha = 0.05
+z_crit = scipy.stats.norm.ppf(1 - alpha / 2)
+ci = se * z_crit * 2
+lower = kappa - se * z_crit
+upper = kappa + se * z_crit
+
+print(f&#39;a = {a}, b = {b}, c = {c}&#39;)
+print(f&#39;standard error = {se}&#39;)
+print(f&#39;lower confidence interval = {lower}&#39;)
+print(f&#39;upper confidence interval = {upper}&#39;)</code></pre>
+<p>Using this method on the data from the Wikipedia example gives:</p>
+<pre class="python"><code>import scipy.stats
+
+# Confusion matrix
+cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=[&#39;Y&#39;, &#39;N&#39;])
+
+#
+# Cohen&#39;s kappa
+#
+# Sample size
+n = np.sum(cm)
+# Number of classes
+n_classes = cm.shape[0]
+# Agreement
+agreement = 0
+for i in np.arange(n_classes):
+    # Sum the diagonal values
+    agreement += cm[i, i]
+# Agreement due to chance
+judge1_totals = np.sum(cm, axis=0)
+judge2_totals = np.sum(cm, axis=1)
+judge1_totals_prop = np.sum(cm, axis=0) / n
+judge2_totals_prop = np.sum(cm, axis=1) / n
+by_chance = np.sum(judge1_totals_prop * judge2_totals_prop * n)
+# Calculate Cohen&#39;s kappa
+kappa = (agreement - by_chance) / (n - by_chance)
+
+#
+# Confidence interval
+#
+# Expected matrix
+sum0 = np.sum(cm, axis=0)
+sum1 = np.sum(cm, axis=1)
+expected = np.outer(sum0, sum1) / n
+# Number of classes
+n_classes = cm.shape[0]
+# Calculate p_o (the observed proportionate agreement) and
+# p_e (the probability of random agreement)
+identity = np.identity(n_classes)
+p_o = np.sum((identity * cm) / n)
+p_e = np.sum((identity * expected) / n)
+# Calculate a
+ones = np.ones([n_classes, n_classes])
+row_sums = np.inner(cm, ones)
+col_sums = np.inner(cm.T, ones).T
+sums = row_sums + col_sums
+a_mat = cm / n * (1 - sums / n * (1 - kappa))**2
+identity = np.identity(n_classes)
+a = np.sum(identity * a_mat)
+# Calculate b
+b_mat = cm / n * (sums / n)**2
+b_mat = b_mat * (ones - identity)
+b = (1 - kappa)**2 * np.sum(b_mat)
+# Calculate c
+c = (kappa - p_e * (1 - kappa))**2
+# Standard error
+se = np.sqrt((a + b - c) / n) / (1 - p_e)
+# Two-tailed statistical test
+alpha = 0.05
+z_crit = scipy.stats.norm.ppf(1 - alpha / 2)
+ci = se * z_crit * 2
+lower = kappa - se * z_crit
+upper = kappa + se * z_crit
+
+print(
+    f&#39;kappa = {kappa}\n&#39;,
+    f&#39;a = {a}, b = {b}, c = {c}\n&#39;,
+    f&#39;standard error = {se}\n&#39;,
+    f&#39;lower confidence interval = {lower}\n&#39;,
+    f&#39;upper confidence interval = {upper}&#39;,
+    sep=&#39;&#39;
+)</code></pre>
+<pre><code>## kappa = 0.4
+## a = 0.10971999999999998, b = 0.11628000000000002, c = 0.010000000000000007
+## standard error = 0.13145341380123987
+## lower confidence interval = 0.1423560433047294
+## upper confidence interval = 0.6576439566952706</code></pre>
+<p>And using it to do the Real Statistics example:</p>
+<pre><code>## kappa = 0.49590422180214244
+## a = 0.28000193760822123, b = 0.044662822420191775, c = 0.09722450550292651
+## standard error = 0.10624579391325582
+## lower confidence interval = 0.28766629222329615
+## upper confidence interval = 0.7041421513809887</code></pre>
+<p>Now the confidence interval (0.28767 to 0.70414) exactly matches the original one.</p>
+<p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 
