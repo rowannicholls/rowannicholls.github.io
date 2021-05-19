@@ -11,7 +11,7 @@
 
 
 
-<title>Utilities in Python: Password Management</title>
+<title>Statistics in Python: Intraclass Correlation Coefficient</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -483,7 +483,7 @@ b=0>c?a.href:a.href.substr(0,c)}return b},re=function(a){var b=I.createElement("
 e=re(a),f=a.split(/[?#]/)[0],h=e.search,k=e.hash;"?"===h[0]&&(h=h.substring(1));"#"===k[0]&&(k=k.substring(1));h=c(h);k=c(k);""!==h&&(h="?"+h);""!==k&&(k="#"+k);var l=""+f+h+k;"/"===l[l.length-1]&&(l=l.substring(0,l.length-1));return l};var te=new RegExp(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i),ue=new RegExp(/@(gmail|googlemail)\./i),ve=new RegExp(/support|noreply/i),we="SCRIPT STYLE IMG SVG PATH BR".split(" "),xe=["BR"];function ye(a){var b;if(a===I.body)b="body";else{var c;if(a.id)c="#"+a.id;else{var d;if(a.parentElement){var e;a:{var f=a.parentElement;if(f){for(var h=0;h<f.childElementCount;h++)if(f.children[h]===a){e=h+1;break a}e=-1}else e=1}d=ye(a.parentElement)+">:nth-child("+e+")"}else d="";c=d}b=c}return b}
 function ze(a,b){if(1>=a.length)return a;var c=a.filter(b);return 0==c.length?a:c}function Ae(a){if(0==a.length)return null;var b;b=ze(a,function(c){return!ve.test(c.wb)});b=ze(b,function(c){return"INPUT"===c.element.tagName.toUpperCase()});b=ze(b,function(c){return!ae(c.element)});return b[0]}
 var Be=function(){var a;var b=[],c=I.body;if(c){for(var d=c.querySelectorAll("*"),e=0;e<d.length&&1E4>e;e++){var f=d[e];if(!(0<=we.indexOf(f.tagName.toUpperCase()))){for(var h=!1,k=0;k<f.childElementCount&&1E4>k;k++)if(!(0<=xe.indexOf(f.children[k].tagName.toUpperCase()))){h=!0;break}h||b.push(f)}}a={elements:b,status:1E4<d.length?"2":"1"}}else a={elements:b,status:"4"};for(var l=a,n=l.elements,p=[],q=0;q<n.length;q++){var r=n[q],t=r.textContent;r.value&&(t=r.value);if(t){var u=t.match(te);if(u){var v=
-u[0],x;if(G.location){var z=me(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||p.push({element:r,wb:v})}}}var w=Ae(p),y=[];if(w){var A=w.element,C={wb:w.wb,tagName:A.tagName,type:1};C.querySelector=ye(A);C.isVisible=!ae(A);y.push(C)}return{elements:y,status:10<p.length?"3":l.status}},Ce=function(a){return a.tagName+":"+a.isVisible+":"+a.wb.length+":"+ue.test(a.wb)};var Qe={},O=null,Re=Math.random();Qe.K="UA-156468188-1";Qe.xc="5c1";Qe.ai="";Qe.Vf="ChEI8O6ShQYQkZrHnqigyNm6ARInADeoBJJIYsqmP+vIo1jrmGs151JWhEUSQwitihRp0zYYerqP1V5ZGgKNqA\x3d\x3d";var Se={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Te={__paused:!0,__tg:!0},Ue;for(Ue in Se)Se.hasOwnProperty(Ue)&&(Te[Ue]=!0);var Ve="www.googletagmanager.com/gtm.js";Ve="www.googletagmanager.com/gtag/js";
+u[0],x;if(G.location){var z=me(G.location,"host",!0);x=0<=v.toLowerCase().indexOf(z)}else x=!1;x||p.push({element:r,wb:v})}}}var w=Ae(p),y=[];if(w){var A=w.element,C={wb:w.wb,tagName:A.tagName,type:1};C.querySelector=ye(A);C.isVisible=!ae(A);y.push(C)}return{elements:y,status:10<p.length?"3":l.status}},Ce=function(a){return a.tagName+":"+a.isVisible+":"+a.wb.length+":"+ue.test(a.wb)};var Qe={},O=null,Re=Math.random();Qe.K="UA-156468188-1";Qe.xc="5c1";Qe.ai="";Qe.Vf="ChEI8O6ShQYQkZrHnqigyNm6ARInADeoBJL3OiIu854L7MuuoBKFDzKzX5z0YBLxZqPr47DbAU1nUptDGgJOaw\x3d\x3d";var Se={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Te={__paused:!0,__tg:!0},Ue;for(Ue in Se)Se.hasOwnProperty(Ue)&&(Te[Ue]=!0);var Ve="www.googletagmanager.com/gtm.js";Ve="www.googletagmanager.com/gtag/js";
 var We=Ve,Xe=Ma(""),Ye=null,Ze=null,$e="//www.googletagmanager.com/a?id="+Qe.K+"&cv=1",af={},bf={},cf=function(){var a=O.sequence||1;O.sequence=a+1;return a};Qe.Uf="";var df={},ef=new Ga,ff={},gf={},kf={name:"dataLayer",set:function(a,b){B(ab(a,b),ff);hf()},get:function(a){return jf(a,2)},reset:function(){ef=new Ga;ff={};hf()}},jf=function(a,b){return 2!=b?ef.get(a):lf(a)},lf=function(a){var b,c=a.split(".");b=b||[];for(var d=ff,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ba(b,d))return}return d},mf=function(a,b){gf.hasOwnProperty(a)||(ef.set(a,b),B(ab(a,b),ff),hf())},hf=function(a){Ia(gf,function(b,c){ef.set(b,c);B(ab(b,
 void 0),ff);B(ab(b,c),ff);a&&delete gf[b]})},of=function(a,b,c){df[a]=df[a]||{};df[a][b]=nf(b,c)},nf=function(a,b){var c,d=1!==(void 0===b?2:b)?lf(a):ef.get(a);"array"===fb(d)||"object"===fb(d)?c=B(d):c=d;return c},pf=function(a,b){if(df[a])return df[a][b]},qf=function(a,b){df[a]&&delete df[a][b]};var tf={},uf=function(a,b){if(G._gtmexpgrp&&G._gtmexpgrp.hasOwnProperty(a))return G._gtmexpgrp[a];void 0===tf[a]&&(tf[a]=Math.floor(Math.random()*b));return tf[a]};var vf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!=c?b^c>>21:b;return b};function wf(a,b,c){for(var d=[],e=b.split(";"),f=0;f<e.length;f++){var h=e[f].split("="),k=h[0].replace(/^\s*|\s*$/g,"");if(k&&k==a){var l=h.slice(1).join("=").replace(/^\s*|\s*$/g,"");l&&c&&(l=decodeURIComponent(l));d.push(l)}}return d};function xf(a){return"null"!==a.origin};var Af=function(a,b,c,d){return yf(d)?wf(a,String(b||zf()),c):[]},Df=function(a,b,c,d,e){if(yf(e)){var f=Bf(a,d,e);if(1===f.length)return f[0].id;if(0!==f.length){f=Cf(f,function(h){return h.Fc},b);if(1===f.length)return f[0].id;f=Cf(f,function(h){return h.Sb},c);return f[0]?f[0].id:void 0}}};function Ef(a,b,c,d){var e=zf(),f=window;xf(f)&&(f.document.cookie=a);var h=zf();return e!=h||void 0!=c&&0<=Af(b,h,!1,d).indexOf(c)}
 var If=function(a,b,c){function d(t,u,v){if(null==v)return delete h[u],t;h[u]=v;return t+"; "+u+"="+v}function e(t,u){if(null==u)return delete h[u],t;h[u]=!0;return t+"; "+u}if(!yf(c.Ha))return 2;var f;void 0==b?f=a+"=deleted; expires="+(new Date(0)).toUTCString():(c.encode&&(b=encodeURIComponent(b)),b=Ff(b),f=a+"="+b);var h={};f=d(f,"path",c.path);var k;c.expires instanceof Date?k=c.expires.toUTCString():null!=c.expires&&(k=""+c.expires);f=d(f,"expires",k);f=d(f,"max-age",c.mi);f=d(f,"samesite",
@@ -666,292 +666,221 @@ else{nd(I,"DOMContentLoaded",ji);nd(I,"readystatechange",ji);if(I.createEventObj
 
 
 
-<h1 class="title toc-ignore"><font size="5">Utilities in Python:</font><br>Password Management</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Intraclass Correlation Coefficient</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#the-wrong-way-to-do-it"><span class="toc-section-number">1</span> The Wrong Way to Do It</a></li>
-<li><a href="#passpy"><span class="toc-section-number">2</span> passpy</a>
+<li><a href="#set-up"><span class="toc-section-number">1</span> Set-Up</a></li>
+<li><a href="#worked-example"><span class="toc-section-number">2</span> Worked Example</a>
 <ul>
-<li><a href="#installation"><span class="toc-section-number">2.1</span> Installation</a></li>
-<li><a href="#setup"><span class="toc-section-number">2.2</span> Setup</a></li>
-<li><a href="#usage"><span class="toc-section-number">2.3</span> Usage</a>
-<ul>
-<li><a href="#cli"><span class="toc-section-number">2.3.1</span> CLI</a></li>
-<li><a href="#script"><span class="toc-section-number">2.3.2</span> Script</a></li>
+<li><a href="#confidence-interval"><span class="toc-section-number">2.1</span> Confidence Interval</a></li>
+<li><a href="#how-the-function-works"><span class="toc-section-number">2.2</span> How the Function Works</a></li>
 </ul></li>
-<li><a href="#add-version-control"><span class="toc-section-number">2.4</span> Add version control</a></li>
-</ul></li>
-<li><a href="#secrets"><span class="toc-section-number">3</span> secrets</a>
+<li><a href="#variations"><span class="toc-section-number">3</span> Variations</a>
 <ul>
-<li><a href="#url-safe-strings"><span class="toc-section-number">3.1</span> URL-safe strings</a></li>
-<li><a href="#xkcd-style-passwords"><span class="toc-section-number">3.2</span> XKCD-style passwords</a></li>
-<li><a href="#generic-strong-passwords"><span class="toc-section-number">3.3</span> Generic strong passwords</a></li>
-<li><a href="#blinding-codes"><span class="toc-section-number">3.4</span> Blinding codes</a></li>
+<li><a href="#subsets"><span class="toc-section-number">3.1</span> Subsets</a></li>
+<li><a href="#wide-format"><span class="toc-section-number">3.2</span> Wide-Format</a></li>
 </ul></li>
 </ul>
 </div>
 
 <p><font size="3"></p>
-<p><a href="../../python.html">⇦ Back</a></p>
-<p>Python can help you generate and store passwords in a cryptographically safe way, which is very useful for designing apps and programmes or just generally keeping your accounts secure.</p>
-<div id="the-wrong-way-to-do-it" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> The Wrong Way to Do It</h1>
-<p>What you don’t want is to have a plain text file called “passwords.txt” or something stored on your computer. It would be obvious to a human what it is!</p>
-<pre class="python"><code>passwords = []
-with open(&#39;passwords.txt&#39;) as file:
-    for line in file:
-        passwords.append(line)
-print(passwords[0])</code></pre>
-<pre><code>## password123</code></pre>
+<p><a href="../../../python.html">⇦ Back</a></p>
+<p>In Python, the intraclass correlation coefficient (ICC) can be calculated using the <code>intraclass_corr()</code> function from the <code>pingouin</code> library. This function’s <a href="https://pingouin-stats.org/generated/pingouin.intraclass_corr.html">documentation</a> tells us that:</p>
+<blockquote>
+<p>The intraclass correlation assesses the reliability of ratings by comparing the variability of different ratings of the same subject to the total variation across all ratings and all subjects</p>
+</blockquote>
+<p>…and <a href="https://en.wikipedia.org/wiki/Intraclass_correlation">the Wikipedia page</a> says that:</p>
+<blockquote>
+<p>The intraclass correlation coefficient (ICC) is a descriptive statistic that can be used when quantitative measurements are made on units that are organized into groups. It describes how strongly units in the same group resemble each other.</p>
+</blockquote>
+<p>Note also that an <a href="https://en.wikipedia.org/wiki/Interclass_correlation"><em>inter</em>class correlation coefficient</a> is a thing that exists; it is similar but different.</p>
+<div id="set-up" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Set-Up</h1>
+<p>As mentioned, the <code>pingouin</code> library will be used to calculate the ICC. This can be installed from the terminal with:</p>
+<pre><code>pip install pingouin</code></pre>
+<p>After this it can be imported into Python with:</p>
+<pre class="python"><code>import pingouin as pg</code></pre>
+<p>The Pandas library will also be needed:</p>
+<pre class="python"><code>import pandas as pd</code></pre>
 </div>
-<div id="passpy" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> passpy</h1>
-<p>bfrascher’s <strong>passpy</strong> is a password manager that can be used on any operating system from the terminal or with Python. It is built on top of a programme called <strong>pass</strong> from ZX2C4 which in turn uses <strong>GNU Privacy Guard</strong> (GnuPG or GPG).</p>
-<p>passpy saves your passwords in GPG-encrypted files on your computer. As well as being safer it also makes it possible to use git which can help you:</p>
+<div id="worked-example" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Worked Example</h1>
+<p><em>This example comes from <a href="http://www.real-statistics.com/reliability/intraclass-correlation/">the Real Statistics site</a>, although it has also been included in Pingouin as a built-in example.</em></p>
+<p>Let’s imagine that there are four <strong>judges</strong> each tasting 8 different types of <strong>wine</strong> and rating them from <strong>0 to 9</strong>. The results of their assessments have been included in Pingouin, so there is a function to import this raw data directly:</p>
+<pre class="python"><code>data = pg.read_dataset(&#39;icc&#39;)
+print(data)</code></pre>
+<pre><code>##     Wine Judge  Scores
+## 0      1     A       1
+## 1      2     A       1
+## 2      3     A       3
+## 3      4     A       6
+## 4      5     A       6
+## 5      6     A       7
+## 6      7     A       8
+## 7      8     A       9
+## 8      1     B       2
+## 9      2     B       3
+## 10     3     B       8
+## 11     4     B       4
+## 12     5     B       5
+## 13     6     B       5
+## 14     7     B       7
+## 15     8     B       9
+## 16     1     C       0
+## 17     2     C       3
+## 18     3     C       1
+## 19     4     C       3
+## 20     5     C       5
+## 21     6     C       6
+## 22     7     C       7
+## 23     8     C       9
+## 24     1     D       1
+## 25     2     D       2
+## 26     3     D       4
+## 27     4     D       3
+## 28     5     D       6
+## 29     6     D       2
+## 30     7     D       9
+## 31     8     D       8</code></pre>
+<p><strong>Pivotting</strong> this data table will make it more readable, although it’s actually more <em>useable</em> when it’s in the original un-pivotted format (or ‘long’ format) so we won’t assign the pivotted table to a new variable:</p>
+<pre class="python"><code>print(pd.pivot_table(data, index=&#39;Judge&#39;, columns=&#39;Wine&#39;).T)</code></pre>
+<pre><code>## Judge        A  B  C  D
+##        Wine            
+## Scores 1     1  2  0  1
+##        2     1  3  3  2
+##        3     3  8  1  4
+##        4     6  4  3  3
+##        5     6  5  5  6
+##        6     7  5  6  2
+##        7     8  7  7  9
+##        8     9  9  9  8</code></pre>
+<p>The above table matches <a href="https://www.real-statistics.com/reliability/interrater-reliability/intraclass-correlation/">the one given in the original example</a>, so we can be sure we’re starting from the right place with this worked example.</p>
+<p>In order to use the <code>intraclass_corr()</code> function we need to give it four inputs:</p>
 <ul>
-<li>Version control your passwords</li>
-<li>Sync your passwords across multiple computers</li>
-<li>Back them up in a cloud repository</li>
+<li><code>data</code> - the input dataframe in long format (ie un-pivotted)</li>
+<li><code>targets</code> - the name of the column in <code>data</code> that contains the names of the things being rated</li>
+<li><code>raters</code> - the name of the column in <code>data</code> that contains the names of the things <em>doing</em> the rating</li>
+<li><code>ratings</code> - the name of the column in <code>data</code> that contains the values of the ratings</li>
 </ul>
-<p>Find out more:</p>
-<ul>
-<li>passpy: <a href="https://github.com/bfrascher/passpy" class="uri">https://github.com/bfrascher/passpy</a> and <a href="https://passpy.readthedocs.io/en/latest/" class="uri">https://passpy.readthedocs.io/en/latest/</a></li>
-<li>pass: <a href="https://www.passwordstore.org/" class="uri">https://www.passwordstore.org/</a></li>
-<li>GnuPG: <a href="https://gnupg.org/" class="uri">https://gnupg.org/</a></li>
-</ul>
-<p>A useful StackExchange page: <a href="https://unix.stackexchange.com/questions/53912/i-try-to-add-passwords-to-the-pass-password-manager-but-my-attempts-fail-with" class="uri">https://unix.stackexchange.com/questions/53912/i-try-to-add-passwords-to-the-pass-password-manager-but-my-attempts-fail-with</a></p>
-<div id="installation" class="section level2" number="2.1">
-<h2 number="2.1"><span class="header-section-number">2.1</span> Installation</h2>
-<ul>
-<li>Install the passpy Python package from the terminal with <code>pip3 install passpy</code></li>
-<li>GnuPG comes pre-installed on some OSs, so check if you already have it with <code>gpg --version</code>. If you don’t have it, install it from here: <a href="https://gnupg.org/download/index.html" class="uri">https://gnupg.org/download/index.html</a></li>
-<li>Install gpg2 from the terminal with <code>sudo apt-get install gnupg2 -y</code></li>
-<li>Install pass from the terminal with <code>sudo apt install pass</code></li>
-</ul>
-</div>
-<div id="setup" class="section level2" number="2.2">
-<h2 number="2.2"><span class="header-section-number">2.2</span> Setup</h2>
-<ul>
-<li>Create a <strong>GPG public key</strong> with <code>gpg --gen-key</code>. Follow the prompts to set up a user ID.
-<ul>
-<li>Your public key will be printed to the console during this process, but if you want to view your key again in the future you can use <code>gpg --list-keys</code></li>
-</ul></li>
-<li>Using the <strong>pass</strong> programme, initialise a <strong>password store</strong> (ie a folder in which your encrypted password files will be stored) with <code>pass init &lt;key&gt;</code> where &lt;key&gt; is your GPG public key that you found in the previous step. By default, this will create your password store folder at <code>~/.password-store/</code> although you can change this (indeed, you can have multiple password store folders)</li>
-</ul>
-</div>
-<div id="usage" class="section level2" number="2.3">
-<h2 number="2.3"><span class="header-section-number">2.3</span> Usage</h2>
-<p>Now that you’ve set up the <strong>GPG</strong> and the <strong>pass</strong> components of your password manager, you can interact with it using <strong>passpy</strong>:</p>
-<div id="cli" class="section level3" number="2.3.1">
-<h3 number="2.3.1"><span class="header-section-number">2.3.1</span> CLI</h3>
-<p>From the terminal, you can use the following commands:</p>
-<table>
-<colgroup>
-<col width="52%" />
-<col width="47%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Command</th>
-<th>Effect</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>passpy insert &lt;key&gt;</code></td>
-<td>Add a new password. It will be saved under the name &lt;key&gt; (in other words, the ‘key’ is the <em>name</em> of your password, not the password itself).</td>
-</tr>
-<tr class="even">
-<td><code>passpy insert &lt;folder&gt;/&lt;key&gt;</code></td>
-<td>Add a new password saved in a sub-folder called &lt;folder&gt;. In general, all keys can be inside folders.</td>
-</tr>
-<tr class="odd">
-<td><code>passpy generate &lt;key&gt; &lt;n&gt;</code></td>
-<td>Generate a new password of length &lt;n&gt; and save it under the name &lt;key&gt;</td>
-</tr>
-<tr class="even">
-<td><code>passpy rm &lt;key&gt;</code></td>
-<td>Delete a password</td>
-</tr>
-<tr class="odd">
-<td><code>passpy show</code></td>
-<td>Print the folder hierarchy of the default password store (which is located at <code>~/.password-store/</code>)</td>
-</tr>
-<tr class="even">
-<td><code>passpy show &lt;path&gt;</code></td>
-<td>Print the folder hierarchy of the password store located at &lt;path&gt;</td>
-</tr>
-<tr class="odd">
-<td><code>passpy show &lt;key&gt;</code></td>
-<td>Print the password that is saved under the name &lt;key&gt;</td>
-</tr>
-<tr class="even">
-<td><code>passpy show -c &lt;key&gt;</code></td>
-<td>Copy password to clipboard</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="script" class="section level3" number="2.3.2">
-<h3 number="2.3.2"><span class="header-section-number">2.3.2</span> Script</h3>
-<p>Assuming you’ve created a password called “example” (<code>passpy insert example</code>) in the password store that is in the default location (<code>~/.password-store</code>) you can access it from within a Python script with the following:</p>
-<pre class="python"><code>import passpy
+<p>The first of these is a dataframe and the other three are strings (as they are column names). In our example, the things being rated are <strong>Wines</strong>, the raters are the <strong>Judges</strong> and the ratings are the <strong>Scores</strong>, so here’s how to calculate the ICC:</p>
+<pre class="python"><code>icc = pg.intraclass_corr(
+    data=data, targets=&#39;Wine&#39;, raters=&#39;Judge&#39;, ratings=&#39;Scores&#39;
+)
 
-store = passpy.Store()
-example = store.get_key(&#39;example&#39;)
-print(example)</code></pre>
-<pre><code>## password123</code></pre>
-<p>The <code>store_dir</code> keyword argument can be used to specify an exact password store:</p>
-<pre class="python"><code>store = passpy.Store(store_dir=&#39;~/.password-store&#39;)
-example = store.get_key(&#39;example&#39;)
-print(example)</code></pre>
-<pre><code>## password123</code></pre>
-</div>
-</div>
-<div id="add-version-control" class="section level2" number="2.4">
-<h2 number="2.4"><span class="header-section-number">2.4</span> Add version control</h2>
-<p>Turn your password store into a git repository by cd’ing into the password store folder in the terminal and running <code>git init</code>. From here, you can do all the more advanced git operations like connecting to a remote and cloning it on any other computers you have.</p>
-</div>
-</div>
-<div id="secrets" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> secrets</h1>
-<p><code>secrets</code> is a built-in module in Python 3.6 onwards. According to the documentation it “is used for generating cryptographically strong random numbers suitable for managing data such as passwords, account authentication, security tokens, and related secrets.” - <a href="https://docs.python.org/3/library/secrets.html" class="uri">https://docs.python.org/3/library/secrets.html</a></p>
-<p>So <code>secrets</code> can be used to <em>generate</em> passwords and <code>passpy</code> can be used to <em>store</em> passwords.</p>
-<div id="url-safe-strings" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> URL-safe strings</h2>
-<p>Generate a random text string that can, for example, be used by apps to create hard-to-guess URLs for doing password resets:</p>
-<pre class="python"><code>import secrets
+pd.set_option(&#39;display.max_columns&#39;, 8)
+pd.set_option(&#39;display.width&#39;, 200)
+print(icc)</code></pre>
+<pre><code>##     Type              Description       ICC          F  df1  df2      pval         CI95%
+## 0   ICC1   Single raters absolute  0.727521  11.680026    7   24  0.000002  [0.43, 0.93]
+## 1   ICC2     Single random raters  0.727689  11.786693    7   21  0.000005  [0.43, 0.93]
+## 2   ICC3      Single fixed raters  0.729487  11.786693    7   21  0.000005  [0.43, 0.93]
+## 3  ICC1k  Average raters absolute  0.914384  11.680026    7   24  0.000002  [0.75, 0.98]
+## 4  ICC2k    Average random raters  0.914450  11.786693    7   21  0.000005  [0.75, 0.98]
+## 5  ICC3k     Average fixed raters  0.915159  11.786693    7   21  0.000005  [0.75, 0.98]</code></pre>
+<p>This output is very verbose! You get a whole table when you probably only want one number. The different types of models are detailed briefly on <a href="https://en.wikipedia.org/wiki/Intraclass_correlation#Calculation_in_software_packages">the Wikipedia page</a> but for this example we’re just going to choose the second option (<strong>single random raters</strong>) as that’s the one used on the Real Statistics page:</p>
+<pre class="python"><code>icc = icc.set_index(&#39;Description&#39;)
 
-token = secrets.token_urlsafe()
-print(token)</code></pre>
-<pre><code>## pFjmt_m--A-X7jAwzAl7N1nblHTkLcgn7FYZqNc-5sM</code></pre>
-<p>Generate a URL-safe string that is a custom number of bytes in length:</p>
-<pre class="python"><code>token = secrets.token_urlsafe(10)
-print(token)</code></pre>
-<pre><code>## V2iZ8TPfnnQeRA</code></pre>
+print(icc.loc[&#39;Single random raters&#39;, &#39;ICC&#39;].round(3))</code></pre>
+<pre><code>## 0.728</code></pre>
+<p>This is the same as the value in the original example.</p>
+<div id="confidence-interval" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Confidence Interval</h2>
+<p>The function also gives the 95% confidence interval:</p>
+<pre class="python"><code>lower_ci = icc.loc[&#39;Single random raters&#39;, &#39;CI95%&#39;][0]
+upper_ci = icc.loc[&#39;Single random raters&#39;, &#39;CI95%&#39;][1]
+
+print(f&#39;95% confidence interval: {lower_ci} - {upper_ci}&#39;)</code></pre>
+<pre><code>## 95% confidence interval: 0.43 - 0.93</code></pre>
 </div>
-<div id="xkcd-style-passwords" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> XKCD-style passwords</h2>
-<p>Strong, yet easy-to-remember passwords such as suggested by XKCD (<a href="https://xkcd.com/936/" class="uri">https://xkcd.com/936/</a>) can be generated by using a list of words. On standard Linux operating systems, the system dictionary file located at <code>/usr/share/dict/words</code> can be used. On other operating systems, you will need to use your own dictionary file or list of words.</p>
-<pre class="python"><code>with open(&#39;/usr/share/dict/words&#39;) as f:
-    words = [word.strip() for word in f]
-    password = &#39; &#39;.join(secrets.choice(words) for i in range(4))
-print(password)</code></pre>
-<pre><code>## appositive hallucinogen Chase Ibsen</code></pre>
+<div id="how-the-function-works" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> How the Function Works</h2>
+<p>The source code for this function might be useful if you want to take a look at how exactly it works. That can be found over <a href="https://pingouin-stats.org/_modules/pingouin/reliability.html#intraclass_corr">here</a>.</p>
 </div>
-<div id="generic-strong-passwords" class="section level2" number="3.3">
-<h2 number="3.3"><span class="header-section-number">3.3</span> Generic strong passwords</h2>
-<p>When you create a password for an account there will often be requirements as to how strong it must be. As an example, a website might say that your password needs to contain:</p>
-<ul>
-<li>Alphanumerics (numbers and letters)</li>
-<li>At least twelve characters</li>
-<li>At least one lowercase character</li>
-<li>At least one uppercase character</li>
-<li>At least one special character</li>
-<li>At least two digits</li>
-</ul>
-<p>Here’s a snippet that will generate a password that fits those criteria for you:</p>
-<pre class="python"><code>import secrets
-import string
-
-alphabet = string.ascii_letters + string.digits + string.punctuation
-while True:
-    password = &#39;&#39;.join(secrets.choice(alphabet) for i in range(12))
-    if (
-        any(c.islower() for c in password) and
-        any(c.isupper() for c in password) and
-        any(c in string.punctuation for c in password) and
-        sum(c.isdigit() for c in password) &gt;= 3
-    ):
-        break
-print(password)</code></pre>
-<pre><code>## _V_4Gz7w3&gt;V_</code></pre>
-<p>Sometimes the requirements are even stricter than this and go on to stipulate that must have:</p>
-<ul>
-<li>No run of three or more consecutive numbers</li>
-<li>No run of three or more consecutive letters</li>
-</ul>
-<p>Here’s how to add in these rules:</p>
-<pre class="python"><code>import secrets
-import string
-
-alphabet = string.ascii_letters + string.digits + string.punctuation
-while True:
-    password = &#39;&#39;.join(secrets.choice(alphabet) for i in range(12))
-    if (
-        any(c.islower() for c in password) and
-        any(c.isupper() for c in password) and
-        any(c in string.punctuation for c in password) and
-        sum(c.isdigit() for c in password) &gt;= 3 and
-        not any(
-            all(
-                [
-                    password[i].isdigit(),
-                    password[i + 1].isdigit(),
-                    password[i + 2].isdigit()
-                ]
-            ) for i, c in enumerate(password[:-2])
-        ) and
-        not any(
-            all(
-                [
-                    password[i] in string.ascii_letters,
-                    password[i + 1] in string.ascii_letters,
-                    password[i + 2] in string.ascii_letters
-                ]
-            ) for i, c in enumerate(password[:-2])
-        )
-    ):
-        break
-print(password)</code></pre>
-<pre><code>## 9&amp;jZ6@{0{S&amp;h</code></pre>
 </div>
-<div id="blinding-codes" class="section level2" number="3.4">
-<h2 number="3.4"><span class="header-section-number">3.4</span> Blinding codes</h2>
-<p>If you have information that you want to anonymise you can use <strong>blinding codes</strong>. For example, you might be running a scientific trial where you want to mask the participants’ identities. Or you might want to eliminate bias by hiding whether a particular participant is in the experimental or control group from the experimenter. Of course, you still want there to be somebody who knows who is who so the data can be analysed once collected, so a <em>key</em> should be kept which lists which participant has been given which blinding code. Once the experiment has been run, the data can then be un-blinded to allow for each experimental group to be analysed separately.</p>
-<p>Here are some tips for creating good blinding codes:</p>
-<ul>
-<li><strong>Use letters only</strong>. If you include numbers you run the risk of confusing 0s for Os and 1s for ls. And, if you end up with a code that is made up entirely of numbers, it will likely be interpreted by Python/Excel/R/whatever software you are using as a number and re-formatted (eg leading zeroes might be removed or thousand-separators might be added). If you include special characters you run the risk of having codes with “+”, “-” or “=” at the beginning which programs such as Excel might interpret as mathematical statements and convert to “#NAME?”. Alternatively, a code might start with a single quotation mark which Excel might interpret as a string indicator and drop.</li>
-<li><strong>Make them case insensitive</strong>. You don’t want “AaAa” and “aAaA” to represent different things! That can easily lead to confusion. Similarly, Is and ls look the same in many fonts (that’s the capital i and the lowercase L). The easiest way to ensure your codes are case insensitive is to make them all entirely uppercase (or entirely lowercase) and then keep them that way.</li>
-</ul>
-<p>Here’s some code that will produce 20 unique strings of length 4:</p>
-<pre class="python"><code>import secrets
-import string
+<div id="variations" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Variations</h1>
+<div id="subsets" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Subsets</h2>
+<p>If you are only interested in the agreement amongst a subset of the raters you can filter the dataset accordingly. Here’s the agreement between Judges A and B:</p>
+<pre class="python"><code>data = data[data[&#39;Judge&#39;].isin([&#39;A&#39;, &#39;B&#39;])]
+icc = pg.intraclass_corr(
+    data=data, targets=&#39;Wine&#39;, raters=&#39;Judge&#39;, ratings=&#39;Scores&#39;
+)
+icc = icc.set_index(&#39;Type&#39;)
 
-codes = []
-while len(codes) &lt; 20:
-    code = &#39;&#39;.join(secrets.choice(string.ascii_letters).upper() for i in range(4))
-    if code not in codes:
-        codes.append(code)
-print(codes)</code></pre>
-<pre><code>## [&#39;JXDK&#39;, &#39;HGTO&#39;, &#39;KRRK&#39;, &#39;SBVJ&#39;, &#39;QJAP&#39;, &#39;KPOJ&#39;, &#39;LJQA&#39;, &#39;ZCCS&#39;, &#39;MOJF&#39;, &#39;IBKH&#39;, &#39;ZFCA&#39;, &#39;IKRT&#39;, &#39;TBVF&#39;, &#39;XRQU&#39;, &#39;CFJX&#39;, &#39;OZSR&#39;, &#39;RAUP&#39;, &#39;EOYO&#39;, &#39;RNGA&#39;, &#39;PINY&#39;]</code></pre>
-<p>If you do decide to use both letters and numbers then at least exclude l and o from the selection of letters. Here’s an example that uses:</p>
-<ul>
-<li>Alphanumerics (both numbers and letters)</li>
-<li>Five characters</li>
-<li>Lowercase letters</li>
-<li>No “l” or “o”</li>
-</ul>
-<p>…and generates 10 codes at a time:</p>
-<pre class="python"><code>import secrets
-import string
+print(icc.loc[&#39;ICC1&#39;, &#39;ICC&#39;].round(3))</code></pre>
+<pre><code>## 0.671</code></pre>
+</div>
+<div id="wide-format" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Wide-Format</h2>
+<p>Often you will have raw data that is in <strong>wide format</strong>:</p>
+<pre class="python"><code>df = pd.DataFrame({
+    &#39;Judge A&#39;: [1, 1, 3, 6, 6, 7, 8, 9],
+    &#39;Judge B&#39;: [2, 3, 8, 4, 5, 5, 7, 9],
+    &#39;Judge C&#39;: [0, 3, 1, 3, 5, 6, 7, 9],
+    &#39;Judge D&#39;: [1, 2, 4, 3, 6, 2, 9, 8],
+})
 
-alphabet = string.ascii_letters + string.digits
-codes = []
-while len(codes) &lt; 10:
-    while True:
-        code = &#39;&#39;.join(secrets.choice(alphabet) for i in range(5))
-        code = code.lower()
-        if (&#39;l&#39; not in code) and (&#39;o&#39; not in code):
-            break
-    if code not in codes:
-        codes.append(code)
-print(codes)</code></pre>
-<pre><code>## [&#39;kwr4c&#39;, &#39;x4nzp&#39;, &#39;8m6nz&#39;, &#39;4upbm&#39;, &#39;y8hxz&#39;, &#39;hndxb&#39;, &#39;w4y9r&#39;, &#39;02cvc&#39;, &#39;5fd4n&#39;, &#39;v5yz1&#39;]</code></pre>
-<p><a href="../../python.html">⇦ Back</a></p>
+print(df)</code></pre>
+<pre><code>##    Judge A  Judge B  Judge C  Judge D
+## 0        1        2        0        1
+## 1        1        3        3        2
+## 2        3        8        1        4
+## 3        6        4        3        3
+## 4        6        5        5        6
+## 5        7        5        6        2
+## 6        8        7        7        9
+## 7        9        9        9        8</code></pre>
+<p>It will need to be converted into <strong>long format</strong> before <code>intraclass_corr()</code> can be used. This can be done by creating a new column that will form the <em>targets</em> and then converting to long-format with the <code>melt()</code> function from Pandas:</p>
+<pre class="python"><code>df[&#39;index&#39;] = df.index
+df = pd.melt(df, id_vars=[&#39;index&#39;], value_vars=list(df)[:-1])
+
+print(df)</code></pre>
+<pre><code>##     index variable  value
+## 0       0  Judge A      1
+## 1       1  Judge A      1
+## 2       2  Judge A      3
+## 3       3  Judge A      6
+## 4       4  Judge A      6
+## 5       5  Judge A      7
+## 6       6  Judge A      8
+## 7       7  Judge A      9
+## 8       0  Judge B      2
+## 9       1  Judge B      3
+## 10      2  Judge B      8
+## 11      3  Judge B      4
+## 12      4  Judge B      5
+## 13      5  Judge B      5
+## 14      6  Judge B      7
+## 15      7  Judge B      9
+## 16      0  Judge C      0
+## 17      1  Judge C      3
+## 18      2  Judge C      1
+## 19      3  Judge C      3
+## 20      4  Judge C      5
+## 21      5  Judge C      6
+## 22      6  Judge C      7
+## 23      7  Judge C      9
+## 24      0  Judge D      1
+## 25      1  Judge D      2
+## 26      2  Judge D      4
+## 27      3  Judge D      3
+## 28      4  Judge D      6
+## 29      5  Judge D      2
+## 30      6  Judge D      9
+## 31      7  Judge D      8</code></pre>
+<p>The ICC can then be calculated as per normal:</p>
+<pre class="python"><code>icc = pg.intraclass_corr(
+    data=df, targets=&#39;index&#39;, raters=&#39;variable&#39;, ratings=&#39;value&#39;
+)
+icc = icc.set_index(&#39;Description&#39;)
+
+print(icc.loc[&#39;Single random raters&#39;, &#39;ICC&#39;].round(3))</code></pre>
+<pre><code>## 0.728</code></pre>
+<p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 </div>

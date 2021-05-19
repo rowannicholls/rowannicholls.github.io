@@ -1,0 +1,164 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Intraclass Correlation Coefficient'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+In Python, the intraclass correlation coefficient (ICC) can be calculated using the `intraclass_corr()` function from the `pingouin` library. This function's [documentation](https://pingouin-stats.org/generated/pingouin.intraclass_corr.html) tells us that:
+
+> The intraclass correlation assesses the reliability of ratings by comparing the variability of different ratings of the same subject to the total variation across all ratings and all subjects
+
+...and [the Wikipedia page](https://en.wikipedia.org/wiki/Intraclass_correlation) says that:
+
+> The intraclass correlation coefficient (ICC) is a descriptive statistic that can be used when quantitative measurements are made on units that are organized into groups. It describes how strongly units in the same group resemble each other.
+
+Note also that an [*inter*class correlation coefficient](https://en.wikipedia.org/wiki/Interclass_correlation) is a thing that exists; it is similar but different.
+
+Set-Up
+======
+As mentioned, the `pingouin` library will be used to calculate the ICC. This can be installed from the terminal with:
+
+```
+pip install pingouin
+```
+
+After this it can be imported into Python with:
+
+```{python}
+import pingouin as pg
+```
+
+The Pandas library will also be needed:
+
+```{python}
+import pandas as pd
+```
+
+Worked Example
+==============
+*This example comes from [the Real Statistics site](http://www.real-statistics.com/reliability/intraclass-correlation/), although it has also been included in Pingouin as a built-in example.*
+
+Let's imagine that there are four **judges** each tasting 8 different types of **wine** and rating them from **0 to 9**. The results of their assessments have been included in Pingouin, so there is a function to import this raw data directly:
+
+```{python}
+data = pg.read_dataset('icc')
+print(data)
+```
+
+**Pivotting** this data table will make it more readable, although it's actually more *useable* when it's in the original un-pivotted format (or 'long' format) so we won't assign the pivotted table to a new variable:
+
+```{python}
+print(pd.pivot_table(data, index='Judge', columns='Wine').T)
+```
+
+The above table matches [the one given in the original example](https://www.real-statistics.com/reliability/interrater-reliability/intraclass-correlation/), so we can be sure we're starting from the right place with this worked example.
+
+In order to use the `intraclass_corr()` function we need to give it four inputs:
+
+- `data` - the input dataframe in long format (ie un-pivotted)
+- `targets` - the name of the column in `data` that contains the names of the things being rated
+- `raters` - the name of the column in `data` that contains the names of the things *doing* the rating
+- `ratings` - the name of the column in `data` that contains the values of the ratings
+
+The first of these is a dataframe and the other three are strings (as they are column names). In our example, the things being rated are **Wines**, the raters are the **Judges** and the ratings are the **Scores**, so here's how to calculate the ICC:
+
+```{python}
+icc = pg.intraclass_corr(
+    data=data, targets='Wine', raters='Judge', ratings='Scores'
+)
+
+pd.set_option('display.max_columns', 8)
+pd.set_option('display.width', 200)
+print(icc)
+```
+
+This output is very verbose! You get a whole table when you probably only want one number. The different types of models are detailed briefly on [the Wikipedia page](https://en.wikipedia.org/wiki/Intraclass_correlation#Calculation_in_software_packages) but for this example we're just going to choose the second option (**single random raters**) as that's the one used on the Real Statistics page:
+
+```{python}
+icc = icc.set_index('Description')
+
+print(icc.loc['Single random raters', 'ICC'].round(3))
+```
+
+This is the same as the value in the original example.
+
+Confidence Interval
+-------------------
+The function also gives the 95% confidence interval:
+
+```{python}
+lower_ci = icc.loc['Single random raters', 'CI95%'][0]
+upper_ci = icc.loc['Single random raters', 'CI95%'][1]
+
+print(f'95% confidence interval: {lower_ci} - {upper_ci}')
+```
+
+How the Function Works
+----------------------
+The source code for this function might be useful if you want to take a look at how exactly it works. That can be found over [here](https://pingouin-stats.org/_modules/pingouin/reliability.html#intraclass_corr).
+
+Variations
+==========
+
+Subsets
+-------
+If you are only interested in the agreement amongst a subset of the raters you can filter the dataset accordingly. Here's the agreement between Judges A and B:
+
+```{python}
+data = data[data['Judge'].isin(['A', 'B'])]
+icc = pg.intraclass_corr(
+    data=data, targets='Wine', raters='Judge', ratings='Scores'
+)
+icc = icc.set_index('Type')
+
+print(icc.loc['ICC1', 'ICC'].round(3))
+```
+
+Wide-Format
+-----------
+Often you will have raw data that is in **wide format**:
+
+```{python}
+df = pd.DataFrame({
+    'Judge A': [1, 1, 3, 6, 6, 7, 8, 9],
+    'Judge B': [2, 3, 8, 4, 5, 5, 7, 9],
+    'Judge C': [0, 3, 1, 3, 5, 6, 7, 9],
+    'Judge D': [1, 2, 4, 3, 6, 2, 9, 8],
+})
+
+print(df)
+```
+
+It will need to be converted into **long format** before `intraclass_corr()` can be used. This can be done by creating a new column that will form the *targets* and then converting to long-format with the `melt()` function from Pandas:
+
+```{python}
+df['index'] = df.index
+df = pd.melt(df, id_vars=['index'], value_vars=list(df)[:-1])
+
+print(df)
+```
+
+The ICC can then be calculated as per normal:
+
+```{python}
+icc = pg.intraclass_corr(
+    data=df, targets='index', raters='variable', ratings='value'
+)
+icc = icc.set_index('Description')
+
+print(icc.loc['Single random raters', 'ICC'].round(3))
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
