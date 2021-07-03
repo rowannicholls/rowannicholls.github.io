@@ -288,9 +288,21 @@ Note that, in order to fit the legend in, we had to adjust the size of the plot 
 
 > An important thing to realise at this point is that the first examples used 'infinite bins': each *sepal width* had a bar corresponding to it regardless of how many values there were. This previous example, however, is the opposite in that it only has *one bin* for each iris type. Essentially, all the bins have been compressed into one for each group. Later we will create plots that have a custom number of bins, between one and infinity.
 
-x-Axis Label
-------------
-Now that the x-axis corresponds to the groups as opposed to values, it looks strange to have the scale on that axis be a continuous variable. Replace it with the group names:
+x-Axis Tick Labels
+------------------
+Now that the x-axis corresponds to groups as opposed to values, it looks strange to have the scale on that axis be a continuous variable. Replace it with the group names using:
+
+- The `ax.set_xticks()` command to define the positions of the ticks
+- The `ax.set_xticklabels()` command to define the text for the tick labels
+
+Note that both of these commands need to be used, in the order shown above, to get the desired output. Both functions take lists as their inputs.
+
+Further customisation of the tick labels can be done using the `ax.tick_params()` function which has keyword arguments such as:
+
+- `axis` to choose the axis whose tick labels you want to edit
+- `length` to set the length of the ticks in points
+- `rotation` to change the angle at which the tick labels are written
+- `labelsize` to set the size of the tick labels. This argument will accept either a number (which gets interpreted as a font size with 'points' as the unit) or a string description (eg "large" or "small").
 
 ```{python, eval = FALSE}
 # Plot
@@ -307,9 +319,9 @@ ax.bar(2, data2.mean(), width, color='C3')
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(4) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -333,9 +345,9 @@ ax.bar(2, data2.mean(), width, color='C3')
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(4) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -363,9 +375,9 @@ ax.bar([2], data2.mean(), width, color='C3', yerr=data2.std())
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(4) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -389,9 +401,9 @@ ax.bar([2], data2.mean(), width, color='C3', yerr=data2.std())
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(4) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -424,9 +436,9 @@ ax.bar(2, data2.mean(), width, color='C3', zorder=0)
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(4) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -455,9 +467,9 @@ ax.bar(2, data2.mean(), width, color='C3', zorder=0)
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(4) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -496,9 +508,9 @@ ax.set_ylim(bottom, top * 1.15)
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks(np.arange(len(ax.patches)))
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(ax.patches) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -533,9 +545,9 @@ ax.set_ylim(bottom, top * 1.15)
 ax.set_title('Average Sepal Width for Each Species of Iris')
 ax.set_xlabel('Species')
 ax.set_ylabel('Average Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks(np.arange(len(ax.patches)))
-ax.set_xticklabels(('Setosa', 'Versicolor', 'Virginica'))
+ax.set_xticklabels(['Setosa', 'Versicolor', 'Virginica'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(ax.patches) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -589,9 +601,9 @@ bar2 = ax.bar(
 ax.set_title('Average Sepal Width Given the Sepal Length')
 ax.set_xlabel('Sepal Length (cm)')
 ax.set_ylabel('Average Sepal Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.set_xticklabels(['0 to 5.5', '5.5 to 6.5', '6.5+'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(data1) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -644,9 +656,9 @@ bar2 = ax.bar(
 ax.set_title('Average Sepal Width Given the Sepal Length')
 ax.set_xlabel('Sepal Length (cm)')
 ax.set_ylabel('Average Sepal Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.set_xticklabels(['0 to 5.5', '5.5 to 6.5', '6.5+'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(data1) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -713,9 +725,9 @@ ax.set_ylim(bottom, top * 1.10)
 ax.set_title('Average Sepal Width Given the Sepal Length')
 ax.set_xlabel('Sepal Length (cm)')
 ax.set_ylabel('Average Sepal Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.set_xticklabels(['0 to 5.5', '5.5 to 6.5', '6.5+'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(data1) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -778,9 +790,9 @@ ax.set_ylim(bottom, top * 1.10)
 ax.set_title('Average Sepal Width Given the Sepal Length')
 ax.set_xlabel('Sepal Length (cm)')
 ax.set_ylabel('Average Sepal Width (cm)')
-# X-axis details
+# x-Axis details
 ax.set_xticks([0, 1, 2])
-ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.set_xticklabels(['0 to 5.5', '5.5 to 6.5', '6.5+'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(data1) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -809,9 +821,9 @@ ax.set_title('Average Sepal Width Given the Sepal Length')
 ax.set_xlabel('Sepal Length (cm)')
 ax.set_ylabel('Average Sepal Width (cm) - Versicolor', color='C0')
 ax.tick_params(axis='y', colors='C0')
-# X-axis details
+# x-Axis details
 ax.set_xticks(np.arange(len(data1)))
-ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.set_xticklabels(['0 to 5.5', '5.5 to 6.5', '6.5+'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(data1) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)
@@ -836,9 +848,9 @@ ax.set_title('Average Sepal Width Given the Sepal Length')
 ax.set_xlabel('Sepal Length (cm)')
 ax.set_ylabel('Average Sepal Width (cm) - Versicolor', color='C0')
 ax.tick_params(axis='y', colors='C0')
-# X-axis details
+# x-Axis details
 ax.set_xticks(np.arange(len(data1)))
-ax.set_xticklabels(('0 to 5.5', '5.5 to 6.5', '6.5+'))
+ax.set_xticklabels(['0 to 5.5', '5.5 to 6.5', '6.5+'])
 ax.tick_params(axis='x', length=0)
 xlocs = np.arange(len(data1) + 1) - 0.5
 ax.set_xticks(xlocs, minor=True)

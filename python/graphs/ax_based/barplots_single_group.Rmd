@@ -110,6 +110,60 @@ plt.show()
 plt.close()
 ```
 
+Tick Labels
+-----------
+If the data's independent variable is qualitative, the tick labels on the x-axis can be changed using:
+
+- The `ax.set_xticks()` command to define the positions of the ticks
+- The `ax.set_xticklabels()` command to define the text for the tick labels
+
+Note that both of these commands need to be used, in the order shown above, to get the desired output. Both functions take lists as their inputs.
+
+Further customisation of the tick labels can be done using the `ax.tick_params()` function which has keyword arguments such as:
+
+- `axis` to choose the axis whose tick labels you want to edit
+- `length` to set the length of the ticks in points
+- `rotation` to change the angle at which the tick labels are written
+- `labelsize` to set the size of the tick labels. This argument will accept either a number (which gets interpreted as a font size with 'points' as the unit) or a string description (eg "large" or "small").
+
+```{python, eval = FALSE}
+import numpy as np
+
+heights = [6, 12, 9]
+x_positions = np.arange(len(heights))
+width = 0.5
+
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('How bar plots work in Matplotlib')
+ax.set_xlabel('The first argument of the ax.bar() function')
+ax.set_ylabel('The second argument of the ax.bar() function')
+ax.set_xticks(x_positions)
+ax.set_xticklabels(['Data Point 1', 'Data Point 2', 'Data Point 3'])
+ax.tick_params(axis='x', length=3, rotation=10, labelsize='small')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import numpy as np
+
+heights = [6, 12, 9]
+x_positions = np.arange(len(heights))
+width = 0.5
+
+ax = plt.axes()
+ax.bar(x_positions, heights, width)
+ax.set_title('How bar plots work in Matplotlib')
+ax.set_xlabel('The first argument of the ax.bar() function')
+ax.set_ylabel('The second argument of the ax.bar() function')
+ax.set_xticks(x_positions)
+ax.set_xticklabels(['Data Point 1', 'Data Point 2', 'Data Point 3'])
+ax.tick_params(axis='x', length=3, rotation=10, labelsize='small')
+plt.show()
+plt.close()
+```
+
 Plotting a Dataset
 ==================
 It's not often that you will have your data in the perfect format with the x-positions and heights in their own variables already. Most times, you will need to do some level of data manipulation before you can plot. Here's an example using the iris dataset from the scikit-learn package (see [here](https://rowannicholls.github.io/python/data/sklearn_datasets.html) for more info on these toy datasets):
