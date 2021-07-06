@@ -166,6 +166,75 @@ print(inner)
 
 The teams that got promoted and relegated from the Premier League are not shown here as their names do not appear in both data frames. As a results only 17 rows remain. **This is the default behaviour of the `merge()` function**.
 
+Updating a Row
+==============
+Let's imagine we have a data frame containing out-of-date information that
+we want to *update* with data from a different data frame. For example, here
+is a database of Arsenal and Burnley's log points for three seasons, the last
+of which is incomplete:
+
+```{python, results = "hold"}
+import pandas as pd
+
+df = pd.DataFrame({
+    'Team': [
+        'Arsenal', 'Arsenal', 'Arsenal',
+        'Burnley', 'Burnley', 'Burnley'
+    ],
+    'Season': ['2018_19', '2019_20', '2020_21', '2018_19', '2019_20', '2020_21'],
+    'Points': [70, 56, 49, 40, 54, 36]
+})
+
+print(df)
+```
+
+After Arsenal won their next game, their tally of points for the 2020-21
+season increased from 49
+to 52. So the third row of the data frame (index 2) should look like this:
+
+```{python, results = "hold"}
+# The object containing the update must be a data frame (a series won't work)
+update = pd.DataFrame({
+    'Team': ['Arsenal'],
+    'Season': ['2020_21'],
+    'Points': [52]
+})
+
+print(update)
+```
+
+We want to edit the database and put in this new, correct information. In other
+words, we want to merge these two data frames *but also overwrite* the old one.
+This is known as *updating* and, usefully, the function that does this in
+Pandas is called `update()`. However, in order for it to work, the index of the
+new row (in the data frame `update`) needs to match the index of the old row
+(in the data frame `df`). That is how Python will know which row to overwrite.
+At the moment we have a problem because the original row (row 3 of
+data frame `df`) has index 2 while the new row (row 1 of data frame `update`)
+has index 0.
+
+Now, we *could* fix this manually by individually changing only these two
+indexes using hard-coded values,
+but it's much easier to change the
+indexes completely and instead **use overlapping columns as the indexes**.
+Then, the data frames can be 'merged' on the values they have in common and
+the information in the remaining columns updated accordingly:
+
+```{python, results = "hold"}
+# Use the team names and the seasons as the indexes
+df = df.set_index(['Team', 'Season'])
+update = update.set_index(['Team', 'Season'])
+# Merge and overwrite
+df.update(update)
+# Change back to using sequential numbers as the indexes
+df = df.reset_index()
+
+print(df)
+```
+
+Now we can see that Arsenal have 52 points (so far) in the 2020-21 season.
+
+
 [⇦ Back](../../python.html)
 
 </font>
