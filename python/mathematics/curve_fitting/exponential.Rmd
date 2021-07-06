@@ -1,0 +1,675 @@
+---
+title: '<font size="5">Curve Fitting in Python:</font><br>Exponential Functions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+knitr::opts_chunk$set(out.width = "75%")
+```
+
+If you have a set of data points that look like they're increasing rapidly, it might be useful to fit them with a smooth, exponentially increasing line in order to describe the general shape of the data:
+
+```{python, echo=FALSE, results='hide'}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210706)
+
+# Create fake x-data
+x = np.arange(10)
+# Create fake y-data
+a = 4.5
+b = 0.5
+c = 0
+y = a * np.exp(b * x) + c  # Use the second formulation from above
+y = y + np.random.normal(scale=np.sqrt(np.max(y)), size=len(x))  # Add noise
+
+# Fit a weighted polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1, w=np.sqrt(y))
+
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted_weighted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_weighted = a * np.exp(b * x_fitted_weighted)
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted_weighted, y_fitted_weighted, 'k--', label='Fitted line')
+ax.set_title('An example of data fittted with an exponentially increasing line')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+The line that you need to fit in order to achieve this shape will be one that is described by an exponential function, that is any function of the form:
+
+$y = AB^x + C$
+
+or
+
+$y = ae^{bx} + c$
+
+(these two are mathematically equivalent because $AB^x = Ae^{x\ln(B)}$). The important thing to realise is that *an exponential function can be fully defined with three constants*. We will use the second of these formulations, which can be written in Python as `a * np.exp(b * x) + c` where `exp()` is the exponential function $e^x$ from the Numpy package (renamed `np` in our examples).
+
+Example Data
+============
+For this tutorial, let's create some fake data to use as an example. This should be a set of points that increase exponentially (or else our attempts to fit an exponential curve to them won't work well!) with some random noise thrown in to mimic real-world data:
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210706)
+
+# Create fake x-data
+x = np.arange(10)
+# Create fake y-data
+a = 4.5
+b = 0.5
+c = 50
+y = a * np.exp(b * x) + c  # Use the second formulation from above
+y = y + np.random.normal(scale=np.sqrt(np.max(y)), size=len(x))  # Add noise
+```
+
+The random noise is being added with the `random.normal()` function from Numpy which draws random samples from a normal (Gaussian) distribution. Let's take a look at what this example data looks like on a scatter plot:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+```
+
+Method 1: polyfit
+=================
+> This method only works when $c = 0$, ie when you want to fit a curve with equation $y = ae^{bx}$ to your data. If you want to fit a curve with equation $y = ae^{bx} + c$ with $c \neq 0$ you will need to use method 2.
+
+The `polyfit()` command from Numpy is used to fit a polynomial function to data. This might seem a little strange: why are we trying to fit a *polynomial function* to the data when we want to fit an *exponential function*? The answer is that we can convert an exponential function into a polynomial one using the fact that:
+
+$y = ae^{bx} \implies \ln(y) = \ln(a) + bx$
+
+because we can take the natural logarithm of both sides. This creates a linear equation $f(x) = mx + c$ where:
+
+- $f(x) = \ln(y)$
+- $m = b$
+- $c = \ln(a)$
+
+So `polyfit()` can be used to fit $\ln(y)$ against $x$:
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210706)
+
+# Create fake x-data
+x = np.arange(10)
+# Create fake y-data
+a = 4.5
+b = 0.5
+c = 0
+y = a * np.exp(b * x) + c  # Use the second formulation from above
+y = y + np.random.normal(scale=np.sqrt(np.max(y)), size=len(x))  # Add noise
+
+# Fit a polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1)
+```
+
+This polynomial can now be converted back into an exponential:
+
+```{python}
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.exp(b * x_fitted)
+```
+
+Let's take a look at the fit:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title('Using polyfit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title('Using polyfit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+This method has the disadvantage of over-emphasising small values: points that have large values and which are relatively close to the linear line of best fit created by `polyfit()` become much further away from the line of best fit when the polynomial is converted back into an exponential. The act of transforming a polynomial function into an exponential one has the effect of increasing large values much more than it does small values, and thus it has the effect of increasing the distance to the fitted curve for large values more than it does for small values. This can be mitigated by adding a 'weight' proportional to $y$: tell `polyfit()` to lend more importance to data points with a large y-value:
+
+```{python, eval=FALSE}
+# Fit a weighted polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1, w=np.sqrt(y))
+
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted_weighted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_weighted = a * np.exp(b * x_fitted_weighted)
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve, unweighted')
+ax.plot(x_fitted_weighted, y_fitted_weighted, 'k--', label='Fitted curve, weighted')
+ax.set_title('Using polyfit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Fit a weighted polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1, w=np.sqrt(y))
+
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted_weighted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_weighted = a * np.exp(b * x_fitted_weighted)
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve, unweighted')
+ax.plot(x_fitted_weighted, y_fitted_weighted, 'k--', label='Fitted curve, weighted')
+ax.set_title('Using polyfit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+Using a weight has improved the fit.
+
+Method 2: curve_fit
+===================
+From the Scipy pacakge we can get the `curve_fit()` function. This is more general than `polyfit()` (we can fit any type of function we like, exponential or not) but it's more complicated in that we sometimes need to provide an initial guess as to what the constants could be in order for it to work.
+
+Let's use our original example data (with $c \neq 0$):
+
+```{python, eval=FALSE}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210706)
+
+# Create fake x-data
+x = np.arange(10)
+# Create fake y-data
+a = 4.5
+b = 0.5
+c = 50
+y = a * np.exp(b * x) + c  # Use the second formulation from above
+y = y + np.random.normal(scale=np.sqrt(np.max(y)), size=len(x))  # Add noise
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+```
+
+```{python, echo=FALSE, results='hide'}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210706)
+
+# Create fake x-data
+x = np.arange(10)
+# Create fake y-data
+a = 4.5
+b = 0.5
+c = 50
+y = a * np.exp(b * x) + c  # Use the second formulation from above
+y = y + np.random.normal(scale=np.sqrt(np.max(y)), size=len(x))  # Add noise
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+```
+
+Now let's fit the function $y = ae^{bx} + c$. This is done by defining it as a *lambda function* (ie as an object rather than as a command) of a dummy variable $t$ and using the `curve_fit()` function to fit this object to the x- and y-data. Note that the `curve_fit()` function needs to be imported from the `scipy.optimize` sub-package:
+
+```{python}
+from scipy.optimize import curve_fit
+
+# Fit the function a * np.exp(b * t) + c to x and y
+popt, pcov = curve_fit(lambda t, a, b, c: a * np.exp(b * t) + c, x, y)
+```
+
+> Note that we need to remove any values that are equal to zero from our y-data (and their corresponding x-values from the x-data) for this to work, although there aren't any of these in this example data so it's not relevant here
+
+The first output, `popt`, is a list of the optimised values for the parameters which, in our case, are the constants $a$, $b$ and $c$:
+
+```{python}
+a = popt[0]
+b = popt[1]
+c = popt[2]
+```
+
+Let's see what this looks like:
+
+```{python, eval=FALSE}
+# Create the fitted curve
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.exp(b * x_fitted) + c
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title(r'Using curve\_fit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Create the fitted curve
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.exp(b * x_fitted) + c
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title(r'Using curve\_fit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 500)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+This looks really good, and we didn't need to provide an initial guess! This is because the example data we are using is close enough to exponential in nature that the optimisation algorithm behind `curve_fit()` could fit a curve without accidentally choosing the wrong local minimum. This won't always be the case, so here's how to do it with an initial guess provided:
+
+```{python}
+# Have an initial guess as to what the values of the parameters are
+a_guess = 5
+b_guess = 0.6
+c_guess = 40
+
+# Fit the function a * np.exp(b * t) + c to x and y
+popt, pcov = curve_fit(
+    lambda t, a, b, c: a * np.exp(b * t) + c,
+    x, y, p0=(a_guess, b_guess, c_guess)
+)
+
+# The optimised values of the parameters are
+a = popt[0]
+b = popt[1]
+c = popt[2]
+
+print(a, b, c)
+```
+
+Comparison of Methods
+=====================
+Let's plot all three methods against one another using the same example data ($c = 0$) for each:
+
+```{python, eval=FALSE}
+import numpy as np
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210706)
+
+# Create fake x-data
+x = np.arange(10)
+# Create fake y-data
+a = 4.5
+b = 0.5
+y = a * np.exp(b * x)  # Use the second formulation from above
+y = y + np.random.normal(scale=np.sqrt(np.max(y)), size=len(x))  # Add noise
+
+#
+# Exact answer
+#
+x_exact = np.linspace(np.min(x), np.max(x), 100)
+y_exact = a * np.exp(b * x_exact)
+
+#
+# polyfit (unweighted)
+#
+# Fit a polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1)
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted_polyfit = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_polyfit = a * np.exp(b * x_fitted_polyfit)
+
+#
+# polyfit (weighted)
+#
+# Fit a weighted polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1, w=np.sqrt(y))
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted_weighted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_weighted = a * np.exp(b * x_fitted_weighted)
+
+#
+# curve_fit
+#
+# Fit the function a * np.exp(b * t) to x and y
+popt, pcov = curve_fit(lambda t, a, b: a * np.exp(b * t), x, y)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+x_fitted_curve_fit = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_curve_fit = a * np.exp(b * x_fitted_curve_fit)
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_exact, y_exact, 'k--', label='Exact answer')
+ax.plot(x_fitted_polyfit, y_fitted_polyfit, 'r', label='polyfit - unweighted')
+ax.plot(x_fitted_weighted, y_fitted_weighted, 'g', label='polyfit - weighted')
+ax.plot(x_fitted_curve_fit, y_fitted_curve_fit, 'b', label=r'curve\_fit')
+ax.set_title('Comparing the methods of fitting an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 450)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+```{python, echo=FALSE, results='hide'}
+import numpy as np
+from scipy.optimize import curve_fit
+import matplotlib.pyplot as plt
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210706)
+
+# Create fake x-data
+x = np.arange(10)
+# Create fake y-data
+a = 4.5
+b = 0.5
+y = a * np.exp(b * x)  # Use the second formulation from above
+y = y + np.random.normal(scale=np.sqrt(np.max(y)), size=len(x))  # Add noise
+
+#
+# Exact answer
+#
+x_exact = np.linspace(np.min(x), np.max(x), 100)
+y_exact = a * np.exp(b * x_exact)
+
+#
+# polyfit (unweighted)
+#
+# Fit a polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1)
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted_polyfit = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_polyfit = a * np.exp(b * x_fitted_polyfit)
+
+#
+# polyfit (weighted)
+#
+# Fit a weighted polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, np.log(y), 1, w=np.sqrt(y))
+# Convert the polynomial back into an exponential
+a = np.exp(p[1])
+b = p[0]
+x_fitted_weighted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_weighted = a * np.exp(b * x_fitted_weighted)
+
+#
+# curve_fit
+#
+# Fit the function a * np.exp(b * t) to x and y
+popt, pcov = curve_fit(lambda t, a, b: a * np.exp(b * t), x, y)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+x_fitted_curve_fit = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_curve_fit = a * np.exp(b * x_fitted_curve_fit)
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_exact, y_exact, 'k--', label='Exact answer')
+ax.plot(x_fitted_polyfit, y_fitted_polyfit, 'r', label='polyfit - unweighted')
+ax.plot(x_fitted_weighted, y_fitted_weighted, 'g', label='polyfit - weighted')
+ax.plot(x_fitted_curve_fit, y_fitted_curve_fit, 'b', label=r'curve\_fit')
+ax.set_title('Comparing the methods of fitting an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 450)
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+As you can see, the `curve_fit()` method has given us the best approximation of the true underlying exponential behaviour.
+
+Interpolation and Extrapolation (Forecasting/Predicting/Estimating)
+===============================
+We can use the fitted curve to estimate what our data would be for other values of $x$ that are not in our raw dataset: what would the value be at $x=11$ (which is outside our domain and thus requires us to forecast into the future) or $x = 8.5$ (which is inside our domain and thus requires us to 'fill in a gap' in our data)? To answer these questions, we simply plug these x-values as numbers into the equation of the fitted curve:
+
+```{python, eval=FALSE}
+# Fit the function a * np.exp(b * t) to x and y
+popt, pcov = curve_fit(lambda t, a, b: a * np.exp(b * t), x, y)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+x_fitted_curve_fit = np.linspace(np.min(x), 12, 100)
+y_fitted_curve_fit = a * np.exp(b * x_fitted_curve_fit)
+
+# Extrapolation
+y_11 = a * np.exp(b * 11)
+
+# Interpolation
+y_8_5 = a * np.exp(b * 8.5)
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted_curve_fit, y_fitted_curve_fit, 'k', label=r'Fitted curve')
+# Add result of extrapolation
+ax.plot([11, 11], [0, y_11], 'k--', label=r'$x=11$')
+ax.plot([0, 11], [y_11, y_11], 'k--')
+# Add result of interpolation
+ax.plot([8.5, 8.5], [0, y_8_5], 'k:', label=r'$x=8.5$')
+ax.plot([0, 8.5], [y_8_5, y_8_5], 'k:')
+ax.set_title(r'Using curve\_fit() to extrapolate and interpolate')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 1750)
+ax.set_xlabel('x-Values')
+ax.set_xlim(0, 12.5)
+ax.legend()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Fit the function a * np.exp(b * t) to x and y
+popt, pcov = curve_fit(lambda t, a, b: a * np.exp(b * t), x, y)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+x_fitted_curve_fit = np.linspace(np.min(x), 12, 100)
+y_fitted_curve_fit = a * np.exp(b * x_fitted_curve_fit)
+
+# Extrapolation
+y_11 = a * np.exp(b * 11)
+
+# Interpolation
+y_8_5 = a * np.exp(b * 8.5)
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted_curve_fit, y_fitted_curve_fit, 'k', label=r'Fitted curve')
+# Add result of extrapolation
+ax.plot([11, 11], [0, y_11], 'k--', label=r'$x=11$')
+ax.plot([0, 11], [y_11, y_11], 'k--')
+# Add result of interpolation
+ax.plot([8.5, 8.5], [0, y_8_5], 'k:', label=r'$x=8.5$')
+ax.plot([0, 8.5], [y_8_5, y_8_5], 'k:')
+ax.set_title(r'Using curve\_fit() to extrapolate and interpolate')
+ax.set_ylabel('y-Values')
+ax.set_ylim(0, 1750)
+ax.set_xlabel('x-Values')
+ax.set_xlim(0, 12.5)
+ax.legend()
+```
+
+More explicitly:
+
+```{python}
+print(f'x = 11 implies y = {y_11:6.1f}; x = 8.5 implies y = {y_8_5:5.1f}')
+```
+
+Using a Bar Plot
+================
+If you want to use a bar plot instead of a scatter plot:
+
+```{python, eval=FALSE}
+# Fit the function a * np.exp(b * t) to x and y
+popt, pcov = curve_fit(lambda t, a, b: a * np.exp(b * t), x, y)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+x_fitted_curve_fit = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_curve_fit = a * np.exp(b * x_fitted_curve_fit)
+
+# Plot
+ax = plt.axes()
+ax.bar(x, y, label='Raw data')
+ax.plot(x_fitted_curve_fit, y_fitted_curve_fit, 'k', label='Fitted curve')
+ax.set_xticks(x)
+ax.set_xticklabels([
+    'One', 'Two', 'Three', 'Four', 'Five',
+    'Six', 'Seven', 'Eight', 'Nine', 'Ten'
+])
+ax.set_xlim([0.5, len(y) - 0.5])
+ax.tick_params(axis='x', length=0, labelsize=6)
+xlocs = np.arange(len(y) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_title(r'Using curve\_fit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Fit the function a * np.exp(b * t) to x and y
+popt, pcov = curve_fit(lambda t, a, b: a * np.exp(b * t), x, y)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+x_fitted_curve_fit = np.linspace(np.min(x), np.max(x), 100)
+y_fitted_curve_fit = a * np.exp(b * x_fitted_curve_fit)
+
+# Plot
+ax = plt.axes()
+ax.bar(x, y, label='Raw data')
+ax.plot(x_fitted_curve_fit, y_fitted_curve_fit, 'k', label='Fitted curve')
+ax.set_xticks(x)
+ax.set_xticklabels([
+    'One', 'Two', 'Three', 'Four', 'Five',
+    'Six', 'Seven', 'Eight', 'Nine', 'Ten'
+])
+ax.set_xlim([0.5, len(y) - 0.5])
+ax.tick_params(axis='x', length=0, labelsize=6)
+xlocs = np.arange(len(y) + 1) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_title(r'Using curve\_fit() to fit an exponential function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.legend()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
