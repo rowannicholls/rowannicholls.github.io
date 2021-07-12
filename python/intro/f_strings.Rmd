@@ -18,19 +18,27 @@ F-strings are a way of **f**ormatting your **strings**. It's not the only way to
 
 Creating an F-String
 ====================
-A f-string is created by appending the letter "f" to the front of a string and then adding the name of an already-defined variable between curly bracket. The value of that variable will then get incorporated into the string itself.
+An f-string is created by appending the letter "f" to the front of a string and then adding the name of an already-defined variable between curly bracket. The value of that variable will then get incorporated into the string itself.
 
 ```{python}
 answer = 10
 print(f'The answer is {answer}')
 ```
 
-Multiple arguments can be incorporated into an f-string, and these can be numbers or strings:
+Multiple arguments can be incorporated into an f-string, and these can be either numbers or strings:
 
 ```{python}
 first = 47
 second = 'hi'
 print(f'First argument: {first}, second one: {second}')
+```
+
+Adding an equals sign will print the variable name as well (which is useful for debugging):
+
+```{python}
+foo = 81
+bar = 'hello'
+print(f'First argument: {foo=}, second one: {bar=}')
 ```
 
 For simple variables, an f-string is identical to just printing two things side-by-side:
@@ -307,6 +315,28 @@ first = True
 second = False
 print(f'Call str() on Booleans: |{first!s:8}|{second!s:8}|')
 ```
+
+Formatting Dates
+================
+Things such as `datetime` objects can also be formatted within the curly brackets of an f-string. Here's an example of a normal (unformatted) `datetime` object (more info about these can be found on the [Date and Time page](../advanced/date_time.html)):
+
+```{python}
+from datetime import datetime
+
+dt = datetime(2012, 3, 4, 5, 6, 7)
+
+print(dt)
+```
+
+These can be formatted by adding a date format code as a string after the colon:
+
+```{python}
+dt = datetime(2012, 3, 4, 5, 6, 7)
+
+print(f'{dt:%Hh%M on %d %B %Y}')
+```
+
+For more info about date format codes, see the documentation [here](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes).
 
 Alignment
 =========
