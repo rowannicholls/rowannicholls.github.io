@@ -160,6 +160,25 @@ sudo update-alternatives --config python3
     ```
     There should be no errors.
 
+### Upgrading Packages
+To upgrade (update) a package called "\<package_name\>" simply run:
+
+```{bash, eval=FALSE}
+pip3 install <package_name> --upgrade
+```
+
+To check what version of each package you have, you can run:
+
+```{bash, eval=FALSE}
+pip freeze
+```
+
+...and to check what version of a specific package you have you can search the results of `pip freeze` like so:
+
+```{bash, eval=FALSE}
+pip freeze | grep <package_name>
+```
+
 [⇦ Back](../../python.html)
 
 macOS
@@ -220,6 +239,10 @@ The following works for macOS Sierra, Mojave and Catalina.
     - Finally, check that your Python package manger, pip, is being called from the .pyenv folder and corresponds to the version of Python you expect:
     ```{bash, eval=FALSE}
     pip --version
+    ```
+    - To upgrade pip:
+    ```{bash, eval=FALSE}
+    pip3 install --upgrade pip
     ```
 - Note that you will have to follow a similar process for each Python version you want to install, but once you have you will be able to choose which one to use relatively easily and they will not interfere with one another. When you want to update your Python, you will have to do it 'manually' with the above process (ie there is no single command you can use to just update to and start using the latest version).
 
@@ -285,6 +308,25 @@ import argparse
 import termcolor
 ```
 There should be no errors.
+
+### Upgrading Packages
+To upgrade (update) a package called "\<package_name\>" simply run:
+
+```{bash, eval=FALSE}
+pip3 install <package_name> --upgrade
+```
+
+To check what version of each package you have, you can run:
+
+```{bash, eval=FALSE}
+pip freeze
+```
+
+...and to check what version of a specific package you have you can search the results of `pip freeze` like so:
+
+```{bash, eval=FALSE}
+pip freeze | grep <package_name>
+```
 
 [⇦ Back](../../python.html)
 

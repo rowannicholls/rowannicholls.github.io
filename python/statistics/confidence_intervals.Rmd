@@ -1,0 +1,390 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Confidence Intervals'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+```
+
+Let's start with some example data. Create a series of 20 numbers distributed normally about a mean value of 100 and with a standard deviation of 20:
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210710)
+
+# Create fake data
+mean = 100
+standard_deviation = 5
+sample_size = 20
+x = np.random.normal(mean, standard_deviation, sample_size)
+
+print([f'{x:.1f}' for x in sorted(x)])
+```
+
+This is what they look like on a number line:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+# Add jitter to separate the points out
+y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
+# Create scatter plot
+ax.scatter(x, y, s=10)
+ax.set_title('Example Data: 20 Random Measurements')
+# Remove axes
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['left'].set_visible(False)
+# Add arrows on x-axis
+ax.arrow(100, 0, 11.5, 0, head_width=0.2, color='k', clip_on=False)
+ax.arrow(100, 0, -11.5, 0, head_width=0.2, color='k', clip_on=False)
+# Axes' settings
+ax.set_ylim(0, 2)
+ax.set_xlim(88.5, 111.5)
+ax.tick_params(axis='y', left=False, labelleft=False)
+# Finish
+plt.subplots_adjust(left=0.1, bottom=0.2, right=0.9, top=0.8)
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+# Add jitter to separate the points out
+y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
+# Create scatter plot
+ax.scatter(x, y, s=10)
+ax.set_title('Example Data: 20 Random Measurements')
+# Remove axes
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['left'].set_visible(False)
+# Add arrows on x-axis
+ax.arrow(100, 0, 11.5, 0, head_width=0.2, color='k', clip_on=False)
+ax.arrow(100, 0, -11.5, 0, head_width=0.2, color='k', clip_on=False)
+# Axes' settings
+ax.set_ylim(0, 2)
+ax.set_xlim(88.5, 111.5)
+ax.tick_params(axis='y', left=False, labelleft=False)
+# Finish
+plt.subplots_adjust(left=0.1, bottom=0.2, right=0.9, top=0.8)
+plt.show()
+plt.close()
+```
+
+These 20 numbers are a random *sample* drawn from the full *population* of numbers that have a **true mean** of 100 and a true standard deviation (the **population standard deviation**) of 5. Here's a graph representing the full population (more correctly, this is a graph of the **probability distribution function** - the function which produced our 20 numbers):
+
+```{python, eval=FALSE}
+from scipy.stats import norm
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create data
+x_pdf = np.linspace(84, 116, 1000)
+mean = 100
+std = 5
+y_pdf = norm.pdf(x_pdf, mean, std)
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.plot(x_pdf, y_pdf)
+ax.set_title('Probability Distribution Function')
+ax.set_ylabel('Relative Likelihood')
+ax.set_xlabel('Value')
+ax.set_ylim(0, norm.pdf(mean, mean, std) * 1.08)
+ax.set_xlim(84, 116)
+# Vertical lines
+ax.vlines(mean, 0, norm.pdf(mean, mean, std), colors='k', linestyles='dashed')
+ax.vlines(mean - std, 0, norm.pdf(mean - std, mean, std), colors='k', linestyles='dotted')
+ax.vlines(mean + std, 0, norm.pdf(mean + std, mean, std), colors='k', linestyles='dotted')
+# Text
+plt.text(mean - std, norm.pdf(mean - std, mean, std) * 1.04, r'$\bar x - \sigma$', ha='right')
+plt.text(mean, norm.pdf(mean, mean, std) * 1.02, r'Mean, $\bar x$', ha='center')
+plt.text(mean + std, norm.pdf(mean + std, mean, std) * 1.04, r'$\bar x + \sigma$', ha='left')
+# Finish
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+from scipy.stats import norm
+import matplotlib as mpl
+
+# Formatting options for plots
+mpl.rcParams.update(mpl.rcParamsDefault)
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create data
+x_pdf = np.linspace(84, 116, 1000)
+mean = 100
+std = 5
+y_pdf = norm.pdf(x_pdf, mean, std)
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.plot(x_pdf, y_pdf)
+ax.set_title('Probability Distribution Function')
+ax.set_ylabel('Relative Likelihood')
+ax.set_xlabel('Value')
+ax.set_ylim(0, norm.pdf(mean, mean, std) * 1.08)
+ax.set_xlim(84, 116)
+# Vertical lines
+ax.vlines(mean, 0, norm.pdf(mean, mean, std), colors='k', linestyles='dashed')
+ax.vlines(mean - std, 0, norm.pdf(mean - std, mean, std), colors='k', linestyles='dotted')
+ax.vlines(mean + std, 0, norm.pdf(mean + std, mean, std), colors='k', linestyles='dotted')
+# Text
+plt.text(mean - std, norm.pdf(mean - std, mean, std) * 1.04, r'$\bar x - \sigma$', ha='right')
+plt.text(mean, norm.pdf(mean, mean, std) * 1.02, r'Mean, $\bar x$', ha='center')
+plt.text(mean + std, norm.pdf(mean + std, mean, std) * 1.04, r'$\bar x + \sigma$', ha='left')
+# Finish
+plt.show()
+plt.close()
+```
+
+Of course, the only reason we know that the true mean and standard deviation of these numbers is 100 and 5, respectively, is because we've artificially created this data. However, if these were real-world measurements we wouldn't know these and so could only *estimate* them:
+
+```{python}
+mean = np.mean(x)
+s = np.std(x, ddof=1)  # Use ddof=1 to get the sample standard deviation
+
+print(rf'Sample mean = {mean:4.1f}; sample standard deviation = {s:3.1f}')
+```
+
+So our *best estimate* for the **true mean** ($\bar x$) is 99.5 and for the **true standard deviation** it is 5.7. Note that we use the **sample standard deviation** ($s$) of a sample when trying to estimate the population standard deviation from that sample.
+
+Now, having an estimate of the true mean is fine and all but we can do better: we can calculate a **confidence interval** (CI) in which we know the true mean will lie with a certain amount of confidence, $C$. For example, we can calculate the interval within which we are 95% sure that the true mean lies, in which case $C = 0.95$. If the population standard deviation is not known (which is the case in most real-world examples) then the formula for the confidence interval is:
+
+$\left( \bar x + t^* \times\frac{s}{\sqrt{n}}, \bar x - t^* \times\frac{s}{\sqrt{n}} \right)$
+
+where $\bar x$ is the **sample mean**, $s$ is the **sample standard deviation**, $n$ is the **sample size** and $t^*$ is the **critical value** as calculated using the *Student's t distribution*:
+
+$t^* = t_{\alpha} (df)$
+
+where $df$ is the number of **degree of freedom** and $\alpha$ is the **significance level**:
+
+$df = n - 1$
+
+$\alpha = \frac{1-C}{2}$
+
+where $C$ is the **confidence level**, eg 0.95 for a 95% confidence interval.
+
+Here's how to calculate the CI for our example:
+
+```{python}
+from scipy.stats import t
+
+# Descriptive statistics
+n = len(x)  # Sample size
+x_bar = np.mean(x)  # Mean
+s = np.std(x, ddof=1)  # Sample standard deviation
+
+# Desired confidence level
+C = 0.95
+
+# Calculate confidence interval
+df = n - 1
+alpha = (1 - C) / 2
+t_star = t.ppf(alpha, df)
+ci_lower = x_bar + t_star * s / np.sqrt(n)
+ci_upper = x_bar - t_star * s / np.sqrt(n)
+
+print(f'We are 95% sure that the true mean lies between {ci_lower:4.1f} and {ci_upper:5.1f}')
+```
+
+> Note 1: ideally, the sample size will be greater than 30 (it is 20 in this example)
+
+> Note 2: the value of $t^*$ that corresponds to a 95% confidence level is ~2.093, ie approximately 2. If you want to use $t^* = 2$ in your calculation in order to keep it simple you will get almost exactly the same result ($t^* = 2$ corresponds to a confidence level of ~93.9997%).
+
+If the population standard deviation **IS** known then the formula for the confidence interval is:
+
+$\left( \bar x + z^* \times\frac{\sigma}{\sqrt{n}}, \bar x - z^* \times\frac{\sigma}{\sqrt{n}} \right)$
+
+where the **critical value**, $z^*$, is calculated using the **standard normal distribution**:
+
+$z^* = \Phi^{-1} (1 - \alpha)$
+
+As we know the value for the population standard deviation, we can use this formula on our example data as well:
+
+```{python}
+# Descriptive statistics
+n = len(x)  # Sample size
+x_bar = np.mean(x)  # Mean
+sigma = 5  # Population standard deviation
+
+# Desired confidence level
+C = 0.95
+
+# Calculate confidence interval
+alpha = (1 - C) / 2
+z_star = norm.ppf(alpha)
+ci_lower_2 = x_bar + z_star * sigma / np.sqrt(n)
+ci_upper_2 = x_bar - z_star * sigma / np.sqrt(n)
+
+print(f'We are 95% sure that the true mean lies between {ci_lower_2:4.1f} and {ci_upper_2:5.1f}')
+```
+
+As you can see, the confidence interval as calculated using the population standard deviation (ie using $\sigma$) is narrower than when using the sample standard deviation (ie using $s$). This makes sense: if you know more information (ie the true standard deviation as opposed to an estimate) you would expect a better estimate of the true mean. Unfortunately, in most real-world situations you don't know the true standard deviation of the population.
+
+> Note: for a confidence interval of 95% the $z^*$ value is ~1.960 which can be rounded up to 2 if there is a need to keep the calculation simple. This will give approximately the same end result because a $z^*$ value of 2 corresponds to ~95.44997% confidence.
+
+Here are our results represented on a scatter plot:
+
+```{python, eval=FALSE}
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
+ax.scatter(x, y, s=10)
+ax.set_title(r'95\% Confidence Intervals for the True Mean')
+# Vertical lines
+ax.axvline(100, c='k', ls='--')
+ax.vlines(ci_lower, 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_upper, 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_lower_2, 0, 1, colors='b', linestyles='dashed')
+ax.vlines(ci_upper_2, 0, 1, colors='b', linestyles='dashed')
+# Arrows
+ax.arrow(ci_lower, 1.5, ci_upper - ci_lower, 0, head_width=0.15, color='g', length_includes_head=True)
+ax.arrow(ci_upper, 1.5, ci_lower - ci_upper, 0, head_width=0.15, color='g', length_includes_head=True)
+ax.arrow(ci_lower_2, 0.5, ci_upper_2 - ci_lower_2, 0, head_width=0.15, color='b', length_includes_head=True)
+ax.arrow(ci_upper_2, 0.5, ci_lower_2 - ci_upper_2, 0, head_width=0.15, color='b', length_includes_head=True)
+# Remove axes and add arrows on x-axis
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.arrow(100, 0, 16, 0, head_width=0.2, color='k', clip_on=False)
+ax.arrow(100, 0, -11.5, 0, head_width=0.2, color='k', clip_on=False)
+# Axes' settings
+ax.set_ylim(0, 2)
+ax.set_xlim(88.5, 116)
+ax.tick_params(axis='y', left=False, labelleft=False)
+# Legend
+ax.plot(0, 0, 'g', label='Using $s$')
+ax.plot(0, 0, 'b', label=r'Using $\sigma$')
+ax.legend()
+# Finish
+plt.subplots_adjust(left=0.1, bottom=0.2, right=0.9, top=0.8)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
+ax.scatter(x, y, s=10)
+ax.set_title(r'95\% Confidence Intervals for the True Mean')
+# Vertical lines
+ax.axvline(100, c='k', ls='--')
+ax.vlines(ci_lower, 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_upper, 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_lower_2, 0, 1, colors='b', linestyles='dashed')
+ax.vlines(ci_upper_2, 0, 1, colors='b', linestyles='dashed')
+# Arrows
+ax.arrow(ci_lower, 1.5, ci_upper - ci_lower, 0, head_width=0.15, color='g', length_includes_head=True)
+ax.arrow(ci_upper, 1.5, ci_lower - ci_upper, 0, head_width=0.15, color='g', length_includes_head=True)
+ax.arrow(ci_lower_2, 0.5, ci_upper_2 - ci_lower_2, 0, head_width=0.15, color='b', length_includes_head=True)
+ax.arrow(ci_upper_2, 0.5, ci_lower_2 - ci_upper_2, 0, head_width=0.15, color='b', length_includes_head=True)
+# Remove axes and add arrows on x-axis
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.arrow(100, 0, 16, 0, head_width=0.2, color='k', clip_on=False)
+ax.arrow(100, 0, -11.5, 0, head_width=0.2, color='k', clip_on=False)
+# Axes' settings
+ax.set_ylim(0, 2)
+ax.set_xlim(88.5, 116)
+ax.tick_params(axis='y', left=False, labelleft=False)
+# Legend
+ax.plot(0, 0, 'g', label='Using $s$')
+ax.plot(0, 0, 'b', label=r'Using $\sigma$')
+ax.legend()
+# Finish
+plt.subplots_adjust(left=0.1, bottom=0.2, right=0.9, top=0.8)
+plt.show()
+```
+
+The true mean (100) lies inside both of the confidence intervals.
+
+Sample Size Calculations
+========================
+If you want to set up an experiment, how many samples should you include?
+
+Let's imagine you are running an experiment with two populations - a control group and an experimental group - and take one measurement from each participant. This will allow you to calculate a mean, and a confidence interval for that mean, for that variable for each group. Now, if the two confidence intervals for the two means were to be so large that they overlapped each other we would have a problem; we couldn't be sure that the means were different or even which one was larger! Thus, we want to be able to ensure that, if the means of our groups are indeed different, our confidence intervals will be smaller than the difference between them. Of course, we can't control what the **sample standard deviation** ($s$) or the difference between the means of our results are going to be beforehand, but what we can do is estimate what they might be (and what a **meaningful difference between the means** ($\delta$) would actually be) and plug those into the formula for the width of a confidence interval:
+
+$t^* \times\frac{s}{\sqrt{n}} < \delta$
+
+In other words, we want *the width of the confidence intervals to be smaller than the smallest meaningful difference* between the mean. This can be re-arranged to be in terms of the **sample size** ($n$):
+
+$n > \left( t^* \times\frac{s}{\delta}\right)^2$
+
+The above formula can be used as a guide when choosing the sample size for an experiment.
+
+[⇦ Back](../../python.html)
+
+</font>
