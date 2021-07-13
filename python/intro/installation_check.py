@@ -48,7 +48,8 @@ elif platform.system() == 'Darwin':
         '10.12': 'Sierra',
         '10.13': 'High Sierra',
         '10.14': 'Mojave',
-        '10.15': 'Catalina'
+        '10.15': 'Catalina',
+        '11': 'Big Sur',
     }
     OS = macOS_vers[platform.mac_ver()[0][:5]]
     print(f'Its OS is macOS {OS}')

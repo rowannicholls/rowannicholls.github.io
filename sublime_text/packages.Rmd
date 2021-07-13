@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Sublime Text 3</font><br>Packages'
+title: '<font size="5">Sublime Text 4</font><br>Packages'
 output:
     html_document:
         theme: paper
@@ -19,18 +19,18 @@ Install Packages
 To install packages:
 
 - Install **Package Control** (Tools > Install Package Control...)
-- Close and re-open Sublime Text once this is done
-- Open Command Palette (Menu bar > Tools > Command Palette... or one of the following key bindings:)
+- Close and re-open Sublime Text once it's finished
+- Open **Command Palette** (Menu bar > Tools > Command Palette... or one of the following key bindings:)
     - *macOS:* Shift+Cmd+P
-    - *Windows/Linux:* Shift+Ctrl+P
-- Search "Install Package" > Enter > search for the package you want to install
+    - *Windows/Linux:* Ctrl+Shift+P
+- Search **Install Package** > Enter > search for the package you want to install
 - Close and re-open Sublime Text after each installation
 
 > **_Note:_** to see where package configuration files are stored, go to Preferences > Browse Packages...
 
 <!-- *macOS:* /Users/&lt;username&gt;/Library/Application Support/Sublime Text 3/Packages -->
 
-To uninstall packages, go to Command Palette > search for "Remove Package" > Enter > select package to remove
+To uninstall packages, go to Command Palette > search for "Remove Package" > Enter > select the package you want to remove
 
 Packages I Recommend
 ====================
@@ -79,9 +79,12 @@ Packages I Recommend
     - See the live word count in the status bar
 - **Pretty JSON**
     - Make JSON files more readable
-    - Key bindings:
-        - *macOS:* Ctrl+Cmd+J
-        - *Windows/Linux:* Ctrl+Alt+J
+    - To use, open a JSON file and go to the Command Palette (Ctrl+Shift+P) > search for and run "Pretty JSON: Format JSON"
+    - This command used to have a keybinding assigned to it automatically, but this is no longer the case. It can be added manually, however, by going to Preferences > Key Bindings. In the right-hand side (the user keybindings file) paste:
+    ```json
+        /* Pretty JSON */
+        { "keys": ["ctrl+alt+j"], "command": "pretty_json" }
+    ```
 - **MarkdownEditing**
     - A general Markdown plugin. See more about using Markdown in Sublime Text [here](markdown.html).
     + *Note:* this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) to fix it.

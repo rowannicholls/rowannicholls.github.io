@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Sublime Text 3</font><br>Using Markdown in Sublime Text'
+title: '<font size="5">Sublime Text 4</font><br>Using Markdown in Sublime Text'
 output:
     html_document:
         theme: paper
@@ -51,7 +51,6 @@ To create custom key bindings, go to Preferences > Key Bindings and edit the rig
 ```json
 [
     /* Markdown */
-
     // Render Markdown in browser
     { "keys": ["shift+alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser": "markdown"} },
     // Overwrite MardownEditing's key bindings

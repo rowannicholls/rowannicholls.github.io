@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Sublime Text 3</font><br>Key Bindings'
+title: '<font size="5">Sublime Text 4</font><br>Key Bindings'
 output:
     html_document:
         theme: paper
@@ -55,7 +55,7 @@ Default Key Bindings
 | Outdent                    | Cmd+]                      | Ctrl+]              | Cmd/Ctrl swap |
 | Select next instance       | Cmd+D                      | Ctrl+D              | Cmd/Ctrl swap |
 
-*The following are key mapppings on a Mac keyboard:*
+*The following are general key mapppings on a Mac keyboard:*
 
 | Key    | Mac keyboard mapping |
 |:-------|:---------------------|
@@ -71,7 +71,6 @@ Default Key Bindings
 |:-------------------------|:---------------------------------|:-----------------|:-----------------|
 | SublimeREPL              | Run current Python file          | Ctrl+Alt+P       | Ctrl+Alt+P       |
 | Markdown Table Formatter | Align columns in Markdown tables | Shift+Ctrl+Alt+T | Shift+Ctrl+Alt+T |
-| PrettyJSON               | Make JSON more readable          | Ctrl+Cmd+J       | Ctrl+Alt+J       |
 
 Custom Key Bindings
 ===================
@@ -90,6 +89,7 @@ Custom Key Bindings
 | None            | Run R Markdown             | Shift+Alt+D            |
 | None            | Run Bash                   | Shift+Alt+B            |
 | Terminus        | Open terminal here         | Shift+Alt+T            |
+| Pretty JSON     | Make JSON more readable    | Ctrl+Alt+J             |
 
 Here's my Default.sublime-keymap file that implements the above key bindings:
 
@@ -99,7 +99,6 @@ Here's my Default.sublime-keymap file that implements the above key bindings:
     { "keys": ["ctrl+alt+s"], "command": "save_all" },
     
     /* Markdown */
-
     // Render Markdown in browser
     { "keys": ["shift+alt+m"], "command": "markdown_preview", "args": {"target": "browser", "parser": "markdown"} },
     // Overwrite MardownEditing's key bindings
@@ -110,33 +109,61 @@ Here's my Default.sublime-keymap file that implements the above key bindings:
     { "keys": ["ctrl+5"], "command": "focus_group", "args": { "group": 4 } },
     
     /* Python */
-
     // Python in SublimeREPL
-    { "keys": ["shift+ctrl+alt+p"], "command": "run_existing_window_command", "args": {"id": "repl_python_run", "file": "config/Python/Main.sublime-menu"} },
+    {
+        "keys": ["shift+ctrl+alt+p"], "command": "run_existing_window_command", "args": {
+            "id": "repl_python_run", "file": "config/Python/Main.sublime-menu"
+        }
+    },
     // Python in Build system
-    { "keys": ["shift+alt+p"], "command": "build", "args": {"build_system": "Packages/User/python3.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    {
+        "keys": ["shift+alt+p"], "command": "build", "args": {
+            "build_system": "Packages/User/python3.sublime-build", "variant": "", "choice_build_system": true,
+            "choice_variant": true
+        }
+    },
     
     /* Latex */
-
-    { "keys": ["shift+alt+l"], "command": "build", "args": {"build_system": "Packages/LaTeXTools/LaTeX.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    {
+        "keys": ["shift+alt+l"], "command": "build", "args": {
+            "build_system": "Packages/LaTeXTools/LaTeX.sublime-build", "variant": "", "choice_build_system": true,
+            "choice_variant": true
+        }
+    },
     
     /* R */
-    
     // R in Build system
-    { "keys": ["shift+alt+r"], "command": "build", "args": {"build_system": "Packages/User/R.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    {
+        "keys": ["shift+alt+r"], "command": "build", "args": {
+            "build_system": "Packages/User/R.sublime-build", "variant": "", "choice_build_system": true,
+            "choice_variant": true
+        }
+    },
     // R Markdown in Build system
-    { "keys": ["shift+alt+d"], "command": "build", "args": {"build_system": "Packages/User/Rmarkdown.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    {
+        "keys": ["shift+alt+d"], "command": "build", "args": {
+            "build_system": "Packages/User/Rmarkdown.sublime-build", "variant": "", "choice_build_system": true,
+            "choice_variant": true
+        }
+    },
     
     /* Bash */
-
     // Bash in Build system
-    { "keys": ["shift+alt+b"], "command": "build", "args": {"build_system": "Packages/User/bash.sublime-build", "variant": "", "choice_build_system": true, "choice_variant": true} },
+    {
+        "keys": ["shift+alt+b"], "command": "build", "args": {
+            "build_system": "Packages/User/bash.sublime-build", "variant": "", "choice_build_system": true,
+            "choice_variant": true
+        }
+    },
     // Termius
-    { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} }
+    { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} },
+
+    /* Pretty JSON */
+    { "keys": ["ctrl+alt+j"], "command": "pretty_json" }
 ]
 ```
 
-Use the 'default' Default.sublime-keymap file (ie the one the opens on the left-hand side when you go to Preferences > Key Bindings) to figure out what commands exist and how to re-bind them. Also take a look at the [key bindings documentation](https://www.sublimetext.com/docs/3/key_bindings.html).
+Use the 'default' Default.sublime-keymap file (ie the one the opens up on the left-hand side when you go to Preferences > Key Bindings) to figure out what commands exist and how to re-bind them. Also take a look at the [key bindings documentation](https://www.sublimetext.com/docs/key_bindings.html).
 
 [⇦ Back](../sublime_text.html)
 

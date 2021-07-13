@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Sublime Text 3</font><br>Installation and Setup Guide'
+title: '<font size="5">Sublime Text 4</font><br>Installation and Setup Guide'
 output:
     html_document:
         theme: paper
@@ -46,9 +46,18 @@ Installation {.tabset}
 
 macOS
 -----
-On *macOS Sierra, Mojave and Catalina* install Sublime Text from its [download page](https://www.sublimetext.com/3).
+On macOS, download Sublime Text from its [download page](https://www.sublimetext.com/download). This works for:
 
-Check that it works by opening the terminal (Cmd+Space to open Spotlight Search then search for "terminal") and running:
+- Mavericks
+- Yosemite
+- El Capitan
+- Sierra
+- High Sierra
+- Mojave
+- Catalina
+- Big Sur
+
+After installing it, check that it's worked by opening the terminal (Cmd+Space to open Spotlight Search then search for "terminal") and running:
 
 ```bash
 sublime --version
@@ -66,15 +75,15 @@ Ubuntu
 ------
 
 - *Ubuntu 20.04*
-    - Install from the Ubuntu Software app
+    - Install Sublime Text from the Ubuntu Software app that comes pre-installed with Ubuntu
+    - Check that it's worked by running `subl --version` at the terminal. It should return a build number.
 - *Ubuntu 18.04*
-    - Download Sublime Text from the Ubuntu Software app that comes pre-installed with Ubuntu
-    - Check that it works by running `subl --version` at the terminal. It should return a build number.
+    - Install Sublime Text from the Ubuntu Software app
     - *Updating Sublime Text:* It appears that there is a bit of a delay between a new version being released and it being available on snap (Ubuntu Software). When it does become available it gets downloaded automatically, but there will be a period during which every time you open Sublime Text it notifies you that a new version is available. It's annoying but just ignore it until it goes away. Don't try and download the latest version manually because it will try to install a separate version of Sublime parallel to the snap one. That could get complicated, so just leave it.
 - *Ubuntu 16.04*
     - Install from the terminal with:
-    ```{bash, eval = FALSE}
-    sudo add-apt-repository ppa:webupd8team/sublime-text-3
+    ```bash
+    sudo add-apt-repository ppa:webupd8team/sublime-text-4
     sudo apt-get update
     sudo apt-get install sublime-text-installer
     ```
@@ -103,7 +112,7 @@ subl <filename>
 
 Windows
 -------
-On *Windows 7, 8 & 10* install Sublime Text from its [download page](https://www.sublimetext.com/3).
+On *Windows 7, 8 & 10* install Sublime Text from its [download page](https://www.sublimetext.com/download).
 
 You can open a file in Sublime Text from the command prompt with:
 
@@ -124,10 +133,10 @@ If this doesn't work, it's probably because Sublime Text is not added to your PA
 General Sublime Text Configuration
 ==================================
 - If the default behaviour is to open new files in a new window, you can change this so that they open in the same window:
-    - Sublime Text > Preferences > Settings > right-hand-side (User settings)
+    - Preferences > Settings > right-hand-side (User settings)
     - Add `"open_files_in_new_window": false`
 - *macOS Sierra:*
-    - The default behaviour is to add a full stop when space bar is pressed twice. This is a Sierra thing, not a Sublime Text thing.
+    - The default behaviour is for a full stop to be added when the space bar is pressed twice. This is a Sierra thing, not a Sublime Text thing.
     - It can be disabled by going to System Preferences > Keyboard > Text > deselect "Add period with double-space" on the right
 
 **If Sublime Text is not in the 'Open With' Menus:**
@@ -135,11 +144,12 @@ General Sublime Text Configuration
 - *Ubuntu 18.04:*
     - Right-click on a file > Open With Other Application > Sublime Text
     - This should change the default for this file type so that it will always open with Sublime Text.
-    - In reality, this works for some file types but not for others. For these, you need to manually make Sublime Text the default editor.
+    - In reality, this works for some file types but not for others. For these, you need to manually make Sublime Text the default editor:
+        + Right-click on the file > Properties > Open With > select Sublime Text > Set as default
 - *Ubuntu 16.04:*
     - Copy the contents of `/usr/share/applications/sublime_text.desktop` and paste them in here: `~/.local/share/applications/sublime_text.desktop`
     - Then, in the terminal, run:
-    ```{bash, eval = FALSE}
+    ```bash
     sudo update-desktop-database
     ```
 
