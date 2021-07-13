@@ -1,0 +1,388 @@
+---
+title: '<font size="5">Curve Fitting in Python:</font><br>Linear Functions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+```
+
+If you have a set of data points that look like they’re increasing **steadily**, it might be useful to fit a **straight line** to them in order to describe the general shape of the data:
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+import numpy as np
+from scipy import stats
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210713)
+
+# Create fake x-data
+x = np.arange(1, 11)
+# Create fake y-data
+m = 2
+c = 10
+y = m * x + c
+y = y + np.random.normal(scale=np.sqrt(np.mean(y)), size=len(x))  # Add noise
+
+# Linear regression model
+gradient, intercept, r_value, p_value, slope_std_error = stats.linregress(x, y)
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x, gradient * x + intercept, 'k', label='Fitted curve')
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+The line that you need to fit in order to achieve this shape will be one that is described by a **linear function**, that is any function of the form:
+
+$y = mx + c$
+
+The important thing to notice is that *a linear function can be fully defined with two constants*.
+
+This tutorial will use three methods for fitting linear functions, in increasing order of complexity of the Python command involved:
+
+1. Scipy's `linregress()`
+2. Numpy's `polyfit()`
+3. Scipy's `curve_fit()`
+
+...but first, we need some data to fit the curves to:
+
+Example Data
+============
+For this tutorial, let's create some fake data to use as an example. This should be a set of points whose y-values increase proportionally to their x-values (if they don't do this our attempts to fit a linear curve to them won't work well!), with some random noise thrown in to mimic real-world data:
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210713)
+
+# Create fake x-data
+x = np.arange(1, 11)
+# Create fake y-data
+m = 2
+c = 10
+y = m * x + c
+y = y + np.random.normal(scale=np.sqrt(np.mean(y)), size=len(x))  # Add noise
+
+# Print
+_ = [print(f'({x[i]}, {y[i]:4.1f})') for i in np.arange(len(x))]
+```
+
+The random noise is being added with the `random.normal()` function from Numpy which draws random samples from a normal (Gaussian) distribution. Let's take a look at what this example data looks like on a scatter plot:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+plt.show()
+```
+
+Method 1: linregress
+====================
+From Scipy's `stats` sub-package we can import the `linregress()` function which performs **lin**ear **regress**ion. This is purpose-built for fitting linear curves: it takes the x- and y-data as inputs and returns all the results related to the regression procedure:
+
+```{python}
+from scipy import stats
+
+# Linear regression model
+gradient, intercept, r_value, p_value, slope_std_error = stats.linregress(x, y)
+```
+
+The results can be used as follows:
+
+```{python}
+import numpy as np
+
+# Line of best fit
+predict_y = gradient * x + intercept
+# Associated error
+pred_error = y - predict_y
+degrees_of_freedom = len(x) - 2
+residual_std_error = np.sqrt(np.sum(pred_error**2) / degrees_of_freedom)
+```
+
+Let's take a look at the line of best fit superimposed over our raw data with the true relationship (ie the function that we used to create our example data) added in as well:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
+ax.plot(x, predict_y, 'k', label='Line of best fit')
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
+ax.plot(x, predict_y, 'k', label='Line of best fit')
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+Method 2: polyfit
+=================
+The `polyfit()` command from Numpy is used to fit a polynomial function to data. Of course, a linear function IS a polynomial function (it's a polynomial of degree 1) so we can go right ahead and run `polyfit()` with the following three arguments:
+
+- `x` - the x-values of your data
+- `y` - the y-values of your data
+- `1` - the degree of the polynomial you want to fit
+
+The function will return `p`, the **p**olynomial coefficients of the fitted line. In our case, these are the values $m$ and $c$ from the equation $y = mx + c$, as shown below:
+
+```{python}
+import numpy as np
+
+# Fit a polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(x, y, 1)
+
+# Extract the parameters
+m = p[0]
+c = p[1]
+
+print(f'The equation of the line of best fit is y = {m:4.2f}x + {c:4.2f}')
+```
+
+Here it is drawn out:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
+ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
+ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+Method 3: curve_fit
+===================
+From the Scipy package we can get the `curve_fit()` function. This is more general than `polyfit()` in that we can fit *any* type of function we like - not just polynomials - but it's more complicated in that we sometimes need to provide an initial guess as to what the constants could be in order for it to work.
+
+In order to fit the function $y = mx + c$ to our data we need to define it as a *lambda function* (ie as an object rather than as a command) of a dummy variable $t$. We can then use the `curve_fit()` function to fit this *object* to the x- and y-data. Note that the `curve_fit()` function needs to be imported from the `scipy.optimize` sub-package:
+
+```{python}
+from scipy.optimize import curve_fit
+
+# Fit the function m * t + c to x and y
+popt, pcov = curve_fit(lambda t, m, c: m * t + c, x, y)
+```
+
+> Note that we need to remove any values that are equal to zero from our y-data (and their corresponding x-values from the x-data) for this to work, although there aren't any of these in this example data so it's not relevant here
+
+The first output, `popt`, is a list of the **opt**imised values for the **p**arameters which, in our case, are the constants $m$ and $c$:
+
+```{python}
+m = popt[0]
+c = popt[1]
+```
+
+Let's see what this looks like:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
+ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
+ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+Comparison of Methods
+=====================
+The lines of best fit created by the three methods all look the same on the graphs, but are they actually the same? Let's compare their output parameters:
+
+```{python}
+# Method 1
+p = stats.linregress(x, y)
+m1 = p[0]
+c1 = p[1]
+
+# Method 2
+p = np.polyfit(x, y, 1)
+m2 = p[0]
+c2 = p[1]
+
+# Method 3
+popt, pcov = curve_fit(lambda t, m, c: m * t + c, x, y)
+m3 = popt[0]
+c3 = popt[1]
+
+print(f'Values of m: {m1:5.3f}, {m2:5.3f}, {m3:5.3f}. Values of c: {c1:5.3f}, {c2:5.3f}, {c3:5.3f}')
+```
+
+Yep, they all give the same results! For linear curve-fitting, you can use any one of them.
+
+[⇦ Back](../../python.html)
+
+</font>
