@@ -1,0 +1,602 @@
+---
+title: '<font size="5">Curve Fitting in Python:</font><br>Logarithmic Functions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+```
+
+If you have a set of data points that look like they initially increase rapidly before tailing off, it might be useful to fit them with a smooth, logarithmically increasing line in order to describe their general shape:
+
+```{python, echo=FALSE, results='hide'}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210714)
+
+# Create fake x-data
+x = np.arange(1, 11)
+# Create fake y-data
+a = 5
+b = 2
+c = 0
+y = a * np.log(x - c) + b
+y = y + np.random.normal(scale=0.05 * max(y), size=len(x))  # Add noise
+
+# Fit a polynomial of degree 1 (a linear function) to the data
+p = np.polyfit(np.log(x), y, 1)
+
+# Construct the fitted curve
+a = p[0]
+b = p[1]
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k--', label='Fitted line')
+ax.set_title('An example of data fittted with a logarithmically increasing line')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+```
+
+The line that you need to fit in order to achieve this shape will be one that is described by a logarithmic function, that is any function of the form:
+
+$y = a \times\ln\left(x - c\right) + b$
+
+where $\ln$ is the natural logarithm ($\log_e$). The important thing to realise is that *a logarithmic function can be fully defined with three constants*. The above formulation of a logarithmic function can be written in Python as `a * np.log(x - c) + b` where `log()` is the natural logarithm function as provided by the Numpy package (renamed `np` in our examples).
+
+Example Data
+============
+For this tutorial, let's create some fake data to use as an example. This should be a set of points that increase logarithmically (or else our attempts to fit a logarithmic curve to them won't work well!) with some random noise thrown in to mimic real-world data:
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210714)
+
+# Create fake x-data
+x = np.arange(1, 11)
+# Create fake y-data
+a = 5
+b = 2
+c = 0.3
+y = a * np.log(x - c) + b
+y = y + np.random.normal(scale=0.05 * max(y), size=len(x))  # Add noise
+```
+
+The random noise is being added with the `random.normal()` function from Numpy which draws random samples from a normal (Gaussian) distribution. Let's take a look at what this example data looks like on a scatter plot:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+plt.show()
+```
+
+Method 1: polyfit
+=================
+> This method only works when $c = 0$, ie when you want to fit a curve with equation $y = a \times\ln\left(x\right) + b$ to your data. If you want to fit a curve with equation $y = a \times\ln\left(x - c\right) + b$ with $c \neq 0$ you will need to use method 2.
+
+The `polyfit()` command from Numpy is used to fit a polynomial function to data. This might seem a little strange: why are we trying to fit a *polynomial function* to the data when we want to fit a *logarithmic function*? The answer is that we can convert a logarithmic function into a polynomial one by using the fact that $y = a \times\ln\left(x\right) + b$ is linear in $\ln(x)$. In other words, we can create a linear equation $f(t) = mt + c$ where:
+
+- $f(t) = y$
+- $t = \ln(x)$
+- $m = a$
+- $c = b$
+
+So `polyfit()` can be used to fit $y$ against $\ln(x)$ with a polynomial of degree 1 (aka a linear curve):
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210714)
+
+# Create fake x-data
+x = np.arange(1, 11)
+# Create fake y-data
+a = 5
+b = 2
+y = a * np.log(x) + b
+y = y + np.random.normal(scale=0.05 * max(y), size=len(x))  # Add noise
+
+# Fit a polynomial of degree 1 (a linear function) to the data
+t = np.log(x)
+p = np.polyfit(t, y, 1)
+```
+
+The parameter coefficients can now be extracted and used to create the fitted curve:
+
+```{python}
+# Construct the fitted curve
+a = p[0]
+b = p[1]
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.log(x_fitted) + b
+```
+
+Let's take a look at the fit (with the true underlying logarithmic behaviour of our created data included for comparison):
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# True underlying logarithmic behaviour
+x_true = np.linspace(np.min(x), np.max(x), 100)
+y_true = 5 * np.log(x_true - 0.3) + 2
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_true, y_true, 'k--', label='True underlying logarithmic behaviour')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title('Using polyfit() to fit a logarithmic function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# True underlying logarithmic behaviour
+x_true = np.linspace(np.min(x), np.max(x), 100)
+y_true = 5 * np.log(x_true - 0.3) + 2
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_true, y_true, 'k--', label='True underlying logarithmic behaviour')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title('Using polyfit() to fit a logarithmic function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+Method 2: curve_fit
+===================
+From the Scipy pacakge we can get the `curve_fit()` function. This is more general than `polyfit()` - we can fit *any* type of function we like, not just polynomials - but it's more complicated in that we sometimes need to provide an initial guess as to what the constants could be in order for it to work.
+
+Let's use our original example data (ie with $c \neq 0$):
+
+```{python, eval=FALSE}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210714)
+
+# Create fake x-data
+x = np.arange(1, 11)
+# Create fake y-data
+a = 5
+b = 2
+c = 0.3
+y = a * np.log(x - c) + b
+y = y + np.random.normal(scale=0.05 * max(y), size=len(x))  # Add noise
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210714)
+
+# Create fake x-data
+x = np.arange(1, 11)
+# Create fake y-data
+a = 5
+b = 2
+c = 0.3
+y = a * np.log(x - c) + b
+y = y + np.random.normal(scale=0.05 * max(y), size=len(x))  # Add noise
+
+# Create a plot
+ax = plt.axes()
+ax.scatter(x, y)
+ax.set_title('Example Data')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+plt.show()
+```
+
+Now let's fit the function $y = a \times\ln\left(x - c\right) + b$. This is done by defining it as a **lambda function** (ie as an *object* rather than as a command) of a dummy variable $t$ and using the `curve_fit()` function to fit this object to the x- and y-data. Note that the `curve_fit()` function needs to be imported from the `scipy.optimize` sub-package:
+
+```{python, eval=FALSE}
+from scipy.optimize import curve_fit
+
+# Fit the function a * np.log(t - c) + b to x and y
+popt, pcov = curve_fit(lambda t, a, b, c: a * np.log(t - c) + b, x, y)
+```
+
+```{python, echo=FALSE, results='hide'}
+from scipy.optimize import curve_fit
+
+# Fit the function a * np.log(t - c) + b to x and y
+popt, pcov = curve_fit(lambda t, a, b, c: a * np.log(t - c) + b, x, y)
+```
+
+The first output, `popt`, is a list of the **opt**imised values for the **p**arameters which, in our case, are the constants $a$, $b$ and $c$:
+
+```{python}
+a = popt[0]
+b = popt[1]
+c = popt[2]
+```
+
+Let's see what this looks like:
+
+```{python, eval=FALSE}
+# Create the fitted curve
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title(r'Using curve\_fit() to fit a logarithmic function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Create the fitted curve
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title(r'Using curve\_fit() to fit a logarithmic function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+That's a terrible fit! The reason it's gone wrong is because the optimisation algorithm behind `curve_fit()` got overwhelmed by having to guess-and-optimise three constants at the same time and so probably chose the wrong local minima somewhere. The way to help it along is by providing it with an **initial guess** `p0` of what the parameters are in order to give it an idea of what numbers to look at:
+
+```{python}
+# Have an initial guess as to what the values of the parameters are
+# (we happen to know that the exact values of the constants are a = 5, b = 2 and
+# c = 0.3, but let's make our guess a = 6, b = 1.5, c = 0.2 in order to give the
+# algorithm something to do)
+a_guess = 6
+b_guess = 1.5
+c_guess = 0.2
+
+# Fit the function a * np.log(t - c) + b to x and y
+popt, pcov = curve_fit(
+    lambda t, a, b, c: a * np.log(t - c) + b, x, y,
+    p0=(a_guess, b_guess, c_guess)
+)
+
+# The optimised values of the parameters are
+a = popt[0]
+b = popt[1]
+c = popt[2]
+
+print(a, b, c)
+```
+
+These aren't particularly close to the true values of the constants, but the fitted curve they create is pretty good nonetheless:
+
+```{python, eval=FALSE}
+# True underlying logarithmic behaviour
+x_true = np.linspace(np.min(x), np.max(x), 100)
+y_true = 5 * np.log(x_true - 0.3) + 2
+
+# Create the fitted curve
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_true, y_true, 'k--', label='True underlying logarithmic behaviour')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title(r'Using curve\_fit() with an initial guess')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# True underlying logarithmic behaviour
+x_true = np.linspace(np.min(x), np.max(x), 100)
+y_true = 5 * np.log(x_true - 0.3) + 2
+
+# Create the fitted curve
+x_fitted = np.linspace(np.min(x), np.max(x), 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Plot
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_true, y_true, 'k--', label='True underlying logarithmic behaviour')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_title(r'Using curve\_fit() with an initial guess')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+An initial guess has improved the result considerably!
+
+Interpolation and Extrapolation (Forecasting/Predicting/Estimating)
+===============================
+We can use the fitted curve to estimate what our data would be for other values of $x$ that are not in our raw dataset: what would the value be at $x=12$ (which is outside of our domain and thus requires us to forecast into the future) or $x = 8.5$ (which is inside of our domain and thus requires us to 'fill in a gap' in our data)? To answer these questions, we simply plug these x-values as numbers into the equation of the fitted curve:
+
+```{python, eval=FALSE}
+# Provide an initial guess
+a_guess = 6
+b_guess = 1.5
+c_guess = 0.2
+# Fit the function a * np.log(t - c) + b to x and y
+popt, pcov = curve_fit(
+    lambda t, a, b, c: a * np.log(t - c) + b, x, y,
+    p0=(a_guess, b_guess, c_guess)
+)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+c = popt[2]
+# Create the model function
+x_fitted = np.linspace(np.min(x), 12.5, 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Extrapolation
+y_12 = a * np.log(12 - c) + b
+
+# Interpolation
+y_8_5 = a * np.log(8.5 - c) + b
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label=r'Fitted curve')
+# Add result of extrapolation
+ax.plot([12, 12], [0, y_12], 'k--', label=r'$x=12$')
+ax.plot([0, 12], [y_12, y_12], 'k--')
+# Add result of interpolation
+ax.plot([8.5, 8.5], [0, y_8_5], 'k:', label=r'$x=8.5$')
+ax.plot([0, 8.5], [y_8_5, y_8_5], 'k:')
+ax.set_title(r'Using curve\_fit() to extrapolate and interpolate')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Provide an initial guess
+a_guess = 6
+b_guess = 1.5
+c_guess = 0.2
+# Fit the function a * np.log(t - c) + b to x and y
+popt, pcov = curve_fit(
+    lambda t, a, b, c: a * np.log(t - c) + b, x, y,
+    p0=(a_guess, b_guess, c_guess)
+)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+c = popt[2]
+# Create the model function
+x_fitted = np.linspace(np.min(x), 12.5, 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Extrapolation
+y_12 = a * np.log(12 - c) + b
+
+# Interpolation
+y_8_5 = a * np.log(8.5 - c) + b
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.scatter(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label=r'Fitted curve')
+# Add result of extrapolation
+ax.plot([12, 12], [0, y_12], 'k--', label=r'$x=12$')
+ax.plot([0, 12], [y_12, y_12], 'k--')
+# Add result of interpolation
+ax.plot([8.5, 8.5], [0, y_8_5], 'k:', label=r'$x=8.5$')
+ax.plot([0, 8.5], [y_8_5, y_8_5], 'k:')
+ax.set_title(r'Using curve\_fit() to extrapolate and interpolate')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.set_ylim(0)
+ax.set_xlim(0)
+ax.legend()
+plt.show()
+```
+
+More explicitly:
+
+```{python}
+print(f'x = 12 implies y = {y_12:5.2f}; x = 8.5 implies y = {y_8_5:5.2f}')
+```
+
+Using a Bar Plot
+================
+If you want to use a bar plot instead of a scatter plot:
+
+```{python, eval=FALSE}
+# Provide an initial guess
+a_guess = 6
+b_guess = 1.5
+c_guess = 0.2
+# Fit the function a * np.log(t - c) + b to x and y
+popt, pcov = curve_fit(
+    lambda t, a, b, c: a * np.log(t - c) + b, x, y,
+    p0=(a_guess, b_guess, c_guess)
+)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+c = popt[2]
+# Create the model function
+x_fitted = np.linspace(np.min(x), 10, 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Plot
+ax = plt.axes()
+ax.bar(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_xticks(x)
+ax.set_xticklabels([
+    'One', 'Two', 'Three', 'Four', 'Five',
+    'Six', 'Seven', 'Eight', 'Nine', 'Ten'
+])
+ax.set_xlim([1.5, len(y) + 0.5])
+ax.tick_params(axis='x', length=0, labelsize=6)
+xlocs = np.arange(len(y) + 1) + 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_title(r'Using curve\_fit() to fit a logarithmic function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.legend()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Provide an initial guess
+a_guess = 6
+b_guess = 1.5
+c_guess = 0.2
+# Fit the function a * np.log(t - c) + b to x and y
+popt, pcov = curve_fit(
+    lambda t, a, b, c: a * np.log(t - c) + b, x, y,
+    p0=(a_guess, b_guess, c_guess)
+)
+# Extract the optimised parameters
+a = popt[0]
+b = popt[1]
+c = popt[2]
+# Create the model function
+x_fitted = np.linspace(np.min(x), 10, 100)
+y_fitted = a * np.log(x_fitted - c) + b
+
+# Plot
+ax = plt.axes()
+ax.bar(x, y, label='Raw data')
+ax.plot(x_fitted, y_fitted, 'k', label='Fitted curve')
+ax.set_xticks(x)
+ax.set_xticklabels([
+    'One', 'Two', 'Three', 'Four', 'Five',
+    'Six', 'Seven', 'Eight', 'Nine', 'Ten'
+])
+ax.set_xlim([1.5, len(y) + 0.5])
+ax.tick_params(axis='x', length=0, labelsize=6)
+xlocs = np.arange(len(y) + 1) + 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_title(r'Using curve\_fit() to fit a logarithmic function')
+ax.set_ylabel('y-Values')
+ax.set_xlabel('x-Values')
+ax.legend()
+plt.show()
+```
+
+[⇦ Back](../../python.html)
+
+</font>
