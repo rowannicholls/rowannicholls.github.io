@@ -22,7 +22,7 @@ To install packages:
 - Close and re-open Sublime Text once it's finished
 - Open **Command Palette** (Menu bar > Tools > Command Palette... or one of the following key bindings:)
     - *macOS:* Shift+Cmd+P
-    - *Windows/Linux:* Ctrl+Shift+P
+    - *Windows & Ubuntu:* Ctrl+Shift+P
 - Search **Install Package** > Enter > search for the package you want to install
 - Close and re-open Sublime Text after each installation
 
@@ -41,7 +41,7 @@ Packages I Recommend
     - To open a terminal in its own panel:
         - Open the Command Palette:
             - *macOS:* Shift+Cmd+P
-            - *Windows/Linux:* Shift+Ctrl+P
+            - *Windows & Ubuntu:* Shift+Ctrl+P
         - Search for "Terminus: Open Default Shell in Panel" > Enter
     - To open a terminal as a tab:
         - Open the Command Palette
@@ -49,7 +49,7 @@ Packages I Recommend
     - To create a key binding that opens a terminal pointing to the same folder that the active file is in:
         - Open Key Bindings:
             - *macOS:* Sublime Text > Preferences > Key Bindings
-            - *Windows/Linux:* Preferences > Key Bindings
+            - *Windows & Ubuntu:* Preferences > Key Bindings
         - Add the following in the right-hand-side (the User key bindings file):
         ```json
         { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} },
@@ -73,18 +73,22 @@ Packages I Recommend
     + See the word count in a Latex file
     - With a Latex file open, use as follows:
         - *macOS:* Shift+Cmd+C
-        - *Windows/Linux:* Shift+Ctrl+C
+        - *Windows & Ubuntu:* Shift+Ctrl+C
     - The one drawback is that this does not display the live word count in the status bar. However, the WordCount package does (so install both).
 - **WordCount**
     - See the live word count in the status bar
 - **Pretty JSON**
     - Make JSON files more readable
     - To use, open a JSON file and go to the Command Palette (Ctrl+Shift+P) > search for and run "Pretty JSON: Format JSON"
-    - This command used to have a keybinding assigned to it automatically, but this is no longer the case. It can be added manually, however, by going to Preferences > Key Bindings. In the right-hand side (the user keybindings file) paste:
-    ```json
-        /* Pretty JSON */
-        { "keys": ["ctrl+alt+j"], "command": "pretty_json" }
-    ```
+    - This command used to have a keybinding assigned to it automatically, but this is no longer the case. It can be added manually, however, as follows:
+        - Go to "Key Bindings"
+            - *Ubuntu:* Preferences > Key Bindings
+            - *macOS:* Sublime Text > Preferences > Key Bindings
+        - In the right-hand side (the user keybindings file) paste the following:
+        ```json
+            /* Pretty JSON */
+            { "keys": ["ctrl+alt+j"], "command": "pretty_json" }
+        ```
 - **MarkdownEditing**
     - A general Markdown plugin. See more about using Markdown in Sublime Text [here](markdown.html).
     + *Note:* this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) to fix it.

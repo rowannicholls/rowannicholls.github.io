@@ -208,7 +208,7 @@ Rows in a Data Frame
 
 Append a row
 ------------
-Append a data frame as a new row:
+Append a data frame as a new row (this is the recommended way of doing it as this method **preserves the order of the columns**:
 
 ```{python}
 new_row_dct = {
