@@ -1,0 +1,228 @@
+---
+title: '<font size="5">Introduction to R:</font><br>Using Python inside R'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+Before you can use Python together with R **you first need to have it installed on your computer**:
+
+- If you are using Windows, go to [the Python website](https://www.python.org/downloads/windows/) to download the latest version. If you are using macOS or Linux, it will already be installed.
+- Check that it is installed by opening the terminal and running `which python` to see if the install location is returned. If nothing is returned that's bad because it means that it isn't installed properly.
+- Running `python` should open Python in your terminal
+
+Run a Python Script by Running a Terminal Command in R
+======================================================
+If we have a Python script `Python Script.py` as follows:
+
+```{python, eval = FALSE}
+import distro
+import os
+import platform
+import sys
+import datetime
+import pwd
+
+print('This is a Python script')
+print(f'This script was run on {datetime.datetime.now():%Y-%m-%d}')
+print(f'This is a {platform.system()} machine')
+print(f'Its name is {platform.node()}')
+print(f'Its OS is {distro.linux_distribution()[0]}')
+print(f'Its OS version is {distro.linux_distribution()[1]}')
+print(f'Its Python version is {platform.python_version()}')
+print(f'Python is being run from {sys.executable}')
+print(f'The user is {pwd.getpwuid(os.getuid())[0]}')
+```
+
+...and an R script `R Script.R` as follows:
+
+```{r, eval = FALSE}
+print('This is an R Script')
+
+system('python3 "Python Script.py"')
+```
+
+...then running the R script will produce:
+
+```
+[1] "This is an R Script"
+This is a Python script
+This script was run on 2021-07-25
+This is a Linux machine
+Its name is rowanscomputer
+Its OS is Ubuntu
+Its OS version is 20.04
+Its Python version is 3.8.10
+Python is being run from /usr/bin/python3
+The user is rowan
+```
+
+In other words, the R script has run a terminal command which has run a Python script.
+
+Incorporate a Configuration File
+--------------------------------
+If we have the same Python script as in the above example but *inside a folder* called "Location of Python Script" and, additionally, we have a **config file** called `config.ini` with the following inside it:
+
+```{text}
+[location]
+python_folder=Location of Python Script
+```
+
+...and an R script as follows:
+
+```{r, eval = FALSE}
+# Import libraries
+library(ini)
+
+# Read ini
+config <- read.ini('config.ini')
+print(config$location$python_folder)
+
+# Run Python file
+cmd = paste("python3 '", file.path(config$location$python_folder, 'Python Script.py'), "'", sep='')
+print(cmd)
+system(cmd)
+```
+
+...then running the R script will produce:
+
+```
+[1] "Location of Python Script"
+[1] "python3 'Location of Python Script/Python Script.py'"
+This is a Python script
+This script was run on 2021-07-25
+This is a Linux machine
+Its name is rowanscomputer
+Its OS is Ubuntu
+Its OS version is 20.04
+Its Python version is 3.8.10
+Python is being run from /usr/bin/python3
+The user is rowan
+```
+
+This is a more robust way of running an external script because if you change its location (eg if it's on a remote server or the script is being run on someone else's computer) you only need to update the configuration file.
+
+Import a Python Script or Function in R
+=======================================
+If you want to run Python code *and use its output* in R, you can use the `reticulate` library (a reference to **reticulated pythons**). Once you've installed it, use its `source_python()` function to run code stored in an external Python script and return its values. If we use the same `Python Script.py` as in the above examples along with a file `Python Function.py` containing a function definition like so:
+
+```{python, eval = FALSE}
+def my_function(x):
+    return x + 5
+```
+
+...then if we run the following in R:
+
+```{r, eval = FALSE}
+library(reticulate)
+
+print('This is an R Script')
+
+# Evaluate the chosen script
+source_python('Python Script.py')
+
+# Evaluate the chosen script
+source_python('Python Function.py')
+# Create parameter to pass to Python function
+x = 10
+# Call my_function()
+y = my_function(x)
+print(y)
+```
+
+...it will produce:
+
+```
+[1] "This is an R Script"
+This is a Python script
+This script was run on 2021-07-25
+This is a Linux machine
+Its name is rowanscomputer
+Its OS is Ubuntu
+Its OS version is 20.04
+Its Python version is 3.8.10
+Python is being run from /usr/bin/python3
+The user is rowan
+[1] 15
+```
+
+In other words, we're using a Python function right inside R as if it were an R function!
+
+Python Versioning
+=================
+
+Check What Version of Python Your RStudio is Using
+--------------------------------------------------
+Use the `reticulate` package's `py_config()` function to see what Python and Numpy versions it uses and where those are installed:
+
+```{r}
+library(reticulate)
+print(reticulate::py_config())
+```
+
+Change the Python Version
+-------------------------
+- In order to change what version of Python you are using **you first need to have it installed on your computer**:
+    - Go to [the Python website](https://www.python.org/downloads/) to download the one(s) you want. You can have multiple versions of Python installed on the same computer at once.
+    - Check that the version you want is installed by opening the terminal and running `which python<x.y>` where `<x.y>` are the relevant version numbers - eg `which python3.9` - to see if the location of that Python version is returned. If nothing is returned that's bad because it means that that version is not installed.
+    - Running `python<x.y>` or just `python<x>` - eg `python3.9` or just `python3` - should open that version of Python in your terminal
+- To change the version of Python used by **the terminal** in RStudio you can add an alias to your Bash profile. This works because the RStudio terminal is simply a Bash terminal, so we can re-map the `python` command to a specific version of Python across all Bash terminals:
+    + Open the hidden file `.bash_profile` that should be in your home directory (you will need to make hidden files visible in order to do this, or run `open ~/.bash_profile` in your terminal)
+    + Run `which python<x.y>` to get the location of your Python version x.y
+    + Add the text `alias python=<location>` to your `.bash_profile` file where `<location>` is the location of your Python as returned by `which` in the previous step
+    + Save and close `.bash_profile`, then close and re-open RStudio
+- When running **an R or R Markdown script** in RStudio the version of Python is set when the 'reticulate' library is first loaded, so include the line `Sys.setenv(RETICULATE_PYTHON = <location>)` BEFORE `library(reticulate)` to set it manually, as shown below. Again, you need to close and re-open RStudio and re-run your script for it to have an effect:
+    - **macOS**
+    ```{r, eval = FALSE}
+# path <- "/Library/Frameworks/Python.framework/Versions/3.8/bin/python3.8"
+path <- "/Library/Frameworks/Python.framework/Versions/3.9/bin/python3.9"
+Sys.setenv(RETICULATE_PYTHON = path)
+library(reticulate)
+print(reticulate::py_config())
+    ```
+
+    ```
+    ## python:         /Library/Frameworks/Python.framework/Versions/3.9/bin/python3.9
+    ## libpython:      /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/config-3.9-darwin/libpython3.9.d
+                       ylib
+    ## pythonhome:     /Library/Frameworks/Python.framework/Versions/3.9:/Library/Frameworks/Python.framework/Versions/
+                       3.9
+    ## version:        3.9.5 (v3.9.5:0a7dcbdb13, May  3 2021, 13:17:02)  [Clang 6.0 (clang-600.0.57)]
+    ## numpy:          /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/numpy
+    ## numpy_version:  1.21.0
+    ## 
+    ## NOTE: Python version was forced by RETICULATE_PYTHON
+    ```
+
+    - **Ubuntu**
+    ```{r, eval = FALSE}
+# path <- "/usr/bin/python3.8"
+path <- "/usr/bin/python3.9"
+Sys.setenv(RETICULATE_PYTHON = path)
+library(reticulate)
+print(reticulate::py_config())
+    ```
+
+    ```
+    ## python:         /usr/bin/python3.9
+    ## libpython:      /usr/lib/python3.9/config-3.9-x86_64-linux-gnu/libpython3.9.so
+    ## pythonhome:     //usr://usr
+    ## version:        3.9.5 (default, May 19 2021, 11:32:47)  [GCC 9.3.0]
+    ## numpy:          /home/rowan/.local/lib/python3.9/site-packages/numpy
+    ## numpy_version:  1.20.1
+    ## 
+    ## NOTE: Python version was forced by RETICULATE_PYTHON
+    ```
+
+[⇦ Back](../../R.html)
+
+</font>

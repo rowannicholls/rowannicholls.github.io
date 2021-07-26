@@ -11,7 +11,7 @@
 
 
 
-<title>R</title>
+<title>Introduction to R: Using Python inside R</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -479,7 +479,7 @@ e>>6&63,128|e&63))}b=new Uint8Array(c)}return b},cf=/[0-9`~!@#$%^&*()_\-+=:;<>,.
 Ye(t[v]);""!==x&&h.push({name:v,value:w(x),index:y})}function f(t){return function(v){ud(64);return t(v)}}var h=[],k=[];if("https:"===g.location.protocol){var m=function(t,v){var w=t[v];xa(w)||(w=[w]);for(var y=0;y<w.length;++y){var x=Ye(w[y]);if(""!==x)return x}return null};d(a,"email",gf);var n=m(a,"email");if(n)for(var p=
 0;p<b.length;p++)k.push(b[p].va.toLowerCase()===n.toLowerCase());d(a,"phone_number",ef);d(a,"first_name",f(bf));d(a,"last_name",f(bf));var q=a.home_address||{};d(q,"street",f(af));d(q,"city",f(af));d(q,"postal_code",f($e));d(q,"region",f(af));d(q,"country",f($e));var r=a.address||{};xa(r)||(r=[r]);for(var u=0;u<r.length;u++)e(r[u],"first_name",bf,u),e(r[u],"last_name",bf,u),e(r[u],"street",af,u),e(r[u],"city",af,u),e(r[u],"postal_code",$e,
 u),e(r[u],"region",af,u),e(r[u],"country",$e,u);kf(h,k,c)}else h.push({name:"error_code",value:"e3",index:void 0}),c(h,k)},pf=function(a,b){of(a,[],function(c,d){for(var e=["tv.1"],f=0;f<c.length;++f){var h=c[f].name,k=c[f].value,m=c[f].index,n=nf[h];n&&k&&(!hf(h)||Xe(k))&&(void 0!==m&&(n+=m),e.push(n+"."+k))}b(encodeURIComponent(e.join("~")),d)})},qf=function(a,b){if(g.Promise)try{return new Promise(function(c){of(a,b,function(d,e){for(var f=["tv.1"],h=0;h<d.length;++h){var k=d[h].name,m=d[h].value,
-n=d[h].index,p=nf[k];p&&m&&(!hf(k)||Xe(m))&&(void 0!==n&&(p+=n),f.push(p+"."+m))}c({nc:encodeURIComponent(f.join("~")),ac:e})})})}catch(c){}},hf=function(a){return-1!==["email","phone_number","first_name","last_name","street"].indexOf(a)};var rf={},sf=null,tf=Math.random();rf.M="UA-156468188-1";rf.Wc="7l1";rf.Pi="";rf.Gg="ChEI8Lr5hwYQy+zgifaqlIyVARInAI2AQSjlCWFKMGKF9xEDvMl4IO1B1g5B5OR66cwF7j1uIEEJLkHiGgLXBg\x3d\x3d";var uf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},vf={__paused:!0,__tg:!0},wf;for(wf in uf)uf.hasOwnProperty(wf)&&(vf[wf]=!0);var xf="www.googletagmanager.com/gtm.js";xf="www.googletagmanager.com/gtag/js";
+n=d[h].index,p=nf[k];p&&m&&(!hf(k)||Xe(m))&&(void 0!==n&&(p+=n),f.push(p+"."+m))}c({nc:encodeURIComponent(f.join("~")),ac:e})})})}catch(c){}},hf=function(a){return-1!==["email","phone_number","first_name","last_name","street"].indexOf(a)};var rf={},sf=null,tf=Math.random();rf.M="UA-156468188-1";rf.Wc="7l1";rf.Pi="";rf.Gg="ChEI8Lr5hwYQy+zgifaqlIyVARInAI2AQShq9qXwS/6tS8j7YRoCYHulBa/SUD9ektCOypHMtWXr9zJEGgKUyw\x3d\x3d";var uf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},vf={__paused:!0,__tg:!0},wf;for(wf in uf)uf.hasOwnProperty(wf)&&(vf[wf]=!0);var xf="www.googletagmanager.com/gtm.js";xf="www.googletagmanager.com/gtag/js";
 var yf=xf,zf=Ka(""),Af=null,Bf=null,Cf="https://www.googletagmanager.com/a?id="+rf.M+"&cv=1",Df={},Ef={},Ff=function(){var a=sf.sequence||1;sf.sequence=a+1;return a};rf.Fg="";var Gf={},Hf=new Ca,If={},Jf={},Mf={name:"dataLayer",set:function(a,b){E(Xa(a,b),If);Kf()},get:function(a){return Lf(a,2)},reset:function(){Hf=new Ca;If={};Kf()}},Lf=function(a,b){return 2!=b?Hf.get(a):Nf(a)},Nf=function(a){var b,c=a.split(".");b=b||[];for(var d=If,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==ya(b,d))return}return d},Of=function(a,b){Jf.hasOwnProperty(a)||(Hf.set(a,b),E(Xa(a,b),If),Kf())},Kf=function(a){Ga(Jf,function(b,c){Hf.set(b,c);E(Xa(b,
 void 0),If);E(Xa(b,c),If);a&&delete Jf[b]})},Qf=function(a,b,c){Gf[a]=Gf[a]||{};Gf[a][b]=Pf(b,c)},Pf=function(a,b){var c,d=1!==(void 0===b?2:b)?Nf(a):Hf.get(a);"array"===Sb(d)||"object"===Sb(d)?c=E(d):c=d;return c},Rf=function(a,b){if(Gf[a])return Gf[a][b]},Sf=function(a,b){Gf[a]&&delete Gf[a][b]};
 var Tf=function(a,b,c){if(c){var d=c.selector_type,e=String(c.value),f;if("js_variable"===d){e=e.replace(/\["?'?/g,".").replace(/"?'?\]/g,"");for(var h=e.split(","),k=0;k<h.length;k++){var m=h[k].trim();if(m){if(0===m.indexOf("dataLayer."))f=Lf(m.substring(10));else{var n=m.split(".");f=g[n.shift()];for(var p=0;p<n.length;p++)f=f&&f[n[p]]}if(void 0!==f)break}}}else if("css_selector"===d&&be){var q=ce(e);q&&0<q.length&&(f=Jb(q[0])||Oa(q[0].value))}f&&(a[b]=f)}},Uf=function(a){if(a){var b={};Tf(b,"email",
@@ -669,108 +669,207 @@ Bf;if(a){var x=Oi("INIT");}}}
 
 
 
-<h1 class="title toc-ignore">R</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to R:</font><br>Using Python inside R</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#run-a-python-script-by-running-a-terminal-command-in-r"><span class="toc-section-number">1</span> Run a Python Script by Running a Terminal Command in R</a>
+<ul>
+<li><a href="#incorporate-a-configuration-file"><span class="toc-section-number">1.1</span> Incorporate a Configuration File</a></li>
+</ul></li>
+<li><a href="#import-a-python-script-or-function-in-r"><span class="toc-section-number">2</span> Import a Python Script or Function in R</a></li>
+<li><a href="#python-versioning"><span class="toc-section-number">3</span> Python Versioning</a>
+<ul>
+<li><a href="#check-what-version-of-python-your-rstudio-is-using"><span class="toc-section-number">3.1</span> Check What Version of Python Your RStudio is Using</a></li>
+<li><a href="#change-the-python-version"><span class="toc-section-number">3.2</span> Change the Python Version</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-r" class="section level2">
-<h2>Introduction to R</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/intro/r_rstudio.html">R and RStudio</a></li>
-<li><a href="R/intro/data_types.html">Comments, Variables and Data Types</a></li>
-<li><a href="R/intro/packages.html">Packages and Libraries</a></li>
-<li><a href="R/intro/maths.html">Maths and Numbers</a></li>
-<li><a href="R/intro/strings.html">Strings and Characters</a></li>
-<li><a href="R/intro/vectors.html">Vectors</a></li>
-<li><a href="R/intro/named_vectors_lists.html">Named Vectors and Lists (aka Dictionaries)</a></li>
-<li><a href="R/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="R/intro/data_frames.html">Data Frames</a></li>
-<li><a href="R/intro/loops.html">For and While Loops</a></li>
-<li><a href="R/intro/functions.html">Functions</a></li>
-<li><a href="R/intro/exceptions.html">Exception Handling</a></li>
-<li><a href="R/intro/linting.html">Linting</a></li>
-<li><a href="R/intro/python_in_r.html">Python in R</a></li>
-</ol>
+<p><a href="../../R.html">⇦ Back</a></p>
+<p>Before you can use Python together with R <strong>you first need to have it installed on your computer</strong>:</p>
+<ul>
+<li>If you are using Windows, go to <a href="https://www.python.org/downloads/windows/">the Python website</a> to download the latest version. If you are using macOS or Linux, it will already be installed.</li>
+<li>Check that it is installed by opening the terminal and running <code>which python</code> to see if the install location is returned. If nothing is returned that’s bad because it means that it isn’t installed properly.</li>
+<li>Running <code>python</code> should open Python in your terminal</li>
+</ul>
+<div id="run-a-python-script-by-running-a-terminal-command-in-r" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Run a Python Script by Running a Terminal Command in R</h1>
+<p>If we have a Python script <code>Python Script.py</code> as follows:</p>
+<pre class="python"><code>import distro
+import os
+import platform
+import sys
+import datetime
+import pwd
+
+print(&#39;This is a Python script&#39;)
+print(f&#39;This script was run on {datetime.datetime.now():%Y-%m-%d}&#39;)
+print(f&#39;This is a {platform.system()} machine&#39;)
+print(f&#39;Its name is {platform.node()}&#39;)
+print(f&#39;Its OS is {distro.linux_distribution()[0]}&#39;)
+print(f&#39;Its OS version is {distro.linux_distribution()[1]}&#39;)
+print(f&#39;Its Python version is {platform.python_version()}&#39;)
+print(f&#39;Python is being run from {sys.executable}&#39;)
+print(f&#39;The user is {pwd.getpwuid(os.getuid())[0]}&#39;)</code></pre>
+<p>…and an R script <code>R Script.R</code> as follows:</p>
+<pre class="r"><code>print(&#39;This is an R Script&#39;)
+
+system(&#39;python3 &quot;Python Script.py&quot;&#39;)</code></pre>
+<p>…then running the R script will produce:</p>
+<pre><code>[1] &quot;This is an R Script&quot;
+This is a Python script
+This script was run on 2021-07-25
+This is a Linux machine
+Its name is rowanscomputer
+Its OS is Ubuntu
+Its OS version is 20.04
+Its Python version is 3.8.10
+Python is being run from /usr/bin/python3
+The user is rowan</code></pre>
+<p>In other words, the R script has run a terminal command which has run a Python script.</p>
+<div id="incorporate-a-configuration-file" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Incorporate a Configuration File</h2>
+<p>If we have the same Python script as in the above example but <em>inside a folder</em> called “Location of Python Script” and, additionally, we have a <strong>config file</strong> called <code>config.ini</code> with the following inside it:</p>
+<pre class="text"><code>[location]
+python_folder=Location of Python Script</code></pre>
+<p>…and an R script as follows:</p>
+<pre class="r"><code># Import libraries
+library(ini)
+
+# Read ini
+config &lt;- read.ini(&#39;config.ini&#39;)
+print(config$location$python_folder)
+
+# Run Python file
+cmd = paste(&quot;python3 &#39;&quot;, file.path(config$location$python_folder, &#39;Python Script.py&#39;), &quot;&#39;&quot;, sep=&#39;&#39;)
+print(cmd)
+system(cmd)</code></pre>
+<p>…then running the R script will produce:</p>
+<pre><code>[1] &quot;Location of Python Script&quot;
+[1] &quot;python3 &#39;Location of Python Script/Python Script.py&#39;&quot;
+This is a Python script
+This script was run on 2021-07-25
+This is a Linux machine
+Its name is rowanscomputer
+Its OS is Ubuntu
+Its OS version is 20.04
+Its Python version is 3.8.10
+Python is being run from /usr/bin/python3
+The user is rowan</code></pre>
+<p>This is a more robust way of running an external script because if you change its location (eg if it’s on a remote server or the script is being run on someone else’s computer) you only need to update the configuration file.</p>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/data/pre_loaded_datasets.html">Pre-Loaded Datasets</a></li>
-<li><a href="R/data/create_unique_identifiers.html">Create Unique Identifiers</a></li>
-<li><a href="R/data/stratification.html">Data Stratification</a></li>
-<li><a href="R/data/descriptive_summary_statistics.html">Descriptive and Summary Statistics</a></li>
-<li><a href="R/data/pivot_tables.html">Pivot Tables</a></li>
-<li><a href="R/data/demographic_tables.html">Demographic Data Tables</a></li>
-<li><a href="R/data/merging.html">Merging</a></li>
-<li><a href="R/data/create_export_import.html">File IO: Create, Export and Import Data</a></li>
-<li><a href="R/data/filling_in_missing_data.html">Filling in Missing Data</a></li>
-<li><a href="R/data/working_with_json.html">Working with JSON Files</a></li>
-</ol>
 </div>
-<div id="graphs" class="section level2">
-<h2>Graphs</h2>
-<ol style="list-style-type: decimal">
-<li>Using Base R
-<ul>
-<li><a href="R/graphs/base/symbols_linetypes_colours.html">Symbols, Line Types and Colours</a></li>
-<li><a href="R/graphs/base/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/base/scatterplots.html">Scatter Plots</a></li>
-<li><a href="R/graphs/base/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/base/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/base/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/base/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/base/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/base/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Using ggplot2
-<ul>
-<li><a href="R/graphs/ggplot2/cheat_sheet.html">Cheat Sheet</a></li>
-<li><a href="R/graphs/ggplot2/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/ggplot2/scatterplots.html">Scatter Plots</a></li>
-<li><a href="R/graphs/ggplot2/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/ggplot2/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/ggplot2/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/ggplot2/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/ggplot2/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/ggplot2/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="import-a-python-script-or-function-in-r" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Import a Python Script or Function in R</h1>
+<p>If you want to run Python code <em>and use its output</em> in R, you can use the <code>reticulate</code> library (a reference to <strong>reticulated pythons</strong>). Once you’ve installed it, use its <code>source_python()</code> function to run code stored in an external Python script and return its values. If we use the same <code>Python Script.py</code> as in the above examples along with a file <code>Python Function.py</code> containing a function definition like so:</p>
+<pre class="python"><code>def my_function(x):
+    return x + 5</code></pre>
+<p>…then if we run the following in R:</p>
+<pre class="r"><code>library(reticulate)
+
+print(&#39;This is an R Script&#39;)
+
+# Evaluate the chosen script
+source_python(&#39;Python Script.py&#39;)
+
+# Evaluate the chosen script
+source_python(&#39;Python Function.py&#39;)
+# Create parameter to pass to Python function
+x = 10
+# Call my_function()
+y = my_function(x)
+print(y)</code></pre>
+<p>…it will produce:</p>
+<pre><code>[1] &quot;This is an R Script&quot;
+This is a Python script
+This script was run on 2021-07-25
+This is a Linux machine
+Its name is rowanscomputer
+Its OS is Ubuntu
+Its OS version is 20.04
+Its Python version is 3.8.10
+Python is being run from /usr/bin/python3
+The user is rowan
+[1] 15</code></pre>
+<p>In other words, we’re using a Python function right inside R as if it were an R function!</p>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/statistics/descriptive_statistics.html">Descriptive Statistics</a></li>
-<li><a href="R/statistics/tutorial.html">Diagnostic Accuracy Tutorial</a> (<a href="R/statistics/tutorial_completescript.R">complete</a>, <a href="R/statistics/tutorial_emptyscript.R">empty</a>)</li>
-<li><a href="R/statistics/principal_component_analysis.html">Principal Component Analysis</a></li>
-<li>Hypothesis Testing:
+<div id="python-versioning" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Python Versioning</h1>
+<div id="check-what-version-of-python-your-rstudio-is-using" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Check What Version of Python Your RStudio is Using</h2>
+<p>Use the <code>reticulate</code> package’s <code>py_config()</code> function to see what Python and Numpy versions it uses and where those are installed:</p>
+<pre class="r"><code>library(reticulate)
+print(reticulate::py_config())</code></pre>
+<pre><code>## python:         /usr/bin/python3
+## libpython:      /usr/lib/python3.8/config-3.8-x86_64-linux-gnu/libpython3.8.so
+## pythonhome:     //usr://usr
+## version:        3.8.10 (default, Jun  2 2021, 10:49:15)  [GCC 9.4.0]
+## numpy:          /home/rowan/.local/lib/python3.8/site-packages/numpy
+## numpy_version:  1.19.1
+## 
+## python versions found: 
+##  /usr/bin/python3
+##  /usr/bin/python</code></pre>
+</div>
+<div id="change-the-python-version" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Change the Python Version</h2>
 <ul>
-<li><a href="R/statistics/hypothesis_testing/kruskal_wallis.html">Kruskal-Wallis Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/friedman.html">Friedman Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
+<li>In order to change what version of Python you are using <strong>you first need to have it installed on your computer</strong>:
 <ul>
-<li><a href="R/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="R/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="R/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="R/statistics/agreement/coefficient_of_variation.html">Coefficient of Variation</a></li>
+<li>Go to <a href="https://www.python.org/downloads/">the Python website</a> to download the one(s) you want. You can have multiple versions of Python installed on the same computer at once.</li>
+<li>Check that the version you want is installed by opening the terminal and running <code>which python&lt;x.y&gt;</code> where <code>&lt;x.y&gt;</code> are the relevant version numbers - eg <code>which python3.9</code> - to see if the location of that Python version is returned. If nothing is returned that’s bad because it means that that version is not installed.</li>
+<li>Running <code>python&lt;x.y&gt;</code> or just <code>python&lt;x&gt;</code> - eg <code>python3.9</code> or just <code>python3</code> - should open that version of Python in your terminal</li>
 </ul></li>
-</ol>
+<li>To change the version of Python used by <strong>the terminal</strong> in RStudio you can add an alias to your Bash profile. This works because the RStudio terminal is simply a Bash terminal, so we can re-map the <code>python</code> command to a specific version of Python across all Bash terminals:
+<ul>
+<li>Open the hidden file <code>.bash_profile</code> that should be in your home directory (you will need to make hidden files visible in order to do this, or run <code>open ~/.bash_profile</code> in your terminal)</li>
+<li>Run <code>which python&lt;x.y&gt;</code> to get the location of your Python version x.y</li>
+<li>Add the text <code>alias python=&lt;location&gt;</code> to your <code>.bash_profile</code> file where <code>&lt;location&gt;</code> is the location of your Python as returned by <code>which</code> in the previous step</li>
+<li>Save and close <code>.bash_profile</code>, then close and re-open RStudio</li>
+</ul></li>
+<li>When running <strong>an R or R Markdown script</strong> in RStudio the version of Python is set when the ‘reticulate’ library is first loaded, so include the line <code>Sys.setenv(RETICULATE_PYTHON = &lt;location&gt;)</code> BEFORE <code>library(reticulate)</code> to set it manually, as shown below. Again, you need to close and re-open RStudio and re-run your script for it to have an effect:
+<ul>
+<li><strong>macOS</strong></li>
+</ul>
+<pre class="r"><code># path &lt;- &quot;/Library/Frameworks/Python.framework/Versions/3.8/bin/python3.8&quot;
+path &lt;- &quot;/Library/Frameworks/Python.framework/Versions/3.9/bin/python3.9&quot;
+Sys.setenv(RETICULATE_PYTHON = path)
+library(reticulate)
+print(reticulate::py_config())</code></pre>
+<pre><code>## python:         /Library/Frameworks/Python.framework/Versions/3.9/bin/python3.9
+## libpython:      /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/config-3.9-darwin/libpython3.9.d
+                   ylib
+## pythonhome:     /Library/Frameworks/Python.framework/Versions/3.9:/Library/Frameworks/Python.framework/Versions/
+                   3.9
+## version:        3.9.5 (v3.9.5:0a7dcbdb13, May  3 2021, 13:17:02)  [Clang 6.0 (clang-600.0.57)]
+## numpy:          /Library/Frameworks/Python.framework/Versions/3.9/lib/python3.9/site-packages/numpy
+## numpy_version:  1.21.0
+## 
+## NOTE: Python version was forced by RETICULATE_PYTHON</code></pre>
+<ul>
+<li><strong>Ubuntu</strong></li>
+</ul>
+<pre class="r"><code># path &lt;- &quot;/usr/bin/python3.8&quot;
+path &lt;- &quot;/usr/bin/python3.9&quot;
+Sys.setenv(RETICULATE_PYTHON = path)
+library(reticulate)
+print(reticulate::py_config())</code></pre>
+<pre><code>## python:         /usr/bin/python3.9
+## libpython:      /usr/lib/python3.9/config-3.9-x86_64-linux-gnu/libpython3.9.so
+## pythonhome:     //usr://usr
+## version:        3.9.5 (default, May 19 2021, 11:32:47)  [GCC 9.3.0]
+## numpy:          /home/rowan/.local/lib/python3.9/site-packages/numpy
+## numpy_version:  1.20.1
+## 
+## NOTE: Python version was forced by RETICULATE_PYTHON</code></pre></li>
+</ul>
+<p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 

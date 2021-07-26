@@ -1,0 +1,304 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>One-Sample t-Tests'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+> A t-test can be used when **continuous data** has been measured, for example height in cm or weight in kg as opposed to binary pass/fail results or qualitative judgements
+
+For the *one-sample* t-test the data in question will be a single sample of measurements and the statistical question will, roughly, ask if the mean of this sample is the same as the mean of the population as a whole. In general, it can be used if the population of data from which the sample is drawn is normally distributed, or if it is not normally distributed but the sample size is large.
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]
+            'Hypothesis'
+                'Continuous data'
+                    'Differences'
+                        'Means'
+                            'Two groups'
+                                TGParametric [label='Parametric']
+                                    'One-sample t-test'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                    'Paired t-test'
+                                    'Unpaired t-test'
+                                TGNonparametric [label='Nonparametric']
+                                    TGIndependent [label='Independent groups']
+                                        'Mann-Whitney U test'
+                                    TGNonindependent [label='Non-independent groups']
+                                        'Wilcoxon signed-rank test'
+                            'More than two groups'
+                                MGParametric [label='Parametric']
+                                    'ANOVA'
+                                MGNonparametric [label='Nonparametric']
+                                    MGIndependent [label='Independent groups']
+                                        'Kruskal-Wallis one-way ANOVA'
+                                    MGNonindependent [label='Non-independent groups']
+                                        'Friedman two-way ANOVA'
+                        'Variances'
+                    'Relationships'
+                        RIndependent [label='Independent groups']
+                            'Regression analysis'
+                                'Multiple Linear Regression'
+                        RNonindependent [label='Non-independent groups']
+                            'Correlation analysis'
+                                RParametric [label='Parametric']
+                                    'Pearson product-moment r correlation'
+                                RNonparametric [label='Nonparametric']
+                                    'Spearman Rank Correlation'
+                'Discrete, categorical data'
+                    'Chi-squared goodness-of-fit test'
+                    'Chi-squared independence test'
+                    'Chi-squared homogeneity test'
+
+        {
+            rank = same;
+            TGIndependent 'Mann-Whitney U test'
+            TGNonindependent 'Wilcoxon signed-rank test'
+            MGIndependent 'Kruskal-Wallis one-way ANOVA'
+            MGNonindependent 'Friedman two-way ANOVA'
+        }
+
+        'Hypothesis' -> 'Continuous data';
+            'Continuous data' -> 'Differences'
+                'Differences' -> 'Means'
+                    'Means' -> 'Two groups'
+                        'Two groups' -> TGParametric
+                            TGParametric -> 'One-sample t-test'
+                            TGParametric -> 'Paired t-test'
+                            TGParametric -> 'Unpaired t-test'
+                        'Two groups' -> TGNonparametric
+                            TGNonparametric -> TGIndependent
+                                TGIndependent -> 'Mann-Whitney U test'
+                            TGNonparametric -> TGNonindependent
+                                TGNonindependent -> 'Wilcoxon signed-rank test'
+                    'Means' -> 'More than two groups'
+                        'More than two groups' -> MGParametric
+                            MGParametric -> 'ANOVA'
+                        'More than two groups' -> MGNonparametric
+                            MGNonparametric -> MGIndependent
+                                MGIndependent -> 'Kruskal-Wallis one-way ANOVA'
+                            MGNonparametric -> MGNonindependent
+                                MGNonindependent -> 'Friedman two-way ANOVA'
+                'Differences' -> 'Variances'
+            'Continuous data' -> 'Relationships'
+                'Relationships' -> RIndependent
+                    RIndependent -> 'Regression analysis'
+                        'Regression analysis' -> 'Multiple Linear Regression'
+                'Relationships' -> RNonindependent
+                    RNonindependent -> 'Correlation analysis'
+                        'Correlation analysis' -> RParametric
+                            RParametric -> 'Pearson product-moment r correlation'
+                        'Correlation analysis' -> RNonparametric
+                            RNonparametric -> 'Spearman Rank Correlation'
+        'Hypothesis' -> 'Discrete, categorical data'
+            'Discrete, categorical data' -> 'Chi-squared goodness-of-fit test'
+            'Discrete, categorical data' -> 'Chi-squared independence test'
+            'Discrete, categorical data' -> 'Chi-squared homogeneity test'
+
+    labelloc='t';
+    fontsize=70;
+    label='Flowchart for Choosing a Statistical Test';
+    }",
+    height=400, width=900
+)
+```
+
+Example Data
+============
+Let's start with some example data. Create a series of 20 numbers distributed normally about a mean value of 100 and with a standard deviation of 5:
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210725)
+
+# Create fake data
+mean = 100
+standard_deviation = 5
+sample_size = 20
+x = np.random.normal(mean, standard_deviation, sample_size)
+
+print([f'{x:.1f}' for x in sorted(x)])
+```
+
+This is what they look like on a number line:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+# Add jitter to separate the points out
+y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
+# Create scatter plot
+ax.scatter(x, y, s=10)
+ax.set_title('Example Data: 20 Random Measurements')
+# Remove axes
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['left'].set_visible(False)
+# Add arrows on x-axis
+ax.arrow(100, 0, 11.5, 0, head_width=0.2, color='k', clip_on=False)
+ax.arrow(100, 0, -11.5, 0, head_width=0.2, color='k', clip_on=False)
+# Axes' settings
+ax.set_ylim(0, 2)
+ax.set_xlim(88.5, 111.5)
+ax.tick_params(axis='y', left=False, labelleft=False)
+# Finish
+plt.subplots_adjust(left=0.1, bottom=0.2, right=0.9, top=0.8)
+plt.show()
+plt.close()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+#
+# Plot
+#
+ax = plt.axes()
+# Add jitter to separate the points out
+y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
+# Create scatter plot
+ax.scatter(x, y, s=10)
+ax.set_title('Example Data: 20 Random Measurements')
+# Remove axes
+ax.spines['right'].set_visible(False)
+ax.spines['top'].set_visible(False)
+ax.spines['left'].set_visible(False)
+# Add arrows on x-axis
+ax.arrow(100, 0, 11.5, 0, head_width=0.2, color='k', clip_on=False)
+ax.arrow(100, 0, -11.5, 0, head_width=0.2, color='k', clip_on=False)
+# Axes' settings
+ax.set_ylim(0, 2)
+ax.set_xlim(88.5, 111.5)
+ax.tick_params(axis='y', left=False, labelleft=False)
+# Finish
+plt.subplots_adjust(left=0.1, bottom=0.2, right=0.9, top=0.8)
+plt.show()
+plt.close()
+```
+
+One-Sample t-Test
+=================
+The Scipy package has a 'stats' sub-package which contains the `ttest_1samp()` function. This performs t-tests with one sample. It has two compulsory inputs:
+
+- The sample observation (ie your data; the numbers you have measured)
+- The population mean (ie the expected value you want to test the mean of the sample against)
+
+There are two values returned by this function:
+
+- The t-statistic, which can be thought of as the 'result' of the test
+- The p-value, which can be thought of as the odds that that result happened
+
+By default, the **null hypothesis** is that the expected value (mean) of the sample of independent observations (the numbers in the first input) is equal to the given population mean (the second input to the function). In other words, it is a *two-sided test*; the null hypothesis is that the population mean is neither greater than nor less than the sample mean.
+
+Of course, because we have artificially created this example data, we *know* that the expected value of a sample is 100 (because we've used a distribution that has a mean of 100). However, for the sake of this tutorial, let's test to see whether it's equal to 98.5:
+
+```{python}
+from scipy import stats
+
+statistic, pvalue = stats.ttest_1samp(x, 98.5)
+
+print(f'p = {pvalue:5.3f}')
+```
+
+This low p-value tells us that there is a small (less than 5%) chance that this sample was drawn randomly from a population with a mean of 98.5. If we had decided to use a 95% confidence level as our acceptance criteria, we would have **rejected the null hypothesis** after seeing this result.
+
+One-Sided Tests
+---------------
+The two-sided test we did above had the **alternative hypothesis** that the sample and population means were not equal. However, we can also do a *one-sided* test where the alternative hypothesis is that the sample mean is **greater** than the population mean by using the `alternative='greater'` keyword argument:
+
+```{python}
+statistic, pvalue = stats.ttest_1samp(x, 98.5, alternative='greater')
+
+print(f'p = {pvalue:5.3f}')
+```
+
+We are **very unsure** (only 2.4% confident) that the null hypothesis is true and that the population mean is greater than the sample mean.
+
+Conversely, we could have done the test the other way around, testing the alternative hypothesis that the sample mean is **less** than the population mean:
+
+```{python}
+statistic, pvalue = stats.ttest_1samp(x, 98.5, alternative='less')
+
+print(f'p = {pvalue:5.3f}')
+```
+
+We are now **very sure** that the null hypothesis is correct and that the population mean is less than the sample mean!
+
+In summary:
+
+- **Two-sided test:**
+    + *Null hypothesis:* population mean is equal to the sample mean
+    + *Alternative hypothesis:* population mean is not equal to the sample mean
+- **One-side, greater than test:**
+    + *Null hypothesis:* population mean is greater than the sample mean
+    + *Alternative hypothesis:* population mean is not greater than the sample mean
+- **One-side, less than test:**
+    + *Null hypothesis:* population mean is less than the sample mean
+    + *Alternative hypothesis:* population mean is not less than the sample mean
+
+Two-Sided vs Greater vs Less
+============================
+You might not have noticed it, but the results of the three t-tests we did above are related:
+
+- The p-value of the **two-sided** test was double that of the **one-sided, greater than** test
+- The p-value of the **one-sided, greater than** test plus the p-value of the **one-sided, less than** test added to 1
+- The p-value of the **one-sided, less than** test added to half the p-value of the **two-sided** test gives a value of 1
+
+These are not coincidences: the two-sided test asks if the population mean is neither less than nor greater than the sample mean, while the one-sided, greater than test only asks if the population mean is not less than the sample mean. It only asks half the questions, so we can be doubly sure of the result! Likewise, the one-sided, less than test asks if the population mean is not greater than the sample mean...and surely the chance of not being greater than something and the chance of not being less than something should add to 1 (ie you're 100% sure that one of them is true!). But don't take my word for it, let's check:
+
+```{python}
+from scipy import stats
+
+# Two-sided test
+statistic, pvalue_twosided = stats.ttest_1samp(x, 98.5)
+
+# One-sided, greater than test
+statistic, pvalue_greater = stats.ttest_1samp(x, 98.5, alternative='greater')
+
+# One-sided, less than test
+statistic, pvalue_less = stats.ttest_1samp(x, 98.5, alternative='less')
+
+print(pvalue_twosided == pvalue_greater * 2)
+print(pvalue_greater + pvalue_less == 1)
+print(pvalue_less + pvalue_twosided / 2 == 1)
+```
+
+As promised, all three statements were true.
+
+[⇦ Back](../../../python.html)
+
+</font>
