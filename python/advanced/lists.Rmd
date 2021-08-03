@@ -278,6 +278,17 @@ print(ls)
 
 This translates into English as "for each value 'x' in list 1, and for each value 'y' in list 2, add x and y".
 
+Remove Multiple Values
+----------------------
+To remove a *single* value from a list you can use the `.remove()` method, but to remove *multiple* values at a time (ie remove a list from a list) you can use list comprehensions:
+
+```{python}
+ls = ['A', 'B', 'C', 'B', 'A']
+to_remove = ['B', 'C']
+ls = [x for x in list(ls) if x not in to_remove]
+print(ls)
+```
+
 [⇦ Back](../../python.html)
 
 </font>
