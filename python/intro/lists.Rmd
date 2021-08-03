@@ -292,7 +292,16 @@ ls.remove('B')
 print(ls)
 ```
 
-Again, this has acted *in-place* and only on the *first* occurrence of the value. To remove multiple values from a list at a time, see [the section below](#removing-multiple-values-from-lists) where this is covered.
+Again, this has acted *in-place* and only on the *first* occurrence of the value. To remove multiple values from a list at a time (ie remove a list from a list) one option is to use a list comprehension:
+
+```{python}
+ls = ['A', 'B', 'C', 'B', 'A']
+to_remove = ['B', 'C']
+ls = [x for x in list(ls) if x not in to_remove]
+print(ls)
+```
+
+Alternatively, you could use a **set** - see [the section below](#removing-multiple-values-from-lists) where these are covered.
 
 Sorting Lists
 =============
