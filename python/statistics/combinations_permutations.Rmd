@@ -1,0 +1,152 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Combinations and Permutations'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+```
+
+A **combination** is when you select items from a list and the order *doesn't*
+matter.  
+A **permutation** is when you select items from a list and the order *does*
+matter.
+
+> A **poker hand** is an example of a *combination* of cards: an ace-king is the same as a king-ace. The **Olympic medallists** in an event are an example of a *partial permutation* of the competitors: the order in which they finish is important as it determines who wins gold, silver and bronze. A *complete permutation* would be the entire finishing order, ie *all* the competitors listed in order.
+
+If we select $k$ things from a total of $n$ options and we **don't** care in what order they are, the total number of *combinations* (the number of different ways to do this) is:
+
+$C\left(n, k\right) = {n \choose k} = \dfrac{n!}{k!\left(n-k\right)!}$
+
+The total number of distinct 5-card poker hands is $C(52, 5) = 2,598,960$.
+
+If we arrange $n$ things into an order, we will create one of the $n!$ possible *permutations* of those items (eg the complete finishing order of a race at the Olympics). If we only select and arrange $k$ things from a total of $n$ options in order to create an arrangement (eg the medallists in a race at the Olympics) the number of ways to create a *partial permutation* like this is:
+
+$P\left(n, k\right) = \dfrac{n!}{\left(n-k\right)!}$
+
+There are 8 competitors in an Olympic 100m final, meaning that there are $P(8, 3) = 336$ different possibilities for the podium.
+
+The above assumes that repetition is not allowed, ie a competitor cannot win more than one medal. If repetition *is* allowed, for example if you look at the top 3 fastest 100m times that have ever been run by these 8 athletes, the possible number of arrangements is $n^k$, ie $8^3 = 512$. Another example of **arrangement with repetition** is if you are creating words from an alphabet: the total number of three-letter words is $26\times26\times26=17,576$.
+
+Calculating Combinations and Permutations
+=========================================
+The built-in module `math` in Python provides the `factorial()`, `comb()` and `perm()` functions which can be used as follows:
+
+Combinations
+------------
+How many distinct 5-card poker hands are possible?
+
+```{python}
+from math import factorial
+
+# The long way
+n = 52
+k = 5
+C = factorial(n) / (factorial(k) * factorial(n - k))
+print(C)
+
+from math import comb
+
+# The short way
+C = comb(52, 5)
+print(C)
+```
+
+Permutations
+------------
+An Olympic 100m final has 8 competitors. How many possible finishing orders are there?
+
+```{python}
+from math import factorial
+
+n = 8
+P = factorial(n)
+print(P)
+```
+
+How many different possible podiums (gold, silver and bronze winners) are there?
+
+```{python}
+from math import factorial
+
+# The long way
+n = 8
+k = 3
+P = factorial(n) / factorial(n - k)
+print(P)
+```
+
+```{python}
+from math import perm
+
+# The short way
+P = perm(8, 3)
+print(P)
+```
+
+If we look up the top 3 all-time fastest runs by these 8 athletes how many arrangements could we possibly see?
+
+```{python}
+P = 8**3
+print(P)
+```
+
+Creating Combinations and Permutations
+======================================
+It's all good and well knowing *how many* combinations and/or permutations there are, but how can we see *what* they are? The built-in `itertools` module in Python has the `combinations` and `permutations` functions which can be used as follows:
+
+Combinations
+------------
+On 26 July 2021 the top 4 ranked rugby teams in the world were:
+
+1. South Africa
+2. New Zealand
+3. England
+4. Ireland
+
+If we wanted to organise a round-robin tournament where **each team played each other _once_**, we could create *combinations* of two teams:
+
+```{python}
+import itertools
+
+# Rankings as on 2021-07-26
+teams = ['South Africa', 'New Zealand', 'England', 'Ireland']
+
+# Create the tournament fixture list
+for combination in itertools.combinations(teams, 2):
+    team0 = combination[0]
+    team1 = combination[1]
+    print(f'{team0} vs {team1}')
+```
+
+Permutations
+------------
+If we wanted to create a double round-robin tournament where **each team played each other _twice_** - ie once at home and once away - we could create *permutations* of two teams:
+
+```{python}
+import itertools
+
+# Rankings as on 2021-07-26
+teams = ['South Africa', 'New Zealand', 'England', 'Ireland']
+
+# Create the tournament fixture list
+for permutation in itertools.permutations(teams, 2):
+    home = permutation[0]
+    away = permutation[1]
+    print(f'{home} (H) vs {away} (A)')
+```
+
+[⇦ Back](../../python.html)
+
+</font>

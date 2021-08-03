@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Statistics in Python: Combinations and Permutations</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -482,7 +482,7 @@ u),e(r[u],"region",df,u),e(r[u],"country",cf,u);nf(h,k,c)}else h.push({name:"err
 n=d[h].index,p=qf[k];p&&l&&(!lf(k)||$e(l))&&(void 0!==n&&(p+=n),f.push(p+"."+l))}c({qc:encodeURIComponent(f.join("~")),cc:e})})})}catch(c){}},lf=function(a){return-1!==["email","phone_number","first_name","last_name","street"].indexOf(a)};var uf=function(){this.eventModel={};this.targetConfig={};this.containerConfig={};this.remoteConfig={};this.globalConfig={};this.onSuccess=function(){};this.onFailure=function(){};this.setContainerTypeLoaded=function(){};this.getContainerTypeLoaded=function(){};this.eventId=void 0;this.isGtmEvent=!1},vf=function(a){var b=new uf;b.eventModel=a;return b},wf=function(a,b){a.targetConfig=b;return a},xf=function(a,b){a.containerConfig=b;return a},yf=function(a,b){a.remoteConfig=b;return a},zf=function(a,
 b){a.globalConfig=b;return a},Af=function(a,b){a.onSuccess=b;return a},Bf=function(a,b){a.setContainerTypeLoaded=b;return a},Cf=function(a,b){a.getContainerTypeLoaded=b;return a},Df=function(a,b){a.onFailure=b;return a};
 uf.prototype.getWithConfig=function(a){if(void 0!==this.eventModel[a])return this.eventModel[a];if(void 0!==this.targetConfig[a])return this.targetConfig[a];if(void 0!==this.containerConfig[a])return this.containerConfig[a];if(void 0!==this.remoteConfig[a])return this.remoteConfig[a];if(void 0!==this.globalConfig[a])return this.globalConfig[a]};
-var Ef=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ff=function(a,b,c){function d(h){Yb(h)&&Ja(h,function(k,l){f=!0;e[k]=l})}var e={},f=!1;c&&1!==c||(d(a.globalConfig[b]),d(a.remoteConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var Gf={},Hf=null,If=Math.random();Gf.M="UA-156468188-1";Gf.Xc="820";Gf.Vi="";Gf.Mg="ChAI8K+eiAYQqa3LicT9joAuEicA/8MT7yWX1bKY2Vdzj/9xW/czoXryO/aSvjPKtfQbaisiwGsw9mwaAvFY";var Jf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Kf={__paused:!0,__tg:!0},Lf;for(Lf in Jf)Jf.hasOwnProperty(Lf)&&(Kf[Lf]=!0);var Mf="www.googletagmanager.com/gtm.js";Mf="www.googletagmanager.com/gtag/js";
+var Ef=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ff=function(a,b,c){function d(h){Yb(h)&&Ja(h,function(k,l){f=!0;e[k]=l})}var e={},f=!1;c&&1!==c||(d(a.globalConfig[b]),d(a.remoteConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var Gf={},Hf=null,If=Math.random();Gf.M="UA-156468188-1";Gf.Xc="820";Gf.Vi="";Gf.Mg="ChEI8NKjiAYQp6Sb77CS5eb6ARInACf6PXwf8Z01C0cRcOP+jzoij1AiAAxOCT2Fj8iPuYjvk4jZGDNsGgIVnw\x3d\x3d";var Jf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Kf={__paused:!0,__tg:!0},Lf;for(Lf in Jf)Jf.hasOwnProperty(Lf)&&(Kf[Lf]=!0);var Mf="www.googletagmanager.com/gtm.js";Mf="www.googletagmanager.com/gtag/js";
 var Nf=Mf,Of=Na(""),Pf=null,Qf=null,Rf="https://www.googletagmanager.com/a?id="+Gf.M+"&cv=1",Sf={},Tf={},Uf=function(){var a=Hf.sequence||1;Hf.sequence=a+1;return a};Gf.Lg="";var Vf={},Wf=new Da,Xf={},Yf={},ag={name:"dataLayer",set:function(a,b){H(Xa(a,b),Xf);Zf()},get:function(a){return $f(a,2)},reset:function(){Wf=new Da;Xf={};Zf()}},$f=function(a,b){return 2!=b?Wf.get(a):bg(a)},bg=function(a){var b,c=a.split(".");b=b||[];for(var d=Xf,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==ya(b,d))return}return d},cg=function(a,b){Yf.hasOwnProperty(a)||(Wf.set(a,b),H(Xa(a,b),Xf),Zf())},Zf=function(a){Ja(Yf,function(b,c){Wf.set(b,c);H(Xa(b,
 void 0),Xf);H(Xa(b,c),Xf);a&&delete Yf[b]})},eg=function(a,b,c){Vf[a]=Vf[a]||{};Vf[a][b]=dg(b,c)},dg=function(a,b){var c,d=1!==(void 0===b?2:b)?bg(a):Wf.get(a);"array"===Wb(d)||"object"===Wb(d)?c=H(d):c=d;return c},fg=function(a,b){if(Vf[a])return Vf[a][b]},gg=function(a,b){Vf[a]&&delete Vf[a][b]};
 var hg=function(a,b,c){if(c){var d=c.selector_type,e=String(c.value),f;if("js_variable"===d){e=e.replace(/\["?'?/g,".").replace(/"?'?\]/g,"");for(var h=e.split(","),k=0;k<h.length;k++){var l=h[k].trim();if(l){if(0===l.indexOf("dataLayer."))f=$f(l.substring(10));else{var n=l.split(".");f=m[n.shift()];for(var p=0;p<n.length;p++)f=f&&f[n[p]]}if(void 0!==f)break}}}else if("css_selector"===d&&fe){var q=ge(e);q&&0<q.length&&(f=Lb(q[0])||Pa(q[0].value))}f&&(a[b]=f)}},ig=function(a){if(a){var b={};hg(b,"email",
@@ -671,134 +671,148 @@ Qf;if(a){var x=fj("INIT");}}}
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Combinations and Permutations</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#calculating-combinations-and-permutations"><span class="toc-section-number">1</span> Calculating Combinations and Permutations</a>
+<ul>
+<li><a href="#combinations"><span class="toc-section-number">1.1</span> Combinations</a></li>
+<li><a href="#permutations"><span class="toc-section-number">1.2</span> Permutations</a></li>
+</ul></li>
+<li><a href="#creating-combinations-and-permutations"><span class="toc-section-number">2</span> Creating Combinations and Permutations</a>
+<ul>
+<li><a href="#combinations-1"><span class="toc-section-number">2.1</span> Combinations</a></li>
+<li><a href="#permutations-1"><span class="toc-section-number">2.2</span> Permutations</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/lists.html">Lists</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/date_time.html">Date and Time (Part 1)</a></li>
-</ol>
+<p><a href="../../python.html">⇦ Back</a></p>
+<p>A <strong>combination</strong> is when you select items from a list and the order <em>doesn’t</em> matter.<br />
+A <strong>permutation</strong> is when you select items from a list and the order <em>does</em> matter.</p>
+<blockquote>
+<p>A <strong>poker hand</strong> is an example of a <em>combination</em> of cards: an ace-king is the same as a king-ace. The <strong>Olympic medallists</strong> in an event are an example of a <em>partial permutation</em> of the competitors: the order in which they finish is important as it determines who wins gold, silver and bronze. A <em>complete permutation</em> would be the entire finishing order, ie <em>all</em> the competitors listed in order.</p>
+</blockquote>
+<p>If we select <span class="math inline">\(k\)</span> things from a total of <span class="math inline">\(n\)</span> options and we <strong>don’t</strong> care in what order they are, the total number of <em>combinations</em> (the number of different ways to do this) is:</p>
+<p><span class="math inline">\(C\left(n, k\right) = {n \choose k} = \dfrac{n!}{k!\left(n-k\right)!}\)</span></p>
+<p>The total number of distinct 5-card poker hands is <span class="math inline">\(C(52, 5) = 2,598,960\)</span>.</p>
+<p>If we arrange <span class="math inline">\(n\)</span> things into an order, we will create one of the <span class="math inline">\(n!\)</span> possible <em>permutations</em> of those items (eg the complete finishing order of a race at the Olympics). If we only select and arrange <span class="math inline">\(k\)</span> things from a total of <span class="math inline">\(n\)</span> options in order to create an arrangement (eg the medallists in a race at the Olympics) the number of ways to create a <em>partial permutation</em> like this is:</p>
+<p><span class="math inline">\(P\left(n, k\right) = \dfrac{n!}{\left(n-k\right)!}\)</span></p>
+<p>There are 8 competitors in an Olympic 100m final, meaning that there are <span class="math inline">\(P(8, 3) = 336\)</span> different possibilities for the podium.</p>
+<p>The above assumes that repetition is not allowed, ie a competitor cannot win more than one medal. If repetition <em>is</em> allowed, for example if you look at the top 3 fastest 100m times that have ever been run by these 8 athletes, the possible number of arrangements is <span class="math inline">\(n^k\)</span>, ie <span class="math inline">\(8^3 = 512\)</span>. Another example of <strong>arrangement with repetition</strong> is if you are creating words from an alphabet: the total number of three-letter words is <span class="math inline">\(26\times26\times26=17,576\)</span>.</p>
+<div id="calculating-combinations-and-permutations" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Calculating Combinations and Permutations</h1>
+<p>The built-in module <code>math</code> in Python provides the <code>factorial()</code>, <code>comb()</code> and <code>perm()</code> functions which can be used as follows:</p>
+<div id="combinations" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Combinations</h2>
+<p>How many distinct 5-card poker hands are possible?</p>
+<pre class="python"><code>from math import factorial
+
+# The long way
+n = 52
+k = 5
+C = factorial(n) / (factorial(k) * factorial(n - k))
+print(C)</code></pre>
+<pre><code>## 2598960.0</code></pre>
+<pre class="python"><code>from math import comb
+
+# The short way
+C = comb(52, 5)
+print(C)</code></pre>
+<pre><code>## 2598960</code></pre>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li><a href="python/advanced/date_time.html">Date and Time (Part 2)</a></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="permutations" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Permutations</h2>
+<p>An Olympic 100m final has 8 competitors. How many possible finishing orders are there?</p>
+<pre class="python"><code>from math import factorial
+
+n = 8
+P = factorial(n)
+print(P)</code></pre>
+<pre><code>## 40320</code></pre>
+<p>How many different possible podiums (gold, silver and bronze winners) are there?</p>
+<pre class="python"><code>from math import factorial
+
+# The long way
+n = 8
+k = 3
+P = factorial(n) / factorial(n - k)
+print(P)</code></pre>
+<pre><code>## 336.0</code></pre>
+<pre class="python"><code>from math import perm
+
+# The short way
+P = perm(8, 3)
+print(P)</code></pre>
+<pre><code>## 336</code></pre>
+<p>If we look up the top 3 all-time fastest runs by these 8 athletes how many arrangements could we possibly see?</p>
+<pre class="python"><code>P = 8**3
+print(P)</code></pre>
+<pre><code>## 512</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
+<div id="creating-combinations-and-permutations" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Creating Combinations and Permutations</h1>
+<p>It’s all good and well knowing <em>how many</em> combinations and/or permutations there are, but how can we see <em>what</em> they are? The built-in <code>itertools</code> module in Python has the <code>combinations</code> and <code>permutations</code> functions which can be used as follows:</p>
+<div id="combinations-1" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Combinations</h2>
+<p>On 26 July 2021 the top 4 ranked rugby teams in the world were:</p>
 <ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
+<li>South Africa</li>
+<li>New Zealand</li>
+<li>England</li>
+<li>Ireland</li>
 </ol>
+<p>If we wanted to organise a round-robin tournament where <strong>each team played each other <em>once</em></strong>, we could create <em>combinations</em> of two teams:</p>
+<pre class="python"><code>import itertools
+
+# Rankings as on 2021-07-26
+teams = [&#39;South Africa&#39;, &#39;New Zealand&#39;, &#39;England&#39;, &#39;Ireland&#39;]
+
+# Create the tournament fixture list
+for combination in itertools.combinations(teams, 2):
+    team0 = combination[0]
+    team1 = combination[1]
+    print(f&#39;{team0} vs {team1}&#39;)</code></pre>
+<pre><code>## South Africa vs New Zealand
+## South Africa vs England
+## South Africa vs Ireland
+## New Zealand vs England
+## New Zealand vs Ireland
+## England vs Ireland</code></pre>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/curve_fitting/linear.html">Linear Functions</a></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Tests</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-</ul></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-</ol>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="permutations-1" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Permutations</h2>
+<p>If we wanted to create a double round-robin tournament where <strong>each team played each other <em>twice</em></strong> - ie once at home and once away - we could create <em>permutations</em> of two teams:</p>
+<pre class="python"><code>import itertools
+
+# Rankings as on 2021-07-26
+teams = [&#39;South Africa&#39;, &#39;New Zealand&#39;, &#39;England&#39;, &#39;Ireland&#39;]
+
+# Create the tournament fixture list
+for permutation in itertools.permutations(teams, 2):
+    home = permutation[0]
+    away = permutation[1]
+    print(f&#39;{home} (H) vs {away} (A)&#39;)</code></pre>
+<pre><code>## South Africa (H) vs New Zealand (A)
+## South Africa (H) vs England (A)
+## South Africa (H) vs Ireland (A)
+## New Zealand (H) vs South Africa (A)
+## New Zealand (H) vs England (A)
+## New Zealand (H) vs Ireland (A)
+## England (H) vs South Africa (A)
+## England (H) vs New Zealand (A)
+## England (H) vs Ireland (A)
+## Ireland (H) vs South Africa (A)
+## Ireland (H) vs New Zealand (A)
+## Ireland (H) vs England (A)</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 
