@@ -1,0 +1,319 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Nested Dictionaries and Dictionary Comprehension'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Nested Dictionaries
+===================
+A **dict object** can have any mix of data types as its values, including other dict objects. In other words, you can have a *dictionary-of-dictionaries* such as the one below:
+
+```{python}
+# The 100m medal winners at the Tokyo 2020 Olympics
+athletics = {
+    '100m': {
+        'Men': {
+            'Gold': 'Marcell Jacobs',
+            'Silver': 'Fred Kerley',
+            'Bronze': 'Andre De Grasse'
+        },
+        'Women': {
+            'Gold': 'Elaine Thompson-Herah',
+            'Silver': 'Shelly-Ann Fraser-Pryce',
+            'Bronze': 'Shericka Jackson'
+        }
+    }
+}
+```
+
+This is a pretty useful way of storing data because it's logical: to get the name of the gold medallist in the men's 100m you can look up `'100m'` > `'Men'` > `'Gold'` as shown below:
+
+```{python}
+print(athletics['100m']['Men']['Gold'])
+```
+
+Adding to a Nested Dictionary
+-----------------------------
+Add another *item* (key+value) to a nested dictionary by indexing an as-of-yet non-existent key and assigning a value to it:
+
+```{python}
+# Add a key-value pair to the nested dictionary
+athletics['100m']['Women']['Fourth'] = 'Marie-Josée Ta Lou'
+```
+
+Add another *dictionary* to a nested dictionary in a similar way:
+
+```{python}
+# The 200m medal winners at the Tokyo 2020 Olympics
+results200m = {
+    'Men': {
+        'Gold': 'Andre De Grasse',
+        'Silver': 'Kenneth Bednarek',
+        'Bronze': 'Noah Lyles',
+    },
+    'Women': {
+        'Gold': 'Elaine Thompson-Herah',
+        'Silver': 'Christine Mboma',
+        'Bronze': 'Gabrielle Thomas',
+    }
+}
+# Add to the 'athletics' dictionary
+athletics['200m'] = results200m
+```
+
+Another way to do it:
+
+```{python}
+results100m = athletics['100m']
+
+# Combine the two dictionaries
+athletics = {
+    '100m': results100m,
+    '200m': results200m,
+}
+```
+
+Numbers and Tuples
+------------------
+The above examples used dictionaries where all the keys and values were strings. Of course, this doesn't have to be the case: keys can be strings, numbers or tuples and values can be any data type:
+
+```{python}
+# The 400m medal winners at the Tokyo 2020 Olympics
+athletics['400m'] = {
+    'Men': {
+        1: 'Steven Gardiner',
+        2: 'Anthony Zambrano',
+        3: 'Kirani James',
+    },
+    'Women': {
+        (1, 'Name'): 'Shaunae Miller-Uibo',
+        (1, 'Time'): 48.36,
+        (2, 'Name'): 'Marileidy Paulino',
+        (2, 'Time'): 49.20,
+        (3, 'Name'): 'Allyson Felix',
+        (3, 'Time'): 49.46,
+    }
+}
+```
+
+Indexing values now looks like this:
+
+```{python}
+print(athletics['400m']['Men'][1])
+```
+
+```{python}
+print(athletics['400m']['Women'][(2, 'Time')])
+```
+
+As mentioned, the values in a dict can be of any data type. Often it will be useful to have them be lists and this leads onto the next section...
+
+Nested Dictionaries AND Lists
+-----------------------------
+Dictionaries containing a mix of both lists and dictionaries is a very common format for data to be stored in. Usually, these will appear in the form of [JavaScript Object Notation (JSON)](https://en.wikipedia.org/wiki/JSON) files which are, once imported into Python, essentially exactly this. Here's an example of what the contents of a file like this might look like:
+
+```{python}
+# The 800m medal winners at the Tokyo 2020 Olympics
+results800m = {
+    'Women': {
+        1: ['Athing Mu', 'United States', '1:55.21'],
+        2: ['Keely Hodgkinson', 'Great Britain', '1:55.88'],
+        3: ['Raevyn Rogers', 'United States', '1:56.81'],
+    },
+    'Men': [
+        ['Gold', 'Emmanuel Korir', 'Kenya', '1:45.06'],
+        ['Silver', 'Ferguson Rotich', 'Kenya', '1:45.23'],
+        ['Bronze', 'Patryk Dobek', 'Poland', '1:45.39'],
+    ]
+}
+```
+
+```{python}
+print(results800m['Women'][1][2])
+```
+
+Note that, in the indexing above, the `[1]` is the *key of a value* in a dictionary and the `[2]` is the *position of an element* in a list.
+
+You can, of course, also have a list of dictionaries:
+
+```{python}
+results800m = [
+    {1: 'Athing Mu', 2: 'Keely Hodgkinson', 3: 'Raevyn Rogers'},
+    {1: 'Emmanuel Korir', 2: 'Ferguson Rotich', 3: 'Patryk Dobek'},
+]
+```
+
+```{python}
+print(results800m[0][1])
+```
+
+Merging Nested Dictionaries
+---------------------------
+Nested dictionaries can be merged in the same way as any dictionaries:
+
+```{python}
+athletics = {**athletics, **{'800m': results800m}}
+
+print(athletics.keys())
+```
+
+Iterating Over a Nested Dictionary
+----------------------------------
+When you loop through a dictionary, you will be looping over the *keys,* and only the top-level keys at that:
+
+```{python}
+for key in athletics:
+    print(key)
+```
+
+Printing the value(s) of each key will show the entire dictionary's contents
+
+```{python}
+for key in athletics:
+    print(athletics[key])
+```
+
+The above is equivalent to:
+
+```{python, eval=FALSE}
+for key, value in athletics.items():
+    print(value)
+```
+
+Walking Through a Nested Dictionary
+-----------------------------------
+In order to iterate over *every* item in a dictionary, as opposed to just the top-level keys, you will need to use a series of loops (or one recursive loop, as demonstrated below):
+
+```{python}
+def get_all_values(obj, level=0):
+    """Walk through a dictionary of dicts and lists."""
+    if type(obj) is dict:
+        for key, value in obj.items():
+            if type(value) in [dict, list]:
+                print('    ' * level, key, sep='')
+                level = level + 1
+                get_all_values(value, level)
+                level = level - 1
+            else:
+                print('    ' * (level), key, ': ', value, sep='')
+    elif type(obj) is list:
+        for i, element in enumerate(obj):
+            if type(element) in [dict, list]:
+                print('    ' * level, i, sep='')
+                level = level + 1
+                get_all_values(element, level)
+                level = level - 1
+            else:
+                print('    ' * (level), element, sep='')
+    else:
+        raise ValueError
+
+
+get_all_values(athletics)
+```
+
+Dictionary Comprehension
+========================
+
+List Comprehension vs Dictionary Comprehension
+----------------------------------------------
+Quite simply, a **list** comprehension creates a new list while a **dictionary** comprehension creates a new dictionary. So, if we have a list as follows:
+
+```{python}
+list_x = [0, 1, 2, 3, 4, 5]
+```
+
+An example of a **list** comprehension would be:
+
+```{python}
+# Square the numbers in list_x
+square_numbers = [x**2 for x in list_x]
+
+print(square_numbers)
+```
+
+While an example of a **dictionary** comprehension would be:
+
+```{python}
+# Square the numbers in list_x
+square_numbers = {x: x**2 for x in list_x}
+
+print(square_numbers)
+```
+
+Two Lists
+---------
+If we have a second list as follows:
+
+```{python}
+list_y = ['zero', 'one', 'two', 'three', 'four', 'five']
+```
+
+Then we can combine the two lists into one dictionary. Any of the following will work for this (ie these will produce the same output):
+
+```{python}
+dct = {x: list_y[x] for x in list_x}
+dct = {i: v for i, v in enumerate(list_y)}
+dct = {n: list_y[n] for n in range(len(list_y))}
+
+print(dct)
+```
+
+But the following will NOT work as expected:
+
+```{python}
+dct = {x: y for y in list_y for x in list_x}
+dct = {x: y for x in list_x for y in list_y}
+
+print(dct)
+```
+
+Here's an example that counts the letters of the alphabet:
+
+```{python}
+import string
+
+lt = string.ascii_letters
+dct = {n: lt[n] for n in range(10)}
+
+print(dct)
+```
+
+List Comprehension with a Dictionary
+------------------------------------
+This isn't the same as a dictionary comprehension! It's merely a list comprehension that happens to use a dictionary:
+
+```{python}
+# The men's 100m medal winners at the Tokyo 2020 Olympics
+dct = {
+    'Gold': 'Marcell Jacobs',
+    'Silver': 'Fred Kerley',
+    'Bronze': 'Andre De Grasse'
+}
+ls = [v for k, v in dct.items()]
+
+print(ls)
+```
+
+We can also get selective about which values we include in the output of our list comprehension:
+
+```{python}
+# Use "k" and "v" for "key" and "value"
+ls = [v for k, v in dct.items() if k != 'Bronze']
+
+print(ls)
+```
+
+[⇦ Back](../../python.html)
+
+</font>

@@ -1,0 +1,390 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Dictionaries'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+What is a Dictionary in Python?
+===============================
+It's an **object that stores information in the same way that a dictionary stores words and their definitions**. Here's an example of an *English dictionary* created using a *dictionary object* in Python:
+
+```{python}
+# Create a dictionary
+my_dictionary = {
+    'Apple': 'A fruit that grows on trees',
+    'Ball': 'Another name for a spherical object',
+    'Cart': 'Platform with wheels pulled by an animal',
+}
+```
+
+In the above snippet we have:
+
+- **A variable** called `my_dictionary`
+- **Curly brackets** - `{}` - which are the symbols used by Python to show the start and end of a dictionary object
+- **Keys**, which is the proper name for the *words* being defined
+- **Values**, which is the proper name for the *definitions* of those words
+- **Colons** - `:` - which separate the keys and the values to create *key-value pairs* (or *items*) in your dictionary
+- **Commas**, which separate the key-value pairs. Note that the comma after the last key-value pair is optional.
+
+These are the necessary components for creating a dictionary.
+
+> Essentially, a dictionary is a comma-separated list of key-value pairs inside of curly brackets
+
+Using a Dictionary
+==================
+You **index** a dictionary (look up a value) by using square brackets and the relevant key:
+
+```{python}
+# Look up the definition of 'apple'
+print(my_dictionary['Apple'])
+```
+
+You can add items into a dictionary by *indexing it* with a new key and *assigning* a value to it:
+
+```{python}
+# Add a new word and definition to the dictionary
+my_dictionary['Python'] = 'A type of snake'
+
+print(my_dictionary['Python'])
+```
+
+> Remember, an *item* is a *key* plus a *value*
+
+Overwriting a value works in a similar way: index the dictionary with an *existing* key and assign a new value to it. The old value will be replaced:
+
+```{python}
+# Replace the definition of the word 'Python'
+my_dictionary['Python'] = 'A type of programming language'
+
+print(my_dictionary['Python'])
+```
+
+The fact that the above code overwrites the value implies that *keys must be unique* - you can't have two `Python` keys in the same dictionary.
+
+To **del**ete an item, use the `del` statement:
+
+```{python}
+# Remove the word 'Ball' and its definition
+del my_dictionary['Ball']
+
+print(my_dictionary)
+```
+
+Data Types
+==========
+The **keys** in a dictionary can be *strings, numbers or tuples* (or a combination of these):
+
+```{python}
+# A dictionary with strings as keys
+animal_types = {'Lion': 'Mammal', 'Bear': 'Mammal', 'Crocodile': 'Reptile', 'Eagle': 'Bird', 'Pigeon': 'Bird'}
+
+print(animal_types['Lion'])
+```
+
+```{python}
+# A dictionary with numbers as keys
+arabic_to_roman = {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V', 6: 'VI'}
+
+print(arabic_to_roman[2])
+```
+
+```{python}
+# A dictionary with tuples as keys
+days_in_month = {('Nov', 2021): 30, ('Dec', 2021): 31, ('Jan', 2022): 31, ('Feb', 2022): 28, ('Mar', 2022): 31}
+
+print(days_in_month[('Mar', 2022)])
+```
+
+```{python}
+# A dictionary with a combination of strings, numbers and tuples as keys
+dct = {'A': 'Alfa', 1: 'Bravo', (2, 'C'): 'Charlie'}
+
+print(dct[(2, 'C')])
+```
+
+> You can't have lists as keys because they are mutable (they can be modified in-place) which confuses Python
+
+Of course, a key can be stored in a variable:
+
+```{python}
+# Assign a key to a variable
+var = 'A'
+# Index a dictionary with the variable
+print(dct[var])
+```
+
+The **values** in a dictionary can be *any* data type:
+
+```{python}
+dct = {
+    'String': 'Alpha',
+    'Number': 1,
+    'Null': None,
+    'Boolean': True,
+    'List': [1, 2, 3, 4, 'Five', 'Six'],
+    'Dictionary': {'A': 'Alfa', 'B': 'Bravo', 'C': 'Charlie'},
+    'Tuple': (0, 'A'),
+}
+```
+
+This implies that the values can be treated like their data types; for example, if a value is a list then all the methods that work on lists will work on the indexed dictionary.
+
+```{python}
+# Augment a string
+dct['String'] = dct['String'] + 'bet'
+# Add to a number
+dct['Number'] = dct['Number'] + 9
+# Test equality
+dct['Boolean'] = dct['Boolean'] == 'Value'
+# Append to a list
+dct['List'].append(3)
+# Add to a dictionary within a dictionary
+dct['Dictionary']['D'] = 'Delta'
+# Slice a tuple
+dct['Tuple'] = dct['Tuple'][1:]
+
+print(dct)
+```
+
+This can get as complex as you want:
+
+```{python}
+# Use list comprehension, list indexing and a variable as the key
+key = 'List'
+idx = 4
+dct[key] = dct[key][:idx] + [x + 4 for x in dct[key][:idx]]
+
+print(dct['List'])
+```
+
+Information About a Dictionary
+==============================
+The **len**gth of a dictionary is the number of items inside it:
+
+```{python}
+dct = {'A': 'Alfa', 'B': 'Bravo', 'C': 'Charlie'}
+
+print(len(dct))
+```
+
+The `.keys()` method returns all the keys as a 'dict_keys' object:
+
+```{python}
+print(dct.keys())
+```
+
+It is usually useful to convert this into a list:
+
+```{python}
+print(list(dct.keys()))
+```
+
+Similarly, the `.values()` method will return all the values:
+
+```{python}
+all_values = dct.values()
+all_values = list(all_values)
+print(all_values)
+```
+
+Lastly, the `.items()` method will return all of the items:
+
+```{python}
+all_values = dct.items()
+all_values = list(all_values)
+print(all_values)
+```
+
+Notice that the `list()` function converted the dictionary items into a list of tuples. This means that all the key-value pairs can be iterated over, in order, using a 'for' loop:
+
+```{python}
+for key, value in dct.items():
+    print(key, value)
+```
+
+Initialising a Dictionary
+=========================
+Of course, a dictionary can be empty! Create an empty dictionary by simply not putting anything inside the curly brackets:
+
+```{python}
+dct = {}
+```
+
+An empty dictionary can be useful for when you need the object to be *initialised* for something that happens downstream. Maybe there's a loop that populates a dictionary and thus requires one to exist before it starts:
+
+```{python}
+dct = {}
+for day in ['Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur', 'Sun']:
+    dct[day] = day + 'day'
+
+print(dct)
+```
+
+Another way to create an empty dictionary is by using the `dict()` function with no arguments:
+
+```{python}
+dct = dict()
+```
+
+Python actually uses the name **dict** instead of 'dictionary' for the object type:
+
+```{python}
+print(type(dct))
+```
+
+Note that an empty dictionary is not the same as a dictionary that contains an empty list or a null:
+
+```{python}
+# Not an empty dictionary
+dct['Value 1'] = []
+dct['Value 2'] = None
+```
+
+If it contains an empty list or a null it still contains something!
+
+Conversion to Named Values
+==========================
+What's a "named value"? These are most easily explained by using an example: consider the `pow()` function in Python which raises a number to a **pow**er:
+
+```{python}
+# Raise a number to a power
+x = pow(10, 2)
+
+print(x)
+```
+
+This has calculated $10^2 = 100$. The `pow()` function raises a **base** to an **exp**onent. As it happens, this function names its inputs - the first is given the name "base" and the second is called "exp" - which means you can specify the arguments by their names:
+
+```{python}
+# Raise a base to an exponent
+x = pow(base=10, exp=2)
+
+print(x)
+```
+
+This is what is meant by "named values", it literally refers to values which have names! Of course, dictionaries consist of key-value pairs which associate names to values, but they are not quite the same. Fortunately, there is a way to convert dictionaries to named values: the double-asterisk operator:
+
+```{python}
+# Create a dictionary
+dct = {'base': 10, 'exp': 2}
+# Use the dictionary as the input arguments to the pow() function
+x = pow(**dct)
+
+print(x)
+```
+
+What's happened here is that the two asterisks have converted the two key-value pairs in the dictionary into two named values called "base" (with a value of 10) and "exp" (with a value of 2) which have then been used as named arguments for the `pow()` function.
+
+Merge Two Dictionaries
+======================
+Another use for named values is when you want to merge two dictionaries:
+
+```{python}
+# Results of the men's 400m finals at the last two Olympic Games
+rio2016 = {'Wayde van Niekerk': 1, 'Kirani James': 2, 'LaShawn Merritt': 3}
+tokyo2020 = {'Steven Gardiner': 1, 'Anthony Zambrano': 2, 'Kirani James': 3}
+
+# Merge the two dictionaries to get the athletes' most recent finishing positions
+most_recent = {**rio2016, **tokyo2020}
+
+print(most_recent)
+```
+
+Notice that when there are duplicate keys the value from the second dictionary overwrites the first: Kirani James came 2nd in Rio and 3rd in Tokyo, so the merged dictionary only keeps his most recent result.
+
+Alternatively, as of Python 3.9, the 'bar' notation can be used to merge one dictionary into another:
+
+```{python}
+rio2016 = {'Wayde van Niekerk': 1, 'Kirani James': 2, 'LaShawn Merritt': 3}
+tokyo2020 = {'Steven Gardiner': 1, 'Anthony Zambrano': 2, 'Kirani James': 3}
+most_recent = rio2016 | tokyo2020
+
+print(most_recent)
+```
+
+Or, the `.update()` method can be used to merge *in-place*:
+
+```{python}
+results = {'Wayde van Niekerk': 1, 'Kirani James': 2, 'LaShawn Merritt': 3}
+new_results = {'Steven Gardiner': 1, 'Anthony Zambrano': 2, 'Kirani James': 3}
+results.update(new_results)
+
+print(results)
+```
+
+Display a Dictionary as a Formatted Table
+=========================================
+The `tabulate` package allows you to render a dictionary as a nice table:
+
+```{python}
+from tabulate import tabulate
+
+print(tabulate(results.items(), headers=['Name', 'Ranking'], tablefmt='pipe'))
+```
+
+Install this package from the terminal with `pip3 install tabulate`.
+
+A More Advanced Type of List?
+=============================
+**Lists** and **dictionaries** are two different data types in Python. Let's compare them:
+
+```{python}
+my_dictionary = {0: 'Alfa', 1: 'Bravo', 2: 'Charlie', 3: 'Delta', 4: 'Echo'}
+my_list = ['Alfa', 'Bravo', 'Charlie', 'Delta', 'Echo']
+```
+
+A dictionary is defined with curly brackets and contains key-value pairs whereas a list is defined with square brackets and contains only values. A list is indexed with numbers that correspond to the positions of the values whereas a dictionary is indexed with keys (which can be numbers too, or they can be strings or tuples) that correspond to the values:
+
+```{python}
+print(my_dictionary[2])
+```
+
+```{python}
+print(my_list[2])
+```
+
+A dictionary is **ordered** just like a list is. This means that its items appear in the same order as they were created/added to the dictionary:
+
+```{python}
+print(list(my_dictionary.values())[2])
+```
+
+The implication is that dictionaries have two properties that lists do not:
+
+1) You can index dictionaries with numbers that do not correspond to the positions of the items. For example, you can essentially create a list that starts with 1 instead of 0!
+
+```{python}
+my_dictionary = {1: 'Alfa', 2: 'Bravo', 3: 'Charlie', 4: 'Delta', 5: 'Echo'}
+
+print(my_dictionary[2])
+```
+
+Using the index "2" has returned the second item in the dictionary! You can, of course, not have the numerical indexes be sequential at all if you so wanted.
+
+2) You can index dictionaries with strings **or** numbers:
+
+```{python}
+my_dictionary = {'A': 'Alfa', 'B': 'Bravo', 'C': 'Charlie', 'D': 'Delta', 'E': 'Echo'}
+
+print(my_dictionary['B'])
+```
+
+```{python}
+print(list(my_dictionary.values())[1])
+```
+
+And, finally, just like you can have lists-of-lists and list comprehensions, you can have dictionaries-of-dictionaries and dictionary comprehensions! See [this page](../advanced/dictionaries.html) for more on those...
+
+[⇦ Back](../../python.html)
+
+</font>

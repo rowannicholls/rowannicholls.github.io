@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Advanced Python: Nested Dictionaries and Dictionary Comprehension</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -671,136 +671,301 @@ Qf;if(a){var x=fj("INIT");}}}
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Advanced Python:</font><br>Nested Dictionaries and Dictionary Comprehension</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#nested-dictionaries"><span class="toc-section-number">1</span> Nested Dictionaries</a>
+<ul>
+<li><a href="#adding-to-a-nested-dictionary"><span class="toc-section-number">1.1</span> Adding to a Nested Dictionary</a></li>
+<li><a href="#numbers-and-tuples"><span class="toc-section-number">1.2</span> Numbers and Tuples</a></li>
+<li><a href="#nested-dictionaries-and-lists"><span class="toc-section-number">1.3</span> Nested Dictionaries AND Lists</a></li>
+<li><a href="#merging-nested-dictionaries"><span class="toc-section-number">1.4</span> Merging Nested Dictionaries</a></li>
+<li><a href="#iterating-over-a-nested-dictionary"><span class="toc-section-number">1.5</span> Iterating Over a Nested Dictionary</a></li>
+<li><a href="#walking-through-a-nested-dictionary"><span class="toc-section-number">1.6</span> Walking Through a Nested Dictionary</a></li>
+</ul></li>
+<li><a href="#dictionary-comprehension"><span class="toc-section-number">2</span> Dictionary Comprehension</a>
+<ul>
+<li><a href="#list-comprehension-vs-dictionary-comprehension"><span class="toc-section-number">2.1</span> List Comprehension vs Dictionary Comprehension</a></li>
+<li><a href="#two-lists"><span class="toc-section-number">2.2</span> Two Lists</a></li>
+<li><a href="#list-comprehension-with-a-dictionary"><span class="toc-section-number">2.3</span> List Comprehension with a Dictionary</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/lists.html">Lists</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/date_time.html">Date and Time (Part 1)</a></li>
-</ol>
+<p><a href="../../python.html">⇦ Back</a></p>
+<div id="nested-dictionaries" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Nested Dictionaries</h1>
+<p>A <strong>dict object</strong> can have any mix of data types as its values, including other dict objects. In other words, you can have a <em>dictionary-of-dictionaries</em> such as the one below:</p>
+<pre class="python"><code># The 100m medal winners at the Tokyo 2020 Olympics
+athletics = {
+    &#39;100m&#39;: {
+        &#39;Men&#39;: {
+            &#39;Gold&#39;: &#39;Marcell Jacobs&#39;,
+            &#39;Silver&#39;: &#39;Fred Kerley&#39;,
+            &#39;Bronze&#39;: &#39;Andre De Grasse&#39;
+        },
+        &#39;Women&#39;: {
+            &#39;Gold&#39;: &#39;Elaine Thompson-Herah&#39;,
+            &#39;Silver&#39;: &#39;Shelly-Ann Fraser-Pryce&#39;,
+            &#39;Bronze&#39;: &#39;Shericka Jackson&#39;
+        }
+    }
+}</code></pre>
+<p>This is a pretty useful way of storing data because it’s logical: to get the name of the gold medallist in the men’s 100m you can look up <code>&#39;100m&#39;</code> &gt; <code>&#39;Men&#39;</code> &gt; <code>&#39;Gold&#39;</code> as shown below:</p>
+<pre class="python"><code>print(athletics[&#39;100m&#39;][&#39;Men&#39;][&#39;Gold&#39;])</code></pre>
+<pre><code>## Marcell Jacobs</code></pre>
+<div id="adding-to-a-nested-dictionary" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Adding to a Nested Dictionary</h2>
+<p>Add another <em>item</em> (key+value) to a nested dictionary by indexing an as-of-yet non-existent key and assigning a value to it:</p>
+<pre class="python"><code># Add a key-value pair to the nested dictionary
+athletics[&#39;100m&#39;][&#39;Women&#39;][&#39;Fourth&#39;] = &#39;Marie-Josée Ta Lou&#39;</code></pre>
+<p>Add another <em>dictionary</em> to a nested dictionary in a similar way:</p>
+<pre class="python"><code># The 200m medal winners at the Tokyo 2020 Olympics
+results200m = {
+    &#39;Men&#39;: {
+        &#39;Gold&#39;: &#39;Andre De Grasse&#39;,
+        &#39;Silver&#39;: &#39;Kenneth Bednarek&#39;,
+        &#39;Bronze&#39;: &#39;Noah Lyles&#39;,
+    },
+    &#39;Women&#39;: {
+        &#39;Gold&#39;: &#39;Elaine Thompson-Herah&#39;,
+        &#39;Silver&#39;: &#39;Christine Mboma&#39;,
+        &#39;Bronze&#39;: &#39;Gabrielle Thomas&#39;,
+    }
+}
+# Add to the &#39;athletics&#39; dictionary
+athletics[&#39;200m&#39;] = results200m</code></pre>
+<p>Another way to do it:</p>
+<pre class="python"><code>results100m = athletics[&#39;100m&#39;]
+
+# Combine the two dictionaries
+athletics = {
+    &#39;100m&#39;: results100m,
+    &#39;200m&#39;: results200m,
+}</code></pre>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li><a href="python/advanced/date_time.html">Date and Time (Part 2)</a></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="numbers-and-tuples" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Numbers and Tuples</h2>
+<p>The above examples used dictionaries where all the keys and values were strings. Of course, this doesn’t have to be the case: keys can be strings, numbers or tuples and values can be any data type:</p>
+<pre class="python"><code># The 400m medal winners at the Tokyo 2020 Olympics
+athletics[&#39;400m&#39;] = {
+    &#39;Men&#39;: {
+        1: &#39;Steven Gardiner&#39;,
+        2: &#39;Anthony Zambrano&#39;,
+        3: &#39;Kirani James&#39;,
+    },
+    &#39;Women&#39;: {
+        (1, &#39;Name&#39;): &#39;Shaunae Miller-Uibo&#39;,
+        (1, &#39;Time&#39;): 48.36,
+        (2, &#39;Name&#39;): &#39;Marileidy Paulino&#39;,
+        (2, &#39;Time&#39;): 49.20,
+        (3, &#39;Name&#39;): &#39;Allyson Felix&#39;,
+        (3, &#39;Time&#39;): 49.46,
+    }
+}</code></pre>
+<p>Indexing values now looks like this:</p>
+<pre class="python"><code>print(athletics[&#39;400m&#39;][&#39;Men&#39;][1])</code></pre>
+<pre><code>## Steven Gardiner</code></pre>
+<pre class="python"><code>print(athletics[&#39;400m&#39;][&#39;Women&#39;][(2, &#39;Time&#39;)])</code></pre>
+<pre><code>## 49.2</code></pre>
+<p>As mentioned, the values in a dict can be of any data type. Often it will be useful to have them be lists and this leads onto the next section…</p>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
+<div id="nested-dictionaries-and-lists" class="section level2" number="1.3">
+<h2 number="1.3"><span class="header-section-number">1.3</span> Nested Dictionaries AND Lists</h2>
+<p>Dictionaries containing a mix of both lists and dictionaries is a very common format for data to be stored in. Usually, these will appear in the form of <a href="https://en.wikipedia.org/wiki/JSON">JavaScript Object Notation (JSON)</a> files which are, once imported into Python, essentially exactly this. Here’s an example of what the contents of a file like this might look like:</p>
+<pre class="python"><code># The 800m medal winners at the Tokyo 2020 Olympics
+results800m = {
+    &#39;Women&#39;: {
+        1: [&#39;Athing Mu&#39;, &#39;United States&#39;, &#39;1:55.21&#39;],
+        2: [&#39;Keely Hodgkinson&#39;, &#39;Great Britain&#39;, &#39;1:55.88&#39;],
+        3: [&#39;Raevyn Rogers&#39;, &#39;United States&#39;, &#39;1:56.81&#39;],
+    },
+    &#39;Men&#39;: [
+        [&#39;Gold&#39;, &#39;Emmanuel Korir&#39;, &#39;Kenya&#39;, &#39;1:45.06&#39;],
+        [&#39;Silver&#39;, &#39;Ferguson Rotich&#39;, &#39;Kenya&#39;, &#39;1:45.23&#39;],
+        [&#39;Bronze&#39;, &#39;Patryk Dobek&#39;, &#39;Poland&#39;, &#39;1:45.39&#39;],
+    ]
+}</code></pre>
+<pre class="python"><code>print(results800m[&#39;Women&#39;][1][2])</code></pre>
+<pre><code>## 1:55.21</code></pre>
+<p>Note that, in the indexing above, the <code>[1]</code> is the <em>key of a value</em> in a dictionary and the <code>[2]</code> is the <em>position of an element</em> in a list.</p>
+<p>You can, of course, also have a list of dictionaries:</p>
+<pre class="python"><code>results800m = [
+    {1: &#39;Athing Mu&#39;, 2: &#39;Keely Hodgkinson&#39;, 3: &#39;Raevyn Rogers&#39;},
+    {1: &#39;Emmanuel Korir&#39;, 2: &#39;Ferguson Rotich&#39;, 3: &#39;Patryk Dobek&#39;},
+]</code></pre>
+<pre class="python"><code>print(results800m[0][1])</code></pre>
+<pre><code>## Athing Mu</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="merging-nested-dictionaries" class="section level2" number="1.4">
+<h2 number="1.4"><span class="header-section-number">1.4</span> Merging Nested Dictionaries</h2>
+<p>Nested dictionaries can be merged in the same way as any dictionaries:</p>
+<pre class="python"><code>athletics = {**athletics, **{&#39;800m&#39;: results800m}}
+
+print(athletics.keys())</code></pre>
+<pre><code>## dict_keys([&#39;100m&#39;, &#39;200m&#39;, &#39;400m&#39;, &#39;800m&#39;])</code></pre>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/curve_fitting/linear.html">Linear Functions</a></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
+<div id="iterating-over-a-nested-dictionary" class="section level2" number="1.5">
+<h2 number="1.5"><span class="header-section-number">1.5</span> Iterating Over a Nested Dictionary</h2>
+<p>When you loop through a dictionary, you will be looping over the <em>keys,</em> and only the top-level keys at that:</p>
+<pre class="python"><code>for key in athletics:
+    print(key)</code></pre>
+<pre><code>## 100m
+## 200m
+## 400m
+## 800m</code></pre>
+<p>Printing the value(s) of each key will show the entire dictionary’s contents</p>
+<pre class="python"><code>for key in athletics:
+    print(athletics[key])</code></pre>
+<pre><code>## {&#39;Men&#39;: {&#39;Gold&#39;: &#39;Marcell Jacobs&#39;, &#39;Silver&#39;: &#39;Fred Kerley&#39;, &#39;Bronze&#39;: &#39;Andre De Grasse&#39;}, &#39;Women&#39;: {&#39;Gold&#39;: &#39;Elaine Thompson-Herah&#39;, &#39;Silver&#39;: &#39;Shelly-Ann Fraser-Pryce&#39;, &#39;Bronze&#39;: &#39;Shericka Jackson&#39;, &#39;Fourth&#39;: &#39;Marie-Josée Ta Lou&#39;}}
+## {&#39;Men&#39;: {&#39;Gold&#39;: &#39;Andre De Grasse&#39;, &#39;Silver&#39;: &#39;Kenneth Bednarek&#39;, &#39;Bronze&#39;: &#39;Noah Lyles&#39;}, &#39;Women&#39;: {&#39;Gold&#39;: &#39;Elaine Thompson-Herah&#39;, &#39;Silver&#39;: &#39;Christine Mboma&#39;, &#39;Bronze&#39;: &#39;Gabrielle Thomas&#39;}}
+## {&#39;Men&#39;: {1: &#39;Steven Gardiner&#39;, 2: &#39;Anthony Zambrano&#39;, 3: &#39;Kirani James&#39;}, &#39;Women&#39;: {(1, &#39;Name&#39;): &#39;Shaunae Miller-Uibo&#39;, (1, &#39;Time&#39;): 48.36, (2, &#39;Name&#39;): &#39;Marileidy Paulino&#39;, (2, &#39;Time&#39;): 49.2, (3, &#39;Name&#39;): &#39;Allyson Felix&#39;, (3, &#39;Time&#39;): 49.46}}
+## [{1: &#39;Athing Mu&#39;, 2: &#39;Keely Hodgkinson&#39;, 3: &#39;Raevyn Rogers&#39;}, {1: &#39;Emmanuel Korir&#39;, 2: &#39;Ferguson Rotich&#39;, 3: &#39;Patryk Dobek&#39;}]</code></pre>
+<p>The above is equivalent to:</p>
+<pre class="python"><code>for key, value in athletics.items():
+    print(value)</code></pre>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Tests</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-</ul></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-</ol>
+<div id="walking-through-a-nested-dictionary" class="section level2" number="1.6">
+<h2 number="1.6"><span class="header-section-number">1.6</span> Walking Through a Nested Dictionary</h2>
+<p>In order to iterate over <em>every</em> item in a dictionary, as opposed to just the top-level keys, you will need to use a series of loops (or one recursive loop, as demonstrated below):</p>
+<pre class="python"><code>def get_all_values(obj, level=0):
+    &quot;&quot;&quot;Walk through a dictionary of dicts and lists.&quot;&quot;&quot;
+    if type(obj) is dict:
+        for key, value in obj.items():
+            if type(value) in [dict, list]:
+                print(&#39;    &#39; * level, key, sep=&#39;&#39;)
+                level = level + 1
+                get_all_values(value, level)
+                level = level - 1
+            else:
+                print(&#39;    &#39; * (level), key, &#39;: &#39;, value, sep=&#39;&#39;)
+    elif type(obj) is list:
+        for i, element in enumerate(obj):
+            if type(element) in [dict, list]:
+                print(&#39;    &#39; * level, i, sep=&#39;&#39;)
+                level = level + 1
+                get_all_values(element, level)
+                level = level - 1
+            else:
+                print(&#39;    &#39; * (level), element, sep=&#39;&#39;)
+    else:
+        raise ValueError
+
+
+get_all_values(athletics)</code></pre>
+<pre><code>## 100m
+##     Men
+##         Gold: Marcell Jacobs
+##         Silver: Fred Kerley
+##         Bronze: Andre De Grasse
+##     Women
+##         Gold: Elaine Thompson-Herah
+##         Silver: Shelly-Ann Fraser-Pryce
+##         Bronze: Shericka Jackson
+##         Fourth: Marie-Josée Ta Lou
+## 200m
+##     Men
+##         Gold: Andre De Grasse
+##         Silver: Kenneth Bednarek
+##         Bronze: Noah Lyles
+##     Women
+##         Gold: Elaine Thompson-Herah
+##         Silver: Christine Mboma
+##         Bronze: Gabrielle Thomas
+## 400m
+##     Men
+##         1: Steven Gardiner
+##         2: Anthony Zambrano
+##         3: Kirani James
+##     Women
+##         (1, &#39;Name&#39;): Shaunae Miller-Uibo
+##         (1, &#39;Time&#39;): 48.36
+##         (2, &#39;Name&#39;): Marileidy Paulino
+##         (2, &#39;Time&#39;): 49.2
+##         (3, &#39;Name&#39;): Allyson Felix
+##         (3, &#39;Time&#39;): 49.46
+## 800m
+##     0
+##         1: Athing Mu
+##         2: Keely Hodgkinson
+##         3: Raevyn Rogers
+##     1
+##         1: Emmanuel Korir
+##         2: Ferguson Rotich
+##         3: Patryk Dobek</code></pre>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+</div>
+<div id="dictionary-comprehension" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Dictionary Comprehension</h1>
+<div id="list-comprehension-vs-dictionary-comprehension" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> List Comprehension vs Dictionary Comprehension</h2>
+<p>Quite simply, a <strong>list</strong> comprehension creates a new list while a <strong>dictionary</strong> comprehension creates a new dictionary. So, if we have a list as follows:</p>
+<pre class="python"><code>list_x = [0, 1, 2, 3, 4, 5]</code></pre>
+<p>An example of a <strong>list</strong> comprehension would be:</p>
+<pre class="python"><code># Square the numbers in list_x
+square_numbers = [x**2 for x in list_x]
+
+print(square_numbers)</code></pre>
+<pre><code>## [0, 1, 4, 9, 16, 25]</code></pre>
+<p>While an example of a <strong>dictionary</strong> comprehension would be:</p>
+<pre class="python"><code># Square the numbers in list_x
+square_numbers = {x: x**2 for x in list_x}
+
+print(square_numbers)</code></pre>
+<pre><code>## {0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25}</code></pre>
+</div>
+<div id="two-lists" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Two Lists</h2>
+<p>If we have a second list as follows:</p>
+<pre class="python"><code>list_y = [&#39;zero&#39;, &#39;one&#39;, &#39;two&#39;, &#39;three&#39;, &#39;four&#39;, &#39;five&#39;]</code></pre>
+<p>Then we can combine the two lists into one dictionary. Any of the following will work for this (ie these will produce the same output):</p>
+<pre class="python"><code>dct = {x: list_y[x] for x in list_x}
+dct = {i: v for i, v in enumerate(list_y)}
+dct = {n: list_y[n] for n in range(len(list_y))}
+
+print(dct)</code></pre>
+<pre><code>## {0: &#39;zero&#39;, 1: &#39;one&#39;, 2: &#39;two&#39;, 3: &#39;three&#39;, 4: &#39;four&#39;, 5: &#39;five&#39;}</code></pre>
+<p>But the following will NOT work as expected:</p>
+<pre class="python"><code>dct = {x: y for y in list_y for x in list_x}
+dct = {x: y for x in list_x for y in list_y}
+
+print(dct)</code></pre>
+<pre><code>## {0: &#39;five&#39;, 1: &#39;five&#39;, 2: &#39;five&#39;, 3: &#39;five&#39;, 4: &#39;five&#39;, 5: &#39;five&#39;}</code></pre>
+<p>Here’s an example that counts the letters of the alphabet:</p>
+<pre class="python"><code>import string
+
+lt = string.ascii_letters
+dct = {n: lt[n] for n in range(10)}
+
+print(dct)</code></pre>
+<pre><code>## {0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39;, 3: &#39;d&#39;, 4: &#39;e&#39;, 5: &#39;f&#39;, 6: &#39;g&#39;, 7: &#39;h&#39;, 8: &#39;i&#39;, 9: &#39;j&#39;}</code></pre>
+</div>
+<div id="list-comprehension-with-a-dictionary" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> List Comprehension with a Dictionary</h2>
+<p>This isn’t the same as a dictionary comprehension! It’s merely a list comprehension that happens to use a dictionary:</p>
+<pre class="python"><code># The men&#39;s 100m medal winners at the Tokyo 2020 Olympics
+dct = {
+    &#39;Gold&#39;: &#39;Marcell Jacobs&#39;,
+    &#39;Silver&#39;: &#39;Fred Kerley&#39;,
+    &#39;Bronze&#39;: &#39;Andre De Grasse&#39;
+}
+ls = [v for k, v in dct.items()]
+
+print(ls)</code></pre>
+<pre><code>## [&#39;Marcell Jacobs&#39;, &#39;Fred Kerley&#39;, &#39;Andre De Grasse&#39;]</code></pre>
+<p>We can also get selective about which values we include in the output of our list comprehension:</p>
+<pre class="python"><code># Use &quot;k&quot; and &quot;v&quot; for &quot;key&quot; and &quot;value&quot;
+ls = [v for k, v in dct.items() if k != &#39;Bronze&#39;]
+
+print(ls)</code></pre>
+<pre><code>## [&#39;Marcell Jacobs&#39;, &#39;Fred Kerley&#39;]</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 

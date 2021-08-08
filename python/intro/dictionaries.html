@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Introduction to Python: Dictionaries</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -671,135 +671,297 @@ Qf;if(a){var x=fj("INIT");}}}
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to Python:</font><br>Dictionaries</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#what-is-a-dictionary-in-python">What is a Dictionary in Python?</a></li>
+<li><a href="#using-a-dictionary">Using a Dictionary</a></li>
+<li><a href="#data-types">Data Types</a></li>
+<li><a href="#information-about-a-dictionary">Information About a Dictionary</a></li>
+<li><a href="#initialising-a-dictionary">Initialising a Dictionary</a></li>
+<li><a href="#conversion-to-named-values">Conversion to Named Values</a></li>
+<li><a href="#merge-two-dictionaries">Merge Two Dictionaries</a></li>
+<li><a href="#display-a-dictionary-as-a-formatted-table">Display a Dictionary as a Formatted Table</a></li>
+<li><a href="#a-more-advanced-type-of-list">A More Advanced Type of List?</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../python.html">⇦ Back</a></p>
+<div id="what-is-a-dictionary-in-python" class="section level1">
+<h1>What is a Dictionary in Python?</h1>
+<p>It’s an <strong>object that stores information in the same way that a dictionary stores words and their definitions</strong>. Here’s an example of an <em>English dictionary</em> created using a <em>dictionary object</em> in Python:</p>
+<pre class="python"><code># Create a dictionary
+my_dictionary = {
+    &#39;Apple&#39;: &#39;A fruit that grows on trees&#39;,
+    &#39;Ball&#39;: &#39;Another name for a spherical object&#39;,
+    &#39;Cart&#39;: &#39;Platform with wheels pulled by an animal&#39;,
+}</code></pre>
+<p>In the above snippet we have:</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/lists.html">Lists</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/date_time.html">Date and Time (Part 1)</a></li>
-</ol>
+<li><strong>A variable</strong> called <code>my_dictionary</code></li>
+<li><strong>Curly brackets</strong> - <code>{}</code> - which are the symbols used by Python to show the start and end of a dictionary object</li>
+<li><strong>Keys</strong>, which is the proper name for the <em>words</em> being defined</li>
+<li><strong>Values</strong>, which is the proper name for the <em>definitions</em> of those words</li>
+<li><strong>Colons</strong> - <code>:</code> - which separate the keys and the values to create <em>key-value pairs</em> (or <em>items</em>) in your dictionary</li>
+<li><strong>Commas</strong>, which separate the key-value pairs. Note that the comma after the last key-value pair is optional.</li>
+</ul>
+<p>These are the necessary components for creating a dictionary.</p>
+<blockquote>
+<p>Essentially, a dictionary is a comma-separated list of key-value pairs inside of curly brackets</p>
+</blockquote>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li><a href="python/advanced/date_time.html">Date and Time (Part 2)</a></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="using-a-dictionary" class="section level1">
+<h1>Using a Dictionary</h1>
+<p>You <strong>index</strong> a dictionary (look up a value) by using square brackets and the relevant key:</p>
+<pre class="python"><code># Look up the definition of &#39;apple&#39;
+print(my_dictionary[&#39;Apple&#39;])</code></pre>
+<pre><code>## A fruit that grows on trees</code></pre>
+<p>You can add items into a dictionary by <em>indexing it</em> with a new key and <em>assigning</em> a value to it:</p>
+<pre class="python"><code># Add a new word and definition to the dictionary
+my_dictionary[&#39;Python&#39;] = &#39;A type of snake&#39;
+
+print(my_dictionary[&#39;Python&#39;])</code></pre>
+<pre><code>## A type of snake</code></pre>
+<blockquote>
+<p>Remember, an <em>item</em> is a <em>key</em> plus a <em>value</em></p>
+</blockquote>
+<p>Overwriting a value works in a similar way: index the dictionary with an <em>existing</em> key and assign a new value to it. The old value will be replaced:</p>
+<pre class="python"><code># Replace the definition of the word &#39;Python&#39;
+my_dictionary[&#39;Python&#39;] = &#39;A type of programming language&#39;
+
+print(my_dictionary[&#39;Python&#39;])</code></pre>
+<pre><code>## A type of programming language</code></pre>
+<p>The fact that the above code overwrites the value implies that <em>keys must be unique</em> - you can’t have two <code>Python</code> keys in the same dictionary.</p>
+<p>To <strong>del</strong>ete an item, use the <code>del</code> statement:</p>
+<pre class="python"><code># Remove the word &#39;Ball&#39; and its definition
+del my_dictionary[&#39;Ball&#39;]
+
+print(my_dictionary)</code></pre>
+<pre><code>## {&#39;Apple&#39;: &#39;A fruit that grows on trees&#39;, &#39;Cart&#39;: &#39;Platform with wheels pulled by an animal&#39;, &#39;Python&#39;: &#39;A type of programming language&#39;}</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-</ol>
+<div id="data-types" class="section level1">
+<h1>Data Types</h1>
+<p>The <strong>keys</strong> in a dictionary can be <em>strings, numbers or tuples</em> (or a combination of these):</p>
+<pre class="python"><code># A dictionary with strings as keys
+animal_types = {&#39;Lion&#39;: &#39;Mammal&#39;, &#39;Bear&#39;: &#39;Mammal&#39;, &#39;Crocodile&#39;: &#39;Reptile&#39;, &#39;Eagle&#39;: &#39;Bird&#39;, &#39;Pigeon&#39;: &#39;Bird&#39;}
+
+print(animal_types[&#39;Lion&#39;])</code></pre>
+<pre><code>## Mammal</code></pre>
+<pre class="python"><code># A dictionary with numbers as keys
+arabic_to_roman = {1: &#39;I&#39;, 2: &#39;II&#39;, 3: &#39;III&#39;, 4: &#39;IV&#39;, 5: &#39;V&#39;, 6: &#39;VI&#39;}
+
+print(arabic_to_roman[2])</code></pre>
+<pre><code>## II</code></pre>
+<pre class="python"><code># A dictionary with tuples as keys
+days_in_month = {(&#39;Nov&#39;, 2021): 30, (&#39;Dec&#39;, 2021): 31, (&#39;Jan&#39;, 2022): 31, (&#39;Feb&#39;, 2022): 28, (&#39;Mar&#39;, 2022): 31}
+
+print(days_in_month[(&#39;Mar&#39;, 2022)])</code></pre>
+<pre><code>## 31</code></pre>
+<pre class="python"><code># A dictionary with a combination of strings, numbers and tuples as keys
+dct = {&#39;A&#39;: &#39;Alfa&#39;, 1: &#39;Bravo&#39;, (2, &#39;C&#39;): &#39;Charlie&#39;}
+
+print(dct[(2, &#39;C&#39;)])</code></pre>
+<pre><code>## Charlie</code></pre>
+<blockquote>
+<p>You can’t have lists as keys because they are mutable (they can be modified in-place) which confuses Python</p>
+</blockquote>
+<p>Of course, a key can be stored in a variable:</p>
+<pre class="python"><code># Assign a key to a variable
+var = &#39;A&#39;
+# Index a dictionary with the variable
+print(dct[var])</code></pre>
+<pre><code>## Alfa</code></pre>
+<p>The <strong>values</strong> in a dictionary can be <em>any</em> data type:</p>
+<pre class="python"><code>dct = {
+    &#39;String&#39;: &#39;Alpha&#39;,
+    &#39;Number&#39;: 1,
+    &#39;Null&#39;: None,
+    &#39;Boolean&#39;: True,
+    &#39;List&#39;: [1, 2, 3, 4, &#39;Five&#39;, &#39;Six&#39;],
+    &#39;Dictionary&#39;: {&#39;A&#39;: &#39;Alfa&#39;, &#39;B&#39;: &#39;Bravo&#39;, &#39;C&#39;: &#39;Charlie&#39;},
+    &#39;Tuple&#39;: (0, &#39;A&#39;),
+}</code></pre>
+<p>This implies that the values can be treated like their data types; for example, if a value is a list then all the methods that work on lists will work on the indexed dictionary.</p>
+<pre class="python"><code># Augment a string
+dct[&#39;String&#39;] = dct[&#39;String&#39;] + &#39;bet&#39;
+# Add to a number
+dct[&#39;Number&#39;] = dct[&#39;Number&#39;] + 9
+# Test equality
+dct[&#39;Boolean&#39;] = dct[&#39;Boolean&#39;] == &#39;Value&#39;
+# Append to a list
+dct[&#39;List&#39;].append(3)
+# Add to a dictionary within a dictionary
+dct[&#39;Dictionary&#39;][&#39;D&#39;] = &#39;Delta&#39;
+# Slice a tuple
+dct[&#39;Tuple&#39;] = dct[&#39;Tuple&#39;][1:]
+
+print(dct)</code></pre>
+<pre><code>## {&#39;String&#39;: &#39;Alphabet&#39;, &#39;Number&#39;: 10, &#39;Null&#39;: None, &#39;Boolean&#39;: False, &#39;List&#39;: [1, 2, 3, 4, &#39;Five&#39;, &#39;Six&#39;, 3], &#39;Dictionary&#39;: {&#39;A&#39;: &#39;Alfa&#39;, &#39;B&#39;: &#39;Bravo&#39;, &#39;C&#39;: &#39;Charlie&#39;, &#39;D&#39;: &#39;Delta&#39;}, &#39;Tuple&#39;: (&#39;A&#39;,)}</code></pre>
+<p>This can get as complex as you want:</p>
+<pre class="python"><code># Use list comprehension, list indexing and a variable as the key
+key = &#39;List&#39;
+idx = 4
+dct[key] = dct[key][:idx] + [x + 4 for x in dct[key][:idx]]
+
+print(dct[&#39;List&#39;])</code></pre>
+<pre><code>## [1, 2, 3, 4, 5, 6, 7, 8]</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots)
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="information-about-a-dictionary" class="section level1">
+<h1>Information About a Dictionary</h1>
+<p>The <strong>len</strong>gth of a dictionary is the number of items inside it:</p>
+<pre class="python"><code>dct = {&#39;A&#39;: &#39;Alfa&#39;, &#39;B&#39;: &#39;Bravo&#39;, &#39;C&#39;: &#39;Charlie&#39;}
+
+print(len(dct))</code></pre>
+<pre><code>## 3</code></pre>
+<p>The <code>.keys()</code> method returns all the keys as a ‘dict_keys’ object:</p>
+<pre class="python"><code>print(dct.keys())</code></pre>
+<pre><code>## dict_keys([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;])</code></pre>
+<p>It is usually useful to convert this into a list:</p>
+<pre class="python"><code>print(list(dct.keys()))</code></pre>
+<pre><code>## [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]</code></pre>
+<p>Similarly, the <code>.values()</code> method will return all the values:</p>
+<pre class="python"><code>all_values = dct.values()
+all_values = list(all_values)
+print(all_values)</code></pre>
+<pre><code>## [&#39;Alfa&#39;, &#39;Bravo&#39;, &#39;Charlie&#39;]</code></pre>
+<p>Lastly, the <code>.items()</code> method will return all of the items:</p>
+<pre class="python"><code>all_values = dct.items()
+all_values = list(all_values)
+print(all_values)</code></pre>
+<pre><code>## [(&#39;A&#39;, &#39;Alfa&#39;), (&#39;B&#39;, &#39;Bravo&#39;), (&#39;C&#39;, &#39;Charlie&#39;)]</code></pre>
+<p>Notice that the <code>list()</code> function converted the dictionary items into a list of tuples. This means that all the key-value pairs can be iterated over, in order, using a ‘for’ loop:</p>
+<pre class="python"><code>for key, value in dct.items():
+    print(key, value)</code></pre>
+<pre><code>## A Alfa
+## B Bravo
+## C Charlie</code></pre>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/curve_fitting/linear.html">Linear Functions</a></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
+<div id="initialising-a-dictionary" class="section level1">
+<h1>Initialising a Dictionary</h1>
+<p>Of course, a dictionary can be empty! Create an empty dictionary by simply not putting anything inside the curly brackets:</p>
+<pre class="python"><code>dct = {}</code></pre>
+<p>An empty dictionary can be useful for when you need the object to be <em>initialised</em> for something that happens downstream. Maybe there’s a loop that populates a dictionary and thus requires one to exist before it starts:</p>
+<pre class="python"><code>dct = {}
+for day in [&#39;Mon&#39;, &#39;Tues&#39;, &#39;Wednes&#39;, &#39;Thurs&#39;, &#39;Fri&#39;, &#39;Satur&#39;, &#39;Sun&#39;]:
+    dct[day] = day + &#39;day&#39;
+
+print(dct)</code></pre>
+<pre><code>## {&#39;Mon&#39;: &#39;Monday&#39;, &#39;Tues&#39;: &#39;Tuesday&#39;, &#39;Wednes&#39;: &#39;Wednesday&#39;, &#39;Thurs&#39;: &#39;Thursday&#39;, &#39;Fri&#39;: &#39;Friday&#39;, &#39;Satur&#39;: &#39;Saturday&#39;, &#39;Sun&#39;: &#39;Sunday&#39;}</code></pre>
+<p>Another way to create an empty dictionary is by using the <code>dict()</code> function with no arguments:</p>
+<pre class="python"><code>dct = dict()</code></pre>
+<p>Python actually uses the name <strong>dict</strong> instead of ‘dictionary’ for the object type:</p>
+<pre class="python"><code>print(type(dct))</code></pre>
+<pre><code>## &lt;class &#39;dict&#39;&gt;</code></pre>
+<p>Note that an empty dictionary is not the same as a dictionary that contains an empty list or a null:</p>
+<pre class="python"><code># Not an empty dictionary
+dct[&#39;Value 1&#39;] = []
+dct[&#39;Value 2&#39;] = None</code></pre>
+<p>If it contains an empty list or a null it still contains something!</p>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Tests</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-</ul></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-</ol>
+<div id="conversion-to-named-values" class="section level1">
+<h1>Conversion to Named Values</h1>
+<p>What’s a “named value”? These are most easily explained by using an example: consider the <code>pow()</code> function in Python which raises a number to a <strong>pow</strong>er:</p>
+<pre class="python"><code># Raise a number to a power
+x = pow(10, 2)
+
+print(x)</code></pre>
+<pre><code>## 100</code></pre>
+<p>This has calculated <span class="math inline">\(10^2 = 100\)</span>. The <code>pow()</code> function raises a <strong>base</strong> to an <strong>exp</strong>onent. As it happens, this function names its inputs - the first is given the name “base” and the second is called “exp” - which means you can specify the arguments by their names:</p>
+<pre class="python"><code># Raise a base to an exponent
+x = pow(base=10, exp=2)
+
+print(x)</code></pre>
+<pre><code>## 100</code></pre>
+<p>This is what is meant by “named values”, it literally refers to values which have names! Of course, dictionaries consist of key-value pairs which associate names to values, but they are not quite the same. Fortunately, there is a way to convert dictionaries to named values: the double-asterisk operator:</p>
+<pre class="python"><code># Create a dictionary
+dct = {&#39;base&#39;: 10, &#39;exp&#39;: 2}
+# Use the dictionary as the input arguments to the pow() function
+x = pow(**dct)
+
+print(x)</code></pre>
+<pre><code>## 100</code></pre>
+<p>What’s happened here is that the two asterisks have converted the two key-value pairs in the dictionary into two named values called “base” (with a value of 10) and “exp” (with a value of 2) which have then been used as named arguments for the <code>pow()</code> function.</p>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
+<div id="merge-two-dictionaries" class="section level1">
+<h1>Merge Two Dictionaries</h1>
+<p>Another use for named values is when you want to merge two dictionaries:</p>
+<pre class="python"><code># Results of the men&#39;s 400m finals at the last two Olympic Games
+rio2016 = {&#39;Wayde van Niekerk&#39;: 1, &#39;Kirani James&#39;: 2, &#39;LaShawn Merritt&#39;: 3}
+tokyo2020 = {&#39;Steven Gardiner&#39;: 1, &#39;Anthony Zambrano&#39;: 2, &#39;Kirani James&#39;: 3}
+
+# Merge the two dictionaries to get the athletes&#39; most recent finishing positions
+most_recent = {**rio2016, **tokyo2020}
+
+print(most_recent)</code></pre>
+<pre><code>## {&#39;Wayde van Niekerk&#39;: 1, &#39;Kirani James&#39;: 3, &#39;LaShawn Merritt&#39;: 3, &#39;Steven Gardiner&#39;: 1, &#39;Anthony Zambrano&#39;: 2}</code></pre>
+<p>Notice that when there are duplicate keys the value from the second dictionary overwrites the first: Kirani James came 2nd in Rio and 3rd in Tokyo, so the merged dictionary only keeps his most recent result.</p>
+<p>Alternatively, as of Python 3.9, the ‘bar’ notation can be used to merge one dictionary into another:</p>
+<pre class="python"><code>rio2016 = {&#39;Wayde van Niekerk&#39;: 1, &#39;Kirani James&#39;: 2, &#39;LaShawn Merritt&#39;: 3}
+tokyo2020 = {&#39;Steven Gardiner&#39;: 1, &#39;Anthony Zambrano&#39;: 2, &#39;Kirani James&#39;: 3}
+most_recent = rio2016 | tokyo2020
+
+print(most_recent)</code></pre>
+<pre><code>## {&#39;Wayde van Niekerk&#39;: 1, &#39;Kirani James&#39;: 3, &#39;LaShawn Merritt&#39;: 3, &#39;Steven Gardiner&#39;: 1, &#39;Anthony Zambrano&#39;: 2}</code></pre>
+<p>Or, the <code>.update()</code> method can be used to merge <em>in-place</em>:</p>
+<pre class="python"><code>results = {&#39;Wayde van Niekerk&#39;: 1, &#39;Kirani James&#39;: 2, &#39;LaShawn Merritt&#39;: 3}
+new_results = {&#39;Steven Gardiner&#39;: 1, &#39;Anthony Zambrano&#39;: 2, &#39;Kirani James&#39;: 3}
+results.update(new_results)
+
+print(results)</code></pre>
+<pre><code>## {&#39;Wayde van Niekerk&#39;: 1, &#39;Kirani James&#39;: 3, &#39;LaShawn Merritt&#39;: 3, &#39;Steven Gardiner&#39;: 1, &#39;Anthony Zambrano&#39;: 2}</code></pre>
+</div>
+<div id="display-a-dictionary-as-a-formatted-table" class="section level1">
+<h1>Display a Dictionary as a Formatted Table</h1>
+<p>The <code>tabulate</code> package allows you to render a dictionary as a nice table:</p>
+<pre class="python"><code>from tabulate import tabulate
+
+print(tabulate(results.items(), headers=[&#39;Name&#39;, &#39;Ranking&#39;], tablefmt=&#39;pipe&#39;))</code></pre>
+<pre><code>## | Name              |   Ranking |
+## |:------------------|----------:|
+## | Wayde van Niekerk |         1 |
+## | Kirani James      |         3 |
+## | LaShawn Merritt   |         3 |
+## | Steven Gardiner   |         1 |
+## | Anthony Zambrano  |         2 |</code></pre>
+<p>Install this package from the terminal with <code>pip3 install tabulate</code>.</p>
+</div>
+<div id="a-more-advanced-type-of-list" class="section level1">
+<h1>A More Advanced Type of List?</h1>
+<p><strong>Lists</strong> and <strong>dictionaries</strong> are two different data types in Python. Let’s compare them:</p>
+<pre class="python"><code>my_dictionary = {0: &#39;Alfa&#39;, 1: &#39;Bravo&#39;, 2: &#39;Charlie&#39;, 3: &#39;Delta&#39;, 4: &#39;Echo&#39;}
+my_list = [&#39;Alfa&#39;, &#39;Bravo&#39;, &#39;Charlie&#39;, &#39;Delta&#39;, &#39;Echo&#39;]</code></pre>
+<p>A dictionary is defined with curly brackets and contains key-value pairs whereas a list is defined with square brackets and contains only values. A list is indexed with numbers that correspond to the positions of the values whereas a dictionary is indexed with keys (which can be numbers too, or they can be strings or tuples) that correspond to the values:</p>
+<pre class="python"><code>print(my_dictionary[2])</code></pre>
+<pre><code>## Charlie</code></pre>
+<pre class="python"><code>print(my_list[2])</code></pre>
+<pre><code>## Charlie</code></pre>
+<p>A dictionary is <strong>ordered</strong> just like a list is. This means that its items appear in the same order as they were created/added to the dictionary:</p>
+<pre class="python"><code>print(list(my_dictionary.values())[2])</code></pre>
+<pre><code>## Charlie</code></pre>
+<p>The implication is that dictionaries have two properties that lists do not:</p>
 <ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
+<li>You can index dictionaries with numbers that do not correspond to the positions of the items. For example, you can essentially create a list that starts with 1 instead of 0!</li>
 </ol>
+<pre class="python"><code>my_dictionary = {1: &#39;Alfa&#39;, 2: &#39;Bravo&#39;, 3: &#39;Charlie&#39;, 4: &#39;Delta&#39;, 5: &#39;Echo&#39;}
+
+print(my_dictionary[2])</code></pre>
+<pre><code>## Bravo</code></pre>
+<p>Using the index “2” has returned the second item in the dictionary! You can, of course, not have the numerical indexes be sequential at all if you so wanted.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>You can index dictionaries with strings <strong>or</strong> numbers:</li>
+</ol>
+<pre class="python"><code>my_dictionary = {&#39;A&#39;: &#39;Alfa&#39;, &#39;B&#39;: &#39;Bravo&#39;, &#39;C&#39;: &#39;Charlie&#39;, &#39;D&#39;: &#39;Delta&#39;, &#39;E&#39;: &#39;Echo&#39;}
+
+print(my_dictionary[&#39;B&#39;])</code></pre>
+<pre><code>## Bravo</code></pre>
+<pre class="python"><code>print(list(my_dictionary.values())[1])</code></pre>
+<pre><code>## Bravo</code></pre>
+<p>And, finally, just like you can have lists-of-lists and list comprehensions, you can have dictionaries-of-dictionaries and dictionary comprehensions! See <a href="../advanced/dictionaries.html">this page</a> for more on those…</p>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
