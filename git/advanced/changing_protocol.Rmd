@@ -1,0 +1,138 @@
+---
+title: '<font size="5">Advanced Git:</font><br>Changing the Protocol from HTTPS to SSH'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+### How do I avoid having to enter my username and password each time I push in Git?
+You can change the *protocol* of you repo from HTTPS to SSH:
+
+- An **HTTPS repo** is simpler to access from anywhere as you only need the account details to write to it (no SSH keys) and the HTTPS port will always be open in all firewalls. However, an **SSH repo** is more convenient if you are consistently writing to the repo often and/or from the same one or two computers.
+- You need to do three things to use SSH:
+    1. Load your identity into your SSH Agent
+    2. Load your public key into the remote (GitHub or Bitbucket)
+    3. Make sure your remote repo is using the SSH protocol
+
+### 1. Load Your Identity into Your SSH Agent
+Tested on Ubuntu 16.04, 18.04 and 20.04.
+
+- Open the terminal
+- List what keys/identities your SSH Agent currently has with `ssh-add -l`
+- If this returns `The agent has no identities` or you don't see the one you expect, you need to add yours with `ssh-add ~/.ssh/identity`
+    - If this returns `/home/<username>/.ssh/identity: No such file or directory` it means you haven't yet created an SSH key...
+    + ...to create an SSH key, run `ssh-keygen` > press "enter" to use the default location > enter and confirm a password
+- Running `ls ~/.ssh` should now show "id_rsa" and "id_rsa.pub"; these are your private and public key files
+
+### 2. Load Your Public Key into the Remote
+
+- **Bitbucket**:
+    - Log in to Bitbucket (https://bitbucket.org/)
+    - Go to your avatar in the lower left corner > "Personal settings" > "SSH keys" (under "SECURITY")
+    - If you've already added keys, you'll see them on this page
+    - Click "Add key" to add your new key
+        + Enter a label. Make this something that tells you what computer and what user profile you are currently using because each user profile on each computer will have its own key. I usually use "\<username\>@\<computer_name\>".
+        - Copy the contents of your public key file and paste it into the "Key" field
+            - The second easiest way to see the contents of your public key file is by running `cat ~/.ssh/id_rsa.pub` in the terminal. Select the text and use Ctrl+Shift+C to copy it (Ctrl+C doesn't work in the terminal!)
+            - The easiest way is to use `cat ~/.ssh/id_rsa.pub | xclip -sel clip` which copies the contents directly to your clipboard, but it does require that you have `xclip` installed (this can be done via `sudo apt install xclip`)
+        - Click "Add key" to finish
+        - Bitbucket sends you an email to confirm the addition of the key
+- **GitHub**:
+    - Log in to GitHub (https://github.com/)
+    - Go to your avatar (top-right) > Settings > SSH and GPG keys
+    - If you've already added keys, you'll see them on this page
+    - Click "New SSH key" to add your new key
+        + Enter a title. Make this something that tells you what computer and what user profile you are currently using because each user profile on each computer will have its own key. I usually use "\<username\>@\<computer_name\>".
+        - Copy the contents of your public key file and paste it into the "Key" field
+            - The second easiest way to see the contents of your public key file is by running `cat ~/.ssh/id_rsa.pub` in the terminal. Select the text and use Ctrl+Shift+C to copy it (Ctrl+C doesn't work in the terminal!)
+            - The easiest way is to use `cat ~/.ssh/id_rsa.pub | xclip -sel clip` which copies the contents directly to your clipboard, but it does require that you have `xclip` installed (this can be done via `sudo apt install xclip`)
+        - Click "Add SSH key" to finish
+
+### 3. Test That It Has Worked
+
+- On **Ubuntu** (16.04, 18.04 and 20.04):
+    - **Bitbucket**:
+        - In the terminal, verify your configuration and username by running `ssh -T git@bitbucket.org`
+            - Enter the password you used when creating your private and public key files (ie when you ran `ssh-keygen`)
+        - The message will tell you which accounts can log in with that key:
+        ```{bash, eval = FALSE}
+logged in as <username>
+
+You can use git or hg to connect to Bitbucket. Shell access is disabled.
+        ```
+        - Change directory into a Git project. Run `git remote -v` to see the names of your remote(s). If the URL starts with "https" we now need to change that.
+        - In Bitbucket, go to your repo's Source page > hit "Clone" > change to "SSH" from the top right > copy the URL part of the command (from and including "git@bitbucket" to the end)
+        - Change your local repo's remote's URLs with `git remote set-url`:
+        ```{bash, eval = FALSE}
+git remote set-url origin git@bitbucket.org:<username>/<repo_name>.git
+        ```
+        - You should now be able to push to the remote from the terminal (eg `git push --set-upstream origin master`) without needing to enter your username and password
+            + If this doesn't work and you get error messages like:
+            ```{bash, eval = FALSE}
+hint: Updates were rejected because the remote contains work that you do not have locally
+            ```
+            ...it means you need to sync up your local and remote branches: `git fetch && git pull` should do that.
+            + Pushing should now work via `git push`
+    - **GitHub**
+        - In the terminal, verify your configuration and username by running `ssh -T git@github.com`
+            + Type `yes` at the prompt and hit 'enter'
+        - You should see the following message:
+        ```{bash, eval = FALSE}
+Hi <username>! You've successfully authenticated, but GitHub does not provide shell access.
+        ```
+        - Change directory into your Git project. Run `git remote -v` to see the names of your remote(s). If the URL starts with "https" we now need to change that.
+        - In GitHub, go to your repo's Source page (avatar menu on the top right > "Your repositories" > select the repo you want) > click the green "Code" button > "Use SSH" from the top right > copy the URL (which will start with "git@github")
+        - Change your local repo's remote's URLs with `git remote set-url`:
+        ```{bash, eval = FALSE}
+git remote set-url origin git@github.com:<username>/<repo_name>.git
+        ```
+        - You should now be able to push to the remote from the terminal (eg `git push --set-upstream origin master`) without needing to enter your username and password
+            + If this doesn't work and you get error messages like:
+            ```{bash, eval = FALSE}
+hint: Updates were rejected because the remote contains work that you do not have locally
+            ```
+            ...it means you need to sync up your local and remote branches: `git fetch && git pull` should do that.
+            + Pushing should now work via `git push`
+- On **Windows 10**:
+    - **Bitbucket**:
+        - Pushing to the origin from Command Prompt requires a password
+        - If you want to avoid having to enter your password every time, you can use ssh-agent to store your private key password credentials once per terminal session:
+        ```{bash, eval = FALSE}
+ssh-agent -s
+ssh-add
+        ```
+        - Now run `git push <remote_name> <branch_name>` (although `git push` should also work)
+            <!-- - I couldn't get this to work - I still got prompted for a password at the Command Prompt -->
+            <!-- - https://confluence.atlassian.com/bitbucket/set-up-an-ssh-key-728138079.html#SetupanSSHkey-ssh1 -->
+        - Open Command Prompt (Alt+D, "cmd", enter) and run `ssh-keygen`. Hit 'Enter' to select the default location (C:\Users\\<username\>\.ssh) then respond with 'y' to confirm. Enter your passphrase twice (use your Git password). This creates "id_rsa" and "id_rsa.pub" in C:\Users\\<username\>\.ssh - these are your private and public keys, respectively.
+        - If you don't want to type your password each time you use the key, you'll need to add it to the ssh-agent:
+            + `ssh-agent`
+            + `ssh-add C:/Users/<username>/.ssh/id_rsa`
+        - Now add the public key to your Bitbucket settings:
+            + From Bitbucket, choose Personal settings from your avatar in the lower left corner
+            + The Personal settings page opens. Click "SSH keys" (under "SECURITY"); if you've already added keys you'll see them on this page
+            + Open your .ssh/id_rsa.pub file and copy its contents. You may see an email address on the last line - it doesn't matter whether or not you include this.
+            + In Bitbucket, click "Add key"
+            + Enter a label for your new key (eg "\<username\>@\<computer_name\>")
+            + Paste the copied public key into the SSH Key field
+            + Click "Save". Bitbucket sends you an email to confirm the addition of the key.
+            + Return to the command line and verify your configuration and username by entering the following command: `ssh -T git@bitbucket.org`. You should get something like the following message:
+            ```{bash, eval = FALSE}
+conq: logged in as emmap1.
+You can use git or hg to connect to Bitbucket. Shell access is disabled.
+            ```
+        + Now that you've got an SSH key set up, use the SSH URL the next time you clone a repository
+        + If you already have a repository that you've cloned over HTTPS, change the remote URL for your repository to its SSH URL
+
+[⇦ Back](../../git.html)
+
+</font>

@@ -435,6 +435,47 @@ st_2 = set(['A', 'B', 'C'])
 print(st_1 == st_2)
 ```
 
+Check if a List is a Subset of Another List
+-------------------------------------------
+If you *only have one value* you can check if it exists in a list very easily:
+
+```{python}
+val = 1
+ls = [1, 2, 3]
+# Is val in ls?
+print(val in ls)
+```
+
+However, the same method won't work if you have multiple values:
+
+```{python}
+sub = [1, 2]
+ls = [1, 2, 3]
+# Is sub in ls?
+print(sub in ls)
+```
+
+We got a result of `False` because Python was searching for a *list* inside the list `ls` instead of searching for two separate values (and it didn't find that list). We could have used a list comprehension instead:
+
+```{python}
+sub = [1, 2]
+ls = [1, 2, 3]
+# Are the values in sub in ls as well?
+booleans = [x in ls for x in sub]
+result = all(booleans)
+print(result)
+```
+
+However, if we convert to sets we can use the `issubset()` method which does the job in one line:
+
+```{python}
+sub = [1, 2]
+ls = [1, 2, 3]
+# Are the values in sub in ls as well?
+result = set(sub).issubset(set(ls))
+print(result)
+```
+
 [⇦ Back](../../python.html)
 
 </font>

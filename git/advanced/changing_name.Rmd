@@ -1,0 +1,34 @@
+---
+title: '<font size="5">Advanced Git:</font><br>Changing the Name of a Remote Repo'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+If you change the name of one of your repositories on Bitbucket or GitHub your local copy will no longer be synched up to it. Here's how to fix this:
+
+- In Bitbucket (or GitHub): Repository settings > change the Repository name to what you now want it to be
+- Click "Back" > "Source" (top of the left-hand menu) > "Clone" > copy the URL (without the `git clone` part at the front)
+- In the terminal: `cd` into your repo > use `git remote -v` to see the old (now incorrect) URLs of the remote repo. We want to change these.
+- Remove the old remote name: `git remote rm <name>`. Usually `<name>` will be "origin".
+- Add the new remote name: `git remote add <name> <url>`. Again, "origin" is a common choice for the `<name>` and the `<url>` is the one you copied from Bitbucket (or GitHub).
+- Check that it has worked: `git remote -v`
+- Connect the local and remote repos:
+```{bash, eval = FALSE}
+git fetch
+git pull origin master
+git push --set-upstream origin master
+```
+
+[⇦ Back](../../git.html)
+
+</font>

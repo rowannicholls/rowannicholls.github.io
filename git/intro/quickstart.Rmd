@@ -1,0 +1,69 @@
+---
+title: '<font size="5">Introduction to Git:</font><br>Quickstart'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+> This page is the second part of an introduction to Git:
+> 
+> 1. [Installation](installation.html)
+> 2. Quickstart
+> 3. [Cheat Sheet](cheat_sheet.html)
+> 4. [Gitignore](gitignore.html)
+
+If you have Git [installed](installation.html) you can create a new repository (repo) by running the following from the terminal:
+
+1. `cd <folder_path>` to **c**hange **d**irectory into the folder where you want your Git repository to be. You can use `mkdir <folder_path>` to **m**a**k**e a new sub-**dir**ectory and `cd` into that, or you can use a folder that already has files in it.
+2. `git init` to **init**ialise an empty **Git** repo. In other words, this turns the folder into a repository.
+    - If you have the 'show hidden files and folders' option turned on you will see a folder called ".git" appear. This tells you that the folder is a Git repo.
+3. You now need to add and commit at least one file to you repo:
+    - If your folder is empty, create a new file (use `echo "Hello, World" >> README.md` to do this quickly from the terminal)
+    - If your folder already has files in it then you can proceed to the next step
+4. Use `git add <filename>` (eg `git add README.md`) to **add** a single file to your *staging area*. Use `git add -A` to add **A**LL the files in the folder to your staging area.
+    - In general, *you should only add plaintext files* to your staging area and repo with Git. This includes text and code files but excludes pictures, spreadsheets and documents.
+5. Run `git commit -m "Initial commit"` to **commit** this file/these files to your repo. The **m**essage "Initial commit" is a description of what you're doing. By default, it will be committed to your "master" branch.
+
+The repo is now fully set up on your computer (ie, locally). If you have an account with a cloud repository hosting site such as GitHub or Bitbucket you can now sync it with that by following the below:
+
+6. On the GitHub or Bitbucket website, create a new repository. This repo must be completely empty; if you are given the option to add a README file or a gitignore file you should uncheck this.
+    - If you don't uncheck this option your repo will be created with its own master branch already in existence and a commit operation already having been performed. This branch and commit will *conflict* with the ones you have locally, and you won't be able to sync everything up (it's possible but not easy).
+7. Run `git remote add origin <url>` where `<url>` is the address of the cloud repo you've just created (eg `https://bitbucket.org/<username>/<repo_name>`). This **add**s a **remote** location and gives it the name "**origin**".
+8. Finally, run `git push -u origin master` to **push** the change you made locally (the creation of the README.md file) to the **master** branch of the remote location (which you have called **origin**) and set it **u**pstream of anything that is there (which, in our case, is nothing). Refresh your browser to see the README file in your GitHub/Bitbucket repo.
+
+The Git repo is now fully set up! You can create and edit files and folders, add and commit the changes to the repo and push them to the cloud.
+
+### Workflow
+Assuming you're working on a branch called "develop" (create this with `git branch develop`):
+
+- `git checkout develop` to make sure you're working on the correct branch
+- `git add -A` to add all your edits to the staging area ("stage them")
+- `git commit -m "Message"` to commit all your edits and make them permanent. Use the message to describe what your edits are.
+- `git push` (or `git push origin develop` to be more explicit) to copy these changes to the remote version of the repo. This will either require a password (if your remote is set to use HTTPS) or it will only work if you've set up automatic authentication (if your remote is set to use SSH).
+
+### Terminology
+Remember that Git has two different 'areas' in which edited files are stored:
+
+- **Working area**: when a file is created or edited, this is where it goes
+- **Staging area**: once you've decided that you want to keep an edit, you should *stage* it and move it from the working area to this area
+
+Once you've finished a coherent chunk of work (eg implemented a new feature that works) you should *commit* it. This moves it out of the staging area and into the repo proper.
+
+Another piece of terminology is **HEAD**: the HEAD commit is the most recent commit to master. This means that resetting a file to HEAD, for example, will return it to what it was at the time of that commit.
+
+A **remote** is a cloud location which hosts a copy of your Git project - the "cloud repository" - and it is commonly given the name "origin". This is to where you *push* the changes in your "local repository" on your computer and from where you *pull* changes that have been made elsewhere and pushed to the remote separately. When working on your local repo you will be working on a local branch, and when you push your changes they will merge into the corresponding remote branch. When you *fetch* or *pull* remote changes they come from the remote branch to your local branch.
+
+For a cheat sheet of more things you can do in Git, click [here](cheat_sheet.html).
+
+[⇦ Back](../../git.html)
+
+</font>

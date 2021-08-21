@@ -1,0 +1,146 @@
+---
+title: '<font size="5">Introduction to Git:</font><br>Cheat Sheet'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+> This page is the third part of an introduction to Git:
+> 
+> 1. [Installation](installation.html)
+> 2. [Quickstart](quickstart.html)
+> 3. Cheat Sheet
+> 4. [Gitignore](gitignore.html)
+
+Open the terminal and `cd` into the folder where your Git repository (repo) is located (or where you want it to be located if you are about to create one). From here, the following commands can be used to version control your project:
+
+Create a New Repository
+-----------------------
+
+| Terminal Command | Action                      |
+|------------------|-----------------------------|
+| `git init`                                 | **Create a new, blank, Git repository** in the current folder. Initially it won't have any branches: you first need to commit something (anything!) in order for a *master branch* to be created. |
+| `git clone <repository> <directory>` | **Download a replica (clone) of an existing Git repository** from a remote (cloud) location such as GitHub or Bitbucket into a sub-folder within the current folder.<br>• `<repository>` is the URL of the repo, eg `https://github.com/<username>/<repo_name>` or `https://bitbucket.org/<username>/<repo_name>`<br>• `<directory>` is the name of the sub-folder that will be created on your computer to house the cloned repo<br>• This repo *will* be created with branches because when you download a repo you download all the pieces of it, including its branches (unless, of course, the repo you downloaded doesn't have any branches) |
+| `git remote add origin <url>`              | **Add a remote location** to sync your repo to (eg on GitHub or Bitbucket) and give it the nickname "origin"<br>• This must be an existing *empty* repo on GitHub or Bitbucket<br>• When you created this empty repo on GitHub or Bitbucket *you should __not__ have selected the option to include a "gitignore".* If you included a "gitignore" the remote repo will not be empty!<br>• `<url>` is the URL of the remote, eg `https://bitbucket.org/<username>/<repo_name>/src/master/` |
+| `git remote -v`                            | **View a project's remotes**, ie where in the cloud your repo can sync to |
+| `git remote remove <name>`                 | **Remove a remote location**. Usually `<name>` will be "origin". |
+
+**Delete a repository** simply by deleting the entire folder on your computer. Note that this will only delete the local copy of that repo; any copies in the cloud or on other computers will remain.
+
+Adding and Committing Files/Changes
+-----------------------------------
+As you add or remove files and edit them on your local machine you will be able to track and 'save' (commit) or undo ('reset') your changes as follows:
+
+| Terminal Command | Action                      |
+|------------------|-----------------------------|
+| `git status`                    | **Inspect** the contents of the working directory and the staging area (view the changes you have made since the last commit and see which ones you have earmarked to keep) |
+| `git restore <filename>`        | **Undo** the changes you've made to a file |
+| `git add <filename>`            | **Add a file** from the working directory to the staging area ('stage one file'), earmarking the changes you have made to it as edits you want to keep |
+| `git add -A`                    | **Add all files** from the working directory to the staging area ('stage all files') |
+| `git reset`                     | **Remove all files** from the staging area ('undo staging'). The implication is that you don't want to keep the changes you have made to these files but you don't want to undo the changes either. |
+| `git commit -m "<message>"`     | **Store the files** in the staging area in the repository ('commit the files'/'commit the changes'). Your changes are now 'saved'. |
+| `git push origin <branch_name>` | **Copy the changes** that have been made and committed on your local branch into the corresponding branch on the remote location ('push the changes'). By default, the remote is called "origin". |
+| `git merge <branch_name>`       | Take all the changes that have been made and committed in a *different branch* and **include them in the current branch** as well ('merge in changes') |
+| `git merge master`              | Take all the changes that have been merged into your *master branch* and **include them in the current branch** as well ('merge in changes') |
+| `git merge origin/<branch_name>`| Take all the changes that have been pushed into one of the *remote's branches* and **include them in your local branch** as well |
+| `git merge origin/master`       | Take all the changes that have been merged into the *remote's master branch* and **include them in your local branch** as well |
+
+Change/Work With a Repository
+-----------------------------
+
+| Terminal Command | Action                      |
+|------------------|-----------------------------|
+| `git branch <new_branch>`         | **Create a new branch**. If you try to create a new branch on a brand new repo (ie one where you haven't made any commits yet) it will not work because there is no master branch. You will get an error saying `fatal: Not a valid object name: 'master'` |
+| `git branch`                      | **Show the branches** and which one you are on |
+| `git branch --list`               | Identical to the above |
+| `git checkout <branch_name>`      | **Switch** to a different branch |
+| `git branch -d <branch_name>`     | **Delete** branch |
+
+Change/Work With Files in a Repository
+--------------------------------------
+
+| Terminal Command | Action                      |
+|------------------|-----------------------------|
+| `git diff <filename>` | **See the changes** that have been made to a file |
+| `git diff` | **See the changes** that have been made to *all* the files in the repository |
+| `git log` | Show a list of all the **previous commits** |
+| `git show HEAD` | Show the **HEAD commit** (ie see the changes that were made in the previous commit) |
+| `git checkout HEAD <filename>` | **Restore a file** in your working directory to make it look exactly as it did when you last made a commit |
+| `git reset HEAD <filename>` | **Reset a file** in the staging area to be the same as what it was in the HEAD commit |
+| `git reset <SHA>` | **Reset all files** to their versions from a previous commit using the SHA hash of that commit |
+
+Stashing Changes
+----------------
+Remove the changes you've made, but keep them stored away in case you want to use them again:
+
+| Terminal Command | Action                      |
+|------------------|-----------------------------|
+| `git stash`                   | **Save your WIP** (work in progress) and clean your current working directory (remove all the changes you've made since your last commit) |
+| `git stash push -m "message"` | Stash the WIP **with a name** |
+| `git stash list`              | **See** which stashes you've stored |
+| `git stash pop`               | **Apply the most recent stash** (take the changes and apply them to the relevant files) and delete it from the list of stashes |
+| `git stash pop stash@{2}`     | **Apply a specific stash** and delete it from the list of stashes |
+| `git stash apply`             | **Apply the most recent stash** and *keep* it in the list of stashes |
+| `git stash apply stash@{2}`   | **Apply a specific stash** and *keep* it in the list of stashes |
+
+Updating a Repository
+---------------------
+
+| Terminal Command | Action                      |
+|------------------|-----------------------------|
+| `git fetch` | Check to see if changes have been pushed to the origin's version of the current branch. **Download them** if so, but don't incorporate them into your local branch. |
+| `git pull` | **Merge in** the changes that have been pushed to the origin's version of the current branch |
+| `git fetch && git merge FETCH_HEAD` | Equivalent to `git pull`* |
+| `git diff master origin/master` | **See the differences** between the files in the local version of the master branch and those in the origin's version of the master branch. This is useful to see if a pull will cause a conflict. |
+| `git diff master origin/master --summary` | A **summarised** version of the above |
+| `git pull master` | **Merge changes** from the (local) master branch into your current branch |
+| `git pull origin master` | **Merge changes** from the remote copy of the master branch into your current branch |
+| `git mergetool` | **Open GUI tool** to resolve conflicts |
+
+*A `pull` is the same as a `fetch` plus a `merge`
+
+Oh No! I've Accidentally Made Some Changes on the Wrong Branch!
+---------------------------------------------------------------
+Simply move your changes to the correct branch:
+
+```{bash, eval = FALSE}
+git stash
+git checkout <correct_branch>
+git pull
+git stash pop
+```
+
+Oh No! I've Accidentally Committed Some Changes to the Wrong Branch!
+--------------------------------------------------------------------
+Merge these change into the right branch then remove the changes from the wrong branch:
+
+```{bash, eval = FALSE}
+# Checkout the branch on which you should have made the changes
+git checkout <correct_branch>
+git pull
+# Merge the branch on which you made the changes into this branch
+git merge <wrong_branch>
+git commit
+git push
+# Go back to the wrong branch
+git checkout <wrong_branch>
+# Either do this to reset it back to what is on the origin:
+git reset --hard origin/<wrong_branch>
+# Or do this to remove the last commit
+git reset --hard HEAD^
+```
+
+Finally, consider [adding a Gitignore file](gitignore.html) to your repo.
+
+[⇦ Back](../../git.html)
+
+</font>

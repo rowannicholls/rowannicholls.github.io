@@ -350,6 +350,12 @@ Filter out all rows that contain any null values in any columns:
 subset = df.dropna()
 ```
 
+Filter out all rows that have only null values in particular columns:
+
+```{python}
+subset = df.dropna(how='all', subset=['Country', 'Age'])
+```
+
 Removing Duplicates
 -------------------
 Remove all rows that appear more than once:

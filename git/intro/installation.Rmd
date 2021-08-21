@@ -1,0 +1,48 @@
+---
+title: '<font size="5">Introduction to Git:</font><br>Installation'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+> This page is the first part of an introduction to Git:
+> 
+> 1. Installation
+> 2. [Quickstart](quickstart.html)
+> 3. [Cheat Sheet](cheat_sheet.html)
+> 4. [Gitignore](gitignore.html)
+
+Installing Git
+--------------
+To install Git on:
+
+- **Windows**: download it from https://git-scm.com/download/win
+- **Ubuntu**: you actually don't need to do anything because Git comes pre-installed (but you can upgrade to the latest version if you don't already have it with `sudo apt-get install git`)
+- **macOS**:
+    - Install Xcode Command Line Tools, which will install Git at the same time
+    - If you run `git` on the terminal and you don't have it installed, it will prompt you to install it
+
+Double check that you have Git installed (and see what version you have at the same time) by running `git --version` from the terminal. This should return the version number, eg `git version 2.25.1`. See the full documentation for installing Git [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+
+GUIs
+----
+Many people prefer to use Git via a graphical user interface (GUI) instead of via the terminal. Some options that you can install include:
+
+- **GitKraken** (https://www.gitkraken.com/): free for local and public cloud repositories and the paid version allows for private cloud repositories as well. Available on Windows, macOS and Linux. See a usage guide for GitKraken [here](../advanced/gitkraken.html).
+- **Sublime Merge** (https://www.sublimemerge.com/): free for an unlimited amount of time although you should buy a license "for continued use" (ie it's 'nagware'; it will nag you to buy a license but not stop you if you don't). Available on Windows, macOS and Linux.
+- **Sourcetree** (https://www.sourcetreeapp.com/): free. Available on Windows and macOS.
+
+**Next:** create a new repository by following a [quickstart guide](quickstart.html)
+
+[⇦ Back](../../git.html)
+
+</font>

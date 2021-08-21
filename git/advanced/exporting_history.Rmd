@@ -1,0 +1,55 @@
+---
+title: '<font size="5">Advanced Git:</font><br>Exporting the History of Your Edits'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+### Lab Book Archiving
+Export the history of the activity in your Git repo:
+
+- `git log --since="1 day ago" -p > "../Lab Book.txt"`<br>Export a log of all the edits that have been made to the files in your repo in the last day. This log will be stored in a text file one folder up from your repo (so it doesn't become an edit itself!).
+- `git diff > diff.txt`<br>Save the edits that have been made since the last commit to a text file
+    - This text file can have colour added to it by running `git diff --color > diff.txt`
+- `date_iso=$(date +'%Y-%m-%d %H.%M.%S') && git diff > "$date_iso diff.txt"`<br>Save the diff to a file named for the date and time
+- `date_iso=$(date +'%Y-%m-%d %H.%M.%S') && git diff -- . ':(exclude)file_1.txt' ':(exclude)folder_1' > "$date_iso diff.txt"`<br>The same as the above, but with specific files and folders excluded
+
+### Create a Changelog (Branched-Tree Schematic)
+The following command will draw and export the 'tree' of all the branches in your repo and the commits that have been made:
+
+```{bash, eval = FALSE}
+git log --graph --full-history --all --pretty=format:"%x09%d%x20%s" > "Git Tree.txt"
+```
+
+This can be used as a base to create 'version history' charts such as the one below:
+
+```
+*    v2 New features released
+|\
+| *      v1.1 Export functionality added
+|/
+*    v1 Initial release
+|\
+| *      v0.5 Added Build.sh
+| *      v0.4 - Added .gitignore
+| |           - Moved Latex code to new folder
+| |           - Changed filenames
+| *      v0.3 Python code added
+| *      v0.2 Small addition to text
+| *      v0.1 Latex document created
+|/
+*    v0 Initial commit
+```
+
+[⇦ Back](../../git.html)
+
+</font>

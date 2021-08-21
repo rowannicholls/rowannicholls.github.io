@@ -16,7 +16,7 @@ output:
 
 The larger a Git repository, the slower it is. After a certain point, it starts to become frustrating to have such a large folder taking up unnecessary space and causing each Git command to take multiple minutes to execute. More importantly, cloud storage sites such as GitHub and Bitbucket have limits as to how large a repo can be, so there is plenty enough reason to want to reduce bloat.
 
-More often than not, the problem is caused by someone having committed a *binary file*. **Git is designed for code** and plain text files in general, not files such as PDFs, DOCs, JPEGs, etc. The latter are known as binary files because they can only be treated as 'blobs' that have either changed or not. If you commit a Word doc to a Git repo and change just one letter, Git will only be able to tell that the file has changed, not *what* has changed. It will have to commit the changed file as a completely new thing and, as a result, you will have two complete copies of the document stored in your Git history. With plain text files, however, changing one letter will only result in Git storing *that one change*. Much less information needs to be stored and hence the repo stays small and quick to clone and interact with.
+More often than not, the problem is caused by someone having committed a *binary file.* **Git is designed for code** - and plaintext files in general - not files such as PDFs, DOCs, JPEGs, etc. The latter are known as binary files because they can only be treated as 'blobs' that have either changed or stayed the same. If you commit a Word doc to a Git repo and change just one letter, Git will only be able to tell that the file has changed, not *what* has changed. It will have to commit the changed file as a completely new thing and, as a result, you will have two complete copies of the document stored in your Git history. With plaintext files, however, changing one letter will only result in Git storing *that one change*. Much less information needs to be stored and hence the repo stays small and quick to clone and interact with.
 
 So, best practice is to not add large files to repos and to keep it small, but what if someone has? The answer is to:
 
@@ -105,7 +105,7 @@ size     pack    SHA                                       location
 99       85      c1c80bc4c09e692d5e2127e39c87ecacdb1e816f  app/assets/images/fw/lovethis_logo_sprint.fw.png
 ```
 
-Yep - looks like someone has been pushing some rather unnecessary files somewhere! Including a lovely 1.1GB present in the form of a SQL dump file.
+Yep - looks like someone has been pushing some rather unnecessary files somewhere! Including a lovely 1.1 GB present in the form of an SQL dump file.
 
 Clean the Files
 ===============
@@ -117,11 +117,11 @@ git filter-branch --tag-name-filter cat --index-filter 'git rm -r --cached --ign
 
 Note that `filter-branch` is being used here, as opposed to the 'better' `filter-repo` command. This is because a lot of the shortcomings of the command are being dealt with by the various flags. For example, `--tag-name-filter cat` ensures that tags are rewritten as well.
 
-After this command has finished executing, your repository should now have been cleaned and have all branches and tags in tact.
+After this command has finished executing your repository should be 'clean' and have all branches and tags intact.
 
 Reclaim Space
 =============
-While we may have rewritten the history of the repository, those files still exist in there. They need to be deleted:
+While we may have re-written the history of the repository, those files still exist in there. They need to be deleted:
 
 ```{bash, eval = FALSE}
 rm -rf .git/refs/original/
@@ -134,13 +134,13 @@ Now we have a fresh, clean repository. In this example, it went from 180MB to 7M
 
 Push the Cleaned Repository
 ===========================
-Now we need to push the changes back to the remote repository, so that the changes we have made are kept permanently:
+Now we need to push the changes back to the remote repository so that they are kept permanently:
 
 ```{bash, eval = FALSE}
 git push origin --force --all
 ```
 
-The `--all` argument pushes all your branches as well. That's why we needed to clone them at the start of the process.
+The `--all` argument pushes *all* your branches. That's why we needed to clone them at the start of the process.
 
 Now push the newly-rewritten tags:
 
@@ -153,10 +153,10 @@ Tell your Teammates
 When you and your teammates next look at the status of your local repos it will say that they are multiple commits behind and ahead of the remote. This can be fixed by running:
 
 ```{bash, eval = FALSE}
-`git rebase`
+git rebase
 ```
 
-or just cloning a fresh copy. If they don't do this and then push again, those large files are going to get pushed up again and the repository will be reset into the state it was before.
+or by just cloning a fresh copy. If they don't do this and then push, those large files are going to get pushed up again and the repository will be reset into the state it was before.
 
 [⇦ Back](../../git.html)
 

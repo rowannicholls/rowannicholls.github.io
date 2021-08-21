@@ -469,16 +469,40 @@ print(df)
 
 As you can see, 5 of the top 10 most-streamed songs on Spotify have a featuring artist.
 
+Find Missing Data
+-----------------
+Sometimes you don't want to *remove* missing data but rather *analyse* it. For example, is there a music label which releases songs without featuring artists significantly more often than other labels? In order to answer this question you could group the data by "Label" then search for more than 2 instances of missing "Featuring Artist" data in their songs:
+
+```{r, eval = FALSE}
+library(dplyr)
+
+# Find missing data
+df <- group_by(spotify, Label)
+df <- summarize(df, "No Featuring Artists" = ifelse(sum(is.na(Featuring)) >= 2, TRUE, FALSE))
+print(df)
+```
+
+```
+## # A tibble: 3 x 2
+##   Label     `No Featuring Artists`
+##   <chr>     <lgl>                 
+## 1 Sony      FALSE                 
+## 2 Universal FALSE                 
+## 3 Warner    TRUE
+```
+
 Standardise Column Headings
 ---------------------------
-If you are working with many data frames then some might have slightly different column headings despite having the same type of information. This could result, for example, due to typos if the data was created manually. It's good practice to decide on a standard format and use that consistently: for example, you might choose to use underscores in column headings instead of full stops to break up works:
+If you are working with multiple data frames it might be the case that they each have slightly different column headings despite having the same type of information. This could arise, for example, due to typos if the data was created manually. It's good practice to decide on a standard format and use that consistently: for example, you might choose to use full stops in column headings instead of underscores to break up works:
 
 ```{r}
-names(df) <- gsub("\\.", "_", names(df))
+df <- spotify
+
+names(df) <- gsub("_", "\\.", names(df))
 print(names(df))
 ```
 
-The columns "Streams_Millions" and "Release_Date" have been changed to "Streams_Millions" and "Release_Date".
+The columns "Streams_Millions", "Release_Date" and "Weeks_at_no1" have been changed to "Streams.Millions", "Release.Date" and "Weeks.at.no1".
 
 Change Data Types of Columns
 ----------------------------

@@ -1,0 +1,45 @@
+---
+title: '<font size="5">Advanced Git:</font><br>GitKraken'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../git.html)
+
+A guide to using the GitKraken GUI.
+
+### Download and Install
+- Start from [the GitKraken site](https://www.gitkraken.com/git-client)
+- On **Ubuntu**: download and install the .deb
+    + To change the repositories that appear when GitKraken opens, edit /home/.gitkraken/profiles/<guid>/localRepoCache
+- On **Windows**: download and install the .exe
+
+### Turn an Existing Local Code Project into a Git Repository
+- Open GitKraken > Repository Management > Init > Local Only
+    - Don't give it a name > choose the folder that your code project is in > don't touch any of the other stuff > Create repository
+- On GitHub or Bitbucket, create a new (empty) repository
+    + Name it after the folder your Git repo is in
+    + Do not include a README file (because it will automatically create a master branch and not show you the original src screen from where you need to check that it is using the SSH protocol)
+    + Create repository
+- To add the remote, either:
+    - Copy the URL without the /src bit (eg `https://bitbucket.org/<username>/<repo_name>`) or:
+    - Copy the `git@bitbucket.org:<username>/<repo_name>.git` URL from the Bitbucket/Overview page, given that the project is SSH not HTTPS
+- Then, in GitKraken, click "Add Remote" (green "+" next to REMOTE in the left panel) > call it "origin" > paste the URL into the "Pull URL" space (the "Push URL" space will then get auto-filled) in the URL tab (not in the Bitbucket tab!) > Add remote
+- Do an initial push of the master branch to the remote
+- Create a "develop" branch, check it out and make changes in here from now on
+
+### Authenticate the Remote
+- File > Preferences > Authentication > Bitbucket.org > Generate SSH key > click the link to manage your Bitbucket SSH keys > add the new one (on your clipboard) with a custom name
+- The remote settings should have the SSH URL of the Bitbucket repo
+
+[⇦ Back](../../git.html)
+
+</font>
