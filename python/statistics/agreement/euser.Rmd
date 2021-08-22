@@ -1,0 +1,479 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Euser Analysis'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+This page is a follow-on of [this one](bland_altman.html) on Bland-Altman analysis and [this one](giavarina.html) on Giavarina analysis:
+
+**Bland-Altman analysis** is used to assess the agreement between two methods of measuring something, usually clinical information. It was discussed in Bland & Altman's 1986 paper<sup>[1]</sup> and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
+
+**Giavarina analysis** is identical to Bland-Altman analysis except that it accounts for [heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity). It does this by using percentage differences (relative to the means) on the y-axis instead of raw differences. It was published in Giavarina's 2015 paper<sup>[2]</sup>.
+
+**Euser analysis** also accounts for heteroscedasticity except that it does so via a logarithmic transformation. While this approach was mentioned in Bland & Altman (1986) it was Euser, Dekker & Le Cessie who published a method to transform the data back into the native space and calculate a meaningful coefficient of variation<sup>[3]</sup>.
+
+Calculating agreement is useful when discussing:
+
+- Test-retest experiments
+- Repeatability and reproducibility
+- Reliability
+- Intra- and inter-operator agreement
+- Intra- and inter-test agreement
+
+> [1] Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: [10.1016/S0140-6736(86)90837-8](https://linkinghub.elsevier.com/retrieve/pii/S0140673686908378). PMID: [2868172](https://pubmed.ncbi.nlm.nih.gov/2868172/).
+> 
+> [2] Giavarina D. Understanding Bland Altman analysis. Biochemia Medica. 2015;25(2):141-151. DOI: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
+>
+> [3] Euser AM, Dekker FW, Le Cessie S. A practical approach to Bland-Altman plots and variation coefficients for log transformed variables. J Clin Epidemiol. 2008;61(10):978–82. DOI: [10.1016/j.jclinepi.2007.11.003](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.9186&rep=rep1&type=pdf)
+
+Raw Data
+========
+The Euser, Dekker & Le Cessie (2008) paper use data from an investigation into the reproducibility of measurements of the thickness of skinfolds around participants' biceps. In the investigation, 13 observers took measurements from 4 subjects (yielding 13 × 4 = 52 measurements) on two occasions, resulting in the following data:
+
+```{python}
+import pandas as pd
+
+# Create raw data
+raw_data = {
+    'Measurement 1': [
+        7.5, 8.6, 8.6, 8.6, 8.3, 9.2, 9.2, 9.9, 9.8, 9.4, 9.3, 9.6, 10.6, 10.2,
+        11.7, 11.4, 11.8, 11.4, 12.0, 12.4, 12.2, 12.0, 11.6, 11.8, 13.6, 15.3,
+        15.0, 15.4, 15.5, 17.0, 16.8, 16.5, 17.0, 18.2, 18.3, 20.1, 21.5, 21.0,
+        22.6, 23.0, 25.0, 24.0, 27.0, 21.0, 15.5, 17.0, 17.0, 24.5, 14.0, 11.0,
+        17.8, 9.2
+    ],
+    'Measurement 2': [
+        7.3, 7.8, 8.0, 8.4, 8.5, 9.0, 9.0, 9.3, 9.7, 9.8, 10.0, 10.0, 10.0,
+        10.2, 11.2, 11.3, 11.6, 11.8, 12.2, 12.5, 12.7, 12.9, 12.7, 13.0, 14.8,
+        13.8, 15.0, 15.5, 15.2, 15.0, 15.6, 16.2, 16.0, 18.0, 18.1, 20.1, 19.0,
+        21.2, 22.2, 21.8, 23.0, 17.8, 19.0, 23.0, 17.9, 20.0, 22.6, 29.0, 16.0,
+        13.0, 14.2, 9.0
+    ],
+}
+df = pd.DataFrame(raw_data)
+```
+
+Summary statistics about this data are as follows (this replicates the first part of Table 1 of Euser (2008)):
+
+```{python, eval = FALSE}
+print(f'Sample size, n = {df.shape[0]}')
+print(f'Minimum = {df.min().min()}')
+print(f'Maximum = {df.max().max()}')
+print(f'Mean = {df.stack().mean()}')
+```
+
+```
+## Sample size, n = 52
+## Minimum = 7.3
+## Maximum = 29.0
+## Mean = 14.498076923076924
+```
+
+Bland-Altman Analysis
+=====================
+'Traditional' Bland-Altman analysis can be performed in the usual way:
+
+```{python}
+import numpy as np
+from scipy.stats import norm
+
+# Bland-Altman analysis
+means = df.mean(axis=1)
+diffs = df.diff(axis=1, periods=-1).iloc[:, 0]
+# Average difference (aka the bias)
+bias = np.mean(diffs)
+# Sample standard deviation
+s = np.std(diffs, ddof=1)
+# 95% limits of agreement
+C = 0.95  # Confidence level = 95%
+alpha = (1 - C) / 2  # Significance level
+z_star = norm.ppf(alpha)  # Critical value
+upper_loa = bias - z_star * s
+lower_loa = bias + z_star * s
+```
+
+> Note that the critical value ($z^*$) used when calculating the limits of agreement is being generated 'the long way' in this example by looking up the alpha value in the normal distribution's percent-point function (PPF). Using `z_star = 1.96` (which is what is done in the Euser paper) or even `z_star = 2` (which is done in some of Bland & Altman's papers) is usually accurate enough.
+
+We can now plot the results, starting with some code to set the format of the graphs:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Options
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+```
+
+Plotting the results replicates Figure 1 from Euser (2008):
+
+```{python, eval = FALSE}
+#
+# Plot
+#
+ax = plt.axes()
+ax.set(
+    title='Bland-Altman Plot for Duplicate Measurements of Biceps Skinfolds',
+    xlabel='Mean (mm)', ylabel='Difference (mm)'
+)
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the zero line
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left, left + domain * 1.15)
+# Add the annotations
+ax.annotate('+1.96×SD', (right, upper_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), (0, -12), textcoords='offset points')
+ax.annotate('Bias', (right, bias), (0, 6), textcoords='offset points')
+ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -12), textcoords='offset points')
+ax.annotate('-1.96×SD', (right, lower_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), (0, -12), textcoords='offset points')
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+#
+# Plot
+#
+ax = plt.axes()
+ax.set(
+    title='Bland-Altman Plot for Duplicate Measurements of Biceps Skinfolds',
+    xlabel='Mean (mm)', ylabel='Difference (mm)'
+)
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the zero line
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left, left + domain * 1.15)
+# Add the annotations
+ax.annotate('+1.96×SD', (right, upper_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), (0, -12), textcoords='offset points')
+ax.annotate('Bias', (right, bias), (0, 6), textcoords='offset points')
+ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -12), textcoords='offset points')
+ax.annotate('-1.96×SD', (right, lower_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), (0, -12), textcoords='offset points')
+# Show plot
+plt.show()
+```
+
+Note that in Euser (2008) they have ±4.09 mm as their limits of agreement as opposed to 4.21 and -3.98 which are shown in the above. This is because they round off their bias from 0.12 to 0 which results in the critical difference (1.96 × s) being the same as the absolute value of both LOAs:
+
+```{python}
+# Print the critical difference
+print(f'{z_star * s:4.2f}')
+```
+
+Euser Analysis
+==============
+The basis of Euser analysis is the transformation of the data into the log 10 space:
+
+```{python}
+df_log10 = np.log10(df)
+```
+
+The summary statistics of the transformed data look as follows (this replicates the first part of Table 1 of Euser (2008)):
+
+```{python, eval = FALSE}
+print(f'Sample size, n = {df_log10.shape[0]}')
+print(f'Minimum = {df_log10.min().min():4.2f}')
+print(f'Maximum = {df_log10.max().max():4.2f}')
+print(f'Mean = {df_log10.stack().mean():4.2f}')
+```
+
+```
+## Sample size, n = 52
+## Minimum = 0.86
+## Maximum = 1.46
+## Mean = 1.14
+```
+
+The residual-error variance (average within-subject sample variance) and intra-observer coefficient of variation can be calculated immediately (also from Table 1):
+
+```{python}
+# Residual-error variance (average within-subject sample variance)
+s = np.std(df_log10, ddof=1, axis=1)
+residual_error_variance = np.mean(s**2)
+print(f'Residual-error variance = {residual_error_variance:5.3e}')
+```
+
+```{python}
+# Intra-observer CV (%)
+cv = np.log(10) * np.sqrt(residual_error_variance) * 100
+print(f'Intra-observer CV = {cv:3.1f}%')
+```
+
+After this point, the analysis is identical to Bland-Altman:
+
+```{python}
+means = df_log10.mean(axis=1)
+diffs = df_log10.diff(axis=1, periods=-1).iloc[:, 0]
+# Average difference (aka the bias)
+bias = np.mean(diffs)
+# Sample standard deviation
+s = np.std(diffs, ddof=1)
+# 95% limits of agreement
+C = 0.95  # Confidence level = 95%
+alpha = (1 - C) / 2  # Significance level
+z_star = norm.ppf(alpha)  # Critical value
+upper_loa = bias - z_star * s
+lower_loa = bias + z_star * s
+```
+
+Plot in the Log Space
+---------------------
+Plotting the results in the log space replicates Figure 2 of Euser (2008):
+
+```{python, eval = FALSE}
+#
+# Plot
+#
+ax = plt.axes()
+ax.set_title(
+    r'\begin{center}{\bf Euser Plot for Duplicate Measurements of Biceps Skinfolds}\\(Log Space)\end{center}',
+    fontsize = 15
+)
+ax.set_ylabel('Log10 of Differences')
+ax.set_xlabel('Log10 of Means')
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the zero line
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left, left + domain * 1.15)
+# Add the annotations
+ax.annotate('+1.96×SD', (right, upper_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{upper_loa:+5.3f}', (right, upper_loa), (0, -12), textcoords='offset points')
+ax.annotate('Bias', (right, bias), (0, 6), textcoords='offset points')
+ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -12), textcoords='offset points')
+ax.annotate('-1.96×SD', (right, lower_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{lower_loa:+5.3f}', (right, lower_loa), (0, -12), textcoords='offset points')
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+#
+# Plot
+#
+ax = plt.axes()
+ax.set_title(
+    r'\begin{center}{\bf Euser Plot for Duplicate Measurements of Biceps Skinfolds}\\(Log Space)\end{center}',
+    fontsize = 15
+)
+ax.set_ylabel('Log10 of Differences')
+ax.set_xlabel('Log10 of Means')
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the zero line
+ax.axhline(y=0, c='k', lw=0.5)
+# Plot the bias and the limits of agreement
+ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=bias, c='grey', ls='--')
+ax.axhline(y=lower_loa, c='grey', ls='--')
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+ax.set_xlim(left, left + domain * 1.15)
+# Add the annotations
+ax.annotate('+1.96×SD', (right, upper_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{upper_loa:+5.3f}', (right, upper_loa), (0, -12), textcoords='offset points')
+ax.annotate('Bias', (right, bias), (0, 6), textcoords='offset points')
+ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -12), textcoords='offset points')
+ax.annotate('-1.96×SD', (right, lower_loa), (0, 6), textcoords='offset points')
+ax.annotate(f'{lower_loa:+5.3f}', (right, lower_loa), (0, -12), textcoords='offset points')
+# Show plot
+plt.show()
+```
+
+Again, their limits of agreement (±0.092) are equal to the critical difference (1.96 × s), give or take rounding errors:
+
+```{python}
+# Print the critical difference
+print(f'{z_star * s:5.3f}')
+```
+
+Back-Transform the Limits of Agreement
+--------------------------------------
+In the log space the limits of agreement are horizontal lines, but they can be transformed back into the native space where they appear as diagonal lines on a Bland-Altman plot. The formula given in Euser (2008) is:
+
+$\pm 2 \times \dfrac{10^a - 1}{10^a + 1} \times \bar{X}$
+
+where the values of $a$ are the limits of agreement in the log space and $\bar{X}$ are the arithmetic means of the data (ie the x-axis of the Bland-Altman plot):
+
+```{python}
+# Convert the LOAs from horizontal lines in the log space to gradients of
+# diagonal lines in the native space
+upper_loa_m = 2 * (10**upper_loa - 1) / (10**upper_loa + 1)
+lower_loa_m = 2 * (10**lower_loa - 1) / (10**lower_loa + 1)
+```
+
+The Bland-Altman plot can now be re-drawn (Figure 3 of Euser (2008)):
+
+```{python, eval = FALSE}
+# Bland-Altman analysis
+means = df.mean(axis=1)
+diffs = df.diff(axis=1, periods=-1).iloc[:, 0]
+# Average difference (aka the bias)
+bias = np.mean(diffs)
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.set_title(
+    r'\begin{center}{\bf Euser Plot for Duplicate Measurements of Biceps Skinfolds}\\(Native Space)\end{center}',
+    fontsize = 15
+)
+ax.set_ylabel('Difference (mm)')
+ax.set_xlabel('Mean (mm)')
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the zero line
+ax.axhline(y=0, c='k', lw=0.5)
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+# right_edge = left + domain * 1.12
+ax.set_xlim(left, right)
+# Plot the bias
+ax.axhline(y=bias, c='grey', ls='--')
+# Plot the limits of agreement
+x = np.array([left, right])
+y = upper_loa_m * x + bias
+ax.plot(x, y, c='grey', ls='--')
+y = lower_loa_m * x + bias
+ax.plot(x, y, c='grey', ls='--')
+# Make space for the annotations
+plt.subplots_adjust(right=0.8)
+# Add the annotations
+x = left + domain * 1.01
+y = upper_loa_m * right + bias
+ax.annotate('Upper LOA', (x, y), (0, 3), textcoords='offset points', annotation_clip=False)
+ax.annotate(f'{upper_loa_m:+4.2f} × Mean + Bias', (x, y), (0, -9), textcoords='offset points', annotation_clip=False)
+ax.annotate('Bias', (x, bias), (0, 3), textcoords='offset points', annotation_clip=False)
+ax.annotate(f'{bias:+4.2f}', (x, bias), (0, -9), textcoords='offset points', annotation_clip=False)
+y = lower_loa_m * right + bias
+ax.annotate('Lower LOA', (x, y), (0, 3), textcoords='offset points', annotation_clip=False)
+ax.annotate(f'{lower_loa_m:+4.2f} × Mean + Bias', (x, y), (0, -9), textcoords='offset points', annotation_clip=False)
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Bland-Altman analysis
+means = df.mean(axis=1)
+diffs = df.diff(axis=1, periods=-1).iloc[:, 0]
+# Average difference (aka the bias)
+bias = np.mean(diffs)
+
+#
+# Plot
+#
+ax = plt.axes()
+ax.set_title(
+    r'\begin{center}{\bf Euser Plot for Duplicate Measurements of Biceps Skinfolds}\\(Native Space)\end{center}',
+    fontsize = 15
+)
+ax.set_ylabel('Difference (mm)')
+ax.set_xlabel('Mean (mm)')
+# Scatter plot
+ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
+# Plot the zero line
+ax.axhline(y=0, c='k', lw=0.5)
+# Get axis limits
+left, right = plt.xlim()
+bottom, top = plt.ylim()
+# Set y-axis limits
+max_y = max(abs(bottom), abs(top))
+ax.set_ylim(-max_y * 1.1, max_y * 1.1)
+# Set x-axis limits
+domain = right - left
+# right_edge = left + domain * 1.12
+ax.set_xlim(left, right)
+# Plot the bias
+ax.axhline(y=bias, c='grey', ls='--')
+# Plot the limits of agreement
+x = np.array([left, right])
+y = upper_loa_m * x + bias
+ax.plot(x, y, c='grey', ls='--')
+y = lower_loa_m * x + bias
+ax.plot(x, y, c='grey', ls='--')
+# Make space for the annotations
+plt.subplots_adjust(right=0.8)
+# Add the annotations
+x = left + domain * 1.01
+y = upper_loa_m * right + bias
+ax.annotate('Upper LOA', (x, y), (0, 3), textcoords='offset points', annotation_clip=False)
+ax.annotate(f'{upper_loa_m:+4.2f} × Mean + Bias', (x, y), (0, -9), textcoords='offset points', annotation_clip=False)
+ax.annotate('Bias', (x, bias), (0, 3), textcoords='offset points', annotation_clip=False)
+ax.annotate(f'{bias:+4.2f}', (x, bias), (0, -9), textcoords='offset points', annotation_clip=False)
+y = lower_loa_m * right + bias
+ax.annotate('Lower LOA', (x, y), (0, 3), textcoords='offset points', annotation_clip=False)
+ax.annotate(f'{lower_loa_m:+4.2f} × Mean + Bias', (x, y), (0, -9), textcoords='offset points', annotation_clip=False)
+# Show plot
+plt.show()
+```
+
+Again, the values of the gradients of the LOAs used by Euser are not 100% the same due to rounding and not including the bias.
+
+[⇦ Back](../../../python.html)
+
+</font>
