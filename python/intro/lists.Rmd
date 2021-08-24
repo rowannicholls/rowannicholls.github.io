@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Introduction to Python:</font><br>Lists'
+title: '<font size="5">Introduction to Python:</font><br>Lists, Sets and Tuples'
 output:
     html_document:
         theme: paper
@@ -213,7 +213,7 @@ ls_2 = [4, 5]
 print('Adding the numbers at indexes 0 and 1 = ' + str(ls_1[0] + ls_2[1]))
 ```
 
-While concatenating two lists together is possible using the "+" sign, it is **not** possible to remove the values in one list from another list using a "-" sign! It **is**, however, possible to do this with *sets*, which are discussed below.
+> While concatenating two lists together is possible using the "+" sign, it is **not** possible to remove the values in one list from another list using a "-" sign! It **is**, however, possible to do this with *sets*, which are discussed below.
 
 Adding to Lists
 ---------------
@@ -292,7 +292,7 @@ ls.remove('B')
 print(ls)
 ```
 
-Again, this has acted *in-place* and only on the *first* occurrence of the value. To remove multiple values from a list at a time, you could either use a **set** or a **list comprehension**. See [the section below](#removing-multiple-values-from-lists) for how to do this with sets and [the page on list comprehensions](../advanced/lists.html#remove-multiple-values) for how to use those.
+Again, this has acted *in-place* and only on the *first* occurrence of the value. To remove multiple values from a list at a time you could either use a **set** or a **list comprehension**. See [the section below](#removing-multiple-values-from-lists) for how to do this with sets and [the page on list comprehensions](../advanced/lists.html#remove-multiple-values) for how to use those.
 
 Sorting Lists
 =============
@@ -326,11 +326,12 @@ In the second example, the old order is forgotten.
 
 Sets
 ====
-Sets are *NOT* lists! But they are similar, which is why they are getting discussed on this page about lists. The main differences are that:
+Sets are *NOT* lists, but they are similar! The main differences are that:
 
 - A set is **immutable** which means that it *cannot be changed once created*
 - A set cannot have duplicates; all of its elements are **unique**
 - A set is **unordered**: the order of the elements is not remembered by Python
+- A set is **not subscriptable** and so cannot be indexed with square brackets: if `a` was a set then running `a[0]` would result in an error. How can an object where the elements are unordered have a 0th, 1st, 2nd, etc, element?
 
 Sets are either created by using curly brackets (note that the elements in the output are not necessarily in the same order as in the input, due to sets being unordered):
 
@@ -475,6 +476,113 @@ ls = [1, 2, 3]
 result = set(sub).issubset(set(ls))
 print(result)
 ```
+
+Tuples
+======
+Tuples are similar to lists and sets but, again, they are different to both:
+
+- A tuple is **immutable** (like a set, unlike a list) which means that it *cannot be changed once created*
+- A tuple can have **duplicates** (like a list, unlike a set)
+- A tuple is **ordered**: the order of the elements is remembered by Python (like a list, unlike a set)
+- A tuple is **subscriptable** (like a list, unlike a set) and so can be indexed with square brackets
+
+A tuple is also created by listing elements separated by commas, but this time those elements need to be surrounded by **round** brackets:
+
+```{python}
+# Create a tuple by using round brackets
+tup = (1, '2', 'three')
+
+print(tup)
+```
+
+Due to a weird quirk of Python, when creating a tuple of length 1 you have to have a comma at the end:
+
+```{python}
+tup = (1,)  # The comma is necessary
+
+print(tup)
+```
+
+Alternatively, the `tuple()` function can be used to convert a list (identifiable from the square brackets) to a tuple:
+
+```{python}
+# Create a tuple by using the function
+tup = tuple([1, '2', 'three'])
+
+print(tup)
+```
+
+In fact, a tuple can be created even without anything surrounding the elements!
+
+```{python}
+# Create a tuple without brackets or a function
+tup = 1, '2', 'three'
+
+print(tup)
+```
+
+The above example (not using any brackets) is known as **tuple packing** and the reverse operation is also possible:
+
+```{python}
+# Extract the elements from a tuple
+first, second, third = tup
+
+print(first, second, third)
+```
+
+This is known as **sequence unpacking** and works with any sequence (list, set, tuple, etc) on the right-hand-side.
+
+Properties of a Tuple
+---------------------
+Being **immutable** means they cannot be changed in-place:
+
+```{python, eval = FALSE}
+# THIS WILL PRODUCE AN ERROR
+tup.append(4)
+```
+
+...but they CAN be overwritten:
+
+```{python}
+tup = tup + (4, 5)
+
+print(tup)
+```
+
+They can contain **duplicate** elements:
+
+```{python}
+tup = (1, 1, 1)
+
+print(tup)
+```
+
+They are **ordered**: the tuples `(1, 2, 3)` and `(3, 2, 1)` contain the same elements but because they are in a different order the tuples are NOT equal:
+
+```{python}
+# Are these tuples equal?
+boolean = (1, 2, 3) == (3, 2, 1)
+
+print(boolean)
+```
+
+They are **subscriptable** and so can be indexed using the position of an element to refer to that element:
+
+```{python}
+# Print the 0th element of the tuple
+print(tup[0])
+```
+
+Summary
+=======
+
+| Data Structure | Creation Function | Surrounded By   | Mutable | Unique | Ordered | Subscriptable |
+|----------------|-------------------|-----------------|---------|--------|---------|---------------|
+| List           | `list()`          | `[]`            | True    | False  | True    | True          |
+| Tuple          | `tuple()`         | `()` or nothing | False   | False  | True    | True          |
+| Set            | `set()`           | `{}`            | False   | True   | False   | False         |
+
+All of these structures can contain any type of element (numbers, strings, dictionaries, etc; even other lists, sets or tuples) and/or a mixture of types. They all use commas to separate their elements.
 
 [⇦ Back](../../python.html)
 
