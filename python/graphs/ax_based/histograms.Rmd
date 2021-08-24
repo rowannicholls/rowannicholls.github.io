@@ -1,0 +1,274 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Histograms<br><font size="5">_using explicitly defined axes in Matplotlib_</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+**Histograms** are used to represent *continuous data*. This is in contrast to **bar plots** which represent *categorical data:*
+
+- Although histograms and bar plots look similar, they are not the same and you should use different functions in Python to draw them (`ax.bar()` and `ax.hist()`, respectively)
+- From a mathematical point of view, if continuous data *was* to be shown on a bar plot then the bars would be infinitely thin. This is because there are an infinite number of numbers between two points on the number line, so the number of possible values data points in your set of continuous data could have is also infinite. You would need to have a bar plot with an infinite number of bars to cover all the possible values you could encounter!
+- Histograms solve this problem by using **bins**: all numbers that fall within a certain *range* are grouped together and shown in the same bar
+
+> Bar plots have *categories* while histograms have *bins*
+
+Conceptually, a histogram is like a combination of a line plot and a bar plot: data that could be shown as a continuous line is being grouped into bars. Here's an example that is derived from one shown on [the Matplotlib website](https://matplotlib.org/stable/gallery/pyplots/pyplot_text.html) itself that illustrates this link between a line plot, a bar plot and a histogram:
+
+Example Data
+============
+An intelligence quotient (IQ) test is an assessment where, by design, peoples' results follow a normal distribution with a mean of 100 and a standard deviation of 15. The distribution of peoples' scores will thus tend to a continuous line as the number of people tested tends to infinity (assuming that the tests are infinitely precise in their scoring), and so it can be represented on a graph as such. This type of graph is known as a probability density function (PDF) and a function to produce it is provided by Scipy's "stats" package:
+
+```{python}
+from scipy.stats import norm
+import numpy as np
+
+# Create a normal distribution probability density function (PDF) with mean 100,
+# standard deviation 15 and running from 45 to 155. It will consist of 1,000
+# points to ensure it looks smooth when plotted.
+x = np.linspace(45, 155, 1000)
+mu, sigma = 100, 15
+normal_pdf = norm.pdf(x, loc=mu, scale=sigma)
+```
+
+This can then be plotted with the Matplotlib package. The `plot()` function plots the x-data `x` against the y-data `normal_pdf` and, because there are 1,000 points being plotted, the resulting line looks smooth (although technically it is made up of 999 straight line segments). The `set_title()`, `set_xlabel()` and `set_ylabel()` functions then create the plot title and axis labels:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Plot
+ax = plt.axes()
+ax.plot(x, normal_pdf)
+ax.set_title('Probability Density Function of a Normal Distribution')
+ax.set_ylabel('Probability Density')
+ax.set_xlabel('IQ Score')
+```
+
+When we are given a finite sample of peoples' scores, however, we can only approximate this distribution by putting the scores into 'bins', grouping scores of similar magnitudes together and representing those on a graph as vertical bars with height equal to the number of values in that bin.
+
+For this example, we will generate 1,000 numbers by randomly taking values from a normal distribution of mean 100 and standard deviation 15. This will give us 1,000 hypothetical scores from IQ tests. Functions from the Numpy package will be used to do this:
+
+```{python}
+import numpy as np
+
+# Set a seed for the random number generator so we get the same random numbers each time
+np.random.seed(20210823)
+# Randomly sample a normal distribution (of mean 100 and standard deviation 15) 1,000 times
+mu, sigma = 100, 15
+scores = np.random.normal(loc=mu, scale=sigma, size=1000)
+
+# Print the first 10 scores just so we can see them
+print(scores[:10])
+```
+
+Plotting
+========
+Now we can use the `hist()` function from Matplotlib to group these 1,000 scores into bins and plot them. By default, it will create 10 bins of equal width:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+ax = plt.axes()
+ax.hist(scores)
+ax.set_title(r'Histogram of IQ Scores: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Count')
+```
+
+```{python, results = 'hide', echo = FALSE}
+import matplotlib.pyplot as plt
+
+ax = plt.axes()
+ax.hist(scores)
+ax.set_title(r'Histogram of IQ Scores: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Count')
+```
+
+Note the Latex formatting being used in the title; the `r` prepending the string causes it to be interpreted as a 'raw string literal' which is needed for this to work.
+
+Normalising
+===========
+Next, we can show that the histogram does indeed approximate a normal distribution by taking the probability density function produced earlier and plotting it on top. However, this PDF will be on a completely different scale to the histogram: the former has a total area of 1 underneath it while the latter reaches almost 250 at its highest point! In order to be able to show them together we need to *normalise* the histogram by setting the `density` keyword argument to `True` when calling the `hist()` function. This converts the histogram into a probability *density:* the size of the bars are changed such that their total area is 1. We will also use 20 bins for the histogram this time, just to make it look a bit better:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.hist(scores, 20, density=True)
+ax.plot(x, normal_pdf)
+ax.set_title(r'Histogram of IQ Scores: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Probability Density')
+```
+
+```{python, results = 'hide', echo = FALSE}
+ax = plt.axes()
+ax.hist(scores, 20, density=True)
+ax.plot(x, normal_pdf)
+ax.set_title(r'Histogram of IQ Scores: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Probability Density')
+```
+
+Additional Plot Features
+========================
+The histogram can be customised by using its keyword arguments (see [here](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.hist.html) for the documentation on all the options):
+
+- `histtype` changes the type of graph: bar plot, stacked bar plot, step plot or filled step plot
+- The colour and thickness can be set with `edgecolor`, `facecolor` and `linewidth` (or their shorthands: `ec`, `fc` and `lw`)
+- `label` sets the name that will be used in the legend
+- `zorder` controls what elements in the plot are in front of others. A lower value for `zorder` means that it will be drawn first (ie it will be at the back, underneath other elements)
+
+Other functions used below include:
+
+- `axvline()` to create a **v**ertical **line** across the **ax**es
+- `grid()` to add a grid
+- `axis()` to manually control the size of the axes
+- `legend()` to add a legend
+
+The above functions can be customised using generic Matplotlib keyword arguments:
+
+- `color` or `c` sets the colour (eg `'b'` for blue)
+- `linestyle` or `ls` sets the line style (eg `'--'` for dashed)
+- `alpha` sets the transparency
+- `loc` sets the **loc**ation of the legend
+
+```{python, eval = FALSE}
+ax = plt.axes()
+# Normalised histogram
+ax.hist(
+    scores, 20, density=True,
+    histtype='stepfilled',
+    edgecolor='b', facecolor='w', linewidth=2,
+    label='Normalised IQ scores',
+    zorder=2
+)
+# Normal distribution
+ax.plot(x, normal_pdf, c='k', ls='--', label='PDF')
+# Midline
+ax.axvline(mu, c='k')
+# Add a grid
+ax.grid(True, alpha=0.5, zorder=1)
+# Titles and labels
+ax.set_title(r'Histogram of IQ: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Probability')
+# Axis limits
+ax.axis([40, 160, 0, 0.03])
+# Add a legend
+ax.legend(loc='upper left')
+```
+
+```{python, results = 'hide', echo = FALSE}
+ax = plt.axes()
+# Normalised histogram
+ax.hist(
+    scores, 20, density=True,
+    histtype='stepfilled',
+    edgecolor='b', facecolor='w', linewidth=2,
+    label='Normalised IQ scores',
+    zorder=2
+)
+# Normal distribution
+ax.plot(x, normal_pdf, c='k', ls='--', label='PDF')
+# Midline
+ax.axvline(mu, c='k')
+# Add a grid
+ax.grid(True, alpha=0.5, zorder=1)
+# Titles and labels
+ax.set_title(r'Histogram of IQ: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Probability')
+# Axis limits
+ax.axis([40, 160, 0, 0.03])
+# Add a legend
+ax.legend(loc='upper left')
+```
+
+More Latex formatting
+=====================
+While the headings of the above plots already use Latex's math mode to get the Greek letters mu and sigma, additional Latex functionality (and more control of figures' size and quality) can be unlocked by using the following code:
+
+```{python}
+# Make figures A5 in size
+A = 5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Image quality
+plt.rc('figure', dpi=141)
+# Be able to add Latex
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+```
+
+The plot now looks like this:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+# Normalised histogram
+ax.hist(
+    scores, 20, density=True,
+    histtype='stepfilled',
+    ec='b', fc='w', lw=2,
+    label='Normalised IQ scores',
+    zorder=2
+)
+# Normal distribution
+ax.plot(x, normal_pdf, c='k', ls='--', label='PDF')
+# Midline
+ax.axvline(mu, c='k')
+# Add a grid
+ax.grid(True, alpha=0.5, zorder=1)
+# Titles and labels
+ax.set_title(
+    r'\begin{center}{\bf\LARGE Histogram of IQ}\\\textmu\ = 100, \textsigma\ = 15\end{center}',
+    pad=25
+)
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Probability')
+# Axis limits
+ax.axis([40, 160, 0, 0.03])
+# Add a legend
+ax.legend(loc='upper left')
+```
+
+```{python, results = 'hide', echo = FALSE}
+ax = plt.axes()
+# Normalised histogram
+ax.hist(
+    scores, 20, density=True,
+    histtype='stepfilled',
+    ec='b', fc='w', lw=2,
+    label='Normalised IQ scores',
+    zorder=2
+)
+# Normal distribution
+ax.plot(x, normal_pdf, c='k', ls='--', label='PDF')
+# Midline
+ax.axvline(mu, c='k')
+# Add a grid
+ax.grid(True, alpha=0.5, zorder=1)
+# Titles and labels
+ax.set_title(
+    r'\begin{center}{\bf\LARGE Histogram of IQ}\\\textmu\ = 100, \textsigma\ = 15\end{center}',
+    pad=25
+)
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Probability')
+# Axis limits
+ax.axis([40, 160, 0, 0.03])
+# Add a legend
+ax.legend(loc='upper left')
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
