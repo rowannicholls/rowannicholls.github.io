@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Introduction to Bash:</font><br>Variables and Data Types'
+title: '<font size="5">Introduction to Bash and Z Shell:</font><br>Variables and Data Types'
 output:
     html_document:
         theme: paper
@@ -18,7 +18,7 @@ output:
 
 Variables
 =========
-Assign a value to a variable using a single equals sign and no spaces, then use the `echo` function to display the value of the variable. When you do the call, you need to prepend a dollar sign; that's Bash's way of knowing you're using a variable:
+Assign a value to a variable using a single equals sign and no spaces, then use the `echo` function to display the value of the variable. When you do the call, you need to prepend a dollar sign; that's Bash/Zsh's way of knowing you're using a variable:
 
 ```{bash, comment=NA}
 message=Hello
@@ -40,8 +40,8 @@ echo $message
 
 So it doesn't matter if you use double or single quotation marks when you assign a value to a variable, but it does make a difference when you call that variable:
 
-- Calling a variable with **no quotation marks** means each word is treated as a separate thing. Bash doesn't know how to handle spaces, tabs and newlines by default and thinks that they are *delimiters* (ie that spaces separate items in a list rather than words in a sentence).
-- Calling a variable with **single quotation marks** tells Bash to interpret everything literally. The fact that you are calling a variable is ignored!
+- Calling a variable with **no quotation marks** means each word is treated as a separate thing. Bash/Zsh doesn't know how to handle spaces, tabs and newlines by default and thinks that they are *delimiters* (ie that spaces separate items in a list rather than words in a sentence).
+- Calling a variable with **single quotation marks** tells Bash/Zsh to interpret everything literally. The fact that you are calling a variable is ignored!
 - Calling a variable with **double quotation marks** will output the variable exactly how it was input. If there was a newline character in the input, for example, there will be a line break in the output:
 
 ```{bash, comment=NA}
@@ -64,7 +64,7 @@ The first `touch` command will create two new files ("My" and "File.txt") wherea
 
 Curly Brackets
 --------------
-Note that `$message` is actually shorthand for `${message}`: a dollar sign AND curly brackets are used to tell Bash what the name of your variable is, but, if you leave out the brackets then Bash can usually still guess correctly. However, this is not the case if you want your variable to appear in the middle of a string:
+Note that `$message` is actually shorthand for `${message}`: a dollar sign AND curly brackets are used to tell Bash/Zsh what the name of your variable is, but, if you leave out the brackets then Bash/Zsh can usually still guess correctly. However, this is not the case if you want your variable to appear in the middle of a string:
 
 ```{bash, comment=NA}
 prefix='un'
@@ -78,7 +78,7 @@ So, if you always want to be 100% accurate, it's good practice to always use bot
 
 Built-In Variables
 ------------------
-The 'hash', 'at' and 'question mark' symbols are all pre-defined variables in bash.
+The 'hash', 'at' and 'question mark' symbols are all pre-defined variables in Bash/Zsh.
 
 - `$#` returns the **number of arguments** that were parsed to a script
 - `$@` returns the **arguments themselves**
@@ -108,7 +108,7 @@ echo 0
 
 Data Types
 ==========
-Unlike most programming languages, Bash doesn't worry too much about what *type* a particular variable is. If you want to treat a variable as a word you can, and if it contains only numbers and you want to treat it as a number you also can:
+Unlike most programming languages, Bash/Zsh doesn't worry too much about what *type* a particular variable is. If you want to treat a variable as a word you can, and if it contains only numbers and you want to treat it as a number you also can:
 
 ```{bash, comment=NA}
 variable="1234"

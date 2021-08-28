@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Introduction to Bash:</font><br>Creating a Function'
+title: '<font size="5">Introduction to Bash and Z Shell:</font><br>Creating a Function'
 output:
     html_document:
         theme: paper
@@ -20,7 +20,7 @@ Functions are a way to *re-use code*. If you ever find yourself copying-and-past
 
 Defining a Function
 ===================
-Here's the format of a function in Bash:
+Here's the format of a function in Bash/Zsh:
 
 ```{bash, comment=NA}
 my_function () {
@@ -117,7 +117,7 @@ my_function Hello World
 echo "What did you return? I returned the number $?"
 ```
 
-Note that a return can only be a number. In general, returns in Bash are more commonly referred to as 'exit codes' and are mostly only useful for telling a user what happened during a function. For example, you might make your function return an 'error code' if something goes wrong: if a user tries to divide by 0 you might return the number 1, for example, which the user could then look up to see the meaning of and thus work out what went wrong. Usually, an exit code of 0 means that there were no errors.
+Note that a return can only be a number. In general, returns in Bash/Zsh are more commonly referred to as 'exit codes' and are mostly only useful for telling a user what happened during a function. For example, you might make your function return an 'error code' if something goes wrong: if a user tries to divide by 0 you might return the number 1, for example, which the user could then look up to see the meaning of and thus work out what went wrong. Usually, an exit code of 0 means that there were no errors.
 
 Global vs Local Variables
 =========================

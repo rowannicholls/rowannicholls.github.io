@@ -401,9 +401,8 @@ We are left with the elements from set 1 *minus* the elements from set 2. This c
 
 ```{python}
 ls_1 = ['A', 'B', 'C', 'D', 'E', 'F']
-ls_2 = ['A', 'B', 'C']
 # Convert lists to sets, subtract them, convert result into a list
-ls = list(set(ls_1) - set(ls_2))
+ls = list(set(ls_1) - set(['A', 'B', 'C']))
 print(ls)
 ```
 

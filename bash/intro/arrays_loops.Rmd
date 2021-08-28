@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Introduction to Bash:</font><br>Arrays and Loops'
+title: '<font size="5">Introduction to Bash and Z Shell:</font><br>Arrays and Loops'
 output:
     html_document:
         theme: paper
@@ -18,7 +18,7 @@ output:
 
 Arrays and Lists
 ================
-'Arrays' and 'lists' are data types in Bash, just like strings, numbers, nulls and Booleans. Fundamentally, they are both *collections of elements* separated by spaces. Arrays are created using round brackets and lists with quotation marks:
+'Arrays' and 'lists' are data types in Bash/Zsh, just like strings, numbers, nulls and Booleans. Fundamentally, they are both *collections of elements* separated by spaces. Arrays are created using round brackets and lists with quotation marks:
 
 ```{bash, comment=NA}
 # Arrays
@@ -62,7 +62,7 @@ numbers=(2 4 6 8 10)
 echo ${numbers[2]}
 ```
 
-Remember that Bash uses *zero-indexing*, so the first element is in position zero and the number 6 is actually at index 2, not 3! Notice also that you need to include the curly brackets when making this call; if you leave them out Bash will look for a variable called "numbers[2]" instead of a variable called "numbers".
+Remember that Bash/Zsh uses *zero-indexing*, so the first element is in position zero and the number 6 is actually at index 2, not 3! Notice also that you need to include the curly brackets when making this call; if you leave them out Bash/Zsh will look for a variable called "numbers[2]" instead of a variable called "numbers".
 
 To use all of the elements, index the variable with the 'at' symbol (`@`):
 

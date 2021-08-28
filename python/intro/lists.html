@@ -482,7 +482,7 @@ u),e(r[u],"region",af,u),e(r[u],"country",$e,u);kf(h,k,c)}else h.push({name:"err
 n=d[h].index,p=nf[k];p&&l&&(!hf(k)||Xe(l))&&(void 0!==n&&(p+=n),f.push(p+"."+l))}c({vc:encodeURIComponent(f.join("~")),ic:e})})})}catch(c){}},hf=function(a){return-1!==["email","phone_number","first_name","last_name","street"].indexOf(a)};var rf=function(){this.eventModel={};this.targetConfig={};this.containerConfig={};this.remoteConfig={};this.globalConfig={};this.onSuccess=function(){};this.onFailure=function(){};this.setContainerTypeLoaded=function(){};this.getContainerTypeLoaded=function(){};this.eventId=void 0;this.isGtmEvent=!1},sf=function(a){var b=new rf;b.eventModel=a;return b},tf=function(a,b){a.targetConfig=b;return a},uf=function(a,b){a.containerConfig=b;return a},vf=function(a,b){a.remoteConfig=b;return a},wf=function(a,
 b){a.globalConfig=b;return a},xf=function(a,b){a.onSuccess=b;return a},yf=function(a,b){a.setContainerTypeLoaded=b;return a},zf=function(a,b){a.getContainerTypeLoaded=b;return a},Af=function(a,b){a.onFailure=b;return a};
 rf.prototype.getWithConfig=function(a){if(void 0!==this.eventModel[a])return this.eventModel[a];if(void 0!==this.targetConfig[a])return this.targetConfig[a];if(void 0!==this.containerConfig[a])return this.containerConfig[a];if(void 0!==this.remoteConfig[a])return this.remoteConfig[a];if(void 0!==this.globalConfig[a])return this.globalConfig[a]};
-var Bf=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Cf=function(a,b,c){function d(h){Zb(h)&&Na(h,function(k,l){f=!0;e[k]=l})}var e={},f=!1;c&&1!==c||(d(a.globalConfig[b]),d(a.remoteConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var Df={},Q=null,Ef=Math.random();Df.M="UA-156468188-1";Df.$c="8n0";Df.Rg="ChAI8LGSiQYQ/8Hu4Z6Hr8soEicAGwtSqmqnOJzRc1GzSI584ztRHc3VEwWvzXL+FaRVIQs/hJH2g08aArwW";var Ff={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Gf={__paused:!0,__tg:!0},Hf;for(Hf in Ff)Ff.hasOwnProperty(Hf)&&(Gf[Hf]=!0);var If="www.googletagmanager.com/gtm.js";If="www.googletagmanager.com/gtag/js";
+var Bf=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Cf=function(a,b,c){function d(h){Zb(h)&&Na(h,function(k,l){f=!0;e[k]=l})}var e={},f=!1;c&&1!==c||(d(a.globalConfig[b]),d(a.remoteConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var Df={},Q=null,Ef=Math.random();Df.M="UA-156468188-1";Df.$c="8n0";Df.Rg="ChAI8LGSiQYQ/8Hu4Z6Hr8soEicAGwtSqlGyNdlNJe8Nd9Bd/eWLPNGqH1AMYcifnVI1LEjr2K172gsaAqc3";var Ff={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Gf={__paused:!0,__tg:!0},Hf;for(Hf in Ff)Ff.hasOwnProperty(Hf)&&(Gf[Hf]=!0);var If="www.googletagmanager.com/gtm.js";If="www.googletagmanager.com/gtag/js";
 var Jf=If,Kf=Qa(""),Lf=null,Mf=null,Nf="https://www.googletagmanager.com/a?id="+Df.M+"&cv=1",Of={},Pf={},Qf=function(){var a=Q.sequence||1;Q.sequence=a+1;return a};Df.Qg="";var Rf={},Sf=new Fa,Tf={},Uf={},Xf={name:"dataLayer",set:function(a,b){I(bb(a,b),Tf);Vf()},get:function(a){return Wf(a,2)},reset:function(){Sf=new Fa;Tf={};Vf()}},Wf=function(a,b){return 2!=b?Sf.get(a):Yf(a)},Yf=function(a){var b,c=a.split(".");b=b||[];for(var d=Tf,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==Ba(b,d))return}return d},Zf=function(a,b){Uf.hasOwnProperty(a)||(Sf.set(a,b),I(bb(a,b),Tf),Vf())},Vf=function(a){Na(Uf,function(b,c){Sf.set(b,c);I(bb(b,
 void 0),Tf);I(bb(b,c),Tf);a&&delete Uf[b]})},ag=function(a,b,c){Rf[a]=Rf[a]||{};Rf[a][b]=$f(b,c)},$f=function(a,b){var c,d=1!==(void 0===b?2:b)?Yf(a):Sf.get(a);"array"===Xb(d)||"object"===Xb(d)?c=I(d):c=d;return c},bg=function(a,b){if(Rf[a])return Rf[a][b]},cg=function(a,b){Rf[a]&&delete Rf[a][b]};
 var dg=function(a,b,c){if(c){var d=c.selector_type,e=String(c.value),f;if("js_variable"===d){e=e.replace(/\["?'?/g,".").replace(/"?'?\]/g,"");for(var h=e.split(","),k=0;k<h.length;k++){var l=h[k].trim();if(l){if(0===l.indexOf("dataLayer."))f=Wf(l.substring(10));else{var n=l.split(".");f=m[n.shift()];for(var p=0;p<n.length;p++)f=f&&f[n[p]]}if(void 0!==f)break}}}else if("css_selector"===d&&ie){var q=je(e);q&&0<q.length&&(f=Ob(q[0])||Ta(q[0].value))}f&&(a[b]=f)}},eg=function(a){if(a){var b={};dg(b,"email",
@@ -986,7 +986,7 @@ print(st)</code></pre>
 <pre class="python"><code># Convert set to list
 ls = list(st)
 print(ls)</code></pre>
-<pre><code>## [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]</code></pre>
+<pre><code>## [&#39;A&#39;, &#39;C&#39;, &#39;B&#39;]</code></pre>
 </div>
 <div id="removing-multiple-values-from-lists" class="section level2" number="9.2">
 <h2 number="9.2"><span class="header-section-number">9.2</span> Removing Multiple Values from Lists</h2>
@@ -996,14 +996,13 @@ st_2 = {&#39;A&#39;, &#39;B&#39;, &#39;C&#39;}
 # Subtract the sets from each other
 st = st_1 - st_2
 print(st)</code></pre>
-<pre><code>## {&#39;E&#39;, &#39;D&#39;, &#39;F&#39;}</code></pre>
+<pre><code>## {&#39;F&#39;, &#39;D&#39;, &#39;E&#39;}</code></pre>
 <p>We are left with the elements from set 1 <em>minus</em> the elements from set 2. This can be used to remove multiple values from a list at a time:</p>
 <pre class="python"><code>ls_1 = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;, &#39;F&#39;]
-ls_2 = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
 # Convert lists to sets, subtract them, convert result into a list
-ls = list(set(ls_1) - set(ls_2))
+ls = list(set(ls_1) - set([&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]))
 print(ls)</code></pre>
-<pre><code>## [&#39;E&#39;, &#39;D&#39;, &#39;F&#39;]</code></pre>
+<pre><code>## [&#39;F&#39;, &#39;D&#39;, &#39;E&#39;]</code></pre>
 </div>
 <div id="checking-if-two-lists-are-the-same" class="section level2" number="9.3">
 <h2 number="9.3"><span class="header-section-number">9.3</span> Checking if Two Lists are the Same</h2>

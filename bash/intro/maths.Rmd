@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Introduction to Bash:</font><br>Maths and Arithmetic'
+title: '<font size="5">Introduction to Bash and Z Shell:</font><br>Maths and Arithmetic'
 output:
     html_document:
         theme: paper
@@ -22,7 +22,7 @@ Integer Arithmetic
 expr
 ----
 
-All the usual mathematical operations are possible in Bash using the `expr` (*expression*) command:
+All the usual mathematical operations are possible in Bash/Zsh using the `expr` (*expression*) command:
 
 ```{bash, comment=NA}
 # Addition
@@ -35,7 +35,7 @@ expr 1 \* 2
 expr 2 / 1
 ```
 
-Multiplication needs to have a backslash before the `*`. This is because the asterisk on it's own is a **wildcard** in Bash, ie it means 'everything' as opposed to 'multiplication'. The backslash tells Bash that you want to **escape** that behaviour and treat the asterisk as a multiplication symbol.
+Multiplication needs to have a backslash before the `*`. This is because the asterisk on it's own is a **wildcard** in Bash/Zsh, ie it means 'everything' as opposed to 'multiplication'. The backslash tells Bash/Zsh that you want to **escape** that behaviour and treat the asterisk as a multiplication symbol.
 
 Note also that division poses a problem because fractions aren't something that can be immediately handled:
 
@@ -118,7 +118,7 @@ echo $[++answer]
 
 Floating-Point Arithmetic
 =========================
-You can't do maths with decimal fractions in Bash! At least not out-of-the-box. You have to use a tool called `bc`.
+You can't do maths with decimal fractions in Bash/Zsh! At least not out-of-the-box. You have to use a tool called `bc`.
 
 Pipe to Standard Out
 --------------------
