@@ -1,0 +1,232 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Booleans and If Statements'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+# Booleans
+A [Boolean](https://en.wikipedia.org/wiki/Boolean_data_type) (named after the English mathematician [George Boole](https://en.wikipedia.org/wiki/George_Boole)) is something that is either "true" or "false". In Python, variables can be Booleans:
+
+```{python}
+y = True
+n = False
+```
+
+These words "True" and "False" are not interpreted by Python as strings, they are a different **data type** completely.
+
+> Note that the values "True" and "False" must be typed with capital letters at the start and the rest in lowercase
+
+## Equality
+Another way to create a Boolean object is by testing equality via a **conditional statement**. To do this, use two equal signs: `==`
+
+```{python}
+# Is 1 equal to 1?
+print(1 == 1)
+```
+
+Remember that a SINGLE equals sign is used to **assign** a value to a variable while a DOUBLE equals sign is used to **test for equality**:
+
+```{python}
+# Assign a value of 1 to a
+a = 1
+# Assign a value of 1 to b
+b = 1
+# Does a equal b?
+print(a == b)
+```
+
+This means that you can test equality using `==`, generate a Boolean, then assign this Boolean to a variable using `=`:
+
+```{python}
+# The statement "1 == 1" evaluates to "True" and then we assign that result
+# to the variable "bl"
+bl = 1 == 1
+# Is 1 equal to 1?
+print(bl)
+```
+
+In addition to equality (`==`) you can test if two things are NOT equal using `!=`. In Python, the exclamation mark means 'not':
+
+```{python}
+# Is 1 not equal to 1?
+bl = 1 != 1
+print(bl)
+```
+
+```{python}
+# Is 1 not equal to 2?
+bl = 1 != 2
+print(bl)
+```
+
+## Inequality
+You can use `>` and `<` to test if something is **greater than** or **less than** something else. Use `>=` to test if something is **greater than or equal to** something else and `<=` to test **less than or equal to**:
+
+```{python}
+# Is 1 less than 2?
+print(1 < 2)
+```
+
+```{python}
+# Is attendance below or at capacity?
+attendance = 95
+capacity = 100
+print(attendance <= capacity)
+```
+
+## 'And' and 'Or'
+You can combine conditionals using 'and' and 'or' statements.
+
+An 'and' statement is created by using an ampersand (`&`) between two conditional statements. In order for an 'and' statement to evaluate to `True` both conditionals must be true:
+
+```{python}
+# Is attendance below or at capacity AND
+# has everyone bought a ticket?
+attendance = 95
+capacity = 100
+tickets_sold = 93
+print((attendance <= capacity) & (tickets_sold == attendance))
+```
+
+Notice the use of brackets in the last line. Each conditional statement is enclosed in round brackets or otherwise Python (and possibly the person reading your code too) will get confused.
+
+An 'or' statement is created by using a pipe (`|`) between two conditionals. In order for an 'or' statement to evaluate to `True` either conditional statement can be true:
+
+```{python}
+# Is attendance over capacity OR
+# has someone not bought a ticket?
+attendance = 105
+capacity = 100
+tickets_sold = 105
+print((attendance > capacity) | (tickets_sold != attendance))
+```
+
+Notice that the same question is being asked as in the 'and' statement example, but this time in a different way.
+
+## Strings
+Strings are handled similarly to numbers:
+
+```{python}
+# Do these two people have the same name?
+person1 = 'WINSTON CHURCHILL'
+person2 = 'Winston Churchill'
+print(person1.lower() == person2.lower())
+```
+
+Notice the method `.lower()` that was used above to convert both strings to lowercase before making the comparison. Strings are case sensitive, so if we hadn't used that method the result would have been `False`.
+
+You can also test if a string contains a certain sub-string or character using an 'in' statement:
+
+```{python}
+st = 'Hello World'
+# Is "Hello" in "Hello World"?
+print('Hello' in st)
+```
+
+# If/Else Statements
+
+## If Statements
+An 'if' statement is a chunk of code that will execute **if** a condition is true (and which will **not** execute if the condition is false). In order to write an if statement you need to:
+
+- Use the word "if" (lowercase letters) before the Boolean variable/Boolean statement
+- Follow the Boolean with a colon `:`
+- Put the chunk of code to be executed if the condition is true after the 'if' statement, indented away from the left-hand margin (because whitespace has meaning in Python):
+
+```{python}
+if 1 == 1:
+    print('This text will print to console because 1 is equal to 1')
+```
+
+Note that, while there is no difference between using a Boolean variable (a variable with a value of either `True` or `False`) and using a Boolean statement (a conditional statement that will *evaluate* to either `True` or `False`), one option might make your code more **readable**. Here's an example that tests whether a patient is sick or not:
+
+```{python}
+patient_is_sick = 'Yes'
+# An if statement using a Boolean statement
+if patient_is_sick == 'Yes':
+    print('The patient is sick')
+```
+
+```{python}
+patient_is_sick = True
+# An if statement using a Boolean variable
+if patient_is_sick:
+    print('The patient is sick')
+```
+
+As promised, both examples have the same output, but the second reads in a way that makes more sense: the line `if patient_is_sick:` is slightly clearer for the reader than `if patient_is_sick == 'Yes':`.
+
+## Else Statements
+An 'else' statement is a chunk of code that will execute if the 'if' statement does **not** execute:
+
+```{python}
+height = 170
+if height >= 180:
+    print('This person is tall')
+else:
+    print('This person is not tall')
+```
+
+Note that you again need a colon (after the `else`) and, again, must use whitespace correctly.
+
+## Else-If Statements
+An 'else-if' statement is like a second 'if' statement. It is a chunk of code that will execute if the first 'if' statement does not evaluate to true but the second one does. 'Else-if' is shortened to `elif` in Python:
+
+```{python}
+height = 170
+if height >= 180:
+    print('This person is tall')
+elif (height < 180) & (height >= 160):
+    print('This person is medium height')
+else:
+    print('This person is short')
+```
+
+The brackets around each conditional in the `elif` statement **are** necessary! Any time you have multiple conditional statements you should enclose them with brackets, otherwise Python gets confused. For the sake of demonstration, here's the same example again but without the brackets:
+
+```{python}
+height = 170
+if height >= 180:
+    print('This person is tall')
+elif height < 180 & height >= 160:
+    print('This person is medium height')
+else:
+    print('This person is short')
+```
+
+We got the wrong output because we didn't separate out the conditional statements!
+
+## Using If Statements to Check Your Code
+Imagine you are running some code using a dataset that someone else has given you and which contains some errors. For example, maybe they entered someone's birth year as 1890 instead of 1980 and so you calculate their age as being 131 instead of 41. You can use if statements together with the `raise` statement to sanitise your data and check that these types of errors don't occur:
+
+```{python, eval = FALSE}
+# Imaginary data that is given to you
+current_year = 2021
+birth_year = 1890
+
+# Perform a calculation with the data
+age = current_year - birth_year
+
+# Sanity check your calculation
+if age <= 110:
+    print('This person is not older than 110 years')
+else:
+    raise ValueError('This person is older than 110 years. Are you sure this is correct?')
+```
+
+The above code will cause the script to stop and produce the message:  
+```ValueError: This person is older than 110 years. Are you sure this is correct?```  
+...in other words, it will **raise an error**, specifically a *ValueError,* and stop immediately. This is a lot better than having it run to completion generating incorrect results in the process.
+
+[⇦ Back](../../python.html)
+
+</font>
