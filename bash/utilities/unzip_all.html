@@ -11,7 +11,7 @@
 
 
 
-<title>Bash and Z Shell</title>
+<title>Utilities Written in Bash and Z Shell: Unzip All Files</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -679,32 +679,24 @@ Nf=(new Date).getTime();Zs.bootstrap=Nf;if(a){var z=$i("INIT");}}}
 
 
 
-<h1 class="title toc-ignore">Bash and Z Shell</h1>
+<h1 class="title toc-ignore"><font size="5">Utilities Written in Bash and Z Shell:</font><br>Unzip All Files</h1>
 
 </div>
 
 
 <p><font size="3"></p>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<ol style="list-style-type: decimal">
-<li><a href="bash/intro/myscript.html">Creating and Running a Shell Script</a></li>
-<li><a href="bash/intro/variables.html">Variables and Data Types</a></li>
-<li><a href="bash/intro/maths.html">Maths and Arithmetic</a></li>
-<li><a href="bash/intro/strings.html">Strings</a></li>
-<li><a href="bash/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="bash/intro/arrays_loops.html">Arrays and Loops</a></li>
-<li><a href="bash/intro/functions.html">Functions</a></li>
-<li><a href="bash/intro/passing_arguments.html">Passing Arguments</a></li>
-</ol>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="bash/utilities/unzip_all.html">Unzip All Files</a></li>
-</ol>
+<p><a href="../../bash.html">⇦ Back</a></p>
+<p>Unzip all “.zip” files in the current folder:</p>
+<pre class="bash"><code># For each file and folder in the directory
+for d in * ; do
+    # If the file ends in &quot;.zip&quot;
+    if [ ${d: -4} == &quot;.zip&quot; ]; then
+        # -o Overwrite: allow the function to overwrite existing files and folders
+        unzip -o &quot;$d&quot;
+    fi
+done</code></pre>
+<p><a href="../../bash.html">⇦ Back</a></p>
 <p></font></p>
-</div>
 
 
 

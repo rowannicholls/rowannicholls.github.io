@@ -1,0 +1,32 @@
+---
+title: '<font size="5">Utilities Written in Bash and Z Shell:</font><br>Unzip All Files'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../bash.html)
+
+Unzip all ".zip" files in the current folder:
+
+```{bash, eval = FALSE}
+# For each file and folder in the directory
+for d in * ; do
+    # If the file ends in ".zip"
+    if [ ${d: -4} == ".zip" ]; then
+        # -o Overwrite: allow the function to overwrite existing files and folders
+        unzip -o "$d"
+    fi
+done
+```
+
+[⇦ Back](../../bash.html)
+
+</font>
