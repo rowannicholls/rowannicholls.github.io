@@ -1,0 +1,698 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Loops'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Why Use Loops?
+==============
+As an example, let's look at the "MPG" test dataset. This is one of the sample datasets that comes pre-installed with the Seaborn package; it contains a whole bunch of information related to the performance of motor cars (eg their "MPG" - miles per gallon - ie their fuel economy). You can either:
+
+- Download the Seaborn package from the terminal with `pip install seaborn` then run the following Python code:
+
+```{python, eval = FALSE}
+import seaborn as sns
+
+df = sns.load_dataset('mpg')
+print(df.head().to_latex())
+```
+
+| index |   mpg |  cylinders |  displacement |  horsepower |  weight |  acceleration |  model\_year | origin |                       name |
+|-------|-------|------------|---------------|-------------|---------|---------------|--------------|--------|----------------------------|
+0 |  18.0 |          8 |         307.0 |       130.0 |    3504 |          12.0 |          70 |    usa |  chevrolet chevelle malibu |
+1 |  15.0 |          8 |         350.0 |       165.0 |    3693 |          11.5 |          70 |    usa |          buick skylark 320 |
+2 |  18.0 |          8 |         318.0 |       150.0 |    3436 |          11.0 |          70 |    usa |         plymouth satellite |
+3 |  16.0 |          8 |         304.0 |       150.0 |    3433 |          12.0 |          70 |    usa |              amc rebel sst |
+4 |  17.0 |          8 |         302.0 |       140.0 |    3449 |          10.5 |          70 |    usa |                ford torino |
+
+- ...or you can read the data straight from the internet with Pandas (which can be installed with `pip install pandas`):
+
+```{python, eval = FALSE}
+import pandas as pd
+
+df = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/mpg.csv')
+```
+
+- Thirdly, you could copy the data yourself off the internet (simply go to the URL in the above code snippet), save it onto your local machine as a .csv file and read it into Python with Pandas as you would any other CSV:
+
+```{python, eval = FALSE}
+import pandas as pd
+
+df = pd.read_csv('mpg.csv')
+```
+
+You now have the data in **data frame** format. If you ever have data in this format (or in the **series** format, which is essentially a column of a data frame) you have the ability to perform operations on an entire column in one go. For example, we can convert the weight of the cars in the above dataset (the information stored in the "weight" column) from pounds into kilograms by dividing by 2.205 like this:
+
+```{python, echo = FALSE}
+import seaborn as sns
+import pandas as pd
+
+df = sns.load_dataset('mpg')
+```
+
+```{python}
+# Convert pounds to kilograms
+df['weight'] = df['weight'] / 2.205
+```
+
+The data frame now looks like this:
+
+```{python}
+# Change the number of columns shown
+pd.set_option('display.max_columns', 10)
+# Change the width of the displayed information
+pd.set_option('display.width', 150)
+
+print(df.head())
+```
+
+Notice that we could perform this operation on **all** of the rows in this column in one go. This is useful for simple tasks which can be written in one line - dividing by 2.205, for example - but it gets much more complicated if you want to do multiple things at once (or if you want to do different things depending on the value in question). Thankfully, it is possible to *iterate* through the rows; look at the data row-by-row and decide what to do with each. In other words, **for** each row in the data frame you can perform a set of operations. This is where we need to start looking at '**for-loops**':
+
+For-Loops
+=========
+A 'for-loop' will repeat the same operations a given number of times. You can tell the programme to perform the same action FOR a certain number of repetitions. The syntax is as follows:
+
+```{python}
+for number in range(3, 6):
+    print(number)
+```
+
+Notice how this code (almost) reads like an English sentence: **for** each **number in** the **range** from **3** to (but not including) **6**, **print** that **number**. Each number in the range gets assigned to the variable `number` in turn and used as an input to the `print()` function.
+
+The `range()` function can have up to three inputs (all of which must be whole numbers):
+
+- If you give it **one** input, it will create a range from 0 to (but not including) that number
+- If you give it **two** inputs, it will create a range from the first to (but not including) the second
+- If you give it **three** inputs, it will interpret the third as the *step size,* ie how many numbers to step over when going from one number to the next
+
+```{python}
+for number in range(3):
+    print(number)
+```
+
+```{python}
+for number in range(4, 14, 3):
+    print(number)
+```
+
+```{python}
+for number in range(4, -10, -3):
+    print(number)
+```
+
+Notice that, in the third example above, the step size was negative and the end of the range was a smaller number that the start, hence it counted *down* rather than *up.*
+
+Here's a example of a for-loop in action: a function that calculates the factorial of a number:
+
+```{python}
+def factorial(x):
+    """Return the factorial (x!) of a given number."""
+    # Initialise the answer
+    answer = 1
+    for x in range(1, x + 1):
+        # Multiply the running total by the next number
+        answer = answer * x
+    return answer
+
+
+x = 5
+print(f'{x}! = {factorial(x)}')
+```
+
+Lists
+-----
+For-loops work using lists as well. With this object type they iterate over the *values:*
+
+```{python, eval=FALSE}
+print('MENU:')
+# Loop through the values in a list
+for meal in ['Pizza', 'Pasta', 'Salad']:
+    print(meal)
+```
+
+```
+## MENU:
+## Pizza
+## Pasta
+## Salad
+```
+
+If you instead want to iterate over the *indexes* of a list, you can create a range from the length of the list:
+
+```{python, eval=FALSE}
+print('MENU:')
+# Create a list
+ls = ['Pizza', 'Pasta', 'Salad']
+# Loop the same number of times as there are elements in the list
+for idx in range(len(ls)):
+    print(idx, ls[idx])
+```
+
+```
+## MENU:
+## 0 Pizza
+## 1 Pasta
+## 2 Salad
+```
+
+To do both and iterate over the indexes *and* the values, use the `enumerate()` function. This returns a **tuple** for each element in the list containing that element's index and its value in that order:
+
+```{python, eval=FALSE}
+print('MENU:')
+# Create a list
+ls = ['Pizza', 'Pasta', 'Salad']
+# Iterate over both the indexes and values in a list
+for idx, value in enumerate(ls):
+    print(idx, value)
+```
+
+```
+## MENU:
+## 0 Pizza
+## 1 Pasta
+## 2 Salad
+```
+
+### Conditionals (If-Statements)
+A for-loop can be combined with an if-statement to only execute on certain values from the list:
+
+```{python}
+numbers = [5, 3, 8, 1, 3, 5, 9, 4]
+# Only print the large numbers
+for number in numbers:
+    if number > 7:
+        print(number)
+```
+
+A more efficient way to do this, however, is to use a **list comprehension** (read more about list comprehensions on [this page](../advanced/lists.html)):
+
+```{python}
+numbers = [5, 3, 8, 1, 3, 5, 9, 4]
+# Only print the large numbers
+for number in [v for v in numbers if v > 7]:
+    print(number)
+```
+
+...or even:
+
+```{python, eval=FALSE}
+numbers = [5, 3, 8, 1, 3, 5, 9, 4]
+# Only print the large numbers
+[print(v) for v in numbers if v > 7]
+```
+
+```
+## 8
+## 9
+```
+
+Here's another example of a for-loop with a conditional: a function that censors certain words:
+
+```{python}
+def censor(text, to_censor):
+    """Censor a word."""
+    words = text.split()
+    for i in range(len(words)):
+        if words[i] == to_censor:
+            words[i] = '*' * len(to_censor)
+    return ' '.join(words)
+
+
+print(censor("Frankly, my dear, I don't give a damn", 'damn'))
+```
+
+### Two Lists
+'Zipping' two lists together will allow you to look at both of them at the same time (even if they are not the same length):
+
+```{python}
+list_a = [3, 9, 17, 15, 19]
+list_b = [2, 4, 8, 10, 30, 40, 50, 60, 70, 80, 90]
+for a, b in zip(list_a, list_b):
+    if a > b:
+        print (a)
+    else:
+        print (b)
+```
+
+Strings
+-------
+Strings are treated as *lists of letters:*
+
+```{python}
+# Loop through the letters in a word
+for letter in 'HELLO':
+    print(letter)
+```
+
+Setting the `end` keyword argument in the `print()` function to an empty string causes the letters to print on the same line. This is because it overwrite the default value for `end` which is the newline character (`\n`):
+
+```{python}
+# Loop through the letters in a word
+for letter in 'HELLO':
+    print(letter, end='')
+```
+
+Dictionaries
+------------
+By default, a for-loop will iterate over a dictionary's *keys:*
+
+```{python}
+dct = {'a': 'apple', 'b': 'banana', 'c': 'cat'}
+# Loop through the keys in a dictionary
+for key in dct:
+    # Print the key and the corresponding value
+    print(key, dct[key])
+```
+
+Data Frames
+-----------
+
+### Columns
+When using a data frame (such as the "MPG" data frame from section 1 above), a for-loop will iterate over the *column names:*
+
+```{python}
+# Iterate over the column names
+for col_name in df:
+    print(col_name)
+```
+
+Unlike a list (where `for x in ls` and `for i in range(len(ls))` will cause the code to loop the same number of times), iterating over `range(len(df))` will cause the loop to run once for each *row* in the data frame. To loop once for each column, use `for i in range(len(list(df)))` - this will work because converting a data frame to a list keeps only the column names.
+
+### Rows
+As mentioned above, we can iterate over a range the same length as there are rows in a data frame (we will only use the head of the data frame - ie the first 5 rows - for this example to save space):
+
+```{python}
+# To save space, we're only going to use the head of the data frame (ie the
+# first 5 rows)
+df = df.head()
+
+# Iterate over a range the same length as the number of rows
+for i in range(len(df)):
+    print(i)
+```
+
+Iterating over the rows themselves can be achieved using the `.iterrows()` method which works like the `enumerate()` function did for lists in that it returns both the index and the value:
+
+```{python}
+# Iterate over the rows of a data frame
+for i, row in df.iterrows():
+    print(i, row.tolist())
+```
+
+Statements
+==========
+
+Break
+-----
+The `break` statement will cause Python to **break** out of the loop and continue on with the rest of the script:
+
+```{python, eval = FALSE}
+# Iterate over the range from 0 to 10
+for i in range(11):
+    # Once you get to 5, break out of the loop
+    if i >= 5:
+        break
+    print(i)
+print('The rest of the script will now run')
+```
+
+```
+## 0
+## 1
+## 2
+## 3
+## 4
+## The rest of the script will now run
+```
+
+Continue
+--------
+The `continue` statement will cause Python to skip the rest of the current iteration of the loop and **continue** with the next iteration:
+
+```{python, eval = FALSE}
+# Iterate over the range from 0 to 10
+for i in range(11):
+    # When you have an even number, skip to the next iteration
+    if i % 2 == 0:
+        continue
+    print(i)
+print('The rest of the script will now run')
+```
+
+```
+## 1
+## 3
+## 5
+## 7
+## 9
+## The rest of the script will now run
+```
+
+Pass
+----
+The `pass` statement will cause Python to do nothing! It can be used with for-loops to **pass** over errors without bringing the entire script to a halt:
+
+```{python, eval = FALSE}
+# This list contains 5 numbers and a string
+ls = [0, 1, 2, 3, 'four', 5]
+# Iterate over the elements in the list
+for x in ls:
+    try:
+        # Try to perform division
+        print(x / 2)
+    except TypeError:
+        # If you get an error, do nothing
+        pass
+print('The rest of the script will now run')
+```
+
+```
+## 0.0
+## 0.5
+## 1.0
+## 1.5
+## 2.5
+## The rest of the script will now run
+```
+
+When the code tried to divide 'four' by 2 it created an error (because a string cannot be divided by 2!). However, because the `try` and `except` statements were used, instead of this error stopping the entire script it caused the `pass` statement to execute. In this way, we allowed the script to continue to run despite the error being there.
+
+> The `try` and `except <error_type>` statements can be used together to deal with known or suspected bugs. This is called **error handling** in programming. Note that the `except` statement needs to be given a specific error type in order to work. In the above example, the `except` statement was made to catch errors of the `TypeError` variety (ie when a variable is of the wrong type) which is what gets raised when you try to divide a string instead of a number by 2. An error of a different type would not have been caught.
+
+Alternatively, the `pass` statement can be used to avoid using negative conditions (eg `not in`) which can be confusing. Here's an example of a function that loops over a string and removes any vowels it encounters by using an if-statement to find them:
+
+```{python}
+def remove_vowels(word):
+    """Remove vowels from a given word."""
+    new_word = ''
+    # Iterate through the letters in the word
+    for character in word:
+        if character in 'aeiouAEIOU':
+            # If a vowel is encountered, do nothing
+            pass
+        else:
+            # If not a vowel, add the letter to the word that will be outputted
+            new_word = new_word + character
+    return new_word
+
+
+print(remove_vowels('Hello, World'))
+```
+
+It would have been possible to write this function with just one conditional (ie `if character not in`) but the programme would have lost readability. From a stylistic point of view, it's best to avoid negative conditionals.
+
+Else (For-Else Loops)
+---------------------
+A 'for-else' loop is a combination of a for-loop, an if-statement and an else-statement. The for-loop will run, then the else-statement will run *unless you break out of the for-loop:*
+
+```{python, eval = FALSE}
+import random
+
+# Set the seed so that we get the same random numbers each time
+random.seed(20210830)
+
+print('Lucky Numbers! 3 numbers will be generated.')
+print('If one of them is a "5", you lose!')
+for i in range(3):
+    num = random.randint(1, 6)
+    print(num)
+    if num == 5:
+        print('Sorry, you lose!')
+        break
+else:
+    print('You win!')
+```
+
+```
+## Lucky Numbers! 3 numbers will be generated.
+## If one of them is a "5", you lose!
+## 1
+## 4
+## 1
+## You win!
+```
+
+This functions a bit like a *flag:* if you get a "5", a 'flag' is raised that causes some code to execute but other code to not execute.
+
+Range vs Arange
+===============
+The Numpy package contains a function called `arange()` which, at first glance, appears to be identical to the `range()` function that has been used above:
+
+```{python}
+for x in range(3, 12, 4):
+    print(x)
+```
+
+```{python}
+import numpy as np
+
+for x in np.arange(3, 12, 4):
+    print(x)
+```
+
+The behaviour of `arange()` is equivalent to that of `range()` except:
+
+- `arange()` creates an *array*$^1$ whereas `range()` creates something called a *range object*. The difference is that an array *contains all the numbers* in the given range - ie all the numbers are stored explicitly in memory - while a range object only contains the *information* about the range which it then uses to generate$^2$ each successive number in the sequence on demand.
+- `arange()` can have non-integers as arguments whereas `range()` cannot
+- `arange()` is part of the Numpy library (which needs to be downloaded at some point after you first install Python and which needs to be imported into every script you write which uses `arange()`) whereas `range()` is part of the standard library and so it is immediately available in 'base' Python
+- `arange()` is more efficient for *matrix manipulation* while `range()` is more efficient for *for-loops*
+
+$^1$Specifically, `arange()` creates an `ndarray` object - an n-dimensional array  
+$^2$There are things in Python known as "generators" and `range()` is NOT a generator, but it is similar in that it generates numbers on demand as opposed to creating and storing them all at once like `arange()` does
+
+Both `list(arange())` and `list(range())` will produce a *list* of the numbers in the given sequence. Depending on the context, a list, array or range object might be more appropriate.
+
+Speed Test
+----------
+It was mentioned above that `arange()` is more efficient for *matrix manipulation* while `range()` is more efficient for *for-loops.* We can confirm this by using the "timeit" module to time how quickly code takes to run: firstly, here's a simple for-loop (`for x in range(100): pass`) run 100,000 using that standard library's `range()`:
+
+```{python}
+from timeit import timeit
+
+n = int(1e5)
+t = timeit(stmt='for x in range(100): pass', number=n) / n * 1e6
+print(f'The code ran {n:,} times and took {t:4.2f} microseconds on average')
+```
+
+Now, here is the same loop run 100,000 using Numpy's `arange()`:
+
+```{python}
+t = timeit(
+    stmt='for x in np.arange(100): pass',
+    setup='import numpy as np',
+    number=n
+) / n * 1e6
+print(f'The code ran {n:,} times and took {t:4.2f} microseconds on average')
+```
+
+This confirms that `range()` is quicker for for-loops. Now let's try matrix manipulation: how long does it take to double all the numbers from 0 to 99 using `range()`?
+
+```{python}
+n = int(1e5)
+t = timeit(stmt='[x * 2 for x in range(100)]', number=n) / n * 1e6
+print(f'The code ran {n:,} times and took {t:4.2f} microseconds on average')
+```
+
+...and using `arange()`?
+
+```{python}
+t = timeit(
+    stmt='np.arange(100) * 2',
+    setup='import numpy as np',
+    number=n
+) / n * 1e6
+print(f'The code ran {n:,} times and took {t:4.2f} microseconds on average')
+```
+
+This time, Numpy's `arange()` was faster.
+
+While-Loops
+===========
+A 'while-loop' will continue performing a set of operations until a condition is met. Let's imagine you have a jug that is 1 litre in size and you are pouring 150 ml glasses of water into it. You want to continue doing this as many times as you can without letting the jug overflow. Let's set up the scenario:
+
+```{python}
+water_in_jug = 0
+capacity = 1000
+glass_size = 150
+number_of_pours = 0
+```
+
+You start with 0 ml of water in the jug. The capacity of the jug is 1000 ml. The size of the glass you are pouring in is 150 ml. You start having poured this glass into the jug 0 times. Now start pouring:
+
+```{python, eval = FALSE}
+# This loop will continue to run while the amount of water in the jug is under
+# the capacity
+while water_in_jug < capacity:
+    # Pour a glass
+    water_in_jug = water_in_jug + 150
+    number_of_pours = number_of_pours + 1
+
+print(number_of_pours)
+print(water_in_jug)
+print(water_in_jug > capacity)
+```
+
+```
+## 7
+## 1050
+## True
+```
+
+Whoopsie! You poured 7 glasses worth of water into the jug and caused it to overflow by 50 ml! Think about how you would modify the code in order to stop it from pouring too much. There are a couple of ways to do it, but one option is to tell the loop to run forever and then stop it once it nears capacity:
+
+```{python, eval = FALSE}
+water_in_jug = 0
+capacity = 1000
+glass_size = 150
+number_of_pours = 0
+
+# This loop will continue to run for as long as True is True (ie forever)
+while True:
+    # If the jug is almost at capacity, stop
+    if water_in_jug > capacity - glass_size:
+        break
+    # Pour a glass
+    water_in_jug = water_in_jug + glass_size
+    number_of_pours = number_of_pours + 1
+
+print(number_of_pours)
+print(water_in_jug)
+print(water_in_jug > capacity)
+```
+
+```
+## 6
+## 900
+## False
+```
+
+Hurray! No overflow!
+
+Using a While-Loop as a For-Loop
+--------------------------------
+Let's continue using the above example. Now that we know that 6 pours is the most we can perform before the jug overflows, we could use a for-loop and set it to run exactly six times:
+
+```{python, eval = FALSE}
+for i in range(6):
+    # Pour a glass
+    number_of_pours = i + 1
+    water_in_jug = number_of_pours * glass_size
+
+print(number_of_pours)
+print(water_in_jug)
+print(water_in_jug > capacity)
+```
+
+```
+## 6
+## 900
+## False
+```
+
+However, we could also use a while-loop and set it to run exactly six times:
+
+```{python, eval = FALSE}
+water_in_jug = 0
+capacity = 1000
+glass_size = 150
+number_of_pours = 0
+
+while number_of_pours < 6:
+    # Pour a glass
+    water_in_jug = water_in_jug + glass_size
+    number_of_pours += 1
+
+print(number_of_pours)
+print(water_in_jug)
+print(water_in_jug > capacity)
+```
+
+```
+## 6
+## 900
+## False
+```
+
+Note that in the above example we used `number_of_pours += 1`. This is shorthand for `number_of_pours = number_of_pours + 1`.
+
+The opposite (using a for-loop as a while-loop) is possible in the sense that we can make a for-loop run a large number of times and have it break out when a condition is met:
+
+```{python, eval = FALSE}
+water_in_jug = 0
+capacity = 1000
+glass_size = 150
+number_of_pours = 0
+
+for pours in range(100):
+    # Pour a glass
+    water_in_jug = pours * glass_size
+    number_of_pours = pours
+    # Check if you are nearing capacity
+    if water_in_jug + glass_size > capacity:
+        break
+
+print(number_of_pours)
+print(water_in_jug)
+print(water_in_jug > capacity)
+```
+
+```
+## 6
+## 900
+## False
+```
+
+Note that the fact that the `break` statement has been put at the end of the loop means that the 'pour a glass' code will run even on the last iteration. If you instead put the break statement at the start, on the last iteration it will *not* run.
+
+While-Else Loops
+----------------
+A 'while-else' loop is a combination of a while-loop, an if-statement and an else-statement. The while-loop will run, then the else-statement will run *unless you break out of the while-loop:*
+
+```{python, eval = FALSE}
+import random
+
+# Set the seed so that we get the same random numbers each time
+random.seed(20210830)
+
+print('Lucky Numbers! 3 numbers will be generated.')
+print('If one of them is a "5", you lose!')
+count = 0
+while count < 3:
+    num = random.randint(1, 6)
+    print(num)
+    if num == 5:
+        print('Sorry, you lose!')
+        break
+    count += 1
+else:
+    print('You win!')
+```
+
+```
+## Lucky Numbers! 3 numbers will be generated.
+## If one of them is a "5", you lose!
+## 1
+## 4
+## 1
+## You win!
+```
+
+Summary
+=======
+- Loops can be used to do the __same thing multiple times__
+- There are __for-loops__ which repeat the same thing a set number of times
+- There are also __while-loops__ which repeat the same thing until a condition is met
+
+[⇦ Back](../../python.html)
+
+</font>

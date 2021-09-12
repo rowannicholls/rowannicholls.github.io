@@ -1,19 +1,20 @@
-"""
+u"""
 Produce meta information about the computer and Python.
 
 Works on:
-┌────────────┬────────────────┬───────────────┬────────────────────────────┐
-│ DATE       │ OS             │ VERSION       │ LOCATION                   │
-├────────────┼────────────────┼───────────────┼────────────────────────────┤
-│ 2019-04-28 │ Ubuntu 18.04   │ Python 2.7.15 │ /usr/bin/python            │
-│ 2019-05-14 │ macOS Sierra   │ Python 3.6.6  │ .../miniconda3/bin/python  │
-│ 2019-04-28 │ Ubuntu 18.04   │ Python 3.6.7  │ /usr/bin/python3           │
-│ 2019-07-23 │ macOS Sierra   │ Python 3.6.8  │ .../miniconda3/bin/python3 │
-│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.6.9  │ /usr/bin/python3.6         │
-│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.8.0  │ /usr/bin/python3           │
-│ 2020-06-07 │ macOS Catalina │ Python 3.8.2  │ ...rsions/3.8.2/bin/python │
-│ 2020-09-06 │ Ubuntu 20.04   │ Python 3.8.2  │ /usr/bin/python3           │
-└────────────┴────────────────┴───────────────┴────────────────────────────┘
+┌────────────┬────────────────┬───────────────┬─────────────────────────────┐
+│ DATE       │ OS             │ VERSION       │ LOCATION                    │
+├────────────┼────────────────┼───────────────┼─────────────────────────────┤
+│ 2019-04-28 │ Ubuntu 18.04   │ Python 2.7.15 │ /usr/bin/python             │
+│ 2019-05-14 │ macOS Sierra   │ Python 3.6.6  │ .../miniconda3/bin/python   │
+│ 2019-04-28 │ Ubuntu 18.04   │ Python 3.6.7  │ /usr/bin/python3            │
+│ 2019-07-23 │ macOS Sierra   │ Python 3.6.8  │ .../miniconda3/bin/python3  │
+│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.6.9  │ /usr/bin/python3.6          │
+│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.8.0  │ /usr/bin/python3            │
+│ 2020-06-07 │ macOS Catalina │ Python 3.8.2  │ ...rsions/3.8.2/bin/python  │
+│ 2020-09-06 │ Ubuntu 20.04   │ Python 3.8.2  │ /usr/bin/python3            │
+│ 2021-08-31 │ macOS Big Sur  │ Python 3.9.6  │ ...rsions/3.9/bin/python3.9 │
+└────────────┴────────────────┴───────────────┴─────────────────────────────┘
 """
 import distro
 import os
@@ -49,7 +50,7 @@ elif platform.system() == 'Darwin':
         '10.13': 'High Sierra',
         '10.14': 'Mojave',
         '10.15': 'Catalina',
-        '11': 'Big Sur',
+        '10.16': 'Big Sur',
     }
     OS = macOS_vers[platform.mac_ver()[0][:5]]
     print(f'Its OS is macOS {OS}')
@@ -72,18 +73,18 @@ for requirement in freeze(local_only=True):
 # Specific stuff
 print('\n\n')
 if platform.system() == 'Linux':
-    print('\nWORKS ON:')
+    print('\nWorks on:')
     print('┌────────────┬────────────────┬───────────────┬──────────────────┐')
     print(f'│ {today:10} │ {OS} {version}   │ Python {py:6} │ {path:16} │')
     print('└────────────┴────────────────┴───────────────┴──────────────────┘')
 elif platform.system() == 'Darwin':
     print(f'Running with Python {py} on {name}, a macOS {OS} machine, ' +
           f'by user {user}')
-    print('\nWORKS ON:')
+    print('\nWorks on:')
     if len(sys.executable) > 28:
-        path = '...' + sys.executable[-28:]
+        path = '...' + sys.executable[-24:]
     else:
         path = sys.executable
-    print('┌────────────┬────────────────┬───────────────┬──────────────────┐')
-    print(f'│ {today} │ macOS {OS} │ Python {py}  │ {path} │')
-    print('└────────────┴────────────────┴───────────────┴──────────────────┘')
+    print('┌────────────┬────────────────┬───────────────┬' + '─' * 29 + '┐')
+    print(f'│ {today} │ macOS {OS:8} │ Python {py}  │ {path:24} │')
+    print('└────────────┴────────────────┴───────────────┴' + '─' * 29 + '┘')
