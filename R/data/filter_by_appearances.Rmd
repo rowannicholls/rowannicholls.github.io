@@ -1,0 +1,54 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Filter by Number of Times a Values Appears'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+If you are running an experiment with multiple timepoints and you want to **select only the paired samples** - ie the ones that have been tested twice - you need to filter by the number of times a values appears. Take the following example data:
+
+```{r}
+df <- data.frame(
+    id = c(
+        "101-0001", "101-0001", "101-0002", "101-0002", "101-0003", "101-0004",
+        "101-0005"
+    ),
+    timepoint = c("A", "B", "A", "B", "A", "A", "A")
+)
+print(df)
+```
+
+We can see that participants "101-0001" and "101-0002" have been tested at two timepoints each. To select only them, you can group by `id` then file for those that appear twice using dplyr:
+
+```{r}
+library(dplyr, warn.conflicts = FALSE)
+
+df %>%
+    group_by(id) %>%
+    filter(n() == 2) -> subset
+
+print(subset)
+```
+
+...or, using only Base R, you can split the data frame `by` factors and count the number of rows for each factor using `nrow`. Then, search for factors that appear twice and filter by that search result:
+
+```{r}
+res <- by(df, df$id, nrow)
+res <- res == 2
+subset <- df[df$id %in% names(which(res)), ]
+
+print(subset)
+```
+
+[⇦ Back](../../R.html)
+
+</font>

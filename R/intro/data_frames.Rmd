@@ -372,6 +372,15 @@ df <- spotify[colnames(spotify) == "Streams_Millions"]
 print(df)
 ```
 
+Filter for *multiple values* that are listed in a vector using the `%in%` operator:
+
+```{r}
+# Return all rows that match the given stream counts
+streams <- c(1851, 1734, 1495)
+df <- spotify[df$Streams_Millions %in% streams, ]
+print(df)
+```
+
 ### Filter Using `subset()`
 You can filter out rows that do not meet a single condition, eg if I am only interested in Ed Sheeran (which I am <3):
 

@@ -11,7 +11,7 @@
 
 
 
-<title>R</title>
+<title>Data Handling in R: Filter by Number of Times a Values Appears</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -475,7 +475,7 @@ function e(n){return function(p){yd(64);return n(p)}}var f=[];if("https:"===B.lo
 d){b({yc:c,vj:d})})})}catch(b){}},we=function(a){return-1!==["email","phone_number","first_name","last_name","street"].indexOf(a)};var Oe=function(){this.eventModel={};this.targetConfig={};this.containerConfig={};this.remoteConfig={};this.globalConfig={};this.onSuccess=function(){};this.onFailure=function(){};this.setContainerTypeLoaded=function(){};this.getContainerTypeLoaded=function(){};this.eventId=void 0;this.isGtmEvent=!1},Pe=function(a){var b=new Oe;b.eventModel=a;return b},Qe=function(a,b){a.targetConfig=b;return a},Re=function(a,b){a.containerConfig=b;return a},Se=function(a,b){a.remoteConfig=b;return a},Te=function(a,
 b){a.globalConfig=b;return a},Ue=function(a,b){a.onSuccess=b;return a},Ve=function(a,b){a.setContainerTypeLoaded=b;return a},We=function(a,b){a.getContainerTypeLoaded=b;return a},Xe=function(a,b){a.onFailure=b;return a};
 Oe.prototype.getWithConfig=function(a){if(void 0!==this.eventModel[a])return this.eventModel[a];if(void 0!==this.targetConfig[a])return this.targetConfig[a];if(void 0!==this.containerConfig[a])return this.containerConfig[a];if(void 0!==this.remoteConfig[a])return this.remoteConfig[a];if(void 0!==this.globalConfig[a])return this.globalConfig[a]};
-var Ye=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ze=function(a,b,c){function d(g){$b(g)&&Ea(g,function(k,m){f=!0;e[k]=m})}var e={},f=!1;c&&1!==c||(d(a.globalConfig[b]),d(a.remoteConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var $e={},R=null,af=Math.random();$e.M="UA-156468188-1";$e.cd="9m0";$e.Kg="ChAI8KirigYQkuyGoeWjvNRLEicA71sSZ+euq/1AIk7cSlsM81a3J7AKry4I+Fq4RF/rP3dAiJqmsF8aAm5N";var bf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},cf={__paused:!0,__tg:!0},df;for(df in bf)bf.hasOwnProperty(df)&&(cf[df]=!0);var ef="www.googletagmanager.com/gtm.js";
+var Ye=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ze=function(a,b,c){function d(g){$b(g)&&Ea(g,function(k,m){f=!0;e[k]=m})}var e={},f=!1;c&&1!==c||(d(a.globalConfig[b]),d(a.remoteConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var $e={},R=null,af=Math.random();$e.M="UA-156468188-1";$e.cd="9m0";$e.Kg="ChAI8KirigYQkuyGoeWjvNRLEicA71sSZ7fdvoynd7by0/TWjA0IX6O/o/b+pF0HFCKZWTxHMr5SV9YaAilD";var bf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},cf={__paused:!0,__tg:!0},df;for(df in bf)bf.hasOwnProperty(df)&&(cf[df]=!0);var ef="www.googletagmanager.com/gtm.js";
 ef="www.googletagmanager.com/gtag/js";var ff=ef,gf=La(""),hf=null,jf=null,kf="https://www.googletagmanager.com/a?id="+$e.M+"&cv=1",lf={},mf={},nf=function(){var a=R.sequence||1;R.sequence=a+1;return a};$e.Jg="";var of="";
 $e.Lb=of;var pf={},qf=new Aa,rf={},sf={},vf={name:"dataLayer",set:function(a,b){N(Va(a,b),rf);tf()},get:function(a){return uf(a,2)},reset:function(){qf=new Aa;rf={};tf()}},uf=function(a,b){return 2!=b?qf.get(a):wf(a)},wf=function(a){var b,c=a.split(".");b=b||[];for(var d=rf,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==wa(b,d))return}return d},xf=function(a,b){sf.hasOwnProperty(a)||(qf.set(a,b),N(Va(a,b),rf),tf())},tf=function(a){Ea(sf,function(b,c){qf.set(b,c);N(Va(b,
 void 0),rf);N(Va(b,c),rf);a&&delete sf[b]})},zf=function(a,b,c){pf[a]=pf[a]||{};pf[a][b]=yf(b,c)},yf=function(a,b){var c,d=1!==(void 0===b?2:b)?wf(a):qf.get(a);"array"===Tb(d)||"object"===Tb(d)?c=N(d):c=d;return c},Af=function(a,b){if(pf[a])return pf[a][b]},Bf=function(a,b){pf[a]&&delete pf[a][b]};var Cf,Df=!1,Ef=function(a){if(!Df){Df=!0;Cf=Cf||{}}return Cf[a]};var Ff=function(a){if(G.hidden)return!0;var b=a.getBoundingClientRect();if(b.top==b.bottom||b.left==b.right||!B.getComputedStyle)return!0;var c=B.getComputedStyle(a,null);if("hidden"===c.visibility)return!0;for(var d=a,e=c;d;){if("none"===e.display)return!0;var f=e.opacity,g=e.filter;if(g){var k=g.indexOf("opacity(");0<=k&&(g=g.substring(k+8,g.indexOf(")",k)),"%"==g.charAt(g.length-1)&&(g=g.substring(0,g.length-1)),f=Math.min(g,f))}if(void 0!==f&&0>=f)return!0;(d=d.parentElement)&&(e=B.getComputedStyle(d,
@@ -674,110 +674,59 @@ p.data.containerProduct="OGT";$e.Jg&&(p.data.initialPublish=!0);n.push(p)},g="x"
 
 
 
-<h1 class="title toc-ignore">R</h1>
+<h1 class="title toc-ignore"><font size="5">Data Handling in R:</font><br>Filter by Number of Times a Values Appears</h1>
 
 </div>
 
 
 <p><font size="3"></p>
-<div id="introduction-to-r" class="section level2">
-<h2>Introduction to R</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/intro/r_rstudio.html">R and RStudio</a></li>
-<li><a href="R/intro/data_types.html">Comments, Variables and Data Types</a></li>
-<li><a href="R/intro/packages.html">Packages and Libraries</a></li>
-<li><a href="R/intro/maths.html">Maths and Numbers</a></li>
-<li><a href="R/intro/strings.html">Strings and Characters</a></li>
-<li><a href="R/intro/vectors.html">Vectors</a></li>
-<li><a href="R/intro/named_vectors_lists.html">Named Vectors and Lists (aka Dictionaries)</a></li>
-<li><a href="R/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="R/intro/data_frames.html">Data Frames</a></li>
-<li><a href="R/intro/loops.html">For and While Loops</a></li>
-<li><a href="R/intro/functions.html">Functions</a></li>
-<li><a href="R/intro/exceptions.html">Exception Handling</a></li>
-<li><a href="R/intro/linting.html">Linting</a></li>
-<li><a href="R/intro/python_in_r.html">Python in R</a></li>
-</ol>
-</div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/data/pre_loaded_datasets.html">Pre-Loaded Datasets</a></li>
-<li><a href="R/data/create_unique_identifiers.html">Create Unique Identifiers</a></li>
-<li><a href="R/data/stratification.html">Data Stratification</a></li>
-<li><a href="R/data/filter_by_appearances.html">Filter by Number of Times a Values Appears</a></li>
-<li><a href="R/data/descriptive_summary_statistics.html">Descriptive and Summary Statistics</a></li>
-<li><a href="R/data/pivot_tables.html">Pivot Tables</a></li>
-<li><a href="R/data/demographic_tables.html">Demographic Data Tables</a></li>
-<li><a href="R/data/merging.html">Merging</a></li>
-<li><a href="R/data/create_export_import.html">File IO: Create, Export and Import Data</a></li>
-<li><a href="R/data/filling_in_missing_data.html">Filling in Missing Data</a></li>
-<li><a href="R/data/working_with_json.html">Working with JSON Files</a></li>
-</ol>
-</div>
-<div id="graphs" class="section level2">
-<h2>Graphs</h2>
-<ol style="list-style-type: decimal">
-<li>Using Base R
-<ul>
-<li><a href="R/graphs/base/symbols_linetypes_colours.html">Symbols, Line Types and Colours</a></li>
-<li><a href="R/graphs/base/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/base/scatterplots.html">Scatter Plots</a></li>
-<li><a href="R/graphs/base/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/base/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/base/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/base/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/base/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/base/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Using ggplot2
-<ul>
-<li><a href="R/graphs/ggplot2/cheat_sheet.html">Cheat Sheet</a></li>
-<li><a href="R/graphs/ggplot2/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/ggplot2/scatterplots.html">Scatter Plots</a></li>
-<li><a href="R/graphs/ggplot2/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/ggplot2/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/ggplot2/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/ggplot2/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/ggplot2/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/ggplot2/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/statistics/descriptive_statistics.html">Descriptive Statistics</a></li>
-<li><a href="R/statistics/tutorial.html">Diagnostic Accuracy Tutorial</a> (<a href="R/statistics/tutorial_completescript.R">complete</a>, <a href="R/statistics/tutorial_emptyscript.R">empty</a>)</li>
-<li><a href="R/statistics/principal_component_analysis.html">Principal Component Analysis</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="R/statistics/hypothesis_testing/kruskal_wallis.html">Kruskal-Wallis Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/friedman.html">Friedman Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="R/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="R/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="R/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="R/statistics/agreement/coefficient_of_variation.html">Coefficient of Variation</a></li>
-</ul></li>
-</ol>
+<p><a href="../../R.html">⇦ Back</a></p>
+<p>If you are running an experiment with multiple timepoints and you want to <strong>select only the paired samples</strong> - ie the ones that have been tested twice - you need to filter by the number of times a values appears. Take the following example data:</p>
+<pre class="r"><code>df &lt;- data.frame(
+    id = c(
+        &quot;101-0001&quot;, &quot;101-0001&quot;, &quot;101-0002&quot;, &quot;101-0002&quot;, &quot;101-0003&quot;, &quot;101-0004&quot;,
+        &quot;101-0005&quot;
+    ),
+    timepoint = c(&quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;B&quot;, &quot;A&quot;, &quot;A&quot;, &quot;A&quot;)
+)
+print(df)</code></pre>
+<pre><code>##         id timepoint
+## 1 101-0001         A
+## 2 101-0001         B
+## 3 101-0002         A
+## 4 101-0002         B
+## 5 101-0003         A
+## 6 101-0004         A
+## 7 101-0005         A</code></pre>
+<p>We can see that participants “101-0001” and “101-0002” have been tested at two timepoints each. To select only them, you can group by <code>id</code> then file for those that appear twice using dplyr:</p>
+<pre class="r"><code>library(dplyr, warn.conflicts = FALSE)
+
+df %&gt;%
+    group_by(id) %&gt;%
+    filter(n() == 2) -&gt; subset
+
+print(subset)</code></pre>
+<pre><code>## # A tibble: 4 x 2
+## # Groups:   id [2]
+##   id       timepoint
+##   &lt;chr&gt;    &lt;chr&gt;    
+## 1 101-0001 A        
+## 2 101-0001 B        
+## 3 101-0002 A        
+## 4 101-0002 B</code></pre>
+<p>…or, using only Base R, you can split the data frame <code>by</code> factors and count the number of rows for each factor using <code>nrow</code>. Then, search for factors that appear twice and filter by that search result:</p>
+<pre class="r"><code>res &lt;- by(df, df$id, nrow)
+res &lt;- res == 2
+subset &lt;- df[df$id %in% names(which(res)), ]
+
+print(subset)</code></pre>
+<pre><code>##         id timepoint
+## 1 101-0001         A
+## 2 101-0001         B
+## 3 101-0002         A
+## 4 101-0002         B</code></pre>
+<p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
-</div>
 
 
 
