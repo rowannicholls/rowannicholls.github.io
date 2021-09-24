@@ -1,0 +1,578 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Functions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+A **function** is a piece of code that can be used (and re-used) whenever and as many times as you like. It has *inputs* and *outputs*. To use a function, you need to type its name immediately followed by round brackets containing the input(s) you are giving it. If you are giving it more than one input, you need to separate them with commas.
+
+Built-In Functions
+==================
+Python comes with many *built-in functions* that are already available and which can be used immediately, for example: `print()`
+
+```{python}
+print('Hello, World!')
+```
+
+The `print()` function takes an input (in this example the input is the text 'Hello, World!') and returns an output (namely, the same text it was given). So this isn't a very interesting function because it doesn't make any changes to its input, but it's nonetheless a very useful one. Another built-in function is `round()` which, by default, rounds a number off to the nearest whole number. We then need to use the `print()` function to see the result:
+
+```{python}
+print(round(123.456))
+```
+
+Alternatively, we could have *assigned* the output to a *variable* and printed that instead:
+
+```{python}
+result = round(123.456)
+print(result)
+```
+
+With the `round()` function, although the default behaviour is to round-off to a whole number you actually also have the option of rounding-off to a given number of decimal places:
+
+```{python}
+print(round(123.456, 2))
+```
+
+In this example the `round()` function needed to be given two things: the value to round-off and the number of decimal places to round-off to. These 'things' are called *arguments* - the proper name for the inputs of a function.
+
+> The inputs of a function are called **arguments** (or **parameters**) and the outputs are called **returns**. When you use a function it's known as **calling** it.
+
+Functions from Packages
+=======================
+The built-in functions that automatically come with Python form what is known as the 'standard library', ie the library of functions that are available to you as standard. However, there are thousands of Python **packages** that can be downloaded and installed which contain many of their own functions. Let's take a look at the **Numpy** package (which contains many mathematical and scientific functions) as an example:
+
+- Download and install Numpy from your computer's terminal with `pythonx.y -m pip install numpy` where `x.y` is the version of Python you have installed
+    - If you don't know what version of Python you have installed, run `python --version` on your terminal. If this returns a version number that starts with a 2, it means that Python version 2 is your default version. However, chances are that you also have version 3 installed, so run `python3 --version` to see if that works and use that version number instead.
+        - In general, you should always use Python 3 because Python 2 is significantly different and is no longer supported
+        - For example, if `python --version` returns `Python 2.7.18` then you should run `python3 --version`. If this returns `Python 3.9.5` then it means you have Python 3.9 installed and should use `python3.9 -m pip install numpy` to install Numpy.
+    - `pip` is the name of the **p**ackage **i**nstaller for **P**ython. It's the main programme for downloading and installing Python packages.
+    - The `-m` flag tells Python to run the pip **m**odule
+    - The `install numpy` instruction then tells pip what to do
+    - In addition to `pythonx.y -m pip install numpy`, using `pip install numpy` might also work for the task of downloading and installing Numpy. However, it's more difficult to control which version of Python (and which version of pip) you are using with this method, so it's not recommended.
+- Once you have Numpy, you need to import it into your Python script before you can use it. There are three ways to do this but start with `import numpy`
+- Now you can use Numpy's functions! For example, `log()` which returns the natural logarithm of a number:
+
+```{python}
+import numpy
+
+result = numpy.log(2.71828)
+
+print(result)
+```
+
+As mentioned, there are 3 ways to import a package. This first way (`import numpy`) means that you have to use the word `numpy` every time you want to use one of Numpy's functions. This can get cumbersome, so option number 2 is to import this function specifically:
+
+```{python}
+from numpy import log
+
+result = log(2.71828)
+
+print(result)
+```
+
+You can simplify things further by using `from numpy import *` which imports ALL of Numpy's functions such that you don't need to precede them with `numpy` in order to use them.
+
+HOWEVER, using these options means that you lose information in your code: someone reading your work might not recognise where you got this `log()` function from and so they might get confused. As a result, the recommended method of importing a package like Numpy is `import numpy as np`:
+
+```{python}
+import numpy as np
+
+result = np.log(2.71828)
+
+print(result)
+```
+
+This is the Goldilocks solution: you only need to precede a Numpy function with `np` in order to use it as opposed to `numpy` - which de-clutters your code - but you don't lose the detail of where the function came from.
+
+Here's another example using the Pandas (**pan**el **da**ta) package:
+
+- Install it from the terminal:
+
+```{bash, eval = FALSE}
+python3.9 -m pip install pandas
+```
+
+- Import it and use it to convert a list into a series (a column of a spreadsheet):
+
+```{python}
+import pandas as pd
+
+ser = pd.Series([1, 3, 5, 7, 9])
+
+print(ser)
+```
+
+You can see all of the functions (and methods, which are slightly different) included in a module by using the built-in `dir()` function:
+
+```{python}
+import math
+
+print(dir(math))
+```
+
+Custom Functions
+================
+You can create your own function by:
+
+- Using the `def` statement to indicate that you are **def**ining something
+- Giving it a name
+- Listing the inputs your function requires inside round brackets
+- Following the closing bracket with a colon
+- Including the code the function must run as an indented block
+
+Here's one that takes a number, raises it to a power and tells you the answer:
+
+```{python}
+def power(base, exponent):
+    result = base**exponent
+    print(f'{base} to the power of {exponent} is {result}')
+```
+
+This function can now be called as many times as you want, whenever you need it:
+
+```{python}
+power(37, 4)
+power(18, 2)
+power(5, 7)
+```
+
+Optionally, you can finish the function with the `return` statement to indicate what the output will be. This output will then be *returned* and you will have to assign it to a variable in order to use it. The following example takes a number and rounds it to a given number of significant figures (ie reduces the total number of digits to the number indicated) before returning it. After it's returned it needs to be assigned to a variable and printed outside of the function itself:
+
+```{python}
+def sigfigs(number, num_sig_figs):
+    """Round a number of to a given number of significant figures."""
+    # Get the order of magnitude of the number
+    magnitude = np.floor(np.log10(number)) + 1
+    # Move the decimal point to the right
+    std_form = number * 10**(num_sig_figs - magnitude)
+    # Round off in the usual way
+    rounded = np.round(std_form)
+    # Return to the original order of magnitude
+    output = rounded / 10**(num_sig_figs - magnitude)
+    # Remove trailing zero if one exists
+    if output.is_integer():
+        output = int(output)
+    # Convert to a string
+    output = str(output)
+
+    return output
+
+
+rounded1 = sigfigs(1.2345, 4)
+rounded2 = sigfigs(12.345, 4)
+rounded3 = sigfigs(123.45, 4)
+rounded4 = sigfigs(1234.5, 4)
+rounded5 = sigfigs(12345, 4)
+
+print(rounded1, rounded2, rounded3, rounded4, rounded5)
+```
+
+> You might have expected the final digit of the answers to be 5 (ie 1.2345 to be rounded off to 1.235 instead of 1.234, etc). This is not a mistake; Numpy's `round()` function rounds 5 to the nearest *even* number, as opposed to rounding up.
+
+Multiple Returns
+----------------
+Functions can have multiple values returned at the same time. List them after the `return` statement and they will be returned as a tuple. This returned tuple can then be assigned to multiple variables via *tuple unpacking*:
+
+```{python}
+def f(x):
+    """Return a tuple of the square, cube and square root of a number."""
+    square = x**2
+    cube = x**3
+    square_root = x**(1 / 2)
+
+    return square, cube, square_root
+
+
+# Find the square, cube and square root of 9 and use tuple unpacking to assign
+# each to its own variable
+s, c, sr = f(9)
+print(s, c, sr)
+```
+
+Conventions
+-----------
+When writing functions there are a few conventions that are usually followed:
+
+- The first line of a function should be a **docstring**: text inside a pair of triple quotation marks that describes what the function does
+    - This docstring should start with a capital letter, end with a fullstop and be in the imperative mood (eg "Round a number" instead of "A number is rounded")
+- There should be two empty lines before and after the function definition
+- The function name should be entirely lowercase with underscores separating words if needed (eg "sigfigs" or "sig_figs", not "SigFigs" or otherwise)
+
+Parameter Types
+===============
+
+Required, Positional Arguments
+------------------------------
+In the `sigfigs` example used above, both parameters (`number` and `num_sig_figs`) are **required**. If one is left out when the function is called it causes an error:
+
+```{python, eval = FALSE}
+rounded = sigfigs(1.2345)
+```
+
+```
+TypeError: sigfigs() missing 1 required positional argument: 'num_sig_figs'
+```
+
+Additionally, both arguments are **positional**: the first one is assigned to the variable `number` and the second is assigned to `num_sig_figs`.
+
+Variable Length Positional Arguments
+------------------------------------
+Some functions can have any number of positional inputs, for example `print()` can print one or many strings:
+
+```{python}
+# Print one string
+print('Hello World from Python')
+```
+
+```{python}
+# Print four strings
+print('Hello', 'World', 'from', 'Python')
+```
+
+These are indicated by using one asterisk when defining the function - eg `def function_name(*args):` - to tell Python that the first inputs to a function are all assigned to `args`.
+
+```{python}
+def details(*args):
+    """Return the details of a set of numbers."""
+    print(f'Maximum: {max(args)}')
+    print(f'Minimum: {min(args)}')
+    print(f'Magnitude of the min: {abs(min(args))}')
+    print(f'Type of object: {type(args)}')
+
+
+details(-10, -5, 5, 10)
+```
+
+Optional, Keyword Arguments
+---------------------------
+The third main type of arguments are **optional, keyword arguments** (kwargs). These have a *default value* which means that you can omit them when you call the function and it won't matter because the code will just use the default value. Here is the same example that was used previously except `num_sig_figs` is now an optional keyword argument with a default value of 4:
+
+```{python}
+def sigfigs(number, num_sig_figs=4):
+    """Round a number of to a given number of significant figures."""
+    # Get the order of magnitude of the number
+    magnitude = np.floor(np.log10(number)) + 1
+    # Move the decimal point to the right
+    std_form = number * 10**(num_sig_figs - magnitude)
+    # Round off in the usual way
+    rounded = np.round(std_form)
+    # Return to the original order of magnitude
+    output = rounded / 10**(num_sig_figs - magnitude)
+    # Remove trailing zero if one exists
+    if output.is_integer():
+        output = int(output)
+    # Convert to a string
+    output = str(output)
+
+    return output
+
+
+# Call the function without specifying num_sig_figs (ie the default value will
+# be used)
+rounded = sigfigs(1.2345)
+
+print(rounded)
+```
+
+You can also call the function explicitly indicating which of your inputs is the optional keyword argument by using the keyword (ie call it by its 'name'):
+
+```{python}
+# Call the function explicitly indicating num_sig_figs
+rounded = sigfigs(1.2345, num_sig_figs=3)
+
+print(rounded)
+```
+
+Keyword arguments allow you to have multiple options that customise how a function works. For example, the `print()` function has 4 keyword arguments, two of which are:
+
+- `sep` which determines the character(s) that **sep**arate multiple outputs (default: a blank space)
+- `end` which determines the character(s) that **end** an output (default: a new line)
+
+Here's how to use these:
+
+```{python, eval = FALSE}
+# The default behaviour
+print('Hello', 'World')
+print('from', 'Python')
+```
+
+```
+## Hello World
+## from Python
+```
+
+```{python, eval = FALSE}
+# Change the separation between outputs from a space to a tab character
+print('Hello', 'World', sep='\t')
+print('from', 'Python', sep='\t')
+```
+
+```
+## Hello    World
+## from     Python
+```
+
+```{python, eval = FALSE}
+# Change the end from a newline to a space
+print('Hello', 'World', end=' ')
+print('from', 'Python')
+```
+
+```
+## Hello World from Python
+```
+
+```{python}
+# It doesn't matter in what order keyword arguments appear
+print('Hello', 'World', 'from', 'Python', end=' ', sep='\t')
+```
+
+Variable Length Keyword Arguments
+---------------------------------
+Similar to variable length positional arguments, multiple inputs can be assigned to keyword arguments. This is done by using two asterisks in the function definition - eg `def function_name(**kwargs):` - after which the arguments and their names are available as the values and keys of a dictionary object:
+
+```{python}
+def my_function(**kwargs):
+    """Print keywords and their values."""
+    for key, value in kwargs.items():
+        print(f'{key} = {value}')
+
+
+my_function(first='Hello', second='World', third='from', fourth='Python')
+```
+
+Using Multiple Argument Types
+-----------------------------
+Let's say that you have a database of the forecasted weather conditions for various cities:
+
+```{python}
+five_day_forecast = {
+    'Oxford': {
+        'Temperature': [21, 22, 23, 23, 25],
+        'Conditions': ['Rainy', 'Clear', 'Overcast', 'Fog', 'Clear']
+    },
+    'Cambridge': {
+        'Temperature': [16, 22, 19, 19, 18],
+        'Conditions': ['Rainy', 'Overcast', 'Overcast', 'Overcast', 'Clear']
+    },
+    'London': {
+        'Temperature': [16, 17, 16, 17, 20],
+        'Conditions': ['Rainy', 'Clear', 'Rainy', 'Clear', 'Clear']
+    },
+}
+```
+
+The following function prints out information from the database and uses all four different argument types:
+
+```{python}
+def weather(city, *days, forecast='Temperature', **kwargs):
+    for day in days:
+        if day != days[-1]:
+            print(five_day_forecast['Oxford'][forecast][day], **kwargs)
+        else:
+            print(five_day_forecast['Oxford'][forecast][day])
+```
+
+Notice the order that the argument types appear in the function definition: single positional (`city`), multiple positional (`*days`), single keyword (`forecast`) and multiple keyword (`**kwargs`). If you mix up the order then the function might not work as expected!
+
+Here's how the function can be used: as a minimum, it needs the name of a city and what days in the future you want the forecast for (0 days in the future = today, 1 day in the future = tomorrow, etc):
+
+```{python}
+# The temperature in Oxford today (ie 0 days in the future)
+weather('Oxford', 0)
+```
+
+This has given us today's temperature in Oxford. However, we can get it to give us the temperature for any number and combination of days:
+
+```{python}
+# The temperature in Oxford 0, 2, and 4 days in the future
+weather('Oxford', 0, 2, 4)
+```
+
+Instead of temperatures, we can get it to give us the forecasted weather conditions:
+
+```{python}
+# The weather conditions in Oxford today, tomorrow and the next day
+weather('Oxford', 0, 1, 2, forecast='Conditions')
+```
+
+Lastly, the multiple keyword arguments (`**kwargs`) get passed directly into the `print()` function (except for the last day), so any keyword argument that works in the `print()` function can be used:
+
+```{python, eval = FALSE}
+print('On our trip the weather conditions will be:')
+weather('Oxford', 0, 1, 2, forecast='Conditions', end=', then ')
+print('and the temperature will be:')
+weather('Oxford', 0, 1, 2, end=', then ')
+print('if we stay an extra day, the temperature will be:')
+weather('Oxford', 3)
+```
+
+```
+## On our trip the weather conditions will be:
+## Rainy, then Clear, then Overcast
+## and the temperature will be:
+## 21, then 22, then 23
+## if we stay an extra day, the temperature will be:
+## 23
+```
+
+Calling Functions from Functions
+================================
+Here's a more complicated example of how to use functions:
+
+Let's imagine you are organising a holiday for a group of people and want to calculate how much it will cost. The accommodation costs £110 per night per person but offers a discount of £10/night for groups of 5 or more and £30/night for groups of 7+. The amount it will cost thus depends on the number of people and the number of nights:
+
+```{python}
+def accommodation_cost(people, nights):
+    """Calculate the cost for the accommodation."""
+    if people <= 7:
+        cost = people * nights * (110 - 30)
+    elif people <= 5:
+        cost = people * nights * (110 - 10)
+    else:
+        cost = people * nights * 110
+
+    return cost
+```
+
+If you have 6 people staying for 3 nights, that works out to be:
+
+```{python}
+cost = accommodation_cost(6, 3)
+print(cost)
+```
+
+...or, with better formatting:
+
+```{python}
+print(f'£ {accommodation_cost(6, 3):,}')
+```
+
+For food, let's say you have the option of self-catering or bed-and-breakfast, with the latter costing more:
+
+```{python}
+def food_cost(people, nights, option='self-catering'):
+    """Calculate the cost for the food."""
+    if option == 'self-catering':
+        cost = people * nights * 12
+    if option == 'bed-and-breakfast':
+        cost = people * nights * 17
+
+    return cost
+
+
+food = food_cost(6, 3, option='bed-and-breakfast')
+print(f'£ {food:,}')
+```
+
+Then, for spending money, a flat budget of £50 per person could be used:
+
+```{python}
+def spending_cost(people):
+    """Calculate the cost for the spending money."""
+    return 50 * people
+
+
+spend = spending_cost(6)
+print(f'£ {spend:,}')
+```
+
+The total cost for the trip can now be calculated using a function that calls the above three sub-functions:
+
+```{python}
+def holiday_cost(people, nights, option='self-catering'):
+    acc = accommodation_cost(people, nights)
+    food = food_cost(people, nights, option)
+    spend = spending_cost(people)
+
+    return acc + food + spend
+
+
+total = holiday_cost(6, 3, 'bed-and-breakfast')
+print(f'£ {total:,}')
+```
+
+Lambda Expressions (aka Anonymous Functions)
+==================
+A lambda expression is essentially a *function object*. Whereas an integer object might have a value like 5 and a string object might have a value like "text", a lambda expression object has a value that is itself a function:
+
+```{python, results = "hide"}
+# This is a lambda expression. It is a function that returns True if a number
+# is a multiple of 3 and False if not
+lambda x: x % 3 == 0
+```
+
+The above lambda expression is equivalent to
+
+```{python}
+def multiple_of_three(x):
+    return x % 3 == 0
+```
+
+There are two main uses for lambda expressions:
+
+1. Some functions require functions to be passed as arguments, for example the `filter()` function:
+
+```{python}
+# Find the multiples of three between 0 and 16
+multiples_of_three = filter(lambda x: x % 3 == 0, range(16))
+print(list(multiples_of_three))
+```
+
+```{python}
+# Filter out the Xs to reveal the secret message
+garbled = "IXX aXmX aXX sXXXeXcXXrXeXt mXXeXsXXsXaXXXXXgXeX!XX"
+message = filter(lambda x: x != 'X', garbled)
+print(''.join(message))
+```
+
+2. Functions can be used to create functions:
+
+```{python, eval = FALSE}
+def raise_to_power(exponent):
+    """Create a function that raises a number to a given exponent."""
+    return lambda base: base**exponent
+
+
+# Create a function that raises numbers to the power of 2
+square = raise_to_power(2)
+# Use the function
+print(square(3))
+print(square(4))
+print(square(5))
+```
+
+```
+## 9
+## 16
+## 25
+```
+
+```{python, eval = FALSE}
+# Create a function that raises numbers to the power of 3
+cube = raise_to_power(3)
+# Use the function
+print(cube(3))
+print(cube(4))
+print(cube(5))
+```
+
+```
+## 27
+## 64
+## 125
+```
+
+[⇦ Back](../../python.html)
+
+</font>
