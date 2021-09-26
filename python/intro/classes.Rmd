@@ -1,0 +1,567 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Classes'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+When you code in Python, you create and use *objects* which are each an *instance* of an object *type*. Consider the following code:
+
+```{python}
+st = 'Hello, World'
+```
+
+- `st` is an **object**
+- It is a *string*. That's the **type** of object it is. Other examples of object types in Python include *integers* and *Booleans*.
+- It is an **instance** of a string object
+- The string `'Hello, World'` on its own is also an instance of a string object. In the code above it gets *assigned* to `st` which makes `st` a **variable** - something that `'Hello, World'` on its own is not.
+
+Each object type has its own functionality: strings can be formatted and printed like text, integers can be used to do maths and Booleans can represent the output or result of a test. This means that an instance of an object type both *contains data* and *has functionality.*
+
+**Classes** are essentially *custom object types.* Forget using strings, integers and Booleans: you can create your own types!
+
+The Basics
+==========
+Here's how to create a very simple class (so simple that it has no functionality):
+
+```{python}
+class ClassName:
+    """A simple example class."""
+    pass
+```
+
+In other words, you need to:
+
+- Use the `class` statement
+- Provide a name for the class (in this example we've used `ClassName`). The convention for class names is to use 'CapWords' - each word in the class's name starts with a capital letter and there is no space or underscore between them.
+- The class name is followed by a colon (`:`)
+- The 'contents' of the class is indented away from the left-hand margin
+- Another convention is to have the first line of the class be a 'docstring':
+    - A docstring is a string that documents (describes) what the class is
+    - It is written as a full sentence - starting with a capital letter and ending with a full stop - but one which only contains an object (ie you could add the words "this is" to the start and it would make sense, for example "(This is) A simple example class.")
+    - The string is created using a pair of triple quotation marks
+- The statements inside the indented block of code make up the content of the class definition. In this example we just have the `pass` statement, which does nothing, hence our class has no functionality.
+
+An *instance* of this class is created as follows:
+
+```{python}
+# Notice the round brackets after the class name indicating that the class
+# definition is being 'called'
+instance = ClassName()
+```
+
+This instance contains no data and has no functionality, but it exists!
+
+Attributes
+----------
+Let's imagine we want to create a database of Olympic athletes. We can create a class (object type) called "TrackAthlete" to contain data relevant to individual people:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+    pass
+
+
+# Create an instance of the TrackAthlete class
+athlete1 = TrackAthlete()
+```
+
+> Notice that there are two blank lines after the class definition. This is another convention: definitions should be preceded and followed by two blank lines.
+
+So "athlete1" is an instance of a track athlete but, currently, it contains no data. We can give the athlete a name by creating and setting an **attribute** called "name":
+
+```{python}
+# Create an attribute
+athlete1.name = 'Usain Bolt'
+print(athlete1.name)
+```
+
+An attribute is a piece of information stored inside an object. It is set and called using 'dot notation': `object.attribute`.
+
+Member Variables
+----------------
+**Member variables** are attributes that are automatically created when an instance is created (and so all objects of a particular type have them). They are defined in the class definition:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+    # Create a member variable
+    sport = 'Track and Field'
+
+
+# Create an instance of the TrackAthlete class
+athlete1 = TrackAthlete()
+print(athlete1.sport)
+```
+
+This ensures that all instances of track athletes have 'Track and Field' listed as their sport.
+
+Methods
+-------
+As demonstrated previously, we can create an attribute for an object using 'dot notation':
+
+```{python}
+athlete1.name = 'Usain Bolt'
+print(athlete1.name)
+```
+
+We could also do this with a function. Here's a function called "set_name" which sets the "name" attribute of a TrackAthlete instance that is passed to it (in fact, it would set the "name" attribute of any instance that is passed to it):
+
+```{python}
+def set_name(self, athlete_name):
+    """Give the athlete a name."""
+    self.name = athlete_name
+
+
+# Call the function
+set_name(athlete1, 'Elaine Thompson-Herah')
+print(athlete1.name)
+```
+
+These two methods of setting the "name" attribute are not fundamentally different from each other, one is just inside a function while the other is outside of one. However, there's a special third way to do this with classes: a 'method'. A 'method' is essentially a function that's unique to a class and is defined as part of it:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+
+    # Create a member variable
+    sport = 'Track and Field'
+
+    # Create a method
+    def set_name(self, athlete_name):
+        """Give the athlete a name."""
+        self.name = athlete_name
+
+
+# Create an instance of the TrackAthlete class
+athlete1 = TrackAthlete()
+# Call a method (using 'dot notation' and with the first argument omitted)
+athlete1.set_name('Usain Bolt')
+print(athlete1.name)
+```
+
+What's the difference between a method (a 'function inside a class') and a regular function (a 'function outside a class')? Well, firstly, a method only works with objects of that specific class (whereas a regular function would work with an object of *any* class). Secondly, a method can be called using 'dot notation' (similar to an attribute or a member variable) and the name of the instance (ie the first argument, "self") can be omitted when you do so (in fact, it MUST be omitted) because Python already knows what instance the method is being called on.
+
+Calling this "set_name" method again or editing the attribute directly will overwrite the "name" attribute:
+
+```{python}
+# Call the method again
+athlete1.set_name('Shelly-Ann Fraser-Pryce')
+print(athlete1.name)
+```
+
+```{python}
+# Edit the member variable directly
+athlete1.name = 'Marcell Jacobs'
+print(athlete1.name)
+```
+
+More Methods
+============
+
+A Method with a Return
+----------------------
+Much like a regular function, a method can have a return:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+
+    # Create a member variable
+    sport = 'Track and Field'
+
+    # Create a method
+    def set_name(self, athlete_name):
+        """Give the athlete a name."""
+        self.name = athlete_name
+
+    # Create a method
+    def get_name(self):
+        """Get the athlete's name."""
+        return self.name
+
+
+# Create an instance of the TrackAthlete class
+athlete1 = TrackAthlete()
+# Call the set_name method
+athlete1.set_name('Usain Bolt')
+# Call the get_name method (necessarily without the first (and only) argument)
+# and assign the return to a variable
+athletes_name = athlete1.get_name()
+print(athletes_name)
+```
+
+The Initialisation Method
+-------------------------
+There is a special method called `__init__` (pronounced 'dunder init' where 'dunder' is short for 'double underscore') which is automatically created when a new class is defined. It gets created for *all* new classes, even if you don't do anything; all of the classes that have been created so far in this tutorial have had a `__init__` method without you even knowing it! It determines what happens when a new instance of that class is created (ie when a new instance is **init**ialised) and, usually, it doesn't do anything. However, we can overwrite its functionality in order to get it to do something useful:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+
+    # Create a member variable
+    sport = 'Track and Field'
+
+    # Edit the initialisation method
+    def __init__(self, athlete_event):
+        """Specify the athlete's event from an input parameter."""
+        self.event = athlete_event
+
+    # Create a method
+    def set_name(self, athlete_name):
+        """Give the athlete a name."""
+        self.name = athlete_name
+
+    # Create a method
+    def get_name(self):
+        """Get the athlete's name."""
+        return self.name
+
+
+# Create an instance of the TrackAthlete class but now with an input
+athlete1 = TrackAthlete('100m')
+# Get the athlete's event
+athletes_event = athlete1.event
+print(athletes_event)
+```
+
+As you can see above, when the instance was created an input was given (`'100m'`). This is because the `__init__` method requires an additional input (besides `self` which, as mentioned above, you must omit as an argument) called `athlete_event` which then gets assigned to an attribute called `event`.
+
+> Initialisation methods can be used to ensure that all instances of a class type have a particular attribute populated. In this example, all track athletes need to have the event they do specified.
+
+The Representation Method
+-------------------------
+Similar to `__init__`, there is a method called `__repr__` ('dunder rep-er') which is auto-created when a new class is created. Again, all classes created so far in this tutorial have had a `__repr__` method without you realising! This method controls how the instance is **repr**esented when it is printed, and can also be overwritten:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+
+    # Create a member variable
+    sport = 'Track and Field'
+
+    # Edit the initialisation method
+    def __init__(self, athlete_event):
+        """Specify the athlete's event from an input parameter."""
+        self.event = athlete_event
+
+    # Edit the representation method
+    def __repr__(self):
+        """Specify how this athlete is represented when printed."""
+        return f'This athlete is {self.name} and they do the {self.event}'
+
+    # Create a method
+    def set_name(self, athlete_name):
+        """Give the athlete a name."""
+        self.name = athlete_name
+
+    # Create a method
+    def get_name(self):
+        """Get the athlete's name."""
+        return self.name
+
+
+# Create an instance of the TrackAthlete class, specifying their event
+athlete1 = TrackAthlete('100m')
+# Call the set_name method
+athlete1.set_name('Usain Bolt')
+# Print the instance to see how it's represented
+print(athlete1)
+```
+
+HOWEVER, the way this has been coded assumes that the `name` attribute exists, which might not always be the case:
+
+```{python, eval = FALSE}
+athlete2 = TrackAthlete('100m')
+print(athlete2)
+```
+
+```
+AttributeError: 'TrackAthlete' object has no attribute 'name'
+```
+
+So here's an edit that first does some checks to prevent this type of problem from happening:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+
+    # Create a member variable
+    sport = 'Track and Field'
+
+    # Edit the initialisation method
+    def __init__(self, athlete_event):
+        """Specify the athlete's event from an input parameter."""
+        self.event = athlete_event
+
+    # Edit the representation method
+    def __repr__(self):
+        """Specify how this athlete is represented when printed."""
+        if hasattr(self, 'name'):
+            return f'This athlete is {self.name} and they do the {self.event}'
+        else:
+            return f"This unnamed athlete's event is the {self.event}"
+
+    # Create a method
+    def set_name(self, athlete_name):
+        """Give the athlete a name."""
+        self.name = athlete_name
+
+    # Create a method
+    def get_name(self):
+        """Get the athlete's name."""
+        if hasattr(self, 'name'):
+            return self.name
+        else:
+            return 'This athlete does not yet have a name...'
+
+
+# Create an instance of the TrackAthlete class, specifying their event
+athlete2 = TrackAthlete('100m')
+# Print the instance to see how it's represented
+print(athlete2)
+```
+
+A List as an Attribute
+----------------------
+Having an attribute be a list is useful for storing information that can be appended to over time, such as an athlete's race results:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+
+    # Create member variables
+    sport = 'Track and Field'
+    results = []
+
+    # Edit the initialisation method
+    def __init__(self, athlete_event):
+        """Specify the athlete's event from an input parameter."""
+        self.event = athlete_event
+
+    # Edit the representation method
+    def __repr__(self):
+        """Specify how this athlete is represented when printed."""
+        if hasattr(self, 'name'):
+            return f'This athlete is {self.name} and they do the {self.event}'
+        else:
+            return f"This unnamed athlete's event is the {self.event}"
+
+    # Create a method
+    def set_name(self, athlete_name):
+        """Give the athlete a name."""
+        self.name = athlete_name
+
+    # Create a method
+    def get_name(self):
+        """Get the athlete's name."""
+        if hasattr(self, 'name'):
+            return self.name
+        else:
+            return 'This athlete does not yet have a name...'
+
+    # Create a method
+    def add_result(self, result):
+        """Record a result for this athlete."""
+        self.results.append(result)
+
+
+# Create an instance of the TrackAthlete class, specifying their event
+athlete1 = TrackAthlete('100m')
+# Add a race result for this athlete
+athlete1.add_result(10.00)
+# Add another race result for this athlete
+athlete1.add_result(9.90)
+# Show all race results
+results = athlete1.results
+print(f"This athlete's results for the {athlete1.event} are: {results}")
+```
+
+A Method that Performs a Calculation
+------------------------------------
+Now that we are storing a list of the athlete's results, we can perform a calculation on the data. For example, we could calculate their fastest time and set it as their 'personal best' attribute:
+
+```{python}
+class TrackAthlete:
+    """A Python object representing a track athlete."""
+
+    # Create member variables
+    sport = 'Track and Field'
+    results = []
+
+    # Edit the initialisation method
+    def __init__(self, athlete_event):
+        """Specify the athlete's event from an input parameter."""
+        self.event = athlete_event
+
+    # Edit the representation method
+    def __repr__(self):
+        """Specify how this athlete is represented when printed."""
+        if hasattr(self, 'name'):
+            return f'This athlete is {self.name} and they do the {self.event}'
+        else:
+            return f"This unnamed athlete's event is the {self.event}"
+
+    # Create a method
+    def set_name(self, athlete_name):
+        """Give the athlete a name."""
+        self.name = athlete_name
+
+    # Create a method
+    def get_name(self):
+        """Get the athlete's name."""
+        if hasattr(self, 'name'):
+            return self.name
+        else:
+            return 'This athlete does not yet have a name...'
+
+    # Create a method
+    def add_result(self, result):
+        """Record a result for this athlete."""
+        self.results.append(result)
+
+    # Create a method that performs a calculation
+    def personal_best(self):
+        """Calculate the athlete's personal best."""
+        return min(self.results)
+
+
+# Create an instance of the TrackAthlete class, specifying their event
+athlete1 = TrackAthlete('100m')
+# Add a race result for this athlete
+athlete1.add_result(10.00)
+# Add another race result for this athlete
+athlete1.add_result(9.90)
+# Calculate and return their personal best
+pb = athlete1.personal_best()
+print(f"This athlete's personal best is {pb} seconds for the {athlete1.event}")
+```
+
+Parent and Child Classes
+========================
+Some track athletes are Olympians, but not all of them. So if we wanted to create a Python class to store the data of Olympic track athletes it would have to be separate from the `TrackAthlete` class we've been using above (which can be used for *any* athlete). But we would still want it to have all the functionality of the `TrackAthlete` class - Olympic track athletes are track athletes after all. The solution is to create a class that **inherits** all of the functionality of `TrackAthlete` but then has some functionality of its own as well. This is known as a **child class** where `TrackAthlete` is the **parent class**.
+
+To create a child class, create a class as per normal but with the parent class's name inside round brackets before the colon:
+
+```{python}
+class OlympicTrackAthlete(TrackAthlete):
+    """A Python object representing an Olympic track athlete."""
+
+    # Create a member variable
+    medals = []
+
+    # Create a method
+    def add_medal(self, medal):
+        """Record a medal won by this athlete."""
+        self.medals.append(medal)
+
+
+# Create an instance of the OlympicTrackAthlete class, specifying their event
+athlete1 = OlympicTrackAthlete('100m')
+# Call a method from the parent class
+athlete1.set_name('Elaine Thompson-Herah')
+# See the athlete's name
+print(f"This athlete's name is {athlete1.name}")
+```
+
+```{python}
+# Call a method from the child class
+athlete1.add_medal('Gold')
+# See the athlete's medals
+print(f'This athlete has won the following medals: {athlete1.medals}')
+```
+
+This instance has all the functionality of a `TrackAthlete` instance plus the ability to record what medals have been won.
+
+Overwrite a Parent Method
+-------------------------
+If you aren't content with a child class having more functionality than its parent class, you can go so far as to *overwrite* the parent's methods. This is done by simply defining a method with the same name as one of the parent's methods inside of the child's definition:
+
+```{python}
+class OlympicTrackAthlete(TrackAthlete):
+    """A Python object representing an Olympic track athlete."""
+
+    # Create member variables
+    medals = []
+    results = []
+
+    # Create a method
+    def add_medal(self, medal):
+        """Record a medal won by this athlete."""
+        self.medals.append(medal)
+
+    # Create a method that overwrites a parent method
+    def add_result(self, result, olympics):
+        """Record a result from the Olympics for this athlete."""
+        self.results.append((result, olympics))
+
+
+# Create an instance of the OlympicTrackAthlete class, specifying their event
+athlete1 = OlympicTrackAthlete('100m')
+# Call a method from the child class (originally from the parent class)
+athlete1.add_result(10.61, 'Tokyo 2020')
+# See the athlete's results and which Olympics they come from
+print(f"This athlete's results: {athlete1.results}")
+```
+
+Use a Super-Call
+----------------
+The parent class is also called the **super-class** and the child class is also called the **sub-class**.
+
+If you've overwritten a method from the super-class in the sub-class you can actually still use the original method. This is known as a **super-call**. It's done by using the `super()` function and giving it the name of the *sub-class* along with `self` (so Python knows you are referring to an instance of the type currently being defined), after which you can use the method from the super-class as per normal:
+
+```{python}
+class OlympicTrackAthlete(TrackAthlete):
+    """A Python object representing an Olympic track athlete."""
+
+    # Create member variables
+    medals = []
+    results = []
+
+    # Create a method
+    def add_medal(self, medal):
+        """Record a medal won by this athlete."""
+        self.medals.append(medal)
+
+    # Create a method that overwrites a parent method
+    def add_result(self, result, olympics):
+        """Record a result from the Olympics for this athlete."""
+        self.results.append((result, olympics))
+
+    # Make a super-call
+    # (use a method from the super-class that's been overwritten in the
+    # sub-class)
+    def add_non_olympic_results(self, result):
+        """Record a result not from the Olympics for this athlete."""
+        super(OlympicTrackAthlete, self).add_result(result)
+
+
+# Create an instance of the OlympicTrackAthlete class, specifying their event
+athlete1 = OlympicTrackAthlete('100m')
+# Add a race result (not from the Olympics) for this Olympic athlete
+athlete1.add_non_olympic_results(10.76)
+# View this athlete's results
+print(f"This athlete's results not from the Olympics are: {athlete1.results}")
+```
+
+Summary
+=======
+- Classes are *custom object types*
+- Instances of a class have the *functionality* of that class and can also *store data*
+- Inside the class definition, you can define *attributes*, *member variables* and *methods* for that class
+- *Methods* are essentially functions that are unique to instances of that class
+- There are some special methods that are auto-created but which can be overwritten, such as `__init__` and `__repr__`
+- You can have parent and child classes (super- and sub-classes) where the child class inherits everything from its parent class and extends it
+
+[⇦ Back](../../python.html)
+
+</font>
