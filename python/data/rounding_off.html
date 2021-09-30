@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Data Handling in Python: Rounding Off</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -475,7 +475,7 @@ function e(n){return function(p){yd(64);return n(p)}}var f=[];if("https:"===B.lo
 d){b({wc:c,rj:d})})})}catch(b){}},we=function(a){return-1!==["email","phone_number","first_name","last_name","street"].indexOf(a)};var Oe=function(){this.eventModel={};this.targetConfig={};this.containerConfig={};this.globalConfig={};this.remoteConfig={};this.onSuccess=function(){};this.onFailure=function(){};this.setContainerTypeLoaded=function(){};this.getContainerTypeLoaded=function(){};this.eventId=void 0;this.isGtmEvent=!1},Pe=function(a){var b=new Oe;b.eventModel=a;return b},Qe=function(a,b){a.targetConfig=b;return a},Re=function(a,b){a.containerConfig=b;return a},Se=function(a,b){a.globalConfig=b;return a},Te=function(a,
 b){a.remoteConfig=b;return a},Ue=function(a,b){a.onSuccess=b;return a},Ve=function(a,b){a.setContainerTypeLoaded=b;return a},We=function(a,b){a.getContainerTypeLoaded=b;return a},Xe=function(a,b){a.onFailure=b;return a};
 Oe.prototype.getWithConfig=function(a){if(void 0!==this.eventModel[a])return this.eventModel[a];if(void 0!==this.targetConfig[a])return this.targetConfig[a];if(void 0!==this.containerConfig[a])return this.containerConfig[a];if(void 0!==this.globalConfig[a])return this.globalConfig[a];if(void 0!==this.remoteConfig[a])return this.remoteConfig[a]};
-var Ye=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ze=function(a,b,c){function d(g){$b(g)&&Ea(g,function(k,m){f=!0;e[k]=m})}var e={},f=!1;c&&1!==c||(d(a.remoteConfig[b]),d(a.globalConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var $e={},R=null,af=Math.random();$e.J="UA-156468188-1";$e.ad="9r0";$e.Ig="ChEI8J3QigYQ1ujivvKR1OevARInAER8H6SHOZZcrTjpti93lTz1Q34Ns3U/xpfuUkHsiYjg3TuquJLmGgIQcg\x3d\x3d";var bf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},cf={__paused:!0,__tg:!0},df;for(df in bf)bf.hasOwnProperty(df)&&(cf[df]=!0);var ef="www.googletagmanager.com/gtm.js";
+var Ye=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ze=function(a,b,c){function d(g){$b(g)&&Ea(g,function(k,m){f=!0;e[k]=m})}var e={},f=!1;c&&1!==c||(d(a.remoteConfig[b]),d(a.globalConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var $e={},R=null,af=Math.random();$e.J="UA-156468188-1";$e.ad="9r0";$e.Ig="ChEI8J3QigYQ1ujivvKR1OevARInAER8H6SvDRyYP2ZRm2CayiurCvtZmm/i5d32PIIQ7XLKZfm0zcW1GgLhNw\x3d\x3d";var bf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},cf={__paused:!0,__tg:!0},df;for(df in bf)bf.hasOwnProperty(df)&&(cf[df]=!0);var ef="www.googletagmanager.com/gtm.js";
 ef="www.googletagmanager.com/gtag/js";var ff=ef,gf=La(""),hf=null,jf=null,kf="https://www.googletagmanager.com/a?id="+$e.J+"&cv=1",lf={},mf={},nf=function(){var a=R.sequence||1;R.sequence=a+1;return a};$e.Hg="";var of="";
 $e.Jb=of;var pf={},qf=new Aa,rf={},sf={},vf={name:"dataLayer",set:function(a,b){M(Va(a,b),rf);tf()},get:function(a){return uf(a,2)},reset:function(){qf=new Aa;rf={};tf()}},uf=function(a,b){return 2!=b?qf.get(a):wf(a)},wf=function(a){var b,c=a.split(".");b=b||[];for(var d=rf,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==wa(b,d))return}return d},xf=function(a,b){sf.hasOwnProperty(a)||(qf.set(a,b),M(Va(a,b),rf),tf())},tf=function(a){Ea(sf,function(b,c){qf.set(b,c);M(Va(b,
 void 0),rf);M(Va(b,c),rf);a&&delete sf[b]})},zf=function(a,b,c){pf[a]=pf[a]||{};pf[a][b]=yf(b,c)},yf=function(a,b){var c,d=1!==(void 0===b?2:b)?wf(a):qf.get(a);"array"===Tb(d)||"object"===Tb(d)?c=M(d):c=d;return c},Af=function(a,b){if(pf[a])return pf[a][b]},Bf=function(a,b){pf[a]&&delete pf[a][b]};var Cf,Df=!1,Ef=function(a){if(!Df){Df=!0;Cf=Cf||{}}return Cf[a]};var Ff=function(a){if(G.hidden)return!0;var b=a.getBoundingClientRect();if(b.top==b.bottom||b.left==b.right||!B.getComputedStyle)return!0;var c=B.getComputedStyle(a,null);if("hidden"===c.visibility)return!0;for(var d=a,e=c;d;){if("none"===e.display)return!0;var f=e.opacity,g=e.filter;if(g){var k=g.indexOf("opacity(");0<=k&&(g=g.substring(k+8,g.indexOf(")",k)),"%"==g.charAt(g.length-1)&&(g=g.substring(0,g.length-1)),f=Math.min(g,f))}if(void 0!==f&&0>=f)return!0;(d=d.parentElement)&&(e=B.getComputedStyle(d,
@@ -674,151 +674,332 @@ p=l();g=n<p+3E5&&n>p-9E5;}g&&xb?f():a()})(et);
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Data Handling in Python:</font><br>Rounding Off</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#rounding-off-to-a-whole-number"><span class="toc-section-number">1</span> Rounding Off to a Whole Number</a>
+<ul>
+<li><a href="#rounding-down"><span class="toc-section-number">1.1</span> Rounding Down</a></li>
+<li><a href="#rounding-up"><span class="toc-section-number">1.2</span> Rounding Up</a></li>
+<li><a href="#rounding-towards-zero"><span class="toc-section-number">1.3</span> Rounding Towards Zero</a></li>
+<li><a href="#rounding-away-from-zero"><span class="toc-section-number">1.4</span> Rounding Away from Zero</a></li>
+</ul></li>
+<li><a href="#rounding-off-to-a-number-of-decimal-places"><span class="toc-section-number">2</span> Rounding Off to a Number of Decimal Places</a>
+<ul>
+<li><a href="#rounding-using-string-formatting"><span class="toc-section-number">2.1</span> Rounding Using String Formatting</a></li>
+</ul></li>
+<li><a href="#rounding-off-to-a-number-of-significant-figures"><span class="toc-section-number">3</span> Rounding Off to a Number of Significant Figures</a>
+<ul>
+<li><a href="#customising-sig-fig-notation"><span class="toc-section-number">3.1</span> Customising Sig Fig Notation</a></li>
+</ul></li>
+<li><a href="#rounding-using-engineering-notation"><span class="toc-section-number">4</span> Rounding Using Engineering Notation</a>
+<ul>
+<li><a href="#customising-engineering-notation"><span class="toc-section-number">4.1</span> Customising Engineering Notation</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<p><a href="../../python.html">⇦ Back</a></p>
+<div id="rounding-off-to-a-whole-number" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Rounding Off to a Whole Number</h1>
+<p>Python has a built-in function <code>round()</code> that will, as the name suggests, <strong>round</strong> a number off:</p>
+<pre class="python"><code>unrounded = 5.99
+rounded = round(unrounded)
+
+print(rounded)</code></pre>
+<pre><code>## 6</code></pre>
+<p>Note that, by default, this uses the <strong>round half to even</strong> rule for tie-breaking multiples of 0.5. In other words, any number that ends in “.5” gets rounded to the nearest EVEN whole number:</p>
+<pre class="python"><code># 2.5 gets rounded DOWN
+print(round(2.5))</code></pre>
+<pre><code>## 2</code></pre>
+<pre class="python"><code># 3.5 gets rounded UP
+print(round(3.5))</code></pre>
+<pre><code>## 4</code></pre>
+<p>This is true even for negative numbers:</p>
+<pre class="python"><code>print(round(-2.5))</code></pre>
+<pre><code>## -2</code></pre>
+<p>This method of rounding off is known as <strong>statistician’s rounding</strong> and avoids both a positive/negative bias and a bias towards/away from zero</p>
+<div id="rounding-down" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Rounding Down</h2>
+<p>The built-in <code>math</code> library contains the <code>floor()</code> function that will round numbers ‘towards the floor’ (ie towards negative infinity):</p>
+<pre class="python"><code>import math
+
+negative_example = math.floor(-2.9)
+positive_example = math.floor(2.9)
+
+print(negative_example, positive_example, sep=&#39;, &#39;)</code></pre>
+<pre><code>## -3, 2</code></pre>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --> <!-- 5. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-</ul></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a> <!-- 7. [Webscraping] --> <!-- 8. [Bitwise Operators] --> <!-- 9. [Error Handling] --> <!-- 10. [Linting] --> <!-- 11. [Variable Scope] --></li>
-</ol>
+<div id="rounding-up" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Rounding Up</h2>
+<p>The complement to <code>floor()</code> is <code>ceil()</code> which will round numbers ‘towards the ceiling’ (ie towards positive infinity):</p>
+<pre class="python"><code>negative_example = math.ceil(-2.9)
+positive_example = math.ceil(2.9)
+
+print(negative_example, positive_example, sep=&#39;, &#39;)</code></pre>
+<pre><code>## -2, 3</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-</ol>
+<div id="rounding-towards-zero" class="section level2" number="1.3">
+<h2 number="1.3"><span class="header-section-number">1.3</span> Rounding Towards Zero</h2>
+<p>The <code>trunc()</code> function <strong>trunc</strong>ates a number, which means that it throws away the part after the decimal point. This is equivalent to rounding towards zero:</p>
+<pre class="python"><code>negative_example = math.trunc(-2.9)
+positive_example = math.trunc(2.9)
+
+print(negative_example, positive_example, sep=&#39;, &#39;)</code></pre>
+<pre><code>## -2, 2</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="rounding-away-from-zero" class="section level2" number="1.4">
+<h2 number="1.4"><span class="header-section-number">1.4</span> Rounding Away from Zero</h2>
+<p>There is no single function to do this in <code>math</code> (not even in <code>numpy</code>)! However, here’s a quick custom function you can use:</p>
+<pre class="python"><code>def round_away_from_zero(x):
+    &quot;&quot;&quot;Round a number x away from 0.&quot;&quot;&quot;
+    return math.ceil(abs(x)) * math.copysign(1, x)
+
+
+negative_example = round_away_from_zero(-2.9)
+positive_example = round_away_from_zero(2.9)
+
+print(negative_example, positive_example, sep=&#39;, &#39;)</code></pre>
+<pre><code>## -3.0, 3.0</code></pre>
+<p>The <code>abs()</code> function takes the absolute value of the un-rounded number (ie makes it positive if it’s negative), rounds it up with <code>ceil()</code> then multiplies that answer by either -1 or 1 using the <code>copysign()</code> function to copy the sign of the original number.</p>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/curve_fitting/linear.html">Linear Functions</a></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Tests</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)</li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-</ul></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-</ol>
+<div id="rounding-off-to-a-number-of-decimal-places" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Rounding Off to a Number of Decimal Places</h1>
+<p>The <code>round()</code> function can take a second argument, namely the number of decimal places you want to round off to:</p>
+<pre class="python"><code>unrounded = 6.283185
+rounded = round(unrounded, 3)
+
+print(rounded)</code></pre>
+<pre><code>## 6.283</code></pre>
+<p>Again, this uses statistician’s rounding:</p>
+<pre class="python"><code># Round DOWN to 6.28318
+print(round(6.283185, 5))</code></pre>
+<pre><code>## 6.28318</code></pre>
+<div id="rounding-using-string-formatting" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Rounding Using String Formatting</h2>
+<p>Another method for rounding off is to use the <code>.xf</code> notation with formatted strings (usually these will be ‘f-strings’ - see <a href="../intro/f_strings.html#formatting-numbers">this page</a> for more info - but you can also use this notation with the older <code>.format()</code> method or %-sign notation). <code>.xf</code> will round a <strong>f</strong>loating-point number off to <strong>x</strong> places after the decimal point and it can be used with f-strings as follows:</p>
+<pre class="python"><code>unrounded = 6.283185
+rounded = f&#39;The number rounded to 3 decimal places is: {unrounded:.3f}&#39;
+
+print(rounded)</code></pre>
+<pre><code>## The number rounded to 3 decimal places is: 6.283</code></pre>
+<p>Note that the result is a <em>string</em> not a number! So you can’t do any further calculation with it when using this method.</p>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+</div>
+<div id="rounding-off-to-a-number-of-significant-figures" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Rounding Off to a Number of Significant Figures</h1>
+<p>Instead of rounding off to a certain number of decimal places we often want to round off to a certain number of <em>significant figures</em> - digits excluding leading zeroes. A useful library that will do this is <code>sigfig</code> which can be installed from the terminal with:</p>
+<pre class="bash"><code># If you have a version of Python that isn&#39;t 3.9 use those version numbers instead
+python3.9 -m pip install sigfig</code></pre>
+<p>This includes a new implementation of the <code>round()</code> function that overwrites the built-in one. It can round off to a given number of decimal places using the <code>decimals</code> keyword argument like so:</p>
+<pre class="python"><code>import sigfig
+
+unrounded = 1.2345
+rounded = sigfig.round(unrounded, decimals=3)
+
+print(f&#39;{1.2345} becomes {rounded}&#39;)</code></pre>
+<pre><code>## 1.2345 becomes 1.235</code></pre>
+<blockquote>
+<p>Note that this function rounds <em>half away from zero</em>, also known as <strong>commercial rounding</strong>: 1.2345 gets rounded to 1.235 as opposed to statistician’s rounding which would make it 1.234</p>
+</blockquote>
+<p>This implementation of <code>round()</code> can also round off to a given number of significant figures via the <code>sigfigs</code> keyword argument:</p>
+<pre class="python"><code>unrounded = 1.2345
+rounded = sigfig.round(unrounded, sigfigs=3)
+
+print(f&#39;{1.2345} becomes {rounded}&#39;)</code></pre>
+<pre><code>## 1.2345 becomes 1.23</code></pre>
+<p>Note that exponential notation is preserved unless you convert to a string before invoking the function:</p>
+<pre class="python"><code>unrounded = 1.2345e-7
+exponential = sigfig.round(unrounded, sigfigs=3)
+floating = sigfig.round(str(unrounded), sigfigs=3)
+
+print(f&#39;{1.2345e-7} becomes {exponential} or {floating}&#39;)</code></pre>
+<pre><code>## 1.2345e-07 becomes 1.23e-07 or 0.000000123</code></pre>
+<p>This function can also incorporate uncertainty using the <code>uncertainty</code> keyword:</p>
+<pre class="python"><code>unrounded = 1.2345
+rounded = sigfig.round(unrounded, uncertainty=0.0002)
+
+print(f&#39;{1.2345} becomes {rounded}&#39;)</code></pre>
+<pre><code>## 1.2345 becomes 1.2345 ± 0.0002</code></pre>
+<p>And, finally, it can use different representations of uncertainty:</p>
+<pre class="python"><code># Estimate Newton&#39;s gravitational constant
+print(&#39;G =&#39;, sigfig.round(&#39;6.67430&#39;, &#39;0.00015&#39;, format=&#39;Drake&#39;), &#39;×10^−11 m3⋅kg−1⋅s−2&#39;)</code></pre>
+<pre><code>## G = 6.674 30(15) ×10^−11 m3⋅kg−1⋅s−2</code></pre>
+<div id="customising-sig-fig-notation" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Customising Sig Fig Notation</h2>
+<p>If you are absolutely set on using statistician’s rounding (or if you want to make any other modifications to how the <code>sigfig</code> package does its rounding), or if you only want to use built-in packages instead of relying on external dependencies, you can re-create the function yourself. This has been done below:</p>
+<pre class="python"><code>from decimal import Decimal, getcontext
+
+
+def round_to_sig_figs(number, num_sig_figs):
+    &quot;&quot;&quot;Round a number off to a given number of significant figures.&quot;&quot;&quot;
+    # A special case is if the number is 0
+    if float(number) == 0.0:
+        output = &#39;0&#39; * num_sig_figs
+        # Insert a decimal point
+        output = output[0] + &#39;.&#39; + output[1:]
+
+        return output
+
+    # Set the precision
+    getcontext().prec = num_sig_figs
+    rounded = Decimal(number)
+    # The precision only kicks in when an arithmetic operation is performed
+    rounded = rounded * 1
+    # Remove scientific notation
+    # (if the order of magnitude of the number is larger than the number of
+    # significant figures, the number will have been converted to scientific
+    # notation)
+    rounded = float(rounded)
+    # Convert to string
+    output = str(rounded)
+
+    # Remove trailing zero if one exists and is not necessary
+    if (
+        (len(output.replace(&#39;.&#39;, &#39;&#39;)) &gt; num_sig_figs) and
+        (output.endswith(&#39;.0&#39;))
+    ):
+        if rounded.is_integer():
+            output = str(int(rounded))
+
+    # Add trailing zeroes if necessary
+    if len(output.replace(&#39;.&#39;, &#39;&#39;).lstrip(&#39;-&#39;).lstrip(&#39;0&#39;)) &lt; num_sig_figs:
+        current_sig_figs = len(output.replace(&#39;.&#39;, &#39;&#39;).lstrip(&#39;-&#39;).lstrip(&#39;0&#39;))
+        discrepancy = num_sig_figs - current_sig_figs
+        # Append a decimal point
+        if &#39;.&#39; not in output:
+            output = output + &#39;.&#39;
+        # Add trailing zeroes
+        output = output + &#39;0&#39; * discrepancy
+
+    return output</code></pre>
+<p>Let’s test it:</p>
+<pre class="python"><code>unrounded = 1.2345
+rounded = round_to_sig_figs(unrounded, 4)
+
+print(f&#39;{1.2345} becomes {rounded}&#39;)</code></pre>
+<pre><code>## 1.2345 becomes 1.234</code></pre>
+</div>
+</div>
+<div id="rounding-using-engineering-notation" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Rounding Using Engineering Notation</h1>
+<p>Another useful library to have is <code>engineering_notation</code>. It can be installed from the terminal with:</p>
+<pre class="bash"><code># If you have a version of Python that isn&#39;t 3.9 use those version numbers instead
+python3.9 -m pip install engineering_notation</code></pre>
+<p>This library contains the <code>EngNumber()</code> function which converts a number into ‘engineering notation’ (ie it represents it as a multiple of <span class="math inline">\(10^x\)</span> or of <span class="math inline">\(1/10^x\)</span> where <span class="math inline">\(x\)</span> is a multiple of 3) using the usual SI units. It then rounds off to a given precision (number of decimal place; 2 by default) or to a given level of significance:</p>
+<pre class="python"><code>from engineering_notation import EngNumber
+
+# Represent a large number in engineering notation with a unit
+# Use default rounding (to 2 decimal places)
+raw = 12345
+formatted = EngNumber(raw)
+
+print(f&#39;{raw} becomes {formatted}&#39;)</code></pre>
+<pre><code>## 12345 becomes 12.34k</code></pre>
+<pre class="python"><code># Represent a small number in engineering notation with a unit
+# Round to 1 decimal place
+raw = 0.012345
+formatted = EngNumber(raw, precision=1)
+
+print(f&#39;{raw} becomes {formatted}&#39;)</code></pre>
+<pre><code>## 0.012345 becomes 12.3m</code></pre>
+<pre class="python"><code># Represent a number in engineering notation
+# Round to 4 significant figures
+raw = 6.283185
+formatted = EngNumber(raw, significant=4)
+
+print(f&#39;{raw} becomes {formatted}&#39;)</code></pre>
+<pre><code>## 6.283185 becomes 6.283</code></pre>
+<div id="customising-engineering-notation" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Customising Engineering Notation</h2>
+<p>If you want to tweak the output of <code>EngNumber()</code> you can copy the function’s source code from <a href="https://github.com/slightlynybbled/engineering_notation/blob/master/engineering_notation/engineering_notation.py">GitHub</a> and edit it yourself. Here’s an example of exactly that: the <code>EngNumber()</code> function re-moulded into a new function <code>round_engineering()</code> that represents the output in a variant of exponential notation:</p>
+<pre class="python"><code>from decimal import Decimal
+
+
+def round_engineering(value, precision=2, significant=0):
+    &quot;&quot;&quot;
+    Round and convert to an exponential format that is a multiple of 3.
+
+    :return: A string representing the engineering number
+    &quot;&quot;&quot;
+    number = Decimal(str(value))
+
+    # Since the Decimal class only really converts numbers that are very small
+    # into engineering notation we will simply make all numbers small numbers.
+    # We can then take advantage of the Decimal class
+    num_str = number * Decimal(&#39;10e-25&#39;)
+    num_str = num_str.to_eng_string().lower()
+
+    base, exponent = num_str.split(&#39;e&#39;)
+
+    if significant &gt; 0:
+        if abs(Decimal(base)) &gt;= 100.0:
+            base = str(round(Decimal(base), significant - 3))
+        elif abs(Decimal(base)) &gt;= 10.0:
+            base = str(round(Decimal(base), significant - 2))
+        else:
+            base = str(round(Decimal(base), significant - 1))
+    else:
+        base = str(round(Decimal(base), precision))
+
+    if &#39;e&#39; in base.lower():
+        base = str(int(Decimal(base)))
+
+    # Remove trailing decimals
+    # https://stackoverflow.com/questions/3410976/how-to-round-a-number-to-significant-figures-in-python
+    # https://stackoverflow.com/questions/11227620/drop-trailing-zeros-from-decimal
+    if &#39;.&#39; in base:
+        base = base.rstrip(&#39;.&#39;)
+
+    # Remove trailing .00 in precision 2
+    if precision == 2 and significant == 0:
+        if &#39;.00&#39; in base:
+            base = base[:-3]
+
+    # Scale the exponent back to normal
+    exponent = str(int(exponent) + 24)
+    # Format the exponent
+    if exponent == &#39;0&#39;:
+        exponent_str = &#39;&#39;
+    else:
+        exponent_str = &#39;×10^&#39; + exponent
+
+    return base + exponent_str</code></pre>
+<p>Here’s how it’s used:</p>
+<pre class="python"><code>numbers = [
+    1,
+    12,
+    123,
+    1234,
+    12345,
+    123456,
+    0.1234,
+    1.234,
+    12.34,
+    123.4,
+    1234,
+]
+for number in numbers:
+    print(f&#39;{number:&gt;7} becomes {round_engineering(number, significant=3)}&#39;)</code></pre>
+<pre><code>##       1 becomes 1.00
+##      12 becomes 12.0
+##     123 becomes 123
+##    1234 becomes 1.23×10^3
+##   12345 becomes 12.3×10^3
+##  123456 becomes 123×10^3
+##  0.1234 becomes 123×10^-3
+##   1.234 becomes 1.23
+##   12.34 becomes 12.3
+##   123.4 becomes 123
+##    1234 becomes 1.23×10^3</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 

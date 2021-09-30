@@ -1,0 +1,379 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Rounding Off'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+```
+
+Rounding Off to a Whole Number
+==============================
+Python has a built-in function `round()` that will, as the name suggests, **round** a number off:
+
+```{python}
+unrounded = 5.99
+rounded = round(unrounded)
+
+print(rounded)
+```
+
+Note that, by default, this uses the **round half to even** rule for tie-breaking multiples of 0.5. In other words, any number that ends in ".5" gets rounded to the nearest EVEN whole number:
+
+```{python}
+# 2.5 gets rounded DOWN
+print(round(2.5))
+```
+
+```{python}
+# 3.5 gets rounded UP
+print(round(3.5))
+```
+
+This is true even for negative numbers:
+
+```{python}
+print(round(-2.5))
+```
+
+This method of rounding off is known as **statistician's rounding** and avoids both a positive/negative bias and a bias towards/away from zero
+
+Rounding Down
+-------------
+The built-in `math` library contains the `floor()` function that will round numbers 'towards the floor' (ie towards negative infinity):
+
+```{python}
+import math
+
+negative_example = math.floor(-2.9)
+positive_example = math.floor(2.9)
+
+print(negative_example, positive_example, sep=', ')
+```
+
+Rounding Up
+-----------
+The complement to `floor()` is `ceil()` which will round numbers 'towards the ceiling' (ie towards positive infinity):
+
+```{python}
+negative_example = math.ceil(-2.9)
+positive_example = math.ceil(2.9)
+
+print(negative_example, positive_example, sep=', ')
+```
+
+Rounding Towards Zero
+---------------------
+The `trunc()` function **trunc**ates a number, which means that it throws away the part after the decimal point. This is equivalent to rounding towards zero:
+
+```{python}
+negative_example = math.trunc(-2.9)
+positive_example = math.trunc(2.9)
+
+print(negative_example, positive_example, sep=', ')
+```
+
+Rounding Away from Zero
+-----------------------
+There is no single function to do this in `math` (not even in `numpy`)! However, here's a quick custom function you can use:
+
+```{python}
+def round_away_from_zero(x):
+    """Round a number x away from 0."""
+    return math.ceil(abs(x)) * math.copysign(1, x)
+
+
+negative_example = round_away_from_zero(-2.9)
+positive_example = round_away_from_zero(2.9)
+
+print(negative_example, positive_example, sep=', ')
+```
+
+The `abs()` function takes the absolute value of the un-rounded number (ie makes it positive if it's negative), rounds it up with `ceil()` then multiplies that answer by either -1 or 1 using the `copysign()` function to copy the sign of the original number.
+
+Rounding Off to a Number of Decimal Places
+==========================================
+The `round()` function can take a second argument, namely the number of decimal places you want to round off to:
+
+```{python}
+unrounded = 6.283185
+rounded = round(unrounded, 3)
+
+print(rounded)
+```
+
+Again, this uses statistician's rounding:
+
+```{python}
+# Round DOWN to 6.28318
+print(round(6.283185, 5))
+```
+
+Rounding Using String Formatting
+--------------------------------
+Another method for rounding off is to use the `.xf` notation with formatted strings (usually these will be 'f-strings' - see [this page](../intro/f_strings.html#formatting-numbers) for more info - but you can also use this notation with the older `.format()` method or %-sign notation). `.xf` will round a **f**loating-point number off to **x** places after the decimal point and it can be used with f-strings as follows:
+
+```{python}
+unrounded = 6.283185
+rounded = f'The number rounded to 3 decimal places is: {unrounded:.3f}'
+
+print(rounded)
+```
+
+Note that the result is a *string* not a number! So you can't do any further calculation with it when using this method.
+
+Rounding Off to a Number of Significant Figures
+===============================================
+Instead of rounding off to a certain number of decimal places we often want to round off to a certain number of *significant figures* - digits excluding leading zeroes. A useful library that will do this is `sigfig` which can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+# If you have a version of Python that isn't 3.9 use those version numbers instead
+python3.9 -m pip install sigfig
+```
+
+This includes a new implementation of the `round()` function that overwrites the built-in one. It can round off to a given number of decimal places using the `decimals` keyword argument like so:
+
+```{python}
+import sigfig
+
+unrounded = 1.2345
+rounded = sigfig.round(unrounded, decimals=3)
+
+print(f'{1.2345} becomes {rounded}')
+```
+
+> Note that this function rounds *half away from zero*, also known as **commercial rounding**: 1.2345 gets rounded to 1.235 as opposed to statistician's rounding which would make it 1.234
+
+This implementation of `round()` can also round off to a given number of significant figures via the `sigfigs` keyword argument:
+
+```{python}
+unrounded = 1.2345
+rounded = sigfig.round(unrounded, sigfigs=3)
+
+print(f'{1.2345} becomes {rounded}')
+```
+
+Note that exponential notation is preserved unless you convert to a string before invoking the function:
+
+```{python}
+unrounded = 1.2345e-7
+exponential = sigfig.round(unrounded, sigfigs=3)
+floating = sigfig.round(str(unrounded), sigfigs=3)
+
+print(f'{1.2345e-7} becomes {exponential} or {floating}')
+```
+
+This function can also incorporate uncertainty using the `uncertainty` keyword:
+
+```{python}
+unrounded = 1.2345
+rounded = sigfig.round(unrounded, uncertainty=0.0002)
+
+print(f'{1.2345} becomes {rounded}')
+```
+
+And, finally, it can use different representations of uncertainty:
+
+```{python}
+# Estimate Newton's gravitational constant
+print('G =', sigfig.round('6.67430', '0.00015', format='Drake'), '×10^−11 m3⋅kg−1⋅s−2')
+```
+
+Customising Sig Fig Notation
+----------------------------
+If you are absolutely set on using statistician's rounding (or if you want to make any other modifications to how the `sigfig` package does its rounding), or if you only want to use built-in packages instead of relying on external dependencies, you can re-create the function yourself. This has been done below:
+
+```{python, eval = FALSE}
+from decimal import Decimal, getcontext
+
+
+def round_to_sig_figs(number, num_sig_figs):
+    """Round a number off to a given number of significant figures."""
+    # A special case is if the number is 0
+    if float(number) == 0.0:
+        output = '0' * num_sig_figs
+        # Insert a decimal point
+        output = output[0] + '.' + output[1:]
+
+        return output
+
+    # Set the precision
+    getcontext().prec = num_sig_figs
+    rounded = Decimal(number)
+    # The precision only kicks in when an arithmetic operation is performed
+    rounded = rounded * 1
+    # Remove scientific notation
+    # (if the order of magnitude of the number is larger than the number of
+    # significant figures, the number will have been converted to scientific
+    # notation)
+    rounded = float(rounded)
+    # Convert to string
+    output = str(rounded)
+
+    # Remove trailing zero if one exists and is not necessary
+    if (
+        (len(output.replace('.', '')) > num_sig_figs) and
+        (output.endswith('.0'))
+    ):
+        if rounded.is_integer():
+            output = str(int(rounded))
+
+    # Add trailing zeroes if necessary
+    if len(output.replace('.', '').lstrip('-').lstrip('0')) < num_sig_figs:
+        current_sig_figs = len(output.replace('.', '').lstrip('-').lstrip('0'))
+        discrepancy = num_sig_figs - current_sig_figs
+        # Append a decimal point
+        if '.' not in output:
+            output = output + '.'
+        # Add trailing zeroes
+        output = output + '0' * discrepancy
+
+    return output
+```
+
+Let's test it:
+
+```{python, eval = FALSE}
+unrounded = 1.2345
+rounded = round_to_sig_figs(unrounded, 4)
+
+print(f'{1.2345} becomes {rounded}')
+```
+
+```
+## 1.2345 becomes 1.234
+```
+
+Rounding Using Engineering Notation
+===================================
+Another useful library to have is `engineering_notation`. It can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+# If you have a version of Python that isn't 3.9 use those version numbers instead
+python3.9 -m pip install engineering_notation
+```
+
+This library contains the `EngNumber()` function which converts a number into 'engineering notation' (ie it represents it as a multiple of $10^x$ or of $1/10^x$ where $x$ is a multiple of 3) using the usual SI units. It then rounds off to a given precision (number of decimal place; 2 by default) or to a given level of significance:
+
+```{python}
+from engineering_notation import EngNumber
+
+# Represent a large number in engineering notation with a unit
+# Use default rounding (to 2 decimal places)
+raw = 12345
+formatted = EngNumber(raw)
+
+print(f'{raw} becomes {formatted}')
+```
+
+```{python}
+# Represent a small number in engineering notation with a unit
+# Round to 1 decimal place
+raw = 0.012345
+formatted = EngNumber(raw, precision=1)
+
+print(f'{raw} becomes {formatted}')
+```
+
+```{python}
+# Represent a number in engineering notation
+# Round to 4 significant figures
+raw = 6.283185
+formatted = EngNumber(raw, significant=4)
+
+print(f'{raw} becomes {formatted}')
+```
+
+Customising Engineering Notation
+--------------------------------
+If you want to tweak the output of `EngNumber()` you can copy the function's source code from [GitHub](https://github.com/slightlynybbled/engineering_notation/blob/master/engineering_notation/engineering_notation.py) and edit it yourself. Here's an example of exactly that: the `EngNumber()` function re-moulded into a new function `round_engineering()` that represents the output in a variant of exponential notation:
+
+```{python}
+from decimal import Decimal
+
+
+def round_engineering(value, precision=2, significant=0):
+    """
+    Round and convert to an exponential format that is a multiple of 3.
+
+    :return: A string representing the engineering number
+    """
+    number = Decimal(str(value))
+
+    # Since the Decimal class only really converts numbers that are very small
+    # into engineering notation we will simply make all numbers small numbers.
+    # We can then take advantage of the Decimal class
+    num_str = number * Decimal('10e-25')
+    num_str = num_str.to_eng_string().lower()
+
+    base, exponent = num_str.split('e')
+
+    if significant > 0:
+        if abs(Decimal(base)) >= 100.0:
+            base = str(round(Decimal(base), significant - 3))
+        elif abs(Decimal(base)) >= 10.0:
+            base = str(round(Decimal(base), significant - 2))
+        else:
+            base = str(round(Decimal(base), significant - 1))
+    else:
+        base = str(round(Decimal(base), precision))
+
+    if 'e' in base.lower():
+        base = str(int(Decimal(base)))
+
+    # Remove trailing decimals
+    # https://stackoverflow.com/questions/3410976/how-to-round-a-number-to-significant-figures-in-python
+    # https://stackoverflow.com/questions/11227620/drop-trailing-zeros-from-decimal
+    if '.' in base:
+        base = base.rstrip('.')
+
+    # Remove trailing .00 in precision 2
+    if precision == 2 and significant == 0:
+        if '.00' in base:
+            base = base[:-3]
+
+    # Scale the exponent back to normal
+    exponent = str(int(exponent) + 24)
+    # Format the exponent
+    if exponent == '0':
+        exponent_str = ''
+    else:
+        exponent_str = '×10^' + exponent
+
+    return base + exponent_str
+```
+
+Here's how it's used:
+
+```{python}
+numbers = [
+    1,
+    12,
+    123,
+    1234,
+    12345,
+    123456,
+    0.1234,
+    1.234,
+    12.34,
+    123.4,
+    1234,
+]
+for number in numbers:
+    print(f'{number:>7} becomes {round_engineering(number, significant=3)}')
+```
+
+[⇦ Back](../../python.html)
+
+</font>
