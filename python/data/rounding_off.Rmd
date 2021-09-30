@@ -198,19 +198,24 @@ If you are absolutely set on using statistician's rounding (or if you want to ma
 from decimal import Decimal, getcontext
 
 
-def round_to_sig_figs(number, num_sig_figs):
+def round_to_sig_figs(x, sigfigs):
     """Round a number off to a given number of significant figures."""
     # A special case is if the number is 0
-    if float(number) == 0.0:
-        output = '0' * num_sig_figs
+    if float(x) == 0.0:
+        output = '0' * sigfigs
         # Insert a decimal point
         output = output[0] + '.' + output[1:]
 
         return output
 
+    # A special case is if the number is 'nan'
+    if np.isnan(x):
+
+        return 'None'
+
     # Set the precision
-    getcontext().prec = num_sig_figs
-    rounded = Decimal(number)
+    getcontext().prec = sigfigs
+    rounded = Decimal(x)
     # The precision only kicks in when an arithmetic operation is performed
     rounded = rounded * 1
     # Remove scientific notation
@@ -221,19 +226,17 @@ def round_to_sig_figs(number, num_sig_figs):
     # Convert to string
     output = str(rounded)
 
-    # Remove trailing zero if one exists and is not necessary
-    if (
-        (len(output.replace('.', '')) > num_sig_figs) and
-        (output.endswith('.0'))
-    ):
-        if rounded.is_integer():
-            output = str(int(rounded))
+    # Count the number of significant figures
+    sigfigs_now = len(output.replace('-', '').replace('.', '').lstrip('0'))
+
+    # Remove trailing zero if one exists and it is not necessary
+    if ((sigfigs_now > sigfigs) and (output.endswith('.0'))):
+        output = output.removesuffix('.0')
 
     # Add trailing zeroes if necessary
-    if len(output.replace('.', '').lstrip('-').lstrip('0')) < num_sig_figs:
-        current_sig_figs = len(output.replace('.', '').lstrip('-').lstrip('0'))
-        discrepancy = num_sig_figs - current_sig_figs
-        # Append a decimal point
+    if sigfigs_now < sigfigs:
+        discrepancy = sigfigs - sigfigs_now
+        # Append a decimal point if necessary
         if '.' not in output:
             output = output + '.'
         # Add trailing zeroes

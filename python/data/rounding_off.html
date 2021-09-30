@@ -475,7 +475,7 @@ function e(n){return function(p){yd(64);return n(p)}}var f=[];if("https:"===B.lo
 d){b({wc:c,rj:d})})})}catch(b){}},we=function(a){return-1!==["email","phone_number","first_name","last_name","street"].indexOf(a)};var Oe=function(){this.eventModel={};this.targetConfig={};this.containerConfig={};this.globalConfig={};this.remoteConfig={};this.onSuccess=function(){};this.onFailure=function(){};this.setContainerTypeLoaded=function(){};this.getContainerTypeLoaded=function(){};this.eventId=void 0;this.isGtmEvent=!1},Pe=function(a){var b=new Oe;b.eventModel=a;return b},Qe=function(a,b){a.targetConfig=b;return a},Re=function(a,b){a.containerConfig=b;return a},Se=function(a,b){a.globalConfig=b;return a},Te=function(a,
 b){a.remoteConfig=b;return a},Ue=function(a,b){a.onSuccess=b;return a},Ve=function(a,b){a.setContainerTypeLoaded=b;return a},We=function(a,b){a.getContainerTypeLoaded=b;return a},Xe=function(a,b){a.onFailure=b;return a};
 Oe.prototype.getWithConfig=function(a){if(void 0!==this.eventModel[a])return this.eventModel[a];if(void 0!==this.targetConfig[a])return this.targetConfig[a];if(void 0!==this.containerConfig[a])return this.containerConfig[a];if(void 0!==this.globalConfig[a])return this.globalConfig[a];if(void 0!==this.remoteConfig[a])return this.remoteConfig[a]};
-var Ye=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ze=function(a,b,c){function d(g){$b(g)&&Ea(g,function(k,m){f=!0;e[k]=m})}var e={},f=!1;c&&1!==c||(d(a.remoteConfig[b]),d(a.globalConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var $e={},R=null,af=Math.random();$e.J="UA-156468188-1";$e.ad="9r0";$e.Ig="ChEI8J3QigYQ1ujivvKR1OevARInAER8H6SvDRyYP2ZRm2CayiurCvtZmm/i5d32PIIQ7XLKZfm0zcW1GgLhNw\x3d\x3d";var bf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},cf={__paused:!0,__tg:!0},df;for(df in bf)bf.hasOwnProperty(df)&&(cf[df]=!0);var ef="www.googletagmanager.com/gtm.js";
+var Ye=function(a){function b(d){for(var e=Object.keys(d),f=0;f<e.length;++f)c[e[f]]=1}var c={};b(a.eventModel);b(a.targetConfig);b(a.containerConfig);b(a.globalConfig);return Object.keys(c)},Ze=function(a,b,c){function d(g){$b(g)&&Ea(g,function(k,m){f=!0;e[k]=m})}var e={},f=!1;c&&1!==c||(d(a.remoteConfig[b]),d(a.globalConfig[b]),d(a.containerConfig[b]),d(a.targetConfig[b]));c&&2!==c||d(a.eventModel[b]);return f?e:void 0};var $e={},R=null,af=Math.random();$e.J="UA-156468188-1";$e.ad="9r0";$e.Ig="ChAI8MDVigYQgYrKkZ3czfgrEicAMH637CF/GVSsDD8zlA3O7IF3F9XN1FB4XmH33wMcDQf4EncKe9YaAuis";var bf={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},cf={__paused:!0,__tg:!0},df;for(df in bf)bf.hasOwnProperty(df)&&(cf[df]=!0);var ef="www.googletagmanager.com/gtm.js";
 ef="www.googletagmanager.com/gtag/js";var ff=ef,gf=La(""),hf=null,jf=null,kf="https://www.googletagmanager.com/a?id="+$e.J+"&cv=1",lf={},mf={},nf=function(){var a=R.sequence||1;R.sequence=a+1;return a};$e.Hg="";var of="";
 $e.Jb=of;var pf={},qf=new Aa,rf={},sf={},vf={name:"dataLayer",set:function(a,b){M(Va(a,b),rf);tf()},get:function(a){return uf(a,2)},reset:function(){qf=new Aa;rf={};tf()}},uf=function(a,b){return 2!=b?qf.get(a):wf(a)},wf=function(a){var b,c=a.split(".");b=b||[];for(var d=rf,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==wa(b,d))return}return d},xf=function(a,b){sf.hasOwnProperty(a)||(qf.set(a,b),M(Va(a,b),rf),tf())},tf=function(a){Ea(sf,function(b,c){qf.set(b,c);M(Va(b,
 void 0),rf);M(Va(b,c),rf);a&&delete sf[b]})},zf=function(a,b,c){pf[a]=pf[a]||{};pf[a][b]=yf(b,c)},yf=function(a,b){var c,d=1!==(void 0===b?2:b)?wf(a):qf.get(a);"array"===Tb(d)||"object"===Tb(d)?c=M(d):c=d;return c},Af=function(a,b){if(pf[a])return pf[a][b]},Bf=function(a,b){pf[a]&&delete pf[a][b]};var Cf,Df=!1,Ef=function(a){if(!Df){Df=!0;Cf=Cf||{}}return Cf[a]};var Ff=function(a){if(G.hidden)return!0;var b=a.getBoundingClientRect();if(b.top==b.bottom||b.left==b.right||!B.getComputedStyle)return!0;var c=B.getComputedStyle(a,null);if("hidden"===c.visibility)return!0;for(var d=a,e=c;d;){if("none"===e.display)return!0;var f=e.opacity,g=e.filter;if(g){var k=g.indexOf("opacity(");0<=k&&(g=g.substring(k+8,g.indexOf(")",k)),"%"==g.charAt(g.length-1)&&(g=g.substring(0,g.length-1)),f=Math.min(g,f))}if(void 0!==f&&0>=f)return!0;(d=d.parentElement)&&(e=B.getComputedStyle(d,
@@ -609,7 +609,7 @@ return b},consent:function(a){function b(){uo()&&M(a[2],{subcommand:a[1]})}if(3=
 yd(53);if(4!==a.length||!h(a[1])||!h(a[2])||!ta(a[3]))return;var b=xl(a[1]),c=String(a[2]),d=a[3];if(!b)return;ro||yd(43);if(!uo()||-1===wa(oo,b.prefix))return;nf();var e={};bk(M((e[O.Ka]=c,e[O.Ta]=d,e)));Fn(c,function(f){H(function(){return d(f)})},b.id);},js:function(a){if(2==a.length&&a[1].getTime){ro=!0;uo();var b={};return b.event="gtm.js",b["gtm.start"]=a[1].getTime(),b["gtm.uniqueEventId"]=to(a),b}},policy:function(){},set:function(a){var b;2==a.length&&$b(a[1])?
 b=M(a[1]):3==a.length&&h(a[1])&&(b={},$b(a[2])||va(a[2])?b[a[1]]=M(a[2]):b[a[1]]=a[2]);if(b){if(nf(),uo()){M(b);var c=M(b);An().push("set",[c])}b._clear=!0;return b}}},wo={policy:!0};var xo=function(a,b){var c=a.hide;if(c&&void 0!==c[b]&&c.end){c[b]=!1;var d=!0,e;for(e in c)if(c.hasOwnProperty(e)&&!0===c[e]){d=!1;break}d&&(c.end(),c.end=null)}},zo=function(a){var b=yo(),c=b&&b.hide;c&&c.end&&(c[a]=!0)};var Qo=function(a){if(Po(a))return a;this.m=a};Qo.prototype.mi=function(){return this.m};var Po=function(a){return!a||"object"!==Tb(a)||$b(a)?!1:"getUntrustedUpdateValue"in a};Qo.prototype.getUntrustedUpdateValue=Qo.prototype.mi;var Ro=[],So=!1,To=!1,Uo=function(a){return B["dataLayer"].push(a)},Vo=function(a){var b=R["dataLayer"],c=b?b.subscribers:1,d=0,e=a;return function(){++d===c&&(e(),e=null)}};
 function Wo(a){var b=a._clear;Ea(a,function(d,e){"_clear"!==d&&(b&&xf(d,void 0),xf(d,e))});hf||(hf=a["gtm.start"]);var c=a["gtm.uniqueEventId"];if(!a.event)return!1;c||(c=nf(),a["gtm.uniqueEventId"]=c,xf("gtm.uniqueEventId",c));return sk(a)}function Xo(){var a=Ro[0];if(null==a||"object"!==typeof a)return!1;if(a.event)return!0;if(Ga(a)){var b=a[0];if("config"===b||"event"===b||"js"===b)return!0}return!1}
-function Yo(){for(var a=!1;!To&&0<Ro.length;){if(!So&&Xo()){var b={},c=(b.event="gtm.init_consent",b),d={},e=(d.event="gtm.init",d);Ro.unshift(c,e);So=!0}To=!0;delete rf.eventModel;
+function Yo(){for(var a=!1;!To&&0<Ro.length;){if(!So&&Xo()){var b={},c=(b.event="gtm.init_consent",b),d={},e=(d.event="gtm.init",d);var f=Ro[0]["gtm.uniqueEventId"];f&&(c["gtm.uniqueEventId"]=f-2,e["gtm.uniqueEventId"]=f-1);Ro.unshift(c,e);So=!0}To=!0;delete rf.eventModel;
 tf();var g=Ro.shift();if(null!=g){var k=Po(g);if(k){var m=g;g=Po(m)?m.getUntrustedUpdateValue():void 0;for(var n=["gtm.allowlist","gtm.blocklist","gtm.whitelist","gtm.blacklist","tagTypeBlacklist"],p=0;p<n.length;p++){var q=n[p],t=uf(q,1);if(va(t)||$b(t))t=M(t);sf[q]=t}}try{if(ta(g))try{g.call(vf)}catch(A){}else if(va(g)){var u=g;if(h(u[0])){var r=u[0].split("."),v=r.pop(),x=u.slice(1),z=uf(r.join("."),2);if(void 0!==z&&null!==z)try{z[v].apply(z,x)}catch(A){}}}else{if(Ga(g)){a:{var w=g;if(w.length&&
 h(w[0])){var y=vo[w[0]];if(y&&(!k||!wo[w[0]])){g=y(w);break a}}g=void 0}if(!g){To=!1;continue}}a=Wo(g)||a}}finally{k&&tf(!0)}}To=!1}return!a}
 function Zo(){var b=Yo();try{xo(B["dataLayer"],$e.J)}catch(c){}return b}
@@ -836,19 +836,24 @@ print(&#39;G =&#39;, sigfig.round(&#39;6.67430&#39;, &#39;0.00015&#39;, format=&
 <pre class="python"><code>from decimal import Decimal, getcontext
 
 
-def round_to_sig_figs(number, num_sig_figs):
+def round_to_sig_figs(x, sigfigs):
     &quot;&quot;&quot;Round a number off to a given number of significant figures.&quot;&quot;&quot;
     # A special case is if the number is 0
-    if float(number) == 0.0:
-        output = &#39;0&#39; * num_sig_figs
+    if float(x) == 0.0:
+        output = &#39;0&#39; * sigfigs
         # Insert a decimal point
         output = output[0] + &#39;.&#39; + output[1:]
 
         return output
 
+    # A special case is if the number is &#39;nan&#39;
+    if np.isnan(x):
+
+        return &#39;None&#39;
+
     # Set the precision
-    getcontext().prec = num_sig_figs
-    rounded = Decimal(number)
+    getcontext().prec = sigfigs
+    rounded = Decimal(x)
     # The precision only kicks in when an arithmetic operation is performed
     rounded = rounded * 1
     # Remove scientific notation
@@ -859,19 +864,17 @@ def round_to_sig_figs(number, num_sig_figs):
     # Convert to string
     output = str(rounded)
 
-    # Remove trailing zero if one exists and is not necessary
-    if (
-        (len(output.replace(&#39;.&#39;, &#39;&#39;)) &gt; num_sig_figs) and
-        (output.endswith(&#39;.0&#39;))
-    ):
-        if rounded.is_integer():
-            output = str(int(rounded))
+    # Count the number of significant figures
+    sigfigs_now = len(output.replace(&#39;-&#39;, &#39;&#39;).replace(&#39;.&#39;, &#39;&#39;).lstrip(&#39;0&#39;))
+
+    # Remove trailing zero if one exists and it is not necessary
+    if ((sigfigs_now &gt; sigfigs) and (output.endswith(&#39;.0&#39;))):
+        output = output.removesuffix(&#39;.0&#39;)
 
     # Add trailing zeroes if necessary
-    if len(output.replace(&#39;.&#39;, &#39;&#39;).lstrip(&#39;-&#39;).lstrip(&#39;0&#39;)) &lt; num_sig_figs:
-        current_sig_figs = len(output.replace(&#39;.&#39;, &#39;&#39;).lstrip(&#39;-&#39;).lstrip(&#39;0&#39;))
-        discrepancy = num_sig_figs - current_sig_figs
-        # Append a decimal point
+    if sigfigs_now &lt; sigfigs:
+        discrepancy = sigfigs - sigfigs_now
+        # Append a decimal point if necessary
         if &#39;.&#39; not in output:
             output = output + &#39;.&#39;
         # Add trailing zeroes
