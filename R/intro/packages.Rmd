@@ -126,25 +126,53 @@ sudo apt-get upgrade
 
 Import a Library
 ================
-When you want to use functionality that is part of a particular package, you need to import the package as a library in the script.
+When you want to use functionality that is part of a particular package, you need to import the package as a library in the script by using the `library()` function:
 
-**Note:** it's best practice is to import all the libraries you need in a script right in the beginning, in alphabetical order:
-
-```{r message = FALSE}
+```{r, eval = FALSE}
+# Import the 'dplyr' library in order to be able to use its functions
 library(dplyr)
 ```
 
-You can now use the functionality that is included with the libraries you imported:
+```
+## 
+## Attaching package: 'dplyr'
+##
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+##
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+Some packages print text to the console when they are loaded, and `dplyr` is one of them (as you can see above). If you find this annoying you can turn the feature off by setting `warn.conflicts` to `FALSE`:
 
 ```{r}
-# Import the 'dplyr' library
-library(dplyr)
+# Import the 'dplyr' library without generating text
+library(dplyr, warn.conflicts = FALSE)
+```
+
+You can now use the functionality that is included with the library you imported:
+
+```{r}
 # As an example, you can now use the 'pipe' operator which puts a value into
 # the front of the next pair of brackets:
 x <- 49
 square_root <- x %>% sqrt()
 # This will be the square root of 49:
 square_root
+```
+
+**Note:** best practice is to import all of the libraries you need in a script right in the beginning, in alphabetical order:
+
+```{r}
+# Start of your script
+library(dplyr)
+library(ggplot2)
+library(logging)
+
+# The rest of your code follows from here...
 ```
 
 Call a Function From a Library
@@ -178,7 +206,7 @@ require(ggplot2)
 require(logging)
 ```
 
-Sometimes, the messages that get printed to the console when a package is installed or imported get annoying. Suppress them with `suppressPackageStartupMessages()`:
+Sometimes, the messages that get printed to the console when a package is installed or imported get annoying. Some (as mentioned above with regards to `dplyr`) give you the option to turn these off by, for example, setting `warn.conflicts` to `FALSE`. Other packages don't give you this option, but in those cases you can suppress messages by using `suppressPackageStartupMessages()`:
 
 ```{r}
 suppressPackageStartupMessages(require(ggplot2))
