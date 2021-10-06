@@ -2,6 +2,7 @@
 # install.packages("brglm2", repos = "http://cran.us.r-project.org")
 # install.packages("Cairo", repos = "http://cran.us.r-project.org")
 # install.packages("chron", repos = "http://cran.us.r-project.org")
+# install.packages("clinspacy", repos = "http://cran.us.r-project.org")
 # install.packages("devtools", repos = "http://cran.us.r-project.org")
 # install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
 # install.packages("dplyr", repos = "http://cran.us.r-project.org")
@@ -58,6 +59,7 @@ library(BlandAltmanLeh)
 library(brglm2)
 library(Cairo)
 library(chron)
+library(clinspacy)
 library(devtools)
 library(DiagrammeR)
 library(dplyr)
@@ -112,3 +114,22 @@ library(xtable)
 
 # Full run
 # [Finished in 384.6s]
+
+# Troubleshooting
+# ---------------
+#
+# ### clinspacy
+# - https://github.com/ML4LHS/clinspacy
+# - For clinspacy to work you need Python installed:
+#     - Download Python from https://www.python.org/
+#     - A shortcut to downloading Python 3.8 is here:
+#       https://www.python.org/ftp/python/3.8.10/python-3.8.10-macosx10.9.pkg
+# - Run the following in R (you might need to change the `use_python()` path
+#   if you have a version of Python that isn't 3.8 installed and/or you have
+#   it installed to a different location):
+# library(clinspacy)
+# clinspacy_init(miniconda = FALSE)
+# library(reticulate)
+# path = "/Library/Frameworks/Python.framework/Versions/3.8/bin/python3.8"
+# reticulate::use_python(path)
+# clinspacy("This patient has diabetes and CKD stage 3 but no HTN.")
