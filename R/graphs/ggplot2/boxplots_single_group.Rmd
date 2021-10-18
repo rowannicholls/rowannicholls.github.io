@@ -51,6 +51,17 @@ p <- p + xlab("")  # Remove the x-axis label
 print(p)
 ```
 
+Exclude the outliers by specifying `outlier.shape = NA` in the `geom_boxplot()` call then adjust the y-axis limits using `ylim()`:
+
+```{r, message = FALSE, warning = FALSE}
+# Plot
+p <- ggplot(titanic_train, aes(Survived, Fare))
+p <- p + geom_boxplot(outlier.shape = NA)
+p <- p + xlab("")  # Remove the x-axis label
+p <- p + ylim(0, 125)
+print(p)
+```
+
 Using a Data Frame in 'Long' Format
 -----------------------------------
 Take a look at the following dataset (which shows the results of the long jump finals at the last four Olympic Games):
@@ -195,6 +206,8 @@ print(p)
 
 Notice that we also removed the x-axis label now that we have it in the legend.
 
+Change the Colours
+------------------
 Edit what colours are used with the `scale_fill_manual()` function:
 
 ```{r}
@@ -211,6 +224,34 @@ print(p)
 ```
 
 We also renamed the title of the legend (from "Olympics" to "Olympic Games"). This was done with the `labs()` function. As it happens, this function can actually be used to set *all* of the plot's titles, so the `ggtitle()`, `ylab()` and `xlab()` functions were done away with and replaced by this one function.
+
+Colour All Boxes the Same
+-------------------------
+Instead of each box having a different colour - ie having the fill colour correspond to the x-variable - we can give each box the same colour using the same `fill` keyword argument but in the `geom_boxplot()` function, not the `aes()` function. The `alpha` argument can be used to set the transparency from 0 (completely see-through) to 1 (solid colour - ie the default):
+
+```{r}
+p <- ggplot(long_jump_men, aes(x = Olympics, y = Distance))
+p <- p + geom_boxplot(fill = "orange", alpha = 0.5)
+p <- p + labs(
+    title = "Men's Long Jump Finals", x = "", y = "Distance [m]",
+    fill = "Olympic Games"
+)
+print(p)
+```
+
+Colour the Outlines
+-------------------
+The `color` option is actually used to control the colour of the *outlines* of the boxes, as opposed to the *fill* colour:
+
+```{r}
+p <- ggplot(long_jump_men, aes(x = Olympics, y = Distance))
+p <- p + geom_boxplot(fill = "orange", alpha = 0.5, color = "red")
+p <- p + labs(
+    title = "Men's Long Jump Finals", x = "", y = "Distance [m]",
+    fill = "Olympic Games"
+)
+print(p)
+```
 
 Annotate Text - Sample Size & Sample Mean
 =========================================
