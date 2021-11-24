@@ -86,7 +86,7 @@ Ubuntu
     - Install Sublime Text from the Ubuntu Software app that comes pre-installed with Ubuntu
     - Check that it's worked by running `subl --version` at the terminal. It should return a build number.
     - To **update Sublime Text 4**:
-        + Open Sublime Text and, if an update is available, you should get a prompt inviting you to download it
+        + Open Sublime Text and, if an update is available, you should get a prompt inviting you to download it ("A new version of Sublime Text is available, download now?")
         - The link takes you to https://www.sublimetext.com/download
         - Go to "Linux repos" and follow the instructions for "apt":
             - Install the GPG key:
@@ -106,6 +106,7 @@ echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sou
 sudo apt-get update
 sudo apt-get install sublime-text
             ```
+        - Sometimes it takes a few days for the latest Sublime Text version to be available for Ubuntu. In other words, even if you follow the above steps, you might still see the "A new version of Sublime Text is available, download now?" prompt. You just have to live with that.
 - *Ubuntu 18.04*
     - Install Sublime Text from the Ubuntu Software app
     - *Updating Sublime Text:* It appears that there is a bit of a delay between a new version being released and it being available on snap (Ubuntu Software). When it does become available it gets downloaded automatically, but there will be a period during which every time you open Sublime Text it notifies you that a new version is available. It's annoying but just ignore it until it goes away. Don't try and download the latest version manually because it will try to install a separate version of Sublime parallel to the snap one. That could get complicated, so just leave it.
