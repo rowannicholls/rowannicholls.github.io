@@ -58,6 +58,68 @@ g <- prettyNum(-6.28000, zero.print = NULL)
 g
 ```
 
+# Equality
+If you want to test if something is equal to a particular number, you can use two equal signs: `==`
+
+```{r}
+# Is 2 + 2 equal to 4?
+2 + 2 == 4
+```
+
+As you can see, the word `TRUE` has been returned in response to the statement that 2 + 2 is equal to 4. This value `TRUE` is an example of a **Boolean**: something that is either true or false. If we instead make an incorrect statement then the Boolean that is returned has the opposite value: `FALSE`
+
+```{r}
+# Is 2 + 2 equal to 5?
+2 + 2 == 5
+```
+
+See more about Booleans on [this page](booleans.html).
+
+Remember that a single equals sign `=` is used for *assignment* - setting the value of a variable equal to something - whereas the double equals sign `==` is used for testing equality:
+
+```{r}
+# Is a equal to b?
+a = 2 + 2
+b = 4
+a == b
+```
+
+## Inequality
+If we instead want to test if something is *not equal* to a particular number we can use `!=`
+
+```{r}
+# Is 2 + 2 not equal to 5?
+2 + 2 != 5
+```
+
+In programming, the exclamation mark often means "not". So `!=` means "not equal to".
+
+Similarly, the 'greater than', 'less than', 'greater than or equal to' and 'less than or equal to' tests can be applied using the operators `>`, `<`, `>=` and `<=`, respectively:
+
+```{r}
+a = 2 > 1
+b = 1 < 2
+c = 1 >= 1
+d = 1 <= 1
+c(a, b, c, d)
+```
+
+These operators can be applied to an entire vector of numbers at once. This means, for example, that we can find out which numbers in a list are greater than 5:
+
+```{r}
+# Which of these numbers are greater than 5?
+x = c(1, 2, 3, 4, 5, 6, 7, 8)
+x > 5
+```
+
+If you prefer 1s and 0s to trues and falses, you can convert Booleans to numbers using the `as.integer()` function:
+
+```{r}
+# Which of these numbers are greater than 5?
+x = c(1, 2, 3, 4, 5, 6, 7, 8)
+as.integer(x > 5)
+```
+
 [⇦ Back](../../R.html)
 
 </font>
