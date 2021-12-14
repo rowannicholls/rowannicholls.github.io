@@ -1,0 +1,302 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Pie Charts<br><font size="5">_using explicitly defined axes in Matplotlib_</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+The Basics
+==========
+To make a pie chart in Python you need four things (and then another two things to display it properly):
+
+- The Matplotlib package
+    + Install this from the terminal with `python3.9 -m pip install matplotlib`
+        * Replace `python3.9` with whatever version of Python you have
+    - Import this package (specifically, the Pyplot sub-package) into your script under the alias `plt`
+- Data to plot as a pie chart. This can be a list of numbers. These numbers don't have to sum to 100 but, of course, they will be turned into percentages when Python represents them in the pie.
+- Axes on which to plot, created with the `axes()` function and, in this example, assigned to the variable `ax`
+- The `pie()` command from the Pyplot sub-package
+
+The command `show()` will then display the pie chart and `close()` will close it afterwards (this is necessary if you want to continue plotting other charts and graphs):
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Create data
+data = [12, 9, 17]
+
+# Plot
+ax = plt.axes()
+ax.pie(data)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Create data
+data = [12, 9, 17]
+
+# Plot
+ax = plt.axes()
+ax.pie(data)
+plt.show()
+plt.close()
+```
+
+Plot Title and Labels
+---------------------
+Of course, this is a little empty. Fill in the chart with a title and labels:
+
+- `set_title()` adds a title
+    + The `fontsize` keyword argument can be used to change the font size
+    + The special character "\\n" creates a new line
+- The `labels` parameter of the `pie()` function determines the labels
+
+In this example, the data is create as a dictionary. The values are plotted in the pie chart and the keys are used as the labels:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Plot
+ax = plt.axes()
+ax.pie(results.values(), labels=results.keys())
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Plot
+ax = plt.axes()
+ax.pie(results.values(), labels=results.keys())
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+Manual Annotations
+------------------
+Edit the labels to add more detail. If you are using special characters like "%" you will need to convert the labels to *raw strings* by prepending the letter "r":
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {r'Won (32%)': 12, r'Drawn (24%)': 9, r'Lost (45%)': 17}
+
+# Plot
+ax = plt.axes()
+ax.pie(results.values(), labels=results.keys())
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {r'Won (32%)': 12, r'Drawn (24%)': 9, r'Lost (45%)': 17}
+
+# Plot
+ax = plt.axes()
+ax.pie(results.values(), labels=results.keys())
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+Automatic Annotations
+---------------------
+A way of doing the above without having to hardcode the values in is provided by the `autopct` parameter. Set this equal to a formatting instruction such as would be used by an f-string (more about those [here](../../intro/f_strings.html)):
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Plot
+ax = plt.axes()
+ax.pie(results.values(), labels=results.keys(), autopct='%1.0f%%')
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Plot
+ax = plt.axes()
+ax.pie(results.values(), labels=results.keys(), autopct='%1.0f%%')
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+Colours
+=======
+- The colours of the pie's segments are customisable through the `colors` parameter
+    + In this example, a list of hex codes is used
+- To make the annotations more readable, a number of things can be done:
+    + Increase their font size (together with the font size of the labels) with the `textprops` parameter, which takes a dictionary as its input
+    + Add outlines:
+        * The `patheffects` sub-module is needed
+        * Access the annotations as objects by returning them from the `pie` function (in this example, they are assigned to the variable `autotexts`)
+        * Loops through the annotations and use their `set_path_effects()` method to set a path around each of them
+        * Make this path white to add contrast
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+import matplotlib.patheffects as path_effects
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Custom colours
+colors = ['#FDB913', '#000000', '#231F20']
+
+# Plot
+ax = plt.axes()
+patches, texts, autotexts = ax.pie(
+    results.values(), labels=results.keys(), autopct='%1.0f%%', colors=colors, textprops={'fontsize': 12}
+)
+for autotext in autotexts:
+    autotext.set_path_effects(
+        [path_effects.Stroke(linewidth=2, foreground='white'), path_effects.Normal()]
+    )
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+import matplotlib.patheffects as path_effects
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Custom colours
+colors = ['#FDB913', '#000000', '#231F20']
+
+# Plot
+ax = plt.axes()
+patches, texts, autotexts = ax.pie(
+    results.values(), labels=results.keys(), autopct='%1.0f%%', colors=colors, textprops={'fontsize': 12}
+)
+for autotext in autotexts:
+    autotext.set_path_effects(
+        [path_effects.Stroke(linewidth=2, foreground='white'), path_effects.Normal()]
+    )
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+Using Latex and Setting the Figure Size
+=======================================
+The run commands (RCs), which are the instructions that get read first when the code is run, can be edited with Pyplot's `rc()` command. These can be used to set the figure size and quality, to use Latex for the graph's text and to add Latex packages:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+import matplotlib.patheffects as path_effects
+
+# Settings
+x = 5  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Custom colours
+colors = ['#FDB913', '#000000', '#231F20']
+
+# Plot
+ax = plt.axes()
+patches, texts, autotexts = ax.pie(
+    results.values(), labels=results.keys(), autopct=r'%1.0f\%%', colors=colors, textprops={'fontsize': 14}
+)
+for autotext in autotexts:
+    autotext.set_path_effects(
+        [path_effects.Stroke(linewidth=1, foreground='white'), path_effects.Normal()]
+    )
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide', dpi=300}
+import matplotlib.pyplot as plt
+import matplotlib.patheffects as path_effects
+
+# Settings
+x = 5  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create data:
+# Wolverhampton Wanderers' results in the 2020–21 Premier League
+results = {'Won': 12, 'Drawn': 9, 'Lost': 17}
+
+# Custom colours
+colors = ['#FDB913', '#000000', '#231F20']
+
+# Plot
+ax = plt.axes()
+patches, texts, autotexts = ax.pie(
+    results.values(), labels=results.keys(), autopct=r'%1.0f\%%', colors=colors, textprops={'fontsize': 14}
+)
+for autotext in autotexts:
+    autotext.set_path_effects(
+        [path_effects.Stroke(linewidth=1, foreground='white'), path_effects.Normal()]
+    )
+ax.set_title("Wolverhampton Wanderers' results\nin the 2020–21 Premier League", fontsize=16)
+plt.show()
+plt.close()
+```
+
+Save Plot
+=========
+Finally, use `plt.savefig('name_of_plot.png')` to save the plot to your computer.
+
+[⇦ Back](../../../python.html)
+
+</font>
