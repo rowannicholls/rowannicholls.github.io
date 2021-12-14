@@ -865,6 +865,114 @@ plt.show()
 plt.close()
 ```
 
+Colours and Formatting
+======================
+All the formatting options detailed in the [Bar Plots with One Group of Data](https://rowannicholls.github.io/python/graphs/ax_based/barplots_single_group.html) page can be used here, including outlining the bars with the `edgecolor` and `linewidth` parameters:
+
+```{python, eval = FALSE}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Settings
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Custom Colours
+skyblue = '#87CEEB'
+maroon = '#800000'
+
+# Create data
+first_dose = {'UAE': 98.99, 'China': 84.83, 'Vietnam': 76.23, 'Turkey': 66.46, 'Pakistan': 37.65,}
+second_dose = {'UAE': 90.18, 'China': 74.53, 'Vietnam': 58.51, 'Turkey': 59.87, 'Pakistan': 25.25,}
+
+#
+# Plot
+#
+ax = plt.axes()
+for i, item in enumerate(first_dose.items()):
+    country = item[0]
+    dose1 = first_dose[country]
+    dose2 = second_dose[country]
+    bar1 = ax.bar(i, dose1, 0.8, color=skyblue, edgecolor=skyblue, linewidth=4)
+    bar2 = ax.bar(i, dose2, 0.75, color=maroon)
+# Set labels
+ax.set_title('Share of People Vaccinated Against COVID-19 (2021-12-12)', fontsize=18)
+ax.set_xlabel('Country', fontsize=14)
+ax.set_ylabel(r'Percent [\%]', fontsize=14)
+# y-Axis details
+ax.set_ylim(0, 100)
+# x-Axis details
+ax.set_xticks(np.arange(len(first_dose)))
+ax.set_xticklabels(first_dose.keys())
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(first_dose)) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim(-0.5, len(first_dose) - 0.5)
+# Legend
+plt.gca().legend(
+    (bar1[0], bar2[0]), ('First Dose', 'Second Dose'),
+    fontsize=10
+)
+# Finished
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide', dpi = 300}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Settings
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Custom Colours
+skyblue = '#87CEEB'
+maroon = '#800000'
+
+# Create data
+first_dose = {'UAE': 98.99, 'China': 84.83, 'Vietnam': 76.23, 'Turkey': 66.46, 'Pakistan': 37.65,}
+second_dose = {'UAE': 90.18, 'China': 74.53, 'Vietnam': 58.51, 'Turkey': 59.87, 'Pakistan': 25.25,}
+
+#
+# Plot
+#
+ax = plt.axes()
+for i, item in enumerate(first_dose.items()):
+    country = item[0]
+    dose1 = first_dose[country]
+    dose2 = second_dose[country]
+    bar1 = ax.bar(i, dose1, 0.8, color=skyblue, edgecolor=skyblue, linewidth=4)
+    bar2 = ax.bar(i, dose2, 0.75, color=maroon)
+# Set labels
+ax.set_title('Share of People Vaccinated Against COVID-19 (2021-12-12)', fontsize=18)
+ax.set_xlabel('Country', fontsize=14)
+ax.set_ylabel(r'Percent [\%]', fontsize=14)
+# y-Axis details
+ax.set_ylim(0, 100)
+# x-Axis details
+ax.set_xticks(np.arange(len(first_dose)))
+ax.set_xticklabels(first_dose.keys())
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(first_dose)) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim(-0.5, len(first_dose) - 0.5)
+# Legend
+plt.gca().legend(
+    (bar1[0], bar2[0]), ('First Dose', 'Second Dose'),
+    fontsize=10
+)
+# Finished
+plt.show()
+plt.close()
+```
+
 Save Plot
 =========
 Finally, use `plt.savefig('name_of_plot.png')` to save the plot to your computer.

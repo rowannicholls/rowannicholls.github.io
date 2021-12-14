@@ -503,6 +503,101 @@ plt.show()
 plt.close()
 ```
 
+Outlines
+========
+Getting outlines on the bars can be done using keywords arguments in the `bar()` call:
+
+- `edgecolor` sets the colour
+- `linewidth` sets the width
+
+```{python, eval = FALSE}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Settings
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Custom Colours
+skyblue = '#87CEEB'
+maroon = '#800000'
+
+# Create data
+london_rainfall = {
+    'Jan': 55.2, 'Feb': 40.9, 'Mar': 41.6, 'Apr': 43.7, 'May': 49.4, 'Jun': 45.1,
+    'Jul': 44.5, 'Aug': 49.5, 'Sep': 49.1, 'Oct': 68.5, 'Nov': 59.0, 'Dec': 55.2,
+}
+
+#
+# Plot
+#
+ax = plt.axes()
+for i, item in enumerate(london_rainfall.items()):
+    rainfall = item[1]
+    bar = ax.bar(i, rainfall, 0.8, color=maroon, edgecolor=skyblue, linewidth=4)
+# Set labels
+ax.set_title('Average Precipitation in London', fontsize=18)
+ax.set_xlabel('Month', fontsize=14)
+ax.set_ylabel('Rainfall [mm]', fontsize=14)
+# x-Axis details
+ax.set_xticks(np.arange(len(london_rainfall)))
+ax.set_xticklabels(london_rainfall.keys())
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(london_rainfall)) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim(-0.5, len(london_rainfall) - 0.5)
+# Finished
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide', dpi = 300}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Settings
+x = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Custom Colours
+skyblue = '#87CEEB'
+maroon = '#800000'
+
+# Create data
+london_rainfall = {
+    'Jan': 55.2, 'Feb': 40.9, 'Mar': 41.6, 'Apr': 43.7, 'May': 49.4, 'Jun': 45.1,
+    'Jul': 44.5, 'Aug': 49.5, 'Sep': 49.1, 'Oct': 68.5, 'Nov': 59.0, 'Dec': 55.2,
+}
+
+#
+# Plot
+#
+ax = plt.axes()
+for i, item in enumerate(london_rainfall.items()):
+    rainfall = item[1]
+    bar = ax.bar(i, rainfall, 0.8, color=maroon, edgecolor=skyblue, linewidth=4)
+# Set labels
+ax.set_title('Average Precipitation in London', fontsize=18)
+ax.set_xlabel('Month', fontsize=14)
+ax.set_ylabel('Rainfall [mm]', fontsize=14)
+# x-Axis details
+ax.set_xticks(np.arange(len(london_rainfall)))
+ax.set_xticklabels(london_rainfall.keys())
+ax.tick_params(axis='x', length=0)
+xlocs = np.arange(len(london_rainfall)) - 0.5
+ax.set_xticks(xlocs, minor=True)
+ax.set_xlim(-0.5, len(london_rainfall) - 0.5)
+# Finished
+plt.show()
+plt.close()
+```
+
 Save Plot
 =========
 Finally, use `plt.savefig('name_of_plot.png')` to save the plot to your computer.
