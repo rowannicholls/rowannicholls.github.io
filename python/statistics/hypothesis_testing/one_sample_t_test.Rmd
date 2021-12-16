@@ -24,96 +24,94 @@ DiagrammeR::grViz(
     "digraph statistical_tests {
         rankdir='LR'
 
-        node [fontname=Helvetica, shape=box, width=5, fillcolor=LightBlue, style=filled, fontsize=42]
-            'Hypothesis'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
+            'Start:\nSet a hypothesis'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
                 'Continuous data'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                    'Relationships'
+                        RIndependent [label='Independent\ngroups']
+                            'Regression analysis'
+                                'Multiple\nlinear\nregression' [shape = 'oval']
+                        RNonindependent [label='Non-independent\ngroups']
+                            'Correlation analysis'
+                                RParametric [label='Parametric']
+                                    'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
+                                RNonparametric [label='Nonparametric']
+                                    'Spearman\nrank\ncorrelation' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
                     'Differences'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                        'Variances'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
                         'Means'
                             'Two groups'
                                 TGParametric [label='Parametric']
-                                    'One-sample t-test'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                                    'One-sample\nt-test' [shape = 'oval']
         node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                                    'Paired t-test'
-                                    'Unpaired t-test'
+                                    'Paired\nt-test' [shape = 'oval']
+                                    'Unpaired\nt-test' [shape = 'oval']
                                 TGNonparametric [label='Nonparametric']
-                                    TGIndependent [label='Independent groups']
-                                        'Mann-Whitney U test'
-                                    TGNonindependent [label='Non-independent groups']
-                                        'Wilcoxon signed-rank test'
+                                    TGIndependent [label='Independent\ngroups']
+                                        'Mann-Whitney\nU test' [shape = 'oval']
+                                    TGNonindependent [label='Non-independent\ngroups']
+                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
                             'More than two groups'
                                 MGParametric [label='Parametric']
-                                    'ANOVA'
+                                    'ANOVA' [shape = 'oval']
                                 MGNonparametric [label='Nonparametric']
-                                    MGIndependent [label='Independent groups']
-                                        'Kruskal-Wallis one-way ANOVA'
-                                    MGNonindependent [label='Non-independent groups']
-                                        'Friedman two-way ANOVA'
-                        'Variances'
-                    'Relationships'
-                        RIndependent [label='Independent groups']
-                            'Regression analysis'
-                                'Multiple Linear Regression'
-                        RNonindependent [label='Non-independent groups']
-                            'Correlation analysis'
-                                RParametric [label='Parametric']
-                                    'Pearson product-moment r correlation'
-                                RNonparametric [label='Nonparametric']
-                                    'Spearman Rank Correlation'
-                'Discrete, categorical data'
-                    'Chi-squared goodness-of-fit test'
-                    'Chi-squared independence test'
-                    'Chi-squared homogeneity test'
+                                    MGIndependent [label='Independent\ngroups']
+                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
+                                    MGNonindependent [label='Non-independent\ngroups']
+                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
+                'Discrete,\ncategorical data'
+                    'Chi-squared\ngoodness-of-fit test' [shape = 'oval']
+                    'Chi-squared\nindependence test' [shape = 'oval']
+                    'Chi-squared\nhomogeneity test' [shape = 'oval']
 
-        {
-            rank = same;
-            TGIndependent 'Mann-Whitney U test'
-            TGNonindependent 'Wilcoxon signed-rank test'
-            MGIndependent 'Kruskal-Wallis one-way ANOVA'
-            MGNonindependent 'Friedman two-way ANOVA'
-        }
-
-        'Hypothesis' -> 'Continuous data';
-            'Continuous data' -> 'Differences'
-                'Differences' -> 'Means'
-                    'Means' -> 'Two groups'
-                        'Two groups' -> TGParametric
-                            TGParametric -> 'One-sample t-test'
-                            TGParametric -> 'Paired t-test'
-                            TGParametric -> 'Unpaired t-test'
-                        'Two groups' -> TGNonparametric
-                            TGNonparametric -> TGIndependent
-                                TGIndependent -> 'Mann-Whitney U test'
-                            TGNonparametric -> TGNonindependent
-                                TGNonindependent -> 'Wilcoxon signed-rank test'
-                    'Means' -> 'More than two groups'
-                        'More than two groups' -> MGParametric
-                            MGParametric -> 'ANOVA'
-                        'More than two groups' -> MGNonparametric
-                            MGNonparametric -> MGIndependent
-                                MGIndependent -> 'Kruskal-Wallis one-way ANOVA'
-                            MGNonparametric -> MGNonindependent
-                                MGNonindependent -> 'Friedman two-way ANOVA'
-                'Differences' -> 'Variances'
-            'Continuous data' -> 'Relationships'
-                'Relationships' -> RIndependent
-                    RIndependent -> 'Regression analysis'
-                        'Regression analysis' -> 'Multiple Linear Regression'
-                'Relationships' -> RNonindependent
-                    RNonindependent -> 'Correlation analysis'
-                        'Correlation analysis' -> RParametric
-                            RParametric -> 'Pearson product-moment r correlation'
-                        'Correlation analysis' -> RNonparametric
-                            RNonparametric -> 'Spearman Rank Correlation'
-        'Hypothesis' -> 'Discrete, categorical data'
-            'Discrete, categorical data' -> 'Chi-squared goodness-of-fit test'
-            'Discrete, categorical data' -> 'Chi-squared independence test'
-            'Discrete, categorical data' -> 'Chi-squared homogeneity test'
+            'Start:\nSet a hypothesis' -> 'Continuous data'
+                'Continuous data' -> 'Differences'
+                    'Differences' -> 'Means'
+                        'Means' -> 'Two groups'
+                            'Two groups' -> TGParametric
+                                TGParametric -> 'One-sample\nt-test'
+                                TGParametric -> 'Paired\nt-test'
+                                TGParametric -> 'Unpaired\nt-test'
+                            'Two groups' -> TGNonparametric
+                                TGNonparametric -> TGIndependent
+                                    TGIndependent -> 'Mann-Whitney\nU test'
+                                TGNonparametric -> TGNonindependent
+                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
+                        'Means' -> 'More than two groups'
+                            'More than two groups' -> MGParametric
+                                MGParametric -> 'ANOVA'
+                            'More than two groups' -> MGNonparametric
+                                MGNonparametric -> MGIndependent
+                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
+                                MGNonparametric -> MGNonindependent
+                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
+                    'Differences' -> 'Variances'
+                'Continuous data' -> 'Relationships'
+                    'Relationships' -> RIndependent
+                        RIndependent -> 'Regression analysis'
+                            'Regression analysis' -> 'Multiple\nlinear\nregression'
+                    'Relationships' -> RNonindependent
+                        RNonindependent -> 'Correlation analysis'
+                            'Correlation analysis' -> RParametric
+                                RParametric -> 'Pearson\nproduct-moment\nr correlation'
+                            'Correlation analysis' -> RNonparametric
+                                RNonparametric -> 'Spearman\nrank\ncorrelation'
+            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ngoodness-of-fit test'
+                'Discrete,\ncategorical data' -> 'Chi-squared\nindependence test'
+                'Discrete,\ncategorical data' -> 'Chi-squared\nhomogeneity test'
 
     labelloc='t';
     fontsize=70;
-    label='Flowchart for Choosing a Statistical Test';
+    label='Flowchart for Choosing a Statistical Test\n\n';
     }",
-    height=400, width=900
+    width=900
 )
 ```
 
