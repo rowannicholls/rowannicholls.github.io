@@ -161,7 +161,7 @@ DiagrammeR::grViz(
                                 RParametric [label='Parametric']
                                     'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
                                 RNonparametric [label='Non-parametric']
-                                    'Spearman\nrank\ncorrelation' [shape = 'oval']
+                                    'Spearman\nrank correlation' [shape = 'oval']
         node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
                     'Differences'
         node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
@@ -169,11 +169,15 @@ DiagrammeR::grViz(
         node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
                         'Averages (means\nor medians)'
         node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                            'Two\ngroups'
+                            'One group'
+                                OGParametric [label='Parametric']
+                                    'One-sample t-test' [shape = 'oval']
+                            'Two groups'
                                 TGParametric [label='Parametric']
-                                    'One-sample\nt-test' [shape = 'oval']
-                                    'Paired\nt-test' [shape = 'oval']
-                                    'Unpaired\nt-test' [shape = 'oval']
+                                    PIndependent [label='Independent\ngroups']
+                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
+                                    PNonIndependent [label='Non-independent\ngroups']
+                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
                                 TGNonparametric [label='Non-parametric']
                                     TGIndependent [label='Independent\ngroups']
                                         'Mann-Whitney\nU test' [shape = 'oval']
@@ -190,20 +194,26 @@ DiagrammeR::grViz(
                                         'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
                                     MGNonindependent [label='Non-independent\ngroups']
                                         'Friedman\ntwo-way ANOVA' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
                 'Discrete,\ncategorical data'
-                    'Chi-squared\ngoodness-of-fit test' [shape = 'oval']
-                    'Chi-squared\nindependence test' [shape = 'oval']
-                    'Chi-squared\nhomogeneity test' [shape = 'oval']
+                    'Chi-squared\ntest'
+                        'Goodness-of-fit\ntest' [shape = 'oval']
+                        'Independence\ntest' [shape = 'oval']
+                        'Homogeneity\ntest' [shape = 'oval']
 
             'Start:\nSet a hypothesis' -> 'Continuous data'
                 'Continuous data' -> 'Differences'
                     'Differences' -> 'Averages (means\nor medians)'
-                        'Averages (means\nor medians)' -> 'Two\ngroups'
-                            'Two\ngroups' -> TGParametric
-                                TGParametric -> 'One-sample\nt-test'
-                                TGParametric -> 'Paired\nt-test'
-                                TGParametric -> 'Unpaired\nt-test'
-                            'Two\ngroups' -> TGNonparametric
+                        'Averages (means\nor medians)' -> 'One group'
+                            'One group' -> OGParametric
+                                OGParametric -> 'One-sample t-test'
+                        'Averages (means\nor medians)' -> 'Two groups'
+                            'Two groups' -> TGParametric
+                                TGParametric -> PIndependent
+                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
+                                TGParametric -> PNonIndependent
+                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
+                            'Two groups' -> TGNonparametric
                                 TGNonparametric -> TGIndependent
                                     TGIndependent -> 'Mann-Whitney\nU test'
                                 TGNonparametric -> TGNonindependent
@@ -226,11 +236,12 @@ DiagrammeR::grViz(
                             'Correlation\nanalysis' -> RParametric
                                 RParametric -> 'Pearson\nproduct-moment\nr correlation'
                             'Correlation\nanalysis' -> RNonparametric
-                                RNonparametric -> 'Spearman\nrank\ncorrelation'
+                                RNonparametric -> 'Spearman\nrank correlation'
             'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
-                'Discrete,\ncategorical data' -> 'Chi-squared\ngoodness-of-fit test'
-                'Discrete,\ncategorical data' -> 'Chi-squared\nindependence test'
-                'Discrete,\ncategorical data' -> 'Chi-squared\nhomogeneity test'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
+                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
+                    'Chi-squared\ntest' -> 'Independence\ntest'
+                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
 
     labelloc='t';
     fontsize=70;

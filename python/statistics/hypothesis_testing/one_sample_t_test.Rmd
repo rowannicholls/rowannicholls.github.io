@@ -31,62 +31,72 @@ DiagrammeR::grViz(
         node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
                     'Relationships'
                         RIndependent [label='Independent\ngroups']
-                            'Regression analysis'
+                            'Regression\nanalysis'
                                 'Multiple\nlinear\nregression' [shape = 'oval']
                         RNonindependent [label='Non-independent\ngroups']
-                            'Correlation analysis'
+                            'Correlation\nanalysis'
                                 RParametric [label='Parametric']
                                     'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
-                                RNonparametric [label='Nonparametric']
-                                    'Spearman\nrank\ncorrelation' [shape = 'oval']
+                                RNonparametric [label='Non-parametric']
+                                    'Spearman\nrank correlation' [shape = 'oval']
         node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
                     'Differences'
         node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
                         'Variances'
         node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
-                        'Means'
+                        'Averages (means\nor medians)'
+                            'One group'
+                                OGParametric [label='Parametric']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                                    'One-sample t-test' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
                             'Two groups'
                                 TGParametric [label='Parametric']
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
-                                    'One-sample\nt-test' [shape = 'oval']
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                                    'Paired\nt-test' [shape = 'oval']
-                                    'Unpaired\nt-test' [shape = 'oval']
-                                TGNonparametric [label='Nonparametric']
+                                    PIndependent [label='Independent\ngroups']
+                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
+                                    PNonIndependent [label='Non-independent\ngroups']
+                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
+                                TGNonparametric [label='Non-parametric']
                                     TGIndependent [label='Independent\ngroups']
                                         'Mann-Whitney\nU test' [shape = 'oval']
                                     TGNonindependent [label='Non-independent\ngroups']
                                         'Wilcoxon\nsigned-rank test' [shape = 'oval']
-                            'More than two groups'
+                            'More than\ntwo groups'
                                 MGParametric [label='Parametric']
+
                                     'ANOVA' [shape = 'oval']
-                                MGNonparametric [label='Nonparametric']
+                                MGNonparametric [label='Non-parametric']
                                     MGIndependent [label='Independent\ngroups']
                                         'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
                                     MGNonindependent [label='Non-independent\ngroups']
                                         'Friedman\ntwo-way ANOVA' [shape = 'oval']
                 'Discrete,\ncategorical data'
-                    'Chi-squared\ngoodness-of-fit test' [shape = 'oval']
-                    'Chi-squared\nindependence test' [shape = 'oval']
-                    'Chi-squared\nhomogeneity test' [shape = 'oval']
+                    'Chi-squared\ntest'
+                        'Goodness-of-fit\ntest' [shape = 'oval']
+                        'Independence\ntest' [shape = 'oval']
+                        'Homogeneity\ntest' [shape = 'oval']
 
             'Start:\nSet a hypothesis' -> 'Continuous data'
                 'Continuous data' -> 'Differences'
-                    'Differences' -> 'Means'
-                        'Means' -> 'Two groups'
+                    'Differences' -> 'Averages (means\nor medians)'
+                        'Averages (means\nor medians)' -> 'One group'
+                            'One group' -> OGParametric
+                                OGParametric -> 'One-sample t-test'
+                        'Averages (means\nor medians)' -> 'Two groups'
                             'Two groups' -> TGParametric
-                                TGParametric -> 'One-sample\nt-test'
-                                TGParametric -> 'Paired\nt-test'
-                                TGParametric -> 'Unpaired\nt-test'
+                                TGParametric -> PIndependent
+                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
+                                TGParametric -> PNonIndependent
+                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
                             'Two groups' -> TGNonparametric
                                 TGNonparametric -> TGIndependent
                                     TGIndependent -> 'Mann-Whitney\nU test'
                                 TGNonparametric -> TGNonindependent
                                     TGNonindependent -> 'Wilcoxon\nsigned-rank test'
-                        'Means' -> 'More than two groups'
-                            'More than two groups' -> MGParametric
+                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
+                            'More than\ntwo groups' -> MGParametric
                                 MGParametric -> 'ANOVA'
-                            'More than two groups' -> MGNonparametric
+                            'More than\ntwo groups' -> MGNonparametric
                                 MGNonparametric -> MGIndependent
                                     MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
                                 MGNonparametric -> MGNonindependent
@@ -94,18 +104,19 @@ DiagrammeR::grViz(
                     'Differences' -> 'Variances'
                 'Continuous data' -> 'Relationships'
                     'Relationships' -> RIndependent
-                        RIndependent -> 'Regression analysis'
-                            'Regression analysis' -> 'Multiple\nlinear\nregression'
+                        RIndependent -> 'Regression\nanalysis'
+                            'Regression\nanalysis' -> 'Multiple\nlinear\nregression'
                     'Relationships' -> RNonindependent
-                        RNonindependent -> 'Correlation analysis'
-                            'Correlation analysis' -> RParametric
+                        RNonindependent -> 'Correlation\nanalysis'
+                            'Correlation\nanalysis' -> RParametric
                                 RParametric -> 'Pearson\nproduct-moment\nr correlation'
-                            'Correlation analysis' -> RNonparametric
-                                RNonparametric -> 'Spearman\nrank\ncorrelation'
+                            'Correlation\nanalysis' -> RNonparametric
+                                RNonparametric -> 'Spearman\nrank correlation'
             'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
-                'Discrete,\ncategorical data' -> 'Chi-squared\ngoodness-of-fit test'
-                'Discrete,\ncategorical data' -> 'Chi-squared\nindependence test'
-                'Discrete,\ncategorical data' -> 'Chi-squared\nhomogeneity test'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
+                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
+                    'Chi-squared\ntest' -> 'Independence\ntest'
+                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
 
     labelloc='t';
     fontsize=70;
