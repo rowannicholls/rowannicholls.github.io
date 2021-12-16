@@ -67,30 +67,31 @@ group as follows:
 ```{python}
 import matplotlib.pyplot as plt
 
-# PLOT
+# Plot
 plt.scatter(boston['data'][:, 6], boston['target'])
 plt.title('Boston house prices dataset')
 x = boston['feature_names'][6]
 plt.xlabel(x + ' (proportion of owner-occupied units built prior to 1940)')
 plt.ylabel("MEDV (Median value of owner-occupied homes in $1000's)")
-plt.show()
 ```
 
-The data is much easier to work with if it is converted to a data frame:
+The data is much easier to work with if it is converted into a data frame:
 
 ```{python}
 import pandas as pd
 
-# CONVERT TO DATA FRAME
-boston_df = pd.DataFrame(boston['data'], columns=boston['feature_names'])
-boston_df['MEDV'] = boston['target']
+# Extract the data
+data = pd.DataFrame(boston['data'], columns=boston['feature_names'])
+# Extract the target
+target = pd.DataFrame(boston['target'], columns=['MEDV'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
 
-# PLOT
-plt.scatter(boston_df['RM'], boston_df['MEDV'])
+# Plot
+plt.scatter(df['RM'], df['MEDV'])
 plt.title('Boston house prices dataset')
 plt.xlabel('RM (average number of rooms per dwelling)')
 plt.ylabel("MEDV (Median value of owner-occupied homes in $1000's)")
-plt.show('boston_df.png')
 ```
 
 </font>

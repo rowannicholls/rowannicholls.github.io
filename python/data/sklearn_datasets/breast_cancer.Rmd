@@ -62,8 +62,8 @@ print(breast_cancer['target_names'])
 ```
 
 ```{python}
-# Which categorisation each data point is in (0, 1)
-print(breast_cancer['target'][:10])
+# Which categorisation each data point is in (1 = malignant, 0 = benign)
+print(breast_cancer['target'])
 ```
 
 The groups of data can be plotted against each other or against the target
@@ -72,37 +72,30 @@ group as follows:
 ```{python}
 import matplotlib.pyplot as plt
 
-# PLOT
-plt.scatter(
-    breast_cancer['data'][:, 0], breast_cancer['data'][:, 8],
-    c=breast_cancer['target']
-)
+# Plot
+plt.scatter(breast_cancer['data'][:, 0], breast_cancer['data'][:, 8], c=breast_cancer['target'])
 plt.title('Breast cancer wisconsin (diagnostic) dataset')
 plt.xlabel(breast_cancer['feature_names'][0])
 plt.ylabel(breast_cancer['feature_names'][8])
-plt.show()
 ```
 
-The data is much easier to work with if it is converted to a data frame:
+The data is much easier to work with if it is converted into a data frame:
 
 ```{python}
 import pandas as pd
 
-# CONVERT TO DATA FRAME
-breast_cancer_df = pd.DataFrame(
-    breast_cancer['data'], columns=breast_cancer['feature_names']
-)
-breast_cancer_df['Categorisation'] = breast_cancer['target']
+# Extract the data
+data = pd.DataFrame(breast_cancer['data'], columns=breast_cancer['feature_names'])
+# Extract the target
+target = pd.DataFrame(breast_cancer['target'], columns=['Categorisation'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
 
-# PLOT
-plt.scatter(
-    breast_cancer_df['mean area'], breast_cancer_df['mean smoothness'],
-    c=breast_cancer_df['Categorisation']
-)
+# Plot
+plt.scatter(df['mean area'], df['mean smoothness'], c=df['Categorisation'])
 plt.title('Breast cancer wisconsin (diagnostic) dataset')
 plt.xlabel('mean area')
 plt.ylabel('mean smoothness')
-plt.show()
 ```
 
 </font>

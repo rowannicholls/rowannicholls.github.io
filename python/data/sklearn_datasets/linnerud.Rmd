@@ -79,30 +79,30 @@ group as follows:
 ```{python}
 import matplotlib.pyplot as plt
 
-# PLOT
+# Plot
 plt.scatter(linnerud['data'][:, 0], linnerud['target'][:, 0])
 plt.title('Linnerrud dataset')
 plt.xlabel(linnerud['feature_names'][0])
 plt.ylabel(linnerud['target_names'][0])
-plt.show()
 ```
 
-The data is much easier to work with if it is converted to a data frame:
+The data is much easier to work with if it is converted into a data frame:
 
 ```{python}
 import pandas as pd
 
-# CONVERT TO DATA FRAME
-df_1 = pd.DataFrame(linnerud['data'], columns=linnerud['feature_names'])
-df_2 = pd.DataFrame(linnerud['target'], columns=linnerud['target_names'])
-linnerud_df = pd.concat([df_1, df_2], axis=1)
+# Extract the data
+data = pd.DataFrame(linnerud['data'], columns=linnerud['feature_names'])
+# Extract the target
+target = pd.DataFrame(linnerud['target'], columns=linnerud['target_names'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
 
-# PLOT
-plt.scatter(linnerud_df['Waist'], linnerud_df['Situps'])
+# Plot
+plt.scatter(df['Waist'], df['Situps'])
 plt.title('Linnerrud dataset')
 plt.xlabel('Waist')
 plt.ylabel('Situps')
-plt.show()
 ```
 
 </font>

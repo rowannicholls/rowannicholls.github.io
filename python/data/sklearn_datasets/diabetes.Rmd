@@ -74,30 +74,31 @@ group as follows:
 ```{python}
 import matplotlib.pyplot as plt
 
-# PLOT
+# Plot
 plt.scatter(diabetes['data'][:, 6], diabetes['target'])
 plt.title('Diabetes dataset')
 x = diabetes['feature_names'][6]
 plt.xlabel(x + ' (hdl, high-density lipoproteins)')
 plt.ylabel('Disease progression one year after baseline')
-plt.show()
 ```
 
-The data is much easier to work with if it is converted to a data frame:
+The data is much easier to work with if it is converted into a data frame:
 
 ```{python}
 import pandas as pd
 
-# CONVERT TO DATA FRAME
-diabetes_df = pd.DataFrame(diabetes['data'], columns=diabetes['feature_names'])
-diabetes_df['Y'] = diabetes['target']
+# Extract the data
+data = pd.DataFrame(diabetes['data'], columns=diabetes['feature_names'])
+# Extract the target
+target = pd.DataFrame(diabetes['target'], columns=['Y'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
 
-# PLOT
-plt.scatter(diabetes_df['bp'], diabetes_df['Y'])
+# Plot
+plt.scatter(df['bp'], df['Y'])
 plt.title('Diabetes dataset')
 plt.xlabel('bp (average blood pressure)')
 plt.ylabel('Disease progression one year after baseline')
-plt.show()
 ```
 
 </font>

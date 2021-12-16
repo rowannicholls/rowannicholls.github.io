@@ -73,32 +73,30 @@ group as follows:
 ```{python}
 import matplotlib.pyplot as plt
 
-# PLOT
+# Plot
 plt.scatter(iris['data'][:, 1], iris['data'][:, 3], c=iris['target'])
 plt.title('Iris plants dataset')
 plt.xlabel(iris['feature_names'][1])
 plt.ylabel(iris['feature_names'][3])
-plt.show()
 ```
 
-The data is much easier to work with if it is converted to a data frame:
+The data is much easier to work with if it is converted into a data frame:
 
 ```{python}
 import pandas as pd
 
-# CONVERT TO DATA FRAME
-iris_df = pd.DataFrame(iris['data'], columns=iris['feature_names'])
-iris_df['Species'] = iris['target']
+# Extract the data
+data = pd.DataFrame(iris['data'], columns=iris['feature_names'])
+# Extract the target
+target = pd.DataFrame(iris['target'], columns=['Species'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
 
-# PLOT
-plt.scatter(
-    iris_df['sepal length (cm)'], iris_df['petal length (cm)'],
-    c=iris_df['Species']
-)
+# Plot
+plt.scatter(df['sepal length (cm)'], df['petal length (cm)'], c=df['Species'])
 plt.title('Iris plants dataset')
 plt.xlabel('sepal length (cm)')
 plt.ylabel('petal length (cm)')
-plt.show()
 ```
 
 </font>

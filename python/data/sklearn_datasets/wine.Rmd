@@ -67,7 +67,7 @@ group as follows:
 ```{python}
 import matplotlib.pyplot as plt
 
-# PLOT
+# Plot
 plt.scatter(wine['data'][:, 0], wine['data'][:, 9], c=wine['target'])
 plt.title('Wine recognition dataset')
 plt.xlabel(wine['feature_names'][0])
@@ -75,20 +75,20 @@ plt.ylabel(wine['feature_names'][9])
 plt.show()
 ```
 
-The data is much easier to work with if it is converted to a data frame:
+The data is much easier to work with if it is converted into a data frame:
 
 ```{python}
 import pandas as pd
 
-# CONVERT TO DATA FRAME
-wine_df = pd.DataFrame(wine['data'], columns=wine['feature_names'])
-wine_df['Cultivator'] = wine['target']
+# Extract the data
+data = pd.DataFrame(wine['data'], columns=wine['feature_names'])
+# Extract the target
+target = pd.DataFrame(wine['target'], columns=['cultivator'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
 
-# PLOT
-plt.scatter(
-    wine_df['hue'], wine_df['malic_acid'],
-    c=wine_df['Cultivator']
-)
+# Plot
+plt.scatter(df['hue'], df['malic_acid'], c=df['cultivator'])
 plt.title('Wine recognition dataset')
 plt.xlabel('hue')
 plt.ylabel('malic_acid')

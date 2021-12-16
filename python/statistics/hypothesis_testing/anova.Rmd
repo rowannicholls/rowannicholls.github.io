@@ -1,0 +1,311 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>ANOVA'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- https://blog.minitab.com/en/adventures-in-statistics-2/understanding-analysis-of-variance-anova-and-the-f-test -->
+
+**Analysis of variance (ANOVA)** is a category of hypothesis test that can be considered when comparing more than two groups of numerical data.
+
+Example Data
+============
+As an example, let's use the *wine recognition dataset* from Scikit-Learn (more info on this dataset [here](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#wine-recognition-dataset) and [here](https://rowannicholls.github.io/python/data/sklearn_datasets/wine.html)). Assuming you have Scikit-Learn installed (this can be done from the terminal with `python3.9 -m pip install sklearn`) this dataset can be loaded with:
+
+```{python}
+from sklearn.datasets import load_wine
+
+# Load the dataset
+wine = load_wine()
+```
+
+Re-Format the Data
+------------------
+This dataset comes as a 'bunch' object and in multiple parts. Let's convert the stuff we need into data frames and combine them via the following:
+
+```{python}
+import pandas as pd
+
+#
+# Convert into a data frame
+#
+# Extract the data
+data = pd.DataFrame(wine['data'], columns=wine['feature_names'])
+# Extract the target
+target = pd.DataFrame(wine['target'], columns=['cultivator'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
+```
+
+> This uses the Pandas package. Install this from the terminal with `python3.9 -m pip install pandas`
+
+This dataset contains the results of a chemical analysis of 178 different wines grown in the same region in Italy by three different cultivators. For this example, let's just look at the **total phenols** that were measured in each cultivator's wines ([phenolic content in wine](https://en.wikipedia.org/wiki/Phenolic_content_in_wine) is an important factor in it's quality):
+
+```{python}
+# Trim the data
+df = df[['cultivator', 'total_phenols']]
+
+# Display the first 5 columns
+print(df.head())
+```
+
+Only 5 rows are shown above (all from cultivator number 0) but there are 178 in total (from cultivators 0, 1 and 2):
+
+```{python}
+# Number of rows
+print(df.shape[0])
+```
+
+```{python}
+# Cultivators' names
+print(df['cultivator'].unique())
+```
+
+View the Data
+-------------
+The best way to understand the raw data is to see all of it. Use a scatter plot to do this, with a boxplot included underneath to show the distribution:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Plot
+grouped_data = df.groupby('cultivator')['total_phenols'].apply(list)
+plt.boxplot(grouped_data, positions=range(0, len(df['cultivator'].unique())), showmeans=True, meanline=True)
+plt.scatter(df['cultivator'], df['total_phenols'])
+plt.title('The Phenolic Content in 178 Wines from 3 Different Italian Cultivators')
+plt.xlabel('Cultivator')
+plt.ylabel('Total Phenols')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Plot
+grouped_data = df.groupby('cultivator')['total_phenols'].apply(list)
+plt.boxplot(grouped_data, positions=range(0, len(df['cultivator'].unique())), showmeans=True, meanline=True)
+plt.scatter(df['cultivator'], df['total_phenols'])
+plt.title('The Phenolic Content in 178 Wines from 3 Different Italian Cultivators')
+plt.xlabel('Cultivator')
+plt.ylabel('Total Phenols')
+```
+
+> This uses the Matplotlib package. Install this from the terminal with `python3.9 -m pip install matplotlib`
+
+Choose a Statistical Test
+=========================
+Looking at the plotted data above raises a question: **is the average phenolic content different** between the three cultivators? If it is, it would imply that the quality of the three winemakers is different (assuming, of course, that quality of wine is objective)!
+
+Parametric vs Non-Parametric
+----------------------------
+First, we need to decide if we should use **parametric** or **non-parametric** statistics. Parametric statistics are based on assumptions about the data’s distribution (whereas non-parametric statistics are not) and reasons to choose them include:
+
+- Your data is normally distributed
+- Your data is not normally distributed but the sample size is large:
+    + n > 20 if you only have one group
+    + n > 15 in each group if you have 2 to 9 groups
+    + n > 20 in each group if you have 10 to 12 groups
+- The spread of data in each group is different
+- The data is skewed (in other words, the *median* is more representative of the central tendency than the *mean*)
+- There is a need to increase the statistical power (parametric tests usually have more power and so are more likely to detect a significant difference when one truly exists)
+
+Looking at the plot, the spread in each group is fairly consistent and nothing is particularly skewed, although the sample size is large and it could very well be the case that the data in each group approximates a normal distribution. As a result, **we should choose to do parametric statistics** and tweak our research question so that it becomes "is the *mean* phenolic content different?"\*. In other words, are the dashed blue lines in the plot (the means) at different heights?
+
+\*when doing parametric statistics you should use the *mean*. If doing non-parametric statistics, use the *median*.
+
+Set a Hypothesis
+----------------
+In order to answer the research question ("is the mean phenolic content different?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+
+- H<sub>0</sub>: true mean phenolic content levels are the same for all three cultivators
+- H<sub>1</sub>: true mean phenolic content levels are not the same for all three cultivators
+
+Choose a Test
+-------------
+Now that we have hypotheses, we can follow a statistical test selection process:
+
+- Our phenolic content data is **continuous** because it is made up of measurements that are numbers (not discrete categories or ranks)
+- We are interested in the **differences** between the phenolic content of the groups of wine (not the *relationship* between the phenolic content and something else)
+- Specifically, we are interested in the differences of the **average** (mean) phenolic content (not the *variance* in the content)
+- We have **more than two groups** because there are three cultivators
+- As discussed above, we are doing **parametric statistics**
+
+Looking at the flowchart below tells us that we should thus be using ANOVA to test our hypothesis:
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
+            'Start:\nSet a hypothesis'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                'Continuous data'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                    'Relationships'
+                        RIndependent [label='Independent\ngroups']
+                            'Regression\nanalysis'
+                                'Multiple\nlinear\nregression' [shape = 'oval']
+                        RNonindependent [label='Non-independent\ngroups']
+                            'Correlation\nanalysis'
+                                RParametric [label='Parametric']
+                                    'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
+                                RNonparametric [label='Non-parametric']
+                                    'Spearman\nrank\ncorrelation' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                    'Differences'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                        'Variances'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                        'Averages (means\nor medians)'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                            'Two\ngroups'
+                                TGParametric [label='Parametric']
+                                    'One-sample\nt-test' [shape = 'oval']
+                                    'Paired\nt-test' [shape = 'oval']
+                                    'Unpaired\nt-test' [shape = 'oval']
+                                TGNonparametric [label='Non-parametric']
+                                    TGIndependent [label='Independent\ngroups']
+                                        'Mann-Whitney\nU test' [shape = 'oval']
+                                    TGNonindependent [label='Non-independent\ngroups']
+                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                            'More than\ntwo groups'
+                                MGParametric [label='Parametric']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                                    'ANOVA' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                MGNonparametric [label='Non-parametric']
+                                    MGIndependent [label='Independent\ngroups']
+                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
+                                    MGNonindependent [label='Non-independent\ngroups']
+                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
+                'Discrete,\ncategorical data'
+                    'Chi-squared\ngoodness-of-fit test' [shape = 'oval']
+                    'Chi-squared\nindependence test' [shape = 'oval']
+                    'Chi-squared\nhomogeneity test' [shape = 'oval']
+
+            'Start:\nSet a hypothesis' -> 'Continuous data'
+                'Continuous data' -> 'Differences'
+                    'Differences' -> 'Averages (means\nor medians)'
+                        'Averages (means\nor medians)' -> 'Two\ngroups'
+                            'Two\ngroups' -> TGParametric
+                                TGParametric -> 'One-sample\nt-test'
+                                TGParametric -> 'Paired\nt-test'
+                                TGParametric -> 'Unpaired\nt-test'
+                            'Two\ngroups' -> TGNonparametric
+                                TGNonparametric -> TGIndependent
+                                    TGIndependent -> 'Mann-Whitney\nU test'
+                                TGNonparametric -> TGNonindependent
+                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
+                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
+                            'More than\ntwo groups' -> MGParametric
+                                MGParametric -> 'ANOVA'
+                            'More than\ntwo groups' -> MGNonparametric
+                                MGNonparametric -> MGIndependent
+                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
+                                MGNonparametric -> MGNonindependent
+                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
+                    'Differences' -> 'Variances'
+                'Continuous data' -> 'Relationships'
+                    'Relationships' -> RIndependent
+                        RIndependent -> 'Regression\nanalysis'
+                            'Regression\nanalysis' -> 'Multiple\nlinear\nregression'
+                    'Relationships' -> RNonindependent
+                        RNonindependent -> 'Correlation\nanalysis'
+                            'Correlation\nanalysis' -> RParametric
+                                RParametric -> 'Pearson\nproduct-moment\nr correlation'
+                            'Correlation\nanalysis' -> RNonparametric
+                                RNonparametric -> 'Spearman\nrank\ncorrelation'
+            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ngoodness-of-fit test'
+                'Discrete,\ncategorical data' -> 'Chi-squared\nindependence test'
+                'Discrete,\ncategorical data' -> 'Chi-squared\nhomogeneity test'
+
+    labelloc='t';
+    fontsize=70;
+    label='Flowchart for Choosing a Statistical Test\n\n';
+    }",
+    width=900
+)
+```
+
+It's a bit confusing that we've chosen analysis of *variance* as the method to look at the differences of *means*, but it's correct.
+
+One-Way ANOVA Using an F-Test
+=============================
+After all that hard work getting the data into the correct format and choosing a hypothesis test, actually performing it is incredibly simple. Firstly, split the data up into one series of data per group:
+
+```{python}
+# Samples
+sample_0 = df[df['cultivator'] == 0]['total_phenols']
+sample_1 = df[df['cultivator'] == 1]['total_phenols']
+sample_2 = df[df['cultivator'] == 2]['total_phenols']
+```
+
+Then use the one-way ANOVA F-test from SciPy:
+
+```{python}
+from scipy.stats import f_oneway
+
+# One-way ANOVA
+statistic, pvalue = f_oneway(sample_0, sample_1, sample_2)
+
+print(f'One-way ANOVA: s = {statistic}, p = {pvalue}')
+```
+
+> Install SciPy from the terminal with `python3.9 -m pip install scipy`
+
+The "F-test" is the actual test being performed in the background during the ANOVA.
+
+Interpreting the Result
+-----------------------
+This p-value is incredibly small, which means we can reject H<sub>0</sub> and conclude that the true mean phenolic content levels are not the same for all three cultivators. Often, you will see this reported using asterisks to indicate the significance level (α) associated with the result. Additionally, if the p-value is very small (like it is here) it's usually just reported as "<0.001" rather than an exact value. Here are functions to add in this formatting:
+
+```{python}
+def get_significance(p):
+    """Returns the significance of a p-values as a string of stars."""
+    if p <= 0.001:
+        return '***'
+    elif p <= 0.01:
+        return '**'
+    elif p <= 0.05:
+        return '*'
+    elif p <= 0.1:
+        return '.'
+    else:
+        return ''
+
+
+def round_p_value(p):
+    """Round a small p-value so that it is human-readable."""
+    if p < 0.001:
+        return '<0.001'
+    else:
+        return f'{p:5.3}'
+
+
+p_rounded = round_p_value(pvalue)
+significance = get_significance(pvalue)
+print(f'The p-value is {p_rounded} ({significance})')
+```
+
+ANOVA vs the Two-Sample t-Test
+==============================
+Another way to address the research question would have been to look at the differences between each pair of groups in turn. In other words, we could have performed three two-sample t-tests to compare cultivator 0 against cultivator 1, cultivator 0 against cultivator 2 and cultivator 1 against cultivator 2. That is not an incorrect approach, but it is definitely less efficient than performing one ANOVA, especially if we had had more than three groups (with 4 groups, 6 t-tests are required; with 5 groups, 10 tests; with 6 groups, 15 tests and so on).
+
+However, the ANOVA test only answers the question of whether the means of the groups are the *same*. It won't tell us which of the groups is different (or how many groups are different if there are lots) or if it/they are higher or lower than the others. In practice, you would need to analyse the data further - visualising it through graphs and performing other tests - in order to get a complete picture.
+
+[⇦ Back](../../../python.html)
+
+</font>
