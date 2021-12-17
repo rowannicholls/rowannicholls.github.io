@@ -175,9 +175,9 @@ DiagrammeR::grViz(
                             'Two groups'
                                 TGParametric [label='Parametric']
                                     PIndependent [label='Independent\ngroups']
-                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
-                                    PNonIndependent [label='Non-independent\ngroups']
                                         'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
+                                    PNonIndependent [label='Non-independent\ngroups']
+                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
                                 TGNonparametric [label='Non-parametric']
                                     TGIndependent [label='Independent\ngroups']
                                         'Mann-Whitney\nU test' [shape = 'oval']

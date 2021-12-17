@@ -1,0 +1,439 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Unpaired Two-Sample t-Tests'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+The **unpaired two-sample t-test** is one of [Student's t-tests](https://en.wikipedia.org/wiki/Student%27s_t-test) that can be used to compare the means of two groups of numerical data which are *independent* of each other (ie a sample in one group is not *paired* with any sample in the other group; it does not affect the value of any of the samples in the other group in any way)
+
+Example Data
+============
+As an example, let's use the *Boston house prices dataset* from Scikit-Learn (more info on this dataset [here](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#boston-house-prices-dataset) and [here](https://rowannicholls.github.io/python/data/sklearn_datasets/boston.html)). Assuming you have Scikit-Learn installed (this can be done from the terminal with `python3.9 -m pip install sklearn`) this dataset can be loaded with:
+
+```{python}
+from sklearn.datasets import load_boston
+
+# Load the dataset
+boston = load_boston()
+```
+
+Re-Format the Data
+------------------
+This dataset comes as a 'bunch' object and in multiple parts. Let's convert the stuff we need into data frames and combine them via the following:
+
+```{python}
+import pandas as pd
+
+# Extract the data
+data = pd.DataFrame(boston['data'], columns=boston['feature_names'])
+# Extract the target
+target = pd.DataFrame(boston['target'], columns=['MEDV'])
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
+```
+
+> This uses the Pandas package. Install this from the terminal with `python3.9 -m pip install pandas`
+
+This dataset contains information related to house prices - and various factors that potentially influenced them - in the city of Boston during the 1970s. For this example, let's just look at one of these factors, `CHAS`, which indicates whether or not the area in question touches the Charles river (1 = the area is bounded by the river, 0 = it does not). We will look at whether or not this impacts the value in the `MEDV` column: the median value of owner-occupied homes in that area in multiples of $1000.
+
+```{python}
+# Keep only the CHAS and MEDV columns
+df = df[['CHAS', 'MEDV']]
+
+# Display the first 5 columns
+print(df.head())
+```
+
+Only 5 rows are shown above (all from areas that are not bounded by the river; `CHAS = 0.0`) but there are 506 in total:
+
+```{python}
+# Number of rows
+print(df.shape[0])
+```
+
+Remove Outliers
+---------------
+It's not clear from what we've seen so far, but the data contains outliers. For this example, we will remove them:
+
+```{python}
+# Remove suspect values
+df = df[df['MEDV'] != 50]
+
+#
+# Remove values more than 1.5 times the IQR away from the quartiles (known as 'fliers')
+#
+
+import numpy as np
+
+# Remove fliers above Q3 in the subset where CHAS == 0
+while True:
+    # Extract the sub-sample where CHAS == 0
+    sample_0 = df[df['CHAS'] == 0]
+    # Get the 1st and 3rd quartiles, and the IQR
+    q1 = np.percentile(sample_0['MEDV'], 25)
+    q3 = np.percentile(sample_0['MEDV'], 75)
+    iqr = q3 - q1
+    # Find and remove values more than or equal to 1.5 times the IQR above the 3rd quartile
+    idx = sample_0[sample_0['MEDV'] >= 1.5 * iqr + q3].index
+    df = df.drop(idx)
+    # The values of the quartiles and the IQR have now changed, so there might be new fliers and
+    # so we may need to repeat this process. However, if we have indeed finished removing all
+    # fliers, break out of the loop
+    if len(idx) == 0:
+        break
+
+# Remove fliers above Q3 in the subset where CHAS == 1
+while True:
+    # Extract the sub-sample where CHAS == 1
+    sample_1 = df[df['CHAS'] == 1]
+    # Get the 1st and 3rd quartiles, and the IQR
+    q1 = np.percentile(sample_1['MEDV'], 25)
+    q3 = np.percentile(sample_1['MEDV'], 75)
+    iqr = q3 - q1
+    # Find and remove values more than or equal to 1.5 times the IQR above the 3rd quartile
+    idx = sample_1[sample_1['MEDV'] >= 1.5 * iqr + q3].index
+    df = df.drop(idx)
+    # The values of the quartiles and the IQR have now changed, so there might be new fliers and
+    # so we may need to repeat this process. However, if we have indeed finished removing all
+    # fliers, break out of the loop
+    if len(idx) == 0:
+        break
+```
+
+> This uses the Numpy package. Install this from the terminal with `python3.9 -m pip install numpy`
+
+```{python}
+# Number of rows
+print(df.shape[0])
+```
+
+This has removed 46 rows.
+
+View the Data
+-------------
+The best way to understand the raw data is to see all of it. Use a scatter plot to do this, with a boxplot included underneath to show the distribution:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Add jitter to the data
+np.random.seed(20211217)
+x = df['CHAS']
+x_jittered = x + np.random.randn(len(x)) * 0.1 * (max(x) - min(x))
+
+# Plot
+grouped_data = df.groupby('CHAS')['MEDV'].apply(list)
+positions = range(0, len(df['CHAS'].unique()))
+meanprops = {'color': 'r'}
+bp = plt.boxplot(grouped_data, positions=positions, showmeans=True, meanline=True, meanprops=meanprops)
+plt.scatter(x_jittered, df['MEDV'])
+plt.title('House Prices in Boston')
+plt.xlabel('Bounded by the Charles River')
+plt.ylabel('Median value of owner-occupied homes in $1000’s')
+plt.legend([bp['medians'][0], bp['means'][0]], ['Medians', 'Means'])
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Add jitter to the data
+np.random.seed(20211217)
+x = df['CHAS']
+x_jittered = x + np.random.randn(len(x)) * 0.1 * (max(x) - min(x))
+
+# Plot
+grouped_data = df.groupby('CHAS')['MEDV'].apply(list)
+positions = range(0, len(df['CHAS'].unique()))
+meanprops = {'color': 'r'}
+bp = plt.boxplot(grouped_data, positions=positions, showmeans=True, meanline=True, meanprops=meanprops)
+plt.scatter(x_jittered, df['MEDV'])
+plt.title('House Prices in Boston')
+plt.xlabel('Bounded by the Charles River')
+plt.ylabel('Median value of owner-occupied homes in $1000’s')
+plt.legend([bp['medians'][0], bp['means'][0]], ['Medians', 'Means'])
+```
+
+> This uses the Matplotlib package. Install this from the terminal with `python3.9 -m pip install matplotlib`
+
+Choose a Statistical Test
+=========================
+Looking at the plotted data above raises a question: **is the average house price different** between the two location types? If it is, it would suggest that proximity to the river affects house prices.
+
+Parametric vs Non-Parametric
+----------------------------
+First, we need to decide if we should use **parametric** or **non-parametric** statistics. Parametric statistics are based on assumptions about the data's distribution (whereas non-parametric statistics are not) and reasons to choose them include:
+
+- Your data is normally distributed
+- Your data is not normally distributed but the sample size is large:
+    + n > 20 if you only have one group
+    + n > 15 in each group if you have 2 to 9 groups
+    + n > 20 in each group if you have 10 to 12 groups
+- The spread of data in each group is different
+- The data is skewed (in other words, the *median* is more representative of the central tendency than the *mean*)
+- There is a need to increase the statistical power (parametric tests usually have more power and so are more likely to detect a significant difference when one truly exists)
+
+Looking at the plot, the spread in each group is fairly consistent and nothing is particularly skewed, although the sample size is large and it could very well be the case that the data in each group approximates a normal distribution. As a result, **we should choose to do parametric statistics** and tweak our research question so that it becomes "is the *mean* house price different?"<sup>1, 2</sup>. In other words, are the dashed red lines in the plot (the means) at different heights?
+
+<sup>1</sup>when doing parametric statistics you should use the *mean*, when doing non-parametric statistics, use the *median*.  
+<sup>2</sup>this question is complicated by the fact that our data is the *median* house price for various areas within Boston, so our research question is actually something like, "is the mean median house price different between the two location types?"
+
+Set a Hypothesis
+----------------
+In order to answer the research question ("is the mean house price different?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+
+- H<sub>0</sub>: true mean house price is the same for both location types
+- H<sub>1</sub>: true mean house price is not the same for both location types
+
+Choose a Test
+-------------
+Now that we have hypotheses, we can follow a statistical test selection process:
+
+- Our house price data is **continuous** because it is made up of measurements that are numbers (not discrete categories or ranks)
+- We are interested in the **difference** between the house prices in the different groups (not the *relationship* between the house prices and something else)
+- Specifically, we are interested in the difference of the **average** (mean) house price (not the *variance* in the prices)
+- We have **two groups** because there are two location types (bounded by the river and not)
+- As discussed above, we are doing **parametric statistics**
+
+Looking at the flowchart below tells us that we should thus be using the unpaired two-sample t-test to test our hypothesis:
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
+            'Start:\nSet a hypothesis'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                'Continuous data'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                    'Relationships'
+                        RIndependent [label='Independent\ngroups']
+                            'Regression\nanalysis'
+                                'Multiple\nlinear\nregression' [shape = 'oval']
+                        RNonindependent [label='Non-independent\ngroups']
+                            'Correlation\nanalysis'
+                                RParametric [label='Parametric']
+                                    'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
+                                RNonparametric [label='Non-parametric']
+                                    'Spearman\nrank correlation' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                    'Differences'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                        'Variances'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                        'Averages (means\nor medians)'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                            'One group'
+                                OGParametric [label='Parametric']
+                                    'One-sample t-test' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                            'Two groups'
+                                TGParametric [label='Parametric']
+                                    PIndependent [label='Independent\ngroups']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                    PNonIndependent [label='Non-independent\ngroups']
+                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
+                                TGNonparametric [label='Non-parametric']
+                                    TGIndependent [label='Independent\ngroups']
+                                        'Mann-Whitney\nU test' [shape = 'oval']
+                                    TGNonindependent [label='Non-independent\ngroups']
+                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
+                            'More than\ntwo groups'
+                                MGParametric [label='Parametric']
+                                    'ANOVA' [shape = 'oval']
+                                MGNonparametric [label='Non-parametric']
+                                    MGIndependent [label='Independent\ngroups']
+                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
+                                    MGNonindependent [label='Non-independent\ngroups']
+                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
+                'Discrete,\ncategorical data'
+                    'Chi-squared\ntest'
+                        'Goodness-of-fit\ntest' [shape = 'oval']
+                        'Independence\ntest' [shape = 'oval']
+                        'Homogeneity\ntest' [shape = 'oval']
+
+            'Start:\nSet a hypothesis' -> 'Continuous data'
+                'Continuous data' -> 'Differences'
+                    'Differences' -> 'Averages (means\nor medians)'
+                        'Averages (means\nor medians)' -> 'One group'
+                            'One group' -> OGParametric
+                                OGParametric -> 'One-sample t-test'
+                        'Averages (means\nor medians)' -> 'Two groups'
+                            'Two groups' -> TGParametric
+                                TGParametric -> PIndependent
+                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
+                                TGParametric -> PNonIndependent
+                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
+                            'Two groups' -> TGNonparametric
+                                TGNonparametric -> TGIndependent
+                                    TGIndependent -> 'Mann-Whitney\nU test'
+                                TGNonparametric -> TGNonindependent
+                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
+                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
+                            'More than\ntwo groups' -> MGParametric
+                                MGParametric -> 'ANOVA'
+                            'More than\ntwo groups' -> MGNonparametric
+                                MGNonparametric -> MGIndependent
+                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
+                                MGNonparametric -> MGNonindependent
+                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
+                    'Differences' -> 'Variances'
+                'Continuous data' -> 'Relationships'
+                    'Relationships' -> RIndependent
+                        RIndependent -> 'Regression\nanalysis'
+                            'Regression\nanalysis' -> 'Multiple\nlinear\nregression'
+                    'Relationships' -> RNonindependent
+                        RNonindependent -> 'Correlation\nanalysis'
+                            'Correlation\nanalysis' -> RParametric
+                                RParametric -> 'Pearson\nproduct-moment\nr correlation'
+                            'Correlation\nanalysis' -> RNonparametric
+                                RNonparametric -> 'Spearman\nrank correlation'
+            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
+                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
+                    'Chi-squared\ntest' -> 'Independence\ntest'
+                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
+
+    labelloc='t';
+    fontsize=70;
+    label='Flowchart for Choosing a Statistical Test\n\n';
+    }",
+    width=900
+)
+```
+
+Descriptive Statistics
+======================
+Start by separating out the two samples:
+
+```{python}
+# Samples
+sample_0 = df[df['CHAS'] == 0]['MEDV']
+sample_1 = df[df['CHAS'] == 1]['MEDV']
+```
+
+Means of the two samples:
+
+```{python}
+# Means
+mean_0 = sample_0.mean()
+mean_1 = sample_1.mean()
+difference = mean_0 - mean_1
+
+print(f'Difference of means = {difference:5.3f}')
+```
+
+Sample sizes:
+
+```{python}
+# Sample sizes
+n_0 = sample_0.shape[0]
+n_1 = sample_1.shape[0]
+
+print(f'n = {n_0}, n = {n_1}')
+```
+
+Sample standard deviations:
+
+```{python}
+# Sample standard deviations
+s_0 = sample_0.std(ddof=1)
+s_1 = sample_1.std(ddof=1)
+
+print(f'Standard deviations: {s_0:5.3f} and {s_1:5.3f}')
+```
+
+Standard errors of the means:
+
+```{python}
+# Standard errors of the means
+se_0 = s_0 / np.sqrt(n_0)
+se_1 = s_1 / np.sqrt(n_1)
+
+print(f'Standard errors of the means: {se_0:5.3f} and {se_1:5.3f}')
+```
+
+Standard error of the difference:
+
+```{python}
+# Standard error of the difference
+sed = np.sqrt(s_0**2 / n_0 + s_1**2 / n_1)
+
+print(f'Standard error of the difference: {sed:5.3f}')
+```
+
+Confidence interval for the difference of the means:
+
+```{python}
+# Confidence intervals
+upper_ci = difference + 2 * sed
+lower_ci = difference - 2 * sed
+
+print(f'Difference of the means = {difference:5.3f} ({lower_ci:5.3f} to {upper_ci:5.3f})')
+```
+
+Unpaired Two-Sample t-Test
+==========================
+After all that hard work getting the data into the correct format, choosing a hypothesis test and looking at the descriptive statistics, actually performing the hypothesis test is incredibly simple:
+
+```{python}
+from scipy import stats
+
+# Two-sample t-test
+statistic, pvalue = stats.ttest_ind(sample_0, sample_1)
+
+print(f'Two-sample t-test: s = {statistic:5.3f}, p = {pvalue:5.3f}')
+```
+
+> Install SciPy from the terminal with `python3.9 -m pip install scipy`
+
+Interpreting the Result
+-----------------------
+This p-value is small (<0.05), which means that we can reject H<sub>0</sub> and conclude that there is a statistically significant difference between the two location types (p < 0.05) with the median house price being $2,990 higher on average in areas bounded by the Charles river than in areas away from the river.
+
+Often, you will see this type of result reported using asterisks to indicate the significance level (α) associated with it. Additionally, if the p-value is very small it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting:
+
+```{python}
+def get_significance(p):
+    """Returns the significance of a p-values as a string of stars."""
+    if p <= 0.001:
+        return '***'
+    elif p <= 0.01:
+        return '**'
+    elif p <= 0.05:
+        return '*'
+    elif p <= 0.1:
+        return '.'
+    else:
+        return ''
+
+
+def round_p_value(p):
+    """Round a small p-value so that it is human-readable."""
+    if p < 0.001:
+        return '<0.001'
+    else:
+        return f'{p:5.3}'
+
+
+p_rounded = round_p_value(pvalue)
+significance = get_significance(pvalue)
+print(f'The p-value is {p_rounded} ({significance})')
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
