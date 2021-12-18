@@ -1,0 +1,418 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney *U* Test: Comparison of Methods'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../../python.html)
+
+This page follows on from [the one about the Mann-Whitney *U* test](../mann_whitney_u_test.html). That page used the `mannwhitneyu()` function from SciPy to perform the test, but what wasn't mentioned is the fact that this function has two options for what method to use:
+
+- `mannwhitneyu(x, y, method='exact')` uses the **exact** method to calculate the p-value exactly
+- `mannwhitneyu(x, y, method='asymptotic')` uses the **asymptotic** method to estimate the p-value by assuming that the values of the test statistics follow a normal distribution when H<sub>0</sub> is correct
+
+If no method is specified (or if `mannwhitneyu(x, y, method='auto')` is used) then Python will **auto**matically choose the exact method if the size of one or both of the samples is less than 8 and there are no ties, and choose the asymptotic method otherwise.
+
+There's more: [that page](../mann_whitney_u_test.html) used an example that comes from Section 12.4 of *Probability and Statistics for Engineers and Scientists* by S M Ross (4th edition, 2009). In addition to that example, Ross's text includes three things that are useful to know:
+
+- It gives an explanation of the **exact algorithm** for calculating Mann-Whitney
+- It mentions the fact that this algorithm is **impractical for large sample sizes** due to it becoming too computationally intense
+- It describes methods for **approximating** and **simulating** the test, which enable it to be run more efficiently and, in turn, make it possible to use Mann-Whitney with large sample sizes
+
+In effect, we now have six options for calculating Mann-Whitney: three if using the SciPy function and three if implementing one of Ross's algorithms. Just to make sure we're correct, let's also look at the Mann-Whitney function that's included in the R programming language (known as `wilcox.test()`) and a free-to-access online calculator, bringing our total number of options up to eight.
+
+Example Data
+============
+We'll use two sets of example data. The first is the same as was used on the previous page and comes from example 12.4a of Ross (2009):
+
+```{python}
+# Raw data from example 12.4a in Ross (2009)
+dataset1 = {
+    'Treatment 1': [65.2, 67.1, 69.4, 78.2, 74, 80.3],
+    'Treatment 2': [59.4, 72.1, 68, 66.2, 58.5]
+}
+```
+
+The second has been reverse-engineered from example 12.4d:
+
+```{python}
+# Reverse-engineering example 12.4d
+dataset2 = {
+    'Sample X': [1, 2, 5, 6, 7, 9, 11, 12, 19],
+    'Sample Y': [3, 4, 8, 10, 13, 14, 15, 16, 17, 18, 20, 21, 22]
+}
+```
+
+The major difference is that the first dataset has a small sample size ($n < 8$ for both groups) while the second has a moderate sample size ($n > 8$ for both groups).
+
+Exact Method - from Ross (2009)
+===============================
+
+```{python}
+import numpy as np
+
+
+def P(N, M, K):
+    """
+    Probability of the sum of the ranks of the 1st sample being <= K, given H0.
+
+    Taken from pages 528 and 529 of Ross (2009).
+    """
+    # Boundary conditions
+    if (N == 1) & (M == 0):
+        if K <= 0:
+            return 0
+        else:
+            return 1
+    elif (N == 0) & (M == 1):
+        if K < 0:
+            return 0
+        else:
+            return 1
+    # Equation 12.4.3
+    else:
+        if N == 0:
+            return (M / (N + M)) * P(N, M - 1, K)
+        elif M == 0:
+            return (N / (N + M)) * P(N - 1, M, K - N - M)
+        else:
+            return \
+                (N / (N + M)) * P(N - 1, M, K - N - M) + \
+                (M / (N + M)) * P(N, M - 1, K)
+
+
+def mann_whitney_p(n, m, t):
+    """
+    Find the p-value.
+
+    This uses the formula on page 529 of Ross (2009).
+    """
+    pvalue = 2 * min(P(n, m, t), 1 - P(n, m, t - 1))
+
+    return pvalue
+
+
+def mann_whitney(x, y):
+    """
+    Perform the Mann-Whitney U test.
+
+    Get the test statistic, T, and the p-value.
+    """
+    # Combine the two samples into one array
+    ar = np.array(x + y)
+    # Rank the items in the array without sorting the array
+    order = ar.argsort()
+    ranks = order.argsort()
+    # Python is 0-indexed, so add 1 to get the ranks starting at 1
+    ranks = ranks + 1
+
+    # Get the sum of the ranks of the values in each sample
+    #
+    # Sample size of sample x
+    n = len(x)
+    # The first n ranks are the ranks of the elements of sample x
+    t = np.sum(ranks[:n])
+    # The test statistic, T, is the sum of the ranks of the values in sample x
+    T = t
+
+    # Get the p-value
+    #
+    # Sample size of sample y
+    m = len(y)
+    # Get the p-value
+    pvalue = mann_whitney_p(n, m, t)
+
+    return T, pvalue
+```
+
+This method replicates the examples in Section 12.4 of Ross (2009), using dataset 1:
+
+```{python}
+# Call the function
+T, pvalue = mann_whitney(dataset1['Treatment 1'], dataset1['Treatment 2'])
+
+# Example 12.4a
+print(T)
+```
+
+```{python}
+# Example 12.4b
+print(P(2, 1, 3))
+```
+
+```{python}
+# Example 12.4c
+print(f'{pvalue:6.4f}')
+```
+
+```{python}
+# Example 12.4d
+print(f'{mann_whitney_p(9, 13, 72):7.5f}')
+```
+
+Example 12.4d can also be done using dataset 2:
+
+```{python}
+# Call the function
+T, pvalue = mann_whitney(dataset2['Sample X'], dataset2['Sample Y'])
+
+# Example 12.4d
+print(f'{pvalue:7.5f}')
+```
+
+The Classical Approximation - from Ross (2009)
+==============================================
+
+```{python}
+import numpy as np
+from scipy.stats import norm
+
+
+def E_H0(n, m):
+    """
+    The mean (expected value) of T under H0.
+
+    Taken from page 532 of Ross (2009).
+    """
+    return (n * (n + m + 1)) / 2
+
+
+def var_H0(n, m):
+    """
+    The variance of T under H0.
+
+    Taken from page 532 of Ross (2009).
+    """
+    return (n * m * (n + m + 1)) / 12
+
+
+def mann_whitney_p(n, m, t):
+    """
+    Find the p-value.
+
+    Uses the formulas on page 532 of Ross (2009).
+    """
+    # The mean of T under H_0.
+    e = E_H0(n, m)
+    # The absolute difference between the observed and mean values of T
+    d = abs(e - t)
+    # The variance of T under H_0.
+    s2 = var_H0(n, m)
+
+    # Calculate the p-value
+    z = d / np.sqrt(s2)
+    pvalue = 2 * (1 - norm.cdf(z))
+
+    return pvalue
+
+
+def mann_whitney(x, y):
+    """
+    Perform the Mann-Whitney U test.
+
+    Get the test statistic, T, and the p-value.
+    """
+    # Combine the two samples into one array
+    ar = np.array(x + y)
+    # Rank the items in the aray without sorting the array
+    order = ar.argsort()
+    ranks = order.argsort()
+    # Python is 0-indexed, so add 1 to get the ranks starting at 1
+    ranks = ranks + 1
+
+    # Get the sum of the ranks of the values in each sample
+    #
+    # Sample size of sample x
+    n = len(x)
+    # The first n ranks are the ranks of the elements of sample x
+    t = np.sum(ranks[:n])
+    # The test statistic, T, is the sum of the ranks of the values in sample x
+    T = t
+
+    # Get the p-value
+    #
+    # Sample size of sample y
+    m = len(y)
+    # Get the p-value
+    pvalue = mann_whitney_p(n, m, t)
+
+    return T, pvalue
+```
+
+This method replicates example 12.4e of Ross (2009) to within rounding errors:
+
+Using dataset 1:
+
+```{python}
+# Call the function
+T, pvalue = mann_whitney(dataset1['Treatment 2'], dataset1['Treatment 1'])
+
+print(f'{pvalue:6.4f}')
+```
+
+Using dataset 2:
+
+```{python}
+# Call the function
+T, pvalue = mann_whitney(dataset2['Sample X'], dataset2['Sample Y'])
+
+print(f'{pvalue:6.4f}')
+```
+
+Simulation - from Ross (2009)
+=============================
+Covered in Chapter 15 of the textbook, the answers to example 12.4f are
+
+Using dataset 1:
+
+```
+0.125
+```
+
+Using dataset 2:
+
+```
+0.0356
+```
+
+`mannwhitneyu()` - from SciPy
+=============================
+
+The Exact Method
+----------------
+Using dataset 1:
+
+```{python}
+from scipy.stats import mannwhitneyu
+
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset1['Treatment 2'], dataset1['Treatment 1'], method='exact')
+
+print(f'{pvalue:6.4f}')
+```
+
+Using dataset 2:
+
+```{python}
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset2['Sample X'], dataset2['Sample Y'], method='exact')
+
+print(f'{pvalue:6.4f}')
+```
+
+The Asymptotic Method
+---------------------
+Using dataset 1:
+
+```{python}
+from scipy.stats import mannwhitneyu
+
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset1['Treatment 2'], dataset1['Treatment 1'], method='asymptotic')
+
+print(f'{pvalue:6.4f}')
+```
+
+Using dataset 2:
+
+```{python}
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset2['Sample X'], dataset2['Sample Y'], method='asymptotic')
+
+print(f'{pvalue:6.4f}')
+```
+
+The Auto Method
+---------------
+Using dataset 1:
+
+```{python}
+from scipy.stats import mannwhitneyu
+
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset1['Treatment 2'], dataset1['Treatment 1'], method='auto')
+# or
+statistic, pvalue = mannwhitneyu(dataset1['Treatment 2'], dataset1['Treatment 1'])
+
+print(f'{pvalue:6.4f}')
+```
+
+Using dataset 2:
+
+```{python}
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset2['Sample X'], dataset2['Sample Y'], method='auto')
+# or
+statistic, pvalue = mannwhitneyu(dataset2['Sample X'], dataset2['Sample Y'])
+
+print(f'{pvalue:6.4f}')
+```
+
+`wilcox.test()` - From R
+========================
+This implementation of the Mann-Whitney test is included in 'Base R' (ie you don't need to import a package).
+
+Using dataset 1:
+
+```{r}
+treatment1 <- c(65.2, 67.1, 69.4, 78.2, 74, 80.3)
+treatment2 <- c(59.4, 72.1, 68, 66.2, 58.5)
+
+# Call the function
+wilcox.test(treatment1, treatment2)
+```
+
+Using dataset 2:
+
+```{r}
+sample_x <- c(1, 2, 5, 6, 7, 9, 11, 12, 19)
+sample_y <- c(3, 4, 8, 10, 13, 14, 15, 16, 17, 18, 20, 21, 22)
+
+# Call the function
+wilcox.test(sample_x, sample_y)
+```
+
+Online Calculator
+=================
+Often, you'll be able to find free calculators - such as [this one](https://www.socscistatistics.com/tests/mannwhitney/) - that will perform Mann-Whitney for you. Here are the results:
+
+Using dataset 1:
+
+```
+0.12114
+```
+
+Using dataset 2:
+
+```
+0.03846
+```
+
+Conclusion
+==========
+We've looked at eight different methods for calculating Mann-Whitney; which one is the best? Here's a comparison, including what values of p they produce when used with each of the two datasets:
+
+| Method                                         | From           | Dataset 1   | Dataset 2   | Comment                                           |
+|------------------------------------------------|----------------|-------------|-------------|---------------------------------------------------|
+| Auto:<br>`mannwhitneyu(x, y)` or<br>`mannwhitneyu(x, y, method='auto')` | SciPy | 0.1255 | 0.03844 | Uses the 'exact' method when the size of one of the samples is less than 8 and there are no ties, otherwise it uses 'asymptotic' |
+| Exact:<br>`mannwhitneyu(x, y, method='exact')`        | SciPy         | 0.1255      | 0.03642    | Most correct, but impractically slow for large sample sizes |
+| Asymptotic:<br>`mannwhitneyu(x, y, method='asymptotic')` | SciPy      | 0.1207      | 0.03844    | Less correct, but usable with large sample sizes |
+| Exact algorithm                                      | Ross (2009)    | 0.1255      | 0.03642    | Used by SciPy's 'exact' method and so is identical to that |
+| Classical approximation                              | Ross (2009)    | 0.1003      | 0.03542    | Worse than 'exact' for small sample sizes; better than 'asymptotic' for large sample sizes |
+| Simulation                                           | Ross (2009)    | 0.125       | 0.0356     | Good balance of speed and accuracy |
+| Two-sample Wilcoxon test:<br>`wilcox.test(x, y)`     | (Base) R       | 0.1255      | 0.03642    | Also uses the 'exact' method and so is identical to SciPy and Ross's implementation of that |
+| Online calculator                                    | [Here](https://www.socscistatistics.com/tests/mannwhitney/) | 0.12114   | 0.03846   | Mediocre balance of speed and accuracy |
+
+Overall, the default method from SciPy - `mannwhitneyu(x, y)` - is the best for a practical, accurate calculation of p.
+
+[⇦ Back](../../../../python.html)
+
+</font>

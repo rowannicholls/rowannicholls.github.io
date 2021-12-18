@@ -203,6 +203,7 @@ Now that we have hypotheses, we can follow a statistical test selection process:
 - Specifically, we are interested in the difference of the **average** (mean) house price (not the *variance* in the prices)
 - We have **two groups** because there are two location types (bounded by the river and not)
 - As discussed above, we are doing **parametric statistics**
+- Our measurements are **independent** of each other: the amount that one group of houses cost does not affect how much another group of houses cost
 
 Looking at the flowchart below tells us that we should thus be using the unpaired two-sample t-test to test our hypothesis:
 

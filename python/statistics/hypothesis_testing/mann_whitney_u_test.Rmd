@@ -1,0 +1,302 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney *U* Test'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+The **Mann–Whitney *U* test** can be used to compare the means of two groups of numerical data which are independent of each other.
+
+Example Data
+============
+This example is taken from Section 12.4 of *Probability and Statistics for Engineers and Scientists* by S M Ross (4th edition, 2009). A fictional experiment designed to test the effectiveness of two different anti-corrosion treatments for metal yielded the following results:
+
+- Treatment 1: 65.2, 67.1, 69.4, 78.2, 74, 80.3
+- Treatment 2: 59.4, 72.1, 68, 66.2, 58.5
+
+where the values represent the maximum depth of pits worn into the metal in thousands of a centimetre. This can be hard-codes as a dictionary of lists in Python as follows:
+
+```{python}
+# Raw data
+data = {
+    'Treatment 1': [65.2, 67.1, 69.4, 78.2, 74, 80.3],
+    'Treatment 2': [59.4, 72.1, 68, 66.2, 58.5]
+}
+```
+
+Here's what the data looks like graphically:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+import numpy as np
+
+#
+# Plot
+#
+# Boxplot
+meanprops = {'color': 'b'}
+bp = plt.boxplot(data.values(), showmeans=True, meanline=True, meanprops=meanprops)
+# Scatterplot for treatment 1
+y = data['Treatment 1']
+plt.scatter(np.zeros(len(y)) + 1, y, c='k')
+# Scatterplot for treatment 2
+y = data['Treatment 2']
+plt.scatter(np.ones(len(y)) + 1, y, c='k')
+# Tile and labels
+plt.title('The Effectiveness of Anti-Corrosion Treatments')
+plt.xlabel('Treatment')
+plt.ylabel('Maximum depth of pits [10e-3 cm]')
+# Legend
+plt.legend([bp['medians'][0], bp['means'][0]], ['Medians', 'Means'])
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+import numpy as np
+
+#
+# Plot
+#
+# Boxplot
+meanprops = {'color': 'b'}
+bp = plt.boxplot(data.values(), showmeans=True, meanline=True, meanprops=meanprops)
+# Scatterplot for treatment 1
+y = data['Treatment 1']
+plt.scatter(np.zeros(len(y)) + 1, y, c='k')
+# Scatterplot for treatment 2
+y = data['Treatment 2']
+plt.scatter(np.ones(len(y)) + 1, y, c='k')
+# Tile and labels
+plt.title('The Effectiveness of Anti-Corrosion Treatments')
+plt.xlabel('Treatment')
+plt.ylabel('Maximum depth of pits [10e-3 cm]')
+# Legend
+plt.legend([bp['medians'][0], bp['means'][0]], ['Medians', 'Means'])
+```
+
+> The above uses the Matplotlib and Numpy packages. Install these from the terminal with:
+> 
+> - `python3.9 -m pip install matplotlib`
+> - `python3.9 -m pip install numpy`
+
+Choose a Statistical Test
+=========================
+Looking at the data plotted above, the question we want to ask is:
+
+**Is the average amount of wear different between samples given different anti-corrosion treatments?**
+
+If it is, it would suggest that that the effectiveness of the treatments is different.
+
+Parametric vs Non-Parametric
+----------------------------
+Before we can answer this question, we need to decide if we should use **parametric** or **non-parametric** statistics. Parametric statistics are based on assumptions about the data's distribution (whereas non-parametric statistics are not) and reasons to choose them include:
+
+- Your data is normally distributed
+- Your data is not normally distributed but the sample size is large:
+    + n > 20 if you only have one group
+    + n > 15 in each group if you have 2 to 9 groups
+    + n > 20 in each group if you have 10 to 12 groups
+- The spread of data in each group is different
+- The data is skewed (in other words, the *median* is more representative of the central tendency than the *mean*)
+- There is a need to increase the statistical power (parametric tests usually have more power and so are more likely to detect a significant difference when one truly exists)
+
+As the sample size in this example dataset is small, **we should choose to do non-parametric statistics** and tweak our research question so that it becomes "is the *median* amount of wear different?"<sup>1</sup>. In other words, are the orange lines in the plot above (the medians) at different heights?
+
+<sup>1</sup>when doing parametric statistics you should use the *mean*; when doing non-parametric statistics you should use the *median*.
+
+Set a Hypothesis
+----------------
+In order to answer the research question ("is the median amount of wear different?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+
+- H<sub>0</sub>: true median amount of wear is the same for both treatments
+- H<sub>1</sub>: true median amount of wear is not the same for both treatments
+
+Choose a Test
+-------------
+Now that we have hypotheses, we can follow a statistical test selection process:
+
+- Our data is **continuous** because it is made up of measurements that are numbers (not discrete categories or ranks)
+- We are interested in the **difference** between the amount of wear in one group compared to the other (not the *relationship* between the amount of wear and something else)
+- Specifically, we are interested in the difference of the **average** (median) amount of wear (not the *variance* in the amount of wear)
+- We have **two groups** because there are two treatments being compared
+- As discussed above, we are doing **non-parametric statistics**
+- Our measurements are **independent** of each other: the amount that one sample corrodes does not affect how much another sample corrodes
+
+Looking at the flowchart below tells us that we should thus be using the Mann-Whitney *U* test to test our hypothesis:
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
+            'Start:\nSet a hypothesis'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                'Continuous data'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                    'Relationships'
+                        RIndependent [label='Independent\ngroups']
+                            'Regression\nanalysis'
+                                'Multiple\nlinear\nregression' [shape = 'oval']
+                        RNonindependent [label='Non-independent\ngroups']
+                            'Correlation\nanalysis'
+                                RParametric [label='Parametric']
+                                    'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
+                                RNonparametric [label='Non-parametric']
+                                    'Spearman\nrank correlation' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                    'Differences'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                        'Variances'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                        'Averages (means\nor medians)'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                            'One group'
+                                OGParametric [label='Parametric']
+                                    'One-sample t-test' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                            'Two groups'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                TGParametric [label='Parametric']
+                                    PIndependent [label='Independent\ngroups']
+                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
+                                    PNonIndependent [label='Non-independent\ngroups']
+                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                                TGNonparametric [label='Non-parametric']
+                                    TGIndependent [label='Independent\ngroups']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                                        'Mann-Whitney\nU test' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                    TGNonindependent [label='Non-independent\ngroups']
+                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
+                            'More than\ntwo groups'
+                                MGParametric [label='Parametric']
+                                    'ANOVA' [shape = 'oval']
+                                MGNonparametric [label='Non-parametric']
+                                    MGIndependent [label='Independent\ngroups']
+                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
+                                    MGNonindependent [label='Non-independent\ngroups']
+                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
+                'Discrete,\ncategorical data'
+                    'Chi-squared\ntest'
+                        'Goodness-of-fit\ntest' [shape = 'oval']
+                        'Independence\ntest' [shape = 'oval']
+                        'Homogeneity\ntest' [shape = 'oval']
+
+            'Start:\nSet a hypothesis' -> 'Continuous data'
+                'Continuous data' -> 'Differences'
+                    'Differences' -> 'Averages (means\nor medians)'
+                        'Averages (means\nor medians)' -> 'One group'
+                            'One group' -> OGParametric
+                                OGParametric -> 'One-sample t-test'
+                        'Averages (means\nor medians)' -> 'Two groups'
+                            'Two groups' -> TGParametric
+                                TGParametric -> PIndependent
+                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
+                                TGParametric -> PNonIndependent
+                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
+                            'Two groups' -> TGNonparametric
+                                TGNonparametric -> TGIndependent
+                                    TGIndependent -> 'Mann-Whitney\nU test'
+                                TGNonparametric -> TGNonindependent
+                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
+                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
+                            'More than\ntwo groups' -> MGParametric
+                                MGParametric -> 'ANOVA'
+                            'More than\ntwo groups' -> MGNonparametric
+                                MGNonparametric -> MGIndependent
+                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
+                                MGNonparametric -> MGNonindependent
+                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
+                    'Differences' -> 'Variances'
+                'Continuous data' -> 'Relationships'
+                    'Relationships' -> RIndependent
+                        RIndependent -> 'Regression\nanalysis'
+                            'Regression\nanalysis' -> 'Multiple\nlinear\nregression'
+                    'Relationships' -> RNonindependent
+                        RNonindependent -> 'Correlation\nanalysis'
+                            'Correlation\nanalysis' -> RParametric
+                                RParametric -> 'Pearson\nproduct-moment\nr correlation'
+                            'Correlation\nanalysis' -> RNonparametric
+                                RNonparametric -> 'Spearman\nrank correlation'
+            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
+                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
+                    'Chi-squared\ntest' -> 'Independence\ntest'
+                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
+
+    labelloc='t';
+    fontsize=70;
+    label='Flowchart for Choosing a Statistical Test\n\n';
+    }",
+    width=900
+)
+```
+
+Mann-Whitney *U* Test
+=====================
+The SciPy package makes it incredibly easy to perform the test: just use the `mannwhitneyu()` function!
+
+```{python}
+from scipy.stats import mannwhitneyu
+
+# Perform the Mann-Whitney U test
+statistic, pvalue = mannwhitneyu(data['Treatment 1'], data['Treatment 2'])
+
+print(f'Mann-Whitney U test: U = {int(statistic)}, p = {pvalue:6.4f}')
+```
+
+> Install SciPy from the terminal with `python3.9 -m pip install scipy`
+
+Interpreting the Result
+-----------------------
+This p-value is large (>0.05), which means that we fail to reject H<sub>0</sub> and conclude that there is not a statistically significant difference between the two treatments (p > 0.05).
+
+Often, you will see this type of result reported using asterisks to indicate the significance level (α) associated with it. Additionally, if the p-value is very small it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting (not that it's relevant in this example!):
+
+```{python}
+def get_significance(p):
+    """Returns the significance of a p-values as a string of stars."""
+    if p <= 0.001:
+        return ' (***)'
+    elif p <= 0.01:
+        return ' (**)'
+    elif p <= 0.05:
+        return ' (*)'
+    elif p <= 0.1:
+        return ' (.)'
+    else:
+        return ''
+
+
+def round_p_value(p):
+    """Round a small p-value so that it is human-readable."""
+    if p < 0.001:
+        return '<0.001'
+    else:
+        return f'{p:5.3}'
+
+
+p_rounded = round_p_value(pvalue)
+significance = get_significance(pvalue)
+print(f'The p-value is {p_rounded}{significance}')
+```
+
+Can't Get Enough?
+=================
+This page showed one method of calculating the Mann-Whitney test which, in my opinion, is the best for practical use. However, if you're interested in doing a deep dive into how the test works and variations on the method used by SciPy's `mannwhitneyu()` by default, take a look [here](mann_whitney_u_test/comparison_of_methods.html).
+
+[⇦ Back](../../../python.html)
+
+</font>

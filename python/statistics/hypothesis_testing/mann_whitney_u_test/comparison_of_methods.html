@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Statistics in Python: Mann–Whitney U Test: Comparison of Methods</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -458,7 +458,7 @@ ah:"app_store_subscription_renew",eh:"first_open",fh:"first_visit",gh:"in_app_pu
 Lb:"send_page_view",nb:"send_to",Wd:"session_engaged",uf:"_logged_in_state",Xd:"session_number",Ah:"tracking_id",Xa:"url_passthrough",Jb:"accept_incoming",Kb:"url_position",Af:"phone_conversion_number",yf:"phone_conversion_callback",zf:"phone_conversion_css_class",Bf:"phone_conversion_options",xh:"phone_conversion_ids",wh:"phone_conversion_country_code",df:"aw_remarketing",Fd:"aw_remarketing_only",Dd:"gclid",lh:"auid",rh:"affiliation",rf:"tax",Md:"list_name",qf:"checkout_step",pf:"checkout_option",
 sh:"coupon",th:"promotions",ob:"user_id",yh:"retoken",na:"cookie_prefix",nf:"disable_merchant_reported_purchases",qh:"dc_natural_search",ph:"dc_custom_params",vf:"method",zh:"search_term",oh:"content_type",vh:"optimize_id",uh:"experiments",Va:"google_signals",Pc:"google_tld",Uc:"update",Qd:"firebase_id",Ib:"ga_restrict_domain",Mc:"event_settings",Ld:"dynamic_event_settings",hc:"user_data_settings",Df:"screen_name",jb:"_x_19",ib:"_ecid",Oc:"_x_20",Td:"internal_traffic_results",Ef:"traffic_type",Rc:"referral_exclusion_definition",
 Sd:"ignore_referrer",nh:"content_group"};var zd={};N.Hf=Object.freeze((zd[N.bf]=1,zd[N.bh]=1,zd[N.Cb]=1,zd[N.Db]=1,zd[N.dh]=1,zd[N.eb]=1,zd[N.Bd]=1,zd[N.Sa]=1,zd[N.Jc]=1,zd[N.fb]=1,zd[N.sa]=1,zd[N.Eb]=1,zd[N.va]=1,zd[N.cf]=1,zd));N.$d=Object.freeze([N.Aa,N.Yb,N.Gb]);N.Mh=Object.freeze([].concat(N.$d));N.ae=Object.freeze([N.ma,N.Nc,N.cc,N.Sc]);N.Nh=Object.freeze([].concat(N.ae));
-var Bd={},Cd=function(a,b){Bd[a]=Bd[a]||[];Bd[a][b]=!0},Dd=function(a){for(var b=[],c=Bd[a]||[],d=0;d<c.length;d++)c[d]&&(b[Math.floor(d/6)]^=1<<d%6);for(var e=0;e<b.length;e++)b[e]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".charAt(b[e]||0);return b.join("")};var Ed=function(a){Cd("GTM",a)};var O={},R=null,Fd=Math.random();O.J="UA-156468188-1";O.ad="c10";O.U="dataLayer";O.Wg="ChAIgKr2jQYQ49OBxM6UoY0lEicAduIP+/irolufGnfb5n2UNbAJdeWykxm6ztY3qZpW7jpvKS2HLtsaArQW";var Gd={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Hd={__paused:!0,__tg:!0},Id;for(Id in Gd)Gd.hasOwnProperty(Id)&&(Hd[Id]=!0);
+var Bd={},Cd=function(a,b){Bd[a]=Bd[a]||[];Bd[a][b]=!0},Dd=function(a){for(var b=[],c=Bd[a]||[],d=0;d<c.length;d++)c[d]&&(b[Math.floor(d/6)]^=1<<d%6);for(var e=0;e<b.length;e++)b[e]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".charAt(b[e]||0);return b.join("")};var Ed=function(a){Cd("GTM",a)};var O={},R=null,Fd=Math.random();O.J="UA-156468188-1";O.ad="c10";O.U="dataLayer";O.Wg="ChAIgKr2jQYQ49OBxM6UoY0lEicAduIP+wL5845GT+grc/4ulUFMlTnC5ZqXOzMo9T3/gRnGnR/sYgkaAgnT";var Gd={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Hd={__paused:!0,__tg:!0},Id;for(Id in Gd)Gd.hasOwnProperty(Id)&&(Hd[Id]=!0);
 O.zd="www.googletagmanager.com";var Jd=O.zd+"/gtm.js";Jd=O.zd+"/gtag/js";var Kd=Jd,Ld=Ga(""),Md=null,Nd=null,Od="https://www.googletagmanager.com/a?id="+O.J+"&cv=1",Pd={},Qd={},Rd=function(){var a=R.sequence||1;R.sequence=a+1;return a};O.Vg="";var Xd="";
 O.bd=Xd;var Yd={},Zd=new ya,$d={},ae={},de={name:O.U,set:function(a,b){H(Wa(a,b),$d);be()},get:function(a){return ce(a,2)},reset:function(){Zd=new ya;$d={};be()}},ce=function(a,b){return 2!=b?Zd.get(a):ee(a)},ee=function(a){var b,c=a.split(".");b=b||[];for(var d=$d,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},fe=function(a,b){ae.hasOwnProperty(a)||(Zd.set(a,b),H(Wa(a,b),$d),be())},be=function(a){Aa(ae,function(b,c){Zd.set(b,c);H(Wa(b,void 0),
 $d);H(Wa(b,c),$d);a&&delete ae[b]})},he=function(a,b,c){Yd[a]=Yd[a]||{};Yd[a][b]=ge(b,c)},ge=function(a,b){var c,d=1!==(void 0===b?2:b)?ee(a):Zd.get(a);"array"===Tb(d)||"object"===Tb(d)?c=H(d):c=d;return c},ie=function(a,b){if(Yd[a])return Yd[a][b]},je=function(a,b){Yd[a]&&delete Yd[a][b]};var ke=new RegExp(/^(.*\.)?(google|youtube|blogger|withgoogle)(\.com?)?(\.[a-z]{2})?\.?$/),le={cl:["ecl"],customPixels:["nonGooglePixels"],ecl:["cl"],ehl:["hl"],hl:["ehl"],html:["customScripts","customPixels","nonGooglePixels","nonGoogleScripts","nonGoogleIframes"],customScripts:["html","customPixels","nonGooglePixels","nonGoogleScripts","nonGoogleIframes"],nonGooglePixels:[],nonGoogleScripts:["nonGooglePixels"],nonGoogleIframes:["nonGooglePixels"]},me={cl:["ecl"],customPixels:["customScripts","html"],
@@ -661,161 +661,431 @@ containerProduct:v,debug:!1,id:O.J}};u.data.resume=function(){a()};O.Vg&&(u.data
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Mann–Whitney <em>U</em> Test: Comparison of Methods</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#example-data"><span class="toc-section-number">1</span> Example Data</a></li>
+<li><a href="#exact-method---from-ross-2009"><span class="toc-section-number">2</span> Exact Method - from Ross (2009)</a></li>
+<li><a href="#the-classical-approximation---from-ross-2009"><span class="toc-section-number">3</span> The Classical Approximation - from Ross (2009)</a></li>
+<li><a href="#simulation---from-ross-2009"><span class="toc-section-number">4</span> Simulation - from Ross (2009)</a></li>
+<li><a href="#mannwhitneyu---from-scipy"><span class="toc-section-number">5</span> <code>mannwhitneyu()</code> - from SciPy</a>
+<ul>
+<li><a href="#the-exact-method"><span class="toc-section-number">5.1</span> The Exact Method</a></li>
+<li><a href="#the-asymptotic-method"><span class="toc-section-number">5.2</span> The Asymptotic Method</a></li>
+<li><a href="#the-auto-method"><span class="toc-section-number">5.3</span> The Auto Method</a></li>
+</ul></li>
+<li><a href="#wilcox.test---from-r"><span class="toc-section-number">6</span> <code>wilcox.test()</code> - From R</a></li>
+<li><a href="#online-calculator"><span class="toc-section-number">7</span> Online Calculator</a></li>
+<li><a href="#conclusion"><span class="toc-section-number">8</span> Conclusion</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../../../python.html">⇦ Back</a></p>
+<p>This page follows on from <a href="../mann_whitney_u_test.html">the one about the Mann-Whitney <em>U</em> test</a>. That page used the <code>mannwhitneyu()</code> function from SciPy to perform the test, but what wasn’t mentioned is the fact that this function has two options for what method to use:</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
+<li><code>mannwhitneyu(x, y, method=&#39;exact&#39;)</code> uses the <strong>exact</strong> method to calculate the p-value exactly</li>
+<li><code>mannwhitneyu(x, y, method=&#39;asymptotic&#39;)</code> uses the <strong>asymptotic</strong> method to estimate the p-value by assuming that the values of the test statistics follow a normal distribution when H<sub>0</sub> is correct</li>
+</ul>
+<p>If no method is specified (or if <code>mannwhitneyu(x, y, method=&#39;auto&#39;)</code> is used) then Python will <strong>auto</strong>matically choose the exact method if the size of one or both of the samples is less than 8 and there are no ties, and choose the asymptotic method otherwise.</p>
+<p>There’s more: <a href="../mann_whitney_u_test.html">that page</a> used an example that comes from Section 12.4 of <em>Probability and Statistics for Engineers and Scientists</em> by S M Ross (4th edition, 2009). In addition to that example, Ross’s text includes three things that are useful to know:</p>
 <ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<li>It gives an explanation of the <strong>exact algorithm</strong> for calculating Mann-Whitney</li>
+<li>It mentions the fact that this algorithm is <strong>impractical for large sample sizes</strong> due to it becoming too computationally intense</li>
+<li>It describes methods for <strong>approximating</strong> and <strong>simulating</strong> the test, which enable it to be run more efficiently and, in turn, make it possible to use Mann-Whitney with large sample sizes</li>
+</ul>
+<p>In effect, we now have six options for calculating Mann-Whitney: three if using the SciPy function and three if implementing one of Ross’s algorithms. Just to make sure we’re correct, let’s also look at the Mann-Whitney function that’s included in the R programming language (known as <code>wilcox.test()</code>) and a free-to-access online calculator, bringing our total number of options up to eight.</p>
+<div id="example-data" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Example Data</h1>
+<p>We’ll use two sets of example data. The first is the same as was used on the previous page and comes from example 12.4a of Ross (2009):</p>
+<pre class="python"><code># Raw data from example 12.4a in Ross (2009)
+dataset1 = {
+    &#39;Treatment 1&#39;: [65.2, 67.1, 69.4, 78.2, 74, 80.3],
+    &#39;Treatment 2&#39;: [59.4, 72.1, 68, 66.2, 58.5]
+}</code></pre>
+<p>The second has been reverse-engineered from example 12.4d:</p>
+<pre class="python"><code># Reverse-engineering example 12.4d
+dataset2 = {
+    &#39;Sample X&#39;: [1, 2, 5, 6, 7, 9, 11, 12, 19],
+    &#39;Sample Y&#39;: [3, 4, 8, 10, 13, 14, 15, 16, 17, 18, 20, 21, 22]
+}</code></pre>
+<p>The major difference is that the first dataset has a small sample size (<span class="math inline">\(n &lt; 8\)</span> for both groups) while the second has a moderate sample size (<span class="math inline">\(n &gt; 8\)</span> for both groups).</p>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --> <!-- 5. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-</ul></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a> <!-- 7. [Webscraping] --> <!-- 8. [Bitwise Operators] --> <!-- 9. [Error Handling] --> <!-- 10. [Linting] --> <!-- 11. [Variable Scope] --></li>
-</ol>
+<div id="exact-method---from-ross-2009" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Exact Method - from Ross (2009)</h1>
+<pre class="python"><code>import numpy as np
+
+
+def P(N, M, K):
+    &quot;&quot;&quot;
+    Probability of the sum of the ranks of the 1st sample being &lt;= K, given H0.
+
+    Taken from pages 528 and 529 of Ross (2009).
+    &quot;&quot;&quot;
+    # Boundary conditions
+    if (N == 1) &amp; (M == 0):
+        if K &lt;= 0:
+            return 0
+        else:
+            return 1
+    elif (N == 0) &amp; (M == 1):
+        if K &lt; 0:
+            return 0
+        else:
+            return 1
+    # Equation 12.4.3
+    else:
+        if N == 0:
+            return (M / (N + M)) * P(N, M - 1, K)
+        elif M == 0:
+            return (N / (N + M)) * P(N - 1, M, K - N - M)
+        else:
+            return \
+                (N / (N + M)) * P(N - 1, M, K - N - M) + \
+                (M / (N + M)) * P(N, M - 1, K)
+
+
+def mann_whitney_p(n, m, t):
+    &quot;&quot;&quot;
+    Find the p-value.
+
+    This uses the formula on page 529 of Ross (2009).
+    &quot;&quot;&quot;
+    pvalue = 2 * min(P(n, m, t), 1 - P(n, m, t - 1))
+
+    return pvalue
+
+
+def mann_whitney(x, y):
+    &quot;&quot;&quot;
+    Perform the Mann-Whitney U test.
+
+    Get the test statistic, T, and the p-value.
+    &quot;&quot;&quot;
+    # Combine the two samples into one array
+    ar = np.array(x + y)
+    # Rank the items in the array without sorting the array
+    order = ar.argsort()
+    ranks = order.argsort()
+    # Python is 0-indexed, so add 1 to get the ranks starting at 1
+    ranks = ranks + 1
+
+    # Get the sum of the ranks of the values in each sample
+    #
+    # Sample size of sample x
+    n = len(x)
+    # The first n ranks are the ranks of the elements of sample x
+    t = np.sum(ranks[:n])
+    # The test statistic, T, is the sum of the ranks of the values in sample x
+    T = t
+
+    # Get the p-value
+    #
+    # Sample size of sample y
+    m = len(y)
+    # Get the p-value
+    pvalue = mann_whitney_p(n, m, t)
+
+    return T, pvalue</code></pre>
+<p>This method replicates the examples in Section 12.4 of Ross (2009), using dataset 1:</p>
+<pre class="python"><code># Call the function
+T, pvalue = mann_whitney(dataset1[&#39;Treatment 1&#39;], dataset1[&#39;Treatment 2&#39;])
+
+# Example 12.4a
+print(T)</code></pre>
+<pre><code>## 45</code></pre>
+<pre class="python"><code># Example 12.4b
+print(P(2, 1, 3))</code></pre>
+<pre><code>## 0.3333333333333333</code></pre>
+<pre class="python"><code># Example 12.4c
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.1255</code></pre>
+<pre class="python"><code># Example 12.4d
+print(f&#39;{mann_whitney_p(9, 13, 72):7.5f}&#39;)</code></pre>
+<pre><code>## 0.03642</code></pre>
+<p>Example 12.4d can also be done using dataset 2:</p>
+<pre class="python"><code># Call the function
+T, pvalue = mann_whitney(dataset2[&#39;Sample X&#39;], dataset2[&#39;Sample Y&#39;])
+
+# Example 12.4d
+print(f&#39;{pvalue:7.5f}&#39;)</code></pre>
+<pre><code>## 0.03642</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a>
-<ul>
-<li><a href="python/data/export_to_word.html">Export Tables to Word</a></li>
-</ul></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-</ol>
+<div id="the-classical-approximation---from-ross-2009" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> The Classical Approximation - from Ross (2009)</h1>
+<pre class="python"><code>import numpy as np
+from scipy.stats import norm
+
+
+def E_H0(n, m):
+    &quot;&quot;&quot;
+    The mean (expected value) of T under H0.
+
+    Taken from page 532 of Ross (2009).
+    &quot;&quot;&quot;
+    return (n * (n + m + 1)) / 2
+
+
+def var_H0(n, m):
+    &quot;&quot;&quot;
+    The variance of T under H0.
+
+    Taken from page 532 of Ross (2009).
+    &quot;&quot;&quot;
+    return (n * m * (n + m + 1)) / 12
+
+
+def mann_whitney_p(n, m, t):
+    &quot;&quot;&quot;
+    Find the p-value.
+
+    Uses the formulas on page 532 of Ross (2009).
+    &quot;&quot;&quot;
+    # The mean of T under H_0.
+    e = E_H0(n, m)
+    # The absolute difference between the observed and mean values of T
+    d = abs(e - t)
+    # The variance of T under H_0.
+    s2 = var_H0(n, m)
+
+    # Calculate the p-value
+    z = d / np.sqrt(s2)
+    pvalue = 2 * (1 - norm.cdf(z))
+
+    return pvalue
+
+
+def mann_whitney(x, y):
+    &quot;&quot;&quot;
+    Perform the Mann-Whitney U test.
+
+    Get the test statistic, T, and the p-value.
+    &quot;&quot;&quot;
+    # Combine the two samples into one array
+    ar = np.array(x + y)
+    # Rank the items in the aray without sorting the array
+    order = ar.argsort()
+    ranks = order.argsort()
+    # Python is 0-indexed, so add 1 to get the ranks starting at 1
+    ranks = ranks + 1
+
+    # Get the sum of the ranks of the values in each sample
+    #
+    # Sample size of sample x
+    n = len(x)
+    # The first n ranks are the ranks of the elements of sample x
+    t = np.sum(ranks[:n])
+    # The test statistic, T, is the sum of the ranks of the values in sample x
+    T = t
+
+    # Get the p-value
+    #
+    # Sample size of sample y
+    m = len(y)
+    # Get the p-value
+    pvalue = mann_whitney_p(n, m, t)
+
+    return T, pvalue</code></pre>
+<p>This method replicates example 12.4e of Ross (2009) to within rounding errors:</p>
+<p>Using dataset 1:</p>
+<pre class="python"><code># Call the function
+T, pvalue = mann_whitney(dataset1[&#39;Treatment 2&#39;], dataset1[&#39;Treatment 1&#39;])
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.1003</code></pre>
+<p>Using dataset 2:</p>
+<pre class="python"><code># Call the function
+T, pvalue = mann_whitney(dataset2[&#39;Sample X&#39;], dataset2[&#39;Sample Y&#39;])
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.0354</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="simulation---from-ross-2009" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Simulation - from Ross (2009)</h1>
+<p>Covered in Chapter 15 of the textbook, the answers to example 12.4f are</p>
+<p>Using dataset 1:</p>
+<pre><code>0.125</code></pre>
+<p>Using dataset 2:</p>
+<pre><code>0.0356</code></pre>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/curve_fitting/linear.html">Linear Functions</a></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
+<div id="mannwhitneyu---from-scipy" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> <code>mannwhitneyu()</code> - from SciPy</h1>
+<div id="the-exact-method" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> The Exact Method</h2>
+<p>Using dataset 1:</p>
+<pre class="python"><code>from scipy.stats import mannwhitneyu
+
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset1[&#39;Treatment 2&#39;], dataset1[&#39;Treatment 1&#39;], method=&#39;exact&#39;)
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.1255</code></pre>
+<p>Using dataset 2:</p>
+<pre class="python"><code># Call the function
+statistic, pvalue = mannwhitneyu(dataset2[&#39;Sample X&#39;], dataset2[&#39;Sample Y&#39;], method=&#39;exact&#39;)
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.0364</code></pre>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Tests</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired Two-Sample t-Tests</a></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney <em>U</em> Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)</li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-</ul></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-</ol>
+<div id="the-asymptotic-method" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> The Asymptotic Method</h2>
+<p>Using dataset 1:</p>
+<pre class="python"><code>from scipy.stats import mannwhitneyu
+
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset1[&#39;Treatment 2&#39;], dataset1[&#39;Treatment 1&#39;], method=&#39;asymptotic&#39;)
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.1207</code></pre>
+<p>Using dataset 2:</p>
+<pre class="python"><code># Call the function
+statistic, pvalue = mannwhitneyu(dataset2[&#39;Sample X&#39;], dataset2[&#39;Sample Y&#39;], method=&#39;asymptotic&#39;)
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.0384</code></pre>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="the-auto-method" class="section level2" number="5.3">
+<h2 number="5.3"><span class="header-section-number">5.3</span> The Auto Method</h2>
+<p>Using dataset 1:</p>
+<pre class="python"><code>from scipy.stats import mannwhitneyu
+
+# Call the function
+statistic, pvalue = mannwhitneyu(dataset1[&#39;Treatment 2&#39;], dataset1[&#39;Treatment 1&#39;], method=&#39;auto&#39;)
+# or
+statistic, pvalue = mannwhitneyu(dataset1[&#39;Treatment 2&#39;], dataset1[&#39;Treatment 1&#39;])
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.1255</code></pre>
+<p>Using dataset 2:</p>
+<pre class="python"><code># Call the function
+statistic, pvalue = mannwhitneyu(dataset2[&#39;Sample X&#39;], dataset2[&#39;Sample Y&#39;], method=&#39;auto&#39;)
+# or
+statistic, pvalue = mannwhitneyu(dataset2[&#39;Sample X&#39;], dataset2[&#39;Sample Y&#39;])
+
+print(f&#39;{pvalue:6.4f}&#39;)</code></pre>
+<pre><code>## 0.0384</code></pre>
+</div>
+</div>
+<div id="wilcox.test---from-r" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> <code>wilcox.test()</code> - From R</h1>
+<p>This implementation of the Mann-Whitney test is included in ‘Base R’ (ie you don’t need to import a package).</p>
+<p>Using dataset 1:</p>
+<pre class="r"><code>treatment1 &lt;- c(65.2, 67.1, 69.4, 78.2, 74, 80.3)
+treatment2 &lt;- c(59.4, 72.1, 68, 66.2, 58.5)
+
+# Call the function
+wilcox.test(treatment1, treatment2)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum exact test
+## 
+## data:  treatment1 and treatment2
+## W = 24, p-value = 0.1255
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+<p>Using dataset 2:</p>
+<pre class="r"><code>sample_x &lt;- c(1, 2, 5, 6, 7, 9, 11, 12, 19)
+sample_y &lt;- c(3, 4, 8, 10, 13, 14, 15, 16, 17, 18, 20, 21, 22)
+
+# Call the function
+wilcox.test(sample_x, sample_y)</code></pre>
+<pre><code>## 
+##  Wilcoxon rank sum exact test
+## 
+## data:  sample_x and sample_y
+## W = 27, p-value = 0.03642
+## alternative hypothesis: true location shift is not equal to 0</code></pre>
+</div>
+<div id="online-calculator" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Online Calculator</h1>
+<p>Often, you’ll be able to find free calculators - such as <a href="https://www.socscistatistics.com/tests/mannwhitney/">this one</a> - that will perform Mann-Whitney for you. Here are the results:</p>
+<p>Using dataset 1:</p>
+<pre><code>0.12114</code></pre>
+<p>Using dataset 2:</p>
+<pre><code>0.03846</code></pre>
+</div>
+<div id="conclusion" class="section level1" number="8">
+<h1 number="8"><span class="header-section-number">8</span> Conclusion</h1>
+<p>We’ve looked at eight different methods for calculating Mann-Whitney; which one is the best? Here’s a comparison, including what values of p they produce when used with each of the two datasets:</p>
+<table>
+<colgroup>
+<col width="34%" />
+<col width="11%" />
+<col width="9%" />
+<col width="9%" />
+<col width="36%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Method</th>
+<th>From</th>
+<th>Dataset 1</th>
+<th>Dataset 2</th>
+<th>Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Auto:<br><code>mannwhitneyu(x, y)</code> or<br><code>mannwhitneyu(x, y, method=&#39;auto&#39;)</code></td>
+<td>SciPy</td>
+<td>0.1255</td>
+<td>0.03844</td>
+<td>Uses the ‘exact’ method when the size of one of the samples is less than 8 and there are no ties, otherwise it uses ‘asymptotic’</td>
+</tr>
+<tr class="even">
+<td>Exact:<br><code>mannwhitneyu(x, y, method=&#39;exact&#39;)</code></td>
+<td>SciPy</td>
+<td>0.1255</td>
+<td>0.03642</td>
+<td>Most correct, but impractically slow for large sample sizes</td>
+</tr>
+<tr class="odd">
+<td>Asymptotic:<br><code>mannwhitneyu(x, y, method=&#39;asymptotic&#39;)</code></td>
+<td>SciPy</td>
+<td>0.1207</td>
+<td>0.03844</td>
+<td>Less correct, but usable with large sample sizes</td>
+</tr>
+<tr class="even">
+<td>Exact algorithm</td>
+<td>Ross (2009)</td>
+<td>0.1255</td>
+<td>0.03642</td>
+<td>Used by SciPy’s ‘exact’ method and so is identical to that</td>
+</tr>
+<tr class="odd">
+<td>Classical approximation</td>
+<td>Ross (2009)</td>
+<td>0.1003</td>
+<td>0.03542</td>
+<td>Worse than ‘exact’ for small sample sizes; better than ‘asymptotic’ for large sample sizes</td>
+</tr>
+<tr class="even">
+<td>Simulation</td>
+<td>Ross (2009)</td>
+<td>0.125</td>
+<td>0.0356</td>
+<td>Good balance of speed and accuracy</td>
+</tr>
+<tr class="odd">
+<td>Two-sample Wilcoxon test:<br><code>wilcox.test(x, y)</code></td>
+<td>(Base) R</td>
+<td>0.1255</td>
+<td>0.03642</td>
+<td>Also uses the ‘exact’ method and so is identical to SciPy and Ross’s implementation of that</td>
+</tr>
+<tr class="even">
+<td>Online calculator</td>
+<td><a href="https://www.socscistatistics.com/tests/mannwhitney/">Here</a></td>
+<td>0.12114</td>
+<td>0.03846</td>
+<td>Mediocre balance of speed and accuracy</td>
+</tr>
+</tbody>
+</table>
+<p>Overall, the default method from SciPy - <code>mannwhitneyu(x, y)</code> - is the best for a practical, accurate calculation of p.</p>
+<p><a href="../../../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
