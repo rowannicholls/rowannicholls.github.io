@@ -239,45 +239,43 @@ These functions come from the `stringr` library.
 
 Formatted Output
 ================
-If you want to print a variable as part of a string using a specific format, use the `printf()` function from the `R.utils` library along with the `%` character to indicate where you want the variable to be inserted. You also need to have a letter after the `%` to indicate what type of format to use.
+If you want to print a variable as part of a string using a specific format, use the `sprintf()` function (**s**tring **print** **f**ormatted) along with the "%" character to indicate where you want the variable to be inserted. You also need to have a letter after the "%" to indicate what type of format to use:
 
 Number formats
 --------------
-When working with numbers, use the `f` for 'floating-point' in conjunction with `%`:
+When working with numbers, use the "f" for 'floating-point' in conjunction with "%":
 
-```{r, message = FALSE}
-library(R.utils)
-
+```{r}
 x <- 1
-printf("x = %f", x)
+sprintf("x = %f", x)
 ```
 
 Use a decimal point and a number to set the number of decimal places you see:
 
 ```{r}
 x <- 1
-printf("x = %.2f", x)
+sprintf("x = %.2f", x)
 ```
 
 Use a number before the decimal point to set the 'width' of the number, ie how many spaces it takes up (including the decimal point). If the width is set to be wider than the number is long, the extra space with be filled up with blanks:
 
 ```{r}
 x <- 1
-printf("x = %8.2f", x)
+sprintf("x = %8.2f", x)
 ```
 
 String formats
 --------------
-Instead of the `f`, use an `s` together with the `%`.
+Instead of the "f", use an "s" together with the "%".
 
 You can print to the console immediately:
 
 ```{r}
 st <- "Hello world"
-printf("Output text is: %s", st)
+sprintf("Output text is: %s", st)
 ```
 
-...or you can write the value to a variable and print it to the console at a later stage by using the `sprintf()` function:
+...or you can write the value to a variable and print it to the console at a later stage:
 
 ```{r}
 st <- "Hello world"
@@ -287,13 +285,13 @@ print(st[1])
 
 Using formatted output with a dataframe
 ---------------------------------------
-If you extract a single string from any vector or dataframe, it will be treated in the same way by the `printf()` function:
+If you extract a single string from any vector or dataframe, it will be treated in the same way by the `sprintf()` function:
 
 ```{r}
 df <- data.frame(
     name <- c("Alfa", "Bravo", "Charlie")
 )
-printf("Output text is: %s", df$name[1])
+sprintf("Output text is: %s", df$name[1])
 ```
 
 Unicode and Emojii

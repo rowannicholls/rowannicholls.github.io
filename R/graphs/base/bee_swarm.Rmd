@@ -1,0 +1,258 @@
+---
+title: '<font size="5">Graphs in Base R:</font><br>Bee Swarm Plots'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../R.html)
+
+**Bee swarm plots** enable you to see all the individual points in a dataset as well as the distribution, making them a very powerful visualisation tool.
+
+Example Data
+============
+We'll use the built-in `iris` dataset (more info [here](https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/iris) and [here](https://rowannicholls.github.io/R/data/datasets/iris.html)). This contains various measurements from samples of different species of iris flower, although for this example we'll just use one measurement (petal length) of two of the species (versicolor and virginica):
+
+```{r}
+df <- iris[
+    (iris["Species"] == "versicolor") |
+    (iris["Species"] == "virginica"),
+]
+df <- df[c("Petal.Length", "Species")]
+# Drop unused levels
+df <- droplevels(df)
+
+print(head(df))
+```
+
+Bee Swarm Plot
+==============
+The `beeswarm` library contains the `beeswarm()` function which can be used as follows:
+
+```{r}
+# Load the beeswarm library
+library(beeswarm)
+
+# Create a bee swarm plot
+beeswarm(
+    # Plot the petal lengths as a function of the species of iris flower
+    df[["Petal.Length"]] ~ df[["Species"]],
+    # Set the main title of the plot
+    main = "Length of Petals of Different Species of Iris Flowers",
+    # Set the x- and y-axis labels
+    xlab = "Species", ylab = "Petal Length [cm]",
+    # Set the labels of the groups
+    labels = c("Versicolor", "Virginica")
+)
+```
+
+A Box Plot and a Bee Swarm Plot
+===============================
+To better visualise the distribution, plot a box plot first and add the bee swarm plot in over it:
+
+```{r}
+boxplot(
+    # Plot the petal lengths as a function of the species of iris flower
+    df[["Petal.Length"]] ~ df[["Species"]],
+    # Set the main title of the plot
+    main = "Length of Petals of Different Species of Iris Flowers",
+    # Set the x- and y-axis labels
+    xlab = "Species", ylab = "Petal Length [cm]",
+    # Set the names of the groups
+    names = c("Versicolor", "Virginica")
+)
+beeswarm(
+    # Plot the petal lengths as a function of the species of iris flower
+    df[["Petal.Length"]] ~ df[["Species"]],
+    # Add this plot to the box plot that has just been created
+    add=TRUE
+)
+```
+
+Test for Significance
+=====================
+We can see from the plots that the petals of the virginica flowers are, on average, longer than those of the versicolor flowers, but is this difference statistically significant? We can do a t-test to find out:
+
+```{r}
+# Significance test
+stats <- t.test(df[["Petal.Length"]] ~ df[["Species"]])
+```
+
+The `t.test()` function returns a number of things and we have assigned all of them to the `stats` variable. One of the things that is returned is the best estimate (ie the mean) of the length of each species's petals:
+
+```{r}
+print(stats$estimate)
+```
+
+The confidence interval of the difference between these means is also returned:
+
+```{r}
+diff = stats$estimate[2] - stats$estimate[1]
+ci_upper = abs(stats$conf.int[1])
+ci_lower = abs(stats$conf.int[2])
+sprintf("A difference of %.3f cm (95%% CI: %.3f - %.3f cm) between the mean petal lengths of versicolor and virginica flowers was found", diff, ci_lower, ci_upper)
+```
+
+...and, of course, the p-value of the t-test is returned:
+
+```{r}
+print(stats$p.value)
+```
+
+This can be re-formatted as follows:
+
+```{r}
+significance_strings_from_p <- function(p) {
+    if (p < 0.001) {
+        stars <- "***"
+        str <- " (***)"
+    } else if (p < 0.01) {
+        stars <- "**"
+        str <- " (**)"
+    } else if (p < 0.05) {
+        stars <- "*"
+        str <- " (*)"
+    } else if (p < 0.1) {
+        stars <- "."
+        str <- " (.)"
+    } else {
+        stars <- ""
+        str <- ""
+    }
+    sig <- list("stars" = stars, "str" = str)
+    return(sig)
+}
+
+sig <- significance_strings_from_p(stats$p.value)
+
+sprintf("The petal length of versicolor flowers is not the same as that of virginica flowers; p = %8.2e%s", stats$p.value, sig$str)
+```
+
+Add the Statistics to the Plot
+==============================
+These results can be added to the plot itself, allowing as much information to be communicated as efficiently as possible:
+
+Add Significance Bars
+---------------------
+In order to have enough space for these, the height of the plot needs to be increased by 15%. Do this by adjusting the y-axis limits:
+
+```{r}
+# Increase height of plot area by 15%
+range <- max(df[["Petal.Length"]]) - min(df[["Petal.Length"]])
+ylim <- c(min(df[["Petal.Length"]]), max(df[["Petal.Length"]]) + 0.15 * range)
+# Box plot
+boxplot(
+    df[["Petal.Length"]] ~ df[["Species"]],
+    main = "Length of Petals of Different Species of Iris Flowers",
+    xlab = "Species", ylab = "Petal Length",
+    ylim = ylim,
+    names = c("Versicolor", "Virginica")
+)
+# Bee swarm plot
+beeswarm(
+    df[["Petal.Length"]] ~ df[["Species"]],
+    add=TRUE
+)
+# Text labels
+text(
+    (1 + 2) / 2, max(df[["Petal.Length"]]) + 0.16 * range,
+    labels = sig$stars, cex = 1.5
+)
+text(
+    (1 + 2) / 2, max(df[["Petal.Length"]]) + 0.10 * range,
+    labels = sprintf("p = %8.2e", stats$p.value), cex = 0.9
+)
+# Horizontal line
+y1 <- max(df[["Petal.Length"]]) + 0.14 * range
+lines(c(1, 2), c(y1, y1))
+# Vertical lines
+y2 <- max(df[["Petal.Length"]]) + 0.04 * range
+lines(c(1, 1), c(y1, y2))
+lines(c(2, 2), c(y1, y2))
+```
+
+Add the Confidence Intervals
+----------------------------
+The height of the plot needs to be increased by 15% again, but this time it needs to be added in at the bottom as well as at the top:
+
+```{r}
+# Increase height of plot area by 15% at the top and 15% at the bottom
+range <- max(df[["Petal.Length"]]) - min(df[["Petal.Length"]])
+ylim <- c(min(df[["Petal.Length"]]) - 0.15 * range, max(df[["Petal.Length"]]) + 0.15 * range)
+# Box plot
+bp <- boxplot(
+    df[["Petal.Length"]] ~ df[["Species"]],
+    main = "Length of Petals of Different Species of Iris Flowers",
+    xlab = "Species", ylab = "Petal Length",
+    ylim = ylim,
+    names = c("Versicolor", "Virginica")
+)
+# Bee swarm plot
+beeswarm(
+    df[["Petal.Length"]] ~ df[["Species"]],
+    add=TRUE
+)
+# Text labels
+text(
+    (1 + 2) / 2, max(df[["Petal.Length"]]) + 0.17 * range,
+    labels = sig$stars, cex = 1.5
+)
+text(
+    (1 + 2) / 2, max(df[["Petal.Length"]]) + 0.09 * range,
+    labels = sprintf("p = %8.2e", stats$p.value), cex = 0.9
+)
+# Horizontal line
+y1 <- max(df[["Petal.Length"]]) + 0.14 * range
+lines(c(1, 2), c(y1, y1))
+# Vertical lines
+y2 <- max(df[["Petal.Length"]]) + 0.04 * range
+lines(c(1, 1), c(y1, y2))
+lines(c(2, 2), c(y1, y2))
+# Confidence intervals
+# +/-1.58 IQR/sqrt(n)
+for (col in seq_along(numeric(ncol(bp$conf)))) {
+    text(
+        col, min(df[["Petal.Length"]]) - 0.13 * range, cex = 0.9,
+        labels = paste(
+            "CI:",
+            round(bp$conf[1, col], 2), "-",
+            round(bp$conf[2, col], 2)
+        )
+    )
+}
+```
+
+Save the Plot
+=============
+Finally, export your plot to your computer as an image by having `png("Name of Plot.png")` at the top of your code (before you start the plotting). Various options are available to control the way this image looks:
+
+```{r, eval = FALSE}
+# Export image to PNG
+png(file = "Box Plot and Bee Swarm.png", width = 700, height = 700, pointsize = 24)
+```
+
+To save the plot as a PDF, use the following:
+
+```{r, eval = FALSE}
+# Export image to PDF
+cairo_pdf(file = "Box Plot and Bee Swarm.pdf", width = 8, height = 8, pointsize = 24)
+```
+
+<!-- # TODO
+col=, spacing = 2, pwcol = df$rowpos, corral = "wrap", pch = 19
+legend(
+    x = 0.5, y = 15, title = "Row",
+    legend = unique(sort(df$rowpos)), pch = 19, col = unique(sort(df$rowpos)),
+    cex = 0.5
+) -->
+
+[⇦ Back](../../../R.html)
+
+</font>
