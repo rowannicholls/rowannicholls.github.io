@@ -1,0 +1,222 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Drop Columns That Only Contain "False"'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+```
+
+Sometimes, you'll come across datasets where certain columns only contain the value "False" and you'll want to remove them. This isn't entirely straightforward to do, so this page explores a few options at your disposal.
+
+Example data
+============
+
+```{python}
+import pandas as pd
+import numpy as np
+
+# Set Pandas display options
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 120)
+
+# Create a data frame
+raw = pd.DataFrame({
+    'only_trues': [True, True, True],
+    'only_falses': [False, False, False],
+    'only_text': ['Value 1', 'Value 2', 'Value 3'],
+    'falses_and_null': [False, False, None],
+    'falses_and_nan': [False, False, np.NaN],
+    'text_and_null': ['Value 1', 'Value 2', None],
+})
+
+print(raw)
+```
+
+The above uses the Pandas and Numpy packages. Install these from the terminal with:
+
+- `python3.9 -m pip install pandas`
+- `python3.9 -m pip install numpy`
+
+Drop Columns That Only Contain "False", "None" and "NaN"
+========================================================
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False', 'None' and 'NaN'
+for col in list(df.any()[~df.any()].index):
+    df = df.drop(col, axis=1)
+
+print(df)
+```
+
+Columns "only_falses", "falses_and_null" and "falses_and_nan" have been dropped.
+
+Drop Columns That Only Contain "False" and "None"
+=================================================
+Converting a copy of each column to 'Boolean' format will change all instances of "None" to "False", but instances of "NaN" will be unaffected:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False', 'None' and 'NaN'
+for col in list(df):
+    if not df[col].astype('bool').any():
+        df = df.drop(col, axis=1)
+
+print(df)
+```
+
+Columns "only_falses" and "falses_and_null" have been dropped, but not "falses_and_nan".
+
+Drop Columns That Only Contain "False"
+======================================
+Use the `bool_only=True` option with the `any()` function to have it only recognise Booleans:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False'
+for col in list(df.any(bool_only=True)[~df.any(bool_only=True)].index):
+    df = df.drop(col, axis=1)
+print(df)
+```
+
+Only column "only_falses" has been dropped, "falses_and_null" and "falses_and_nan" are still there.
+
+Note: 'Category' Columns Can Be a Problem
+=========================================
+If there is a column that is of the 'category' type then the above methods do not always work as expected. To demonstrate, let's convert one of the columns to this type:
+
+```{python}
+# Change the type of the falses_and_null column
+raw['falses_and_null'] = raw['falses_and_null'].astype('category')
+
+print(raw)
+```
+
+Note that the "None" value in the "falses_and_null" column has been changed to a "NaN" by the re-typing process.
+
+Drop Columns That Only Contain "False", "None" and "NaN"
+--------------------------------------------------------
+Now, let's attempt the 'drop columns containing only "False", "None" and "NaN"' method we used above (ie `bool_only=False`):
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False', 'None' and 'NaN'
+for col in list(df.any()[~df.any()].index):
+    df = df.drop(col, axis=1)
+
+print(df)
+```
+
+**This has not worked as expected!** While "only_falses" and "falses_and_nan" have been dropped, "falses_and_null" is still there. This is despite the fact that it contains the same values as "falses_and_nan"!
+
+Using `.fillna()` to fill all "None" and "NaN" values with "False" does not work either, regardless of whether you have `bool_only=True` or not:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False', 'None' and 'NaN'
+df = df.fillna(False)
+for col in list(df.any()[~df.any()].index):
+    df = df.drop(col, axis=1)
+
+print(df)
+```
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False'
+df = df.fillna(False)
+for col in list(df.any(bool_only=True)[~df.any(bool_only=True)].index):
+    df = df.drop(col, axis=1)
+
+print(df)
+```
+
+Drop Columns That Only Contain "False" and "None"
+-------------------------------------------------
+Again, we will use the method that worked previously:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False', 'None' and 'NaN'
+for col in list(df):
+    if not df[col].astype('bool').any():
+        df = df.drop(col, axis=1)
+
+print(df)
+```
+
+...and this has worked as expected! Columns "only_falses" and "falses_and_null" have been dropped, but not "falses_and_nan".
+
+Drop Columns That Only Contain "False"
+--------------------------------------
+Now let's try the 'drop columns containing only "False"' method (ie `bool_only=True`):
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False'
+for col in list(df.any(bool_only=True)[~df.any(bool_only=True)].index):
+    df = df.drop(col, axis=1)
+
+print(df)
+```
+
+This has also worked as expected!
+
+Solution: Just Avoid Columns of Type 'Category'
+===============================================
+Iterate though the columns and treat them differently depending on whether they are categorical or not:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False', 'None' and 'NaN'
+for col in list(df):
+    if str(df[col].dtype) != 'category':
+        # If the column is not categorical, check if it has any True values...
+        if not df[col].any():
+            # ...if not, remove it
+            df = df.drop(col, axis=1)
+    else:
+        # If the column is categorical, convert it to Boolean THEN check it...
+        if not df[col].astype('bool').any():
+            # ...if there are no True values, remove it
+            df = df.drop(col, axis=1)
+
+print(df)
+```
+
+As expected, all columns that only contain 'False', 'None' and 'NaN' have been removed.
+
+[⇦ Back](../../python.html)
+
+</font>
