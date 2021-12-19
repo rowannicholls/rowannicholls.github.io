@@ -106,6 +106,23 @@ wide <- cast(gapminder, country + continent ~ year, value = "pop")
 head(wide[, 1:12])
 ```
 
+Using dcast() from reshape2
+---------------------------
+The reshape2 package has the `acast()` and the `dcast()` functions: `acast()` returns its output as a vector, matrix or array while `dcast()` returns it as a data frame. They are otherwise identical to `cast()` from the reshape package, although they use `value.var` instead of `value` as the keyword for the value parameter:
+
+```{r, message = F}
+library(reshape2)
+wide <- dcast(gapminder, country + continent ~ year, value.var = "pop")
+head(wide[, 1:12])
+```
+
+Something that's useful to remember is that the default aggregation function for `dcast()` is `length`. In other words, it will return a count of the number of elements relevant to the row and column headings by default. In this example, it gives the number of countries for which we have data at each time point and from each continent:
+
+```{r, message = F}
+wide <- dcast(gapminder, continent ~ year)
+print(wide)
+```
+
 From Wide to Long
 =================
 Unsurprisingly, this is the opposite operation: going from a **wide** table to a **long** one.
