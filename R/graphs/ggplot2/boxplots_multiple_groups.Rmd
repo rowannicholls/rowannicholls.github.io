@@ -118,8 +118,8 @@ p <- p + scale_fill_manual(values = c("#0074c5", "#d71921", "#e400a3", "#00a650"
 print(p)
 ```
 
-Annotate the Sample Size and Mean Values
-========================================
+Annotating the Sample Size and Mean Values
+==========================================
 It can be very useful to include summary statistics right on the plot as opposed to hidden away in a paragraph of text. This requires custom functions which then get called from within the `stat_summary()` function:
 
 ```{r}
@@ -161,7 +161,10 @@ print(p)
 
 Overlaying a Scatter Plot
 =========================
-Instead of representing the multiple groups via multiple box plots we could use one box plot and overlay the individual points as a scatter plot. Adding colour-coding will then ensure that the sub-groups are still distinguishable:
+
+Using a 'Jitter Plot'
+---------------------
+Instead of representing the multiple groups via multiple box plots we could instead have one box plot and overlay the individual points in a jitter plot (a type of scatter plot where the points have been moved off-centre by a random amount - 'jittered' - in order to improve their visibility). Adding colour-coding will then ensure that the sub-groups are still distinguishable:
 
 ```{r}
 p <- ggplot(long_jump, aes(x = men_women, y = distance))
@@ -181,6 +184,32 @@ There are a couple of differences between this code and previous examples:
 - The `geom_jitter()` function is included. This spreads the data points in the scatter plots out to make them more visible, and the `color` argument causes them to be coloured by Olympics.
 - In the `labs()` function, the label for the `color` is being set, not the `fill` as has been done previously. This is because we are using the *colour of the points* to distinguish the groups, not the *fill colour of the boxes.*
 - For the same reason as above, the `scale_color_manual()` function is needed to control the colour of the points, as opposed to `scale_fill_manual()`
+
+Using a 'Dot Plot'
+------------------
+This is another way of doing the above, but using the `geom_dotplot()` function instead of the `geom_jitter()` function. The `stackdir = "center"` option ensures that points with similar values remain stacked horizontally instead of hiding behind one another:
+
+```{r}
+p <- ggplot(long_jump, aes(x = men_women, y = distance, color = olympics))
+p <- p + geom_boxplot(
+    outlier.colour = "black", outlier.shape = 16, outlier.size = 0.5,
+    notch = FALSE, aes(fill = olympics)
+)
+p <- p + geom_dotplot(
+    binaxis = "y", stackdir = "center", dotsize = 0.4,
+    position = position_dodge(0.75), binwidth = 0.05,
+    show.legend = FALSE
+)
+p <- p + ggtitle("Long Jump Finals at the Last Four Olympic Games")
+p <- p + scale_color_manual(values = c("#B2182B", "#2166AC", "#B2182B", "#2166AC"), guide=FALSE)
+p <- p + scale_fill_manual(values = c("#F4A582", "#92C5DE", "#F4A582", "#92C5DE"))
+p <- p + theme_light()
+p <- p + scale_x_discrete(limits=c("Men", "Women"))
+p <- p + ylab("Distance [m]")
+p <- p + xlab("")
+p <- p + labs(fill = "Olympics")
+print(p)
+```
 
 Save Plot
 =========
