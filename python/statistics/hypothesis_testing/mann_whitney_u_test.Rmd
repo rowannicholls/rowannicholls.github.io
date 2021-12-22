@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney *U* Test'
+title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney U Test'
 output:
     html_document:
         theme: paper
@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../python.html)
 
-The **Mann–Whitney *U* test** can be used to compare the means of two groups of numerical data which are independent of each other.
+The **Mann–Whitney U test** can be used to compare the means of two groups of numerical data which are independent of each other.
 
 Example Data
 ============
@@ -131,7 +131,7 @@ Now that we have hypotheses, we can follow a statistical test selection process:
 - As discussed above, we are doing **non-parametric statistics**
 - Our measurements are **independent** of each other: the amount that one sample corrodes does not affect how much another sample corrodes
 
-Looking at the flowchart below tells us that we should thus be using the Mann-Whitney *U* test to test our hypothesis:
+Looking at the flowchart below tells us that we should thus be using the Mann-Whitney U test to test our hypothesis:
 
 ```{r, echo = FALSE}
 library(DiagrammeR)
@@ -244,8 +244,8 @@ DiagrammeR::grViz(
 )
 ```
 
-Mann-Whitney *U* Test
-=====================
+Mann-Whitney U Test
+===================
 The SciPy package makes it incredibly easy to perform the test: just use the `mannwhitneyu()` function!
 
 ```{python}

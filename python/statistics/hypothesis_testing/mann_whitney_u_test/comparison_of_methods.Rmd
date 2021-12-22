@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney *U* Test: Comparison of Methods'
+title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney U Test: Comparison of Methods'
 output:
     html_document:
         theme: paper
@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../../python.html)
 
-This page follows on from [the one about the Mann-Whitney *U* test](../mann_whitney_u_test.html). That page used the `mannwhitneyu()` function from SciPy to perform the test, but what wasn't mentioned is the fact that this function has two options for what method to use:
+This page follows on from [the one about the Mann-Whitney U test](../mann_whitney_u_test.html). That page used the `mannwhitneyu()` function from SciPy to perform the test, but what wasn't mentioned is the fact that this function has two options for what method to use:
 
 - `mannwhitneyu(x, y, method='exact')` uses the **exact** method to calculate the p-value exactly
 - `mannwhitneyu(x, y, method='asymptotic')` uses the **asymptotic** method to estimate the p-value by assuming that the values of the test statistics follow a normal distribution when H<sub>0</sub> is correct
