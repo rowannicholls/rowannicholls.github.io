@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../python.html)
 
-> This tutorial is about *plotting* Bland-Altman graphs. For a more complete tutorial on Bland-Altman analysis as a whole, see [here](../../statistics/agreement/bland_altman_giavarina.html). For a tutorial on scatter plots in general, see [here](scatterplots.html), and for line plots in general, see [here](lineplots.html).
+> This tutorial is about *plotting* Bland-Altman graphs. For a more complete tutorial on Bland-Altman analysis as a whole, see [here](../../statistics/agreement/bland_altman.html). For a tutorial on scatter plots in general, see [here](scatterplots.html), and for line plots in general, see [here](lineplots.html).
 
 **Bland-Altman plots** are used to assess the agreement between two methods of measuring something, usually clinical information. They were discussed in Bland & Altman's 1986 paper (available [here](https://www-users.york.ac.uk/~mb55/meas/ba.pdf) and/or [here](https://pubmed.ncbi.nlm.nih.gov/2868172/)) and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot). Here is the example data that was used in the 1986 paper in **data frame** format (note that, in order to use data frames, the `pandas` library first needs to be imported):
 
@@ -178,7 +178,7 @@ plt.show()
 
 Bland-Altman Plot
 =================
-The Bland-Altman analysis is discussed [here](../../statistics/agreement/bland_altman_giavarina.html), but it can be replicated using the following code:
+The Bland-Altman analysis is discussed [here](../../statistics/agreement/bland_altman.html), but it can be replicated using the following code:
 
 ```{python}
 import pandas as pd
