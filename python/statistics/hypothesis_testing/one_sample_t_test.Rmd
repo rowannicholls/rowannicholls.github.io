@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../python.html)
 
-> A t-test can be used when **continuous data** has been measured, for example height in cm or weight in kg as opposed to binary pass/fail results or qualitative judgements
+> A t-test can be used when **continuous data** has been measured - for example height in cm or weight in kg - as opposed to binary pass/fail results or qualitative judgements
 
 For the *one-sample* t-test the data in question will be a single sample of measurements and the statistical question will, roughly, ask if the mean of this sample is the same as the mean of the population as a whole. In general, it can be used if the population of data from which the sample is drawn is normally distributed, or if it is not normally distributed but the sample size is large.
 
@@ -219,8 +219,25 @@ plt.show()
 plt.close()
 ```
 
-One-Sample t-Test
-=================
+Descriptive Statistics
+======================
+In addition to creating a plot, we should calculate 'descriptive statistics' to help *describe* the data:
+
+```{python}
+# Sample size
+n = len(x)
+# Mean
+x_bar = np.mean(x)
+# Sample standard deviation
+s = np.std(x, ddof=1)
+# Standard error of the mean
+sem = s / np.sqrt(n)
+
+print(f'Sample size = {n}, mean = {x_bar:.2f}, sample std deviation = {s:.2f}, std error of the mean = {sem:.2f}')
+```
+
+One-Sample t-Tests
+==================
 The Scipy package has a 'stats' sub-package which contains the `ttest_1samp()` function. This performs t-tests with one sample. It has two compulsory inputs:
 
 - The sample observation (ie your data; the numbers you have measured)
@@ -231,14 +248,19 @@ There are two values returned by this function:
 - The t-statistic, which can be thought of as the 'result' of the test
 - The p-value, which can be thought of as the odds that that result happened
 
-By default, the **null hypothesis** is that the expected value (mean) of the sample of independent observations (the numbers in the first input) is equal to the given population mean (the second input to the function). In other words, it is a *two-sided test*; the null hypothesis is that the population mean is neither greater than nor less than the sample mean.
+Two-Sided Tests
+---------------
+By default, the **null hypothesis** used by the `ttest_1samp()` function is that the expected value (mean) of the sample of independent observations (the numbers in the first input) is equal to the given population mean (the second input to the function). In other words, it is a *two-sided test*; the null hypothesis is that the population mean is neither greater than nor less than the sample mean.
 
 Of course, because we have artificially created this example data, we *know* that the expected value of a sample is 100 (because we've used a distribution that has a mean of 100). However, for the sake of this tutorial, let's test to see whether it's equal to 98.5:
 
 ```{python}
 from scipy import stats
 
-statistic, pvalue = stats.ttest_1samp(x, 98.5)
+# The population mean
+popmean = 98.5
+# Perform a two-sided one-sample t-test
+statistic, pvalue = stats.ttest_1samp(x, popmean)
 
 print(f'p = {pvalue:5.3f}')
 ```
@@ -247,7 +269,7 @@ This low p-value tells us that there is a small (less than 5%) chance that this 
 
 One-Sided Tests
 ---------------
-The two-sided test we did above had the **alternative hypothesis** that the sample and population means were not equal. However, we can also do a *one-sided* test where the alternative hypothesis is that the sample mean is **greater** than the population mean by using the `alternative='greater'` keyword argument:
+The two-sided test we did above had the **alternative hypothesis** that the mean of the population from which our sample was drawn and the given population mean (98.5) were not equal. However, we can also do a *one-sided* test where the alternative hypothesis is that the true population mean is **greater** than the given population mean by using the `alternative='greater'` keyword argument:
 
 ```{python}
 statistic, pvalue = stats.ttest_1samp(x, 98.5, alternative='greater')
@@ -255,9 +277,9 @@ statistic, pvalue = stats.ttest_1samp(x, 98.5, alternative='greater')
 print(f'p = {pvalue:5.3f}')
 ```
 
-We are **very unsure** (only 2.4% confident) that the null hypothesis is true and that the population mean is greater than the sample mean.
+We are **very unsure** (only 2.4% confident) that the null hypothesis is true and that the true mean of the population from which our sample was drawn is less than 98.5 (which is good - remember that the true mean is 100!).
 
-Conversely, we could have done the test the other way around, testing the alternative hypothesis that the sample mean is **less** than the population mean:
+Conversely, we could have done the test the other way around, testing the alternative hypothesis that the true mean is **less** than the given population mean:
 
 ```{python}
 statistic, pvalue = stats.ttest_1samp(x, 98.5, alternative='less')
@@ -265,19 +287,19 @@ statistic, pvalue = stats.ttest_1samp(x, 98.5, alternative='less')
 print(f'p = {pvalue:5.3f}')
 ```
 
-We are now **very sure** that the null hypothesis is correct and that the population mean is less than the sample mean!
+We are now **very sure** that the null hypothesis is correct and that the true population mean is greater than the given population mean of 98.5!
 
 In summary:
 
 - **Two-sided test:**
-    + *Null hypothesis:* population mean is equal to the sample mean
-    + *Alternative hypothesis:* population mean is not equal to the sample mean
+    + *Null hypothesis:* true population mean is equal to the given population mean
+    + *Alternative hypothesis:* true population mean is not equal to the given population mean
 - **One-side, greater than test:**
-    + *Null hypothesis:* population mean is greater than the sample mean
-    + *Alternative hypothesis:* population mean is not greater than the sample mean
+    + *Null hypothesis:* true population mean is not greater than the given population mean
+    + *Alternative hypothesis:* true population mean is greater than the given population mean
 - **One-side, less than test:**
-    + *Null hypothesis:* population mean is less than the sample mean
-    + *Alternative hypothesis:* population mean is not less than the sample mean
+    + *Null hypothesis:* true population mean is not less than the given population mean
+    + *Alternative hypothesis:* true population mean is less than the given population mean
 
 Two-Sided vs Greater vs Less
 ============================
@@ -307,6 +329,45 @@ print(pvalue_less + pvalue_twosided / 2 == 1)
 ```
 
 As promised, all three statements were true.
+
+Confidence Intervals vs the One-Sample t-Test
+=============================================
+95% confidence intervals for the value of the mean of the sample can be calculated as follows:
+
+```{python}
+# Confidence level
+alpha = 0.05  # 95% confidence
+# Degrees of freedom
+dof = n - 1
+# Percent-point function (aka quantile function) of the t-distribution
+t = stats.t.ppf(1 - (alpha / 2), dof)
+# Margin of error
+d = t * sem
+# Intervals
+upper_ci = x_bar + d
+lower_ci = x_bar - d
+
+print(f'Sample mean = {x_bar:.2f}, 95% CI [{lower_ci:.2f}, {upper_ci:.2f}]')
+```
+
+Put another way, the conclusion is:
+
+```{python}
+print(f'You can be 95% confident that the range {lower_ci:.2f} to {upper_ci:.2f} contains the true population mean')
+```
+
+This implies that 98.5 is just outside the range of numbers we expect to contain the true population mean and so we can say, with 95% certainty, that the true population mean and 98.5 are not equal. But hang on, was that not the conclusion of the two-sided t-test we did? And given that we were just on the cusp of making the opposite conclusion there (our p value for that test was 0.049), is 98.5 being on the cusp of the above confidence interval a fluke? It turns out...no. The question of whether a given number lies within the 95% confidence interval of a sample mean is mathematically the same as performing a two-sided one-sample t-test if all the assumptions are the same. To check this, let's do a test with the number 98.52, which lies *just* within the confidence interval and so, if we're right, the t-test should *just* not reach significance:
+
+```{python}
+# The population mean
+popmean = 98.52
+# Perform a two-sided one-sample t-test
+statistic, pvalue = stats.ttest_1samp(x, popmean)
+
+print(f'p = {pvalue:5.3f}')
+```
+
+As suspected, p > 0.05.
 
 [⇦ Back](../../../python.html)
 
