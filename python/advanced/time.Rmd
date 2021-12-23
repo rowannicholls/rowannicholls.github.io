@@ -28,7 +28,7 @@ In Python, there are six main 'formats' that date and time data can be in and th
 The first two are *simpler* while the latter four are *more powerful*:
 
 - Use the `time` module for time stamping, ie if you care about when something happened *relative to other things*, not the actual calendar date or clock time when it happened. This is the module that is discussed on this page.
-- Use the `datetime` module if you want to work with times and dates like you would see on a clock or on a calendar, or with durations. This module is discussed on its [own page](../advanced/date_time.html).
+- Use the `datetime` module if you want to work with times and dates like you would see on a clock or on a calendar, or with durations. This module is discussed on its [own page](../advanced/datetime.html).
 
 Seconds Since the Unix Epoch
 ============================
@@ -318,7 +318,7 @@ tdiff = int((t2 - t1) / 60 / 60 / 24)
 print(f'Days since England last won the Rugby World Cup: {tdiff}')
 ```
 
-Be careful not to convert this result (which is a number) into a time struct or interpret it as Unix time: doing so would cause it to be interpreted as a period of time *after the epoch* as opposed to *since the event we are interested in* which, in this example, is the 2003 Rugby World Cup final. In order to better handle differences in time we should use *timedelta objects* which are part of the `datetime` module (see [here](../advanced/date_time.html) for the page on that topic).
+Be careful not to convert this result (which is a number) into a time struct or interpret it as Unix time: doing so would cause it to be interpreted as a period of time *after the epoch* as opposed to *since the event we are interested in* which, in this example, is the 2003 Rugby World Cup final. In order to better handle differences in time we should use *timedelta objects* which are part of the `datetime` module (see [here](../advanced/datetime.html) for the page on that topic).
 
 [⇦ Back](../../python.html)
 

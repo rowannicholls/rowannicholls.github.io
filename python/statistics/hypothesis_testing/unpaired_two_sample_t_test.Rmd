@@ -351,27 +351,27 @@ Sample standard deviations:
 
 ```{python}
 # Sample standard deviations
-s_0 = sample_0.std(ddof=1)
-s_1 = sample_1.std(ddof=1)
+std_0 = sample_0.std(ddof=1)
+std_1 = sample_1.std(ddof=1)
 
-print(f'Standard deviations: {s_0:5.3f} and {s_1:5.3f}')
+print(f'Standard deviations: {std_0:5.3f} and {std_1:5.3f}')
 ```
 
 Standard errors of the means:
 
 ```{python}
 # Standard errors of the means
-se_0 = s_0 / np.sqrt(n_0)
-se_1 = s_1 / np.sqrt(n_1)
+sem_0 = std_0 / np.sqrt(n_0)
+sem_1 = std_1 / np.sqrt(n_1)
 
-print(f'Standard errors of the means: {se_0:5.3f} and {se_1:5.3f}')
+print(f'Standard errors of the means: {sem_0:5.3f} and {sem_1:5.3f}')
 ```
 
 Standard error of the difference:
 
 ```{python}
 # Standard error of the difference
-sed = np.sqrt(s_0**2 / n_0 + s_1**2 / n_1)
+sed = np.sqrt(std_0**2 / n_0 + std_1**2 / n_1)
 
 print(f'Standard error of the difference: {sed:5.3f}')
 ```
