@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Statistics in Python: Two One-Sided t-Test (TOST)</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -458,7 +458,7 @@ ah:"app_store_subscription_renew",eh:"first_open",fh:"first_visit",gh:"in_app_pu
 Lb:"send_page_view",nb:"send_to",Wd:"session_engaged",uf:"_logged_in_state",Xd:"session_number",Ah:"tracking_id",Xa:"url_passthrough",Jb:"accept_incoming",Kb:"url_position",Af:"phone_conversion_number",yf:"phone_conversion_callback",zf:"phone_conversion_css_class",Bf:"phone_conversion_options",xh:"phone_conversion_ids",wh:"phone_conversion_country_code",df:"aw_remarketing",Fd:"aw_remarketing_only",Dd:"gclid",lh:"auid",rh:"affiliation",rf:"tax",Md:"list_name",qf:"checkout_step",pf:"checkout_option",
 sh:"coupon",th:"promotions",ob:"user_id",yh:"retoken",na:"cookie_prefix",nf:"disable_merchant_reported_purchases",qh:"dc_natural_search",ph:"dc_custom_params",vf:"method",zh:"search_term",oh:"content_type",vh:"optimize_id",uh:"experiments",Va:"google_signals",Pc:"google_tld",Uc:"update",Qd:"firebase_id",Ib:"ga_restrict_domain",Mc:"event_settings",Ld:"dynamic_event_settings",hc:"user_data_settings",Df:"screen_name",jb:"_x_19",ib:"_ecid",Oc:"_x_20",Td:"internal_traffic_results",Ef:"traffic_type",Rc:"referral_exclusion_definition",
 Sd:"ignore_referrer",nh:"content_group"};var zd={};N.Hf=Object.freeze((zd[N.bf]=1,zd[N.bh]=1,zd[N.Cb]=1,zd[N.Db]=1,zd[N.dh]=1,zd[N.eb]=1,zd[N.Bd]=1,zd[N.Sa]=1,zd[N.Jc]=1,zd[N.fb]=1,zd[N.sa]=1,zd[N.Eb]=1,zd[N.va]=1,zd[N.cf]=1,zd));N.$d=Object.freeze([N.Aa,N.Yb,N.Gb]);N.Mh=Object.freeze([].concat(N.$d));N.ae=Object.freeze([N.ma,N.Nc,N.cc,N.Sc]);N.Nh=Object.freeze([].concat(N.ae));
-var Bd={},Cd=function(a,b){Bd[a]=Bd[a]||[];Bd[a][b]=!0},Dd=function(a){for(var b=[],c=Bd[a]||[],d=0;d<c.length;d++)c[d]&&(b[Math.floor(d/6)]^=1<<d%6);for(var e=0;e<b.length;e++)b[e]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".charAt(b[e]||0);return b.join("")};var Ed=function(a){Cd("GTM",a)};var O={},R=null,Fd=Math.random();O.J="UA-156468188-1";O.ad="c10";O.U="dataLayer";O.Wg="ChAIgNmQjgYQnbmelO2xmuMOEicAvqdyi7fm+DemiGICLzQqsapqS9ONR/5ybf2Aonkemn3wAiAcd8UaAtzb";var Gd={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Hd={__paused:!0,__tg:!0},Id;for(Id in Gd)Gd.hasOwnProperty(Id)&&(Hd[Id]=!0);
+var Bd={},Cd=function(a,b){Bd[a]=Bd[a]||[];Bd[a][b]=!0},Dd=function(a){for(var b=[],c=Bd[a]||[],d=0;d<c.length;d++)c[d]&&(b[Math.floor(d/6)]^=1<<d%6);for(var e=0;e<b.length;e++)b[e]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".charAt(b[e]||0);return b.join("")};var Ed=function(a){Cd("GTM",a)};var O={},R=null,Fd=Math.random();O.J="UA-156468188-1";O.ad="c10";O.U="dataLayer";O.Wg="ChAIgNmQjgYQnbmelO2xmuMOEicAvqdyiynUxSFCq5ZuSg0UMb8HYRN7/jU2EgyzIg25PY+dIL1SyjMaArA6";var Gd={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Hd={__paused:!0,__tg:!0},Id;for(Id in Gd)Gd.hasOwnProperty(Id)&&(Hd[Id]=!0);
 O.zd="www.googletagmanager.com";var Jd=O.zd+"/gtm.js";Jd=O.zd+"/gtag/js";var Kd=Jd,Ld=Ga(""),Md=null,Nd=null,Od="https://www.googletagmanager.com/a?id="+O.J+"&cv=1",Pd={},Qd={},Rd=function(){var a=R.sequence||1;R.sequence=a+1;return a};O.Vg="";var Xd="";
 O.bd=Xd;var Yd={},Zd=new ya,$d={},ae={},de={name:O.U,set:function(a,b){H(Wa(a,b),$d);be()},get:function(a){return ce(a,2)},reset:function(){Zd=new ya;$d={};be()}},ce=function(a,b){return 2!=b?Zd.get(a):ee(a)},ee=function(a){var b,c=a.split(".");b=b||[];for(var d=$d,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},fe=function(a,b){ae.hasOwnProperty(a)||(Zd.set(a,b),H(Wa(a,b),$d),be())},be=function(a){Aa(ae,function(b,c){Zd.set(b,c);H(Wa(b,void 0),
 $d);H(Wa(b,c),$d);a&&delete ae[b]})},he=function(a,b,c){Yd[a]=Yd[a]||{};Yd[a][b]=ge(b,c)},ge=function(a,b){var c,d=1!==(void 0===b?2:b)?ee(a):Zd.get(a);"array"===Tb(d)||"object"===Tb(d)?c=H(d):c=d;return c},ie=function(a,b){if(Yd[a])return Yd[a][b]},je=function(a,b){Yd[a]&&delete Yd[a][b]};var ke=new RegExp(/^(.*\.)?(google|youtube|blogger|withgoogle)(\.com?)?(\.[a-z]{2})?\.?$/),le={cl:["ecl"],customPixels:["nonGooglePixels"],ecl:["cl"],ehl:["hl"],hl:["ehl"],html:["customScripts","customPixels","nonGooglePixels","nonGoogleScripts","nonGoogleIframes"],customScripts:["html","customPixels","nonGooglePixels","nonGoogleScripts","nonGoogleIframes"],nonGooglePixels:[],nonGoogleScripts:["nonGooglePixels"],nonGoogleIframes:["nonGooglePixels"]},me={cl:["ecl"],customPixels:["customScripts","html"],
@@ -661,164 +661,209 @@ containerProduct:v,debug:!1,id:O.J}};u.data.resume=function(){a()};O.Vg&&(u.data
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Two One-Sided t-Test (TOST)</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#example-1-pingouin"><span class="toc-section-number">1</span> Example 1: Pingouin</a>
+<ul>
+<li><a href="#doing-it-with-pingouin"><span class="toc-section-number">1.1</span> Doing it with Pingouin</a></li>
+<li><a href="#doing-it-with-scipy"><span class="toc-section-number">1.2</span> Doing it with SciPy</a></li>
+</ul></li>
+<li><a href="#example-2-real-statistics"><span class="toc-section-number">2</span> Example 2: Real Statistics</a>
+<ul>
+<li><a href="#summary-statistics"><span class="toc-section-number">2.1</span> Summary Statistics</a></li>
+<li><a href="#t-test-equal-variances"><span class="toc-section-number">2.2</span> t-Test: Equal Variances</a></li>
+<li><a href="#final-answer"><span class="toc-section-number">2.3</span> Final Answer</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../../python.html">⇦ Back</a></p>
+<p>The TOST can be used to test <strong>equivalence</strong>: do the means of two populations differ by less than a given amount?</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
+<li>Of course, we can’t get the exact means of the two populations because it’s (usually) not practical to measure every member of an entire population. For this reason we take a <strong>sample</strong> from each and compare the means of those.</li>
+<li>These populations and samples should be <strong>independent</strong> of each other: a change in one of them should not affect any of the others</li>
+<li>We assume that the values in the populations are <strong>normally distributed</strong></li>
+</ul>
+<p>The test was originally published by Donald J Schuirmann (not Donald <strong>L</strong> Schuirmann as appears in the <a href="https://www.rdocumentation.org/packages/equivalence/versions/0.7.2/topics/tost.stat">R</a> and <a href="https://pingouin-stats.org/generated/pingouin.tost.html">Pingouin</a> documentation):</p>
 <ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<li>Schuirmann, Donald J. On hypothesis testing to determine if the mean of a normal distribution is contained in a known interval. Biometrics. 1981;37:617</li>
+<li>Schuirmann, Donald J. A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability. Journal of Pharmacokinetics and Biopharmaceutics. 1987;15(6):657–680. DOI: <a href="https://link.springer.com/article/10.1007/BF01068419">10.1007/BF01068419</a>.</li>
+</ul>
+<div id="example-1-pingouin" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Example 1: Pingouin</h1>
+<p>This comes from <a href="https://pingouin-stats.org/generated/pingouin.tost.html">the documentation</a> for Pingouin’s <code>tost()</code> function. Here’s the example data:</p>
+<pre class="python"><code># Example data
+a = [4, 7, 8, 6, 3, 2]
+b = [6, 8, 7, 10, 11, 9]</code></pre>
+<div id="doing-it-with-pingouin" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Doing it with Pingouin</h2>
+<p>Pingouin can be installed from the terminal with <code>python3.9 -m pip install pingouin</code>. This gives you access to the <code>tost()</code> function which, as the name suggests, performs the TOST.</p>
+<p>As mentioned, the TOST asks “do the means of two populations differ by less than a given amount?”. This given amount is called the ‘bound’ and, by default, Pingouin gives it a value of 1.</p>
+<pre class="python"><code>import pingouin as pg
+
+pval = pg.tost(a, b).loc[&#39;TOST&#39;, &#39;pval&#39;]
+
+print(f&#39;TOST: p = {pval:.3f}&#39;)</code></pre>
+<pre><code>## TOST: p = 0.965</code></pre>
+<p>If you’re interested in seeing exactly what this function is doing in the background, you can take a look at <a href="https://github.com/raphaelvallat/pingouin/blob/master/pingouin/equivalence.py">the source code</a>.</p>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
+<div id="doing-it-with-scipy" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Doing it with SciPy</h2>
+<p>While SciPy doesn’t have a dedicated TOST function, it does have the t-test. So we can use that twice in its ‘one-sided’ configuration. Specifically, we’re using the unpaired (independent) two-sample t-test:</p>
+<pre class="python"><code>from scipy import stats
+import numpy as np
+
+#
+# TOST
+#
+# Magnitude of region of similarity
+bound = 1
+# Unpaired two-sample t-test
+_, p_greater = stats.ttest_ind(np.array(a) + bound, b, alternative=&#39;greater&#39;)
+_, p_less = stats.ttest_ind(np.array(a) - bound, b, alternative=&#39;less&#39;)
+# Choose the maximum p-value
+pval = max(p_less, p_greater)
+
+print(f&#39;TOST: p = {pval:5.3f}&#39;)</code></pre>
+<pre><code>## TOST: p = 0.965</code></pre>
+<p>As expected, this gives us the same answer as Pingouin.</p>
 <ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --> <!-- 5. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-</ul></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a> <!-- 7. [Webscraping] --> <!-- 8. [Bitwise Operators] --> <!-- 9. [Error Handling] --> <!-- 10. [Linting] --> <!-- 11. [Variable Scope] --></li>
-</ol>
+<li>SciPy can be installed from the terminal with <code>python3.9 -m pip install scipy</code></li>
+<li>Numpy can be installed from the terminal with <code>python3.9 -m pip install numpy</code></li>
+</ul>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a>
-<ul>
-<li><a href="python/data/export_to_word.html">Export Tables to Word</a></li>
-</ul></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-<li><a href="python/data/drop_columns_false.html">Drop Columns That Only Contain “False”</a></li>
-</ol>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
+<div id="example-2-real-statistics" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Example 2: Real Statistics</h1>
+<p>This example comes from <a href="https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/">here</a> and uses this data:</p>
+<pre class="python"><code>import pandas as pd
+
+data = {
+    &#39;values&#39;: [
+        2311, 2274, 2262, 2297, 2291, 2319, 2263, 2329, 2289, 2287, 2290, 2301,
+        2298, 2260, 2250, 2242, 2302, 2297, 2293, 2286, 2270, 2313, 2327, 2290,
+    ],
+    &#39;types&#39;: [&#39;original&#39;] * 12 + [&#39;new&#39;] * 12
+}
+df = pd.DataFrame(data)</code></pre>
+<p>Pandas can be installed from the terminal with <code>python3.9 -m pip install pandas</code></p>
+<div id="summary-statistics" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Summary Statistics</h2>
+<p>Here’s how to replicate the values in the top table of Figure 1 in <a href="https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/">the example</a>:</p>
+<pre class="python"><code># Initialise the summary table
+summary = pd.DataFrame()
+
+# Count
+n = df.groupby(&#39;types&#39;).count()
+summary[&#39;Count&#39;] = n[&#39;values&#39;]
+# Mean
+summary[&#39;Mean&#39;] = df.groupby(&#39;types&#39;).mean()[&#39;values&#39;]
+# Variance
+summary[&#39;Variance&#39;] = df.groupby(&#39;types&#39;).var()[&#39;values&#39;]
+
+print(summary.round(2))</code></pre>
+<pre><code>##           Count     Mean  Variance
+## types                             
+## new          12  2285.67    650.79
+## original     12  2292.75    423.84</code></pre>
+<pre class="python"><code># Difference of the means
+diff_mean = df.groupby(&#39;types&#39;).mean().diff().values[1][0]
+print(f&#39;Difference of the means = {diff_mean:.3f}&#39;)</code></pre>
+<pre><code>## Difference of the means = 7.083</code></pre>
+<pre class="python"><code># Mean variance
+mean_var = df.groupby(&#39;types&#39;).var().mean().values[0]
+print(f&#39;Mean variance = {mean_var:.3f}&#39;)</code></pre>
+<pre><code>## Mean variance = 537.314</code></pre>
+<pre class="python"><code># Cohen&#39;s d
+cohens_d = diff_mean / np.sqrt(mean_var)
+print(f&quot;Cohen&#39;s d = {cohens_d:.3f}&quot;)</code></pre>
+<pre><code>## Cohen&#39;s d = 0.306</code></pre>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/curve_fitting/linear.html">Linear Functions</a></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
+<div id="t-test-equal-variances" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> t-Test: Equal Variances</h2>
+<p>Here’s how to replicate the values in the middle table of Figure 1 in <a href="https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/">the example</a>:</p>
+<pre class="python"><code># Standard deviations
+std = df.groupby(&#39;types&#39;).std(ddof=1)
+# Standard errors of the means
+sem = std / np.sqrt(df.groupby(&#39;types&#39;).mean())
+# Standard error of the difference of the means
+sed = np.sqrt(std[&#39;values&#39;][&#39;new&#39;]**2 / n[&#39;values&#39;][&#39;new&#39;] + std[&#39;values&#39;][&#39;original&#39;]**2 / n[&#39;values&#39;][&#39;original&#39;])
+
+print(f&#39;Standard error of the difference of the means = {sed:.3f}&#39;)</code></pre>
+<pre><code>## Standard error of the difference of the means = 9.463</code></pre>
+<pre class="python"><code># Degrees of freedom
+dof = n.sum() - 2
+print(f&quot;Degrees of freedom = {dof[&#39;values&#39;]}&quot;)</code></pre>
+<pre><code>## Degrees of freedom = 22</code></pre>
+<p>Now it’s time to do the t-tests. Let’s re-configure the raw data so it’s slightly easier to work with:</p>
+<pre class="python"><code># Data frame to dictionary
+dct = df.groupby(&#39;types&#39;)[&#39;values&#39;].apply(list).to_dict()
+# Data
+x = dct[&#39;original&#39;]
+y = dct[&#39;new&#39;]</code></pre>
+<p>The example we’re following does both a one-tailed and a two-tailed test, where the one-tailed test has a bound of 0 (which they call the ‘hyp mean’ or ‘hypothetical difference of the means’) and an alternative hypothesis of ‘greater’:</p>
+<pre class="python"><code># One-sided unpaired two-sample t-test
+bound = 0
+t_greater, p_greater = stats.ttest_ind(np.array(x) + bound, y, alternative=&#39;greater&#39;)
+
+print(f&#39;t-stat = {t_greater:.3f}; p-value = {p_greater:.3f}&#39;)</code></pre>
+<pre><code>## t-stat = 0.749; p-value = 0.231</code></pre>
+<pre class="python"><code># Two-sided unpaired two-sample t-test
+bound = 0
+t_stat, pval = stats.ttest_ind(x, y, alternative=&#39;two-sided&#39;)
+
+print(f&#39;t-stat = {t_stat:.3f}; p-value = {pval:.3f}&#39;)</code></pre>
+<pre><code>## t-stat = 0.749; p-value = 0.462</code></pre>
+<p>If we use a significance level of 0.1, here are the critical t-values we would need to reach in order to get significance:</p>
+<pre class="python"><code># Significance level
+alpha = 0.1
+# Percent-point function (aka quantile function) of the t-distribution
+t_crit_one = stats.t.ppf(1 - alpha, dof)[0]
+print(f&#39;t-crit (one-tailed): {t_crit_one:.3f}&#39;)</code></pre>
+<pre><code>## t-crit (one-tailed): 1.321</code></pre>
+<pre class="python"><code># Percent-point function (aka quantile function) of the t-distribution
+t_crit_two = stats.t.ppf(1 - (alpha / 2), dof)[0]
+print(f&#39;t-crit (two-tailed): {t_crit_two:.3f}&#39;)</code></pre>
+<pre><code>## t-crit (two-tailed): 1.717</code></pre>
+<p>Now for the confidence interval for the difference of the means (the fact that we’re finding an interval that extends <em>both</em> sides of the difference of the means implies we need to use the critical t-value from the <em>two-sided</em> test):</p>
+<pre class="python"><code># Margin of error
+d = t_crit_two * sed
+# Confidence interval
+ci_upper = diff_mean + d
+ci_lower = diff_mean - d
+
+print(f&#39;Difference of the means = {diff_mean:.3f} 95% CI [{ci_lower:.3f}, {ci_upper:.3f}]&#39;)</code></pre>
+<pre><code>## Difference of the means = 7.083 95% CI [-9.166, 23.333]</code></pre>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired Two-Sample t-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney U Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)</li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-<li><a href="python/statistics/agreement/tost.html">Two One-Sided t-Test (TOST)</a></li>
-</ul></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-</ol>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="final-answer" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Final Answer</h2>
+<p><a href="https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/">The example</a> only shows one one-sided t-test for equal variances in Figure 1, which is only one-half of the full TOST. We’ve replicated that above and got the same p-value: 0.231. Here’s the full TOST with a bound of 0:</p>
+<pre class="python"><code>#
+# TOST
+#
+# Magnitude of region of similarity
+bound = 0
+# Unpaired two-sample t-test
+_, p_greater = stats.ttest_ind(np.array(x) + bound, y, alternative=&#39;greater&#39;)
+_, p_less = stats.ttest_ind(np.array(x) - bound, y, alternative=&#39;less&#39;)
+# Choose the maximum p-value
+pval = max(p_less, p_greater)
+
+print(f&#39;TOST: p = {pval:5.3f}&#39;)</code></pre>
+<pre><code>## TOST: p = 0.769</code></pre>
+<p>Here’s the same thing with Pingouin:</p>
+<pre class="python"><code>pval = pg.tost(x, y, bound=0).loc[&#39;TOST&#39;, &#39;pval&#39;]
+
+print(f&#39;TOST: p = {pval:.3f}&#39;)</code></pre>
+<pre><code>## TOST: p = 0.769</code></pre>
+<p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 
