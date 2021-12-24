@@ -1,0 +1,316 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Effect Size'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+If you have two groups of measurements with very different means you might be tempted to immediately attach significance to that (and conclude that the measurements in one group will generally always be larger than those in the other). However, if there is a lot of **variability** in the data then even a large difference in means might be meaningless. Think of it like a dartboard:
+
+- If someone isn't very good at darts then there will be a lot of variation in where their dart lands
+- If you ask someone like this to throw a lot of darts towards the bullseye and they miss to the right on average (while missing to the left a lot too) we would not conclude that they are doing it on purpose
+- We would also not conclude that there is something fundamentally causing them to miss to that side as opposed to the other side: if they threw more darts we would expect to see this right-side bias disappear
+- However, if we asked someone who is very good at darts to aim at the bullseye and they kept missing to the right by the same amount (ie they were very consistent in where their darts landed) we would suspect that they were doing this on purpose. Alternatively, there might be something about their technique that's fundamentally causing them to do this, in which case this thing would not go away if they kept throwing (without coaching or concerted efforts to self-correct).
+
+This is the idea behind effect size: the strength of the relationship between two variables depends on:
+
+a. The **size of the relationship** (how far to the right the person misses on average), and
+b. The **variability** in the data (how good the person is at darts)
+
+Indeed, in general, effect size is equal to the size of the relationship relative to the variability, although there are three different formulas for calculating it exactly: Cohen's d, Glass's Δ (delta) and Hedges's g. All of these require that you have two independent samples (and that you know their means and their standard deviations) and the differences between these three measures are:
+
+- **Cohen's d** gets used when the two groups have similar standard deviations, the same sample size and this sample size is 20 or greater (ie 40 or more total samples in the two groups combined)
+- **Glass's Δ** gets used when the two groups' standard deviations are considerably different
+- **Hedges's g** gets used when the two groups have similar standard deviations and either:
+    + Both groups have the same sample size and this sample size is small (less than 20 per group)
+    + The groups have different sample sizes
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph effect_size {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=2, fillcolor=white, style=filled]
+            'Start:\nTwo groups of data'
+                'Similar standard deviations'
+                    'Same sample size'
+                        'Sample size ≥20'
+                            'Cohen`s d'
+                        'Sample size <20'
+                            'Hedges`s g'
+                    'Different sample sizes'
+                'Different standard deviations'
+                    'Glass`s Δ'
+
+            'Start:\nTwo groups of data' -> 'Similar standard deviations'
+                'Similar standard deviations' -> 'Same sample size'
+                    'Same sample size' -> 'Sample size ≥20'
+                        'Sample size ≥20' -> 'Cohen`s d'
+                    'Same sample size' -> 'Sample size <20'
+                        'Sample size <20' -> 'Hedges`s g'
+                'Similar standard deviations' -> 'Different sample sizes'
+                    'Different sample sizes' -> 'Hedges`s g'
+            'Start:\nTwo groups of data' -> 'Different standard deviations'
+                'Different standard deviations' -> 'Glass`s Δ'
+
+    labelloc='t';
+    fontsize=20;
+    label='Flowchart for Choosing a Measure of Effect Size\n\n';
+    }",
+    width=900,
+    height=270
+)
+```
+
+Example 1
+=========
+Here's a worked example that comes from [this page](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/) from Real Statistics with the following raw data:
+
+```{python}
+import pandas as pd
+
+# Raw data
+data = {
+    'values': [
+        2311, 2274, 2262, 2297, 2291, 2319, 2263, 2329, 2289, 2287, 2290, 2301,
+        2298, 2260, 2250, 2242, 2302, 2297, 2293, 2286, 2270, 2313, 2327, 2290,
+    ],
+    'types': ['original'] * 12 + ['new'] * 12
+}
+df = pd.DataFrame(data)
+```
+
+The results can be verified using [this](https://www.socscistatistics.com/effectsize/default3.aspx) online calculator.
+
+Cohen's d
+---------
+The formula is:
+
+$d = \dfrac{\bar{x}_1 - \bar{x}_2}{s}$
+
+where $\bar{x}_1$ and $\bar{x}_2$ are the means of your two samples and $s$ is the pooled standard deviation (the square root of the mean of your two samples' variances).
+
+```{python}
+import numpy as np
+
+# Variances
+variances = df.groupby('types').var(ddof=1)
+# Mean variance
+mean_var = variances.mean()['values']
+# Pooled standard deviation
+s_pooled = np.sqrt(mean_var)
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Cohen's d
+cohens_d = diff_mean / s_pooled
+
+print(f"Cohen's d = {cohens_d:.3f}")
+```
+
+Glass's Δ
+---------
+Glass's delta uses only the standard deviation of the control group in the denominator:
+
+$Δ = \dfrac{\bar{x}_1 - \bar{x}_2}{s_1}$
+
+where $\bar{x}_1$ and $\bar{x}_2$ are the means of your two samples and $s_1$ is the standard deviation of the first sample (or whichever one is your control group).
+
+```{python}
+# Variances
+variances = df.groupby('types').var(ddof=1)
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Glass's delta
+glasss_delta = diff_mean / np.sqrt(variances['values'].to_list()[0])
+
+print(f"Glass's delta = {glasss_delta:.3f}")
+```
+
+Hedges's g
+----------
+Hedges's g uses a different formula for the pooled standard deviation:
+
+$g = \dfrac{\bar{x}_1 - \bar{x}_2}{s^*}$
+
+where $\bar{x}_1$ and $\bar{x}_2$ are the means of your two samples and $s^*$ is the pooled standard deviation as calculated with the following formula:
+
+$s^* = \sqrt{\dfrac{\left(n_1 - 1\right)s^2_1 + \left(n_2 - 1\right)s^2_2}{n_1 + n_2 - 2}}$
+
+where $n_1$ and $n_2$ are the sample sizes and $s^2_1$ and $s^2_2$ are the sample variances. Note that $n_1 + n_2 - 2$ is the number of degrees of freedom.
+
+```{python}
+# Sample sizes
+n = df.groupby('types').count()
+n1 = n['values']['new']
+n2 = n['values']['original']
+# Degrees of freedom
+dof = n.sum()['values'] - 2
+# Variances
+variances = df.groupby('types').var(ddof=1)
+var1 = variances['values']['new']
+var2 = variances['values']['original']
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Pooled standard deviation
+s_pooled_star = np.sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / dof)
+# Hedges's g
+hedgess_g = diff_mean / s_pooled_star
+
+print(f"Hedges's g = {hedgess_g:.3f}")
+```
+
+Note that this is the same as Cohen's d. This will always be the case when the sample sizes of the groups are the same.
+
+Maximum Likelihood
+------------------
+This is essentially a different definition of Cohen's d where the pooled standard deviation is defined as:
+
+$s = \sqrt{\dfrac{\left(n_1 - 1\right)s^2_1 + \left(n_2 - 1\right)s^2_2}{n_1 + n_2}}$
+
+Note that this is identical to Hedges's g except that there is no "$-2$" in the denominator in the radical.
+
+```{python}
+# Sample sizes
+n = df.groupby('types').count()
+n1 = n['values']['new']
+n2 = n['values']['original']
+# Variances
+variances = df.groupby('types').var(ddof=1)
+var1 = variances['values']['new']
+var2 = variances['values']['original']
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Pooled standard deviation
+s_pooled = np.sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / (n1 + n2))
+# Maximum likelihood
+maximum_likelihood = diff_mean / s_pooled
+
+print(f"Maximum likelihood = {maximum_likelihood:.3f}")
+```
+
+Example 2
+=========
+Here's a worked example that comes from [this page](https://www.real-statistics.com/students-t-distribution/two-sample-t-test-equal-variances/confidence-interval-for-two-sample-cohens-d/) from Real Statistics with the following raw data:
+
+```{python}
+import pandas as pd
+
+# Raw data
+data = {
+    'values': [
+        13, 17, 19, 10, 20, 15, 18, 9, 12, 15, 16,
+        12, 8, 6, 16, 12, 14, 10, 18, 4, 11
+    ],
+    'types': ['new'] * 11 + ['old'] * 10
+}
+df = pd.DataFrame(data)
+```
+
+The results can be verified using [this](https://www.socscistatistics.com/effectsize/default3.aspx) online calculator.
+
+Cohen's d
+---------
+
+```{python}
+import numpy as np
+
+# Variances
+variances = df.groupby('types').var(ddof=1)
+# Mean variance
+mean_var = variances.mean()['values']
+# Pooled standard deviation
+s_pooled = np.sqrt(mean_var)
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Cohen's d
+cohens_d = diff_mean / s_pooled
+
+print(f"Cohen's d = {cohens_d:.3f}")
+```
+
+Glass's Δ
+---------
+
+```{python}
+# Variances
+variances = df.groupby('types').var(ddof=1)
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Glass's delta
+glasss_delta = diff_mean / np.sqrt(variances['values'].to_list()[0])
+
+print(f"Glass's delta = {glasss_delta:.3f}")
+```
+
+Hedges's g
+----------
+
+```{python}
+# Sample sizes
+n = df.groupby('types').count()
+n1 = n['values']['new']
+n2 = n['values']['old']
+# Degrees of freedom
+dof = n.sum()['values'] - 2
+# Variances
+variances = df.groupby('types').var(ddof=1)
+var1 = variances['values']['new']
+var2 = variances['values']['old']
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Pooled standard deviation
+s_pooled_star = np.sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / dof)
+# Hedges's g
+hedgess_g = diff_mean / s_pooled_star
+
+print(f"Hedges's g = {hedgess_g:.3f}")
+```
+
+Maximum Likelihood
+------------------
+
+```{python}
+# Sample sizes
+n = df.groupby('types').count()
+n1 = n['values']['new']
+n2 = n['values']['old']
+# Variances
+variances = df.groupby('types').var(ddof=1)
+var1 = variances['values']['new']
+var2 = variances['values']['old']
+# Difference of the means
+diff_mean = abs(df.groupby('types').mean().diff()['values'][-1])
+# Pooled standard deviation
+s_pooled = np.sqrt((((n1 - 1) * var1) + ((n2 - 1) * var2)) / (n1 + n2))
+# Maximum likelihood
+maximum_likelihood = diff_mean / s_pooled
+
+print(f"Maximum likelihood = {maximum_likelihood:.3f}")
+```
+
+Interpreting the Results
+========================
+We can interpret the results as follows:
+
+| Effect Size | d, Δ or g | % of std dev |
+|-------------|-----------|--------------|
+| Very small  | 0.01      | 1%           |
+| Small       | 0.20      | 20%          |
+| Medium      | 0.50      | 50%          |
+| Large       | 0.80      | 80%          |
+| Very large  | 1.20      | 120%         |
+| Huge        | 2.00      | 200%         |
+
+[⇦ Back](../../python.html)
+
+</font>
