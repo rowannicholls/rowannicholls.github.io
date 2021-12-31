@@ -1,0 +1,685 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Simple Linear Regression'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+**Simple linear regression** fits a straight, slanted line-of-best-fit to continuous numerical data that has one dependent variable (it is a 'univariate' linear model), one independent variable and one group. In other words:
+
+- We need to have *continuous data* (ie numbers) that come from measurements, not from ratings or scores
+- A straight-line *relationship* is fitted to this data. And there is only one group which means that there is no way to look at the differences between groups.
+- There is exactly one independent variable and it is a *true* independent variable (which means that all other variables are being controlled for and stay the same when this variable is being read)
+- The shape of the data when plotted suggests that a *straight-line* relationship is appropriate, as opposed to a parabolic line or some other curve
+
+If the above criteria are met then, as we can see from the flowchart below, simple linear regression is needed.
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
+            'Start:\nSet a hypothesis'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                'Continuous data'
+                    'Relationships'
+                        RIndependent [label='True independent\nvariable(s)']
+                            'Regression\nanalysis'
+                                'One independent\nvariable'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                                    'Simple linear\nregression' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                    'Quadratic\nregression' [shape = 'oval']
+                                'Multiple independent\nvariables'
+                                    'Multiple linear\nregression' [shape = 'oval']
+                        RNonindependent [label='No true\nindependent\nvariable']
+                            'Correlation\nanalysis'
+                                RParametric [label='Parametric']
+                                    Pearsons_r [label=<Pearson's r>,  shape = 'oval']
+                                RNonparametric [label='Non-parametric']
+                                    Spearmans_rho [label=<Spearman's ρ>, shape = 'oval']
+                    'Differences'
+                        'Variances'
+                        'Averages (means\nor medians)'
+                            'One group'
+                                OGParametric [label='Parametric']
+                                    'One-sample t-test' [shape = 'oval']
+                            'Two groups'
+                                TGParametric [label='Parametric']
+                                    PIndependent [label='Independent\ngroups']
+                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
+                                    PNonIndependent [label='Non-independent\ngroups']
+                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
+                                TGNonparametric [label='Non-parametric']
+                                    TGIndependent [label='Independent\ngroups']
+                                        'Mann-Whitney\nU test' [shape = 'oval']
+                                    TGNonindependent [label='Non-independent\ngroups']
+                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
+                            'More than\ntwo groups'
+                                MGParametric [label='Parametric']
+
+                                    'ANOVA' [shape = 'oval']
+                                MGNonparametric [label='Non-parametric']
+                                    MGIndependent [label='Independent\ngroups']
+                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
+                                    MGNonindependent [label='Non-independent\ngroups']
+                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
+                'Discrete,\ncategorical data'
+                    'Chi-squared\ntest'
+                        'Goodness-of-fit\ntest' [shape = 'oval']
+                        'Independence\ntest' [shape = 'oval']
+                        'Homogeneity\ntest' [shape = 'oval']
+
+            'Start:\nSet a hypothesis' -> 'Continuous data'
+                'Continuous data' -> 'Differences'
+                    'Differences' -> 'Averages (means\nor medians)'
+                        'Averages (means\nor medians)' -> 'One group'
+                            'One group' -> OGParametric
+                                OGParametric -> 'One-sample t-test'
+                        'Averages (means\nor medians)' -> 'Two groups'
+                            'Two groups' -> TGParametric
+                                TGParametric -> PIndependent
+                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
+                                TGParametric -> PNonIndependent
+                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
+                            'Two groups' -> TGNonparametric
+                                TGNonparametric -> TGIndependent
+                                    TGIndependent -> 'Mann-Whitney\nU test'
+                                TGNonparametric -> TGNonindependent
+                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
+                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
+                            'More than\ntwo groups' -> MGParametric
+                                MGParametric -> 'ANOVA'
+                            'More than\ntwo groups' -> MGNonparametric
+                                MGNonparametric -> MGIndependent
+                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
+                                MGNonparametric -> MGNonindependent
+                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
+                    'Differences' -> 'Variances'
+                'Continuous data' -> 'Relationships'
+                    'Relationships' -> RIndependent
+                        RIndependent -> 'Regression\nanalysis'
+                            'Regression\nanalysis' -> 'One independent\nvariable'
+                                'One independent\nvariable' -> 'Simple linear\nregression'
+                                'One independent\nvariable' -> 'Quadratic\nregression'
+                            'Regression\nanalysis' -> 'Multiple independent\nvariables'
+                                'Multiple independent\nvariables' -> 'Multiple linear\nregression'
+                    'Relationships' -> RNonindependent
+                        RNonindependent -> 'Correlation\nanalysis'
+                            'Correlation\nanalysis' -> RParametric
+                                RParametric -> Pearsons_r
+                            'Correlation\nanalysis' -> RNonparametric
+                                RNonparametric -> Spearmans_rho
+            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
+                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
+                    'Chi-squared\ntest' -> 'Independence\ntest'
+                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
+
+    labelloc='t';
+    fontsize=70;
+    label='Flowchart for Choosing a Statistical Test\n\n';
+    }",
+    width=900
+)
+```
+
+Example Data
+============
+Use the 'diabetes' dataset from Scikit-learn. This contains measurements of 10 health-related variables from 442 patients and one 'target' variable: a quantitative measure of disease progression one year after baseline. For this example we will only use one of the 10 variables - body mass index (BMI) - and see if it alone can predict the target ('outcome') variable. We will also only use 25 patients worth of measurements:
+
+```{python}
+from sklearn import datasets
+
+# Load the dataset as a 'bunch' object that contains a data frame
+diabetes = datasets.load_diabetes(as_frame=True)
+# Extract the data frame
+df = diabetes['frame']
+# Use a subset of 25 rows for this example (not all 442 rows)
+df = df.head(25)
+# We'll look at 2 columns:
+# 'bmi': the body mass index
+# 'target': a quantitative measure of disease progression one year after baseline
+df = df[['bmi', 'target']]
+# Undo the scaling factor that was applied
+df['bmi'] = (df['bmi'] * 3.19 / df['bmi'].std(ddof=1)) + 24.4
+
+print(df)
+```
+
+Exploring the Data
+==================
+Use graphs and descriptive statistics to make an initial decision as to what summary model to use:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Make figures A6 in size
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Image quality
+plt.rc('figure', dpi=141)
+# Be able to add Latex
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.scatter(df['bmi'], df['target'], c='k', s=10)
+plt.title('Diabetes Dataset')
+plt.xlabel('BMI [kg/m²]')
+plt.ylabel('Target Variable (Disease Progression)')
+```
+
+```{python}
+import numpy as np
+
+# Sample size
+n = df.shape[0]
+# Mean
+y_bar = df['target'].mean()
+# Sample standard deviation
+s = df['target'].std(ddof=1)
+# Standard error of the mean
+sem = s / np.sqrt(n)
+
+print(f'n = {n}; mean = {y_bar:.1f}, std dev = {s:.2f}, std error of the mean = {sem:.2f}')
+```
+
+Calculate the 95% confidence interval:
+
+```{python}
+from scipy import stats
+
+# Significance level
+alpha = 0.05
+# Degrees of freedom
+dof = n - 1
+# Two-tailed test
+tails = 2
+# Percent-point function (aka quantile function) of the t-distribution
+t_critical = stats.t.ppf(1 - (alpha / tails), dof)
+# Margin of error
+d = t_critical * sem
+# Confidence interval
+upper_ci = y_bar + d
+lower_ci = y_bar - d
+
+print(f'The sample mean is {y_bar:.1f}, 95% CI [{lower_ci:.1f}, {upper_ci:.1f}].')
+```
+
+You can be 95% confident that the population mean falls between 111.9 and 163.2.
+
+Defining the Model
+==================
+Having a look at the data, it seems that a linear regression model (a straight, slanted line) might be appropriate here. Our **alternative model** is thus a linear relationship between the true change in disease progression and an increase in a patient's BMI, whereas the **null model** has no such relationship and disease progression is merely equal to the average (mean) disease progression of the sample. Both of these models can be written in the form 'Data = Pattern + Residual' as follows:
+
+- Null model: y = α + ε
+- Alternative model: y = α + βx + ε
+
+where y is the 'data' ie the dependent variable (in this case, disease progression), ε is the unexplained 'residual' (AKA 'noise') and α and α + βx are the possible 'patterns': α is the mean disease progression under the null model and α + βx is a line-of-best-fit with gradient β and y-intercept α under the alternative model. Note that, effectively, the sample mean **is** the null model. The hypotheses associated with these models are:
+
+- Null hypothesis, H₀: β = 0
+- Alternative hypothesis, H₁: β ≠ 0
+
+Here's what the models look like graphically:
+
+Null Model
+----------
+The null model states that there is **no** relationship between the response variable y and explanatory variable x, ie y = α + ε (or, equivalently, y = α + βx + ε with β = 0) where α is the sample mean. In other words, disease progression = average disease progression + unexplained residual.
+
+```{python}
+plt.scatter(df['bmi'], df['target'], c='k', s=10)
+mean = df['target'].mean()
+plt.axhline(mean, c='lightblue', ls='--', ms=5, label=f'Mean = {mean:.1f}')
+plt.title('Null Model')
+plt.xlabel('BMI [kg/m²]')
+plt.ylabel('Target Variable (Disease Progression)')
+plt.legend(fontsize=8)
+```
+
+Alternative Model
+-----------------
+The alternative model states that there **is** a relationship between BMI and disease progression, namely a straight-line regression y = α + βx + ε (disease progression = BMI + unexplained residual):
+
+```{python, eval = FALSE}
+m, c, r, p, se = stats.linregress(df['bmi'], df['target'])
+
+plt.scatter(df['bmi'], df['target'], c='k', s=10)
+xlim = plt.xlim()
+plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', ms=5)
+plt.xlim(xlim)
+plt.title('Alternative Model')
+plt.xlabel('BMI [kg/m²]')
+plt.ylabel('Target Variable (Disease Progression)')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+m, c, r, p, se = stats.linregress(df['bmi'], df['target'])
+
+plt.scatter(df['bmi'], df['target'], c='k', s=10)
+xlim = plt.xlim()
+plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', ms=5)
+plt.xlim(xlim)
+plt.title('Alternative Model')
+plt.xlabel('BMI [kg/m²]')
+plt.ylabel('Target Variable (Disease Progression)')
+```
+
+Fitting the Model
+=================
+Each time you perform a 'simple linear regression' analysis you are comparing two competing summary models: the null model and the straight-line regression model. Indeed, all hypothesis tests are a choice between two models: a two-sample t-test, for example, is a choice between using one or two means as the model for two groups of data (one mean for both groups or one mean for each group).
+
+Test of Between-Subject Effects
+-------------------------------
+For this, we can use ordinary least-squares (`ols()`) from the Statsmodels package:
+
+```{python}
+import statsmodels.formula.api as smf
+import statsmodels.api as sm
+
+# Create and fit the ANOVA model
+model = smf.ols('target ~ bmi', data=df)
+results = model.fit()
+aov = sm.stats.anova_lm(results, typ=2)
+
+print(aov)
+```
+
+The first column is the source of between-subject effects/the factors: 'ones' is the intercept parameter and 'Residual' is the error. 'PR(>F)' is the p-value from the statistical test of the null hypothesis. The sum of the rows is useful if you're interested in the total between-subject effects:
+
+```{python}
+print(aov.sum())
+```
+
+Here is the relevant p-value:
+
+```{python}
+p = aov.loc['bmi', 'PR(>F)']
+
+print(f'p-value = {p:.3f}')
+```
+
+Parameter Estimates
+-------------------
+
+### Using Statsmodels
+Estimate the parameters of the model and get the associated p-values, again using ordinary least-squares from Statsmodels but this time the `OLS()` function as opposed to the `ols()` function (they are different):
+
+```{python}
+import statsmodels.api as sm
+
+# Create and fit the model
+X = sm.add_constant(df['bmi'])
+model = sm.OLS(df['target'], X)
+results = model.fit()
+
+print(f'Intercept:\n{results.t_test([1, 0])}\n\n\nGradient:\n{results.t_test([0, 1])}')
+```
+
+Final results of the simple linear regression:
+
+```{python}
+α = results.params[0]
+β = results.params[1]
+
+print(f'target = {α:.2f} {β:=+7.3f} × bmi')
+```
+
+```{python}
+t = results.tvalues[1]
+p = results.pvalues[1]
+
+print(f't = {t:.3f}, p = {p:.3f}')
+```
+
+As p < 0.05, we reject H₀ (β = 0) in favour of H₁ (β ≠ 0) at significance level 0.05.
+
+### Using SciPy
+Here's how to do it using the `linregress()` function from SciPy:
+
+```{python}
+from scipy import stats
+
+# Simple linear regression
+result = stats.linregress(df['bmi'], df['target'])
+
+# Extract the results
+β = result.slope
+α = result.intercept
+r = result.rvalue
+p = result.pvalue
+se_β = result.stderr
+se_α = result.intercept_stderr
+```
+
+Results of the simple linear regression:
+
+```{python}
+print(f'target = {α:.2f} {β:=+7.3f} × bmi')
+```
+
+```{python}
+print(f'p = {p:.3f}')
+```
+
+As p < 0.05, we reject H₀ (β = 0) in favour of H₁ (β ≠ 0) at significance level 0.05.
+
+The t-statistic is calculated inside of linregress but, for the record, here it is:
+
+```{python}
+t_stat = stats.t.ppf(1 - (p / 2), df.shape[0] - 2)
+
+print(f't = {t_stat:.3f}')
+```
+
+### Using Scikit-Learn
+Scikit-learn as a package is geared towards machine learning so its method for doing simple linear regression involves 'training' a regression model. This example has been adapted from the one included in [the documentation](https://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html).
+
+```{python}
+from sklearn import datasets, linear_model, metrics
+import numpy as np
+
+# Load the dataset as a 'bunch' object that contains a data frame
+diabetes = datasets.load_diabetes(as_frame=True)
+# Extract the data frame
+df = diabetes['frame']
+# Use a subset of 25 rows for this example (not all 442 rows)
+df = df.head(25)
+# We'll look at 2 columns:
+# 'bmi': the body mass index
+# 'target': a quantitative measure of disease progression one year after baseline
+df = df[['bmi', 'target']]
+# Undo the scaling factor that was applied
+df['bmi'] = (df['bmi'] * 3.19 / df['bmi'].std(ddof=1)) + 24.4
+
+# Separate out the data we need
+X = df[['bmi']]
+Y = df['target']
+
+# Create a linear regression object
+regr = linear_model.LinearRegression()
+
+# Train a regression model using the raw data as a training set
+ft = regr.fit(X, Y)
+
+# Results of the simple linear regression
+print(f'Intercept: {regr.intercept_:.2f}; coefficient: {regr.coef_[0]:.3f}')
+```
+
+Use the predictions of the trained regression model:
+
+```{python}
+predictions = regr.predict(X)
+
+# The mean squared error
+mse = metrics.mean_squared_error(Y, predictions)
+
+print(f'Mean squared error: {mse:.2f}')
+```
+
+```{python}
+# The coefficient of determination: 1 is perfect prediction
+R2 = metrics.r2_score(Y, predictions)
+
+print(f'Coefficient of determination, R²: {R2:.3f}')
+```
+
+Calculate the p-values. This uses code taken from [here](https://stackoverflow.com/questions/27928275/find-p-value-significance-in-scikit-learn-linearregression):
+
+```{python}
+from scipy import stats
+
+# Re-format the results of the linear regression
+params = np.append(regr.coef_, regr.intercept_)
+# Sum of squared residuals
+sum_sq_residuals = sum((Y - predictions)**2)
+# Degrees of freedom (sample size - number of parameters)
+dof = len(X) - len(params)
+# Mean squared error
+mse = sum_sq_residuals / dof
+# Add a constant
+X['Constant'] = 1
+# Covariances of the parameters ('@'' is the dot product)
+cov = mse * np.diagonal(np.linalg.inv(X.T @ X))
+# Standard errors of the parameters
+se = np.sqrt(cov)
+# t-statistics associated with the parameters
+t_statistics = params / se
+# Two-tailed test
+tails = 2
+# Calculate the p-values
+p_values = [tails * (1 - stats.t.cdf(np.abs(t), dof)) for t in t_statistics]
+```
+
+Display the results:
+
+```{python}
+import pandas as pd
+
+# Round-off the results
+params = np.round(params, 4)
+se = np.round(se, 3)
+t_statistics = np.round(t_statistics, 3)
+p_values = np.round(p_values, 3)
+
+# Construct the output data frame
+output = pd.DataFrame()
+output['Parameters'] = ['β', 'α']
+output['Values'] = params
+output['Standard Errors'] = se
+output['t-Values'] = t_statistics
+output['Probabilities'] = p_values
+
+print(output)
+```
+
+As p < 0.05 for the gradient (β), we reject H₀ (β = 0) in favour of H₁ (β ≠ 0) at significance level 0.05.
+
+Coefficient of Determination (R-Squared)
+----------------------------------------
+
+```{python}
+from scipy import stats
+
+# Simple linear regression
+result = stats.linregress(df['bmi'], df['target'])
+
+# Extract the results
+r = result.rvalue
+R2 = r**2
+
+print(f'R² = {R2:.3f}')
+```
+
+R² = 19.2%. This indicates that 19.2% of the total variability observed in disease progression has been explained by the straight-line regression on BMI. The higher R² is, the more adherent the straight line is to the observed relationship between y and x. In other words, R² represents how much of the variability observed in y ignoring x (ie in the null regression) is explained by taking into account the change in x (ie by taking into account the straight-line regression).
+
+R² = 1 − (residual sum of squares / total sum of squares) where 'total sum of squares' is the residual variability around the null model and the 'residual sum of squares' is the residual variability around the straight-line regression.
+
+Confidence Interval
+-------------------
+Calculate the 95% confidence interval for the slope and the intercept using the two-sided inverse Student's t-distribution:
+
+```{python}
+from scipy import stats
+
+# Sample size
+n = df.shape[0]
+# Number of parameters
+n_params = 2  # We have 2 parameters: α and β
+# Degrees of freedom
+dof = n - n_params  # Sample size - number of parameters
+# Significance level
+alpha = 0.05
+# Percent-point function (aka quantile function) of the t-distribution
+t_critical = stats.t.ppf(1 - (alpha / 2), dof)
+
+print(f't-critical: {t_critical:.3f}')
+```
+
+Confidence interval for the gradient:
+
+```{python}
+# Margin of error
+d = t_critical * se_β
+
+print(f'Gradient, β = {β:.3f} ± {d:.3f} (95% CI); se = {se_β:.3f}')
+```
+
+```{python}
+ci_upper = β + d
+ci_lower = β - d
+
+print(f'Gradient, β = {β:.3f}, 95% CI [{ci_lower:.4f}, {ci_upper:.2f}]')
+```
+
+Confidence interval for the intercept:
+
+```{python}
+# Margin of error
+d = t_critical * se_α
+
+print(f'Intercept, α = {α:.2f} ± {d:.1f} (95% CI); se = {se_α:.2f}')
+```
+
+```{python}
+ci_upper = α + d
+ci_lower = α - d
+
+print(f'Intercept, α = {α:.2f}, 95% CI [{ci_lower:.1f}, {ci_upper:.1f}]')
+```
+
+Prediction Limits
+-----------------
+An extension of simple linear regression, using NumPy:
+
+```{python}
+import numpy as np
+
+x = df['bmi']
+y = df['target']
+
+# Parameters from the fit of the 1D polynomial
+params = np.polyfit(x, y, 1)
+
+# Straight line regression
+β = params[0]
+α = params[1]
+
+print(f'target = {α:.2f} {β:=+7.3f} × bmi')
+```
+
+```{python}
+# Model using the fit parameters (ie using the coefficients)
+y_model = np.polyval(params, x)
+# Number of observations
+n = y.size
+# Number of parameters
+m = p.size
+# Degrees of freedom (number of observations - number of parameters)
+dof = n - m
+# Significance level
+alpha = 0.05
+# We're using a two-sided test
+tails = 2
+# Percent-point function (aka quantile function) of the t-distribution
+t_critical = stats.t.ppf(1 - (alpha / tails), dof)
+# Calculate the residuals (estimates of error in the data or the model)
+resid = y - y_model
+# Chi-squared; estimates error in data
+chi2 = sum((resid / y_model)**2)
+# Reduced chi-squared; measures goodness of fit
+chi2_red = chi2 / dof
+# Standard deviation of the error
+std_err = np.sqrt(sum(resid**2) / dof)
+```
+
+Plot:
+
+```{python, eval = FALSE}
+plt.scatter(df['bmi'], df['target'], c='k', s=10)
+xlim = plt.xlim()
+# Line of best fit
+plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression')
+# Fit
+x2 = np.linspace(xlim[0], xlim[1], 100)
+y2 = np.polyval(params, x2)
+# Confidence interval
+ci = t_critical * std_err * np.sqrt(1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+plt.fill_between(
+    x2, y2 + ci, y2 - ci, facecolor='#b9cfe7', zorder=0,
+    label=r'95\% Confidence Interval'
+)
+# Prediction Interval
+pi = t_critical * std_err * np.sqrt(1 + 1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits')
+plt.plot(x2, y2 + pi, '--', color='0.5')
+# Title and labels
+plt.title('Simple Linear Regression')
+plt.xlabel('BMI [kg/m²]')
+plt.ylabel('Target Variable (Disease Progression)')
+# Finished
+plt.legend(fontsize=8)
+plt.xlim(xlim)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+plt.scatter(df['bmi'], df['target'], c='k', s=10)
+xlim = plt.xlim()
+# Line of best fit
+plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression')
+# Fit
+x2 = np.linspace(xlim[0], xlim[1], 100)
+y2 = np.polyval(params, x2)
+# Confidence interval
+ci = t_critical * std_err * np.sqrt(1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+plt.fill_between(
+    x2, y2 + ci, y2 - ci, facecolor='#b9cfe7', zorder=0,
+    label=r'95\% Confidence Interval'
+)
+# Prediction Interval
+pi = t_critical * std_err * np.sqrt(1 + 1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits')
+plt.plot(x2, y2 + pi, '--', color='0.5')
+# Title and labels
+plt.title('Simple Linear Regression')
+plt.xlabel('BMI [kg/m²]')
+plt.ylabel('Target Variable (Disease Progression)')
+# Finished
+plt.legend(fontsize=8)
+plt.xlim(xlim)
+plt.show()
+```
+
+Making Inferences
+=================
+When generalising your findings to the target population, take notice of whether you are **interpolating** (making conclusions about data within the sample domain) or **extrapolating** (making conclusions outside the sample domain). The domain is defined by the maximum and minimum values of the independent variable:
+
+```{python}
+minimum = min(df['bmi'])
+maximum = max(df['bmi'])
+
+print(f'{minimum:.1f}, {maximum:.1f}')
+```
+
+This means we can predict the disease progression for any patient with a BMI between about 18 and 29 kg/m². For predictions outside of this range we would need more data.
+
+[⇦ Back](../../../python.html)
+
+</font>
