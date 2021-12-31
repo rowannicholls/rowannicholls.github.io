@@ -1,0 +1,470 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Quadratic Regression'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+**Quadratic regression** fits a parabolic line-of-best-fit to continuous numerical data that has one dependent variable (it is a 'univariate' linear model), one independent variable and one group. In other words:
+
+- We need to have *continuous data* (ie numbers) that come from measurements, not from ratings or scores
+- A parabolic *relationship* is fitted to this data. And there is only one group which means that there is no way to look at the differences between groups.
+- There is exactly one independent variable and it is a *true* independent variable (which means that all other variables are being controlled for and stay the same when this variable is being read)
+- The shape of the data when plotted suggests that a *parabolic* relationship is appropriate, as opposed to a straight line or some other curve
+
+If the above criteria are met then, as we can see from the flowchart below, quadratic regression is needed.
+
+```{r, echo = FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
+            'Start:\nSet a hypothesis'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                'Continuous data'
+                    'Relationships'
+                        RIndependent [label='True independent\nvariable(s)']
+                            'Regression\nanalysis'
+                                'One independent\nvariable'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                    'Simple linear\nregression' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                                    'Quadratic\nregression' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
+                                'Multiple independent\nvariables'
+                                    'Multiple linear\nregression' [shape = 'oval']
+                        RNonindependent [label='No true\nindependent\nvariable']
+                            'Correlation\nanalysis'
+                                RParametric [label='Parametric']
+                                    Pearsons_r [label=<Pearson's r>,  shape = 'oval']
+                                RNonparametric [label='Non-parametric']
+                                    Spearmans_rho [label=<Spearman's ρ>, shape = 'oval']
+                    'Differences'
+                        'Variances'
+                        'Averages (means\nor medians)'
+                            'One group'
+                                OGParametric [label='Parametric']
+                                    'One-sample t-test' [shape = 'oval']
+                            'Two groups'
+                                TGParametric [label='Parametric']
+                                    PIndependent [label='Independent\ngroups']
+                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
+                                    PNonIndependent [label='Non-independent\ngroups']
+                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
+                                TGNonparametric [label='Non-parametric']
+                                    TGIndependent [label='Independent\ngroups']
+                                        'Mann-Whitney\nU test' [shape = 'oval']
+                                    TGNonindependent [label='Non-independent\ngroups']
+                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
+                            'More than\ntwo groups'
+                                MGParametric [label='Parametric']
+
+                                    'ANOVA' [shape = 'oval']
+                                MGNonparametric [label='Non-parametric']
+                                    MGIndependent [label='Independent\ngroups']
+                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
+                                    MGNonindependent [label='Non-independent\ngroups']
+                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
+                'Discrete,\ncategorical data'
+                    'Chi-squared\ntest'
+                        'Goodness-of-fit\ntest' [shape = 'oval']
+                        'Independence\ntest' [shape = 'oval']
+                        'Homogeneity\ntest' [shape = 'oval']
+
+            'Start:\nSet a hypothesis' -> 'Continuous data'
+                'Continuous data' -> 'Differences'
+                    'Differences' -> 'Averages (means\nor medians)'
+                        'Averages (means\nor medians)' -> 'One group'
+                            'One group' -> OGParametric
+                                OGParametric -> 'One-sample t-test'
+                        'Averages (means\nor medians)' -> 'Two groups'
+                            'Two groups' -> TGParametric
+                                TGParametric -> PIndependent
+                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
+                                TGParametric -> PNonIndependent
+                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
+                            'Two groups' -> TGNonparametric
+                                TGNonparametric -> TGIndependent
+                                    TGIndependent -> 'Mann-Whitney\nU test'
+                                TGNonparametric -> TGNonindependent
+                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
+                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
+                            'More than\ntwo groups' -> MGParametric
+                                MGParametric -> 'ANOVA'
+                            'More than\ntwo groups' -> MGNonparametric
+                                MGNonparametric -> MGIndependent
+                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
+                                MGNonparametric -> MGNonindependent
+                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
+                    'Differences' -> 'Variances'
+                'Continuous data' -> 'Relationships'
+                    'Relationships' -> RIndependent
+                        RIndependent -> 'Regression\nanalysis'
+                            'Regression\nanalysis' -> 'One independent\nvariable'
+                                'One independent\nvariable' -> 'Simple linear\nregression'
+                                'One independent\nvariable' -> 'Quadratic\nregression'
+                            'Regression\nanalysis' -> 'Multiple independent\nvariables'
+                                'Multiple independent\nvariables' -> 'Multiple linear\nregression'
+                    'Relationships' -> RNonindependent
+                        RNonindependent -> 'Correlation\nanalysis'
+                            'Correlation\nanalysis' -> RParametric
+                                RParametric -> Pearsons_r
+                            'Correlation\nanalysis' -> RNonparametric
+                                RNonparametric -> Spearmans_rho
+            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
+                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
+                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
+                    'Chi-squared\ntest' -> 'Independence\ntest'
+                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
+
+    labelloc='t';
+    fontsize=70;
+    label='Flowchart for Choosing a Statistical Test\n\n';
+    }",
+    width=900
+)
+```
+
+Example Data
+============
+Use the 'Linnerud' example dataset from Scikit-learn. This contains physical exercise and physiological data as measured on 20 volunteers from a fitness club:
+
+```{python}
+from sklearn import datasets
+
+# Load the dataset
+linnerud = datasets.load_linnerud(as_frame=True)
+```
+
+Only two of these variables will be used in this example: the number of situps completed and waist circumference in inches:
+
+```{python}
+x = linnerud['data']['Situps']
+y = linnerud['target']['Waist']
+```
+
+Exploring the Data
+==================
+Use graphs and descriptive statistics to make an initial decision as to what summary model to use:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Make figures A6 in size
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Image quality
+plt.rc('figure', dpi=141)
+# Be able to add Latex
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.scatter(x, y, c='k', s=10)
+plt.title('Linnerud Dataset')
+plt.xlabel('Sit-Ups')
+plt.ylabel('Waist Circumference [in]')
+```
+
+Descriptive statistics:
+
+```{python}
+import numpy as np
+
+# Sample size
+n = x.shape[0]
+# Mean
+y_bar = y.mean()
+# Sample standard deviation
+s = y.std(ddof=1)
+# Standard error of the mean
+sem = s / np.sqrt(n)
+
+print(f'n = {n}; mean = {y_bar:.1f} inches, std dev = {s:.2f} inches, std error of the mean = {sem:.3f}')
+```
+
+Calculate the 95% confidence interval:
+
+```{python}
+from scipy import stats
+
+# Significance level
+alpha = 0.05
+# Degrees of freedom
+dof = n - 1
+# Two-tailed test
+tails = 2
+# Percent-point function (aka quantile function) of the t-distribution
+t = stats.t.ppf(1 - (alpha / tails), dof)
+# Intervals
+upper_ci = y_bar + t * sem
+lower_ci = y_bar - t * sem
+
+print(f'The sample mean is {y_bar:.1f} inches, 95% CI [{lower_ci:.1f}, {upper_ci:.1f}]')
+```
+
+You can be 95% confident that the population mean falls between 33.9 and 36.9 inches.
+
+Defining the Model
+==================
+Having a look at the data, it seems that a quadratic regression model (a parabolic line) might be appropriate here. Our **alternative model** is thus a quadratic relationship between someone's waist circumference and the number of sit-ups they can complete, whereas the **null model** is a linear relationship. Both of these models can be written in the form 'Data = Pattern + Residual' as follows:
+
+- Null model: y = α + βx + ε
+- Alternative model: y = α + βx + γx² + ε
+
+where y is the 'data' ie the dependent variable (in this case, waist circumference), ε is the unexplained 'residual' (AKA 'noise') and α + βx and α + βx + γx² are the possible 'patterns' (α, β and γ being the coefficients of the polynomial line-of-best-fit). The hypotheses associated with these models are:
+
+- Null hypothesis, H₀: γ = 0
+- Alternative hypothesis, H₁: γ ≠ 0
+
+Here's what the models look like graphically:
+
+Null Model
+----------
+There is a straight-line relationship y = α + βx + ε (waist circumference = number of sit-ups + unexplained residual) between the response variable y and explanatory variable x:
+
+```{python, eval = FALSE}
+m, c, r, p, se = stats.linregress(x, y)
+
+plt.scatter(x, y, c='k', s=10)
+xlim = plt.xlim()
+plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', ms=5)
+plt.xlim(xlim)
+plt.title('Null Model')
+plt.xlabel('Sit-Ups')
+plt.ylabel('Waist Circumference [in]')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+m, c, r, p, se = stats.linregress(x, y)
+
+plt.scatter(x, y, c='k', s=10)
+xlim = plt.xlim()
+plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', ms=5)
+plt.xlim(xlim)
+plt.title('Null Model')
+plt.xlabel('Sit-Ups')
+plt.ylabel('Waist Circumference [in]')
+```
+
+Alternative Model
+-----------------
+The alternative model states that there is a quadratic relationship between sit-ups completed and waist circumference: y = α + βx + γx² + ε (waist circumference = sit-ups completed + (sit-ups completed)² + unexplained residual):
+
+```{python, eval = FALSE}
+params, residuals, rank, singular_values, rcond = np.polyfit(x, y, 2, full=True)
+
+plt.scatter(x, y, c='k', s=10)
+xlim = plt.xlim()
+x_fitted = np.linspace(xlim[0], xlim[1], 100)
+y_fitted = params[2] + x_fitted * params[1] + x_fitted**2 * params[0]
+plt.plot(x_fitted, y_fitted, c='lightblue', ls='--', ms=5)
+plt.xlim(xlim)
+plt.title('Alternative Model')
+plt.xlabel('Sit-Ups')
+plt.ylabel('Waist Circumference [in]')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+params, residuals, rank, singular_values, rcond = np.polyfit(x, y, 2, full=True)
+
+plt.scatter(x, y, c='k', s=10)
+xlim = plt.xlim()
+x_fitted = np.linspace(xlim[0], xlim[1], 100)
+y_fitted = params[2] + x_fitted * params[1] + x_fitted**2 * params[0]
+plt.plot(x_fitted, y_fitted, c='lightblue', ls='--', ms=5)
+plt.xlim(xlim)
+plt.title('Alternative Model')
+plt.xlabel('Sit-Ups')
+plt.ylabel('Waist Circumference [in]')
+```
+
+Fitting the Model
+=================
+We now need to find values for the parameters α, β and γ:
+
+Using SciPy
+-----------
+
+```{python}
+from scipy import odr, stats
+
+# Orthogonal distance regression
+data = odr.Data(x, y)
+odr_obj = odr.ODR(data, odr.quadratic)
+output = odr_obj.run()
+# Sample size
+n = x.shape[0]
+# Number of parameters
+n_params = 3  # We have 3 parameters: α, β and γ
+# Degrees of freedom
+dof = n - n_params  # Sample size - number of parameters
+# Confidence level
+alpha = 0.05
+# Two-sided test
+tails = 2
+# Percent-point function (aka quantile function) of the t-distribution
+t_critical = stats.t.ppf(1 - alpha / tails, dof)
+# Margin of error
+d = t_critical * output.sd_beta
+# Confidence interval
+ci_upper = output.beta + d
+ci_lower = output.beta - d
+# Define the parameters
+symbols = ['γ', 'β', 'α']
+
+for i in range(n_params):
+    s = symbols[i]
+    v = output.beta[i]
+    se = output.sd_beta[i]
+    margin = d[i]
+    cu = ci_upper[i]
+    cl = ci_lower[i]
+    print(f'{s} = {v:7.4f} ± {margin:.4f}, 95% CI [{cl:7.04f} to {cu:7.4f}]; se = {se:.4f}')
+```
+
+Plot:
+
+```{python, eval = FALSE}
+γ = output.beta[0]
+β = output.beta[1]
+α = output.beta[2]
+
+# Create the plot
+plt.scatter(x, y, c='k', s=10, label='Raw data')
+# Quadratic line of best fit
+xlim = plt.xlim()
+x2 = np.linspace(xlim[0], xlim[1], 100)
+plt.plot(x2, α + β * x2 + γ * x2**2, label='Quadratic line-of-best-fit')
+# Title and labels
+plt.title('Quadratic Regression')
+plt.xlabel('Sit-Ups')
+plt.ylabel('Waist Circumference [in]')
+# Finished
+plt.legend(fontsize=8)
+plt.xlim(xlim)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+γ = output.beta[0]
+β = output.beta[1]
+α = output.beta[2]
+
+# Create the plot
+plt.scatter(x, y, c='k', s=10, label='Raw data')
+# Quadratic line of best fit
+xlim = plt.xlim()
+x2 = np.linspace(xlim[0], xlim[1], 100)
+plt.plot(x2, α + β * x2 + γ * x2**2, label='Quadratic line-of-best-fit')
+# Title and labels
+plt.title('Quadratic Regression')
+plt.xlabel('Sit-Ups')
+plt.ylabel('Waist Circumference [in]')
+# Finished
+plt.legend(fontsize=8)
+plt.xlim(xlim)
+plt.show()
+```
+
+Using NumPy
+-----------
+
+```{python}
+x = linnerud['data']['Situps']
+y = linnerud['target']['Waist']
+
+# Fit a polynomial of degree 2 (a quadratic)
+params, residuals, rank, singular_values, rcond = np.polyfit(x, y, 2, full=True)
+
+# Define the parameters
+symbols = ['γ', 'β', 'α']
+for i in range(n_params):
+    s = symbols[i]
+    v = params[i]
+    print(f'{s} = {v:7.4f}')
+```
+
+```{python}
+# Fit the model
+model = np.poly1d(params)
+y_model = model(x)
+y_bar = np.mean(y)
+r_squared = np.sum((y_model - y_bar)**2) / np.sum((y - y_bar)**2)
+
+print(f'Coefficient of determination, R² = {r_squared:.3f}')
+```
+
+Using Statsmodels
+-----------------
+The Statsmodels method requires some re-formatting of the data:
+
+- Everything must be in one data frame
+- In addition to 'sit-ups', there needs to be a column with the number of sit-ups *squared*. This will form the γx² component of the quadratic polynomial
+
+Here's the data re-formatting:
+
+```{python, eval = FALSE}
+import pandas as pd
+
+# Merge on indexes
+df = pd.merge(y, x, left_index=True, right_index=True)
+linnerud['data']['Situps_sq'] = linnerud['data']['Situps']**2
+df = pd.merge(df, linnerud['data']['Situps_sq'], left_index=True, right_index=True)
+```
+
+```{python, echo = FALSE, results='hide'}
+import pandas as pd
+
+# Merge on indexes
+df = pd.merge(y, x, left_index=True, right_index=True)
+linnerud['data']['Situps_sq'] = linnerud['data']['Situps']**2
+df = pd.merge(df, linnerud['data']['Situps_sq'], left_index=True, right_index=True)
+```
+
+Now we can fit the quadratic regression model using ordinary least-squares (ols):
+
+```{python}
+import statsmodels.formula.api as smf
+
+model = smf.ols(formula='Waist ~ Situps + Situps_sq', data=df)
+results = model.fit()
+
+print(results.summary())
+```
+
+Specifically, here are the p-values for the model's coefficients:
+
+```{python}
+print(results.pvalues)
+```
+
+We are only interested in the p-value for 'Situps_sq' (the gamma parameter, γ) when testing the null and alternative hypotheses given above (γ = 0 vs γ ≠ 0):
+
+```{python}
+p = results.pvalues['Situps_sq']
+
+print(f'p = {p:.3f}')
+```
+
+This is statistically significant at the 0.1 significance level, hence we fail to reject H₀ and conclude that the quadratic regression model adequately represents the relationship between sit-ups completed and waist circumference (p < 0.1).
+
+[⇦ Back](../../../python.html)
+
+</font>
