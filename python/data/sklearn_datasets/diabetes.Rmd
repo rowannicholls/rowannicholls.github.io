@@ -15,8 +15,32 @@ output:
 For more info, see here:  
 [https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#diabetes-dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#diabetes-dataset){target="_blank"}
 
-The **diabetes dataset** is loaded using `load_diabetes()`. This
-returns a 'Bunch' object with the following keys:
+The **diabetes dataset** is loaded using `load_diabetes()` function:
+
+```{python}
+from sklearn import datasets
+
+# Load the dataset
+diabetes = datasets.load_diabetes()
+```
+
+This returns a 'Bunch' object. Usually, it's more user-friendly to use the `as_frame` parameter which causes the 'data' and 'target' values to be loaded as data frames inside the Bunch object:
+
+```{python}
+# Load the dataset
+diabetes = datasets.load_diabetes(as_frame=True)
+
+print(type(diabetes['data']))
+```
+
+Either way, the Bunch object has the following keys:
+
+```{python}
+# Show the dataset's keys
+print(list(diabetes))
+```
+
+More info on each of the keys:
 
 | Key | Description |
 |-----|-------------------------------------------------------------|
@@ -26,16 +50,6 @@ returns a 'Bunch' object with the following keys:
 | `feature_names` | Names of the 10 groups of data |
 | `data` | The 442 data points in each of the 10 groups of data, formatted as a 442x10 array |
 | `target` | The target data, namely a quantitative measure of disease progression one year after baseline |
-
-```{python}
-from sklearn.datasets import load_diabetes
-
-# Load the dataset
-diabetes = load_diabetes()
-
-# Show the dataset's keys
-print(list(diabetes))
-```
 
 ```{python}
 # Description of the dataset
@@ -68,37 +82,27 @@ print(diabetes['data'])
 print(diabetes['target'][:20])
 ```
 
-The groups of data can be plotted against each other or against the target
-group as follows:
+The groups of feature data can be plotted against the target data as follows:
 
 ```{python}
 import matplotlib.pyplot as plt
 
-# Plot
-plt.scatter(diabetes['data'][:, 6], diabetes['target'])
-plt.title('Diabetes dataset')
-x = diabetes['feature_names'][6]
-plt.xlabel(x + ' (hdl, high-density lipoproteins)')
-plt.ylabel('Disease progression one year after baseline')
-```
-
-The data is much easier to work with if it is converted into a data frame:
-
-```{python}
-import pandas as pd
-
-# Extract the data
-data = pd.DataFrame(diabetes['data'], columns=diabetes['feature_names'])
-# Extract the target
-target = pd.DataFrame(diabetes['target'], columns=['Y'])
-# Combine into one dataset
-df = pd.concat([target, data], axis='columns')
+# Don't plot the sex data
+features = diabetes['feature_names']
+features.remove('sex')
 
 # Plot
-plt.scatter(df['bp'], df['Y'])
-plt.title('Diabetes dataset')
-plt.xlabel('bp (average blood pressure)')
-plt.ylabel('Disease progression one year after baseline')
+fig, axs = plt.subplots(3, 3)
+fig.suptitle('Diabetes Dataset')
+for i in range(3):
+    for j in range(3):
+        n = j + i * 3
+        feature = features[n]
+        axs[i, j].scatter(diabetes['data'][feature], diabetes['target'], s=1)
+        axs[i, j].set_xlabel(feature)
+        axs[i, j].set_ylabel('target')
+plt.tight_layout()
+plt.show()
 ```
 
 </font>

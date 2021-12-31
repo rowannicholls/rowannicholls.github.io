@@ -14,6 +14,10 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
 In order to access the power of Latex when creating text as part of a graph you need to change some of the 'rc parameters'. These are the default settings for your plots: 'rc' stands for 'run commands' which tells you that these are the commands are executed at runtime (ie the moment when you run Python, even before your code gets executed). The two most important rc parameters to change are:
 
 - `text.usetex` which needs to be set to `True`
@@ -34,14 +38,15 @@ plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 
 # Create some data
-x = np.arange(100)
+x = np.arange(10)
 y = x**2
 
 # Plot
-plt.plot(x, y)
+plt.plot(x, y, label=r'Dataset 1: R = t²')
 plt.title(r'\LaTeX\ in Labels')
 plt.xlabel(r'Time, $t$ [\textmu s]')
-plt.text(70, 7000, r'$R = t^2$')
+plt.text(7, 70, r'$R = t^2$')
+plt.legend(fontsize=8)
 ```
 
 Notice that we can use both Latex's math mode for equations (eg `r'$R = t^2$'`) and text mode for upright text (eg "&mu;s" in the x-axis label). To use upright Greek letters in text mode, as has been done here, the only letter that will work out-of-the-box is mu (&mu;). This is because the command that does this (`\textmu`) is included in the `textcomp` package which is loaded by default. To use other upright Greek letter in text mode we need to use the `textgreek` package which can be loaded in the Latex preamble by changing another rc parameter:
@@ -54,20 +59,21 @@ This gives us access to, for example, `\textOmega`. Have a look:
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Plot
-plt.plot(x, y)
+plt.plot(x, y, label=r'Dataset 1: R = t²')
 plt.title(r'\LaTeX\ in Labels')
 plt.xlabel(r'Time, $t$ [\textmu s]')
 plt.ylabel(r'Resistance, $R$ [\textOmega]')
-plt.text(70, 7000, r'$R = t^2$')
+plt.text(7, 70, r'$R = t^2$')
+plt.legend(fontsize=8)
 ```
 
 Finally, note that we can combine "r-strings" with "f-strings" to create "fr-strings", accessing both the typesetting power of Latex AND the string formatting power of Python:
 
 ```{python}
-plt.plot(x, y)
+plt.plot(x, y, label=r'Dataset 1: R = t²')
 plt.title(r'\LaTeX\ in Labels')
 # \textmu works out-of-the-box
-plt.xlabel(r'Time, $T$ [\textmu s]')
+plt.xlabel(r'Time, $t$ [\textmu s]')
 # Other Greek letters need the textgreek package
 plt.ylabel(r'Resistance, $R$ [\textOmega]')
 # Add annotations
@@ -76,8 +82,9 @@ ylim = plt.ylim(min(y), max(y))
 xlim = plt.xlim(min(x), max(x))
 plt.vlines(np.sqrt(mean_y), ymin=0, ymax=mean_y, linestyles='dashed')
 plt.hlines(mean_y, xmin=0, xmax=np.sqrt(mean_y), linestyles='dashed')
-plt.text(10, mean_y + 150, fr'Mean resistance, \textsigma\ = {np.mean(y)}\textOmega')
-plt.text(70, 7000, r'$R = t^2$')
+plt.text(1, mean_y + 1.5, fr'Mean resistance, \textsigma\ = {mean_y:.1f}\textOmega')
+plt.text(7, 70, r'$R = t^2$')
+plt.legend(fontsize=8)
 ```
 
 Troubleshooting

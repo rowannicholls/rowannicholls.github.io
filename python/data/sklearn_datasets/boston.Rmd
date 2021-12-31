@@ -15,8 +15,16 @@ output:
 For more info, see here:  
 [https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#boston-house-prices-dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#boston-house-prices-dataset){target="_blank"}
 
-The **Boston house prices dataset** is loaded using `load_boston()`. This
-returns a 'Bunch' object with the following keys:
+The **Boston house prices dataset** is loaded using the `load_boston()` function:
+
+```{python}
+from sklearn import datasets
+
+# Load the dataset
+boston = datasets.load_boston()
+```
+
+This returns a 'Bunch' object with the following keys:
 
 | Key | Description |
 |-----|-------------------------------------------------------------|
@@ -27,14 +35,11 @@ returns a 'Bunch' object with the following keys:
 | `target` | The target data, namely "MEDV" (Median value of owner-occupied homes in $1000’s) |
 
 ```{python}
-from sklearn.datasets import load_boston
-
-# Load the dataset
-boston = load_boston()
-
 # Show the dataset's keys
 print(list(boston))
 ```
+
+Here's what all the keys contain:
 
 ```{python}
 # Description of the dataset

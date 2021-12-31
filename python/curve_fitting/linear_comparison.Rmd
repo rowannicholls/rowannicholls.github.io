@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Curve Fitting in Python:</font><br>Linear Functions'
+title: '<font size="5">Curve Fitting in Python:</font><br>Linear Functions: Comparison of Methods'
 output:
     html_document:
         theme: paper
@@ -14,8 +14,8 @@ output:
 
 [⇦ Back](../../python.html)
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "75%")
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
 ```
 
 If you have a set of data points that look like they’re increasing **steadily**, it might be useful to fit a **straight line** to them in order to describe the general shape of the data:
@@ -39,7 +39,7 @@ np.random.seed(20210713)
 x = np.arange(1, 11)
 # Create fake y-data
 m = 2
-c = 10
+c = 11
 y = m * x + c
 y = y + np.random.normal(scale=np.sqrt(np.mean(y)), size=len(x))  # Add noise
 
@@ -48,14 +48,16 @@ gradient, intercept, r_value, p_value, slope_std_error = stats.linregress(x, y)
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y, label='Raw data')
-ax.plot(x, gradient * x + intercept, 'k', label='Fitted curve')
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18, label='Raw data')
+xlim = np.array([0, ax.get_xlim()[1]])
+ylim = ax.get_ylim()
+ax.plot(xlim, gradient * xlim + intercept, 'k', label='Fitted curve')
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
-ax.set_ylim(0)
-ax.set_xlim(0)
-ax.legend()
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
+ax.set_xlim(0, xlim[1])
+ax.set_ylim(0, ylim[1])
+ax.legend(fontsize=8)
 plt.show()
 ```
 
@@ -67,9 +69,9 @@ The important thing to notice is that *a linear function can be fully defined wi
 
 This tutorial will use three methods for fitting linear functions, in increasing order of complexity of the Python command involved:
 
-1. Scipy's `linregress()`
-2. Numpy's `polyfit()`
-3. Scipy's `curve_fit()`
+1. SciPy's `linregress()`
+2. NumPy's `polyfit()`
+3. SciPy's `curve_fit()`
 
 ...but first, we need some data to fit the curves to:
 
@@ -87,7 +89,7 @@ np.random.seed(20210713)
 x = np.arange(1, 11)
 # Create fake y-data
 m = 2
-c = 10
+c = 11
 y = m * x + c
 y = y + np.random.normal(scale=np.sqrt(np.mean(y)), size=len(x))  # Add noise
 
@@ -95,7 +97,7 @@ y = y + np.random.normal(scale=np.sqrt(np.mean(y)), size=len(x))  # Add noise
 _ = [print(f'({x[i]}, {y[i]:4.1f})') for i in np.arange(len(x))]
 ```
 
-The random noise is being added with the `random.normal()` function from Numpy which draws random samples from a normal (Gaussian) distribution. Let's take a look at what this example data looks like on a scatter plot:
+The random noise is being added with the `random.normal()` function from NumPy which draws random samples from a normal (Gaussian) distribution. Let's take a look at what this example data looks like on a scatter plot:
 
 ```{python, eval=FALSE}
 import matplotlib.pyplot as plt
@@ -109,10 +111,10 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y)
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18)
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
 ax.set_ylim(0)
 ax.set_xlim(0)
 plt.show()
@@ -130,10 +132,10 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y)
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18)
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
 ax.set_ylim(0)
 ax.set_xlim(0)
 plt.show()
@@ -141,7 +143,7 @@ plt.show()
 
 Method 1: linregress
 ====================
-From Scipy's `stats` sub-package we can import the `linregress()` function which performs **lin**ear **regress**ion. This is purpose-built for fitting linear curves: it takes the x- and y-data as inputs and returns all the results related to the regression procedure:
+From SciPy's `stats` sub-package we can import the `linregress()` function which performs **lin**ear **regress**ion. This is purpose-built for fitting linear curves: it takes the x- and y-data as inputs and returns all the results related to the regression procedure:
 
 ```{python}
 from scipy import stats
@@ -177,15 +179,17 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y, label='Raw data')
-ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
-ax.plot(x, predict_y, 'k', label='Line of best fit')
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18, label='Raw data')
+xlim = np.array(ax.get_xlim())
+xlim[0] = 0
+ax.plot(xlim, 2 * xlim + 11, 'k--', label='True underlying relationship')
+ax.plot(xlim, gradient * xlim + intercept, 'k', label='Line of best fit')
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
+ax.set_xlim(xlim)
 ax.set_ylim(0)
-ax.set_xlim(0)
-ax.legend()
+ax.legend(fontsize=8)
 plt.show()
 ```
 
@@ -201,21 +205,23 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y, label='Raw data')
-ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
-ax.plot(x, predict_y, 'k', label='Line of best fit')
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18, label='Raw data')
+xlim = np.array(ax.get_xlim())
+xlim[0] = 0
+ax.plot(xlim, 2 * xlim + 11, 'k--', label='True underlying relationship')
+ax.plot(xlim, gradient * xlim + intercept, 'k', label='Line of best fit')
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
+ax.set_xlim(xlim)
 ax.set_ylim(0)
-ax.set_xlim(0)
-ax.legend()
+ax.legend(fontsize=8)
 plt.show()
 ```
 
 Method 2: polyfit
 =================
-The `polyfit()` command from Numpy is used to fit a polynomial function to data. Of course, a linear function IS a polynomial function (it's a polynomial of degree 1) so we can go right ahead and run `polyfit()` with the following three arguments:
+The `polyfit()` command from NumPy is used to fit a polynomial function to data. Of course, a linear function IS a polynomial function (it's a polynomial of degree 1) so we can go right ahead and run `polyfit()` with the following three arguments:
 
 - `x` - the x-values of your data
 - `y` - the y-values of your data
@@ -250,15 +256,17 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y, label='Raw data')
-ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
-ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18, label='Raw data')
+xlim = np.array(ax.get_xlim())
+xlim[0] = 0
+ax.plot(xlim, 2 * xlim + 11, 'k--', label='True underlying relationship')
+ax.plot(xlim, m * xlim + c, 'k', label='Line of best fit')
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
+ax.set_xlim(xlim)
 ax.set_ylim(0)
-ax.set_xlim(0)
-ax.legend()
+ax.legend(fontsize=8)
 plt.show()
 ```
 
@@ -274,21 +282,23 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y, label='Raw data')
-ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
-ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18, label='Raw data')
+xlim = np.array(ax.get_xlim())
+xlim[0] = 0
+ax.plot(xlim, 2 * xlim + 11, 'k--', label='True underlying relationship')
+ax.plot(xlim, m * xlim + c, 'k', label='Line of best fit')
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
+ax.set_xlim(xlim)
 ax.set_ylim(0)
-ax.set_xlim(0)
-ax.legend()
+ax.legend(fontsize=8)
 plt.show()
 ```
 
 Method 3: curve_fit
 ===================
-From the Scipy package we can get the `curve_fit()` function. This is more general than `polyfit()` in that we can fit *any* type of function we like - not just polynomials - but it's more complicated in that we sometimes need to provide an initial guess as to what the constants could be in order for it to work.
+From the SciPy package we can get the `curve_fit()` function. This is more general than `polyfit()` in that we can fit *any* type of function we like - not just polynomials - but it's more complicated in that we sometimes need to provide an initial guess as to what the constants could be in order for it to work.
 
 In order to fit the function $y = mx + c$ to our data we need to define it as a *lambda function* (ie as an object rather than as a command) of a dummy variable $t$. We can then use the `curve_fit()` function to fit this *object* to the x- and y-data. Note that the `curve_fit()` function needs to be imported from the `scipy.optimize` sub-package:
 
@@ -322,15 +332,17 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y, label='Raw data')
-ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
-ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18, label='Raw data')
+xlim = np.array(ax.get_xlim())
+xlim[0] = 0
+ax.plot(xlim, 2 * xlim + 11, 'k--', label='True underlying relationship')
+ax.plot(xlim, m * xlim + c, 'k', label='Line of best fit')
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
+ax.set_xlim(xlim)
 ax.set_ylim(0)
-ax.set_xlim(0)
-ax.legend()
+ax.legend(fontsize=8)
 plt.show()
 ```
 
@@ -346,15 +358,17 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 # Create a plot
 ax = plt.axes()
-ax.scatter(x, y, label='Raw data')
-ax.plot(x, 2 * x + 10, 'k--', label='True underlying relationship')
-ax.plot(x, m * x + c, 'k', label='Line of best fit')
+ax.scatter(x, y, c='gray', marker='o', edgecolors='k', s=18, label='Raw data')
+xlim = np.array(ax.get_xlim())
+xlim[0] = 0
+ax.plot(xlim, 2 * xlim + 11, 'k--', label='True underlying relationship')
+ax.plot(xlim, m * xlim + c, 'k', label='Line of best fit')
 ax.set_title('Example Data')
-ax.set_ylabel('y-Values')
-ax.set_xlabel('x-Values')
+ax.set_xlabel(r'Independent Variable, $x$')
+ax.set_ylabel(r'Dependent Variable, $y$')
+ax.set_xlim(xlim)
 ax.set_ylim(0)
-ax.set_xlim(0)
-ax.legend()
+ax.legend(fontsize=8)
 plt.show()
 ```
 

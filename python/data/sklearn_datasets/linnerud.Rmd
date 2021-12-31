@@ -15,8 +15,32 @@ output:
 For more info, see here:  
 [https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#linnerrud-dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#linnerrud-dataset){target="_blank"}
 
-The **Linnerrud dataset** is loaded using `load_linnerud()`. This
-returns a 'Bunch' object with the following keys:
+The **Linnerrud dataset** is loaded using the `load_linnerud()` function:
+
+```{python}
+from sklearn import datasets
+
+# Load the dataset
+linnerud = datasets.load_linnerud()
+```
+
+This returns a 'Bunch' object. Usually, it's more user-friendly to use the `as_frame` parameter which causes the 'data' and 'target' values to be loaded as data frames inside the Bunch object:
+
+```{python}
+# Load the dataset
+linnerud = datasets.load_linnerud(as_frame=True)
+
+print(type(linnerud['data']))
+```
+
+Either way, the Bunch object has the following keys:
+
+```{python}
+# Show the dataset's keys
+print(list(linnerud))
+```
+
+More info on each of the keys:
 
 | Key | Description |
 |-----|-------------------------------------------------------------|
@@ -27,16 +51,6 @@ returns a 'Bunch' object with the following keys:
 | `data` | The 20 data points for each of the 3 exercises, formatted as a 20x3 array |
 | `target_names` | Names of the 3 physiological variables (Weight, Waist and Pulse) |
 | `target` | The target data, namely the physiological measurements |
-
-```{python}
-from sklearn.datasets import load_linnerud
-
-# Load the dataset
-linnerud = load_linnerud()
-
-# Show the dataset's keys
-print(list(linnerud))
-```
 
 ```{python}
 # Description of the dataset
@@ -73,36 +87,21 @@ print(linnerud['target_names'])
 print(linnerud['target'])
 ```
 
-The groups of data can be plotted against each other or against the target
-group as follows:
+The groups of feature data can be plotted against the target data as follows:
 
 ```{python}
 import matplotlib.pyplot as plt
 
 # Plot
-plt.scatter(linnerud['data'][:, 0], linnerud['target'][:, 0])
-plt.title('Linnerrud dataset')
-plt.xlabel(linnerud['feature_names'][0])
-plt.ylabel(linnerud['target_names'][0])
-```
-
-The data is much easier to work with if it is converted into a data frame:
-
-```{python}
-import pandas as pd
-
-# Extract the data
-data = pd.DataFrame(linnerud['data'], columns=linnerud['feature_names'])
-# Extract the target
-target = pd.DataFrame(linnerud['target'], columns=linnerud['target_names'])
-# Combine into one dataset
-df = pd.concat([target, data], axis='columns')
-
-# Plot
-plt.scatter(df['Waist'], df['Situps'])
-plt.title('Linnerrud dataset')
-plt.xlabel('Waist')
-plt.ylabel('Situps')
+fig, axs = plt.subplots(3, 3)
+fig.suptitle('Linnerud Dataset')
+for i in range(3):
+    for j in range(3):
+        axs[i, j].scatter(linnerud['data'].iloc[:, i], linnerud['target'].iloc[:, j])
+        axs[i, j].set_xlabel(list(linnerud['data'])[i])
+        axs[i, j].set_ylabel(list(linnerud['target'])[j])
+plt.tight_layout()
+plt.show()
 ```
 
 </font>
