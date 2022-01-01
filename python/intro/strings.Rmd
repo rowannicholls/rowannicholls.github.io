@@ -425,6 +425,17 @@ st = st.replace('_', r'\_')
 print(st)
 ```
 
+Remove Characters From the Start or the End
+-------------------------------------------
+The `.removeprefix()` and `.removesuffix()` methods do exactly what they say on the tin: they remove characters from the front and from the end of a string, respectively. This is useful for things like file extensions:
+
+```{python}
+filename = 'Document.docx'
+fileroot = filename.removesuffix('.docx')
+
+print(fileroot)
+```
+
 Trim White Space
 ----------------
 Leading and trailing white space (space and tab characters) can be removed with the `.strip()` method:
