@@ -361,7 +361,17 @@ Removing Duplicates
 Remove all rows that appear more than once:
 
 ```{python, eval = FALSE}
-df.drop_duplicates()
+subset = df.drop_duplicates()
+```
+
+Remove rows where a value appears twice in a particular column, keeping the row where that value first appears:
+
+```{python}
+# Remove all repeat instances of athletes from the same country
+subset = df.drop_duplicates('Country', keep='first')
+
+# This removes Yohan Blake and Trayvon Bromell
+print(subset)
 ```
 
 [⇦ Back](../../python.html)
