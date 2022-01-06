@@ -386,6 +386,18 @@ print(list(df['Age']))
 df.loc[df['Age'] == 'twenty-two', 'Age'] = 22
 ```
 
+...or you can use `.replace()` again:
+
+```{python}
+df['Age'] = df['Age'].replace(22, 'twenty-two')
+print(list(df['Age']))
+```
+
+```{python, echo = FALSE}
+# Undo
+df.loc[df['Age'] == 'twenty-two', 'Age'] = 22
+```
+
 Use lambda functions
 --------------------
 If you want to do more complicated searches and replaces that require functions to be run on cells as individual values (as opposed to being run on columns as a whole), you will need to use lambda functions.
