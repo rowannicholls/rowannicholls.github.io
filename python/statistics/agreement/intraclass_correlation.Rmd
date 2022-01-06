@@ -29,7 +29,7 @@ Set-Up
 As mentioned, the `pingouin` library will be used to calculate the ICC. This can be installed from the terminal with:
 
 ```
-pip install pingouin
+python3.9 -m pip install pingouin
 ```
 
 After this it can be imported into Python with:
@@ -106,6 +106,74 @@ print(f'95% confidence interval: {lower_ci} - {upper_ci}')
 How the Function Works
 ----------------------
 The source code for this function might be useful if you want to take a look at how exactly it works. That can be found over [here](https://github.com/raphaelvallat/pingouin/blob/dcfdc82bbc7f1ba5991b80717a5ca156617443e8/pingouin/reliability.py#L158).
+
+Interpretation
+==============
+Again we can look at the Wikipedia page for help, as it gives this guide for interpreting the ICC (re-produced from Cicchetti (1994)<sup>[1]</sup>):
+
+| Inter-rater agreement | Intraclass correlation |
+|-----------------------|------------------------|
+| Poor                  | Less than 0.40         |
+| Fair                  | Between 0.40 and 0.59  |
+| Good                  | Between 0.60 and 0.74  |
+| Excellent             | Between 0.75 and 1.00  |
+
+...plus this alternative one from Koo and Li (2016)<sup>[2]</sup>:
+
+| Inter-rater agreement | Intraclass correlation |
+|-----------------------|------------------------|
+| Poor                  | Less than 0.50         |
+| Moderate              | Between 0.50 and 0.75  |
+| Good                  | Between 0.75 and 0.90  |
+| Excellent             | Between 0.90 and 1.00  |
+
+<sup>[1]</sup>Cicchetti D. Guidelines, criteria, and rules of thumb for evaluating normed and standardized assessment instruments in psychology. Psychological Assessment. 1994;6(4):284-290  
+<sup>[2]</sup>2. Koo T, Li M. A Guideline of Selecting and Reporting Intraclass Correlation Coefficients for Reliability Research. Journal of Chiropractic Medicine. 2016;15(2):155-163
+
+These can be coded up into functions as follows:
+
+```{python}
+def interpret_icc_cicchetti(icc):
+    """Interpret the inter-rater agreement."""
+    if icc < 0.4:
+        return 'poor'
+    elif icc < 0.60:
+        return 'fair'
+    elif icc < 0.75:
+        return 'good'
+    elif icc <= 1:
+        return 'excellent'
+    else:
+        raise ValueError(f'Invalid value for the ICC: {icc}')
+
+
+def interpret_icc_koo_li(icc):
+    """Interpret the inter-rater agreement."""
+    if icc < 0.5:
+        return 'poor'
+    elif icc < 0.75:
+        return 'moderate'
+    elif icc < 0.9:
+        return 'good'
+    elif icc <= 1:
+        return 'excellent'
+    else:
+        raise ValueError(f'Invalid value for the ICC: {icc}')
+```
+
+Our result of 0.728 can now be interpreted automatically:
+
+```{python}
+agreement = interpret_icc_cicchetti(icc.loc['Single random raters', 'ICC'])
+
+print(f"The inter-rate agreement ({icc.loc['Single random raters', 'ICC'].round(3)}) is {agreement}")
+```
+
+```{python}
+agreement = interpret_icc_koo_li(icc.loc['Single random raters', 'ICC'])
+
+print(f"The inter-rate agreement ({icc.loc['Single random raters', 'ICC'].round(3)}) is {agreement}")
+```
 
 Variations
 ==========
