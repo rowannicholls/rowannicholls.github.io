@@ -167,23 +167,51 @@ To upgrade (update) a package called "\<package_name\>" simply run:
 pip3 install <package_name> --upgrade
 ```
 
+### See What Version of Each Package You Have
 To check what version of each package you have, you can run:
 
 ```{bash, eval=FALSE}
 pip freeze
 ```
 
-...and to check what version of a specific package you have you can search the results of `pip freeze` like so:
+...and to check what version of a specific package you have, you can search the results of `pip freeze` like so:
 
 ```{bash, eval=FALSE}
 pip freeze | grep <package_name>
+```
+
+To store the package version numbers we can 'pipe' the output of `pip freeze` into a text file. By convention, this kind of file gets called 'requirements.txt' because it contains the packages and versions that are *required* to run your project.
+
+```{bash, eval=FALSE}
+pip freeze >> requirements.txt
+```
+
+An even better option, however, is to install and use the **pipreqs** package (see [here](https://pypi.org/project/pipreqs/) for more info on pipreqs):
+
+```{bash, eval=FALSE}
+# Install pipreqs. The "python3.9" command should be changed to match the version of Python you have installed.
+python3.9 -m pip install pipreqs
+# Use pipreqs to create requirements.txt
+pipreqs '.' --force
+```
+
+This creates the requirements.txt file using *only the packages that are actually used* by whatever Python files are in the folder your terminal is pointing at. However, while pipreqs worked immediately for me on my macOS machine, on my Ubuntu machine it wouldn't run in my terminal (even when I put it in my PATH). Not only that but running it with Python gave me the following error:
+
+```
+ImportError: cannot import name '__version__' from partially initialized module 'pipreqs' (most likely due to a circular import)
+```
+
+...which is caused by running a Python script that tries to import a package with the same name as the file itself. I got around this by locating the file (it was in `/usr/local/lib/python3.9/dist-packages/pipreqs`) and re-naming it to `python_pipreqs.py` after which it worked from the terminal with:
+
+```{bash, eval=FALSE}
+/usr/local/lib/python3.9/dist-packages/pipreqs/python_pipreqs.py '.' --force
 ```
 
 [⇦ Back](../../python.html)
 
 macOS
 -----
-The following works for macOS Sierra, Mojave and Catalina.
+The following works for macOS Sierra, Mojave, Catalina and Big Sur.
 
 ### Installing and Setting up
 - While it is true that macOS comes with Python pre-installed on it (located in /usr/bin/), *it is not recommended to use the pre-installed version*. This is because it is out-of-date and, because some background macOS programmes rely on this out-of-date version in order to work, it is not recommended to update it.
@@ -316,17 +344,35 @@ To upgrade (update) a package called "\<package_name\>" simply run:
 pip3 install <package_name> --upgrade
 ```
 
+### See What Version of Each Package You Have
 To check what version of each package you have, you can run:
 
 ```{bash, eval=FALSE}
 pip freeze
 ```
 
-...and to check what version of a specific package you have you can search the results of `pip freeze` like so:
+...and to check what version of a specific package you have, you can search the results of `pip freeze` like so:
 
 ```{bash, eval=FALSE}
 pip freeze | grep <package_name>
 ```
+
+To store the package version numbers we can 'pipe' the output of `pip freeze` into a text file. By convention, this kind of file gets called 'requirements.txt' because it contains the packages and versions that are *required* to run your project.
+
+```{bash, eval=FALSE}
+pip freeze >> requirements.txt
+```
+
+An even better option, however, is to install and use the **pipreqs** package (see [here](https://pypi.org/project/pipreqs/) for more info on pipreqs):
+
+```{bash, eval=FALSE}
+# Install pipreqs. The "python3.9" command should be changed to match the version of Python you have installed.
+python3.9 -m pip install pipreqs
+# Use pipreqs to create requirements.txt
+pipreqs '.' --force
+```
+
+This creates the requirements.txt file using *only the packages that are actually used* by whatever Python files are in the folder your terminal is pointing at.
 
 [⇦ Back](../../python.html)
 
@@ -438,9 +484,11 @@ This works for Fedora 22.
 
 ### Installing Packages
 - The best option is to use the standard Python package manager, "pip" (aka pip3 for Python 3):
+
 ```{bash, eval=FALSE}
 sudo dnf install python3-pip
 ```
+
 - Update pip with:
 ```{bash, eval=FALSE}
 sudo pip3 install --update pip

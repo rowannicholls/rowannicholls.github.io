@@ -14,6 +14,7 @@ Works on:
 │ 2020-06-07 │ macOS Catalina │ Python 3.8.2  │ ...rsions/3.8.2/bin/python  │
 │ 2020-09-06 │ Ubuntu 20.04   │ Python 3.8.2  │ /usr/bin/python3            │
 │ 2021-08-31 │ macOS Big Sur  │ Python 3.9.6  │ ...rsions/3.9/bin/python3.9 │
+│ 2022-01-08 │ Ubuntu 20.04   │ Python 3.9.5  │ /usr/bin/python3            │
 └────────────┴────────────────┴───────────────┴─────────────────────────────┘
 """
 import distro
