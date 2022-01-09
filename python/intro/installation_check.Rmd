@@ -26,18 +26,28 @@ import sys
 import time
 import pwd
 
+# General implementation
 today = time.strftime('%Y-%m-%d', time.localtime(time.time()))
 print(f'This script was run on {today}')
 print(f'This is a {platform.system()} machine')
 name = platform.node()
 print(f'Its name is {name}')
 if platform.system() == 'Linux':
-    if int(platform.python_version()[2]) >= 7:
+    # Check which versoin of Python you are running
+    major = platform.python_version().split('.')[0]
+    minor = platform.python_version().split('.')[1]
+    if (int(major) == 3) & (int(minor) < 7):
+        # Python 3.6 or lower
+        OS = platform.linux_distribution()[0]
+        version = platform.linux_distribution()[1]
+    elif (int(major) == 3) & (int(minor) < 7):
+        # Python 3.7 to 3.9
         OS = distro.linux_distribution()[0]
         version = distro.linux_distribution()[1]
     else:
-        OS = platform.linux_distribution()[0]
-        version = platform.linux_distribution()[1]
+        # Python 3.10
+        OS = distro.name()
+        version = distro.version()
     print(f'Its OS is {OS}')
     print(f'Its OS version is {version}')
 elif platform.system() == 'Windows':
@@ -50,7 +60,7 @@ elif platform.system() == 'Darwin':
         '10.13': 'High Sierra',
         '10.14': 'Mojave',
         '10.15': 'Catalina',
-        '11': 'Big Sur',
+        '10.16': 'Big Sur',
     }
     OS = macOS_vers[platform.mac_ver()[0][:5]]
     print(f'Its OS is macOS {OS}')
