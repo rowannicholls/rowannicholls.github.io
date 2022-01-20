@@ -91,7 +91,7 @@ Although it's possible to update Python from the terminal I haven't gotten it to
 
 - Unzip the Python-3.10.1.tar.xz file that gets downloaded
 - Open your terminal and cd into the newly-created Python-3.10.1 folder
-- As mentioned in the README.rst file that is in this folder, you now need to run the following commands (the last of which prompts you to enter your computer password):
+- ~~As mentioned in the README.rst file that is in this folder, you now need to run the following commands (the last of which prompts you to enter your computer password):~~
 
 ```{bash, eval=FALSE}
 ./configure
@@ -100,8 +100,19 @@ make test
 sudo make install
 ```
 
-- Running `python3.10 --version` in the terminal should now return `Python 3.10.1`
-- Running `python3.10` in the terminal should now open Python 3.10.1
+- I actually recommend you use the following instead:
+
+```{bash, eval=FALSE}
+./configure --enable-shared
+make
+make test
+sudo make install
+```
+
+- The `--enable-shared` option creates a shared library. This is needed by the Reticulate package and R Markdown.
+    + Specifically, Reticulate and R Markdown require that the /usr/local/lib/libpython3.10.so.1.0 file exists (or whatever .so file corresponds to the version of Python you have)
+
+Running `python3.10 --version` in the terminal should now return "`Python 3.10.1`" and running `python3.10` should open Python 3.10.1 in the terminal (in 'interactive mode').
 
 <!-- From the terminal:
 

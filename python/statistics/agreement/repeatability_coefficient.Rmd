@@ -37,7 +37,7 @@ represented as:
 
 $RC = 1.96 \times \sqrt{2\sigma_w^2} = 2.77\sigma_w$
 
-where $\sigma_w$ is the *within-subject standard deviation* - the standard deviation of the values you will get if you measure the same subject multiple times. In practice, it is not always feasible to attempt to calculate the within-subject standard deviation exactly (as it might require too many repeats, which can be expensive) and it isn't always possible either (ie it might be a function instead of a single number) so it is usually *approximated* as the average (mean) sample standard deviation of multiple sets of repeated measurements. When approximating in this way, we use the symbol $s_w$ to differentiate from the true value of the within-subject standard deviation (which is always $\sigma_w$).
+where $\sigma_w$ is the *within-subject standard deviation* - the standard deviation of the values you will get if you measure the same subject multiple times. In practice, it is not always feasible to attempt to calculate the within-subject standard deviation exactly (as it might require too many repeats, which can be expensive) and it isn't always possible either (ie it might be a function instead of a single number) so it is usually *approximated* as the average (mean) sample standard deviation of multiple sets of repeated measurements. When approximating in this way, we use the symbol $s_w$ to differentiate from the true value of the within-subject standard deviation, $\sigma_w$.
 
 In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows:
 
