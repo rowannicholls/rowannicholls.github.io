@@ -22,20 +22,32 @@ Create a Bash Build System:
     - In the "untitled.sublime-build" that appears, replace everything with
     ```json
     {
-        "cmd"       : ["bash", "$file"],
+        "cmd": "bash \"$file\"",
+        "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
         "selector"  : "source.shell",
+        "shell":"bash",
 
         "windows": {
             "path"  : "$path;c:\\mingw\\bin;c:\\mingw\\msys\\1.0\\bin",
             "cmd"   : ["bash", "--login", "-i", "-c", "cd \"$file_path\"; \"$file\""]
         },
-        
+
         "osx": {
             "path"  : "$PATH:/usr/local/bin:/usr/X11R6/bin:/opt/X11/bin:/usr/texbin"
+        },
+
+        "linux": {
+            "env": {
+                // Manually set where a Python module looks when it uses shared object
+                // files or static libraries
+                "LD_LIBRARY_PATH": "/usr/local/lib"
+            }
         }
     }
     ```
-- Save as "bash.sublime-build" in the default location (which, on macOS, is `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`)
+- Save as "bash.sublime-build" in the default location. For the record, this location is:
+    + **macOS:** /Users/<username>/Library/Application Support/Sublime Text 3/Packages/User
+    + **Ubuntu:** /home/rowan/.config/sublime-text-3/Packages/User
 
 [⇦ Back](../sublime_text.html)
 

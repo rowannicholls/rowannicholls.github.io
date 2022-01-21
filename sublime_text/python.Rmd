@@ -36,7 +36,7 @@ macOS
 
 Ubuntu
 ------
-*On Ubuntu 16.04 and 18.04:*
+*On Ubuntu 16.04, 18.04 and 20.04:*
 
 - Double check that your default Python is 3.x.x, not 2.x.x:
     - Check your Python version with:
@@ -59,9 +59,24 @@ Ubuntu
     - Replace all text with:
     ```json
     {
-        "cmd": ["python3", "-i", "-u", "$file"],
-        "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
-        "selector": "source.python"
+        "shell_cmd": "python3 -u \"$file\"",
+        "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+        "selector": "source.python",
+
+        "env": {
+            "PYTHONIOENCODING": "utf-8",
+            // Manually set where a Python module looks when it uses shared
+            // object files or static libraries
+            "LD_LIBRARY_PATH": "/usr/local/lib"
+        },
+
+        "variants":
+        [
+            {
+                "name": "Syntax Check",
+                "shell_cmd": "python3 -m py_compile \"${file}\"",
+            }
+        ]
     }
     ```
     - Save it to the default location (which is `~/.config/sublime-text-3/Packages/User`) with a meaningful name like "python3.sublime-build"

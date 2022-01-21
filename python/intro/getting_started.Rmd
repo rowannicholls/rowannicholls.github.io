@@ -111,6 +111,13 @@ sudo make install
 
 - The `--enable-shared` option creates a shared library. This is needed by the Reticulate package and R Markdown.
     + Specifically, Reticulate and R Markdown require that the /usr/local/lib/libpython3.10.so.1.0 file exists (or whatever .so file corresponds to the version of Python you have)
+    - Tell Python where this shared library file is by opening ~/.basrc and adding the following:
+
+```{bash, eval=FALSE}
+# Manually set where a Python module looks when it uses shared object files or
+# static libraries
+export LD_LIBRARY_PATH=/usr/local/lib
+```
 
 Running `python3.10 --version` in the terminal should now return "`Python 3.10.1`" and running `python3.10` should open Python 3.10.1 in the terminal (in 'interactive mode').
 
