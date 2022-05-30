@@ -79,21 +79,13 @@ kable_styling(
 
 Concatenation
 =============
-Concatenating two data frames is actually *not* the same as merging them, it's simply combining them by sticking one next to the other:
-
-Append a data frame to the bottom of another with the `.append()` method:
-
-```{python, results = "hold"}
-total = EPL_2018_19.append(EPL_2019_20)
-```
-
-Append a data frame to the bottom of another with the `concat()` function:
+Concatenating two data frames is actually *not* the same as merging them, it's simply combining them by sticking one next to the other. It's done using the `concat()` function:
 
 ```{python, results = "hold"}
 total = pd.concat([EPL_2018_19, EPL_2019_20])
 ```
 
-Both of the above produce the same output:
+Which produces the following:
 
 ```{python, results = "hold"}
 print(total)

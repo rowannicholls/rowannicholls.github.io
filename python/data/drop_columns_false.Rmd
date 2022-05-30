@@ -6,8 +6,8 @@ output:
         highlight: textmate
         number_sections: true
         toc: true
-        includes:
-            before_body: ../../google_analytics.html
+        # includes:
+        #     before_body: ../../google_analytics.html
 ---
 
 <font size="3">
@@ -34,12 +34,14 @@ pd.set_option('display.width', 120)
 
 # Create a data frame
 raw = pd.DataFrame({
-    'only_trues': [True, True, True],
-    'only_falses': [False, False, False],
-    'only_text': ['Value 1', 'Value 2', 'Value 3'],
-    'falses_and_null': [False, False, None],
-    'falses_and_nan': [False, False, np.NaN],
-    'text_and_null': ['Value 1', 'Value 2', None],
+    'only_text': ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
+    'only_trues': [True, True, True, True],
+    'only_falses': [False, False, False, False],
+    'only_nones': [None, None, None, None],
+    'only_nans': [np.NaN, np.NaN, np.NaN, np.NaN],
+    'falses_and_nones': [False, False, None, None],
+    'falses_and_nan': [False, False, np.NaN, np.NaN],
+    'text_and_nones': ['Value 1', 'Value 2', None, None],
 })
 
 print(raw)
@@ -47,8 +49,34 @@ print(raw)
 
 The above uses the Pandas and Numpy packages. Install these from the terminal with:
 
-- `python3.9 -m pip install pandas`
-- `python3.9 -m pip install numpy`
+- `python3.10 -m pip install pandas`
+- `python3.10 -m pip install numpy`
+
+...replacing `python3.10` with the version you are using.
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain Falses, Nones and/or NaNs
+for col in df:
+    if not df[col].any():
+        df = df.drop(col, axis=1)
+
+print(df)
+```
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain Nones and/or NaNs
+for col in df:
+    if df[col].isnull().all():
+        df = df.drop(col, axis=1)
+
+print(df)
+```
 
 Drop Columns That Only Contain "False", "None" and "NaN"
 ========================================================
@@ -106,7 +134,7 @@ If there is a column that is of the 'category' type then the above methods do no
 
 ```{python}
 # Change the type of the falses_and_null column
-raw['falses_and_null'] = raw['falses_and_null'].astype('category')
+raw['falses_and_nones'] = raw['falses_and_nones'].astype('category')
 
 print(raw)
 ```

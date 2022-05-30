@@ -61,6 +61,16 @@ The "cran" part of the repos URL refers to "CRAN", the Comprehensive R Archive N
 
 You can find out where on your computer the packages are installed by running `.libPaths()` and see what packages you've installed with `print(as.data.frame(installed.packages()))`.
 
+Install a Version of a Package Other Than the Latest One
+--------------------------------------------------------
+If there is a specific version of a package you want to install, find it on the CRAN archive (https://cran.r-project.org/src/contrib/Archive/) then download it as follows:
+
+```{r message=FALSE, warning=FALSE, results='hide', eval=FALSE}
+# Install vctrs version 0.3.8
+packageurl <- "https://cran.r-project.org/src/contrib/Archive/vctrs/vctrs_0.3.8.tar.gz"
+install.packages(packageurl, repos=NULL, type="source")
+```
+
 Install a Package for the First Time in Ubuntu
 ----------------------------------------------
 If you are on an Ubuntu machine and you get an error message along the lines of:

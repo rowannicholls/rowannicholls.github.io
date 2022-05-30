@@ -19,7 +19,7 @@ This page uses the **Astral** package from sffjunkie:
 - PyPI: https://pypi.org/project/astral/
 - Read the Docs: https://astral.readthedocs.io/en/stable/index.html
 - GitHub: https://github.com/sffjunkie/astral
-- Install: `pip install astral` or `pip3 install astral`
+- Install: `pip install astral` or `pip3 install astral` or `python3.10 -m pip install astral`
 
 Hello World Example
 ===================
@@ -176,12 +176,12 @@ cal = calendar.Calendar()
 
 This calendar object has the method `.itermonthdates()` which will generate all the days in a given month in a given year (ie it will generate the numbers 1 to 30 if it it supplied with "September", 1 to 31 if it is supplied with "October" and so on). We can use this to generate all the sunrise and sunset times for any number of consecutive months starting at a month of our choosing:
 
-```{python, iterate, eval = FALSE}
+```{python, eval = FALSE}
 import numpy as np
 
 # Choose a start year and month
-start_year = 2020
-start_month = 9
+start_year = 2022
+start_month = 4
 # Initialise output lists
 dates = []
 sunrises = []
@@ -207,17 +207,20 @@ for i in range(4):
 # Create list-of-lists
 ls_of_ls = [dates, sunrises, sunsets]
 
-print(f'Dates: {ls_of_ls[0][:5]}')
-print(f'Sunrises: {ls_of_ls[1][:5]}')
-print(f'Sunsets: {ls_of_ls[2][:5]}')
+print(
+    f'Dates: {ls_of_ls[0][:5]}',
+    f'Sunrises: {ls_of_ls[1][:5]}',
+    f'Sunsets: {ls_of_ls[2][:5]}',
+    sep='\n'
+)
 ```
 
-```{python, iterate_copy, echo = FALSE, results = "hide"}
+```{python, echo = FALSE}
 import numpy as np
 
 # Choose a start year and month
-start_year = 2020
-start_month = 9
+start_year = 2022
+start_month = 4
 # Initialise output lists
 dates = []
 sunrises = []
@@ -243,15 +246,12 @@ for i in range(4):
 # Create list-of-lists
 ls_of_ls = [dates, sunrises, sunsets]
 
-print(f'Dates: {ls_of_ls[0][:5]}')
-print(f'Sunrises: {ls_of_ls[1][:5]}')
-print(f'Sunsets: {ls_of_ls[2][:5]}')
-```
-
-```
-## Dates: ['2020-09-01', '2020-09-02', '2020-09-03', '2020-09-04', '2020-09-05']
-## Sunrises: ['06:19 BST', '06:20 BST', '06:22 BST', '06:23 BST', '06:25 BST']
-## Sunsets: ['19:50 BST', '19:49 BST', '19:47 BST', '19:44 BST', '19:42 BST']
+print(
+    f'Dates: {ls_of_ls[0][:5]}',
+    f'Sunrises: {ls_of_ls[1][:5]}',
+    f'Sunsets: {ls_of_ls[2][:5]}',
+    sep='\n'
+)
 ```
 
 Finally, let's export these results to a CSV file:
