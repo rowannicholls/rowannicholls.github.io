@@ -583,7 +583,8 @@ data2 = [
 ]
 
 # Plot with an adjusted shape to accommodate the legend
-ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+# The four values set the following: [left, bottom, width, height]
+ax = plt.axes([0.1, 0.1, 0.7, 0.84])
 width = 0.3
 bar0 = ax.bar(
     np.arange(len(data0)) - width, data0, width,
@@ -638,7 +639,8 @@ data2 = [
 ]
 
 # Plot with an adjusted shape to accommodate the legend
-ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+# The four values set the following: [left, bottom, width, height]
+ax = plt.axes([0.1, 0.1, 0.7, 0.84])
 width = 0.3
 bar0 = ax.bar(
     np.arange(len(data0)) - width, data0, width,
@@ -697,7 +699,8 @@ data2 = [
 ]
 
 # Plot with an adjusted shape to accommodate the legend
-ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+# The four values set the following: [left, bottom, width, height]
+ax = plt.axes([0.1, 0.1, 0.7, 0.84])
 width = 0.3
 bar0 = ax.bar(
     np.arange(len(data0)) - width, data0, width,
@@ -762,7 +765,8 @@ data2 = [
 ]
 
 # Plot with an adjusted shape to accommodate the legend
-ax = plt.axes([0.1, 0.1, 0.7, 0.86])
+# The four values set the following: [left, bottom, width, height]
+ax = plt.axes([0.1, 0.1, 0.7, 0.84])
 width = 0.3
 bar0 = ax.bar(
     np.arange(len(data0)) - width, data0, width,
@@ -899,7 +903,7 @@ for i, item in enumerate(first_dose.items()):
     bar1 = ax.bar(i, dose1, 0.8, color=skyblue, edgecolor=skyblue, linewidth=4)
     bar2 = ax.bar(i, dose2, 0.75, color=maroon)
 # Set labels
-ax.set_title('Share of People Vaccinated Against COVID-19 (2021-12-12)', fontsize=18)
+ax.set_title('Share of People Vaccinated\nAgainst COVID-19 (2021-12-12)', fontsize=18)
 ax.set_xlabel('Country', fontsize=14)
 ax.set_ylabel(r'Percent [\%]', fontsize=14)
 # y-Axis details
@@ -951,7 +955,7 @@ for i, item in enumerate(first_dose.items()):
     bar1 = ax.bar(i, dose1, 0.8, color=skyblue, edgecolor=skyblue, linewidth=4)
     bar2 = ax.bar(i, dose2, 0.75, color=maroon)
 # Set labels
-ax.set_title('Share of People Vaccinated Against COVID-19 (2021-12-12)', fontsize=18)
+ax.set_title('Share of People Vaccinated\nAgainst COVID-19 (2021-12-12)', fontsize=18)
 ax.set_xlabel('Country', fontsize=14)
 ax.set_ylabel(r'Percent [\%]', fontsize=14)
 # y-Axis details

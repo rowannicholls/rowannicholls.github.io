@@ -44,7 +44,7 @@ plt.close()
 
 Plot Title, Axis Labels, Bar Widths
 -----------------------------------
-Titles and labels are added using `set_title()`, `set_xlabel()` and `set_ylabel()` while the width of the bars is defined by the third argument in the `ax.bar()` function:
+Titles and labels are added using `set_title()`, `set_xlabel()` and `set_ylabel()` while the width of the bars is defined by the third argument in the `ax.bar()` function. Use `\n` to have a linebreak in a title:
 
 ```{python, eval = FALSE}
 x_positions = [0, 1, 2]
@@ -53,7 +53,7 @@ width = 0.5
 
 ax = plt.axes()
 ax.bar(x_positions, heights, width)
-ax.set_title('How bar plots work in Matplotlib')
+ax.set_title('How bar plots\nwork in Matplotlib')
 ax.set_xlabel('The first argument of the ax.bar() function')
 ax.set_ylabel('The second argument of the ax.bar() function')
 plt.show()
@@ -67,7 +67,7 @@ width = 0.5
 
 ax = plt.axes()
 ax.bar(x_positions, heights, width)
-ax.set_title('How bar plots work in Matplotlib')
+ax.set_title('How bar plots\nwork in Matplotlib')
 ax.set_xlabel('The first argument of the ax.bar() function')
 ax.set_ylabel('The second argument of the ax.bar() function')
 plt.show()
