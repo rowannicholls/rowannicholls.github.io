@@ -1,0 +1,241 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Colours that Look Good in Figures'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+It's one thing to make a graph, it's another to make it look *good*. Unfortunately, Matplotlib's default colours don't really look that great:
+
+```{python eval = FALSE}
+import matplotlib.pyplot as plt
+import math
+import numpy as np
+
+# An example of a graph that uses the base colours in Matplotlib
+x = np.linspace(0, math.tau, 100)
+plt.plot(x, -0.3 * np.sin(4 * x + 0.5), c='r', lw=3)
+plt.plot(x, 0.5 * np.sin(x) + 0.5, c='g', lw=3)
+plt.plot(x, 0.5 * np.sin(1.5 * x) - 0.5, c='b', lw=3)
+plt.plot(x, np.sin(2 * x), c='c', lw=3)
+plt.plot(x, np.sin(x), c='m', lw=3)
+plt.plot(x, np.sin(0.5 * x) - 0.75, c='y', lw=3)
+plt.plot(x, -np.sin(0.8 * x), c='k', lw=3)
+plt.title('Yuck.')
+plt.xlim(0, math.tau)
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+import matplotlib.pyplot as plt
+import math
+import numpy as np
+
+# An example of a graph that uses the base colours in Matplotlib
+x = np.linspace(0, math.tau, 100)
+plt.plot(x, -0.3 * np.sin(4 * x + 0.5), c='r', lw=3)
+plt.plot(x, 0.5 * np.sin(x) + 0.5, c='g', lw=3)
+plt.plot(x, 0.5 * np.sin(1.5 * x) - 0.5, c='b', lw=3)
+plt.plot(x, np.sin(2 * x), c='c', lw=3)
+plt.plot(x, np.sin(x), c='m', lw=3)
+plt.plot(x, np.sin(0.5 * x) - 0.75, c='y', lw=3)
+plt.plot(x, -np.sin(0.8 * x), c='k', lw=3)
+plt.title('Yuck.')
+plt.xlim(0, math.tau)
+plt.show()
+```
+
+The 'Tableau Palette' is slightly better:
+
+```{python eval = FALSE}
+# An example of a graph that uses the Tableau Palette colours in Matplotlib
+x = np.linspace(0, math.tau, 100)
+plt.plot(x, -0.3 * np.sin(4 * x + 0.5), c='tab:red', lw=3)
+plt.plot(x, 0.5 * np.sin(x) + 0.5, c='tab:green', lw=3)
+plt.plot(x, 0.5 * np.sin(1.5 * x) - 0.5, c='tab:blue', lw=3)
+plt.plot(x, np.sin(2 * x), c='tab:cyan', lw=3)
+plt.plot(x, np.sin(x), c='tab:pink', lw=3)
+plt.plot(x, np.sin(0.5 * x) - 0.75, c='tab:orange', lw=3)
+plt.plot(x, -np.sin(0.8 * x), c='tab:gray', lw=3)
+plt.title('The Tableau Palette colours look ok')
+plt.xlim(0, math.tau)
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+# An example of a graph that uses the Tableau Palette colours in Matplotlib
+x = np.linspace(0, math.tau, 100)
+plt.plot(x, -0.3 * np.sin(4 * x + 0.5), c='tab:red', lw=3)
+plt.plot(x, 0.5 * np.sin(x) + 0.5, c='tab:green', lw=3)
+plt.plot(x, 0.5 * np.sin(1.5 * x) - 0.5, c='tab:blue', lw=3)
+plt.plot(x, np.sin(2 * x), c='tab:cyan', lw=3)
+plt.plot(x, np.sin(x), c='tab:pink', lw=3)
+plt.plot(x, np.sin(0.5 * x) - 0.75, c='tab:orange', lw=3)
+plt.plot(x, -np.sin(0.8 * x), c='tab:gray', lw=3)
+plt.title('The Tableau Palette colours look ok')
+plt.xlim(0, math.tau)
+plt.show()
+```
+
+One option is to use custom pastel colours. Once you've found the hex codes of a nice-looking group of colours you can specify them manually using the hash symbol:
+
+```{python eval = FALSE}
+# An example of a graph that uses custom colours
+x = np.linspace(0, math.tau, 100)
+plt.plot(x, -0.3 * np.sin(4 * x + 0.5), c='#ffc09f', lw=3)  # Red
+plt.plot(x, 0.5 * np.sin(x) + 0.5, c='#f6bc66', lw=3)  # Orange
+plt.plot(x, 0.5 * np.sin(1.5 * x) - 0.5, c='#e9ff70', lw=3)  # Yellow
+plt.plot(x, np.sin(2 * x), c='#84dcc6', lw=3)  # Green
+plt.plot(x, np.sin(x), c='#6caddf', lw=3)  # Blue
+plt.plot(x, np.sin(0.5 * x) - 0.75, c='#cdb4db', lw=3)  # Purple
+plt.plot(x, -np.sin(0.8 * x), c='#d1d1d1', lw=3)  # Grey
+plt.title('Custom Pastel Colours')
+plt.xlim(0, math.tau)
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+# An example of a graph that uses custom colours
+x = np.linspace(0, math.tau, 100)
+plt.plot(x, -0.3 * np.sin(4 * x + 0.5), c='#ffc09f', lw=3)  # Red
+plt.plot(x, 0.5 * np.sin(x) + 0.5, c='#f6bc66', lw=3)  # Orange
+plt.plot(x, 0.5 * np.sin(1.5 * x) - 0.5, c='#e9ff70', lw=3)  # Yellow
+plt.plot(x, np.sin(2 * x), c='#84dcc6', lw=3)  # Green
+plt.plot(x, np.sin(x), c='#6caddf', lw=3)  # Blue
+plt.plot(x, np.sin(0.5 * x) - 0.75, c='#cdb4db', lw=3)  # Purple
+plt.plot(x, -np.sin(0.8 * x), c='#d1d1d1', lw=3)  # Grey
+plt.title('Custom Pastel Colours')
+plt.xlim(0, math.tau)
+plt.show()
+```
+
+Colour Gradients
+================
+Instead of contrasting colours such as those used in the previous examples, sometimes you need to use multiple similar but different colours in the same plot. Here's an example of a nice-looking green gradient:
+
+```{python eval = FALSE}
+# An example of a graph that uses custom shades of green
+x_positions = [0, 1, 2]
+heights = np.array([6, 12, 9])
+plt.bar(x_positions, heights * 1.2, color='#038B62')
+plt.bar(x_positions, heights * 1.0, color='#027F5A')
+plt.bar(x_positions, heights * 0.8, color='#027351')
+plt.bar(x_positions, heights * 0.6, color='#036648')
+plt.bar(x_positions, heights * 0.4, color='#045A40')
+plt.bar(x_positions, heights * 0.2, color='#054C35')
+plt.title('Shades of Green')
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+# An example of a graph that uses custom shades of green
+x_positions = [0, 1, 2]
+heights = np.array([6, 12, 9])
+plt.bar(x_positions, heights * 1.2, color='#038B62')
+plt.bar(x_positions, heights * 1.0, color='#027F5A')
+plt.bar(x_positions, heights * 0.8, color='#027351')
+plt.bar(x_positions, heights * 0.6, color='#036648')
+plt.bar(x_positions, heights * 0.4, color='#045A40')
+plt.bar(x_positions, heights * 0.2, color='#054C35')
+plt.title('Shades of Green')
+plt.show()
+```
+
+...and here's a blue example:
+
+```{python eval = FALSE}
+# An example of a graph that uses custom shades of blue
+x_positions = [0, 1, 2]
+heights = np.array([6, 12, 9])
+plt.bar(x_positions, heights * 1.2, color='#bfd4db')
+plt.bar(x_positions, heights * 1.0, color='#aecbd6')
+plt.bar(x_positions, heights * 0.8, color='#a4c3d2')
+plt.bar(x_positions, heights * 0.6, color='#96b9d0')
+plt.bar(x_positions, heights * 0.4, color='#88aed0')
+plt.bar(x_positions, heights * 0.2, color='#78a2cc')
+plt.title('Shades of Blue')
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+# An example of a graph that uses custom shades of blue
+x_positions = [0, 1, 2]
+heights = np.array([6, 12, 9])
+plt.bar(x_positions, heights * 1.2, color='#bfd4db')
+plt.bar(x_positions, heights * 1.0, color='#aecbd6')
+plt.bar(x_positions, heights * 0.8, color='#a4c3d2')
+plt.bar(x_positions, heights * 0.6, color='#96b9d0')
+plt.bar(x_positions, heights * 0.4, color='#88aed0')
+plt.bar(x_positions, heights * 0.2, color='#78a2cc')
+plt.title('Shades of Blue')
+plt.show()
+```
+
+Adding Latex
+============
+Finally, here's how to complete the look of a plot:
+
+```{python eval = FALSE}
+import random
+
+random.seed(20220708)
+
+# Make figures A6 in size
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Image quality
+plt.rc('figure', dpi=141)
+# Be able to add Latex
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.title('Custom Colour Gradient\nwith \LaTeX\ in the Labels')
+plt.ylabel('Values')
+plt.xlabel('Categories')
+x = np.linspace(0, math.tau, 100)
+colours = ['#002147', '#233a57', '#3c5568', '#557278', '#6d9189', '#85b09a']
+for i, colour in enumerate(colours):
+    plt.bar(i, random.randint(5, 20), color=colour)
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+import random
+
+random.seed(20220708)
+
+# Make figures A6 in size
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Image quality
+plt.rc('figure', dpi=141)
+# Be able to add Latex
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.title('Custom Colour Gradient\nwith \LaTeX\ in the Labels')
+plt.ylabel('Values')
+plt.xlabel('Categories')
+x = np.linspace(0, math.tau, 100)
+colours = ['#002147', '#233a57', '#3c5568', '#557278', '#6d9189', '#85b09a']
+for i, colour in enumerate(colours):
+    plt.bar(i, random.randint(5, 20), color=colour)
+plt.show()
+```
+
+[⇦ Back](../../python.html)
+
+</font>
