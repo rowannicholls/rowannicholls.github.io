@@ -264,9 +264,7 @@ def plot_colortable(colors, title, sort_colors=True, emptycols=0):
 ```
 
 ```{python fig.height=-1}
-plot_colortable(
-    mcolors.BASE_COLORS, 'Base Colors', sort_colors=False, emptycols=1
-)
+plot_colortable(mcolors.BASE_COLORS, 'Base Colors', sort_colors=False, emptycols=1)
 plt.show()
 ```
 
@@ -275,9 +273,7 @@ plt.close()
 ```
 
 ```{python}
-plot_colortable(
-    mcolors.TABLEAU_COLORS, 'Tableau Palette', sort_colors=False, emptycols=2
-)
+plot_colortable(mcolors.TABLEAU_COLORS, 'Tableau Palette', sort_colors=False, emptycols=2)
 plt.show()
 ```
 
@@ -304,7 +300,7 @@ plt.show()
 plt.close()
 ```
 
-The Matplotlib documentation is [here](https://matplotlib.org/3.1.0/gallery/color/named_colors.html).
+The Matplotlib documentation is [here](https://matplotlib.org/stable/gallery/color/named_colors.html).
 
 Hatching
 ========
