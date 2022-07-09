@@ -184,7 +184,7 @@ df = pd.DataFrame(
 SQL Databases
 -------------
 Create SQL database:
-```{python, results = "hide", echo = FALSE}
+```{python, results = "hide", echo = FALSE, eval = FALSE}
 import sqlite3
 
 dbase = sqlite3.connect(':memory:')
@@ -594,7 +594,7 @@ file.close()
 Export SQL Tables
 -----------------
 Export SQL table to a spreadsheet:
-```{python}
+```{python, eval = FALSE}
 def export_table(tablename, filename):
     """
     Export an SQL table in a specified format.
@@ -819,6 +819,11 @@ import json
 dct = json.load(open('txt/dictionary.txt'))
 ```
 
+Import text file (.txt) as a Pandas series:
+```{python}
+ser = pd.read_csv('txt/series.txt', header=None)
+```
+
 Import Numpy Objects 
 --------------------
 Import Numpy object (.npy) as a dictionary:
@@ -897,12 +902,13 @@ Import Excel 2007 workbook (.xlsx) as a list-of-lists:
 ```{python}
 def import_xlsx(filename):
     """Import Excel 2007 workbook (.xlsx) as a list-of-lists."""
-    import xlrd
+    import openpyxl
     data = []
-    wb = xlrd.open_workbook(filename)
-    sh = wb.sheet_by_index(0)
-    for rownum in range(sh.nrows):
-        data += [sh.row_values(rownum)]
+    wb = openpyxl.load_workbook(filename)
+    for sheetname in wb.sheetnames:
+        sh = wb[sheetname]
+        for row in sh.values:
+            data += [list(row)]
     return data
 
 
