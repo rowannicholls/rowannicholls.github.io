@@ -167,11 +167,13 @@ plt.legend([bp['medians'][0], bp['means'][0]], ['Medians', 'Means'])
 
 Choose a Statistical Test
 =========================
-Looking at the plotted data above raises a question: **is the average house price different** between the two location types? If it is, it would suggest that proximity to the river affects house prices.
+Looking at the plotted data above raises a question: is the average house price different between the two location types? If it is, it would suggest that proximity to the river affects house prices. Wording this as a **research question** (which, strictly speaking, should be formulated like a *null hypothesis*) gives us:
+
+> Are the average house prices in areas bounded by the Charles River the same as in areas not bounded by the river?
 
 Parametric vs Non-Parametric
 ----------------------------
-First, we need to decide if we should use **parametric** or **non-parametric** statistics. Parametric statistics are based on assumptions about the data's distribution (whereas non-parametric statistics are not) and reasons to choose them include:
+First, we need to decide if we should use **parametric** or **non-parametric** statistics to address this research question. Parametric statistics are based on assumptions about the data's distribution (whereas non-parametric statistics are not) and reasons to choose them include:
 
 - Your data is normally distributed
 - Your data is not normally distributed but the sample size is large:
@@ -182,32 +184,36 @@ First, we need to decide if we should use **parametric** or **non-parametric** s
 - The data is skewed (in other words, the *median* is more representative of the central tendency than the *mean*)
 - There is a need to increase the statistical power (parametric tests usually have more power and so are more likely to detect a significant difference when one truly exists)
 
-Looking at the plot, the spread in each group is fairly consistent and nothing is particularly skewed, although the sample size is large and it could very well be the case that the data in each group approximates a normal distribution. As a result, **we should choose to do parametric statistics** and tweak our research question so that it becomes "is the *mean* house price different?"<sup>1, 2</sup>. In other words, are the dashed red lines in the plot (the means) at different heights?
+Looking at the plot, the spread in each group is fairly consistent and nothing is particularly skewed, although the sample size is large and it could very well be the case that the data in each group approximates a normal distribution. As a result, **we should choose to do parametric statistics** and tweak our research question so that it becomes "are the *mean* house prices the same?"<sup>1, 2</sup>. In other words, are the dashed red lines in the plot (the means) at different heights?
 
 <sup>1</sup>when doing parametric statistics you should use the *mean*, when doing non-parametric statistics, use the *median*.  
-<sup>2</sup>this question is complicated by the fact that our data is the *median* house price for various areas within Boston, so our research question is actually something like, "is the mean median house price different between the two location types?"
+<sup>2</sup>this question is complicated by the fact that our data is the *median* house price for various areas within Boston, so our research question is actually something like, "are the mean median house prices the same between the two location types?"
 
 Set a Hypothesis
 ----------------
-In order to answer the research question ("is the mean house price different?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+In order to answer the research question ("are the mean house prices the same?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
 
 - H<sub>0</sub>: true mean house price is the same for both location types
-- H<sub>1</sub>: true mean house price is not the same for both location types
+- H<sub>1</sub>: true mean house price is **not** the same for both location types
+
+The null hypothesis is that there is equality and the alternate hypothesis is that there is a difference (of any size). Note that if our research question was instead "are the mean house prices *equivalent*?" or "are the mean house prices the same to within a certain *tolerance*?" then the hypotheses above would not be formulated correct. Examples that have research questions like these are over [here](tost.html).
 
 Choose a Test
 -------------
 Now that we have hypotheses, we can follow a statistical test selection process:
 
 - Our house price data is **continuous** because it is made up of measurements that are numbers (not discrete categories or ranks)
-- We are interested in the **difference** between the house prices in the different groups (not the *relationship* between the house prices and something else)
+- We are interested in the **difference** between the house prices in the different groups (not in the *relationship* between the house prices and something else)
 - Specifically, we are interested in the difference of the **average** (mean) house price (not the *variance* in the prices)
 - We have **two groups** because there are two location types (bounded by the river and not)
 - As discussed above, we are doing **parametric statistics**
 - Our measurements are **independent** of each other: the amount that one group of houses cost does not affect how much another group of houses cost
+- Our hypotheses are formulated in a way that tests for a **difference** (not for *equivalence*)
 
 Looking at the flowchart below tells us that we should thus be using the unpaired two-sample t-test to test our hypothesis:
 
 ```{r, echo = FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
 library(DiagrammeR)
 DiagrammeR::grViz(
     "digraph statistical_tests {

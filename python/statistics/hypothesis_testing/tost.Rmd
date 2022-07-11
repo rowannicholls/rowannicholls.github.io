@@ -1,0 +1,446 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Two One-Sided t-Test (TOST)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+The TOST can be used to test **equivalence**: do the means of two populations differ by less than a given amount?
+
+- In reality, we don't *actually* use the means of two population because, of course, it's (usually) not practical to measure every member of an entire population. For this reason we take a **sample** from each and compare the means of those.
+- These populations and samples should be **independent** of each other: a change in one of them should not affect any of the others
+- We assume that the values in the populations are **normally distributed**
+
+The test was originally published by Donald J Schuirmann (not Donald **L** Schuirmann as appears in the [R](https://www.rdocumentation.org/packages/equivalence/versions/0.7.2/topics/tost.stat) and [Pingouin](https://pingouin-stats.org/generated/pingouin.tost.html) documentation):
+
+- Schuirmann, Donald J. On hypothesis testing to determine if the mean of a normal distribution is contained in a known interval. Biometrics. 1981;37:617
+- Schuirmann, Donald J. A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability. Journal of Pharmacokinetics and Biopharmaceutics. 1987;15(6):657–680. DOI: [10.1007/BF01068419](https://link.springer.com/article/10.1007/BF01068419).
+
+Statistical Hypotheses
+======================
+At first glance, a research question such as "do the means of two populations differ by less than a given amount?" suggests the following pair of hypotheses:
+
+- $H_0:\ \mu_x - \mu_y \geq \delta$
+- $H_1:\ \mu_x - \mu_y \lt \delta$
+
+where $\mu_x$ and $\mu_y$ are the means of the two populations and $\delta$ is the tolerance you've decided on. However, we need to remember that we can't assume that $\mu_x$ is larger than $\mu_y$, and so the difference between them (if one exists) might be negative! We thus need to have a second set of hypotheses to cover this possibility:
+
+- $H_0:\ \mu_x - \mu_y \leq -\delta$
+- $H_1:\ \mu_x - \mu_y \gt -\delta$
+
+This is why it's called the **two** one-sided t-test: the fact that you have two pairs of hypotheses means that you need to do the one-sided t-test **twice**. It is also why, ultimately, you only choose the result of one of these t-tests as your final answer: it's because you only care about the one where the difference between the means has the same sign as $\delta$.
+
+Example One: Pingouin
+=====================
+This comes from [the documentation](https://pingouin-stats.org/generated/pingouin.tost.html) for Pingouin's `tost()` function. Here's the example data:
+
+```{python}
+# Example data
+a = [4, 7, 8, 6, 3, 2]
+b = [6, 8, 7, 10, 11, 9]
+```
+
+Doing it with Pingouin
+----------------------
+Pingouin can be installed from the terminal with `python3.10 -m pip install pingouin` (replace `3.10` with whichever version of Python you have installed). This gives you access to the `tost()` function which, as the name suggests, performs the TOST.
+
+As mentioned, the TOST asks "do the means of two populations differ by less than a given amount?". This given amount is called the 'bound' and, by default, Pingouin gives it a value of 1.
+
+```{python}
+import pingouin as pg
+
+pval = pg.tost(a, b).loc['TOST', 'pval']
+
+print(f'TOST: p = {pval:.3f}')
+```
+
+If you're interested in seeing exactly what this function is doing in the background, you can take a look at [the source code](https://github.com/raphaelvallat/pingouin/blob/master/pingouin/equivalence.py).
+
+If you see a message saying `OutdatedPackageWarning: The package pingouin is out of date.` it means you need to update (upgrade) Pingouin. Do this from the terminal with `python3.10 -m pip install pingouin --upgrade`.
+
+Doing it with SciPy
+-------------------
+While SciPy doesn't have a dedicated TOST function, it does have the t-test. So we can use that twice in its 'one-sided' configuration. Specifically, we're using the unpaired (independent) two-sample t-test:
+
+```{python}
+from scipy import stats
+import numpy as np
+
+#
+# TOST
+#
+# Magnitude of region of similarity
+bound = 1
+# Unpaired two-sample t-test
+_, p_greater = stats.ttest_ind(np.array(a) + bound, b, alternative='greater')
+_, p_less = stats.ttest_ind(np.array(a) - bound, b, alternative='less')
+# Choose the maximum p-value
+pval = max(p_less, p_greater)
+
+print(f'TOST: p = {pval:5.3f}')
+```
+
+As expected, this gives us the same answer as Pingouin.
+
+SciPy and Numpy can be installed from the terminal with:
+
+- `python3.10 -m pip install scipy`
+- `python3.10 -m pip install numpy`
+
+where `python3.10` is the version of Python you have installed.
+
+Doing it Explicitly
+-------------------
+To see what is going on in the background in more detail, here's the same result obtained in more steps:
+
+```{python}
+# Sample means
+mean_a = np.mean(a)
+mean_b = np.mean(b)
+# Sample sizes
+sample_size_a = len(a)
+sample_size_b = len(b)
+# Sample variances
+var_a = np.var(a, ddof=1)
+var_b = np.var(b, ddof=1)
+# Pooled sample variance (ie we assume equal variances)
+var_p = ((sample_size_a - 1) * var_a + (sample_size_b - 1) * var_b) / (sample_size_a + sample_size_b - 2)
+# Pooled sample standard deviation
+std_p = np.sqrt(var_p)
+# t-Values
+bound = 1
+t_1 = (mean_a - mean_b + bound) / np.sqrt(var_p / sample_size_a + var_p / sample_size_b)
+t_2 = (mean_a - mean_b - bound) / np.sqrt(var_p / sample_size_a + var_p / sample_size_b)
+# Degrees of freedom
+dof = sample_size_a + sample_size_b - 2
+# Critical values of the t distribution
+alpha_1 = 0.05
+t_crit_1 = stats.t.ppf(1 - alpha_1, dof)
+alpha_2 = 1 - alpha_1
+t_crit_2 = stats.t.ppf(1 - alpha_2, dof)
+# Test the t-statistics against the t-values required for significance
+if (t_1 > t_crit_1) and (t_2 < t_crit_2):
+    print('Reject both null hypotheses; the means of the two samples are equivalent')
+else:
+    print('Fail to reject both null hypotheses; the means of the two samples are not equivalent')
+```
+
+Example Two: Real Statistics
+============================
+This example comes from [here](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/) and uses this data:
+
+```{python}
+import pandas as pd
+
+data = {
+    'values': [
+        2311, 2274, 2262, 2297, 2291, 2319, 2263, 2329, 2289, 2287, 2290, 2301,
+        2298, 2260, 2250, 2242, 2302, 2297, 2293, 2286, 2270, 2313, 2327, 2290,
+    ],
+    'types': ['original'] * 12 + ['new'] * 12
+}
+df = pd.DataFrame(data)
+```
+
+Pandas can be installed from the terminal with `python3.10 -m pip install pandas`
+
+Summary Statistics
+------------------
+Here's how to replicate the values in the top table of Figure 1 in [the example](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/):
+
+```{python}
+# Initialise the summary table
+summary = pd.DataFrame()
+
+# Count
+n = df.groupby('types').count()
+summary['Count'] = n['values']
+# Mean
+summary['Mean'] = df.groupby('types').mean()['values']
+# Variance
+summary['Variance'] = df.groupby('types').var()['values']
+
+print(summary.round(2))
+```
+
+```{python}
+# Difference of the means
+diff_mean = df.groupby('types').mean().diff().values[1][0]
+print(f'Difference of the means = {diff_mean:.3f}')
+```
+
+```{python}
+# Mean variance
+mean_var = df.groupby('types').var().mean().values[0]
+print(f'Mean variance = {mean_var:.3f}')
+```
+
+```{python}
+# Cohen's d
+cohens_d = diff_mean / np.sqrt(mean_var)
+print(f"Cohen's d = {cohens_d:.3f}")
+```
+
+t-Test: Equal Variances
+-----------------------
+Here's how to replicate the values in the middle table of Figure 1 in [the example](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/):
+
+```{python}
+# Standard deviations
+std = df.groupby('types').std(ddof=1)
+# Standard errors of the means
+sem = std / np.sqrt(df.groupby('types').mean())
+# Standard error of the difference of the means
+sed = np.sqrt(std['values']['new']**2 / n['values']['new'] + std['values']['original']**2 / n['values']['original'])
+
+print(f'Standard error of the difference of the means = {sed:.3f}')
+```
+
+```{python}
+# Degrees of freedom
+dof = n.sum() - 2
+print(f"Degrees of freedom = {dof['values']}")
+```
+
+Now it's time to do the t-tests. Let's re-configure the raw data so it's slightly easier to work with:
+
+```{python}
+# Data frame to dictionary
+dct = df.groupby('types')['values'].apply(list).to_dict()
+# Data
+x = dct['original']
+y = dct['new']
+```
+
+The example we're following does both a one-tailed and a two-tailed test, where the one-tailed test has a bound of 0 (which they call the 'hyp mean' or 'hypothetical difference of the means') and an alternative hypothesis of 'greater':
+
+```{python}
+# One-sided unpaired two-sample t-test
+bound = 0
+t_greater, p_greater = stats.ttest_ind(np.array(x) + bound, y, alternative='greater')
+
+print(f't-stat = {t_greater:.3f}; p-value = {p_greater:.3f}')
+```
+
+```{python}
+# Two-sided unpaired two-sample t-test
+bound = 0
+t_stat, pval = stats.ttest_ind(x, y, alternative='two-sided')
+
+print(f't-stat = {t_stat:.3f}; p-value = {pval:.3f}')
+```
+
+> Note that using a bound of 0 is not practical: if your research question is asking if the difference between the means of two groups is between +0 and -0 you should rather be testing for equivalence! In other words, you should be using a single two-sample t-test, not the TOST (which, remember, is *two* two-sample t-tests). This is actually what the example is doing, but it's not very clear!
+
+If we use a significance level of 0.1, here are the critical t-values we would need to reach in order to get significance:
+
+```{python}
+# Significance level
+alpha = 0.1
+# Percent-point function (aka quantile function) of the t-distribution
+t_crit_one = stats.t.ppf(1 - alpha, dof)[0]
+print(f't-crit (one-tailed): {t_crit_one:.3f}')
+```
+
+```{python}
+# Percent-point function (aka quantile function) of the t-distribution
+t_crit_two = stats.t.ppf(1 - (alpha / 2), dof)[0]
+print(f't-crit (two-tailed): {t_crit_two:.3f}')
+```
+
+Now for the confidence interval for the difference of the means (the fact that we're finding an interval that extends *both* sides of the difference of the means implies we need to use the critical t-value from the *two-sided* test):
+
+```{python}
+# Margin of error
+d = t_crit_two * sed
+# Confidence interval
+ci_upper = diff_mean + d
+ci_lower = diff_mean - d
+
+print(f'Difference of the means = {diff_mean:.3f} 95% CI [{ci_lower:.3f}, {ci_upper:.3f}]')
+```
+
+Final Answer
+------------
+[The example](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/) only shows one one-sided t-test for equal variances in Figure 1, which is only one-half of the full TOST. Here's the full thing with a bound of 25:
+
+```{python}
+#
+# TOST
+#
+# Magnitude of region of similarity
+bound = 25
+# Unpaired two-sample t-test
+_, p_greater = stats.ttest_ind(np.array(x) + bound, y, alternative='greater')
+_, p_less = stats.ttest_ind(np.array(x) - bound, y, alternative='less')
+# Choose the maximum p-value
+pval = max(p_less, p_greater)
+
+print(f'TOST: p = {pval:5.3f}')
+```
+
+Here it is with Pingouin:
+
+```{python}
+pval = pg.tost(x, y, bound=25).loc['TOST', 'pval']
+
+print(f'TOST: p = {pval:.3f}')
+```
+
+This p-value of 0.036 matches that obtained in the example (although this isn't shown in the figure, it's in the text).
+
+Doing it Explicitly
+-------------------
+Once again, here's the same result obtained in more steps:
+
+```{python}
+# Sample
+a = [2311, 2274, 2262, 2297, 2291, 2319, 2263, 2329, 2289, 2287, 2290, 2301]
+b = [2298, 2260, 2250, 2242, 2302, 2297, 2293, 2286, 2270, 2313, 2327, 2290]
+
+# Sample means
+mean_a = np.mean(a)
+mean_b = np.mean(b)
+# Sample sizes
+sample_size_a = len(a)
+sample_size_b = len(b)
+# Sample variances
+var_a = np.var(a, ddof=1)
+var_b = np.var(b, ddof=1)
+# Pooled sample variance (ie we assume equal variances)
+var_p = ((sample_size_a - 1) * var_a + (sample_size_b - 1) * var_b) / (sample_size_a + sample_size_b - 2)
+# Pooled sample standard deviation
+std_p = np.sqrt(var_p)
+# t-Values
+bound = 25
+t_1 = (mean_a - mean_b + bound) / np.sqrt(var_p / sample_size_a + var_p / sample_size_b)
+t_2 = (mean_a - mean_b - bound) / np.sqrt(var_p / sample_size_a + var_p / sample_size_b)
+# Degrees of freedom
+dof = sample_size_a + sample_size_b - 2
+# Critical values of the t distribution
+alpha_1 = 0.05
+t_crit_1 = stats.t.ppf(1 - alpha_1, dof)
+alpha_2 = 1 - alpha_1
+t_crit_2 = stats.t.ppf(1 - alpha_2, dof)
+# Test the t-statistics against the t-values required for significance
+if (t_1 > t_crit_1) and (t_2 < t_crit_2):
+    print('Reject both null hypotheses; the means of the two samples are equivalent')
+else:
+    print('Fail to reject both null hypotheses; the means of the two samples are not equivalent')
+```
+
+Power Calculations
+==================
+A function that finds the power of the TOST is as follows:
+
+<!-- https://perspectum.atlassian.net/wiki/spaces/I/pages/1425638615/STATS+TOST+Test+for+Equivalence+Testing -->
+
+```{python}
+import numpy as np
+from scipy import stats
+
+
+def tost_power(n, alpha, delta, cv):
+    """Calculate the power of a TOST."""
+    mt1 = -(delta * np.sqrt(n)) / cv
+    mt2 = (delta * np.sqrt(n)) / cv
+    ta = stats.t.ppf(1 - alpha, df=n - 1)
+    power = stats.t.cdf(mt2 - ta, df=n-1) - stats.t.cdf(mt1 + ta, df=n-1)
+    # Change negative values for power to 0
+    try:
+        power[power < 0] = 0
+    except TypeError:
+        pass
+
+    return power
+```
+
+This function takes the following parameters:
+
+- `n` - the sample size (which can be a range of numbers)
+- `alpha` - the significance level, aka the sensitivity of the test
+- `delta` - the 'acceptance region', 'bound' or 'magnitude of region of similarity'
+- `cv` - the coefficient of variation
+
+If we choose the following values for the constants (in practice these would be estimated by looking at existing data):
+
+```{python}
+# Significance level/sensitivity of the test
+alpha = 0.05
+# Acceptance region/bound/magnitude of region of similarity
+delta = 0.1  # 10%
+# Coefficient of variation
+cv = 0.08
+```
+
+...then we can calculate the power of the test for a sample size of 2 to 30 participants:
+
+```{python}
+# Sample size
+n = np.arange(2, 31)
+# Run the test
+print(tost_power(n, alpha, delta, cv))
+```
+
+This is easier to visualise in a graph:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+plt.plot(n, tost_power(n, alpha, delta, cv))
+plt.title('Estimating Power from Sample Size')
+plt.ylabel('Power')
+plt.xlabel('Sample Size')
+plt.ylim(0, 1.005)
+plt.xlim(2, 30)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+plt.plot(n, tost_power(n, alpha, delta, cv))
+plt.title('Estimating Power from Sample Size')
+plt.ylabel('Power')
+plt.xlabel('Sample Size')
+plt.ylim(0, 1.005)
+plt.xlim(2, 30)
+plt.show()
+```
+
+Of course, the reverse question is usually more important: how many participants do I need for my study to achieve a certain power? If you want a power of 0.8, here's how to use Scipy's optimize module - specifically the routine known as 'Brent’s method' - to calculate that:
+
+```{python}
+from scipy import optimize
+
+
+def func(n):
+    """Generate a residual to minimise."""
+    res = tost_power(n, alpha, delta, cv) - desired_power
+
+    return res
+
+
+# Desired power for your study
+desired_power = 0.8  # 80%
+# Give a range of sample sizes in which the optimiser can search
+min_guess = 2
+max_guess = 100
+# Find the number of participants that gives the desired power level
+sol = optimize.brentq(func, min_guess, max_guess)
+print(sol)
+```
+
+So we would need 8 participants for this level of power.
+
+[⇦ Back](../../../python.html)
+
+</font>
