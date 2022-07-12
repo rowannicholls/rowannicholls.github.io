@@ -1,0 +1,246 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Error Handling'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Here is some code that produces an error:
+
+```{python, error = TRUE}
+ls = ['List Item 0', 'List Item 1', 'List Item 2']
+print(ls[3])
+```
+
+Under normal circumstances the script will stop when an error like this is encountered, but this isn't the only option. This page will look at how to do **error handling** to customise what happens when an error is triggered.
+
+Using Exceptions
+================
+Errors can be handled using *exceptions*, also known as **try/excepts** because those are the words you use:
+
+```{python}
+ls = ['List Item 0', 'List Item 1', 'List Item 2']
+try:
+    # Try to run this code
+    print(ls[3])
+except:
+    # Run this code if we encounter an exception
+    pass
+```
+
+In the above snippet we **tried** to run the line `print(ls[3])` but this raised an exception (because there are only 3 elements in the list and, because Python is a zero-index language, indexing element "3" tries to return the 4th item in the list). However, as opposed to causing the script to stop, this error instead caused the **exception** clause to run. In this example, the exception clause contained the  `pass` statement, which does nothing. As a result, the script continued to run and reached the end without failing! We have 'avoided' the error caused by the problematic `print(ls[3])` line.
+
+Don't Use 'Bare Excepts'
+------------------------
+While the above example is a good first introduction to exception handling, it contains an example of *bad practice:* it uses the `except` statement on its own. You should instead explicitly say which type of errors it should catch:
+
+```{python}
+ls = ['List Item 0', 'List Item 1', 'List Item 2']
+try:
+    # Try to run this code
+    print(ls[3])
+except IndexError:
+    # Run this code if we encounter an IndexError exception
+    pass
+```
+
+This way, we have built a script that can handle a very specific type of error: an Index Error. We are expecting that this type of error might occur and are preparing the script to behave in an expected fashion should it indeed be encountered. However, if something *unexpected* were to go wrong and an error were to exist that *we were not expecting*, the script will still fail. This is good: it's better to have the script failing if there's a genuine mistake rather than having it running to completion and hiding the error from you.
+
+A Realistic Example
+-------------------
+Often, you will have a set of data and will look through it trying to find a certain value. If that value does not exist, you might decide that you still want your script to continue running:
+
+```{python}
+values = [1.8, 1.9, 2.0]
+try:
+    # Try to run this code
+    solution = next(idx for idx, value in enumerate(values) if value > 3)
+except StopIteration:
+    # Run this code if we encounter a StopIteration exception
+    pass
+```
+
+This code will search for a value larger than 3 in the list of values, fail to find one, trigger a Stop Iteration error (because it has reached the end of the list) and execute the `pass` statement before continuing on.
+
+Else/Finally Statements
+-----------------------
+These can be used when you don't know exactly what type of error to expect:
+
+```{python}
+x = 5
+try:
+    result = 1 / x
+except ZeroDivisionError:
+    print('A ZeroDivisionError occurred')
+else:
+    print('No error occurred')
+finally:
+    print('This will print regardless of whether an error occurred or not')
+```
+
+Useful Error Messages
+---------------------
+Using f-strings can be a good way to communicate to the user what it was that caused the script to fail:
+
+```{python}
+dct = {'Key 0': 0}
+try:
+    key = 'Key 1'
+    print(dct[key])
+except KeyError:
+    print(f'The key "{key}" does not exist in the dictionary')
+```
+
+Raising an Error Manually
+=========================
+An error can be **raised** on purpose by using the (surprise, surprise) `raise` statement:
+
+```{python, error = TRUE}
+raise ValueError
+```
+
+An explanation for why you raised the error can be included as a parameter for the error statement:
+
+```{python, error = TRUE}
+raise ValueError('The reason for this error being raised')
+```
+
+As already mentioned, f-strings can be used to make the error messages more informative:
+
+```{python, error = TRUE}
+val = 5
+if val == 5:
+    raise ValueError(f'This error was raised because val = {val}')
+```
+
+If/Else Statements
+------------------
+When using if/else statements, the relevant error to handle is the Value Error:
+
+```{python, error = TRUE}
+condition = False
+if condition:
+    pass
+else:
+    raise ValueError('An If/Else error occurred')
+```
+
+This can be used as a crude way of creating a custom error type:
+
+```{python, error = TRUE}
+CustomError = True
+if CustomError:
+    raise ValueError('My custom error has been triggered')
+```
+
+However, the *correct* way to create custom error types is to define them as a new **class**:
+
+Using Custom Error Types
+========================
+Creating you own error type can help you in being specific about what exactly went wrong in your code. You can create error types to cover all the sorts of errors you expect to be generated when your code is being used by other people, and set up responses to handle each type correctly. Setting up a new error type is as easy as defining an empty class that takes an `Exception` parameter:
+
+```{python}
+class MyCustomErrorType(Exception):
+    pass
+```
+
+This can then be invoked using `raise`:
+
+```{python, error = TRUE}
+raise MyCustomErrorType
+```
+
+A text explanation can be included as with the other error types:
+
+```{python, error = TRUE}
+raise MyCustomErrorType('The reason for this error being raised')
+```
+
+If you have the text "`__main__.`" at the start of the error message (which isn't the case in these examples, but you might see it elsewhere) you can remove it by overwriting the default `__module__ ` value:
+
+```{python}
+class MyCustomErrorType(Exception):
+    """Raise for my specific kind of exception."""
+
+    # Remover "__main__" from the beginning of the exception
+    __module__ = Exception.__module__
+```
+
+And, as before, remember that f-strings can make the error messages more useful.
+
+Using Assertions
+================
+If you make the effort to set things up correctly you'll be able to use errors to your *advantage*. If your code produces something that is wrong it's better to have it fail and tell you *why* it was wrong as opposed to it soldiering on and producing an incorrect result that you don't realise is wrong! One way to achieve this is by using **assertions** which, essentially, are an error type of their own: if an assertion fails it triggers an Assertion Error which halts the script.
+
+Built-In Assertions
+-------------------
+Python comes with the `assert` statement which evaluates something and triggers an error if the evaluation produces a `False` result:
+
+```{python, error = TRUE}
+assert False, 'Oh no! This assertion failed!'
+```
+
+Here's an example where the assertion passes:
+
+```{python}
+assert 1 == 1, 'Oh no! This assertion failed!'
+```
+
+Here again we have an example with an f-string as the error message:
+
+```{python, error = TRUE}
+a = 1
+b = 2
+assert a == b, f'The assertion failed because {a} != {b}'
+```
+
+Hamcrest Assertions
+-------------------
+Hamcrest is a package that can be installed with `python3.10 -m pip install PyHamcrest` where `python3.10` is the version of Python you have installed. It contains a wider array of options that can be used for assertions, starting with the `assert_that()` function which can work with two parameters (one evaluation and one error message) as follows:
+
+```{python, error = TRUE}
+from hamcrest import assert_that
+
+assert_that(False, 'Oh no! This assertion failed!')
+```
+
+With three parameters (two evaluations and one error message) a number of 'matchers' are defined in the package which can be used to carry out the test for the assertion, for example `equal_to()`:
+
+```{python, error = TRUE}
+from hamcrest import equal_to
+
+assert_that(True, equal_to(False), 'Oh no! This assertion failed!')
+```
+
+The `is_()` matcher is 'syntactic sugar': it does absolutely nothing but it helps with readability:
+
+```{python, error = TRUE}
+from hamcrest import is_
+
+assert_that(True, is_(False), 'Oh no! This assertion failed!')
+```
+
+```{python, error = TRUE}
+assert_that(True, is_(equal_to(False)), 'Oh no! This assertion failed!')
+```
+
+The `in` statement also works:
+
+```{python}
+option = 'First'
+accepted_options = ['First', 'Second']
+assert_that(option in accepted_options, 'The option is not one of the provided options')
+```
+
+[⇦ Back](../../python.html)
+
+</font>

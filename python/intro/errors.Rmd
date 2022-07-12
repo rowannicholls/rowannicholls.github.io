@@ -1,0 +1,109 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>Errors'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+When you run Python code that contains a mistake it will tell you where and what it is! Here's an example:
+
+Zero Division Error
+===================
+
+```{python, error = TRUE}
+print(1 / 0)
+```
+
+We've tried to divide by zero and it's told us that we've made a "ZeroDivisionError" on line 1. That's super useful, because we can see what we need to fix and where to look. All errors have names and it's extremely beneficial to know what to do in the event you come across some of the more common ones. The more familiar you are with error types and how to fix them the quicker you can write a script that works!
+
+Name Errors
+===========
+
+```{python, error = TRUE}
+print(hello_world)
+```
+
+You tried to use a variable (`hello_world` in this case) that does not exist (or maybe you just forgot to put quotation marks around what was meant to be a string that you wanted to print).
+
+Syntax Errors
+=============
+
+```{python, eval = FALSE}
+print(hello world)
+```
+
+```
+## Error in py_call_impl(callable, dots$args, dots$keywords): Error: invalid syntax. Perhaps you forgot a comma?
+## 
+## Detailed traceback:
+##   File "<string>", line 1, in <module>
+```
+
+A syntax error is the equivalent of a 'typo' in Python: you typed a character or two incorrectly and as a result the code is simply wrong. In this example, there are two parameters being given to the `print()` function but there is no comma between them. Note that, additionally, there have been no variables `hello` or `world` defined in the code, so even if there WAS a comma between the two it would create a Name Error.
+
+Index Errors
+============
+
+```{python, error = TRUE}
+ls = ['List Item 0', 'List Item 1', 'List Item 2']
+print(ls[3])
+```
+
+You've indexed something (in this case, a list) with an index which the object doesn't have. This example has a list with three items in it, and as Python is zero-indexed the indexes of the three items are therefore 0, 1 and 2. Using `ls[3]` thus triggers an error because 3 is not in the range 0 to 2.
+
+Value Errors
+============
+
+```{python, error = TRUE}
+ls = ['List Item 0', 'List Item 1', 'List Item 2']
+print(ls.index('List Item 3'))
+```
+
+You've referenced a value that does not exist: `'List Item 3'` is not one of the list's items.
+
+Key Errors
+==========
+
+```{python, error = TRUE}
+dct = {'Key 0': 0, 'Key 1': 1, 'Key 2': 2}
+print(dct['Key 3'])
+```
+
+You've referenced a key that does not exist: `'Key 3'` is not one of the dictionary's keys.
+
+Attribute Errors
+================
+
+```{python, error = TRUE}
+dct = {'Key 0': 0, 'Key 1': 1, 'Key 2': 2}
+print(dct.index('Key 0'))
+```
+
+You've used a method or called an attribute of an object which it does not have. In this example, you've tried to look up the index of a key in a dictionary using `.index()` which a method that works with *lists*, not *dictionaries*.
+
+Type Errors
+===========
+
+```{python, error = TRUE}
+dct = {'Key 0': 0, 'Key 1': 1, 'Key 2': 2}
+print(dct[['Key 1']])
+```
+
+Instead of looking up a value in the dictionary using a *string* to specify the key, a *list containing a string* has been used. The code `dct['Key 1']` (with only one pair of square brackets) would have worked.
+
+There are hundreds of other errors in Python, both [built-in errors](https://docs.python.org/3/library/exceptions.html) and errors defined in add-on packages. Additionally, you can create your own custom error types! While it might seem strange to want to create MORE errors, it can actually be useful to create types that give you more detail about specific code you've written.
+
+> Have a look at [this page](../advanced/error_handling.html) for ideas about how to *handle* errors, and how to write code to use them to your advantage.
+
+[⇦ Back](../../python.html)
+
+</font>
