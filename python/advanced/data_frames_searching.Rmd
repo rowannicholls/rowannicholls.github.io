@@ -259,8 +259,8 @@ Filtering
 =========
 Filtering removes all rows whose values do not meet certain criteria.
 
-Filter Using a Single Criteria
-------------------------------
+Filter Using a Single Criterion
+-------------------------------
 As an example, here is the data of the United States athletes only:
 
 ```{python, echo = FALSE}
@@ -333,6 +333,32 @@ If one of the columns consists of Booleans you can filter by it. In other words,
 ```{python}
 # Filter by who ran sub-10 seconds
 subset = df[df['Sub-10']]
+print(subset)
+```
+
+Filter To Get Values Between Two Numbers
+----------------------------------------
+Use the `.between()` method to find the values that are between two numbers, eg to find the athletes who are between 25 and 30 years of age. Use the `inclusive` keyword argument to specify if you want to include the athletes who are exactly 25 or 30 or not:
+
+- `left` will include the athletes who are 25 - but not those who are 30 - and all ages in-between
+- `right` will include the athletes who are 30 - but not those who are 25 - and all ages in-between
+- `both` will include the athletes who are 25, 30 and in-between
+- `neither` will exclude the athletes aged 25 or 30
+
+```{python}
+# Get the athletes aged between 25 and 30 inclusive
+subset = df[df['Age'].between(25, 30, inclusive='both')]
+print(subset)
+```
+
+As mentioned above, you can use multiple criteria when filtering. So you can get the athletes who are aged between 25 and 30 *and* who ran between 9.90 and 10.00 seconds in the final:
+
+```{python}
+# Get the athletes aged between 25 and 30 inclusive who ran between 9.90 and 10.00 in the final
+subset = df[
+    df['Age'].between(25, 30, inclusive='both') &
+    df['Final'].between(9.90, 10.00, inclusive='both') 
+]
 print(subset)
 ```
 
