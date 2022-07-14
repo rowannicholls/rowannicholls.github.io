@@ -1,0 +1,130 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Paired Two One-Sided t-Test (TOST)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+> This page is a follow-on from [this on](tost_unpaired.html) which introduces the *unpaired* two one-sided t-test ('unpaired TOST')
+
+The Paired TOST
+===============
+We'll use the same example data that was used on the unpaired TOST page. It comes from [the documentation](https://pingouin-stats.org/generated/pingouin.tost.html) for Pingouin's `tost()` function.
+
+```{python}
+# Example data
+a = [4, 7, 8, 6, 3, 2]
+b = [6, 8, 7, 10, 11, 9]
+```
+
+Doing it with Pingouin
+----------------------
+Use the `tost()` function with `paired=True`. For this example, let's use a bound (region of similarity) of 0.5:
+
+```{python}
+import pingouin as pg
+
+pval = pg.tost(a, b, paired=True, bound=0.5).loc['TOST', 'pval']
+
+print(f'TOST: p = {pval:.3f}')
+```
+
+Doing it with SciPy
+-------------------
+The two one-sided paired t-tests can be done individually with SciPy (the relevant function is `ttest_rel()`):
+
+```{python}
+import numpy as np
+from scipy import stats
+
+# Convert data to arrays
+a = np.array(a)
+b = np.array(b)
+
+#
+# TOST
+#
+# Magnitude of region of similarity
+bound = 0.5
+# Paired two-sample t-test
+_, p_greater = stats.ttest_rel(a + bound, b, alternative='greater')
+_, p_less = stats.ttest_rel(a - bound, b, alternative='less')
+# Choose the maximum p-value
+pval = max(p_less, p_greater)
+
+print(f'TOST: p = {pval:5.3f}')
+```
+
+The One-Sample TOST
+===================
+The name of this test is a mouthful: the one-sample two one-sided t-test! As it suggests, this test uses one set of data instead of two. However, if that set of data happens to be the differences between two sets of data, then it (the one-sample TOST) becomes identical to the paired TOST. We will be able to see this if we use the exact same data as before:
+
+```{python}
+# Example data
+a = [4, 7, 8, 6, 3, 2]
+b = [6, 8, 7, 10, 11, 9]
+```
+
+Doing it with Pingouin
+----------------------
+To perform the one-sample TOST with Pingouin's `tost()` function, set the second argument (the y-argument) to a single number, eg 0:
+
+```{python}
+import numpy as np
+import pingouin as pg
+
+# Convert data to arrays
+a = np.array(a)
+b = np.array(b)
+# Calculate the differences between the pairs of data points
+diffs = b - a
+# Perform the TOST
+pval = pg.tost(diffs, y=0, bound=0.5).loc['TOST', 'pval']
+
+print(f'TOST: p = {pval:.3f}')
+```
+
+As promised, the answer is the same as for the paired TOST.
+
+Doing it with SciPy
+-------------------
+The one-sample t-test function (`ttest_1samp()`) can be used twice:
+
+```{python}
+import numpy as np
+from scipy import stats
+
+# Convert to arrays
+a = np.array(a)
+b = np.array(b)
+# Calculate the differences between the pairs of data points
+diffs = b - a
+
+#
+# TOST
+#
+# Magnitude of region of similarity
+bound = 0.5
+# Two one-sample t-tests
+_, p_greater = stats.ttest_1samp(diffs, -bound, alternative='greater')
+_, p_less = stats.ttest_1samp(diffs, bound, alternative='less')
+# Choose the maximum p-value
+pval = max(p_less, p_greater)
+
+print(f'TOST: p = {pval:5.3f}')
+```
+
+Again, we get the same answer.
+
+[⇦ Back](../../../python.html)
+
+</font>

@@ -196,7 +196,7 @@ In order to answer the research question ("are the mean house prices the same?")
 - H<sub>0</sub>: true mean house price is the same for both location types
 - H<sub>1</sub>: true mean house price is **not** the same for both location types
 
-The null hypothesis is that there is equality and the alternate hypothesis is that there is a difference (of any size). Note that if our research question was instead "are the mean house prices *equivalent*?" or "are the mean house prices the same to within a certain *tolerance*?" then the hypotheses above would not be formulated correct. Examples that have research questions like these are over [here](tost.html).
+The null hypothesis is that there is equality and the alternate hypothesis is that there is a difference (of any size). Note that if our research question was instead "are the mean house prices *equivalent*?" or "are the mean house prices the same to within a certain *tolerance*?" then the hypotheses above would not be formulated correct. Examples that have research questions like these are over [here](tost_unpaired.html).
 
 Choose a Test
 -------------
@@ -443,7 +443,7 @@ print(f'The p-value is {p_rounded} ({significance})')
 
 Two One-Sided t-Tests
 =====================
-Another type of test is the "two one-sided t-test" (TOST) which involves, as the name suggests, performing two one-sided unpaired two-sample t-tests. While this *is* a hypothesis test, its purpose is to test equivalence: it asks "do the means of two populations differ by less than a certain amount?" as opposed to "are the means the same?". For this reason it is discussed on [its own page](tost.html) in the 'agreement' section.
+Another type of test is the "two one-sided t-test" (TOST) which involves, as the name suggests, performing two one-sided unpaired two-sample t-tests. While this *is* a hypothesis test, its purpose is to test equivalence: it asks "do the means of two populations differ by less than a certain amount?" as opposed to "are the means the same?". For this reason it is discussed on [its own page](tost_unpaired.html) in the 'agreement' section.
 
 [⇦ Back](../../../python.html)
 
