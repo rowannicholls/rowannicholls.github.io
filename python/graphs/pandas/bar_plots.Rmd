@@ -1,0 +1,337 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Bar Plots from a Pandas Data Frame'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+Example Data
+============
+For this example we'll use a 'toy dataset' (a small, freely available dataset which is realistic enough to be useful but not detailed enough to be academically insightful). Specifically, we'll use the **diabetes dataset** which contains data from 442 diabetes patients (more information [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset) and [here](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.html). Download this from the internet as *tab--separated values* and convert it into a Pandas data frame as follows:
+
+```{python}
+import pandas as pd
+
+# Download the tab-separated values from the internet
+df = pd.read_csv('https://www4.stat.ncsu.edu/~boos/var.select/diabetes.tab.txt', sep='\t')
+
+print(df.head())
+```
+
+For this example, we'll only use the age, BMI and 'S6' columns. According to the documentation for this dataset, column S6 represents a measure of blood sugar called 'glu' which I think is meant to be *fasting blood sugar* (measured in mg/dL) although, given that these patients are diabetic, the numbers are unexpectedly low. We'll use them anyway:
+
+```{python}
+# Rename
+df = df.rename(columns={'S6': 'GLU'})
+# Assume the variable is fasting blood sugar, measured in mg/dL
+
+# Trim
+cols = ['AGE', 'BMI', 'GLU']
+df = df[cols]
+
+print(df.head())
+```
+
+Categorise the Data
+===================
+We're going to see if there is a relationship between blood sugar level and BMI of these diabetic patients. To do that, we need to classify the data into groups using the BMI values:
+
+- Normal: 18.5 to 24.9 kg/m²
+- Overweight: 25.0 to 29.9 kg/m²
+- Obese: 30.0+ kg/m²
+
+This is done below in 3 steps:
+
+- The edges of the three 'bins' (ranges) of values are defined
+- The 'labels' (names) of the categories are defines
+- The BMI values are 'cut' up (sorted) into the three categories, specifying that the rightmost edges of the bins are not included in those bins (ie the rightmost edge of the 'normal' bin - 25 kg/m² - is part of the 'overweight' bin and the rightmost edge of the 'overweight' bin - 30 kg/m² - is part of the 'obese' bin)
+
+```{python}
+# Categorise the BMI data
+bins = [0, 25, 30, df['BMI'].max() + 1]
+labels = ['Normal', 'Overweight', 'Obese']
+df['category'] = pd.cut(df['BMI'], bins, labels=labels, right=False)
+
+print(df.head())
+```
+
+Let's see how many people in each category have high blood sugar levels (≥90 mg/dL in this example, in real life this is well within normal):
+
+```{python, eval = FALSE}
+# Find the number of ppts with glu >= 90 mg/dL
+print(df[(df['category'] == 'Normal') & (df['GLU'] >= 90)].shape[0])
+print(df[(df['category'] == 'Overweight') & (df['GLU'] >= 90)].shape[0])
+print(df[(df['category'] == 'Obese') & (df['GLU'] >= 90)].shape[0])
+```
+
+```
+## 80
+## 100
+## 71
+```
+
+Get Sample Sizes and Averages
+=============================
+For each category, we want to know the mean glu value and the number of patients. This can be done by **pivoting** the table:
+
+```{python}
+# Calculate the mean of each category
+df = pd.pivot_table(df, values='GLU', aggfunc=['mean', 'count'], index='category')
+
+print(df)
+```
+
+Remove the 'GLU' level:
+
+```{python}
+# Remove the 'GLU' level
+df.columns = df.columns.droplevel(level=1)
+
+print(df)
+```
+
+Now we can create the bar plot!
+
+Simple Bar Plot
+===============
+A bar plot can be created directly from a Pandas data frame using the `plot.bar()` method:
+
+- Our x-data is the index column of our data frame, so use the `use_index=True` parameter
+- Our y-data is the mean of the glu values: `y='mean'`
+- We don't want the category labels to be rotated: `rot=0`
+- We can customise the colour of the bars via the `color` keyword argument
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Create bar plot
+ax = df.plot.bar(use_index=True, y='mean', rot=0, color='#95b8d1')
+
+plt.show()
+```
+
+Format Edits
+============
+Let's make the following changes:
+
+- Set the Matplotlib runtime command ('rc') values so as to:
+    + Change the figure size: `plt.rc('figure', figsize=...)`
+    + Use Latex for the text: `plt.rc('text', usetex=True)`
+    + Use the serif font: `plt.rc('font', family='serif')`
+    + Import a Latex package so as to be able to use Greek letters: `plt.rc('text.latex', preamble=r'\usepackage{textgreek}')`
+- Set the title of the graph by using `set_title()`
+    + Use an f-string (formatted string) to include the total sample size, formatted as a decimal with a comma as the thousands separator (`,d`)
+    + Use an r-string (raw string) to allow it to be interpreted by Latex. That allows you to use Latex commands, eg to change the fontsize via `\footnotesize`
+    + A string can be an f-string and an r-string at the same time, ie an 'fr-string' or an 'rf-string' (both work)
+- Set the axis labels using `set_xlabel()` and `set_ylabel()`
+    + The units for this measurement of blood sugar are 'mg/dL' but I'm going to change that to '1000 μg/dL' so I can demonstrate using Greek letters in labels (which is something that the textgreek Latex package allows me to do)
+- Change the vertical zoom of the graph using `set_ylim()`
+- Remove the legend using `legend().set_visible(False)`
+
+```{python, eval = FALSE}
+# Matplotlib settings
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create bar plot
+ax = df.plot.bar(use_index=True, y='mean', rot=0, color='#95b8d1')
+# Format the plot
+total_sample_size = df['count'].sum()
+ax.set_title(
+    'Blood Sugar Levels of Diabetic Patients\n' +
+    rf'\footnotesize (n = {total_sample_size:,d})'
+)
+ax.set_xlabel('')
+ax.set_ylabel(r'Mean Fasting Blood Sugar (1000 \textmu g/dL)')
+ax.set_ylim([80, 100])
+ax.legend().set_visible(False)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Matplotlib settings
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create bar plot
+ax = df.plot.bar(use_index=True, y='mean', rot=0, color='#95b8d1')
+# Format the plot
+total_sample_size = df['count'].sum()
+ax.set_title(
+    'Blood Sugar Levels of Diabetic Patients\n' +
+    rf'\footnotesize (n = {total_sample_size:,d})'
+)
+ax.set_xlabel('')
+ax.set_ylabel(r'Mean Fasting Blood Sugar (1000 \textmu g/dL)')
+ax.set_ylim([80, 100])
+ax.legend().set_visible(False)
+
+plt.show()
+```
+
+Annotations Outside the Plot
+============================
+To make annotations outside the plot area, use the `text()` function and specify the y-position of the annotations to be outside the range of the plot:
+
+```{python, eval = FALSE}
+# Set the keyword arguments for the text labels
+kwargs = {'ha': 'center', 'va': 'center', 'size': 'small'}
+# Annotate the sample size below each label
+for i, bar in enumerate(ax.patches):
+    # For each bar, add text that contains its sample size
+    sample_size = df['count'].to_list()[i]
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 78.5,
+        f'n = {sample_size:d}', **kwargs
+    )
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create bar plot
+ax = df.plot.bar(use_index=True, y='mean', rot=0, color='#95b8d1')
+# Format the plot
+total_sample_size = df['count'].sum()
+ax.set_title(
+    'Blood Sugar Levels of Diabetic Patients\n' +
+    rf'\footnotesize (n = {total_sample_size:,d})'
+)
+ax.set_xlabel('')
+ax.set_ylabel(r'Mean Fasting Blood Sugar (1000 \textmu g/dL)')
+ax.set_ylim([80, 100])
+ax.legend().set_visible(False)
+# Set the keyword arguments for the text labels
+kwargs = {'ha': 'center', 'va': 'center', 'size': 'small'}
+# Annotate the sample size below each label
+for i, bar in enumerate(ax.patches):
+    # For each bar, add text that contains its sample size
+    sample_size = df['count'].to_list()[i]
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 78.5,
+        f'n = {sample_size:d}', **kwargs
+    )
+
+plt.show()
+```
+
+Highlight Information
+=====================
+You could separate sections of the bars out to represent their height above 90 mg/dL:
+
+```{python, eval = FALSE}
+# Add bar plots of different colour
+x_positions = [0, 1, 2]
+heights = [ax.patches[0].get_height(), 90, 90]
+width = 0.5
+ax.bar(x_positions, heights, width, color='#809bce')
+# Add horizontal line
+ax.plot([-1, 2.5], [90, 90], 'k--', lw=0.8)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create bar plot
+ax = df.plot.bar(use_index=True, y='mean', rot=0, color='#95b8d1')
+# Format the plot
+total_sample_size = df['count'].sum()
+ax.set_title(
+    'Blood Sugar Levels of Diabetic Patients\n' +
+    rf'\footnotesize (n = {total_sample_size:,d})'
+)
+ax.set_xlabel('')
+ax.set_ylabel(r'Mean Fasting Blood Sugar (1000 \textmu g/dL)')
+ax.set_ylim([80, 100])
+ax.legend().set_visible(False)
+# Set the keyword arguments for the text labels
+kwargs = {'ha': 'center', 'va': 'center', 'size': 'small'}
+# Annotate the sample size below each label
+for i, bar in enumerate(ax.patches):
+    # For each bar, add text that contains its sample size
+    sample_size = df['count'].to_list()[i]
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 78.5,
+        f'n = {sample_size:d}', **kwargs
+    )
+# Add bar plots of different colour
+x_positions = [0, 1, 2]
+heights = [ax.patches[0].get_height(), 90, 90]
+width = 0.5
+ax.bar(x_positions, heights, width, color='#809bce')
+# Add horizontal line
+ax.plot([-1, 2.5], [90, 90], 'k--', lw=0.8)
+
+plt.show()
+```
+
+Annotations Inside the Plot
+===========================
+To make annotations inside the plot area, use the `text()` function and specify the y-positions of the annotations to be inside the range of the plot:
+
+```{python, eval = FALSE}
+# Add text of number who have glu >= 90 mg/dL
+ax.text(1, (92.39 - 90) / 2 + 90, 'n = 100', **kwargs)
+ax.text(1, 85, 'n = 55', **kwargs)
+ax.text(2, (97.53 - 90) / 2 + 90, 'n = 71', **kwargs)
+ax.text(2, 85, 'n = 28', **kwargs)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create bar plot
+ax = df.plot.bar(use_index=True, y='mean', rot=0, color='#95b8d1')
+# Format the plot
+total_sample_size = df['count'].sum()
+ax.set_title(
+    'Blood Sugar Levels of Diabetic Patients\n' +
+    rf'\footnotesize (n = {total_sample_size:,d})'
+)
+ax.set_xlabel('')
+ax.set_ylabel(r'Mean Fasting Blood Sugar (1000 \textmu g/dL)')
+ax.set_ylim([80, 100])
+ax.legend().set_visible(False)
+# Set the keyword arguments for the text labels
+kwargs = {'ha': 'center', 'va': 'center', 'size': 'medium'}
+# Annotate the sample size below each label
+for i, bar in enumerate(ax.patches):
+    # For each bar, add text that contains its sample size
+    sample_size = df['count'].to_list()[i]
+    ax.text(
+        bar.get_x() + bar.get_width() / 2, 78.5,
+        f'n = {sample_size:d}', **kwargs
+    )
+# Add bar plots of different colour
+x_positions = [0, 1, 2]
+heights = [ax.patches[0].get_height(), 90, 90]
+width = 0.5
+ax.bar(x_positions, heights, width, color='#809bce')
+# Add horizontal line
+ax.plot([-1, 2.5], [90, 90], 'k--', lw=0.8)
+# Add text of number who have glu >= 90 mg/dL
+ax.text(1, (92.39 - 90) / 2 + 90, 'n = 100', **kwargs)
+ax.text(1, 85, 'n = 55', **kwargs)
+ax.text(2, (97.53 - 90) / 2 + 90, 'n = 71', **kwargs)
+ax.text(2, 85, 'n = 28', **kwargs)
+
+plt.show()
+```
+
+Save the Plot
+=============
+Use `plt.savefig('name_of_plot.png')` to save the plot to your computer. The .png, .jpg and .pdf extensions should work, as well as others. Alternatively, display the plot in a pop-up window with `plt.show()`. If you are plotting more than one figure in the same Python script use `plt.figure()` and `plt.close()` before and after each, respectively, in order to tell Python when one plot ends and the next one starts.
+
+[⇦ Back](../../../python.html)
+
+</font>
