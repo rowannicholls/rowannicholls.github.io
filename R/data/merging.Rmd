@@ -133,6 +133,77 @@ print(inner)
 
 The teams that got promoted and relegated from the Premier League are not shown here as their names do not appear in both data frames. As a results only 17 rows remain. **This is the default behaviour of the `merge()` function**.
 
+Merge on Common Columns
+=======================
+In the previous four examples the two data frames only had one column in common - team name - and so that was the column we merged on. However, if we have data frames with two (or more) columns in common and we merge on just one of those columns we get duplication of the other(s):
+
+```{r}
+EPL_2020_21 <- data.frame(
+    team = c(
+        "Manchester City", "Manchester United", "Liverpool", "Chelsea", "Leicester City", "West Ham United",
+        "Tottenham Hotspur", "Arsenal", "Leeds United", "Everton", "Aston Villa", "Newcastle United",
+        "Wolverhampton Wanderers", "Crystal Palace", "Southampton", "Brighton & Hove Albion", "Burnley",
+        "Fulham", "West Bromwich Albion", "Sheffield United"
+    ),
+    location = c(
+        "Manchester", "Manchester", "Liverpool", "London", "Leicester", "London", "London", "London",
+        "Leeds", "Liverpool", "Birmingham", "Newcastle upon Tyne", "Wolverhampton", "London", "Southampton",
+        "Falmer", "Burnley", "London", "West Bromwich", "Sheffield"
+    ),
+    points_2020_21 = c(
+        86, 74, 69, 67, 66, 65, 62, 61, 59, 59, 55, 45, 45, 44, 43, 41, 39, 28, 26, 23
+    )
+)
+
+EPL_2021_22 <- data.frame(
+    team = c(
+        "Manchester City", "Liverpool", "Chelsea", "Tottenham Hotspur", "Arsenal", "Manchester United",
+        "West Ham United", "Leicester City", "Brighton & Hove Albion", "Wolverhampton Wanderers",
+        "Newcastle United", "Crystal Palace", "Brentford", "Aston Villa", "Southampton", "Everton",
+        "Leeds United", "Burnley", "Watford", "Norwich City"
+    ),
+    location = c(
+        "Manchester", "Liverpool", "London", "London", "London", "Manchester", "London", "Leicester", "Falmer",
+        "Wolverhampton", "Newcastle upon Tyne", "London", "London", "Birmingham", "Southampton", "Liverpool",
+        "Leeds", "Burnley", "Watford", "Norwich"
+    ),
+    points_2021_22 = c(
+        93, 92, 74, 71, 69, 58, 56, 52, 51, 51, 49, 48, 46, 45, 40, 39, 38, 35, 23, 22
+    )
+)
+
+df <- merge(EPL_2020_21, EPL_2021_22, by = "team", all = T)
+print(df)
+```
+
+You can see what has gone wrong here: the 'location' information has effectively been duplicated and columns 'location.x' and 'location.y' have been created. To fix this we can merge on the common columns manually by listing them in a vector that gets given to the `by` keyword argument:
+
+```{r}
+df <- merge(EPL_2020_21, EPL_2021_22, by = c("team", "location"), all = T)
+print(df)
+```
+
+...or, we can find these common columns automatically. To do this, use the `intersect()` function on the vectors of the column names of the two data frames to get the **intersection** of these two sets:
+
+```{r}
+print(intersect(colnames(EPL_2020_21), colnames(EPL_2021_22)))
+```
+
+The merging step can now look like this:
+
+```{r}
+df <- merge(EPL_2020_21, EPL_2021_22, by = intersect(colnames(EPL_2020_21), colnames(EPL_2021_22)), all = T)
+print(df)
+```
+
+Note that this `intersect()` function only works as expected on vectors, not on the data frames themselves:
+
+```{r}
+print(intersect(EPL_2020_21, EPL_2021_22))
+```
+
+We didn't get anything useful from that!
+
 [⇦ Back](../../R.html)
 
 </font>
