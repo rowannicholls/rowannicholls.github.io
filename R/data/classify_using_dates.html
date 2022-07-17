@@ -11,7 +11,7 @@
 
 
 
-<title>R</title>
+<title>Data Handling in R: Data Classification Using Date or Time Information</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -684,112 +684,75 @@ Od=B();Nv.bootstrap=Od;if(a){var S=Fl("INIT");}}});
 
 
 
-<h1 class="title toc-ignore">R</h1>
+<h1 class="title toc-ignore"><font size="5">Data Handling in R:</font><br>Data Classification Using Date or Time Information</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#the-problem"><span class="toc-section-number">1</span> The Problem</a></li>
+<li><a href="#the-solution"><span class="toc-section-number">2</span> The Solution</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-r" class="section level2">
-<h2>Introduction to R</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/intro/r_rstudio.html">R and RStudio</a></li>
-<li><a href="R/intro/data_types.html">Comments, Variables and Data Types</a></li>
-<li><a href="R/intro/packages.html">Packages and Libraries</a></li>
-<li><a href="R/intro/maths.html">Maths and Numbers</a></li>
-<li><a href="R/intro/strings.html">Strings and Characters</a></li>
-<li><a href="R/intro/vectors.html">Vectors</a></li>
-<li><a href="R/intro/named_vectors_lists.html">Named Vectors and Lists (aka Dictionaries)</a></li>
-<li><a href="R/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="R/intro/data_frames.html">Data Frames</a></li>
-<li><a href="R/intro/loops.html">For and While Loops</a></li>
-<li><a href="R/intro/functions.html">Functions</a></li>
-<li><a href="R/intro/exceptions.html">Exception Handling</a></li>
-<li><a href="R/intro/linting.html">Linting</a></li>
-<li><a href="R/intro/python_in_r.html">Python in R</a></li>
-</ol>
+<p><a href="../../R.html">⇦ Back</a></p>
+<div id="the-problem" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> The Problem</h1>
+<p>Here we have a data set from a fictitious research study that is <em>incomplete</em> - it only specifies when the participants visited the study centre for the first time, and lists these in the ‘Visit Number’ column as ‘Visit 1’:</p>
+<pre class="r"><code>df &lt;- data.frame(
+    participant_id = c(102, 105, 105, 111, 111, 111),
+    visit_date = c(
+        &quot;2018-02-20&quot;, &quot;2018-04-24&quot;, &quot;2019-02-15&quot;,
+        &quot;2018-01-27&quot;, &quot;2013-11-19&quot;, &quot;2018-11-28&quot;
+    ),
+    visit_no = c(&quot;Visit 1&quot;, &quot;Visit 1&quot;, NA, &quot;Visit 1&quot;, NA, NA)
+)
+
+print(df)</code></pre>
+<pre><code>##   participant_id visit_date visit_no
+## 1            102 2018-02-20  Visit 1
+## 2            105 2018-04-24  Visit 1
+## 3            105 2019-02-15     &lt;NA&gt;
+## 4            111 2018-01-27  Visit 1
+## 5            111 2013-11-19     &lt;NA&gt;
+## 6            111 2018-11-28     &lt;NA&gt;</code></pre>
+<p>What we want to do is fill in the gaps: calculate from the dates which visits were ’Visit 0’s and ’Visit 2’s. More specifically, we can see that:</p>
+<ul>
+<li>Participant 105 had their ‘Visit 1’ in April 2018, so their visit in Feb 2019 was their ‘Visit 2’</li>
+<li>Participant 111 had their ‘Visit 1’ in Jan 2018, so their visit in Nov 2013 was their ‘Visit 0’ and their visit in Nov 2018 was their ‘Visit 2’</li>
+</ul>
+<p>Let’s see how to calculate that automatically:</p>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/data/pre_loaded_datasets.html">Pre-Loaded Datasets</a></li>
-<li><a href="R/data/create_unique_identifiers.html">Create Unique Identifiers</a></li>
-<li><a href="R/data/stratification.html">Data Stratification</a>
-<ul>
-<li><a href="R/data/classify_using_dates.html">Data Classification Using Date or Time Information</a></li>
-</ul></li>
-<li><a href="R/data/filter_by_appearances.html">Filter by Number of Times a Values Appears</a></li>
-<li><a href="R/data/descriptive_summary_statistics.html">Descriptive and Summary Statistics</a></li>
-<li><a href="R/data/pivot_tables.html">Pivot Tables</a></li>
-<li><a href="R/data/demographic_tables.html">Demographic Data Tables</a></li>
-<li><a href="R/data/merging.html">Merging</a></li>
-<li><a href="R/data/create_export_import.html">File IO: Create, Export and Import Data</a></li>
-<li><a href="R/data/filling_in_missing_data.html">Filling in Missing Data</a></li>
-<li><a href="R/data/working_with_json.html">Working with JSON Files</a></li>
-</ol>
-</div>
-<div id="graphs" class="section level2">
-<h2>Graphs</h2>
-<ol style="list-style-type: decimal">
-<li>Using Base R
-<ul>
-<li><a href="R/graphs/base/symbols_linetypes_colours.html">Symbols, Line Types and Colours</a></li>
-<li><a href="R/graphs/base/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/base/scatterplots.html">Scatter Plots</a></li>
-<li><a href="R/graphs/base/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/base/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/base/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li><a href="R/graphs/base/bee_swarm.html">Bee Swarm Plots</a></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/base/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/base/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/base/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Using ggplot2
-<ul>
-<li><a href="R/graphs/ggplot2/cheat_sheet.html">Cheat Sheet</a></li>
-<li><a href="R/graphs/ggplot2/lineplots.html">Line Plots</a></li>
-<li><a href="R/graphs/ggplot2/scatterplots.html">Scatter Plots</a></li>
-<li><a href="R/graphs/ggplot2/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (Box-and-Whisker Plots):
-<ul>
-<li><a href="R/graphs/ggplot2/boxplots_single_group.html">Single Group</a></li>
-<li><a href="R/graphs/ggplot2/boxplots_multiple_groups.html">Multiple Groups</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="R/graphs/ggplot2/barplots_single_factor.html">Single Factor</a></li>
-<li><a href="R/graphs/ggplot2/barplots_multiple_factors.html">Multiple Factors</a></li>
-</ul></li>
-<li><a href="R/graphs/ggplot2/receiver_operating_characteristic.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="R/statistics/descriptive_statistics.html">Descriptive Statistics</a></li>
-<li><a href="R/statistics/tutorial.html">Diagnostic Accuracy Tutorial</a> (<a href="R/statistics/tutorial_completescript.R">complete</a>, <a href="R/statistics/tutorial_emptyscript.R">empty</a>)</li>
-<li><a href="R/statistics/principal_component_analysis.html">Principal Component Analysis</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li><a href="R/statistics/hypothesis_testing/kruskal_wallis.html">Kruskal-Wallis Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/friedman.html">Friedman Rank Sum Test</a></li>
-<li><a href="R/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="R/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="R/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="R/statistics/agreement/bland_altman_giavarina.html">Bland-Altman and Giavarina Analysis</a></li>
-<li><a href="R/statistics/agreement/coefficient_of_variation.html">Coefficient of Variation</a></li>
-</ul></li>
-</ol>
+<div id="the-solution" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> The Solution</h1>
+<p>For each participant, we want to filter to get only their visit information, get the date of their Visit 1 and then assess, for each other visit, whether it came before or after this date:</p>
+<pre class="r"><code># Iterate over the participant IDs
+for (id in unique(df$participant_id)) {
+    # Extract data for this participant ID
+    this_id &lt;- subset(df, participant_id == id)
+    # Date of visit 1
+    visit1 &lt;- subset(this_id, visit_no == &quot;Visit 1&quot;)[[&quot;visit_date&quot;]]
+    # The visit before visit 1 is visit 0
+    for (i in rownames(this_id)) {
+        date &lt;- df[[i, &quot;visit_date&quot;]]
+        if (visit1 &gt; date) {
+            df[[i, &quot;visit_no&quot;]] &lt;- &quot;Visit 0&quot;
+        } else if (visit1 &lt; date) {
+            df[[i, &quot;visit_no&quot;]] &lt;- &quot;Visit 2&quot;
+        }
+    }
+}
+
+print(df)</code></pre>
+<pre><code>##   participant_id visit_date visit_no
+## 1            102 2018-02-20  Visit 1
+## 2            105 2018-04-24  Visit 1
+## 3            105 2019-02-15  Visit 2
+## 4            111 2018-01-27  Visit 1
+## 5            111 2013-11-19  Visit 0
+## 6            111 2018-11-28  Visit 2</code></pre>
+<p><a href="../../R.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 

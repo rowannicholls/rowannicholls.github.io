@@ -1,0 +1,68 @@
+---
+title: '<font size="5">Data Handling in R:</font><br>Data Classification Using Date or Time Information'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../R.html)
+
+The Problem
+===========
+Here we have a data set from a fictitious research study that is *incomplete* - it only specifies when the participants visited the study centre for the first time, and lists these in the 'Visit Number' column as 'Visit 1':
+
+```{r}
+df <- data.frame(
+    participant_id = c(102, 105, 105, 111, 111, 111),
+    visit_date = c(
+        "2018-02-20", "2018-04-24", "2019-02-15",
+        "2018-01-27", "2013-11-19", "2018-11-28"
+    ),
+    visit_no = c("Visit 1", "Visit 1", NA, "Visit 1", NA, NA)
+)
+
+print(df)
+```
+
+What we want to do is fill in the gaps: calculate from the dates which visits were 'Visit 0's and 'Visit 2's. More specifically, we can see that:
+
+- Participant 105 had their 'Visit 1' in April 2018, so their visit in Feb 2019 was their 'Visit 2'
+- Participant 111 had their 'Visit 1' in Jan 2018, so their visit in Nov 2013 was their 'Visit 0' and their visit in Nov 2018 was their 'Visit 2'
+
+Let's see how to calculate that automatically:
+
+The Solution
+============
+For each participant, we want to filter to get only their visit information, get the date of their Visit 1 and then assess, for each other visit, whether it came before or after this date:
+
+```{r}
+# Iterate over the participant IDs
+for (id in unique(df$participant_id)) {
+    # Extract data for this participant ID
+    this_id <- subset(df, participant_id == id)
+    # Date of visit 1
+    visit1 <- subset(this_id, visit_no == "Visit 1")[["visit_date"]]
+    # The visit before visit 1 is visit 0
+    for (i in rownames(this_id)) {
+        date <- df[[i, "visit_date"]]
+        if (visit1 > date) {
+            df[[i, "visit_no"]] <- "Visit 0"
+        } else if (visit1 < date) {
+            df[[i, "visit_no"]] <- "Visit 2"
+        }
+    }
+}
+
+print(df)
+```
+
+[⇦ Back](../../R.html)
+
+</font>
