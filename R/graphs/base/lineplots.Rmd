@@ -75,19 +75,61 @@ y = x
 lines(x, y)
 ```
 
+Of course, having "x^2" instead of "x²" in the title doesn't look great. To improve this text formatting we have three options, each with their own pros and cons:
+
+- Copy-and-paste glyphs in directly
+- Use Unicode
+- Use Latex
+
+Here are examples of each option:
+
+Glyphs in Labels
+----------------
+This is the simplest option: find the symbols you want (eg by Googling them) and copy-paste them into your code:
+
+```{r}
+x <- seq(0, 2, 0.01)
+# Plot a parabola
+y <- x**2
+plot(
+    x, y, type = "l", main = "β = α and β = α² for 0 ≥ α ≥ 2",
+    xlab = "Input, α (μs)", ylab = "Output, β (mΩ)"
+)
+# Plot a straight line
+y <- x
+lines(x, y)
+```
+
+Unicode in Labels
+-----------------
+A slightly more complicated option is to look up the Unicode codes for the symbols and use those prepended by a "\U" to let R know you want to interpret it as Unicode:
+
+```{r}
+x <- seq(0, 2, 0.01)
+# Plot a parabola
+y <- x**2
+plot(
+    x, y, type = "l", main = "\U03B2 = \U03B1 and \U03B2 = \U03B1\U00B2 for 0 \U2265 \U03B1 \U2265 2",
+    xlab = "Input, \U03B1 (\U03BCs)", ylab = "Output, \U03B2 (m\U03A9)"
+)
+# Plot a straight line
+y <- x
+lines(x, y)
+```
+
 Latex in Labels
 ---------------
-By using the `latex2exp` package, you can use the full power of Latex to generate proper-looking labels:
+By using the `latex2exp` package, you can use the full power of Latex to generate proper-looking labels. Note, however, that backslashes have a special meaning in R and you need to *escape* this by using a second backslash (an escaping backslash) in order to allow the first backslash be interpreted as such by Latex:
 
 ```{r}
 library(latex2exp)
 
-x = 0:6
+x <- seq(0, 2, 0.01)
 # Plot a parabola
 y = x**2
 plot(
-    x, y, type = "l", main = TeX("y = x and y = x^2"),
-    xlab = "x-values", ylab = "y-values"
+    x, y, type = "l", main = TeX("\\beta = \\alpha and \\beta = \\alpha$^2$ for 0\\geq\\alpha\\geq{}2"),
+    xlab = TeX("Input, \\alpha (\\mu{}s)"), ylab = TeX("Output, \\beta (m\\Omega)")
 )
 # Plot a straight line
 y = x
@@ -214,6 +256,10 @@ for (team in colnames(data)) {
 }
 legend("topleft", legend = teams, col = team_colours, lwd = 3, cex = 0.6)
 ```
+
+Save Plot
+=========
+Save your plot to your computer as a PNG image using `png("Name of Plot.png")` or as a PDF using `pdf("Name of Plot.pdf")`. Note that, whichever you choose, you need to put it before the code that plots your graph.
 
 [⇦ Back](../../../R.html)
 

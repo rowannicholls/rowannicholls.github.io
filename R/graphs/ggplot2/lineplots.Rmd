@@ -84,23 +84,61 @@ p <- p + xlab("x-values")
 print(p)
 ```
 
-Latex in Labels
----------------
-By using the `latex2exp` package, you can use the full power of Latex to generate proper-looking titles and labels:
+Of course, having "x^2" instead of "x²" in the title doesn't look great. To improve this text formatting we have three options, each with their own pros and cons:
+
+- Copy-and-paste glyphs in directly
+- Use Unicode
+- Use Latex
+
+Here are examples of each option:
+
+Glyphs in Labels
+----------------
+This is the simplest option: find the symbols you want (eg by Googling them) and copy-paste them into your code:
 
 ```{r}
-library(latex2exp)
-
-df <- data.frame(
-    x = c(0, 1, 2, 3, 4, 5, 6)
-)
+df <- data.frame(x = seq(0, 2, 0.01))
 
 p <- ggplot()
 p <- p + geom_line(data = df, aes(x = x, y = x))
 p <- p + geom_line(data = df, aes(x = x, y = x**2))
-p <- p + ggtitle(TeX("y = x and y = x^2"))
-p <- p + ylab("y-values")
-p <- p + xlab("x-values")
+p <- p + ggtitle("β = α and β = α² for 0 ≥ α ≥ 2")
+p <- p + ylab("Output, β (mΩ)")
+p <- p + xlab("Input, α (μs)")
+print(p)
+```
+
+Unicode in Labels
+-----------------
+A slightly more complicated option is to look up the Unicode codes for the symbols and use those prepended by a "\U" to let R know you want to interpret it as Unicode:
+
+```{r}
+df <- data.frame(x = seq(0, 2, 0.01))
+
+p <- ggplot()
+p <- p + geom_line(data = df, aes(x = x, y = x))
+p <- p + geom_line(data = df, aes(x = x, y = x**2))
+p <- p + ggtitle("\U03B2 = \U03B1 and \U03B2 = \U03B1\U00B2 for 0 \U2265 \U03B1 \U2265 2")
+p <- p + ylab("Output, \U03B2 (m\U03A9)")
+p <- p + xlab("Input, \U03B1 (\U03BCs)")
+print(p)
+```
+
+Latex in Labels
+---------------
+By using the `latex2exp` package, you can use the full power of Latex to generate proper-looking labels. Note, however, that backslashes have a special meaning in R and you need to *escape* this by using a second backslash (an escaping backslash) in order to allow the first backslash be interpreted as such by Latex:
+
+```{r}
+library(latex2exp)
+
+df <- data.frame(x = seq(0, 2, 0.01))
+
+p <- ggplot()
+p <- p + geom_line(data = df, aes(x = x, y = x))
+p <- p + geom_line(data = df, aes(x = x, y = x**2))
+p <- p + ggtitle(TeX("\\beta = \\alpha and \\beta = \\alpha$^2$ for 0\\geq\\alpha\\geq{}2"))
+p <- p + ylab(TeX("Output, \\beta (m\\Omega)"))
+p <- p + xlab(TeX("Input, \\alpha (\\mu{}s)"))
 print(p)
 ```
 
