@@ -39,11 +39,30 @@ $RC = 1.96 \times \sqrt{2\sigma_w^2} = 2.77\sigma_w$
 
 where $\sigma_w$ is the *within-subject standard deviation* - the standard deviation of the values you will get if you measure the same subject multiple times. In practice, it is not always feasible to attempt to calculate the within-subject standard deviation exactly (as it might require too many repeats, which can be expensive) and it isn't always possible either (ie it might be a function instead of a single number) so it is usually *approximated* as the average (mean) sample standard deviation of multiple sets of repeated measurements. When approximating in this way, we use the symbol $s_w$ to differentiate from the true value of the within-subject standard deviation, $\sigma_w$.
 
+A Special Case
+--------------
 In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows:
 
 $RC = 1.96 \times \sqrt{\frac{\Sigma\left(m_2 - m_1\right)^2}{n}}$
 
 where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands.<sup>[7, 8]</sup> Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*.<sup>[9]</sup>
+
+Where Does the 1.96 Come From?
+------------------------------
+If a random number is chosen from a normal distribution that has a mean of 0 and a standard deviation of 1, the probability that the number will be less than or equal to 1.96 is 0.95 (ie a 95% chance). Therefore, this number appears a lot in formulas that use a 95% confidence level, such as this one. It can be calculated more exactly in Python by using the percent-point function (aka the quantile function) of the normal distribution as found in Scipy's "stats" module:
+
+```{python}
+from scipy import stats
+
+# Significance level
+alpha = 0.05
+# Two-tailed test
+tails = 2
+
+print(stats.norm.ppf(1 - alpha / tails))
+```
+
+Note that the `stats.norm.ppf` function uses a normal distribution with a mean of 0 and a standard deviation of 1 by default but, for the record, this can be changed using the `loc` and `scale` keyword arguments.
 
 Repeatability vs Reproducibility
 ================================
