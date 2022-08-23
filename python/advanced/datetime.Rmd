@@ -231,7 +231,9 @@ dt = datetime.fromisoformat('2012-03-04 05:06:07')
 print(dt)
 ```
 
-However, there is now also the option to use the `strptime()` (**str**ing **p**arse **time**) function to create a datetime object from a string in a *custom format*. You can define this custom format using the [format codes](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes):
+Create from a String not in ISO Format
+--------------------------------------
+There is now also the option to use the `strptime()` (**str**ing **p**arse **time**) function to create a datetime object from a string in a *custom format*. You define this custom format using the [format codes](https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes):
 
 ```{python}
 # Create a string representation of a date and time, not in ISO format
