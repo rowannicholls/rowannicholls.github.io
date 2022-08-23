@@ -1,0 +1,277 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Args and Kwargs'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+> This page is about **\*args** and **\*\*kwargs**.
+> 
+> In other words, it's about **arg**uments and **k**ey**w**ord **arg**uments, and about what that single- and double-asterisk notation means.
+
+Asterisk Operations vs Asterisk Notations
+=========================================
+Firstly, let's mention what asterisk notation is **not**. It's **not** a type of **operation**. This is confusing, because a single asterisk can be used in Python for *multiplication* and double asterisks can be used to *raise to a power*, and both of these are operations:
+
+```{python}
+# A single asterisk performs multiplication
+x = 5 * 3
+print(x)
+```
+
+```{python}
+# Double asterisks perform exponentiation
+x = 5**3
+print(x)
+```
+
+This is *not* what this page is about. Instead, it is about the single- and double-asterisk _notations_ which differ from the above _operations_ in that they do not augment and return objects. If we try to treat them as operations, we get errors:
+
+```{python, eval=FALSE}
+# This will produce an error
+x = *3
+```
+
+```
+SyntaxError: can't use starred expression here
+```
+
+```{python, eval=FALSE}
+# This will produce an error
+x = **3
+```
+
+```
+SyntaxError: invalid syntax
+```
+
+What is Asterisk Notation?
+==========================
+Asterisk notation **only has meaning when used with the inputs to functions**. More specifically:
+
+- The single-asterisk notation means 'the unnamed inputs to a function'
+- The double-asterisk notation means 'the named inputs to a function'
+
+As an example, let's take the `print()` function which can have multiple inputs to it:
+
+```{python}
+print('A', 'B', 'C')
+```
+
+In that example, it had three inputs. Here's another example where those same three inputs have been bundled together into a list:
+
+```{python}
+ls = ['A', 'B', 'C']
+print(ls)
+```
+
+But hang on, those outputs are not the same! "`A B C`"" is not the same as "`['A', 'B', 'C']`".
+
+The difference is that the first example had *three* inputs ('A', 'B' and 'C') whereas the second example had only *one* input (ls). The fact that this one input had three elements doesn't change the fact that it's _one_ list! The **single-asterisk notation**, however, does change this: it causes the list `ls` to be interpreted as 'the inputs to the function', and so `print()` interprets it as three things:
+
+```{python}
+print(*ls)
+```
+
+This is the same output as the first example. The single asterisk has unpacked the list into three separate items.
+
+Single-Asterisk Notation with a User-Defined Function
+=====================================================
+Instead of a built-in function like `print()`, here's the single-asterisk notation in action with a **custom function**. It demonstrates the real usefulness of this notation: the fact that the number of inputs can be as many or as few as you want. Usually, you would need to specify in some way how many arguments are expected.
+
+```{python}
+def example_function(*args):
+    print(args)
+```
+
+With this function, any number of input can be given:
+
+```{python}
+example_function('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J')
+```
+
+This output is equivalent to:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
+example_function(*ls)
+```
+
+As you can see, the output is a tuple. This may be unexpected for two reasons:
+
+- It's not a list, despite `ls` having originally been a list
+- It's one thing (a tuple), not ten things
+
+The easiest way to think about this is to consider the two asterisks (the one in the function call - `*ls` - and the one in the function definition - `*args`) to have cancelled each other out: the first asterisk converted the single list into ten arguments and the second asterisk converted those ten arguments back into a single thing (and a tuple is just the default output format of this conversion).
+
+Note that, as mentioned previously, this conversion only has meaning in the context of function arguments. You can't use single-asterisk notation to split lists into multiple objects or to concatenate multiple objects into a tuple in general. If you try, you'll probably get a syntax error:
+
+```{python, eval=FALSE}
+ls = ['A', 'B', 'C']
+tup = *ls
+```
+
+```
+SyntaxError: can't use starred expression here
+```
+
+```{python, eval=FALSE}
+ls = *(*ls)
+```
+
+```
+SyntaxError: cannot use starred expression here
+```
+
+Examples to Compare
+-------------------
+Here's a function that takes one input - a list - and adds its elements together:
+
+```{python}
+def add_numbers(args):
+    """Add a bunch of numbers together."""
+    running_total = 0
+    for number in args:
+        running_total += number
+    return running_total
+
+
+print(add_numbers([1, 2, 3, 4]))
+```
+
+Now, here's the same function except it takes multiple inputs and converts them all into a tuple:
+
+```{python}
+def add_numbers(*args):
+    """Add a bunch of numbers together."""
+    running_total = 0
+    for number in args:
+        running_total += number
+    return running_total
+
+
+print(add_numbers(1, 2, 3, 4))
+```
+
+The difference is that the second function had the single-asterisk notation in the definition of its input: `*args` vs `args`.
+
+For completeness, here's the second function again but being given a list that is then interpreted as multiple inputs (which is equivalent to the second example):
+
+```{python}
+ls = [1, 2, 3, 4]
+print(add_numbers(*ls))
+```
+
+Another Example
+---------------
+Single-asterisk notation is useful when augmenting only part of a list of things. For example, imagine we want to import a file from one location then export it to a different-but-similar location:
+
+```{python}
+from pathlib import Path
+
+# Create a path to a file
+path = Path(Path.home(), 'Input Folder', 'Random Sub-Folder', 'File.txt')
+print(path)
+```
+
+When we want to export it we can augment the path like this:
+
+```{python}
+path = Path(Path.home(), 'Output Folder', *path.parts[-2:])
+print(path)
+```
+
+Just a note that if you do something like this it's good practice to double check that the output folder exists before you try to export to it:
+
+```{python, eval=FALSE}
+import os
+
+os.makedirs(path.parents[0], exist_ok=True)
+```
+
+Double-Asterisk Notation
+========================
+Whereas single-asterisk notation is used with **unnamed** inputs to functions, double-asterisk notation is used with **named** inputs to functions. Instead of lists and tuples, the relevant data structure is the *dictionary:*
+
+```{python}
+def example_function(**kwargs):
+    print(kwargs)
+
+
+example_function(first=1, second=2, third=3)
+```
+
+The above is equivalent to:
+
+```{python}
+dct = {
+    'first': 1,
+    'second': 2,
+    'third': 3
+}
+example_function(**dct)
+```
+
+The double-asterisk splits the dictionary up into three **key-value pairs** which then get used as the named inputs to the function. They are then converted back into a dictionary before being printed.
+
+Another Example
+---------------
+Here's a function that calculates a rugby team's score from the methods in which they scored:
+
+```{python}
+def rugby_score(**kwargs):
+    score = 0
+    score = score + kwargs['tries'] * 5
+    score = score + kwargs['conversions'] * 2
+    score = score + kwargs['penalties'] * 3
+    score = score + kwargs['drop_kicks'] * 3
+    return score
+
+
+score = rugby_score(tries=3, conversions=2, penalties=3, drop_kicks=1)
+print(score)
+```
+
+The above is equivalent to:
+
+```{python}
+scores_in_a_rugby_match = {
+    'tries': 3,
+    'conversions': 2,
+    'penalties': 3,
+    'drop_kicks': 1
+}
+score = rugby_score(**scores_in_a_rugby_match)
+print(score)
+```
+
+Contrast this to the following example where ONLY a dictionary can be used as an input (as opposed to keyword arguments):
+
+```{python}
+def rugby_score(kwargs):
+    score = 0
+    score = score + kwargs['tries'] * 5
+    score = score + kwargs['conversions'] * 2
+    score = score + kwargs['penalties'] * 3
+    score = score + kwargs['drop_kicks'] * 3
+    return score
+
+
+score = rugby_score(scores_in_a_rugby_match)
+print(score)
+```
+
+So, in summary, the value of *single-asterisk notation* is that it allows functions to take either a list **or** multiple arguments as inputs (with there being no need to specify the length of the list or the number of arguments). Similarly, the value of *double-asterisk notation* is that it allows function to take either a dictionary **or** multiple keyword arguments as inputs (again with there being no need to specify the length or number of inputs).
+
+[⇦ Back](../../python.html)
+
+</font>
