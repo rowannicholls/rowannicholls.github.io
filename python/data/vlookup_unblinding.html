@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Data Handling in Python: Using VLOOKUP for Unblinding</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -439,7 +439,7 @@ De:"traffic_type",Ca:"transaction_id",Z:"transport_url",qg:"trip_type",Mc:"updat
 Ia:"user_properties",yg:"us_privacy_string",fa:"value",Jd:"wbraid",zg:"wbraid_multiple_conversions",Bg:"_host_name",Cg:"_in_page_command",Dg:"_is_linker_valid",Eg:"_is_passthrough_cid",Fg:"non_personalized_ads"}},md={},nd=Object.freeze((md[T.g.U]=1,md[T.g.sc]=1,md[T.g.uc]=1,md[T.g.V]=1,md[T.g.Xa]=1,md[T.g.Fa]=1,md[T.g.Ya]=1,md[T.g.Bc]=1,md[T.g.se]=1,md[T.g.Za]=1,md[T.g.sb]=1,md[T.g.Dc]=1,md[T.g.W]=1,md[T.g.te]=1,md[T.g.Kb]=1,md[T.g.Ad]=1,md[T.g.Bd]=1,md[T.g.Ic]=1,md[T.g.Jc]=1,md[T.g.lb]=1,md[T.g.Ed]=
 1,md[T.g.Fd]=1,md[T.g.xe]=1,md[T.g.na]=1,md[T.g.Id]=1,md[T.g.nb]=1,md[T.g.ra]=1,md[T.g.vb]=1,md[T.g.Lc]=1,md[T.g.Be]=1,md[T.g.Rb]=1,md[T.g.Z]=1,md[T.g.Mc]=1,md[T.g.Sb]=1,md[T.g.Ia]=1,md)),od=Object.freeze([T.g.Ha,T.g.Na,T.g.Qb,T.g.Ga,T.g.ng,T.g.va,T.g.ve,T.g.Sh]),pd={},qd=Object.freeze((pd[T.g.Hh]=1,pd[T.g.Ih]=1,pd[T.g.Jh]=1,pd[T.g.Kh]=1,pd[T.g.Lh]=1,pd[T.g.Mh]=1,pd[T.g.Nh]=1,pd[T.g.Oh]=1,pd[T.g.Ph]=1,pd[T.g.oe]=1,pd)),rd={},sd=Object.freeze((rd[T.g.Hf]=1,rd[T.g.If]=1,rd[T.g.kc]=1,rd[T.g.mc]=1,rd[T.g.Jf]=
 1,rd[T.g.Gb]=1,rd[T.g.nc]=1,rd[T.g.qb]=1,rd[T.g.Hb]=1,rd[T.g.rb]=1,rd[T.g.za]=1,rd[T.g.oc]=1,rd[T.g.Ea]=1,rd[T.g.Kf]=1,rd)),td=Object.freeze([T.g.U,T.g.uc,T.g.sb]),ud=Object.freeze([].concat(td)),vd=Object.freeze([T.g.Fa,T.g.Bd,T.g.Lc,T.g.Be,T.g.zd]),wd=Object.freeze([].concat(vd)),xd={},yd=(xd[T.g.C]="1",xd[T.g.O]="2",xd),zd={},Ad=Object.freeze((zd[T.g.U]=1,zd[T.g.sc]=1,zd[T.g.qa]=1,zd[T.g.Ua]=1,zd[T.g.rd]=1,zd[T.g.vc]=1,zd[T.g.wc]=1,zd[T.g.xc]=1,zd[T.g.V]=1,zd[T.g.yc]=1,zd[T.g.Ba]=1,zd[T.g.ma]=
-1,zd[T.g.Xa]=1,zd[T.g.Fa]=1,zd[T.g.Ya]=1,zd[T.g.Za]=1,zd[T.g.ja]=1,zd[T.g.Cc]=1,zd[T.g.W]=1,zd[T.g.Mf]=1,zd[T.g.Gc]=1,zd[T.g.Hc]=1,zd[T.g.ve]=1,zd[T.g.Ic]=1,zd[T.g.Ga]=1,zd[T.g.Pb]=1,zd[T.g.Ha]=1,zd[T.g.Na]=1,zd[T.g.hg]=1,zd[T.g.ig]=1,zd[T.g.jg]=1,zd[T.g.kg]=1,zd[T.g.nb]=1,zd[T.g.ra]=1,zd[T.g.vb]=1,zd[T.g.Rb]=1,zd[T.g.Ca]=1,zd[T.g.Z]=1,zd[T.g.Mc]=1,zd[T.g.cb]=1,zd[T.g.sa]=1,zd[T.g.va]=1,zd[T.g.fa]=1,zd));Object.freeze(T.g);var Bd={},Cd=G.google_tag_manager=G.google_tag_manager||{},Dd=Math.random();Bd.Od="8m0";Bd.aa="dataLayer";Bd.Gh="ChEI8JiXmAYQ7JG18b2oicOYARInALPHLjEywTu4HrJfKJ03vqLDUNUGfAGjoi/cgmYZGPeOfE7HgsJaGgK4iw\x3d\x3d";var Ed={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Gd={__paused:!0,__tg:!0},Hd;for(Hd in Ed)Ed.hasOwnProperty(Hd)&&(Gd[Hd]=!0);Bd.jc="www.googletagmanager.com";var Id,Jd=Bd.jc+"/gtm.js";Jd=Bd.jc+"/gtag/js";Id=Jd;
+1,zd[T.g.Xa]=1,zd[T.g.Fa]=1,zd[T.g.Ya]=1,zd[T.g.Za]=1,zd[T.g.ja]=1,zd[T.g.Cc]=1,zd[T.g.W]=1,zd[T.g.Mf]=1,zd[T.g.Gc]=1,zd[T.g.Hc]=1,zd[T.g.ve]=1,zd[T.g.Ic]=1,zd[T.g.Ga]=1,zd[T.g.Pb]=1,zd[T.g.Ha]=1,zd[T.g.Na]=1,zd[T.g.hg]=1,zd[T.g.ig]=1,zd[T.g.jg]=1,zd[T.g.kg]=1,zd[T.g.nb]=1,zd[T.g.ra]=1,zd[T.g.vb]=1,zd[T.g.Rb]=1,zd[T.g.Ca]=1,zd[T.g.Z]=1,zd[T.g.Mc]=1,zd[T.g.cb]=1,zd[T.g.sa]=1,zd[T.g.va]=1,zd[T.g.fa]=1,zd));Object.freeze(T.g);var Bd={},Cd=G.google_tag_manager=G.google_tag_manager||{},Dd=Math.random();Bd.Od="8m0";Bd.aa="dataLayer";Bd.Gh="ChEI8JiXmAYQ7JG18b2oicOYARInALPHLjE9EW3g9a3R+uAmAupFqTNjTs5OhgWON6AD/vPHP3/2cv0NGgIoHQ\x3d\x3d";var Ed={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Gd={__paused:!0,__tg:!0},Hd;for(Hd in Ed)Ed.hasOwnProperty(Hd)&&(Gd[Hd]=!0);Bd.jc="www.googletagmanager.com";var Id,Jd=Bd.jc+"/gtm.js";Jd=Bd.jc+"/gtag/js";Id=Jd;
 var Kd=ya(""),Ld=ya(""),Md=null,Nd=null,Od={},Pd={},Qd=function(){var a=Cd.sequence||1;Cd.sequence=a+1;return a};Bd.Fh="";var Rd="";Bd.Pd=Rd;var Sd=new sa,Td={},Ud={},Xd={name:Bd.aa,set:function(a,b){P(Ia(a,b),Td);Vd()},get:function(a){return Wd(a,2)},reset:function(){Sd=new sa;Td={};Vd()}},Wd=function(a,b){return 2!=b?Sd.get(a):Yd(a)},Yd=function(a){var b,c=a.split(".");b=b||[];for(var d=Td,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},Zd=function(a,b){Ud.hasOwnProperty(a)||(Sd.set(a,b),P(Ia(a,b),Td),Vd())},Vd=function(a){z(Ud,function(b,c){Sd.set(b,c);P(Ia(b),Td);P(Ia(b,
 c),Td);a&&delete Ud[b]})},$d=function(a,b){var c,d=1!==(void 0===b?2:b)?Yd(a):Sd.get(a);"array"===ub(d)||"object"===ub(d)?c=P(d):c=d;return c};var ae,be=!1,ce=function(a){if(!be){be=!0;ae=ae||{}}return ae[a]};var de=function(){var a=G.screen;return{width:a?a.width:0,height:a?a.height:0}},ee=function(a){if(I.hidden)return!0;var b=a.getBoundingClientRect();if(b.top==b.bottom||b.left==b.right||!G.getComputedStyle)return!0;var c=G.getComputedStyle(a,null);if("hidden"===c.visibility)return!0;for(var d=a,e=c;d;){if("none"===e.display)return!0;var f=e.opacity,g=e.filter;if(g){var l=g.indexOf("opacity(");0<=l&&(g=g.substring(l+8,g.indexOf(")",l)),"%"==g.charAt(g.length-1)&&(g=g.substring(0,g.length-1)),f=Math.min(g,
 f))}if(void 0!==f&&0>=f)return!0;(d=d.parentElement)&&(e=G.getComputedStyle(d,null))}return!1};var ne=/:[0-9]+$/,oe=function(a,b,c){for(var d=a.split("&"),e=0;e<d.length;e++){var f=d[e].split("=");if(decodeURIComponent(f[0]).replace(/\+/g," ")===b){var g=f.slice(1).join("=");return c?g:decodeURIComponent(g).replace(/\+/g," ")}}},re=function(a,b,c,d,e){b&&(b=String(b).toLowerCase());if("protocol"===b||"port"===b)a.protocol=pe(a.protocol)||pe(G.location.protocol);"port"===b?a.port=String(Number(a.hostname?a.port:G.location.port)||("http"===a.protocol?80:"https"===a.protocol?443:"")):"host"===
@@ -672,193 +672,116 @@ data.resource||{},e=d.macros||[],f=0;f<e.length;f++)Xb.push(e[f]);for(var g=d.ta
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Data Handling in Python:</font><br>Using VLOOKUP for Unblinding</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#example-data"><span class="toc-section-number">1</span> Example Data</a></li>
+<li><a href="#create-a-key"><span class="toc-section-number">2</span> Create a Key</a></li>
+<li><a href="#replicate-the-vlookup-function"><span class="toc-section-number">3</span> Replicate the VLOOKUP Function</a></li>
+<li><a href="#apply-the-function"><span class="toc-section-number">4</span> Apply the Function</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/errors.html">Errors</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<p><a href="../../python.html">⇦ Back</a></p>
+<p>VLOOKUP is a function that is used all the time in spreadsheet programmes such as Microsoft Excel or LibreOffice Calc. There is no one-line equivalent in Python’s Pandas but the same thing can be achieved in two lines by <em>filtering</em> then <em>accessing:</em></p>
+<pre class="python"><code># VLOOKUP in Python&#39;s Pandas
+idx = df[df[column_name_1] == criterion].index
+value = df.loc[idx, column_name_2]</code></pre>
+<p>In this tutorial we’ll create a custom function that mimics the format of Excel’s VLOOKUP and use it to unblind a dataset from a blinded experiment.</p>
+<div id="example-data" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Example Data</h1>
+<p>We’re going to use scikit-learn’s ‘Diabetes’ toy dataset. You can read about it over <a href="https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset">here</a> but for the purpose of this tutorial all you need to know is that it contains the medical data of participants in a study. It can be downloaded from the internet using Pandas:</p>
+<pre class="python"><code>import pandas as pd
+
+# Download the dataset from the internet as tab-separated variables
+url = &#39;https://www4.stat.ncsu.edu/~boos/var.select/diabetes.tab.txt&#39;
+df = pd.read_csv(url, sep=&#39;\t&#39;)</code></pre>
+<p>Let’s create participant IDs from the data frame’s index:</p>
+<pre class="python"><code># Create participant numbers
+df[&#39;ID&#39;] = &#39;Participant &#39; + (df.index + 1).astype(str)</code></pre>
+<p>Now we can take a look at it:</p>
+<pre class="python"><code>print(df.head())</code></pre>
+<pre><code>##    AGE  SEX   BMI     BP   S1     S2    S3   S4      S5  S6    Y             ID
+## 0   59    2  32.1  101.0  157   93.2  38.0  4.0  4.8598  87  151  Participant 1
+## 1   48    1  21.6   87.0  183  103.2  70.0  3.0  3.8918  69   75  Participant 2
+## 2   72    2  30.5   93.0  156   93.6  41.0  4.0  4.6728  85  141  Participant 3
+## 3   24    1  25.3   84.0  198  131.4  40.0  5.0  4.8903  89  206  Participant 4
+## 4   50    1  23.0  101.0  192  125.4  52.0  4.0  4.2905  80  135  Participant 5</code></pre>
+<p>As you can see, we have information and measurements for each person but do not know their names. To unblind the data we need a ‘key’ that links the participants’ IDs to their real names.</p>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --></li>
-</ul></li>
-<li><a href="python/advanced/args_kwargs.html">Args and Kwargs</a> <!-- 5. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a> <!-- 6. [Webscraping] --> <!-- 7. [Bitwise Operators] --></li>
-<li><a href="python/advanced/error_handling.html">Error Handling</a> <!-- 9. [Linting] --> <!-- 10. [Variable Scope] --></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="create-a-key" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Create a Key</h1>
+<p>Create a data frame that contains both the participants’ blinded IDs and their real names. In a real-life scenario, this might be a spreadsheet that you import into Python using <code>read_csv()</code> or <code>read_excel()</code> but for this example we will create it manually. I’m not creative enough to come up with real-sounding names so I’ll use a package called <code>names</code> to randomly generate them for me. You can download this for yourself by running the following from the terminal (replace <code>3.10</code> with the version of Python you are using):</p>
+<pre><code>python3.10 -m pip install names</code></pre>
+<p>To ensure we get the same random names each time we run this code, we need to set the random package’s ‘seed’ to a fixed value:</p>
+<pre class="python"><code>import names
+import random
+
+# Get the same random names every time
+random.seed(20220824)
+
+# Create a data frame from a dictionary
+dct = {
+    &#39;blinded_name&#39;: [&#39;Participant 1&#39;, &#39;Participant 2&#39;, &#39;Participant 3&#39;, &#39;Participant 4&#39;, &#39;Participant 5&#39;],
+    &#39;unblinded_name&#39;: [
+        names.get_full_name(gender=&#39;female&#39;),
+        names.get_full_name(gender=&#39;male&#39;),
+        names.get_full_name(gender=&#39;female&#39;),
+        names.get_full_name(gender=&#39;male&#39;),
+        names.get_full_name(gender=&#39;male&#39;),
+    ],
+}
+key = pd.DataFrame(dct)
+print(key)</code></pre>
+<pre><code>##     blinded_name    unblinded_name
+## 0  Participant 1    Gina Contreras
+## 1  Participant 2     Dale Casanova
+## 2  Participant 3       Jill Cooper
+## 3  Participant 4  Donald Ballenger
+## 4  Participant 5    Martin Hogarth</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a>
+<div id="replicate-the-vlookup-function" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Replicate the VLOOKUP Function</h1>
+<p>In Excel, Calc or Google Sheets, the VLOOKUP function takes three inputs:</p>
 <ul>
-<li><a href="python/data/export_to_word.html">Export Tables to Word</a></li>
-</ul></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-<li><a href="python/data/drop_columns_false.html">Drop Columns That Only Contain “False”</a></li>
-<li><a href="python/data/vlookup_unblinding.html">Using VLOOKUP for Unblinding</a></li>
-</ol>
+<li>The <strong>search criterion</strong>, which is the value you want to search for</li>
+<li>An <strong>array</strong> or range, the first column of which is where you want to search for the search criterion</li>
+<li>The <strong>index</strong> of the column within the range that contains the values you want returned, ie the data you are looking for</li>
+</ul>
+<p>We can replicate this as follows:</p>
+<pre class="python"><code>def vlookup(search_criterion, array, index):
+    &quot;&quot;&quot;
+    Perform a VLOOKUP operation.
+
+    This uses Microsoft Excel&#39;s/LibreOffice Calc&#39;s format for the VLOOKUP function.
+    &quot;&quot;&quot;
+    # Lookup patient IDs in column 0
+    idx = array[array.iloc[:, 0] == search_criterion].index
+    # Lookup corresponding values in column 1
+    try:
+        value = array.iloc[idx, index].values[0]
+    except IndexError:
+        value = None
+
+    return value</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a>
-<ul>
-<li><a href="python/graphs/colours_good_figures.html">Colours that Look Good in Figures</a></li>
-</ul></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing directly from Pandas data frames <em>- This can be done using either the pyplot or the object-orientated style</em>
-<ul>
-<li><a href="python/graphs/pandas/bar_plots.html">Bar Plots</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li>Linear Functions
-<ul>
-<li><a href="python/curve_fitting/linear_comparison.html">Comparison of Methods</a></li>
-<li><a href="python/curve_fitting/linear_regression.html">Linear Regression</a></li>
-</ul></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-<li><a href="python/statistics/effect_size.html">Effect Size</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li>Regression
-<ul>
-<li><a href="python/statistics/hypothesis_testing/constant_regression.html">Constant Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/simple_linear_regression.html">Simple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/multiple_linear_regression.html">Multiple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/quadratic_regression.html">Quadratic Regression</a></li>
-</ul></li>
-<li>t-Tests
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired Two-Sample t-Test</a></li>
-<li>Two One-Sided t-Test (TOST)
-<ul>
-<li><a href="python/statistics/hypothesis_testing/tost_unpaired.html">Unpaired</a></li>
-<li><a href="python/statistics/hypothesis_testing/tost_paired.html">Paired</a></li>
-</ul></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney U Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)</li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="apply-the-function" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Apply the Function</h1>
+<p>In our example, we want to search the first column of the <code>key</code> data frame to find the participants’ IDs, then look up the corresponding real names in the second column (which is column ‘1’ because Python is zero-indexed). To do this, we <strong>apply</strong> our <code>vlookup()</code> function to the participants’ IDs, which automatically causes these IDs to be interpreted as the search criteria. We then need to specify the remaining two arguments: the <code>key</code> data frame as the array to look at and <code>1</code> as the index of the column within <code>key</code> that contains the data we are looking for:</p>
+<pre class="python"><code>df[&#39;NAME&#39;] = df[&#39;ID&#39;].apply(vlookup, args=(key, 1))
+print(df.head())</code></pre>
+<pre><code>##    AGE  SEX   BMI     BP   S1     S2    S3   S4      S5  S6    Y             ID              NAME
+## 0   59    2  32.1  101.0  157   93.2  38.0  4.0  4.8598  87  151  Participant 1    Gina Contreras
+## 1   48    1  21.6   87.0  183  103.2  70.0  3.0  3.8918  69   75  Participant 2     Dale Casanova
+## 2   72    2  30.5   93.0  156   93.6  41.0  4.0  4.6728  85  141  Participant 3       Jill Cooper
+## 3   24    1  25.3   84.0  198  131.4  40.0  5.0  4.8903  89  206  Participant 4  Donald Ballenger
+## 4   50    1  23.0  101.0  192  125.4  52.0  4.0  4.2905  80  135  Participant 5    Martin Hogarth</code></pre>
+<p>We now know the name of the person each row of data came from.</p>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 

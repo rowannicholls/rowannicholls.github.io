@@ -1,0 +1,133 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Using VLOOKUP for Unblinding'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+VLOOKUP is a function that is used all the time in spreadsheet programmes such as Microsoft Excel or LibreOffice Calc. There is no one-line equivalent in Python's Pandas but the same thing can be achieved in two lines by *filtering* then *accessing:*
+
+```{python, eval=FALSE}
+# VLOOKUP in Python's Pandas
+idx = df[df[column_name_1] == criterion].index
+value = df.loc[idx, column_name_2]
+```
+
+In this tutorial we'll create a custom function that mimics the format of Excel's VLOOKUP and use it to unblind a dataset from a blinded experiment.
+
+Example Data
+============
+We're going to use scikit-learn's 'Diabetes' toy dataset. You can read about it over [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset) but for the purpose of this tutorial all you need to know is that it contains the medical data of participants in a study. It can be downloaded from the internet using Pandas:
+
+```{python}
+import pandas as pd
+
+# Download the dataset from the internet as tab-separated variables
+url = 'https://www4.stat.ncsu.edu/~boos/var.select/diabetes.tab.txt'
+df = pd.read_csv(url, sep='\t')
+```
+
+```{python, echo=FALSE}
+# Display options
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', 362)
+```
+
+Let's create participant IDs from the data frame's index:
+
+```{python}
+# Create participant numbers
+df['ID'] = 'Participant ' + (df.index + 1).astype(str)
+```
+
+Now we can take a look at it:
+
+```{python}
+print(df.head())
+```
+
+As you can see, we have information and measurements for each person but do not know their names. To unblind the data we need a 'key' that links the participants' IDs to their real names.
+
+Create a Key
+============
+Create a data frame that contains both the participants' blinded IDs and their real names. In a real-life scenario, this might be a spreadsheet that you import into Python using `read_csv()` or `read_excel()` but for this example we will create it manually. I'm not creative enough to come up with real-sounding names so I'll use a package called `names` to randomly generate them for me. You can download this for yourself by running the following from the terminal (replace `3.10` with the version of Python you are using):
+
+```
+python3.10 -m pip install names
+```
+
+To ensure we get the same random names each time we run this code, we need to set the random package's 'seed' to a fixed value:
+
+```{python}
+import names
+import random
+
+# Get the same random names every time
+random.seed(20220824)
+
+# Create a data frame from a dictionary
+dct = {
+    'blinded_name': ['Participant 1', 'Participant 2', 'Participant 3', 'Participant 4', 'Participant 5'],
+    'unblinded_name': [
+        names.get_full_name(gender='female'),
+        names.get_full_name(gender='male'),
+        names.get_full_name(gender='female'),
+        names.get_full_name(gender='male'),
+        names.get_full_name(gender='male'),
+    ],
+}
+key = pd.DataFrame(dct)
+print(key)
+```
+
+Replicate the VLOOKUP Function
+==============================
+In Excel, Calc or Google Sheets, the VLOOKUP function takes three inputs:
+
+- The **search criterion**, which is the value you want to search for
+- An **array** or range, the first column of which is where you want to search for the search criterion
+- The **index** of the column within the range that contains the values you want returned, ie the data you are looking for
+
+We can replicate this as follows:
+
+```{python}
+def vlookup(search_criterion, array, index):
+    """
+    Perform a VLOOKUP operation.
+
+    This uses Microsoft Excel's/LibreOffice Calc's format for the VLOOKUP function.
+    """
+    # Lookup patient IDs in column 0
+    idx = array[array.iloc[:, 0] == search_criterion].index
+    # Lookup corresponding values in column 1
+    try:
+        value = array.iloc[idx, index].values[0]
+    except IndexError:
+        value = None
+
+    return value
+```
+
+Apply the Function
+==================
+In our example, we want to search the first column of the `key` data frame to find the participants' IDs, then look up the corresponding real names in the second column (which is column '1' because Python is zero-indexed). To do this, we **apply** our `vlookup()` function to the participants' IDs, which automatically causes these IDs to be interpreted as the search criteria. We then need to specify the remaining two arguments: the `key` data frame as the array to look at and `1` as the index of the column within `key` that contains the data we are looking for:
+
+```{python}
+df['NAME'] = df['ID'].apply(vlookup, args=(key, 1))
+print(df.head())
+```
+
+We now know the name of the person each row of data came from.
+
+[⇦ Back](../../python.html)
+
+</font>
