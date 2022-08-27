@@ -1,0 +1,72 @@
+---
+title: '<font size="5">Utilities Written in Bash and Z Shell:</font><br>Timing a Script'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../bash.html)
+
+The `sleep` function causes Bash/Z Shell to sleep (do nothing) for a period of time. For example, `sleep 1` will do nothing for 1 second.
+
+The `time` function will measure how long a process takes.
+
+Therefore, `time sleep 1` will measure how long it takes your computer to sleep for 1 second. In theory, it should take exactly 1 second (for obvious reasons), but let's check that:
+
+```{bash, eval=FALSE}
+time sleep 1
+```
+
+```
+## 
+## real 0m1.001s
+## user 0m0.001s
+## sys  0m0.000s
+```
+
+Seems pretty accurate but not exact.
+
+We can save this output to a file by using `2>` (the 2 is necessary because the output of the `time` function is technically classified as an error and so it is an output of the '2nd type'):
+
+```{bash}
+(time sleep 1) 2> "Timing a Script.txt"
+```
+
+In the "Timing a Script.txt" file we get:
+
+```
+
+real    0m1.001s
+user    0m0.001s
+sys 0m0.000s
+```
+
+This took the same amount of time.
+
+If you put the function into a script called "example_script.sh" and make it executable with `chmod +x example_script.sh` it can be run and timed as follows:
+
+```{bash}
+(time ./example_script.sh) 2> "Timing example_script.txt"
+```
+
+In "Timing example_script.txt" we get:
+
+```
+
+real    0m1.002s
+user    0m0.002s
+sys 0m0.000s
+```
+
+This took an additional fraction of a second to execute, presumably due to the time taken to read in the script.
+
+[⇦ Back](../../bash.html)
+
+</font>

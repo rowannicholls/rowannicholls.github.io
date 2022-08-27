@@ -11,7 +11,7 @@
 
 
 
-<title>Bash and Z Shell</title>
+<title>Utilities Written in Bash and Z Shell: Timing a Script</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -439,7 +439,7 @@ Ae:"traffic_type",Ba:"transaction_id",X:"transport_url",ng:"trip_type",Jc:"updat
 Ha:"user_properties",vg:"us_privacy_string",fa:"value",Hd:"wbraid",wg:"wbraid_multiple_conversions",yg:"_host_name",zg:"_in_page_command",Ag:"_is_linker_valid",Bg:"_is_passthrough_cid",Cg:"non_personalized_ads"}},md={},nd=Object.freeze((md[V.g.T]=1,md[V.g.oc]=1,md[V.g.qc]=1,md[V.g.U]=1,md[V.g.Ta]=1,md[V.g.Ea]=1,md[V.g.Ua]=1,md[V.g.zc]=1,md[V.g.oe]=1,md[V.g.Va]=1,md[V.g.qb]=1,md[V.g.Bc]=1,md[V.g.V]=1,md[V.g.pe]=1,md[V.g.Ib]=1,md[V.g.xd]=1,md[V.g.yd]=1,md[V.g.zd]=1,md[V.g.Gc]=1,md[V.g.ib]=1,md[V.g.Cd]=
 1,md[V.g.Dd]=1,md[V.g.ue]=1,md[V.g.ma]=1,md[V.g.Gd]=1,md[V.g.jb]=1,md[V.g.qa]=1,md[V.g.tb]=1,md[V.g.Ic]=1,md[V.g.ye]=1,md[V.g.Pb]=1,md[V.g.X]=1,md[V.g.Jc]=1,md[V.g.Qb]=1,md[V.g.Ha]=1,md)),od=Object.freeze([V.g.Ga,V.g.La,V.g.Ob,V.g.Fa,V.g.kg,V.g.sa,V.g.se,V.g.Oh]),pd={},qd=Object.freeze((pd[V.g.Dh]=1,pd[V.g.Eh]=1,pd[V.g.Fh]=1,pd[V.g.Gh]=1,pd[V.g.Hh]=1,pd[V.g.Ih]=1,pd[V.g.Jh]=1,pd[V.g.Kh]=1,pd[V.g.Lh]=1,pd[V.g.ke]=1,pd)),rd={},sd=Object.freeze((rd[V.g.Ef]=1,rd[V.g.Ff]=1,rd[V.g.ic]=1,rd[V.g.jc]=1,rd[V.g.Gf]=
 1,rd[V.g.Eb]=1,rd[V.g.kc]=1,rd[V.g.ob]=1,rd[V.g.Fb]=1,rd[V.g.pb]=1,rd[V.g.ya]=1,rd[V.g.mc]=1,rd[V.g.Da]=1,rd[V.g.Hf]=1,rd)),td=Object.freeze([V.g.T,V.g.qc,V.g.qb]),ud=Object.freeze([].concat(td)),vd=Object.freeze([V.g.Ea,V.g.yd,V.g.Ic,V.g.ye,V.g.wd]),wd=Object.freeze([].concat(vd)),xd={},yd=(xd[V.g.C]="1",xd[V.g.N]="2",xd),zd={},Ad=Object.freeze((zd[V.g.T]=1,zd[V.g.oc]=1,zd[V.g.oa]=1,zd[V.g.Ra]=1,zd[V.g.od]=1,zd[V.g.sc]=1,zd[V.g.uc]=1,zd[V.g.vc]=1,zd[V.g.U]=1,zd[V.g.wc]=1,zd[V.g.Aa]=1,zd[V.g.la]=
-1,zd[V.g.Ta]=1,zd[V.g.Ea]=1,zd[V.g.Ua]=1,zd[V.g.Va]=1,zd[V.g.ja]=1,zd[V.g.Ac]=1,zd[V.g.V]=1,zd[V.g.Jf]=1,zd[V.g.Ec]=1,zd[V.g.Fc]=1,zd[V.g.se]=1,zd[V.g.zd]=1,zd[V.g.Fa]=1,zd[V.g.Nb]=1,zd[V.g.Ga]=1,zd[V.g.La]=1,zd[V.g.eg]=1,zd[V.g.fg]=1,zd[V.g.gg]=1,zd[V.g.hg]=1,zd[V.g.jb]=1,zd[V.g.qa]=1,zd[V.g.tb]=1,zd[V.g.Pb]=1,zd[V.g.Ba]=1,zd[V.g.X]=1,zd[V.g.Jc]=1,zd[V.g.Xa]=1,zd[V.g.ra]=1,zd[V.g.sa]=1,zd[V.g.fa]=1,zd));Object.freeze(V.g);var Bd={},Cd=G.google_tag_manager=G.google_tag_manager||{},Dd=Math.random();Bd.Md="8o0";Bd.Z="dataLayer";Bd.Ch="ChEI8IGnmAYQrYbh6dLQx5ugARInAGs8eBh5Shmgy2OFNUh9gvXbblSl7vlG70dCmHuXDeue/ACaxE1PGgKkNQ\x3d\x3d";var Ed={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Fd={__paused:!0,__tg:!0},Gd;for(Gd in Ed)Ed.hasOwnProperty(Gd)&&(Fd[Gd]=!0);Bd.hc="www.googletagmanager.com";var Id,Jd=Bd.hc+"/gtm.js";Jd=Bd.hc+"/gtag/js";Id=Jd;
+1,zd[V.g.Ta]=1,zd[V.g.Ea]=1,zd[V.g.Ua]=1,zd[V.g.Va]=1,zd[V.g.ja]=1,zd[V.g.Ac]=1,zd[V.g.V]=1,zd[V.g.Jf]=1,zd[V.g.Ec]=1,zd[V.g.Fc]=1,zd[V.g.se]=1,zd[V.g.zd]=1,zd[V.g.Fa]=1,zd[V.g.Nb]=1,zd[V.g.Ga]=1,zd[V.g.La]=1,zd[V.g.eg]=1,zd[V.g.fg]=1,zd[V.g.gg]=1,zd[V.g.hg]=1,zd[V.g.jb]=1,zd[V.g.qa]=1,zd[V.g.tb]=1,zd[V.g.Pb]=1,zd[V.g.Ba]=1,zd[V.g.X]=1,zd[V.g.Jc]=1,zd[V.g.Xa]=1,zd[V.g.ra]=1,zd[V.g.sa]=1,zd[V.g.fa]=1,zd));Object.freeze(V.g);var Bd={},Cd=G.google_tag_manager=G.google_tag_manager||{},Dd=Math.random();Bd.Md="8o0";Bd.Z="dataLayer";Bd.Ch="ChEI8IGnmAYQrYbh6dLQx5ugARInAGs8eBjbFslY7RJzAFFRlxyFtXETLpR9ADUBJ2cn7/YW8cqia4sTGgItlw\x3d\x3d";var Ed={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Fd={__paused:!0,__tg:!0},Gd;for(Gd in Ed)Ed.hasOwnProperty(Gd)&&(Fd[Gd]=!0);Bd.hc="www.googletagmanager.com";var Id,Jd=Bd.hc+"/gtm.js";Jd=Bd.hc+"/gtag/js";Id=Jd;
 var Kd=ya(""),Ld=ya(""),Md=null,Nd=null,Od={},Pd={},Qd=function(){var a=Cd.sequence||1;Cd.sequence=a+1;return a};Bd.Bh="";var Rd="";Bd.Nd=Rd;var Sd=new sa,Td={},Ud={},Xd={name:Bd.Z,set:function(a,b){P(Ia(a,b),Td);Vd()},get:function(a){return Wd(a,2)},reset:function(){Sd=new sa;Td={};Vd()}},Wd=function(a,b){return 2!=b?Sd.get(a):Yd(a)},Yd=function(a){var b,c=a.split(".");b=b||[];for(var d=Td,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},Zd=function(a,b){Ud.hasOwnProperty(a)||(Sd.set(a,b),P(Ia(a,b),Td),Vd())},Vd=function(a){z(Ud,function(b,c){Sd.set(b,c);P(Ia(b),Td);P(Ia(b,c),
 Td);a&&delete Ud[b]})},$d=function(a,b){var c,d=1!==(void 0===b?2:b)?Yd(a):Sd.get(a);"array"===ub(d)||"object"===ub(d)?c=P(d):c=d;return c};var ae,be=!1,ce=function(a){if(!be){be=!0;ae=ae||{}}return ae[a]};var de=function(){var a=G.screen;return{width:a?a.width:0,height:a?a.height:0}},ee=function(a){if(I.hidden)return!0;var b=a.getBoundingClientRect();if(b.top==b.bottom||b.left==b.right||!G.getComputedStyle)return!0;var c=G.getComputedStyle(a,null);if("hidden"===c.visibility)return!0;for(var d=a,e=c;d;){if("none"===e.display)return!0;var f=e.opacity,g=e.filter;if(g){var l=g.indexOf("opacity(");0<=l&&(g=g.substring(l+8,g.indexOf(")",l)),"%"==g.charAt(g.length-1)&&(g=g.substring(0,g.length-1)),f=Math.min(g,
 f))}if(void 0!==f&&0>=f)return!0;(d=d.parentElement)&&(e=G.getComputedStyle(d,null))}return!1};var ne=/:[0-9]+$/,oe=function(a,b,c){for(var d=a.split("&"),e=0;e<d.length;e++){var f=d[e].split("=");if(decodeURIComponent(f[0]).replace(/\+/g," ")===b){var g=f.slice(1).join("=");return c?g:decodeURIComponent(g).replace(/\+/g," ")}}},re=function(a,b,c,d,e){b&&(b=String(b).toLowerCase());if("protocol"===b||"port"===b)a.protocol=pe(a.protocol)||pe(G.location.protocol);"port"===b?a.port=String(Number(a.hostname?a.port:G.location.port)||("http"===a.protocol?80:"https"===a.protocol?443:"")):"host"===
@@ -673,33 +673,40 @@ data.resource||{},e=d.macros||[],f=0;f<e.length;f++)Xb.push(e[f]);for(var g=d.ta
 
 
 
-<h1 class="title toc-ignore">Bash and Z Shell</h1>
+<h1 class="title toc-ignore"><font size="5">Utilities Written in Bash and Z Shell:</font><br>Timing a Script</h1>
 
 </div>
 
 
 <p><font size="3"></p>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<ol style="list-style-type: decimal">
-<li><a href="bash/intro/myscript.html">Creating and Running a Shell Script</a></li>
-<li><a href="bash/intro/variables.html">Variables and Data Types</a></li>
-<li><a href="bash/intro/maths.html">Maths and Arithmetic</a></li>
-<li><a href="bash/intro/strings.html">Strings</a></li>
-<li><a href="bash/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="bash/intro/arrays_loops.html">Arrays and Loops</a></li>
-<li><a href="bash/intro/functions.html">Functions</a></li>
-<li><a href="bash/intro/passing_arguments.html">Passing Arguments</a></li>
-</ol>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="bash/utilities/unzip_all.html">Unzip All Files</a></li>
-<li><a href="bash/utilities/timing_a_script.html">Timing a Script</a></li>
-</ol>
+<p><a href="../../bash.html">⇦ Back</a></p>
+<p>The <code>sleep</code> function causes Bash/Z Shell to sleep (do nothing) for a period of time. For example, <code>sleep 1</code> will do nothing for 1 second.</p>
+<p>The <code>time</code> function will measure how long a process takes.</p>
+<p>Therefore, <code>time sleep 1</code> will measure how long it takes your computer to sleep for 1 second. In theory, it should take exactly 1 second (for obvious reasons), but let’s check that:</p>
+<pre class="bash"><code>time sleep 1</code></pre>
+<pre><code>## 
+## real 0m1.001s
+## user 0m0.001s
+## sys  0m0.000s</code></pre>
+<p>Seems pretty accurate but not exact.</p>
+<p>We can save this output to a file by using <code>2&gt;</code> (the 2 is necessary because the output of the <code>time</code> function is technically classified as an error and so it is an output of the ‘2nd type’):</p>
+<pre class="bash"><code>(time sleep 1) 2&gt; &quot;Timing a Script.txt&quot;</code></pre>
+<p>In the “Timing a Script.txt” file we get:</p>
+<pre><code>
+real    0m1.001s
+user    0m0.001s
+sys 0m0.000s</code></pre>
+<p>This took the same amount of time.</p>
+<p>If you put the function into a script called “example_script.sh” and make it executable with <code>chmod +x example_script.sh</code> it can be run and timed as follows:</p>
+<pre class="bash"><code>(time ./example_script.sh) 2&gt; &quot;Timing example_script.txt&quot;</code></pre>
+<p>In “Timing example_script.txt” we get:</p>
+<pre><code>
+real    0m1.002s
+user    0m0.002s
+sys 0m0.000s</code></pre>
+<p>This took an additional fraction of a second to execute, presumably due to the time taken to read in the script.</p>
+<p><a href="../../bash.html">⇦ Back</a></p>
 <p></font></p>
-</div>
 
 
 
