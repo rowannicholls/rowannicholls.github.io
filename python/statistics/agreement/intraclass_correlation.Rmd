@@ -73,16 +73,25 @@ In order to use the `intraclass_corr()` function we need to give it four inputs:
 The first of these is a dataframe and the other three are strings (as they are column names). In our example, the things being rated are **Wines**, the raters are the **Judges** and the ratings are the **Scores**, so here's how to calculate the ICC:
 
 ```{python}
-icc = pg.intraclass_corr(
-    data=data, targets='Wine', raters='Judge', ratings='Scores'
-)
+icc = pg.intraclass_corr(data=data, targets='Wine', raters='Judge', ratings='Scores')
 
 pd.set_option('display.max_columns', 8)
 pd.set_option('display.width', 200)
 print(icc)
 ```
 
-This output is very verbose! You get a whole table when you probably only want one number. The different types of models are detailed briefly on [the Wikipedia page](https://en.wikipedia.org/wiki/Intraclass_correlation#Calculation_in_software_packages) but for this example we're just going to choose the second option (**single random raters**) as that's the one used on the Real Statistics page:
+This output is very verbose! You get a whole table when you probably only want one number. Here's how to choose which of the six ICC values you want:
+
+ICC Types
+---------
+The different types of ICC models are detailed briefly on [the Wikipedia page](https://en.wikipedia.org/wiki/Intraclass_correlation#Calculation_in_software_packages), but here's a summary:
+
+- **ICC1**: each of the subjects has been measured by only a sub-set of the raters, and it is NOT the same sub-set of raters that measured each subject
+- **ICC2**: each of the subjects has been measured by only a sub-set of the raters, but it IS the same sub-set of raters that measured each subject
+- **ICC3**: each of the subjects has been measured by the entire population of raters (so we don't have to take inter-rater variability into account)
+- **ICC1k**, **ICC2k** and **ICC3k**: the reliability of the *k* raters when working as a group (whereas ICC1, ICC2 and ICC3 represent the reliability of the raters as individuals). These values will always be higher (in the example they are ~0.91 as opposed to the first three which are ~0.73) because multiple raters working together will always give a statistically more reliable result.
+
+For this example the Real Statistics page uses ICC2 (**single random raters**) which is correct for this example: a group of four judges does not represent the entire population of people who could rate wine, each judge tasted all 8 wines and we want to know the reliability of the raters as individuals:
 
 ```{python}
 icc = icc.set_index('Description')
@@ -90,7 +99,7 @@ icc = icc.set_index('Description')
 print(icc.loc['Single random raters', 'ICC'].round(3))
 ```
 
-This is the same as the value in the original example.
+This is the same value as in the original example.
 
 Confidence Interval
 -------------------
