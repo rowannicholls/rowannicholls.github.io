@@ -209,11 +209,6 @@ Export
 
 Export Data Frames
 ------------------
-Import Pandas:
-```{python}
-import pandas as pd
-```
-
 Export data frame to comma-separated values (.csv):
 ```{python}
 df.to_csv('csv/data frame.csv', index=False)
@@ -660,11 +655,26 @@ Import
 
 Import Comma-Separated Values (CSVs)
 ------------------------------------
-Import comma-separated values (.csv) as a data frame:
+Import comma-separated values (.csv) as a data frame. The first row will be used as the column names and the numbers 0, 1, 2, etc, will be used as the indexes (row names):
 ```{python}
 import pandas as pd
 
 df = pd.read_csv('csv/data frame.csv')
+```
+
+If you instead want to use the values in the first column as the indexes (row names), use `index_col=0`:
+```{python}
+df = pd.read_csv('csv/data frame.csv', index_col=0)
+```
+
+If there are no column names (ie if the values in the first row are not the names of the columns) use `header=None` and the columns will instead be given the numbers 0, 1, 2, etc as their names:
+```{python}
+df = pd.read_csv('csv/data frame.csv', header=None)
+```
+
+If there are no column names but you want to provide your own, use `header=None` and also `names` to define them manually:
+```{python}
+df = pd.read_csv('csv/data frame.csv', header=None, names=['col1', 'col2', 'col3'])
 ```
 
 Import comma-separated values (.csv) as a data frame, interpreting certain values as missing data:
@@ -695,11 +705,6 @@ def dateparser(x):
 
 df = pd.read_csv('csv/data frame.csv', parse_dates=['DOB'], date_parser=dateparser)
 date = df.loc[0, 'DOB']
-```
-
-Import comma-separated values (.csv) as a data frame - use the first column as the index:
-```{python}
-df = pd.read_csv('csv/data frame.csv', parse_dates=True, index_col=0)
 ```
 
 Import all CSVs in a folder as data frames:
@@ -898,7 +903,7 @@ df = pd.read_excel('xls/data frame.xls', index_col=0)
 
 Import Excel 2007-onwards Workbooks (aka Office Open XML Workbooks)
 -------------------------------------------------------------------
-Import Excel 2007 workbook (.xlsx) as a list-of-lists:
+Import an Excel 2007 workbook (.xlsx) as a list-of-lists:
 ```{python}
 def import_xlsx(filename):
     """Import Excel 2007 workbook (.xlsx) as a list-of-lists."""
@@ -915,11 +920,32 @@ def import_xlsx(filename):
 ls_of_ls = import_xlsx('xlsx/list-of-lists.xlsx')
 ```
 
-Import Excel 2007 workbook (.xlsx) as a data frame:
+Import an Excel 2007 workbook (.xlsx) as a data frame. If there are multiple sheets in the workbook, only the first will be imported. The first row will be used as the column names and the numbers 0, 1, 2, etc, will be used as the indexes (row names):
 ```{python}
 import pandas as pd
 
-df = pd.read_excel('xlsx/data frame.xlsx', index_col=None, sheet_name=0)
+df = pd.read_excel('xlsx/data frame.xlsx')
+```
+
+If you instead want to use the values in the first column as the indexes (row names), use `index_col=0`:
+```{python}
+df = pd.read_excel('xlsx/data frame.xlsx', index_col=0)
+```
+
+If there are no column names (ie if the values in the first row are not the names of the columns) use `header=None` and the columns will instead be given the numbers 0, 1, 2, etc as their names:
+```{python}
+df = pd.read_excel('xlsx/data frame.xlsx', header=None)
+```
+
+If there are no column names but you want to provide your own, use `header=None` and also `names` to define them manually:
+```{python}
+df = pd.read_excel('xlsx/data frame.xlsx', header=None, names=['col1', 'col2', 'col3'])
+```
+
+If you want to import a sheet that isn't the first, use `sheet_name` and then either the position of the sheet as a number or the name of the sheet as a string:
+```{python}
+df = pd.read_excel('xlsx/data frame.xlsx', sheet_name=0)
+df = pd.read_excel('xlsx/data frame.xlsx', sheet_name='Sheet1')
 ```
 
 Import Any Spreadsheet Type
