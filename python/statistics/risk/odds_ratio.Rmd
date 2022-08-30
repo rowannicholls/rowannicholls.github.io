@@ -1,0 +1,165 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Odds Ratio'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+This page replicates the example given on the [Wikipedia page](https://en.wikipedia.org/wiki/Odds_ratio) about the odds ratio:
+
+> Suppose a radiation leak in a village of 1,000 people increased the incidence of a rare disease. The total number of people exposed to the radiation was 400, out of which 20 developed the disease and 380 stayed healthy. The total number of people not exposed was 600, out of which 6 developed the disease and 594 stayed healthy.
+
+Example Data
+============
+We can tabulate the data from the above example as follows:
+
+```{python}
+import pandas as pd
+
+# Create a data frame from a dictionary
+dct = {
+    'diseased': [20, 6],
+    'healthy': [380, 594],
+}
+df = pd.DataFrame(dct, index=['exposed', 'not_exposed'])
+
+print(df)
+```
+
+It is more useful (and realistic) to start with this data in a 'long format', ie as a data frame with 1,000 rows where each corresponds to one person:
+
+```{python}
+# Create a data frame from a dictionary
+dct = {
+    'exposed': [True] * 400 + [False] * 600,
+    'diseased': [True] * 20 + [False] * 380 + [True] * 6 + [False] * 594,
+}
+df = pd.DataFrame(dct)
+
+print(df.head())
+```
+
+This 'long format' data can then be summarised in a pivot table that counts the number of people exposed and the number of people who are healthy:
+
+```{python}
+pivot_table = pd.pivot_table(df, index='exposed', columns='diseased', aggfunc='size')
+
+print(pivot_table)
+```
+
+Usually, a contingency table will have the positive (in a statistical sense) results first:
+
+```{python}
+# Re-format the pivot table into a contingency table by reversing the order of the columns and the rows
+contingency_table = pivot_table.iloc[::-1, ::-1]
+
+print(contingency_table)
+```
+
+Risk
+====
+The **risk** of developing the disease given exposure, and of developing the disease given non-exposure, is equal to the number of people who became diseased (20 and 6) divided by the total number of people who were exposed or not exposed (400 and 600), respectively. In other words, we need to sum the values in the contingency table's rows and divide the contingency table by those values:
+
+```{python}
+# Get the total of each row
+totals = contingency_table.sum(axis=1)
+# Divide the values in the contingency table by the total of their row
+risk = contingency_table.div(totals, axis=0)
+
+print(risk)
+```
+
+The **relative risk** of developing the disease given expose vs non-exposure is simply one risk value divided by another: $\dfrac{0.05}{0.01}$
+
+```{python}
+relative_risk = risk.loc[True, True] / risk.loc[False, True]
+
+print(f'Relative risk: {relative_risk:1.0f}')
+```
+
+Odds
+====
+The **odds** of getting the disease if exposed is the ratio of the number of people that became diseased to the number that did not - ie 20 divided by 380 - and similar for those who were not exposed:
+
+```{python}
+odds = contingency_table[True] / contingency_table[False]
+
+print(odds)
+```
+
+In summary:
+
+- **Risk** is the ratio of those who caught the disease following exposure to the *total* who were exposed: $\dfrac{20}{20 + 380}$
+- **Odds** are the ratio of those who caught the disease following exposure to the number who did *not* catch the disease following exposure: $\dfrac{20}{380}$
+
+The **odds ratio** is, unsurprisingly, the ratio of the two odds:
+
+```{python}
+odds_ratio = odds[True] / odds[False]
+
+print(f'Odds ratio: {odds_ratio:3.1f}')
+```
+
+Case-Control Example
+====================
+The Wikipedia page goes on to give a second example wherein the data from all 26 diseased villagers is included but only that from 26 of the healthy villagers is available (which is a more realistic scenario):
+
+```{python}
+# Create a data frame from a dictionary
+dct = {
+    'exposed': [True] * 30 + [False] * 22,
+    'diseased': [True] * 20 + [False] * 10 + [True] * 6 + [False] * 16,
+}
+df = pd.DataFrame(dct)
+pivot_table = pd.pivot_table(df, index='exposed', columns='diseased', aggfunc='size')
+# Re-format the pivot table into a contingency table by reversing the order of the columns and the rows
+contingency_table = pivot_table.iloc[::-1, ::-1]
+
+print(contingency_table)
+```
+
+The relative risk cannot be calculated because we don't have data from the entire population, but we can get the odds ratio by follow the same steps as above:
+
+```{python}
+odds = contingency_table[True] / contingency_table[False]
+odds_ratio = odds[True] / odds[False]
+
+print(f'Odds ratio: {odds_ratio:3.1f}')
+```
+
+Extra Example
+=============
+Another example on the Wikipedia page talks about a sample of 100 men where 90 drank wine in the previous week and a sample of 80 women where 20 drank wine in the same period:
+
+```{python}
+# Create a data frame from a dictionary
+dct = {
+    True: [90, 10],
+    False: [20, 60],
+}
+contingency_table = pd.DataFrame(dct, index=[True, False])
+
+print(contingency_table)
+```
+
+The odds ratio is thus:
+
+```{python}
+odds = contingency_table[True] / contingency_table[False]
+odds_ratio = odds[True] / odds[False]
+
+print(f'Odds ratio: {odds_ratio:2.0f}')
+```
+
+[⇦ Back](../../../python.html)
+
+</font>

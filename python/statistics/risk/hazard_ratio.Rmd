@@ -1,0 +1,161 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Hazard Ratio'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+Hazard ratios are used as part of the **Kaplan-Meier** approach to **survivability analysis**. For more information, see the example on the Real Statistics site [here](https://www.real-statistics.com/survival-analysis/kaplan-meier-procedure/log-rank-test/) and [here](https://www.real-statistics.com/survival-analysis/kaplan-meier-procedure/hazard-ratio/) and also check out the [Wikipedia page](https://en.wikipedia.org/wiki/Hazard_ratio).
+
+```{python, echo=FALSE, eval=FALSE}
+# Data used in the Real Statistics example
+import pandas as pd
+
+trial = {}
+
+# Create data frame
+dct = {
+    'timepoint': [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    'died': [0, 0, 1, 1, 0, 3, 0, 3, 0, 0, 2, 2, 0],
+    'withdrew': [0, 0, 0, 0, 0, 1, 0, 0, 1, 2, 0, 0, 0],
+}
+trial['A'] = pd.DataFrame(dct)
+# Count participants
+trial['A']['n'] = 18 - trial['A']['died'].cumsum() - trial['A']['withdrew'].cumsum()
+# Move the values down one row
+trial['A']['n'] = trial['A']['n'].shift(1)
+
+# Create data frame
+dct = {
+    'timepoint': [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13],
+    'died': [0, 1, 0, 1, 1, 0, 1, 1, 0, 2, 0, 0, 1],
+    'withdrew': [0, 0, 0, 0, 0, 0, 2, 1, 1, 2, 0, 2, 0],
+}
+trial['B'] = pd.DataFrame(dct)
+# Count participants
+trial['B']['n'] = 18 - trial['B']['died'].cumsum() - trial['B']['withdrew'].cumsum()
+# Move the values down one row
+trial['B']['n'] = trial['B']['n'].shift(1)
+```
+
+Example Data
+============
+If a clinical trial takes place to test the effectiveness of a cancer drug in prolonging survival in 20 cancer patients, the results might look as follows:
+
+```{python}
+import pandas as pd
+
+# Create data frame
+dct = {
+    'timepoint': [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14],
+    'died': [0, 2, 1, 0, 0, 2, 1, 2, 1, 0, 3, 1, 1, 1],
+    'withdrew': [0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0],
+}
+trial_data = pd.DataFrame(dct)
+
+print(trial_data)
+```
+
+At each timepoint from 0 years (the start of the trial) to 14 years (note that there was no follow-up done in the 6th year so this was the 13th follow-up) the number of participants who had died and the number that had been lost to follow-up or who had voluntarily withdrawn was counted. The total number of participants sampled at each timepoint can be added to the data frame like so:
+
+```{python}
+# Count participants
+trial_data['n'] = 20 - trial_data['died'].cumsum() - trial_data['withdrew'].cumsum()
+# Move the values down one row
+trial_data['n'] = trial_data['n'].shift(1)
+# Add in the starting sample size
+trial_data.loc[0, 'n'] = 20
+
+print(trial_data)
+```
+
+Often, a trial will have two groups (usually a placebo group and an experimental group), so let's generate the data for a second group and put both data frames into a dictionary:
+
+```{python}
+trial = {}
+
+trial['A'] = trial_data
+
+# Create data frame
+dct = {
+    'timepoint': [0, 1, 2, 3, 4, 5, 7, 8, 9, 10, 11, 12, 13, 14],
+    'died': [0, 0, 1, 1, 0, 1, 3, 1, 0, 2, 0, 2, 0, 1],
+    'withdrew': [0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 2, 0, 1, 1],
+}
+trial['B'] = pd.DataFrame(dct)
+# Count participants
+trial['B']['n'] = 20 - trial['B']['died'].cumsum() - trial['B']['withdrew'].cumsum()
+# Move the values down one row
+trial['B']['n'] = trial['B']['n'].shift(1)
+# Add in the starting sample size
+trial['B'].loc[0, 'n'] = 20
+
+print(trial['B'])
+```
+
+Expected Results
+================
+The next step towards working out whether the drug being tested has been effective or not is to work out the number of deaths we would *expect* to see at each timepoint. We can then compare this to the number of deaths we *actually* saw, and if this is lower it will go a long way towards establishing that the drug is indeed effective. To calculate the expected number of deaths, first get the *total* number of deaths by adding the results of trial A to trial B:
+
+```{python}
+# Combined deaths and sample sizes
+combined = pd.DataFrame()
+combined['died'] = trial['A']['died'] + trial['B']['died']
+combined['n'] = trial['A']['n'] + trial['B']['n']
+
+print(combined)
+```
+
+The expected number of deaths at each timepoint in each trial is simply the overall prevalence of death (instances per participant) multiplied by the number of participants:
+
+```{python}
+# Expected deaths for trial A
+trial['A']['expected'] = trial['A']['n'] * combined['died'] / combined['n']
+
+print(trial['A'])
+```
+
+```{python}
+# Expected deaths for trial B
+trial['B']['expected'] = trial['B']['n'] * combined['died'] / combined['n']
+
+print(trial['B'])
+```
+
+Failure Rate
+============
+The **failure rate** is the observed number of failures (deaths) relative to the expected number of failures:
+
+```{python}
+# Failure rates
+failure_rate = {}
+failure_rate['A'] = trial['A']['died'].sum() / trial['A']['expected'].sum()
+failure_rate['B'] = trial['B']['died'].sum() / trial['B']['expected'].sum()
+
+print(failure_rate)
+```
+
+Hazard Ratio
+============
+The ratio of the failure rates (ie how much more one arm of the trial results in failure relative to the other) is the **hazard ratio**, also known as the relative risk or risk ratio:
+
+```{python}
+hazard_ratio = failure_rate['B'] / failure_rate['A']
+
+print(hazard_ratio.round(3))
+```
+
+If trial B was the one in which the participants were given the drug in question, it can be reported that those people were 0.736 times as likely to die compared to the people in trial A who weren't given the drug.
+
+[⇦ Back](../../../python.html)
+
+</font>

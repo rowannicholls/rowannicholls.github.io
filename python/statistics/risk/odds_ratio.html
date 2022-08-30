@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Statistics in Python: Odds Ratio</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -669,198 +669,161 @@ G.documentElement.doScroll){var v=!0;try{v=!E.frameElement}catch(A){}v&&mn()}mb(
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Odds Ratio</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#example-data"><span class="toc-section-number">1</span> Example Data</a></li>
+<li><a href="#risk"><span class="toc-section-number">2</span> Risk</a></li>
+<li><a href="#odds"><span class="toc-section-number">3</span> Odds</a></li>
+<li><a href="#case-control-example"><span class="toc-section-number">4</span> Case-Control Example</a></li>
+<li><a href="#extra-example"><span class="toc-section-number">5</span> Extra Example</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/errors.html">Errors</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">F-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<p><a href="../../../python.html">⇦ Back</a></p>
+<p>This page replicates the example given on the <a href="https://en.wikipedia.org/wiki/Odds_ratio">Wikipedia page</a> about the odds ratio:</p>
+<blockquote>
+<p>Suppose a radiation leak in a village of 1,000 people increased the incidence of a rare disease. The total number of people exposed to the radiation was 400, out of which 20 developed the disease and 380 stayed healthy. The total number of people not exposed was 600, out of which 6 developed the disease and 594 stayed healthy.</p>
+</blockquote>
+<div id="example-data" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Example Data</h1>
+<p>We can tabulate the data from the above example as follows:</p>
+<pre class="python"><code>import pandas as pd
+
+# Create a data frame from a dictionary
+dct = {
+    &#39;diseased&#39;: [20, 6],
+    &#39;healthy&#39;: [380, 594],
+}
+df = pd.DataFrame(dct, index=[&#39;exposed&#39;, &#39;not_exposed&#39;])
+
+print(df)</code></pre>
+<pre><code>##              diseased  healthy
+## exposed            20      380
+## not_exposed         6      594</code></pre>
+<p>It is more useful (and realistic) to start with this data in a ‘long format’, ie as a data frame with 1,000 rows where each corresponds to one person:</p>
+<pre class="python"><code># Create a data frame from a dictionary
+dct = {
+    &#39;exposed&#39;: [True] * 400 + [False] * 600,
+    &#39;diseased&#39;: [True] * 20 + [False] * 380 + [True] * 6 + [False] * 594,
+}
+df = pd.DataFrame(dct)
+
+print(df.head())</code></pre>
+<pre><code>##    exposed  diseased
+## 0     True      True
+## 1     True      True
+## 2     True      True
+## 3     True      True
+## 4     True      True</code></pre>
+<p>This ‘long format’ data can then be summarised in a pivot table that counts the number of people exposed and the number of people who are healthy:</p>
+<pre class="python"><code>pivot_table = pd.pivot_table(df, index=&#39;exposed&#39;, columns=&#39;diseased&#39;, aggfunc=&#39;size&#39;)
+
+print(pivot_table)</code></pre>
+<pre><code>## diseased  False  True
+## exposed              
+## False       594     6
+## True        380    20</code></pre>
+<p>Usually, a contingency table will have the positive (in a statistical sense) results first:</p>
+<pre class="python"><code># Re-format the pivot table into a contingency table by reversing the order of the columns and the rows
+contingency_table = pivot_table.iloc[::-1, ::-1]
+
+print(contingency_table)</code></pre>
+<pre><code>## diseased  True  False
+## exposed              
+## True        20    380
+## False        6    594</code></pre>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --></li>
-</ul></li>
-<li><a href="python/advanced/args_kwargs.html">Args and Kwargs</a> <!-- 5. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a> <!-- 6. [Webscraping] --> <!-- 7. [Bitwise Operators] --></li>
-<li><a href="python/advanced/error_handling.html">Error Handling</a> <!-- 9. [Linting] --> <!-- 10. [Variable Scope] --></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="risk" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Risk</h1>
+<p>The <strong>risk</strong> of developing the disease given exposure, and of developing the disease given non-exposure, is equal to the number of people who became diseased (20 and 6) divided by the total number of people who were exposed or not exposed (400 and 600), respectively. In other words, we need to sum the values in the contingency table’s rows and divide the contingency table by those values:</p>
+<pre class="python"><code># Get the total of each row
+totals = contingency_table.sum(axis=1)
+# Divide the values in the contingency table by the total of their row
+risk = contingency_table.div(totals, axis=0)
+
+print(risk)</code></pre>
+<pre><code>## diseased  True  False
+## exposed              
+## True      0.05   0.95
+## False     0.01   0.99</code></pre>
+<p>The <strong>relative risk</strong> of developing the disease given expose vs non-exposure is simply one risk value divided by another: <span class="math inline">\(\dfrac{0.05}{0.01}\)</span></p>
+<pre class="python"><code>relative_risk = risk.loc[True, True] / risk.loc[False, True]
+
+print(f&#39;Relative risk: {relative_risk:1.0f}&#39;)</code></pre>
+<pre><code>## Relative risk: 5</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a>
+<div id="odds" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Odds</h1>
+<p>The <strong>odds</strong> of getting the disease if exposed is the ratio of the number of people that became diseased to the number that did not - ie 20 divided by 380 - and similar for those who were not exposed:</p>
+<pre class="python"><code>odds = contingency_table[True] / contingency_table[False]
+
+print(odds)</code></pre>
+<pre><code>## exposed
+## True     0.052632
+## False    0.010101
+## dtype: float64</code></pre>
+<p>In summary:</p>
 <ul>
-<li><a href="python/data/export_to_word.html">Export Tables to Word</a></li>
-</ul></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-<li><a href="python/data/drop_columns_false.html">Drop Columns That Only Contain “False”</a></li>
-<li><a href="python/data/vlookup_unblinding.html">Using VLOOKUP for Unblinding</a></li>
-</ol>
+<li><strong>Risk</strong> is the ratio of those who caught the disease following exposure to the <em>total</em> who were exposed: <span class="math inline">\(\dfrac{20}{20 + 380}\)</span></li>
+<li><strong>Odds</strong> are the ratio of those who caught the disease following exposure to the number who did <em>not</em> catch the disease following exposure: <span class="math inline">\(\dfrac{20}{380}\)</span></li>
+</ul>
+<p>The <strong>odds ratio</strong> is, unsurprisingly, the ratio of the two odds:</p>
+<pre class="python"><code>odds_ratio = odds[True] / odds[False]
+
+print(f&#39;Odds ratio: {odds_ratio:3.1f}&#39;)</code></pre>
+<pre><code>## Odds ratio: 5.2</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/latex_in_labels.html">Latex in Labels</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a>
-<ul>
-<li><a href="python/graphs/colours_good_figures.html">Colours that Look Good in Figures</a></li>
-</ul></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing directly from Pandas data frames <em>- This can be done using either the pyplot or the object-orientated style</em>
-<ul>
-<li><a href="python/graphs/pandas/bar_plots.html">Bar Plots</a></li>
-</ul></li>
-</ol>
+<div id="case-control-example" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Case-Control Example</h1>
+<p>The Wikipedia page goes on to give a second example wherein the data from all 26 diseased villagers is included but only that from 26 of the healthy villagers is available (which is a more realistic scenario):</p>
+<pre class="python"><code># Create a data frame from a dictionary
+dct = {
+    &#39;exposed&#39;: [True] * 30 + [False] * 22,
+    &#39;diseased&#39;: [True] * 20 + [False] * 10 + [True] * 6 + [False] * 16,
+}
+df = pd.DataFrame(dct)
+pivot_table = pd.pivot_table(df, index=&#39;exposed&#39;, columns=&#39;diseased&#39;, aggfunc=&#39;size&#39;)
+# Re-format the pivot table into a contingency table by reversing the order of the columns and the rows
+contingency_table = pivot_table.iloc[::-1, ::-1]
+
+print(contingency_table)</code></pre>
+<pre><code>## diseased  True  False
+## exposed              
+## True        20     10
+## False        6     16</code></pre>
+<p>The relative risk cannot be calculated because we don’t have data from the entire population, but we can get the odds ratio by follow the same steps as above:</p>
+<pre class="python"><code>odds = contingency_table[True] / contingency_table[False]
+odds_ratio = odds[True] / odds[False]
+
+print(f&#39;Odds ratio: {odds_ratio:3.1f}&#39;)</code></pre>
+<pre><code>## Odds ratio: 5.3</code></pre>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li>Linear Functions
-<ul>
-<li><a href="python/curve_fitting/linear_comparison.html">Comparison of Methods</a></li>
-<li><a href="python/curve_fitting/linear_regression.html">Linear Regression</a></li>
-</ul></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-<li><a href="python/statistics/effect_size.html">Effect Size</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li>Regression
-<ul>
-<li><a href="python/statistics/hypothesis_testing/constant_regression.html">Constant Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/simple_linear_regression.html">Simple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/multiple_linear_regression.html">Multiple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/quadratic_regression.html">Quadratic Regression</a></li>
-</ul></li>
-<li>t-Tests
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired Two-Sample t-Test</a></li>
-<li>Two One-Sided t-Test (TOST)
-<ul>
-<li><a href="python/statistics/hypothesis_testing/tost_unpaired.html">Unpaired</a></li>
-<li><a href="python/statistics/hypothesis_testing/tost_paired.html">Paired</a></li>
-</ul></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney U Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)</li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-</ul></li>
-<li>Risk
-<ul>
-<li><a href="python/statistics/risk/odds_ratio.html">Odds Ratio</a></li>
-<li><a href="python/statistics/risk/hazard_ratio.html">Hazard Ratio</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Mangement</a></li>
-</ol>
+<div id="extra-example" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Extra Example</h1>
+<p>Another example on the Wikipedia page talks about a sample of 100 men where 90 drank wine in the previous week and a sample of 80 women where 20 drank wine in the same period:</p>
+<pre class="python"><code># Create a data frame from a dictionary
+dct = {
+    True: [90, 10],
+    False: [20, 60],
+}
+contingency_table = pd.DataFrame(dct, index=[True, False])
+
+print(contingency_table)</code></pre>
+<pre><code>##        True  False
+## True     90     20
+## False    10     60</code></pre>
+<p>The odds ratio is thus:</p>
+<pre class="python"><code>odds = contingency_table[True] / contingency_table[False]
+odds_ratio = odds[True] / odds[False]
+
+print(f&#39;Odds ratio: {odds_ratio:2.0f}&#39;)</code></pre>
+<pre><code>## Odds ratio: 27</code></pre>
+<p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
