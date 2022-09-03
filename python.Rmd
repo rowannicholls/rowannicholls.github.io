@@ -65,11 +65,10 @@ output:
 
 ## Graphs (using Matplotlib)
 1. [Image Size](python/graphs/image_size.html)
-2. [Latex in Labels](python/graphs/latex_in_labels.html)
-3. [Symbols, Line Styles and Colours](python/graphs/symbols_linestyles_colours.html)
+2. [Symbols, Line Styles and Colours](python/graphs/symbols_linestyles_colours.html)
     - [Colours that Look Good in Figures](python/graphs/colours_good_figures.html)
-4. [Working with Time-Based Data](python/graphs/time_data.html)
-5. Graphing using the 'state machine interface' (aka the pyplot style) _- This is quicker than the object-orientated style for simple plots but it gives you less control_
+3. [Working with Time-Based Data](python/graphs/time_data.html)
+4. Graphing using the 'state machine interface' (aka the pyplot style) _- This is quicker than the object-orientated style for simple plots but it gives you less control_
     - [Line Plots](python/graphs/plt_based/lineplots.html)
     - [Scatter Plots](python/graphs/plt_based/scatterplots.html)
     - [Bland-Altman Plots](python/graphs/plt_based/bland_altman.html)
@@ -82,7 +81,7 @@ output:
     + [Histograms](python/graphs/plt_based/histograms.html)
     + [Pie Charts](python/graphs/plt_based/pie_charts.html)
     - [Receiver Operating Characteristic (ROC) Curves](python/graphs/plt_based/roc_curves.html)
-6. Graphing using axes objects (aka the object-orientated style) _- This is more complicated than the pyplot style but it gives you more control_
+5. Graphing using axes objects (aka the object-orientated style) _- This is more complicated than the pyplot style but it gives you more control_
     - [Line Plots](python/graphs/ax_based/lineplots.html)
     - [Scatter Plots](python/graphs/ax_based/scatterplots.html)
     - [Bland-Altman Plots](python/graphs/ax_based/bland_altman.html)
@@ -95,8 +94,11 @@ output:
     - [Histograms](python/graphs/ax_based/histograms.html)
     - [Pie Charts](python/graphs/ax_based/pie_charts.html)
     - [Receiver Operating Characteristic (ROC) Curves](python/graphs/ax_based/roc_curves.html)
-7. Graphing directly from Pandas data frames _- This can be done using either the pyplot or the object-orientated style_
+6. Graphing directly from Pandas data frames _- This can be done using either the pyplot or the object-orientated style_
     - [Bar Plots](python/graphs/pandas/bar_plots.html)
+7. Axes and Labels
+    - [LaTeX in Labels](python/graphs/axes_and_labels/latex_in_labels.html)
+    - [Changing the Font](python/graphs/axes_and_labels/changing_the_font.html)
 
 ## Curve Fitting
 1. Linear Functions

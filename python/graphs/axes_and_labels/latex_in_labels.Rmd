@@ -1,0 +1,135 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Use LaTeX in Plot Labels'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+In order to access the power of LaTeX when creating text as part of a graph you need to change some of Matplotlib's 'rc parameters'. These are the default settings for your plots.
+
+> The letters 'rc' stand for '**r**untime **c**onfiguration'. These are commands which are executed at runtime (ie the moment you run Python, even before your code gets executed) and so they can be used to change things about how Matplotlib works before you use it in that script.
+
+The two most important rc parameters to change are:
+
+- `text.usetex` which needs to be set to `True` in order to **use TeX** (and therefore to use LaTeX, which is a TeX macro package) for everything in your plots. You can still use TeX/LaTeX if you don't set this rc parameter to `True`, but this will guarantee that it's used for everything in your plots.
+- `font.family` which needs to be changed to `serif` to use LaTeX's classic **Computer Modern font**
+
+A third rc parameter you can set is `figure.figsize` which, as the name suggests, sets the **figure size**. I usually set the size to be A6 or A7, as that way they will look about right when displayed on an A4 page.
+
+One thing to remember is that you need to prepend the letter `r` to strings that contain LaTeX, creating what can be called an 'r-string'. This lets Python know to treat LaTeX commands as LaTeX commands, not as Python commands. For example:
+
+- `print('\\')` *does not* have an `r` before the string and so Python will interpret the first slash as an *escape character* and only print the second slash: `\`
+- `print(r'\\')` *does* have an `r` before the string and so Python will treat it as a **r**aw string ('r-string') and print both slashes: `\\`
+
+Here's what it looks like in action:
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Settings
+A = 6  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+
+# Create some data
+x = np.arange(10)
+y = x**2
+
+# Plot
+plt.plot(x, y, label=r'Dataset 1: R = t²')
+plt.title(r'\LaTeX\ in Labels')
+plt.xlabel(r'Time, $t$ [\textmu s]')
+plt.text(7, 70, r'$R = t^2$')
+plt.legend(fontsize=8)
+```
+
+Notice that we can use both LaTeX's math mode for equations (eg `r'$R = t^2$'`) and text mode for upright text (eg "&mu;s" in the x-axis label). To use upright Greek letters in text mode, as has been done here, the only letter that will work out-of-the-box is mu (&mu;). This is because the command that enables this (`\textmu`) is included in the `textcomp` package which is loaded by default. To use other upright Greek letters in text mode we need to use the `textgreek` package which can be loaded in the LaTeX preamble by changing another rc parameter: `text.latex.preamble`. This parameter sets what commands are run in LaTeX's preamble. Using it to load `textgreek` gives us access to, for example, `\textOmega` - have a look:
+
+```{python}
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.plot(x, y, label=r'Dataset 1: R = t²')
+plt.title(r'\LaTeX\ in Labels')
+plt.xlabel(r'Time, $t$ [\textmu s]')
+plt.ylabel(r'Resistance, $R$ [\textOmega]')
+plt.text(7, 70, r'$R = t^2$')
+plt.legend(fontsize=8)
+```
+
+Finally, note that we can combine 'r-strings' with 'f-strings' to create 'fr-strings', accessing both the typesetting power of LaTeX AND the string formatting power of Python:
+
+```{python}
+plt.plot(x, y, label=r'Dataset 1: R = t²')
+plt.title(r'\LaTeX\ in Labels')
+# \textmu works out-of-the-box
+plt.xlabel(r'Time, $t$ [\textmu s]')
+# Other Greek letters need the textgreek package
+plt.ylabel(r'Resistance, $R$ [\textOmega]')
+# Add annotations
+mean_y = np.mean(y)
+ylim = plt.ylim(min(y), max(y))
+xlim = plt.xlim(min(x), max(x))
+plt.vlines(np.sqrt(mean_y), ymin=0, ymax=mean_y, linestyles='dashed')
+plt.hlines(mean_y, xmin=0, xmax=np.sqrt(mean_y), linestyles='dashed')
+plt.text(1, mean_y + 1.5, fr'Mean resistance, \textsigma\ = {mean_y:.1f}\textOmega')
+plt.text(7, 70, r'$R = t^2$')
+plt.legend(fontsize=8)
+```
+
+Troubleshooting
+===============
+
+Style Files
+-----------
+If you get an error such as:
+```
+! LaTeX Error: File `textgreek.sty' not found.
+```
+It means that you are missing the LaTeX style file that was mentioned in the error and should manually install it:
+
+- Go to [CTAN](https://www.ctan.org/), search for and download the required package (in this example it's 'textgreek').
+- It will either download as a `.sty` file or as a `.zip` file. If the latter, unzip it and run LaTeX on the `.ins` and `.dtx` files (eg by opening the folder in a terminal and running `latex textgreek.ins`) which will create the `.sty` file.
+    - Follow any advice printed to the terminal, eg with how to run the `.dtx` file.
+- Move the `.sty` file to an appropriate directory, eg `/usr/share/texmf/tex/latex` on Ubuntu.
+- Update the ls-R file in this source tree. Because the folder you moved the `.sty` file into might not be searched by default, the ls-R file must be updated to make the system aware of the new package.
+
+On Ubuntu, the last two points can be done from the terminal with:
+
+```{bash, eval=FALSE}
+sudo mv <package>.sty /usr/share/texmf/tex/latex/<package>.sty
+sudo mktexlsr
+```
+
+Language Elements
+-----------------
+If you get something like:
+
+```
+! Package textgreek Error: Cannot find the file lgrenc.def.
+```
+
+This is a Debian error with the textgreek package. Fix it with:
+
+```{bash, eval=FALSE}
+sudo apt install texlive-lang-greek
+```
+
+[⇦ Back](../../../python.html)
+
+</font>

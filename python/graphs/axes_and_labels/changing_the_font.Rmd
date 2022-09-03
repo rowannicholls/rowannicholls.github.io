@@ -1,0 +1,439 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Axes and Labels: Changing the Font'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+Example Data
+============
+Here is some made-up data that describes the vibration response of a simple mass-spring system, the equation for which is:
+
+$x = A × cos(ωt + φ)$
+
+```{python, echo=FALSE, eval=FALSE}
+# Replicating the example from
+# http://user.engineering.uiowa.edu/~sxiao/class/058-153/lecture-2.pdf
+W = 80  # lbf
+g = 386.4
+m = W / g  # kg
+k = 100  # lbf/in
+ω = np.sqrt(k / m)  # rad/s
+f = ω / math.tau  # Hz
+T = 1 / f  # s
+A = 2  # in
+φ = 0  # rad
+t = np.linspace(0, 1, 500)  # s
+x = A * np.cos(ω * t + φ)  # m
+```
+
+```{python}
+import numpy as np
+import math
+
+# Weight
+W = 0.35  # N (kg.m/s²)
+# Standard acceleration due to gravity
+g = 9.81  # m/s²
+# Mass
+m = W / g  # kg
+# Spring constant
+k = 17 * 1e6  # N/m (kg/s²)
+# Angular frequency
+ω = np.sqrt(k / m)  # rad/s
+# Frequency
+f = ω / math.tau  # Hz
+# Period
+T = 1 / f  # s
+# Amplitude
+A = 5 * 1e-6  # m
+# Phase
+φ = math.tau * 0.75  # rad
+# Time
+t = np.linspace(0, 0.001, 500)  # s
+# Displacement from equilibrium position
+x1 = A * np.cos(ω * t + φ)  # m
+x2 = A * np.cos(20000 * t + φ)  # m
+```
+
+Note that we can use Greek letters (and other unicode characters) in Python code with no problem - something useful to remember when coding up maths and engineering equations!
+
+Plotting with Default Settings
+==============================
+Here's a fairly involved plot that contains a number of features that all include LaTeX code:
+
+- A legend
+- A text label in the plot area
+- A two-line title
+- Axis labels
+
+The purpose of this example is to demonstrate how powerful the default settings in Matplotlib are: we have access to all of this functionality without needing to load any other libraries. Note in particular that we can make use of LaTeX equations (math mode), LaTeX commands and Greek symbols in text immediately, without the need to import any external LaTeX packages:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(680, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='x-small')
+plt.legend(fontsize='x-small')
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(680, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='x-small')
+plt.legend(fontsize='x-small')
+```
+
+In general, it's good practice to have 'mathematical text', including variable names, in italics and 'normal text' in the normal font. Italics can be achieved most easily by using dollar signs to invoke LaTeX math mode. It's also a good idea to put an `r` before strings that contain LaTeX commands, as this ensures that they get interpreted by Python as *raw strings* and passed on to LaTeX exactly as you have typed them. Otherwise, text such as `\n` will get converted by Python into a newline character, `\t` will get converted into a tab and so on.
+
+Change to Another Built-In Font
+===============================
+Matplotlib doesn't have a lot of built-in fonts, and the one of most interest besides the default sans-serif variety is probably the serif version:
+
+```{python, eval=FALSE}
+# Change to the serif font
+plt.rc('font', family='serif')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(680, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='x-small')
+plt.legend(fontsize='x-small')
+```
+
+```{python, echo=FALSE, results='hide'}
+# Change to the serif font
+plt.rc('font', family='serif')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(680, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='x-small')
+plt.legend(fontsize='x-small')
+```
+
+Explicitly Using LaTeX?
+=======================
+Many people will make use of the option to explicitly have LaTeX formatting in their plots by setting the 'usetex' runtime configuration (rc) option to True:
+
+```{python}
+# Use LaTeX for graphs' text
+plt.rc('text', usetex=True)
+```
+
+The **advantages** of this line of code are that:
+
+- You can then create your own preamble, using commands such as `plt.rc('text.latex', preamble=r'\usepackage{example}')` to load additional packages.
+- The font in your graph will be the classic LaTeX Computer Modern serif font, which will probably match the rest of your document if you are using LaTeX to write it.
+
+The **disadvantage** is that you then *have* to use LaTeX for everything. For example, you will have to use LaTeX commands such as `\textmu` in text mode and `\omega` in math mode instead of just using the characters themselves (μ and ω).
+
+Here's the same example as above except now LaTeX is explicitly being used:
+
+```{python, eval=FALSE}
+# Use LaTeX for graphs' text
+plt.rc('text', usetex=True)
+# Be able to use Greek symbols in text mode
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$\omega_1 = 21.8\ \frac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$\omega_2 = 20.0\ \frac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\times\ \cos(\omega t\ +\ \phi)$'
+)
+plt.ylabel(r'Displacement, $x$ [\textmu m]')
+plt.xlabel(r'Time, $t$ [\textmu s]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(670, 6.7, r'$\omega = \sqrt{\frac{k}{m}}$', size='small')
+plt.legend(fontsize='small')
+```
+
+```{python, echo=FALSE, results='hide'}
+# Use LaTeX for graphs' text
+plt.rc('text', usetex=True)
+# Be able to use Greek symbols in text mode
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$\omega_1 = 21.8\ \frac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$\omega_2 = 20.0\ \frac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\times\ \cos(\omega t\ +\ \phi)$'
+)
+plt.ylabel(r'Displacement, $x$ [\textmu m]')
+plt.xlabel(r'Time, $t$ [\textmu s]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(670, 6.7, r'$\omega = \sqrt{\frac{k}{m}}$', size='small')
+plt.legend(fontsize='small')
+```
+
+Note that Matplotlib will **always** use LaTeX in the background, regardless of whether you use the `usetex=True` option or not. It essentially just determines the extent to which LaTeX options are overridden by Matplotlib's wrapper functions.
+
+```{python, echo=FALSE}
+plt.rc('text', usetex=False)
+```
+
+Use a Custom Font
+=================
+For this example I'm using the Crimson Roman and Crimson Italic fonts. These are free and open to use and can be downloaded as TTF or OTF files from [here](https://www.1001fonts.com/crimson-font.html). Once downloaded, these fonts can be installed which will copy the files to your computer's fonts folder (wherever that may be). I prefer to keep my custom font files in the same folder as the scripts I am running so I know where they are. Either way, the first step to using these custom fonts is to create paths to them:
+
+```{python}
+from pathlib import Path
+
+path_rm = Path('crimson.roman.ttf')
+path_it = Path('crimson.italic.ttf')
+```
+
+One Label at a Time
+-------------------
+The keyword argument 'font' can be used to point Python to the font you want to use for a particular label:
+
+```{python, eval=FALSE}
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$', font=path_rm
+)
+plt.ylabel('Displacement, $x$ [μm]', font=path_rm)
+plt.xlabel('Time, $t$ [μs]', font=path_rm)
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(660, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='small')
+plt.legend(fontsize='small')
+```
+
+```{python, echo=FALSE, results='hide'}
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$', font=path_rm
+)
+plt.ylabel('Displacement, $x$ [μm]', font=path_rm)
+plt.xlabel('Time, $t$ [μs]', font=path_rm)
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(660, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='small')
+plt.legend(fontsize='small')
+```
+
+This has two drawbacks: you have to set the `font=path_rm` option each and every time there is text and it doesn't affect the math mode (italic) text. We can solve the first of these problems as follows:
+
+All Labels
+----------
+Use Matplotlib's 'font manager' to set a global font 'family' that will be used by all labels:
+
+```{python, eval=FALSE}
+from matplotlib import font_manager
+
+# Change the font for all labels
+font_manager.fontManager.addfont('crimson.roman.ttf')
+plt.rc('font', family='crimson')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(660, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='small')
+plt.legend(fontsize='small')
+```
+
+```{python, echo=FALSE, results='hide'}
+from matplotlib import font_manager
+
+# Change the font for all labels
+font_manager.fontManager.addfont('crimson.roman.ttf')
+plt.rc('font', family='crimson')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(660, 6.5, r'$ω = \sqrt{\dfrac{k}{m}}$', size='small')
+plt.legend(fontsize='small')
+```
+
+We still aren't getting the new font to apply to the italic text, which means we have one more step to go:
+
+All Labels; Text Mode AND Math Mode
+-----------------------------------
+The 'mathtext' setting is the one that governs the font used in math mode, and changing it is a four step process:
+
+- Load the italic version of your custom font (in addition to the upright version) using `font_manager.fontManager.addfont()`
+- Set the mathtext font set to 'custom'
+- Set the mathtext Roman font to your upright font
+- Set the mathtext italic font to your italic font
+
+This should now change **all** text to your custom fonts:
+
+```{python, eval=FALSE}
+# Change the font for all labels
+font_manager.fontManager.addfont('crimson.roman.ttf')
+font_manager.fontManager.addfont('crimson.italic.ttf')
+plt.rc('font', family='crimson')
+plt.rc('mathtext', fontset='custom')
+plt.rc('mathtext', rm='crimson')
+plt.rc('mathtext', it='crimson:italic')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(660, 6, r'$ω = \sqrt{\dfrac{k}{m}}$')
+plt.legend()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Change the font for all labels
+font_manager.fontManager.addfont('crimson.roman.ttf')
+font_manager.fontManager.addfont('crimson.italic.ttf')
+plt.rc('font', family='crimson')
+plt.rc('mathtext', fontset='custom')
+plt.rc('mathtext', rm='crimson')
+plt.rc('mathtext', it='crimson:italic')
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8])
+plt.text(660, 6, r'$ω = \sqrt{\dfrac{k}{m}}$')
+plt.legend()
+``` 
+
+Image Size and Quality
+======================
+The one criticism of this plot is that it's a bit small and hard to read. This can be changed by setting the figure size (tip: get the dimensions of the A-series of paper via the equation used below) and quality (as measured in 'DPI' - dots per inch):
+
+```{python, eval=FALSE}
+# Make figures A5 in size
+A = 5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Change figure quality
+plt.rc('figure', dpi=141)
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8.2])
+plt.text(660, 6.2, r'$ω = \sqrt{\dfrac{k}{m}}$')
+plt.legend()
+```
+
+```{python, echo=FALSE, results='hide', out.width="100%"}
+# Make figures A5 in size
+A = 5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Change figure quality
+plt.rc('figure', dpi=141)
+
+# Plot
+plt.plot(t * 1e6, x1 * 1e6, label=r'$ω_1 = 21.8\ \dfrac{rad}{ms}$')
+plt.plot(t * 1e6, x2 * 1e6, label=r'$ω_2 = 20.0\ \dfrac{rad}{ms}$')
+plt.title(
+    'Free Vibration Response of an Undamped Spring-Mass System\n' +
+    r'$x = A\ ×\ cos(ωt\ +\ φ)$'
+)
+plt.ylabel('Displacement, $x$ [μm]')
+plt.xlabel('Time, $t$ [μs]')
+plt.xlim([0, 1000])
+plt.ylim([-8, 8.2])
+plt.text(660, 6.2, r'$ω = \sqrt{\dfrac{k}{m}}$')
+plt.legend()
+``` 
+
+[⇦ Back](../../../python.html)
+
+</font>
