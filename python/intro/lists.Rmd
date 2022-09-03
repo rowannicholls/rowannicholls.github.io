@@ -365,27 +365,26 @@ Finding the Unique Values in Lists
 ----------------------------------
 To remove duplicate values from a list, convert it to a set:
 
-```{python, eval = FALSE}
-ls = ['A', 'B', 'C', 'A', 'B', 'C']
+```{python}
+ls = ['First', 'Second', 'Third', 'First', 'Second', 'Third']
 # Convert list to set
 st = set(ls)
 print(st)
 ```
 
-```{python, echo = FALSE}
-ls = ['A', 'B', 'C', 'A', 'B', 'C']
-# Convert list to set
-st = set(ls)
-print("{'C', 'A', 'B'}")
-```
-
 ...then convert it back into a list:
 
-```{python}
+```{python, eval = FALSE}
 # Convert set to list
 ls = list(st)
 print(ls)
 ```
+
+```
+## ['Second', 'First', 'Third']
+```
+
+Notice that this **does _not_ preserve order**: we would have expected the result to be `['First', 'Second', 'Third']` but instead it was `['Second', 'First', 'Third']`. The easiest way to get the unique values in a list *in the same order* they appear in that list is to use a Pandas Series object, see [here](../advanced/data_frames_searching.html#bonus-removing-duplicates-from-a-list-whilst-preserving-the-order).
 
 Removing Multiple Values from Lists
 -----------------------------------
@@ -401,12 +400,18 @@ print(st)
 
 We are left with the elements from set 1 *minus* the elements from set 2. This can be used to remove multiple values from a list at a time:
 
-```{python}
+```{python, eval = FALSE}
 ls_1 = ['A', 'B', 'C', 'D', 'E', 'F']
 # Convert lists to sets, subtract them, convert result into a list
 ls = list(set(ls_1) - set(['A', 'B', 'C']))
 print(ls)
 ```
+
+```
+## ['F', 'E', 'D']
+```
+
+Similar to above, this has **_not_ preserved the order**: we got `['F', 'E', 'D']` when we would have expected `['D', 'E', 'F']`. See [here](../advanced/lists.html#remove-multiple-values) for the section of the page about list comprehensions that describes how to achieve this.
 
 Checking if Two Lists are the Same
 ----------------------------------

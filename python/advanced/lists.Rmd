@@ -283,11 +283,13 @@ Remove Multiple Values
 To remove a *single* value from a list you can use the `.remove()` method, but to remove *multiple* values at a time (ie remove a list from a list) you can use list comprehensions:
 
 ```{python}
-ls = ['A', 'B', 'C', 'B', 'A']
-to_remove = ['B', 'C']
+ls = ['One', 'Two', 'Three', 'Three']
+to_remove = ['Three', 'Four']
 ls = [x for x in list(ls) if x not in to_remove]
 print(ls)
 ```
+
+Notice that this has **preserved the order** of the items in the list, which would not neccessarily have been the case if we had used [set subtraction](../intro/lists.html#removing-multiple-values-from-lists) to do this.
 
 [⇦ Back](../../python.html)
 

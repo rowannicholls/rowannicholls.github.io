@@ -400,6 +400,27 @@ subset = df.drop_duplicates('Country', keep='first')
 print(subset)
 ```
 
+### BONUS: Removing Duplicates From a List Whilst Preserving the Order
+As discussed on [the page about lists and sets](../intro/lists.html#finding-the-unique-values-in-lists), a set will remove duplicate values from a list but not preserve their order:
+
+```{python, eval = FALSE}
+values = ['One', 'Two', 'Three', 'Three']
+unique_values = list(set(values))
+print(unique_values)
+```
+
+```
+## ['Two', 'One', 'Three']
+```
+    
+We would want the result to be `['One', 'Two', 'Three']`, not `['Two', 'One', 'Three']`. By using a Pandas Series object, however, we *can* get this:
+
+```{python}
+values = ['One', 'Two', 'Three', 'Three']
+unique_values = pd.Series(values).drop_duplicates().tolist()
+print(unique_values)
+```
+
 [⇦ Back](../../python.html)
 
 </font>
