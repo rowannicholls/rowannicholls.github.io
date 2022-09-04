@@ -783,18 +783,21 @@ import scipy.io
 dct = scipy.io.loadmat('mat/dictionary.mat')
 ```
 
-Import Text Files
------------------
-Import text file (.txt) as a list:
+Import Plain Text Files
+-----------------------
+Import text file (.txt) as a string:
 ```{python}
-ls = []
-with open('txt/list - multiple lines.txt') as file:
-    for line in file:
-        # Remove newline characters
-        ls.append(line.strip('\n'))
+file = open('txt/string - all together.txt', 'r')
+st = file.read()
 ```
 
-Import text file (.txt) as a list of lines:
+Convert that string into a list of lines:
+```{python}
+# Break the string up on the newline characters
+ls = st.split('\n')
+```
+
+Import text file (.txt) as a list of lines (this is equivalent to the above, it's just a different way of using the output of the `open()` function):
 ```{python}
 ls = []
 with open('txt/string - all together.txt') as file:
@@ -803,31 +806,35 @@ with open('txt/string - all together.txt') as file:
         ls.append(line.strip('\n'))
 ```
 
-Import text file (.txt) as a string:
+Import text file (.txt) as a Pandas series:
 ```{python}
-file = open('txt/string - all together.txt', 'r')
-st = file.read()
+import pandas as pd
+
+ser = pd.read_csv('txt/series.txt', header=None)
 ```
 
-Import text file (.txt) as a list-of-lists:
+The `json` module allows text stored in plain text files to be interpreted exactly as Python code:
+
+Import a list-of-lists stored in a text file (.txt) as a list-of-lists:
 ```{python}
 import json
 
 with open('txt/list-of-lists.txt', 'r') as file:
     ls = json.load(file)
+
+# or
+
+ls = json.load(open('txt/list-of-lists.txt'))
 ```
 
-Import text file (.txt) as a dictionary:
+Import a dictionary stored in a text file (.txt) as a dictionary:
 ```{python}
 import json
 
 dct = json.load(open('txt/dictionary.txt'))
 ```
 
-Import text file (.txt) as a Pandas series:
-```{python}
-ser = pd.read_csv('txt/series.txt', header=None)
-```
+These last two examples are identical except for the fact that the contents of 'list-of-lists.txt' forms a list-of-lists when interpreted as Python code whereas the contents of 'dictionary.txt' forms a dictionary.
 
 Import Numpy Objects 
 --------------------
