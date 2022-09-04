@@ -81,7 +81,9 @@ A Better Approach
 Try breaking the plots up into groups, clearly showing showing which boxes belong together in order to aid interpretation. This will also allow you to fit more data in:
 
 ```{python, eval = FALSE}
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 # Results of the long jump finals at four olympic games
 athens = pd.DataFrame({
@@ -132,7 +134,9 @@ plt.show()
 ```
 
 ```{python, results = 'hide', echo = FALSE, out.width = '100%'}
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 # Results of the long jump finals at four olympic games
 athens = pd.DataFrame({
@@ -186,7 +190,7 @@ Note that we could also have used lists-of-lists as the datasets instead of data
 
 Colour and Format
 =================
-A big step towards better communication will be colour-coding the boxes. At the same time we'll improve the format and size of the plots (see [Image Sizes](../image_size.html) and [Latex in Labels](../latex_in_labels.html) for more info):
+A big step towards better communication will be colour-coding the boxes. At the same time we'll improve the format and size of the plots (see [Image Sizes](../image_size.html) and [Latex in Labels](../axes_and_labels/latex_in_labels.html) for more info):
 
 ```{python, eval = FALSE}
 # Settings
@@ -295,7 +299,7 @@ for i in range(len(datasets)):
 ax.legend(handles=legend_elements, fontsize=8)
 ```
 
-```{python, echo=FALSE, results='hide', out.width='100%'}
+```{python, results = 'hide', echo = FALSE, out.width = '100%'}
 from matplotlib.patches import Patch
 
 # Define which colours you want to use
@@ -311,7 +315,7 @@ x_pos = (x_pos_range * 0.5) + 0.75
 # Plot
 for i, data in enumerate(datasets):
     bp = ax.boxplot(
-        np.array(data), sym='', whis='range', widths=0.6 / len(datasets),
+        np.array(data), sym='', whis=[0, 100], widths=0.6 / len(datasets),
         labels=list(datasets[0]), patch_artist=True,
         positions=[x_pos[i] + j * 1 for j in range(len(data.T))]
     )
@@ -373,7 +377,7 @@ x_pos = (x_pos_range * 0.5) + 0.75
 for i, data in enumerate(datasets):
     positions = [x_pos[i] + j * 1 for j in range(len(data.T))]
     bp = ax.boxplot(
-        np.array(data), sym='', whis='range', widths=0.6 / len(datasets),
+        np.array(data), sym='', whis=[0, 100], widths=0.6 / len(datasets),
         labels=list(datasets[0]), patch_artist=True,
         positions=positions
     )
@@ -440,7 +444,7 @@ x_pos = (x_pos_range * 0.5) + 0.75
 for i, data in enumerate(datasets):
     positions = [x_pos[i] + j * 1 for j in range(len(data.T))]
     bp = ax.boxplot(
-        np.array(data), sym='', whis='range', widths=0.6 / len(datasets),
+        np.array(data), sym='', whis=[0, 100], widths=0.6 / len(datasets),
         labels=list(datasets[0]), patch_artist=True,
         positions=positions
     )
@@ -516,7 +520,7 @@ x_pos = (x_pos_range * 0.5) + 0.75
 for i, data in enumerate(datasets):
     positions = [x_pos[i] + j * 1 for j in range(len(data.T))]
     bp = ax.boxplot(
-        np.array(data), sym='', whis='range', widths=0.6 / len(datasets),
+        np.array(data), sym='', whis=[0, 100], widths=0.6 / len(datasets),
         labels=list(datasets[0]), patch_artist=True,
         positions=positions
     )
@@ -616,7 +620,7 @@ x_pos = (x_pos_range * 0.5) + 0.75
 for i, data in enumerate(datasets):
     positions = [x_pos[i] + j * 1 for j in range(len(data.T))]
     bp = ax.boxplot(
-        np.array(data), sym='', whis='range', widths=0.6 / len(datasets),
+        np.array(data), sym='', whis=[0, 100], widths=0.6 / len(datasets),
         labels=list(datasets[0]), patch_artist=True,
         positions=positions
     )

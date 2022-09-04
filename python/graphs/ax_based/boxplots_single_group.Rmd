@@ -78,7 +78,7 @@ Improving the Format
 We're going to make a number of formatting changes to improve how this graph looks:
 
 - Make the figure size A6 (see [here](../image_size.html) for more info)
-- Use Latex for the labels (see [here](../latex_in_labels.html) for more info)
+- Use Latex for the labels (see [here](../axes_and_labels/latex_in_labels.html) for more info)
 - Change the amount of white space around the plot with `plt.axes()`
     + The format for this function is `plt.axes([left, bottom, width, height])`
     + This allows you to edit the amount of white space to the left of the plot, at the bottom of the plot, the width of the plot and the height of the plot respectively.
