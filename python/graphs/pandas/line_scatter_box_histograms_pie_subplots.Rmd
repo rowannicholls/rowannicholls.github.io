@@ -1,0 +1,532 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Line, Scatter & Box Plots, Histograms, Pie Charts and Sub-Plots using Pandas Data Frames'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+Example Data
+============
+For this page we will use the results of the 2021–22 English Premier League football season, available from [here](https://www.football-data.co.uk/englandm.php) and downloadable as a data frame directly from the internet via the following:
+
+```{python}
+import pandas as pd
+
+# Display options
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', 8)
+pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.width', 117)
+
+# Download the data
+df = pd.read_csv('https://www.football-data.co.uk/mmz4281/2122/E0.csv')
+
+# Trim
+cols = ['Date', 'HomeTeam', 'AwayTeam', 'FTHG', 'FTAG', 'FTR']
+df = df[cols]
+# Re-format the dates
+df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+
+print(df.head())
+```
+
+We're going to use the following columns:
+
+- **Date**: the date of the match
+- **HomeTeam** and **AwayTeam**: the names of the home and away teams, respectively
+- **FTHG**: the **f**ull-**t**ime **h**ome-team **g**oal count
+- **FTAG**: the **f**ull-**t**ime **a**way-team **g**oal count
+- **FTR**: the **f**ull-**t**ime **r**esult (`H` for a home-team win, `A` for an away-team win, `D` for a draw)
+
+Line Plot
+=========
+
+Data Preparation
+----------------
+We need to have a data frame with data in the correct format in order to be able to plot it. So let's go ahead and calculate the running total of goals scored for each team over the season as that is something we can represent in a line plot:
+
+```{python}
+# Data preparation: calculate running total of goals scored
+season = {}
+for team in df['HomeTeam'].unique():
+    home = df[df['HomeTeam'] == team].copy()
+    home['goals_scored'] = home['FTHG']
+    away = df[df['AwayTeam'] == team].copy()
+    away['goals_scored'] = away['FTAG']
+    season[team] = pd.concat([home, away])
+    season[team] = season[team].sort_values('Date').reset_index(drop=True)
+    season[team]['total'] = season[team]['goals_scored'].cumsum()
+
+# Check the data for Manchester United
+print(season['Man United'].head())
+```
+
+What Difference Does It Make Plotting With Pandas?
+--------------------------------------------------
+Not a lot. Here's how to turn the above data into a line plot *without* using Pandas (only Matplotlib):
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Create axes
+ax = plt.axes()
+# Extract the data
+man_u = season['Man United']
+# Plot the index (the week number) against the total number of Man United goals
+ax.plot(man_u.index, man_u['total'], c='#e80909')
+# Re-format the plot
+ax.set_title("Manchester United's 2021-22 Premier League Goals")
+ax.set_ylabel('Goals Scored')
+ax.set_ylim(0, 60)
+ax.set_xlabel('Week')
+ax.set_xlim(0, 37)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Create axes
+ax = plt.axes()
+# Extract the data
+man_u = season['Man United']
+# Plot the index (the week number) against the total number of Man United goals
+ax.plot(man_u.index, man_u['total'], c='#e80909')
+# Re-format the plot
+ax.set_title("Manchester United's 2021-22 Premier League Goals")
+ax.set_ylabel('Goals Scored')
+ax.set_ylim(0, 60)
+ax.set_xlabel('Week')
+ax.set_xlim(0, 37)
+
+plt.show()
+```
+
+...and here's how to do it using Pandas:
+
+```{python, eval = FALSE}
+# Create axes
+ax = plt.axes()
+# Extract the data
+man_utd = season['Man United']
+# Plot the index (the week number) against the total number of Man United goals
+man_utd.plot(y='total', c='#e80909', ax=ax)
+# Re-format the plot
+ax.set_title("Manchester United's 2021-22 Premier League Goals")
+ax.set_ylabel('Goals Scored')
+ax.set_ylim(0, 60)
+ax.set_xlabel('Week')
+ax.set_xlim(0, 37)
+ax.legend().remove()
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create axes
+ax = plt.axes()
+# Extract the data
+man_utd = season['Man United']
+# Plot the index (the week number) against the total number of Man United goals
+man_utd.plot(y='total', c='#e80909', ax=ax)
+# Re-format the plot
+ax.set_title("Manchester United's 2021-22 Premier League Goals")
+ax.set_ylabel('Goals Scored')
+ax.set_ylim(0, 60)
+ax.set_xlabel('Week')
+ax.set_xlim(0, 37)
+ax.legend().remove()
+
+plt.show()
+```
+
+Notice the difference? There isn't any difference in what the plots look like but the first was made using this line:
+
+`ax.plot(man_u.index, man_u['total'], c='#e80909')`
+
+while the second used this line:
+
+`man_utd.plot(y='total', c='#e80909', ax=ax)`
+
+Everything else was the same, and the same plot was produced because **Pandas uses Matplotlib** to create its plots. It's simply a matter of preference as to which method you use.
+
+Full Example
+------------
+Anyway, here's a plot of all the teams' goals, using a dictionary of the teams' colours for the formatting:
+
+```{python}
+# Create a dictionary of the teams' colours
+team_colours = {
+    'Arsenal': '#ef0107',
+    'Aston Villa': '#7b003a',
+    'Brentford': '#e30613',
+    'Brighton': '#005daa',
+    'Burnley': '#80bfff',
+    'Chelsea': '#034694',
+    'Crystal Palace': '#c4122e',
+    'Everton': '#274488',
+    'Leeds': '#ffff00',
+    'Leicester': '#0101e8',
+    'Liverpool': '#dd0000',
+    'Man City': '#6caddf',
+    'Man United': '#e80909',
+    'Newcastle': '#000000',
+    'Norwich': '#00a650',
+    'Southampton': '#ed1a3b',
+    'Tottenham': '#132257',
+    'Watford': '#fbee23',
+    'West Ham': '#7f0000',
+    'Wolves': '#fdbc02'
+}
+```
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+for team in sorted(df['HomeTeam'].unique()):
+    season[team].plot(y='total', ax=ax, label=team, color=team_colours[team])
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+ax.set_ylabel('Goals Scored')
+ax.set_ylim(0, 100)
+ax.set_xlabel('Week')
+ax.set_xlim(0, 37)
+plt.subplots_adjust(right=0.75)
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize='x-small')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+for team in sorted(df['HomeTeam'].unique()):
+    season[team].plot(y='total', ax=ax, label=team, color=team_colours[team])
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+ax.set_ylabel('Goals Scored')
+ax.set_ylim(0, 100)
+ax.set_xlabel('Week')
+ax.set_xlim(0, 37)
+plt.subplots_adjust(right=0.75)
+ax.legend(loc='center left', bbox_to_anchor=(1, 0.5), fontsize='x-small')
+
+plt.show()
+```
+
+Scatter Plot
+============
+Re-format the data to make it into something that can be plotted in a scatter plot:
+
+```{python}
+# Data preparation: calculate the total number of home and away goals for each team
+home_goals = pd.pivot_table(df, values='FTHG', index='HomeTeam', columns='AwayTeam')
+home_goals = home_goals.sum(axis=1)
+away_goals = pd.pivot_table(df, values='FTAG', index='AwayTeam', columns='HomeTeam')
+away_goals = away_goals.sum(axis=1)
+goals = pd.concat([home_goals, away_goals], axis=1)
+goals = goals.rename(columns={0: 'Home Goals', 1: 'Away Goals'})
+
+print(goals.head())
+```
+
+We will use a dictionary of the teams' short-hand codes for the annotations:
+
+```{python}
+team_codes = {
+    'Arsenal': 'ARS',
+    'Aston Villa': 'AVL',
+    'Brentford': 'BRE',
+    'Brighton': 'BRI',
+    'Burnley': 'BUR',
+    'Chelsea': 'CHE',
+    'Crystal Palace': 'CRY',
+    'Everton': 'EVE',
+    'Leeds': 'LEE',
+    'Leicester': 'LEI',
+    'Liverpool': 'LIV',
+    'Man City': 'MCI',
+    'Man United': 'MUN',
+    'Newcastle': 'NEW',
+    'Norwich': 'NOR',
+    'Southampton': 'SOT',
+    'Tottenham': 'TOT',
+    'Watford': 'WAT',
+    'West Ham': 'WHU',
+    'Wolves': 'WOL',
+}
+```
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+goals.plot.scatter('Home Goals', 'Away Goals', ax=ax, alpha=0.5)
+ax.plot([0, 63], [0, 63], 'k--', alpha=0.5)
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+ax.set_ylim(0, 63)
+ax.set_xlim(0, 63)
+for i, row in goals.iterrows():
+    ax.annotate(team_codes[i], (row['Home Goals'], row['Away Goals']), fontsize=6)
+# Make the axes square
+y0, y1 = ax.get_ylim()
+x0, x1 = ax.get_xlim()
+ax.set_aspect(abs(x1 - x0) / abs(y1 - y0))
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+goals.plot.scatter('Home Goals', 'Away Goals', ax=ax, alpha=0.5)
+ax.plot([0, 63], [0, 63], 'k--', alpha=0.5)
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+ax.set_ylim(0, 63)
+ax.set_xlim(0, 63)
+for i, row in goals.iterrows():
+    ax.annotate(team_codes[i], (row['Home Goals'], row['Away Goals']), fontsize=6)
+# Make the axes square
+y0, y1 = ax.get_ylim()
+x0, x1 = ax.get_xlim()
+ax.set_aspect(abs(x1 - x0) / abs(y1 - y0))
+
+plt.show()
+```
+
+Box Plots
+=========
+Similarly, re-format the data now to make it into something that can be plotted in a box plot:
+
+```{python}
+# Data preparation: calculate total number of home and away wins for each team
+home_results = pd.pivot_table(df, values='AwayTeam', index='HomeTeam', columns='FTR', aggfunc=len)
+away_results = pd.pivot_table(df, values='HomeTeam', index='AwayTeam', columns='FTR', aggfunc=len)
+overall = pd.concat([home_results['H'], away_results['A']], axis=1)
+overall = overall.rename(columns={'H': 'Home Wins', 'A': 'Away Wins'})
+overall['team_colours'] = team_colours.values()
+
+print(overall.head())
+```
+
+```{python, eval = FALSE}
+import numpy as np
+
+# Plot
+ax = plt.axes()
+bp = overall.boxplot(column=['Home Wins', 'Away Wins'], grid=False, return_type='dict', patch_artist=True)
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+x = np.random.normal(loc=1, scale=0.08, size=len(overall))
+ax.scatter(x, overall['Home Wins'], zorder=10, c=overall['team_colours'], alpha=0.5)
+for i, (j, row) in enumerate(overall.iterrows()):
+    ax.annotate(team_codes[j], (x[i], row['Home Wins']), fontsize=6, rotation=45)
+x = np.random.normal(loc=2, scale=0.08, size=len(overall))
+ax.scatter(x, overall['Away Wins'], zorder=10, c=overall['team_colours'], alpha=0.5)
+for i, (j, row) in enumerate(overall.iterrows()):
+    ax.annotate(team_codes[j], (x[i], row['Away Wins']), fontsize=6, rotation=45)
+plt.setp(bp['boxes'], color='k')
+plt.setp(bp['medians'], color='k')
+plt.setp(bp['whiskers'], color='k')
+plt.setp(bp['boxes'], facecolor='#cccccc')
+ax.set_ylim(0, 16)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import numpy as np
+
+# Plot
+ax = plt.axes()
+bp = overall.boxplot(column=['Home Wins', 'Away Wins'], grid=False, return_type='dict', patch_artist=True)
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+x = np.random.normal(loc=1, scale=0.08, size=len(overall))
+ax.scatter(x, overall['Home Wins'], zorder=10, c=overall['team_colours'], alpha=0.5)
+for i, (j, row) in enumerate(overall.iterrows()):
+    ax.annotate(team_codes[j], (x[i], row['Home Wins']), fontsize=6, rotation=45)
+x = np.random.normal(loc=2, scale=0.08, size=len(overall))
+ax.scatter(x, overall['Away Wins'], zorder=10, c=overall['team_colours'], alpha=0.5)
+for i, (j, row) in enumerate(overall.iterrows()):
+    ax.annotate(team_codes[j], (x[i], row['Away Wins']), fontsize=6, rotation=45)
+plt.setp(bp['boxes'], color='k')
+plt.setp(bp['medians'], color='k')
+plt.setp(bp['whiskers'], color='k')
+plt.setp(bp['boxes'], facecolor='#cccccc')
+ax.set_ylim(0, 16)
+
+plt.show()
+```
+
+Histograms
+==========
+
+```{python}
+# Data preparation: calculate total number of goals in each game
+overall = df.copy()
+overall['total_goals'] = overall['FTHG'] + overall['FTAG']
+
+print(overall.head())
+```
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+bin_edges = [x - 0.5 for x in range(0, 12)]
+overall.hist('total_goals', ax=ax, grid=False, bins=bin_edges, rwidth=0.9, facecolor='#cccccc', edgecolor='k')
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+ax.set_ylabel('Number of Matches')
+ax.set_ylim(0, 90)
+ax.set_xlabel('Number of Goals in the Match')
+ax.set_xlim(-0.5, 9.5)
+plt.xticks(range(0, 10))
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+bin_edges = [x - 0.5 for x in range(0, 12)]
+overall.hist('total_goals', ax=ax, grid=False, bins=bin_edges, rwidth=0.9, facecolor='#cccccc', edgecolor='k')
+# Formatting
+ax.set_title('2021-22 English Premier League Season')
+ax.set_ylabel('Number of Matches')
+ax.set_ylim(0, 90)
+ax.set_xlabel('Number of Goals in the Match')
+ax.set_xlim(-0.5, 9.5)
+plt.xticks(range(0, 10))
+
+plt.show()
+```
+
+Pie Charts
+==========
+
+```{python}
+# Data preparation: get the overall results for each team
+home_results = pd.pivot_table(df, values='AwayTeam', index='HomeTeam', columns='FTR', aggfunc=len)
+home_results = home_results.rename(columns={'H': 'W', 'A': 'L'})
+away_results = pd.pivot_table(df, values='HomeTeam', index='AwayTeam', columns='FTR', aggfunc=len)
+away_results = away_results.rename(columns={'A': 'W', 'H': 'L'})
+results = home_results + away_results
+results = results.T
+
+print(results.head())
+```
+
+```{python, eval = FALSE}
+# Plot
+colours = ['#9c824a', '#023474', '#db0007']
+labels = ['Drew', 'Lost', 'Won']
+ax = results.plot.pie(y='Arsenal', colors=colours, labels=labels)
+# Formatting
+ax.get_legend().remove()
+ax.set_title('2021-22 English Premier League Season:\nArsenal')
+ax.set_ylabel('')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+colours = ['#9c824a', '#023474', '#db0007']
+labels = ['Drew', 'Lost', 'Won']
+ax = results.plot.pie(y='Arsenal', colors=colours, labels=labels)
+# Formatting
+ax.get_legend().remove()
+ax.set_title('2021-22 English Premier League Season:\nArsenal')
+ax.set_ylabel('')
+
+plt.show()
+```
+
+Sub-Plots
+=========
+
+Option 1
+--------
+Plotting all the subplots using one function call creates the problem that the colours can't be changed after the plot has been generated:
+
+```{python, eval = FALSE}
+teams = ['Arsenal', 'Man United']
+labels = ['Drew', 'Lost', 'Won']
+axes = results[teams].plot.pie(subplots=True, layout=(1, 2), labels=labels)
+# Formatting
+for i, ax in enumerate(axes[0]):
+    ax.set_title(teams[i])
+    ax.set_ylabel('')
+    ax.get_legend().remove()
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+teams = ['Arsenal', 'Man United']
+labels = ['Drew', 'Lost', 'Won']
+axes = results[teams].plot.pie(subplots=True, layout=(1, 2), labels=labels)
+# Formatting
+for i, ax in enumerate(axes[0]):
+    ax.set_title(teams[i])
+    ax.set_ylabel('')
+    ax.get_legend().remove()
+
+plt.show()
+```
+
+Option 2
+--------
+Rather use a loop to plot each sub-plot individually, as this allows the format of each plot to be controlled separately:
+
+```{python, eval = FALSE}
+colours = [
+    ['#9c824a', '#023474', '#db0007'],
+    ['#000000', '#ffe500', '#da020e'],
+]
+fig, axes = plt.subplots(nrows=1, ncols=2)
+for i, team in enumerate(['Arsenal', 'Man United']):
+    # Plot
+    results[team].plot.pie(ax=axes[i], labels=labels, colors=colours[i])
+    # Formatting
+    axes[i].set_title(team)
+    axes[i].set_ylabel('')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+colours = [
+    ['#9c824a', '#023474', '#db0007'],
+    ['#000000', '#ffe500', '#da020e'],
+]
+fig, axes = plt.subplots(nrows=1, ncols=2)
+for i, team in enumerate(['Arsenal', 'Man United']):
+    # Plot
+    results[team].plot.pie(ax=axes[i], labels=labels, colors=colours[i])
+    # Formatting
+    axes[i].set_title(team)
+    axes[i].set_ylabel('')
+
+plt.show()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
