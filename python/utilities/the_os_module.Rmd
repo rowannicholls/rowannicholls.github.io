@@ -1,0 +1,196 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>The `os` Module'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+[⇦ Back](../../python.html)
+
+The `os` module provides "miscellaneous operating system interfaces" - see its documentation over [here](https://docs.python.org/3/library/os.html). Only a small amount of the module's full functionality will be discussed on this page, but it'll be some of the most useful parts.
+
+`os.listdir()`
+==============
+This function shows you all the folders and files contained within a folder:
+
+```{python, eval = FALSE}
+import os
+
+path = 'Example Directory'
+ls = os.listdir(path)
+
+print(ls)
+```
+
+```
+## ['Example File 1.txt', 'Example Sub-Folder', 'Example File 3.txt', 'Example File 2.txt']
+```
+
+Notice that these results are *not in alphabetical order* and no distinction is made between the folder and the files (beside the fact that the folder has no extension). To sort them, use the `sorted()` function or the `.sort()` method:
+
+```{python}
+import os
+
+path = 'Example Directory'
+ls = sorted(os.listdir(path))
+
+print(ls)
+```
+
+```{python}
+ls = os.listdir(path)
+ls.sort()
+
+print(ls)
+```
+
+`os.system()`
+=============
+Runs a piece of terminal/command line code. For example, the `ls` command **l**i**s**ts the files and folders within a folder:
+
+```{python, eval = FALSE}
+print(os.system('ls "Example Directory"'))
+```
+
+```
+Example File 1.txt
+Example File 2.txt
+Example File 3.txt
+Example Sub-Folder
+0
+```
+
+So, essentially, a Python script can do anything a shell script can do because you can execute shell code in the terminal inside Python.
+
+`os.rename()`
+=============
+Renames a file. Let's first check what's in the folder so we can see what files are available to be renamed:
+
+```{python}
+# Check what's in the folder
+path = 'Example Directory'
+print(os.listdir(path))
+```
+
+Now we can rename one:
+
+```{python}
+# Change the name of one of the files
+old_name = 'Example Directory/Example File 1.txt'
+new_name = 'Example Directory/Example File 1 - Renamed.txt'
+os.rename(old_name, new_name)
+print(os.listdir(path))
+```
+
+And we can also change it back:
+
+```{python}
+# Change the name back
+os.rename(new_name, old_name)
+print(os.listdir(path))
+```
+
+`os.remove()`
+=============
+Delete a file:
+
+```{python}
+file_path = 'Example Directory/Example File 1.txt'
+os.remove(file_path)
+
+print(os.listdir('Example Directory'))
+```
+
+Don't confuse this `os.remove()` function with the `.remove()` method which removes an item from a list:
+
+```{python}
+ls = ['A', 'B', 'C']
+ls.remove('A')
+
+print(ls)
+```
+
+Create a File
+-------------
+`os.remove()` will delete a file, so let's see how to create one to balance that out:
+
+```{python}
+file_path = 'Example Directory/Example File 1.txt'
+# Open file in write mode
+f = open(file_path, 'w')
+# Close the file
+f.close()
+
+print(os.listdir('Example Directory'))
+```
+
+Notice that creating a file doesn't use the `os` module.
+
+`os.path`
+=========
+This is actually a sub-module of `os` that contains a whole bunch of functions of its own. They are all to do with pathname manipulations:
+
+`os.path.join()`
+----------------
+Concatenates strings in such a way as to make them valid file paths. If run on Windows it will add *back slashes* and if run on macOS/Linux it will add *forward slashes*:
+
+```{python}
+file_path = os.path.join('Example Directory', 'Example Sub-Directory', 'Example File.txt')
+
+# The output on a macOS/Linux computer
+print(file_path)
+```
+
+```{python, eval = FALSE}
+# The output on a Windows computer
+print(file_path)
+```
+
+```
+## Example Directory\Example Sub-Directory\Example File.txt
+```
+
+### `os.path.join()` vs `pathlib.Path()`
+Another Python module - pathlib - contains the `Path()` function which essentially does the same thing as `os.path.join()` (see the documentation [here](https://docs.python.org/3/library/pathlib.html)):
+
+```{python}
+from pathlib import Path
+
+file_path = Path('Example Directory', 'Example Sub-Directory', 'Example File.txt')
+
+print(file_path)
+```
+
+The difference, however, is that `os.path.join()` produces a *string* whereas `pathlib.Path()` produces a *path object*. Path objects have slightly more functionality that is useful when creating and handling file paths and, in general, should be used when working with paths.
+
+> If you want something to be a *string*, make it a *string*. If you want something to be a *path* make it a *path*. Using good-practice conventions such as this will help ensure that your code does what you expect it to do and will help anyone who reads your code figure out what you meant it to do.
+
+`os.path.basename()`
+--------------------
+Gives you the file name (including the extension) from a file path:
+
+```{python}
+file_path = os.path.join('Example Directory', 'Example Sub-Directory', 'Example File.txt')
+file_name = os.path.basename(file_path)
+
+print(file_name)
+```
+
+The `os` Module in Practice
+===========================
+[This page](move_and_rename.html) will show you how to use functions from the `os` module to move files and rename them.
+
+[⇦ Back](../../python.html)
+
+</font>

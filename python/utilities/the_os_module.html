@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Utilities in Python: The os Module</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -441,7 +441,7 @@ Na:"user_properties",Bg:"us_privacy_string",ka:"value",Md:"wbraid",Cg:"wbraid_mu
 1,xd[S.g.Id]=1,xd[S.g.Ae]=1,xd[S.g.sa]=1,xd[S.g.Ld]=1,xd[S.g.qb]=1,xd[S.g.za]=1,xd[S.g.yb]=1,xd[S.g.Nc]=1,xd[S.g.Ee]=1,xd[S.g.Vb]=1,xd[S.g.ba]=1,xd[S.g.Oc]=1,xd[S.g.Ag]=1,xd[S.g.Na]=1,xd));Object.freeze([S.g.Ma,S.g.Ra,S.g.Ub,S.g.La,S.g.pg,S.g.wa,S.g.ye,S.g.Th]);
 var zd={},Ad=Object.freeze((zd[S.g.Ih]=1,zd[S.g.Jh]=1,zd[S.g.Kh]=1,zd[S.g.Lh]=1,zd[S.g.Mh]=1,zd[S.g.Nh]=1,zd[S.g.Oh]=1,zd[S.g.Ph]=1,zd[S.g.Qh]=1,zd[S.g.se]=1,zd)),Bd={},Cd=Object.freeze((Bd[S.g.Jf]=1,Bd[S.g.Kf]=1,Bd[S.g.oc]=1,Bd[S.g.qc]=1,Bd[S.g.Lf]=1,Bd[S.g.Kb]=1,Bd[S.g.sc]=1,Bd[S.g.tb]=1,Bd[S.g.Lb]=1,Bd[S.g.ub]=1,Bd[S.g.Ea]=1,Bd[S.g.uc]=1,Bd[S.g.Ja]=1,Bd[S.g.Mf]=1,Bd)),Dd=Object.freeze([S.g.W,S.g.xc,S.g.vb]),Ed=Object.freeze([].concat(Dd)),Fd=Object.freeze([S.g.Ka,S.g.Dd,S.g.Nc,S.g.Ee,S.g.Bd]),
 Gd=Object.freeze([].concat(Fd)),Hd={},Id=(Hd[S.g.D]="1",Hd[S.g.P]="2",Hd),Jd={},Kd=Object.freeze((Jd[S.g.W]=1,Jd[S.g.wc]=1,Jd[S.g.ya]=1,Jd[S.g.Xa]=1,Jd[S.g.ud]=1,Jd[S.g.yc]=1,Jd[S.g.zc]=1,Jd[S.g.Ac]=1,Jd[S.g.X]=1,Jd[S.g.Bc]=1,Jd[S.g.Ga]=1,Jd[S.g.ra]=1,Jd[S.g.Za]=1,Jd[S.g.Ka]=1,Jd[S.g.ab]=1,Jd[S.g.cb]=1,Jd[S.g.na]=1,Jd[S.g.Fc]=1,Jd[S.g.Z]=1,Jd[S.g.Of]=1,Jd[S.g.Jc]=1,Jd[S.g.Kc]=1,Jd[S.g.ye]=1,Jd[S.g.Ed]=1,Jd[S.g.La]=1,Jd[S.g.Tb]=1,Jd[S.g.Ma]=1,Jd[S.g.Ra]=1,Jd[S.g.jg]=1,Jd[S.g.kg]=1,Jd[S.g.lg]=1,Jd[S.g.mg]=
-1,Jd[S.g.qb]=1,Jd[S.g.za]=1,Jd[S.g.yb]=1,Jd[S.g.Vb]=1,Jd[S.g.Ha]=1,Jd[S.g.ba]=1,Jd[S.g.Oc]=1,Jd[S.g.fb]=1,Jd[S.g.va]=1,Jd[S.g.wa]=1,Jd[S.g.ka]=1,Jd));Object.freeze(S.g);var Ld={},Nd=E.google_tag_manager=E.google_tag_manager||{},Od=Math.random();Ld.Rd="970";Ld.da="dataLayer";Ld.Hh="ChAI8I72mAYQmojhvpGVgeAXEicAAw578Oga18uut0qnQxRKupGvce5wzaujZPoKN3k0ybrGabhULBQaArSg";var Pd={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Qd={__paused:!0,__tg:!0},Rd;for(Rd in Pd)Pd.hasOwnProperty(Rd)&&(Qd[Rd]=!0);Ld.nc="www.googletagmanager.com";var Sd,Td=Ld.nc+"/gtm.js";Td=Ld.nc+"/gtag/js";Sd=Td;
+1,Jd[S.g.qb]=1,Jd[S.g.za]=1,Jd[S.g.yb]=1,Jd[S.g.Vb]=1,Jd[S.g.Ha]=1,Jd[S.g.ba]=1,Jd[S.g.Oc]=1,Jd[S.g.fb]=1,Jd[S.g.va]=1,Jd[S.g.wa]=1,Jd[S.g.ka]=1,Jd));Object.freeze(S.g);var Ld={},Nd=E.google_tag_manager=E.google_tag_manager||{},Od=Math.random();Ld.Rd="970";Ld.da="dataLayer";Ld.Hh="ChAI8I72mAYQmojhvpGVgeAXEicAAw578J13w0fo8vKAj3KMPoPJ+Wk7qqHvXoxKVqZd0flrfM4EJrsaAsQG";var Pd={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Qd={__paused:!0,__tg:!0},Rd;for(Rd in Pd)Pd.hasOwnProperty(Rd)&&(Qd[Rd]=!0);Ld.nc="www.googletagmanager.com";var Sd,Td=Ld.nc+"/gtm.js";Td=Ld.nc+"/gtag/js";Sd=Td;
 var Ud=za(""),Vd=za(""),Wd=null,Xd=null,Yd={},Zd={},$d=function(){var a=Nd.sequence||1;Nd.sequence=a+1;return a};Ld.Gh="";var ae="";Ld.Sd=ae;var be=new ua,ce={},de={},ge={name:Ld.da,set:function(a,b){N(Ja(a,b),ce);ee()},get:function(a){return fe(a,2)},reset:function(){be=new ua;ce={};ee()}},fe=function(a,b){return 2!=b?be.get(a):he(a)},he=function(a){var b,c=a.split(".");b=b||[];for(var d=ce,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},ie=function(a,b){de.hasOwnProperty(a)||(be.set(a,b),N(Ja(a,b),ce),ee())},ee=function(a){k(de,function(b,c){be.set(b,c);N(Ja(b),ce);N(Ja(b,
 c),ce);a&&delete de[b]})},je=function(a,b){var c,d=1!==(void 0===b?2:b)?he(a):be.get(a);"array"===wb(d)||"object"===wb(d)?c=N(d):c=d;return c};var ke,le=!1,me=function(a){if(!le){le=!0;ke=ke||{}}return ke[a]};var ne=function(){var a=E.screen;return{width:a?a.width:0,height:a?a.height:0}},oe=function(a){if(G.hidden)return!0;var b=a.getBoundingClientRect();if(b.top==b.bottom||b.left==b.right||!E.getComputedStyle)return!0;var c=E.getComputedStyle(a,null);if("hidden"===c.visibility)return!0;for(var d=a,e=c;d;){if("none"===e.display)return!0;var f=e.opacity,g=e.filter;if(g){var l=g.indexOf("opacity(");0<=l&&(g=g.substring(l+8,g.indexOf(")",l)),"%"==g.charAt(g.length-1)&&(g=g.substring(0,g.length-1)),f=Math.min(g,
 f))}if(void 0!==f&&0>=f)return!0;(d=d.parentElement)&&(e=E.getComputedStyle(d,null))}return!1};var xe=/:[0-9]+$/,ye=function(a,b,c){for(var d=a.split("&"),e=0;e<d.length;e++){var f=d[e].split("=");if(decodeURIComponent(f[0]).replace(/\+/g," ")===b){var g=f.slice(1).join("=");return c?g:decodeURIComponent(g).replace(/\+/g," ")}}},Be=function(a,b,c,d,e){b&&(b=String(b).toLowerCase());if("protocol"===b||"port"===b)a.protocol=ze(a.protocol)||ze(E.location.protocol);"port"===b?a.port=String(Number(a.hostname?a.port:E.location.port)||("http"===a.protocol?80:"https"===a.protocol?443:"")):"host"===
@@ -669,207 +669,160 @@ G.documentElement.doScroll){var v=!0;try{v=!E.frameElement}catch(A){}v&&qn()}nb(
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Utilities in Python:</font><br>The <code>os</code> Module</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#os.listdir"><span class="toc-section-number">1</span> <code>os.listdir()</code></a></li>
+<li><a href="#os.system"><span class="toc-section-number">2</span> <code>os.system()</code></a></li>
+<li><a href="#os.rename"><span class="toc-section-number">3</span> <code>os.rename()</code></a></li>
+<li><a href="#os.remove"><span class="toc-section-number">4</span> <code>os.remove()</code></a>
+<ul>
+<li><a href="#create-a-file"><span class="toc-section-number">4.1</span> Create a File</a></li>
+</ul></li>
+<li><a href="#os.path"><span class="toc-section-number">5</span> <code>os.path</code></a>
+<ul>
+<li><a href="#os.path.join"><span class="toc-section-number">5.1</span> <code>os.path.join()</code></a>
+<ul>
+<li><a href="#os.path.join-vs-pathlib.path"><span class="toc-section-number">5.1.1</span> <code>os.path.join()</code> vs <code>pathlib.Path()</code></a></li>
+</ul></li>
+<li><a href="#os.path.basename"><span class="toc-section-number">5.2</span> <code>os.path.basename()</code></a></li>
+</ul></li>
+<li><a href="#the-os-module-in-practice"><span class="toc-section-number">6</span> The <code>os</code> Module in Practice</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/errors.html">Errors</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">f-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<p><a href="../../python.html">⇦ Back</a></p>
+<p>The <code>os</code> module provides “miscellaneous operating system interfaces” - see its documentation over <a href="https://docs.python.org/3/library/os.html">here</a>. Only a small amount of the module’s full functionality will be discussed on this page, but it’ll be some of the most useful parts.</p>
+<div id="os.listdir" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> <code>os.listdir()</code></h1>
+<p>This function shows you all the folders and files contained within a folder:</p>
+<pre class="python"><code>import os
+
+path = &#39;Example Directory&#39;
+ls = os.listdir(path)
+
+print(ls)</code></pre>
+<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Example Sub-Folder&#39;, &#39;Example File 3.txt&#39;, &#39;Example File 2.txt&#39;]</code></pre>
+<p>Notice that these results are <em>not in alphabetical order</em> and no distinction is made between the folder and the files (beside the fact that the folder has no extension). To sort them, use the <code>sorted()</code> function or the <code>.sort()</code> method:</p>
+<pre class="python"><code>import os
+
+path = &#39;Example Directory&#39;
+ls = sorted(os.listdir(path))
+
+print(ls)</code></pre>
+<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Example File 2.txt&#39;, &#39;Example File 3.txt&#39;, &#39;Example Sub-Directory&#39;]</code></pre>
+<pre class="python"><code>ls = os.listdir(path)
+ls.sort()
+
+print(ls)</code></pre>
+<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Example File 2.txt&#39;, &#39;Example File 3.txt&#39;, &#39;Example Sub-Directory&#39;]</code></pre>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --></li>
-</ul></li>
-<li><a href="python/advanced/args_kwargs.html">Args and Kwargs</a> <!-- 5. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a> <!-- 6. [Webscraping] --> <!-- 7. [Bitwise Operators] --></li>
-<li><a href="python/advanced/error_handling.html">Error Handling</a> <!-- 9. [Linting] --> <!-- 10. [Variable Scope] --></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="os.system" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> <code>os.system()</code></h1>
+<p>Runs a piece of terminal/command line code. For example, the <code>ls</code> command <strong>l</strong>i<strong>s</strong>ts the files and folders within a folder:</p>
+<pre class="python"><code>print(os.system(&#39;ls &quot;Example Directory&quot;&#39;))</code></pre>
+<pre><code>Example File 1.txt
+Example File 2.txt
+Example File 3.txt
+Example Sub-Folder
+0</code></pre>
+<p>So, essentially, a Python script can do anything a shell script can do because you can execute shell code in the terminal inside Python.</p>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a>
-<ul>
-<li><a href="python/data/export_to_word.html">Export Tables to Word</a></li>
-</ul></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-<li><a href="python/data/drop_columns_false.html">Drop Columns That Only Contain “False”</a></li>
-<li><a href="python/data/vlookup_unblinding.html">Using VLOOKUP for Unblinding</a></li>
-</ol>
+<div id="os.rename" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> <code>os.rename()</code></h1>
+<p>Renames a file. Let’s first check what’s in the folder so we can see what files are available to be renamed:</p>
+<pre class="python"><code># Check what&#39;s in the folder
+path = &#39;Example Directory&#39;
+print(os.listdir(path))</code></pre>
+<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Example File 3.txt&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File 2.txt&#39;]</code></pre>
+<p>Now we can rename one:</p>
+<pre class="python"><code># Change the name of one of the files
+old_name = &#39;Example Directory/Example File 1.txt&#39;
+new_name = &#39;Example Directory/Example File 1 - Renamed.txt&#39;
+os.rename(old_name, new_name)
+print(os.listdir(path))</code></pre>
+<pre><code>## [&#39;Example File 3.txt&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File 1 - Renamed.txt&#39;, &#39;Example File 2.txt&#39;]</code></pre>
+<p>And we can also change it back:</p>
+<pre class="python"><code># Change the name back
+os.rename(new_name, old_name)
+print(os.listdir(path))</code></pre>
+<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Example File 3.txt&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File 2.txt&#39;]</code></pre>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a>
-<ul>
-<li><a href="python/graphs/colours_good_figures.html">Colours that Look Good in Figures</a></li>
-</ul></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing directly from Pandas data frames <em>- This is essentially the same as the above methods because Pandas uses Matplotlib in the background</em>
-<ul>
-<li><a href="python/graphs/pandas/line_scatter_box_histograms_pie_subplots.html">Line, Scatter &amp; Box Plots, Histograms, Pie Charts and Sub-Plots</a></li>
-<li><a href="python/graphs/pandas/bar_plots.html">Bar Plots</a></li>
-</ul></li>
-<li>Axes and Labels
-<ul>
-<li><a href="python/graphs/axes_and_labels/latex_in_labels.html">LaTeX in Labels</a></li>
-<li><a href="python/graphs/axes_and_labels/changing_the_font.html">Changing the Font</a></li>
-</ul></li>
-</ol>
+<div id="os.remove" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> <code>os.remove()</code></h1>
+<p>Delete a file:</p>
+<pre class="python"><code>file_path = &#39;Example Directory/Example File 1.txt&#39;
+os.remove(file_path)
+
+print(os.listdir(&#39;Example Directory&#39;))</code></pre>
+<pre><code>## [&#39;Example File 3.txt&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File 2.txt&#39;]</code></pre>
+<p>Don’t confuse this <code>os.remove()</code> function with the <code>.remove()</code> method which removes an item from a list:</p>
+<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
+ls.remove(&#39;A&#39;)
+
+print(ls)</code></pre>
+<pre><code>## [&#39;B&#39;, &#39;C&#39;]</code></pre>
+<div id="create-a-file" class="section level2" number="4.1">
+<h2 number="4.1"><span class="header-section-number">4.1</span> Create a File</h2>
+<p><code>os.remove()</code> will delete a file, so let’s see how to create one to balance that out:</p>
+<pre class="python"><code>file_path = &#39;Example Directory/Example File 1.txt&#39;
+# Open file in write mode
+f = open(file_path, &#39;w&#39;)
+# Close the file
+f.close()
+
+print(os.listdir(&#39;Example Directory&#39;))</code></pre>
+<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Example File 3.txt&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File 2.txt&#39;]</code></pre>
+<p>Notice that creating a file doesn’t use the <code>os</code> module.</p>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li>Linear Functions
-<ul>
-<li><a href="python/curve_fitting/linear_comparison.html">Comparison of Methods</a></li>
-<li><a href="python/curve_fitting/linear_regression.html">Linear Regression</a></li>
-</ul></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-<li><a href="python/statistics/effect_size.html">Effect Size</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li>Regression
-<ul>
-<li><a href="python/statistics/hypothesis_testing/constant_regression.html">Constant Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/simple_linear_regression.html">Simple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/multiple_linear_regression.html">Multiple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/quadratic_regression.html">Quadratic Regression</a></li>
-</ul></li>
-<li>t-Tests
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample t-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired Two-Sample t-Test</a></li>
-<li>Two One-Sided t-Test (TOST)
-<ul>
-<li><a href="python/statistics/hypothesis_testing/tost_unpaired.html">Unpaired</a></li>
-<li><a href="python/statistics/hypothesis_testing/tost_paired.html">Paired</a></li>
-</ul></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney U Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)</li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-</ul></li>
-<li>Risk
-<ul>
-<li><a href="python/statistics/risk/odds_ratio.html">Odds Ratio</a></li>
-<li><a href="python/statistics/risk/hazard_ratio.html">Hazard Ratio</a></li>
-</ul></li>
-</ol>
+<div id="os.path" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> <code>os.path</code></h1>
+<p>This is actually a sub-module of <code>os</code> that contains a whole bunch of functions of its own. They are all to do with pathname manipulations:</p>
+<div id="os.path.join" class="section level2" number="5.1">
+<h2 number="5.1"><span class="header-section-number">5.1</span> <code>os.path.join()</code></h2>
+<p>Concatenates strings in such a way as to make them valid file paths. If run on Windows it will add <em>back slashes</em> and if run on macOS/Linux it will add <em>forward slashes</em>:</p>
+<pre class="python"><code>file_path = os.path.join(&#39;Example Directory&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File.txt&#39;)
+
+# The output on a macOS/Linux computer
+print(file_path)</code></pre>
+<pre><code>## Example Directory/Example Sub-Directory/Example File.txt</code></pre>
+<pre class="python"><code># The output on a Windows computer
+print(file_path)</code></pre>
+<pre><code>## Example Directory\Example Sub-Directory\Example File.txt</code></pre>
+<div id="os.path.join-vs-pathlib.path" class="section level3" number="5.1.1">
+<h3 number="5.1.1"><span class="header-section-number">5.1.1</span> <code>os.path.join()</code> vs <code>pathlib.Path()</code></h3>
+<p>Another Python module - pathlib - contains the <code>Path()</code> function which essentially does the same thing as <code>os.path.join()</code> (see the documentation <a href="https://docs.python.org/3/library/pathlib.html">here</a>):</p>
+<pre class="python"><code>from pathlib import Path
+
+file_path = Path(&#39;Example Directory&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File.txt&#39;)
+
+print(file_path)</code></pre>
+<pre><code>## Example Directory/Example Sub-Directory/Example File.txt</code></pre>
+<p>The difference, however, is that <code>os.path.join()</code> produces a <em>string</em> whereas <code>pathlib.Path()</code> produces a <em>path object</em>. Path objects have slightly more functionality that is useful when creating and handling file paths and, in general, should be used when working with paths.</p>
+<blockquote>
+<p>If you want something to be a <em>string</em>, make it a <em>string</em>. If you want something to be a <em>path</em> make it a <em>path</em>. Using good-practice conventions such as this will help ensure that your code does what you expect it to do and will help anyone who reads your code figure out what you meant it to do.</p>
+</blockquote>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Management</a></li>
-<li><a href="python/utilities/the_os_module.html">The <code>os</code> Module</a>
-<ul>
-<li><a href="python/utilities/move_and_rename.html">Move and Rename Files</a></li>
-</ul></li>
-</ol>
+</div>
+<div id="os.path.basename" class="section level2" number="5.2">
+<h2 number="5.2"><span class="header-section-number">5.2</span> <code>os.path.basename()</code></h2>
+<p>Gives you the file name (including the extension) from a file path:</p>
+<pre class="python"><code>file_path = os.path.join(&#39;Example Directory&#39;, &#39;Example Sub-Directory&#39;, &#39;Example File.txt&#39;)
+file_name = os.path.basename(file_path)
+
+print(file_name)</code></pre>
+<pre><code>## Example File.txt</code></pre>
+</div>
+</div>
+<div id="the-os-module-in-practice" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> The <code>os</code> Module in Practice</h1>
+<p><a href="move_and_rename.html">This page</a> will show you how to use functions from the <code>os</code> module to move files and rename them.</p>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
