@@ -383,6 +383,15 @@ print(my_dictionary['B'])
 print(list(my_dictionary.values())[1])
 ```
 
+For the record, you can always **convert a list into a dictionary** by *enumerating* it (assigning a number to each value):
+
+```{python}
+# Convert a list into a dictionary
+dct = dict(enumerate(my_list))
+
+print(dct)
+```
+
 And, finally, just like you can have lists-of-lists and list comprehensions, you can have dictionaries-of-dictionaries and dictionary comprehensions! See [this page](../advanced/dictionaries.html) for more on those...
 
 [⇦ Back](../../python.html)
