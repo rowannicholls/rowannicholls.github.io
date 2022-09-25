@@ -579,6 +579,48 @@ They are **subscriptable** and so can be indexed using the position of an elemen
 print(tup[0])
 ```
 
+This is, however, the *only* way to index a tuple - using the numerical positions of elements. You can't assign names to the elements unless you use a **named tuple**:
+
+Named Tuples
+------------
+These are tuples that allow you to use *either* index referencing *or* dot notation:
+
+```{python}
+from collections import namedtuple
+
+# Create a subclass of tuple that has named fields
+name = namedtuple('Name', 'first last')
+
+# Create an instance of a named tuple
+person1 = name('John', 'Smith')
+```
+
+Index referencing works as per normal:
+
+```{python, eval=FALSE}
+print(person1[0])
+print(person1[1])
+```
+
+```
+## John
+## Smith
+```
+
+However, we can now use *dot notation* as well:
+
+```{python, eval=FALSE}
+print(person1.first)
+print(person1.last)
+```
+
+```
+## John
+## Smith
+```
+
+Named tuples are useful in the specific situation where you have objects with details that have both a name and an order, eg the above example of peoples' names which have components that can be named ("first" and "last") and which also have an order.
+
 Summary
 =======
 
