@@ -232,16 +232,29 @@ print(censor("Frankly, my dear, I don't give a damn", 'damn'))
 ```
 
 ### Two Lists
-'Zipping' two lists together will allow you to look at both of them at the same time (even if they are not the same length):
+'Zipping' two lists together will allow you to look at both of them at the same time. However, if one list is longer than the other it will be shortened so that they match:
 
 ```{python}
-list_a = [3, 9, 17, 15, 19]
-list_b = [2, 4, 8, 10, 30, 40, 50, 60, 70, 80, 90]
-for a, b in zip(list_a, list_b):
+list1 = [3, 9, 17, 15, 19]
+list2 = [2, 4, 8, 10, 30, 40, 50, 60, 70, 80, 90]
+
+# Determine which number at each position in the lists is larger
+for a, b in zip(list1, list2):
     if a > b:
-        print (a)
+        print(a)
     else:
-        print (b)
+        print(b)
+```
+
+In the above example, each of the five numbers in the first list was compared to the corresponding number in the second list; the remaining six numbers in the second list were discarded. If we instead want to loop through each *combination* of elements from *both* lists we need to use a nested **list comprehension**:
+
+```{python}
+list1 = ['A', 'B']
+list2 = ['1', '2', '3', '4']
+
+combinations = [(x, y) for x in list1 for y in list2]
+for combination in combinations:
+    print(combination[0], combination[1])
 ```
 
 Strings
