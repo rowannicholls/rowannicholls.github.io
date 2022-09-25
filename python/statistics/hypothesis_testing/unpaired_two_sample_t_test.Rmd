@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Statistics in Python:</font><br>Unpaired Two-Sample t-Tests'
+title: '<font size="5">Statistics in Python:</font><br>Unpaired Two-Sample <i>t</i>-Tests'
 output:
     html_document:
         theme: paper
@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../python.html)
 
-The **unpaired two-sample t-test** is one of [Student's t-tests](https://en.wikipedia.org/wiki/Student%27s_t-test) that can be used to compare the means of two groups of numerical data which are *independent* of each other (ie a sample in one group is not *paired* with any sample in the other group; it does not affect the value of any of the samples in the other group in any way)
+The **unpaired two-sample *t*-test** is one of [Student's *t*-tests](https://en.wikipedia.org/wiki/Student%27s_t-test) that can be used to compare the means of two groups of numerical data which are *independent* of each other (ie a sample in one group is not *paired* with any sample in the other group; it does not affect the value of any of the samples in the other group in any way)
 
 Example Data
 ============
@@ -210,7 +210,7 @@ Now that we have hypotheses, we can follow a statistical test selection process:
 - Our measurements are **independent** of each other: the amount that one group of houses cost does not affect how much another group of houses cost
 - Our hypotheses are formulated in a way that tests for a **difference** (not for *equivalence*)
 
-Looking at the flowchart below tells us that we should thus be using the unpaired two-sample t-test to test our hypothesis:
+Looking at the flowchart below tells us that we should thus be using the unpaired two-sample *t*-test to test our hypothesis:
 
 ```{r, echo = FALSE}
 # install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
@@ -392,8 +392,8 @@ lower_ci = difference - 2 * sed
 print(f'Difference of the means = {difference:5.3f} ({lower_ci:5.3f} to {upper_ci:5.3f})')
 ```
 
-Unpaired Two-Sample t-Test
-==========================
+Unpaired Two-Sample *t*-Test
+============================
 After all that hard work getting the data into the correct format, choosing a hypothesis test and looking at the descriptive statistics, actually performing the hypothesis test is incredibly simple:
 
 ```{python}
@@ -409,9 +409,9 @@ print(f'Two-sample t-test: s = {statistic:5.3f}, p = {pvalue:5.3f}')
 
 Interpreting the Result
 -----------------------
-This p-value is small (<0.05), which means that we can reject H<sub>0</sub> and conclude that there is a statistically significant difference between the two location types (p < 0.05) with the median house price being $2,990 higher on average in areas bounded by the Charles river than in areas away from the river.
+This *p*-value is small (<0.05), which means that we can reject H<sub>0</sub> and conclude that there is a statistically significant difference between the two location types (*p* < 0.05) with the median house price being $2,990 higher on average in areas bounded by the Charles river than in areas away from the river.
 
-Often, you will see this type of result reported using asterisks to indicate the significance level (α) associated with it. Additionally, if the p-value is very small it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting:
+Often, you will see this type of result reported using asterisks to indicate the significance level (α) associated with it. Additionally, if the *p*-value is very small it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting:
 
 ```{python}
 def get_significance(p):
@@ -441,9 +441,13 @@ significance = get_significance(pvalue)
 print(f'The p-value is {p_rounded} ({significance})')
 ```
 
-Two One-Sided t-Tests
-=====================
-Another type of test is the "two one-sided t-test" (TOST) which involves, as the name suggests, performing two one-sided unpaired two-sample t-tests. While this *is* a hypothesis test, its purpose is to test equivalence: it asks "do the means of two populations differ by less than a certain amount?" as opposed to "are the means the same?". For this reason it is discussed on [its own page](tost_unpaired.html) in the 'agreement' section.
+Adding Significance Bars to Boxplots
+------------------------------------
+If you're interested in adding significance bars to boxplots after having used the unpaired two-sample *t*-test to find a significant difference, look over [here](../../graphs/ax_based/boxplots_significance.html).
+
+Two One-Sided *t*-Tests
+=======================
+Another type of test is the "two one-sided *t*-test" (TOST) which involves, as the name suggests, performing two one-sided unpaired two-sample *t*-tests. While this *is* a hypothesis test, its purpose is to test equivalence: it asks "do the means of two populations differ by less than a certain amount?" as opposed to "are the means the same?". For this reason it is discussed on [its own page](tost_unpaired.html) in the 'agreement' section.
 
 [⇦ Back](../../../python.html)
 

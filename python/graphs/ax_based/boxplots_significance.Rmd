@@ -1,0 +1,647 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Boxplots with Significance Bars<br><font size="5">_using explicitly defined axes in Matplotlib_</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+**Boxplots** - also known as **box-and-whisker** plots - are often used with groups of numerical data. They are useful for quickly comparing differences in *spread*, *skewness* and *central tendency*. If a statistical hypothesis test is used to infer a *statistical difference* between the groups (eg a *t*-test to detect a difference in means or the Mann–Whitney *U* test to detect a difference in expected value) it is usual to represent this finding on the plot via **significance bars**. This page will demonstrate how to create these dynamically, ie in such a way as to work for most use cases with minimal changes to the code.
+
+Example Data
+============
+This first example will use the **_Iris_ flower data set** - see [here](https://en.wikipedia.org/wiki/Iris_flower_data_set) and [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html#sklearn.datasets.load_iris) - which can be loaded from the **scikit-learn** library via the `load_iris()` function:
+
+```{python}
+from sklearn.datasets import load_iris
+
+# Load the dataset
+iris = load_iris()
+```
+
+Let's re-configure the data into a more Pandas-friendly format to make it easier to work with:
+
+```{python}
+import pandas as pd
+
+# Extract the data
+data = pd.DataFrame(iris['data'], columns=iris['feature_names'])
+# Extract the target
+target = pd.DataFrame(iris['target'], columns=['species'])
+# Translate the target
+class2species = dict(enumerate(iris['target_names']))
+target['species'] = target['species'].replace(class2species)
+# Combine into one dataset
+df = pd.concat([target, data], axis='columns')
+```
+
+Now let's take a look at what we're working with:
+
+```{python}
+# Pandas display options
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.width', 362)
+
+print(df.head())
+```
+
+Only one species is visible in this preview of the data - "setosa". There are two others in the full data set: "versicolor" and "virginica".
+
+Initialise the Plot
+===================
+Let's create a boxplot to which we can add significance bars. Specifically, let's graph the *petal length* values and let's use the `boxplot()` function from Matplotlib. This function takes a *list* as its input, and each element of this list is then used as the data for each group (box) in the boxplot. So let's split our data frame up into a *list-of-series* (one series for each of the three species of Iris flower) of petal length values which will then be ready for plotting:
+
+```{python}
+# Convert to a list of series
+col = 'petal length (cm)'
+data = [
+    df[df['species'] == 'setosa'][col],
+    df[df['species'] == 'versicolor'][col],
+    df[df['species'] == 'virginica'][col],
+]
+```
+
+Basic Plot
+----------
+As promised, here's the `boxplot()` function:
+
+```{python}
+import matplotlib.pyplot as plt
+
+# Create a set of axes
+ax = plt.axes()
+# Create a boxplot on the axes
+bp = ax.boxplot(data, widths=0.6, patch_artist=True)
+
+plt.show()
+```
+
+The `widths` parameter sets the width of the boxes as a proportion of the available space (ie `widths=1` will leave no space between boxes). Turning the `patch_artist` parameter on adds colours to the boxes.
+
+Format the Plot
+---------------
+Let's start with setting some general Matpotlib parameters:
+
+```{python}
+# Make figures A6 in size
+A = 6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+# Change figure quality
+plt.rc('figure', dpi=141)
+# Use LaTeX for graphs' text
+plt.rc('text', usetex=True)
+# Use the serif font
+plt.rc('font', family='serif')
+# Be able to use Greek symbols in text mode
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+```
+
+Now let's add in some detail around the plot itself:
+
+```{python}
+# Create a set of axes
+ax = plt.axes()
+# Create a boxplot on the axes
+bp = ax.boxplot(data, widths=0.6, patch_artist=True)
+# Graph title
+ax.set_title('Petal Length of Iris Flower Species', fontsize=16)
+# Label y-axis
+ax.set_ylabel(r'Petal Length, $L$ / cm')
+# Label x-axis ticks
+xticklabels = iris['target_names']
+xticklabels = [label.title() for label in xticklabels]
+ax.set_xticklabels(xticklabels)
+# Hide x-axis major ticks
+ax.tick_params(axis='x', which='major', length=0)
+# Show x-axis minor ticks
+xticks = [0.5] + [x + 0.5 for x in ax.get_xticks()]
+ax.set_xticks(xticks, minor=True)
+# Clean up the appearance
+ax.tick_params(axis='x', which='minor', length=3, width=1)
+
+plt.show()
+```
+
+Add Colour
+----------
+Opinions differ as to how boxplots should be coloured, if at all, so it's probably best to consult a style guide that's relevant to you. For the record, here's how to use Seaborn's pastel colour palette to brighten up the boxes (and also how to re-colour the median lines):
+
+```{python, eval=FALSE}
+import seaborn as sns
+
+# Create a set of axes
+ax = plt.axes()
+# Create a boxplot on the axes
+bp = ax.boxplot(data, widths=0.6, patch_artist=True)
+# Graph title
+ax.set_title('Petal Length of Iris Flower Species', fontsize=16)
+# Label y-axis
+ax.set_ylabel(r'Petal Length, $L$ / cm')
+# Label x-axis ticks
+xticklabels = iris['target_names']
+xticklabels = [label.title() for label in xticklabels]
+ax.set_xticklabels(xticklabels)
+# Hide x-axis major ticks
+ax.tick_params(axis='x', which='major', length=0)
+# Show x-axis minor ticks
+xticks = [0.5] + [x + 0.5 for x in ax.get_xticks()]
+ax.set_xticks(xticks, minor=True)
+# Clean up the appearance
+ax.tick_params(axis='x', which='minor', length=3, width=1)
+
+# Change the colour of the boxes to Seaborn's 'pastel' palette
+colors = sns.color_palette('pastel')
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+
+# Colour of the median lines
+plt.setp(bp['medians'], color='k')
+
+plt.show()
+```
+
+```{python, results='hide', echo=FALSE}
+import seaborn as sns
+
+# Create a set of axes
+ax = plt.axes()
+# Create a boxplot on the axes
+bp = ax.boxplot(data, widths=0.6, patch_artist=True)
+# Graph title
+ax.set_title('Petal Length of Iris Flower Species', fontsize=16)
+# Label y-axis
+ax.set_ylabel(r'Petal Length, $L$ / cm')
+# Label x-axis ticks
+xticklabels = iris['target_names']
+xticklabels = [label.title() for label in xticklabels]
+ax.set_xticklabels(xticklabels)
+# Hide x-axis major ticks
+ax.tick_params(axis='x', which='major', length=0)
+# Show x-axis minor ticks
+xticks = [0.5] + [x + 0.5 for x in ax.get_xticks()]
+ax.set_xticks(xticks, minor=True)
+# Clean up the appearance
+ax.tick_params(axis='x', which='minor', length=3, width=1)
+
+# Change the colour of the boxes to Seaborn's 'pastel' palette
+colors = sns.color_palette('pastel')
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+
+# Colour of the median lines
+plt.setp(bp['medians'], color='k')
+
+plt.show()
+```
+
+Test for Statistical Significance
+=================================
+Cycle through each of the pairs of groups and use the Mann–Whitney *U* test to decide if there is a significant difference between them. One way to do this would be to use the `combinations()` function from the `itertools` module to generate all *combinations* of two species:
+
+```{python}
+import itertools
+
+species = iris['target_names']
+# Generate all the combinations of two groups
+combinations = itertools.combinations(species, 2)
+for combination in combinations:
+    print(combination)
+```
+
+For each pair of species we could extract their data and perform the hypothesis testing. While this would work perfectly fine, it turns out that adding significance bars to boxplots is neater and more readable if it is done *outer pairs first*. The `combinations()` function does *pairs including the first group* first. The following code can be used to generate combinations in the preferred way:
+
+```{python}
+# Check from the outside pairs of boxes inwards
+ls = list(range(1, len(data) + 1))
+combinations = [(ls[x], ls[x + y]) for y in reversed(ls) for x in range((len(ls) - y))]
+for combination in combinations:
+    print(combination)
+```
+
+Here it is in action, generating the pairs of groups, extracting the data and testing for significant differences using the `mannwhitneyu()` function from Scipy:
+
+```{python}
+from scipy import stats
+
+# Initialise a list of combinations of groups that are significantly different
+significant_combinations = []
+# Check from the outside pairs of boxes inwards
+ls = list(range(1, len(data) + 1))
+combinations = [(ls[x], ls[x + y]) for y in reversed(ls) for x in range((len(ls) - y))]
+for combination in combinations:
+    data1 = data[combination[0] - 1]
+    data2 = data[combination[1] - 1]
+    # Significance
+    U, p = stats.mannwhitneyu(data1, data2, alternative='two-sided')
+    if p < 0.05:
+        significant_combinations.append([combination, p])
+
+print(significant_combinations)
+```
+
+All three combinations of groups are significantly different.
+
+Add Significance Bars
+=====================
+To plot the bars, plot three straight line segments above each pair of boxes that are significantly different:
+
+- A short upwards line
+- A horizontal line
+- A short downwards line
+
+Then, convert the relevant $p$-value into a significance level (either one, two or three asterisks) and add that above the bar as text:
+
+```{python, eval=FALSE}
+# Create a set of axes
+ax = plt.axes()
+# Create a boxplot on the axes
+bp = ax.boxplot(data, widths=0.5, patch_artist=True)
+# Graph title
+ax.set_title('Petal Length of Iris Flower Species', fontsize=16)
+# Label y-axis
+ax.set_ylabel(r'Petal Length, $L$ / cm')
+# Label x-axis ticks
+xticklabels = iris['target_names']
+xticklabels = [label.title() for label in xticklabels]
+ax.set_xticklabels(xticklabels)
+# Hide x-axis major ticks
+ax.tick_params(axis='x', which='major', length=0)
+# Show x-axis minor ticks
+xticks = [0.5] + [x + 0.5 for x in ax.get_xticks()]
+ax.set_xticks(xticks, minor=True)
+# Clean up the appearance
+ax.tick_params(axis='x', which='minor', length=3, width=1)
+
+# Change the colour of the boxes to Seaborn's 'pastel' palette
+colors = sns.color_palette('pastel')
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+
+# Colour of the median lines
+plt.setp(bp['medians'], color='k')
+
+# Get the y-axis limits
+bottom, top = ax.get_ylim()
+y_range = top - bottom
+
+# Significance bars
+for i, significant_combination in enumerate(significant_combinations):
+    # Columns corresponding to the datasets of interest
+    x1 = significant_combination[0][0]
+    x2 = significant_combination[0][1]
+    # What level is this bar among the bars above the plot?
+    level = len(significant_combinations) - i
+    # Plot the bar
+    bar_height = (y_range * 0.07 * level) + top
+    bar_tips = bar_height - (y_range * 0.02)
+    plt.plot(
+        [x1, x1, x2, x2],
+        [bar_tips, bar_height, bar_height, bar_tips], lw=1, c='k'
+    )
+    # Significance level
+    p = significant_combination[1]
+    if p < 0.001:
+        sig_symbol = '***'
+    elif p < 0.01:
+        sig_symbol = '**'
+    elif p < 0.05:
+        sig_symbol = '*'
+    text_height = bar_height + (y_range * 0.01)
+    plt.text((x1 + x2) * 0.5, text_height, sig_symbol, ha='center', va='bottom', c='k')
+
+plt.show()
+```
+
+```{python, results='hide', echo=FALSE}
+# Create a set of axes
+ax = plt.axes()
+# Create a boxplot on the axes
+bp = ax.boxplot(data, widths=0.5, patch_artist=True)
+# Graph title
+ax.set_title('Petal Length of Iris Flower Species', fontsize=16)
+# Label y-axis
+ax.set_ylabel(r'Petal Length, $L$ / cm')
+# Label x-axis ticks
+xticklabels = iris['target_names']
+xticklabels = [label.title() for label in xticklabels]
+ax.set_xticklabels(xticklabels)
+# Hide x-axis major ticks
+ax.tick_params(axis='x', which='major', length=0)
+# Show x-axis minor ticks
+xticks = [0.5] + [x + 0.5 for x in ax.get_xticks()]
+ax.set_xticks(xticks, minor=True)
+# Clean up the appearance
+ax.tick_params(axis='x', which='minor', length=3, width=1)
+
+# Change the colour of the boxes to Seaborn's 'pastel' palette
+colors = sns.color_palette('pastel')
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+
+# Colour of the median lines
+plt.setp(bp['medians'], color='k')
+
+# Get the y-axis limits
+bottom, top = ax.get_ylim()
+y_range = top - bottom
+
+# Significance bars
+for i, significant_combination in enumerate(significant_combinations):
+    # Columns corresponding to the datasets of interest
+    x1 = significant_combination[0][0]
+    x2 = significant_combination[0][1]
+    # What level is this bar among the bars above the plot?
+    level = len(significant_combinations) - i
+    # Plot the bar
+    bar_height = (y_range * 0.07 * level) + top
+    bar_tips = bar_height - (y_range * 0.02)
+    plt.plot(
+        [x1, x1, x2, x2],
+        [bar_tips, bar_height, bar_height, bar_tips], lw=1, c='k'
+    )
+    # Significance level
+    p = significant_combination[1]
+    if p < 0.001:
+        sig_symbol = '***'
+    elif p < 0.01:
+        sig_symbol = '**'
+    elif p < 0.05:
+        sig_symbol = '*'
+    text_height = bar_height + (y_range * 0.01)
+    plt.text((x1 + x2) * 0.5, text_height, sig_symbol, ha='center', va='bottom', c='k')
+
+plt.show()
+```
+
+Annotate the Sample Sizes
+-------------------------
+A final touch that will improve how the graph looks will be to add the sample sizes as annotations below the boxes:
+
+```{python, eval=FALSE}
+# Adjust y-axis
+ax.set_ylim(0, ax.get_ylim()[1])
+
+# Annotate sample size below each box
+for i, dataset in enumerate(data):
+    sample_size = len(dataset)
+    ax.text(i + 1, 0 + y_range * 0.02, fr'$n = {sample_size}$', ha='center', size='x-small')
+
+plt.show()
+```
+
+```{python, results='hide', echo=FALSE}
+# Create a set of axes
+ax = plt.axes()
+# Create a boxplot on the axes
+bp = ax.boxplot(data, widths=0.5, patch_artist=True)
+# Graph title
+ax.set_title('Petal Length of Iris Flower Species', fontsize=16)
+# Label y-axis
+ax.set_ylabel(r'Petal Length, $L$ / cm')
+# Label x-axis ticks
+xticklabels = iris['target_names']
+xticklabels = [label.title() for label in xticklabels]
+ax.set_xticklabels(xticklabels)
+# Hide x-axis major ticks
+ax.tick_params(axis='x', which='major', length=0)
+# Show x-axis minor ticks
+xticks = [0.5] + [x + 0.5 for x in ax.get_xticks()]
+ax.set_xticks(xticks, minor=True)
+# Clean up the appearance
+ax.tick_params(axis='x', which='minor', length=3, width=1)
+
+# Change the colour of the boxes to Seaborn's 'pastel' palette
+colors = sns.color_palette('pastel')
+for patch, color in zip(bp['boxes'], colors):
+    patch.set_facecolor(color)
+
+# Colour of the median lines
+plt.setp(bp['medians'], color='k')
+
+# Get the y-axis limits
+bottom, top = ax.get_ylim()
+y_range = top - bottom
+
+# Significance bars
+for i, significant_combination in enumerate(significant_combinations):
+    # Columns corresponding to the datasets of interest
+    x1 = significant_combination[0][0]
+    x2 = significant_combination[0][1]
+    # What level is this bar among the bars above the plot?
+    level = len(significant_combinations) - i
+    # Plot the bar
+    bar_height = (y_range * 0.07 * level) + top
+    bar_tips = bar_height - (y_range * 0.02)
+    plt.plot(
+        [x1, x1, x2, x2],
+        [bar_tips, bar_height, bar_height, bar_tips], lw=1, c='k'
+    )
+    # Significance level
+    p = significant_combination[1]
+    if p < 0.001:
+        sig_symbol = '***'
+    elif p < 0.01:
+        sig_symbol = '**'
+    elif p < 0.05:
+        sig_symbol = '*'
+    text_height = bar_height + (y_range * 0.01)
+    plt.text((x1 + x2) * 0.5, text_height, sig_symbol, ha='center', va='bottom', c='k')
+
+# Adjust y-axis
+ax.set_ylim(0, ax.get_ylim()[1])
+
+# Annotate sample size below each box
+for i, dataset in enumerate(data):
+    sample_size = len(dataset)
+    ax.text(i + 1, 0 + y_range * 0.02, fr'$n = {sample_size}$', ha='center', size='x-small')
+
+plt.show()
+```
+
+Convert into a Function
+=======================
+The above code is fine for doing one plot at a time, but we could really do with a solution that will work again and again for as many plots as we need. Firstly, let's generate some new example data that we can use to practice:
+
+Example Data
+------------
+We'll use Numpy to generate lists (groups) of random data points from the normal distribution with increasing means and standard deviations, and with random sample sizes:
+
+```{python}
+import numpy as np
+
+# Set the seed to ensure we always get the same random numbers each time we run the code
+np.random.seed(20220922)
+
+# Create a list-of-lists, where each sub-list contains random data from the normal distribution
+data = []
+for x in range(2):
+    # Mean
+    mu = 650 + 60 * x
+    # Standard deviation
+    sigma = 50 + 20 * x
+    # Sample size
+    n = 30 + np.random.randint(0, 60)
+    # Create data points and add to master list
+    data.append(np.random.normal(mu, sigma, n))
+```
+
+Create Function
+---------------
+Using the graph-plotting script from above we can create a graph-plotting function:
+
+```{python}
+def box_and_whisker(data, title, ylabel, xticklabels):
+    """
+    Create a box-and-whisker plot with significance bars.
+    """
+    ax = plt.axes()
+    bp = ax.boxplot(data, widths=0.6, patch_artist=True)
+    # Graph title
+    ax.set_title(title, fontsize=14)
+    # Label y-axis
+    ax.set_ylabel(ylabel)
+    # Label x-axis ticks
+    ax.set_xticklabels(xticklabels)
+    # Hide x-axis major ticks
+    ax.tick_params(axis='x', which='major', length=0)
+    # Show x-axis minor ticks
+    xticks = [0.5] + [x + 0.5 for x in ax.get_xticks()]
+    ax.set_xticks(xticks, minor=True)
+    # Clean up the appearance
+    ax.tick_params(axis='x', which='minor', length=3, width=1)
+
+    # Change the colour of the boxes to Seaborn's 'pastel' palette
+    colors = sns.color_palette('pastel')
+    for patch, color in zip(bp['boxes'], colors):
+        patch.set_facecolor(color)
+
+    # Colour of the median lines
+    plt.setp(bp['medians'], color='k')
+
+    # Check for statistical significance
+    significant_combinations = []
+    # Check from the outside pairs of boxes inwards
+    ls = list(range(1, len(data) + 1))
+    combinations = [(ls[x], ls[x + y]) for y in reversed(ls) for x in range((len(ls) - y))]
+    for c in combinations:
+        data1 = data[c[0] - 1]
+        data2 = data[c[1] - 1]
+        # Significance
+        U, p = stats.mannwhitneyu(data1, data2, alternative='two-sided')
+        if p < 0.05:
+            significant_combinations.append([c, p])
+
+    # Get info about y-axis
+    bottom, top = ax.get_ylim()
+    yrange = top - bottom
+
+    # Significance bars
+    for i, significant_combination in enumerate(significant_combinations):
+        # Columns corresponding to the datasets of interest
+        x1 = significant_combination[0][0]
+        x2 = significant_combination[0][1]
+        # What level is this bar among the bars above the plot?
+        level = len(significant_combinations) - i
+        # Plot the bar
+        bar_height = (yrange * 0.08 * level) + top
+        bar_tips = bar_height - (yrange * 0.02)
+        plt.plot(
+            [x1, x1, x2, x2],
+            [bar_tips, bar_height, bar_height, bar_tips], lw=1, c='k')
+        # Significance level
+        p = significant_combination[1]
+        if p < 0.001:
+            sig_symbol = '***'
+        elif p < 0.01:
+            sig_symbol = '**'
+        elif p < 0.05:
+            sig_symbol = '*'
+        text_height = bar_height + (yrange * 0.01)
+        plt.text((x1 + x2) * 0.5, text_height, sig_symbol, ha='center', c='k')
+
+    # Adjust y-axis
+    bottom, top = ax.get_ylim()
+    yrange = top - bottom
+    ax.set_ylim(bottom - 0.02 * yrange, top)
+
+    # Annotate sample size below each box
+    for i, dataset in enumerate(data):
+        sample_size = len(dataset)
+        ax.text(i + 1, bottom, fr'n = {sample_size}', ha='center', size='x-small')
+
+    plt.show()
+```
+
+Call Function
+-------------
+Each time we call the function, a plot is created with the significance bars added dynamically:
+
+```{python}
+data = []
+for x in range(2):
+    mu = 650 + 60 * x
+    sigma = 50 + 20 * x
+    n = 30 + np.random.randint(0, 60)
+    data.append(np.random.normal(mu, sigma, n))
+title = 'Random Data - Two Groups'
+ylabel = r'Measurement, $m$ / units'
+xticklabels = ['First Group', 'Second Group']
+box_and_whisker(data, title, ylabel, xticklabels)
+```
+
+```{python}
+data = []
+for x in range(4):
+    mu = 650 + 100 * x
+    sigma = 50 + 20 * x
+    n = 30 + np.random.randint(0, 100)
+    data.append(np.random.normal(mu, sigma, n))
+title = 'Random Data - Four Groups'
+ylabel = r'Measurement, $m$ / units'
+xticklabels = ['First Group', 'Second Group', 'Third Group', 'Fourth Group']
+box_and_whisker(data, title, ylabel, xticklabels)
+```
+
+```{python}
+data = []
+for x in range(6):
+    mu = 650 + 60 * x
+    sigma = 50 + 20 * x
+    n = 30 + np.random.randint(0, 60)
+    data.append(np.random.normal(mu, sigma, n))
+title = 'Random Data - Six Groups'
+ylabel = r'Measurement, $m$ / units'
+xticklabels = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth']
+box_and_whisker(data, title, ylabel, xticklabels)
+```
+
+```{python}
+data = []
+for x in range(8):
+    mu = 650 + 60 * x
+    sigma = 50 + 20 * x
+    n = 30 + np.random.randint(0, 60)
+    data.append(np.random.normal(mu, sigma, n))
+title = 'Random Data - Eight Groups'
+ylabel = r'Measurement, $m$ / units'
+xticklabels = ['0', '1', '2', '3', '4', '5', '6', '7']
+box_and_whisker(data, title, ylabel, xticklabels)
+```
+
+[⇦ Back](../../../python.html)
+
+</font>

@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney U Test'
+title: '<font size="5">Statistics in Python:</font><br>Mann–Whitney <i>U</i> Test'
 output:
     html_document:
         theme: paper
@@ -14,7 +14,7 @@ output:
 
 [⇦ Back](../../../python.html)
 
-The **Mann–Whitney U test** can be used to compare the means of two groups of numerical data which are independent of each other.
+The **Mann–Whitney *U* test** can be used to compare the means of two groups of numerical data which are independent of each other.
 
 Example Data
 ============
@@ -244,8 +244,8 @@ DiagrammeR::grViz(
 )
 ```
 
-Mann-Whitney U Test
-===================
+Mann-Whitney *U* Test
+=====================
 The SciPy package makes it incredibly easy to perform the test: just use the `mannwhitneyu()` function!
 
 ```{python}
@@ -261,9 +261,9 @@ print(f'Mann-Whitney U test: U = {int(statistic)}, p = {pvalue:6.4f}')
 
 Interpreting the Result
 -----------------------
-This p-value is large (>0.05), which means that we fail to reject H<sub>0</sub> and conclude that there is not a statistically significant difference between the two treatments (p > 0.05).
+This *p*-value is large (>0.05), which means that we fail to reject H<sub>0</sub> and conclude that there is not a statistically significant difference between the two treatments (*p* > 0.05).
 
-Often, you will see this type of result reported using asterisks to indicate the significance level (α) associated with it. Additionally, if the p-value is very small it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting (not that it's relevant in this example!):
+Often, you will see this type of result reported using asterisks to indicate the significance level (α) associated with it. Additionally, if the *p*-value is very small it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting (not that it's relevant in this example!):
 
 ```{python}
 def get_significance(p):
@@ -296,6 +296,8 @@ print(f'The p-value is {p_rounded}{significance}')
 Can't Get Enough?
 =================
 This page showed one method of calculating the Mann-Whitney test which, in my opinion, is the best for practical use. However, if you're interested in doing a deep dive into how the test works and variations on the method used by SciPy's `mannwhitneyu()` by default, take a look [here](mann_whitney_u_test/comparison_of_methods.html).
+
+If you're interested in adding significance bars to boxplots after having used the Mann-Whitney test to find a significant difference, look over [here](../../graphs/ax_based/boxplots_significance.html).
 
 [⇦ Back](../../../python.html)
 
