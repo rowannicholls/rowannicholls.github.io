@@ -506,6 +506,17 @@ Merge two data frames
 ---------------------
 'Merging' is a more complicated form of combining data frames than 'appending' or 'concatenating'. The two objects get combined such that where they have matching values the data gets added together in the same row as opposed to in a new row. It's complicated enough that I've made a [whole page on merging](../data/merging.html).
 
+Join Columns
+------------
+Use the `agg()` method to **agg**regate two (or more) columns of text into one with a custom substring as a conjunction:
+
+```{python}
+# Join multiple columns of text
+ser = df[['Finish Position', 'Athlete']].agg(': '.join, axis=1)
+
+print(ser)
+```
+
 Rename the columns
 ------------------
 Rename one column as follows:
