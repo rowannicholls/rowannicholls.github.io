@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Statistics in Python: Coefficient of Variation</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -428,7 +428,7 @@ a.unless||[],g=0;g<f.length;g++){var l=b(f[g]);if(2===l)return null;if(1===l)ret
 var Oc=function(a){return Nc?F.querySelectorAll(a):null},Pc=function(a,b){if(!Nc)return null;if(Element.prototype.closest)try{return a.closest(b)}catch(e){return null}var c=Element.prototype.matches||Element.prototype.webkitMatchesSelector||Element.prototype.mozMatchesSelector||Element.prototype.msMatchesSelector||Element.prototype.oMatchesSelector,d=a;if(!F.documentElement.contains(d))return null;do{try{if(c.call(d,b))return d}catch(e){break}d=d.parentElement||d.parentNode}while(null!==d&&1===d.nodeType);
 return null},Qc=!1;if(F.querySelectorAll)try{var Rc=F.querySelectorAll(":root");Rc&&1==Rc.length&&Rc[0]==F.documentElement&&(Qc=!0)}catch(a){}var Nc=Qc;var Sc=[];Sc[20]=!0;Sc[21]=!0;
 Sc[22]=!0;Sc[17]=!0;Sc[19]=!0;
-Sc[30]=!0;
+Sc[25]=!0;Sc[30]=!0;
 Sc[36]=!0;Sc[37]=!0;Sc[38]=!0;var Tc={},Uc=function(a,b){Tc[a]=Tc[a]||[];Tc[a][b]=!0},Vc=function(){delete Tc.GA4_EVENT},Wc=function(a){for(var b=[],c=Tc[a]||[],d=0;d<c.length;d++)c[d]&&(b[Math.floor(d/6)]^=1<<d%6);for(var e=0;e<b.length;e++)b[e]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_".charAt(b[e]||0);return b.join("")};var P=function(a){Uc("GTM",a)};var Q={g:{F:"ad_storage",O:"analytics_storage",zf:"region",Af:"consent_updated",Bf:"wait_for_update",Kh:"app_remove",Lh:"app_store_refund",Mh:"app_store_subscription_cancel",Nh:"app_store_subscription_convert",Oh:"app_store_subscription_renew",Hf:"add_payment_info",If:"add_shipping_info",kc:"add_to_cart",mc:"remove_from_cart",Jf:"view_cart",Hb:"begin_checkout",nc:"select_item",qb:"view_item_list",Ib:"select_promotion",rb:"view_promotion",Ba:"purchase",oc:"refund",Ha:"view_item",Kf:"add_to_wishlist",
 Ph:"first_open",Qh:"first_visit",va:"gtag.config",Ca:"gtag.get",Rh:"in_app_purchase",qc:"page_view",Sh:"session_start",oe:"user_engagement",Jb:"gclid",fa:"ads_data_redaction",X:"allow_ad_personalization_signals",pe:"allow_custom_scripts",Th:"allow_display_features",sc:"allow_enhanced_conversions",uc:"allow_google_signals",wa:"allow_interest_groups",pd:"auid",Uh:"auto_detection_enabled",Wa:"aw_remarketing",qd:"aw_remarketing_only",vc:"discount",wc:"aw_feed_country",xc:"aw_feed_language",Z:"items",
 yc:"aw_merchant_id",Lf:"aw_basket_type",rd:"campaign_content",sd:"campaign_id",ud:"campaign_medium",vd:"campaign_name",zc:"campaign",wd:"campaign_source",xd:"campaign_term",kb:"client_id",Vh:"content_group",Wh:"content_type",Da:"conversion_cookie_prefix",Ac:"conversion_id",Xa:"conversion_label",qa:"conversion_linker",qe:"conversion_api",Ya:"cookie_domain",Ia:"cookie_expires",Za:"cookie_flags",Bc:"cookie_name",se:"cookie_path",Oa:"cookie_prefix",sb:"cookie_update",Kb:"country",la:"currency",Cc:"customer_lifetime_value",
@@ -441,7 +441,7 @@ Le:"user_data_settings",sa:"user_id",La:"user_properties",Ag:"us_privacy_string"
 1,wd[Q.g.Ic]=1,wd[Q.g.lb]=1,wd[Q.g.Ed]=1,wd[Q.g.Fd]=1,wd[Q.g.xe]=1,wd[Q.g.ra]=1,wd[Q.g.Id]=1,wd[Q.g.nb]=1,wd[Q.g.xa]=1,wd[Q.g.vb]=1,wd[Q.g.Kc]=1,wd[Q.g.Be]=1,wd[Q.g.Sb]=1,wd[Q.g.ma]=1,wd[Q.g.Lc]=1,wd[Q.g.Le]=1,wd[Q.g.La]=1,wd));Object.freeze([Q.g.Ka,Q.g.Qa,Q.g.Rb,Q.g.Ja,Q.g.og,Q.g.sa,Q.g.ve,Q.g.Vh]);
 var yd={},zd=Object.freeze((yd[Q.g.Kh]=1,yd[Q.g.Lh]=1,yd[Q.g.Mh]=1,yd[Q.g.Nh]=1,yd[Q.g.Oh]=1,yd[Q.g.Ph]=1,yd[Q.g.Qh]=1,yd[Q.g.Rh]=1,yd[Q.g.Sh]=1,yd[Q.g.oe]=1,yd)),Ad={},Bd=Object.freeze((Ad[Q.g.Hf]=1,Ad[Q.g.If]=1,Ad[Q.g.kc]=1,Ad[Q.g.mc]=1,Ad[Q.g.Jf]=1,Ad[Q.g.Hb]=1,Ad[Q.g.nc]=1,Ad[Q.g.qb]=1,Ad[Q.g.Ib]=1,Ad[Q.g.rb]=1,Ad[Q.g.Ba]=1,Ad[Q.g.oc]=1,Ad[Q.g.Ha]=1,Ad[Q.g.Kf]=1,Ad)),Cd=Object.freeze([Q.g.X,Q.g.uc,Q.g.sb]),Dd=Object.freeze([].concat(Cd)),Ed=Object.freeze([Q.g.Ia,Q.g.Ad,Q.g.Kc,Q.g.Be,Q.g.yd]),
 Fd=Object.freeze([].concat(Ed)),Gd={},Hd=(Gd[Q.g.F]="1",Gd[Q.g.O]="2",Gd),Id={},Jd=Object.freeze((Id[Q.g.X]=1,Id[Q.g.sc]=1,Id[Q.g.wa]=1,Id[Q.g.Wa]=1,Id[Q.g.qd]=1,Id[Q.g.vc]=1,Id[Q.g.wc]=1,Id[Q.g.xc]=1,Id[Q.g.Z]=1,Id[Q.g.yc]=1,Id[Q.g.Da]=1,Id[Q.g.qa]=1,Id[Q.g.Ya]=1,Id[Q.g.Ia]=1,Id[Q.g.Za]=1,Id[Q.g.Oa]=1,Id[Q.g.la]=1,Id[Q.g.Cc]=1,Id[Q.g.aa]=1,Id[Q.g.Mf]=1,Id[Q.g.Gc]=1,Id[Q.g.Hc]=1,Id[Q.g.ve]=1,Id[Q.g.Bd]=1,Id[Q.g.Ja]=1,Id[Q.g.Qb]=1,Id[Q.g.Ka]=1,Id[Q.g.Qa]=1,Id[Q.g.ig]=1,Id[Q.g.jg]=1,Id[Q.g.kg]=1,Id[Q.g.lg]=
-1,Id[Q.g.nb]=1,Id[Q.g.xa]=1,Id[Q.g.vb]=1,Id[Q.g.Sb]=1,Id[Q.g.Ea]=1,Id[Q.g.ma]=1,Id[Q.g.Lc]=1,Id[Q.g.cb]=1,Id[Q.g.na]=1,Id[Q.g.sa]=1,Id[Q.g.ja]=1,Id));Object.freeze(Q.g);var Ld={},Md=E.google_tag_manager=E.google_tag_manager||{},Nd=Math.random();Ld.Od="9l0";Ld.da="dataLayer";Ld.Jh="ChEI8JvFmQYQ0//fwZrsqY+LARInANB6T+7NfjleTOpBccp30ETB6oQwYNOfcMbjwjzUYJSEt2fNMXttGgIkIQ\x3d\x3d";var Od={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Pd={__paused:!0,__tg:!0},Qd;for(Qd in Od)Od.hasOwnProperty(Qd)&&(Pd[Qd]=!0);Ld.ic="www.googletagmanager.com";var Rd,Sd=Ld.ic+"/gtm.js";Sd=Ld.ic+"/gtag/js";Rd=Sd;
+1,Id[Q.g.nb]=1,Id[Q.g.xa]=1,Id[Q.g.vb]=1,Id[Q.g.Sb]=1,Id[Q.g.Ea]=1,Id[Q.g.ma]=1,Id[Q.g.Lc]=1,Id[Q.g.cb]=1,Id[Q.g.na]=1,Id[Q.g.sa]=1,Id[Q.g.ja]=1,Id));Object.freeze(Q.g);var Ld={},Md=E.google_tag_manager=E.google_tag_manager||{},Nd=Math.random();Ld.Od="9l0";Ld.da="dataLayer";Ld.Jh="ChEI8JvFmQYQ0//fwZrsqY+LARInANB6T+4monunmvoXt3d2mFmO4eaOJbH9KpQv9ho/Zc512Rj9d1LaGgJgWA\x3d\x3d";var Od={__cl:!0,__ecl:!0,__ehl:!0,__evl:!0,__fal:!0,__fil:!0,__fsl:!0,__hl:!0,__jel:!0,__lcl:!0,__sdl:!0,__tl:!0,__ytl:!0},Pd={__paused:!0,__tg:!0},Qd;for(Qd in Od)Od.hasOwnProperty(Qd)&&(Pd[Qd]=!0);Ld.ic="www.googletagmanager.com";var Rd,Sd=Ld.ic+"/gtm.js";Sd=Ld.ic+"/gtag/js";Rd=Sd;
 var Td=za(""),Ud=za(""),Vd=null,Wd=null,Xd={},Yd={},Zd=function(){var a=Md.sequence||1;Md.sequence=a+1;return a};Ld.Ih="";var $d="";Ld.Pd=$d;var ae=new ua,be={},ce={},fe={name:Ld.da,set:function(a,b){N(Ja(a,b),be);de()},get:function(a){return ee(a,2)},reset:function(){ae=new ua;be={};de()}},ee=function(a,b){return 2!=b?ae.get(a):ge(a)},ge=function(a){var b,c=a.split(".");b=b||[];for(var d=be,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},he=function(a,b){ce.hasOwnProperty(a)||(ae.set(a,b),N(Ja(a,b),be),de())},de=function(a){k(ce,function(b,c){ae.set(b,c);N(Ja(b),be);N(Ja(b,
 c),be);a&&delete ce[b]})},ie=function(a,b){var c,d=1!==(void 0===b?2:b)?ge(a):ae.get(a);"array"===yb(d)||"object"===yb(d)?c=N(d):c=d;return c};var je,ke=!1,le=function(a){if(!ke){ke=!0;je=je||{}}return je[a]};var me=function(){var a=E.screen;return{width:a?a.width:0,height:a?a.height:0}},ne=function(a){if(F.hidden)return!0;var b=a.getBoundingClientRect();if(b.top==b.bottom||b.left==b.right||!E.getComputedStyle)return!0;var c=E.getComputedStyle(a,null);if("hidden"===c.visibility)return!0;for(var d=a,e=c;d;){if("none"===e.display)return!0;var f=e.opacity,g=e.filter;if(g){var l=g.indexOf("opacity(");0<=l&&(g=g.substring(l+8,g.indexOf(")",l)),"%"==g.charAt(g.length-1)&&(g=g.substring(0,g.length-1)),f=Math.min(g,
 f))}if(void 0!==f&&0>=f)return!0;(d=d.parentElement)&&(e=E.getComputedStyle(d,null))}return!1};var we=/:[0-9]+$/,xe=function(a,b,c){for(var d=a.split("&"),e=0;e<d.length;e++){var f=d[e].split("=");if(decodeURIComponent(f[0]).replace(/\+/g," ")===b){var g=f.slice(1).join("=");return c?g:decodeURIComponent(g).replace(/\+/g," ")}}},Ae=function(a,b,c,d,e){b&&(b=String(b).toLowerCase());if("protocol"===b||"port"===b)a.protocol=ye(a.protocol)||ye(E.location.protocol);"port"===b?a.port=String(Number(a.hostname?a.port:E.location.port)||("http"===a.protocol?80:"https"===a.protocol?443:"")):"host"===
@@ -668,211 +668,175 @@ F.documentElement.doScroll){var v=!0;try{v=!E.frameElement}catch(B){}v&&Kn()}pb(
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Coefficient of Variation</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#coefficient-of-variation-one-degree-of-freedom"><span class="toc-section-number">1</span> Coefficient of Variation: One Degree of Freedom</a></li>
+<li><a href="#within-subject-coefficient-of-variation"><span class="toc-section-number">2</span> Within-Subject Coefficient of Variation</a>
+<ul>
+<li><a href="#root-mean-square-method"><span class="toc-section-number">2.1</span> Root-Mean-Square Method</a></li>
+<li><a href="#logarithmic-method"><span class="toc-section-number">2.2</span> Logarithmic Method</a></li>
+</ul></li>
+<li><a href="#between-subject-coefficient-of-variation"><span class="toc-section-number">3</span> Between-Subject Coefficient of Variation</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
+<p><a href="../../../python.html">⇦ Back</a></p>
+<div id="coefficient-of-variation-one-degree-of-freedom" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Coefficient of Variation: One Degree of Freedom</h1>
+<p>When you have <em>one</em> set of numbers, their <strong>coefficient of variation</strong> (<span class="math inline">\(c_v\)</span>) is equal to:</p>
+<p><span class="math inline">\(c_v = \dfrac{\sigma}{\mu}\)</span></p>
+<p>where:</p>
 <ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/errors.html">Errors</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">f-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<li><span class="math inline">\(\sigma\)</span> is the standard deviation of the numbers. In practice, this will often be the <em>sample</em> standard deviation in which case the letter <span class="math inline">\(s\)</span> should be used instead of <span class="math inline">\(\sigma\)</span> (which is reserved for the <em>population</em> standard deviation).</li>
+<li><span class="math inline">\(\mu\)</span> is the mean of the numbers.</li>
+</ul>
+<p>Here’s a worked example which comes from <a href="https://en.wikipedia.org/wiki/Coefficient_of_variation">the Wikipedia page</a> about the coefficient of variation:</p>
+<pre class="python"><code>import numpy as np
+
+data = [1, 5, 6, 8, 10, 40, 65, 88]
+μ = np.mean(data)
+# Sample standard deviation
+s = np.std(data, ddof=1)
+# Coefficient of variation
+cv = s / μ
+
+print(f&#39;cᵥ = {cv:4.2f}&#39;)</code></pre>
+<pre><code>## cᵥ = 1.18</code></pre>
+<p>This matches the answer of 1.18 given on Wikipedia. Here’s another worked example that comes from <a href="https://influentialpoints.com/Training/coefficient_of_variation.htm">the Influential Points</a> page:</p>
+<pre class="python"><code>data = [280, 295, 245, 310, 285]
+# Coefficient of variation
+cv = np.std(data, ddof=1) / np.mean(data)
+
+print(f&#39;cᵥ = {cv:6.4f}&#39;)</code></pre>
+<pre><code>## cᵥ = 0.0853</code></pre>
+<p>This matches their answer of 0.0853 (or 8.53% in percentage form).</p>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --></li>
-</ul></li>
-<li><a href="python/advanced/args_kwargs.html">Args and Kwargs</a> <!-- 5. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a> <!-- 6. [Webscraping] --> <!-- 7. [Bitwise Operators] --></li>
-<li><a href="python/advanced/error_handling.html">Error Handling</a> <!-- 9. [Linting] --> <!-- 10. [Variable Scope] --></li>
-<li><a href="python/advanced/python_vs_r.html">Python vs R</a></li>
-</ol>
+<div id="within-subject-coefficient-of-variation" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Within-Subject Coefficient of Variation</h1>
+<p>When you have <em>two</em> (or more) sets of paired numbers the above formula is too simplistic; do you use the standard deviation of all the numbers together, or the mean of the standard deviations of each of the sets? Or do you work it out for each pair of measurements and average that? There are two approaches to answering this (and they are are almost identical so either can be used, see <a href="https://www-users.york.ac.uk/~mb55/meas/cv.htm">here</a>): the <strong>root-mean-square method</strong> and the <strong>logarithmic method</strong>. A worked example of each will be done and both will use the following fake data which comes from <a href="https://influentialpoints.com/Training/coefficient_of_variation.htm">the same Influential Points page</a> as was used for the second example above:</p>
+<pre class="python"><code>import pandas as pd
+
+# Raw data
+dct = {
+    &#39;first_measurement&#39;: [33, 26, 29, 32, 31, 31, 31, 31, 35, 21],
+    &#39;second_measurement&#39;: [35, 23, 29, 35, 28, 31, 34, 29, 33, 24],
+}
+df = pd.DataFrame(dct)
+
+print(df)</code></pre>
+<pre><code>##    first_measurement  second_measurement
+## 0                 33                  35
+## 1                 26                  23
+## 2                 29                  29
+## 3                 32                  35
+## 4                 31                  28
+## 5                 31                  31
+## 6                 31                  34
+## 7                 31                  29
+## 8                 35                  33
+## 9                 21                  24</code></pre>
+<p>This example data represents the results of an experiment where two repeated measurements were taken from 10 participants or samples (so 20 measurements in total), hence 10 pairs of numbers.</p>
+<div id="root-mean-square-method" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Root-Mean-Square Method</h2>
+<p>Here is the implementation of the method as described on the Influential Points page:</p>
+<pre class="python"><code>means = df.mean(axis=1)
+diffs = df.diff(axis=1).iloc[:, -1]
+# Within-subject variances
+var_w = diffs**2 / 2
+# Individual CVs
+cv_i = np.sqrt(var_w) / means
+# Within-subject coefficient of variation
+cv_w = np.sqrt(np.mean(cv_i**2))
+
+print(f&#39;cᵥ = {cv_w:6.4f}&#39;)</code></pre>
+<pre><code>## cᵥ = 0.0596</code></pre>
+<p>This matches the correct answer, which is 5.96%.</p>
+<p>Martin Bland (of Bland-Altman fame) gives a slightly-differently worded description of how to do the root-mean-square method on <a href="https://www-users.york.ac.uk/~mb55/meas/cv.htm">his page</a> but it is mathematically equivalently to the above and so gives the same answer:</p>
+<pre class="python"><code>means = df.mean(axis=1, skipna=False)
+diffs = df.diff(axis=1).iloc[:, -1]
+# Within-subject variances
+var_w = diffs**2 / 2
+# Within-subject coefficient of variation
+s2m2 = (var_w / means**2)
+cv_w = np.sqrt(np.mean(s2m2))
+
+print(f&#39;cᵥ = {cv_w:6.4f}&#39;)</code></pre>
+<pre><code>## cᵥ = 0.0596</code></pre>
+<p>Bland goes on to explain how to get the confidence interval around this result:</p>
+<pre class="python"><code># Standard error
+se = s2m2.std() / np.sqrt(len(df))
+# 95% confidence interval for the within-subject CV
+ci = (
+    np.sqrt(s2m2.mean() - 1.96 * se),
+    np.sqrt(s2m2.mean() + 1.96 * se)
+)
+
+print(f&#39;cᵥ = {cv_w:6.4f} (95% CI [{ci[0]:6.4f}, {ci[1]:6.4f}])&#39;)</code></pre>
+<pre><code>## cᵥ = 0.0596 (95% CI [0.0411, 0.0736])</code></pre>
+<p>Out of interest, the “1.96” in the calculation above comes from the fact that this is the number of standard deviations around the mean within which 95% of values randomly selected from a normal distribution will lie. Here’s the way to calculate it exactly:</p>
+<pre class="python"><code>import scipy.stats as stats
+
+# Significance level
+alpha = 0.05  # 95% confidence level
+# One- or two-tailed test?
+tails = 2
+# Cumulative probability
+q = 1 - (alpha / tails)
+# Percent-point function (aka quantile function) of the normal distribution
+z_critical = stats.norm.ppf(q)
+
+print(z_critical)</code></pre>
+<pre><code>## 1.959963984540054</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/data/sklearn_datasets.html">Example Datasets from Scikit-Learn</a></li>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a>
-<ul>
-<li><a href="python/data/export_to_word.html">Export Tables to Word</a></li>
-</ul></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-<li><a href="python/data/drop_columns_false.html">Drop Columns That Only Contain “False”</a></li>
-<li><a href="python/data/vlookup_unblinding.html">Using VLOOKUP for Unblinding</a></li>
-</ol>
+<div id="logarithmic-method" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Logarithmic Method</h2>
+<p>Still on <a href="https://www-users.york.ac.uk/~mb55/meas/cv.htm">Bland’s page</a> but using the data from the Influential Points page (because Bland used randomly-generated data that cannot be replicated), here’s how the logarithmic method can be implemented:</p>
+<pre class="python"><code># Log-transform the data
+df_log = np.log(df)
+means_log = df_log.mean(axis=1, skipna=False)
+diffs_log = df_log.diff(axis=1).iloc[:, -1]
+# Within-subject variances
+var_w = diffs_log**2 / 2
+# Within-subject standard deviation
+s_w = np.sqrt(var_w.mean())
+# Within-subject coefficient of variation
+cv_w = np.exp(s_w) - 1
+
+print(f&#39;cᵥ = {cv_w:6.4f}&#39;)</code></pre>
+<pre><code>## cᵥ = 0.0615</code></pre>
+<p>…and the confidence interval around this answer is:</p>
+<pre class="python"><code># Number of subjects
+n = df_log.shape[0]
+# Number of measurements per subject
+m = df_log.shape[1]
+# Standard error
+se = s_w / np.sqrt(2 * n * (m - 1))
+# 95% confidence interval for the within-subject CV
+ci = (np.exp(s_w - 1.96 * se) - 1, np.exp(s_w + 1.96 * se) - 1)
+
+print(f&#39;cᵥ = {cv_w:6.4f} (95% CI [{ci[0]:6.4f}, {ci[1]:6.4f}])&#39;)</code></pre>
+<pre><code>## cᵥ = 0.0615 (95% CI [0.0341, 0.0896])</code></pre>
+<p>As noted by Bland, the results given by the two methods are similar (5.96% and 6.15% in our example) and so either can be used.</p>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a>
-<ul>
-<li><a href="python/graphs/colours_good_figures.html">Colours that Look Good in Figures</a></li>
-</ul></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a>
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_significance.html">Significance Bars</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing directly from Pandas data frames <em>- This is essentially the same as the above methods because Pandas uses Matplotlib in the background</em>
-<ul>
-<li><a href="python/graphs/pandas/line_scatter_box_histograms_pie_subplots.html">Line, Scatter &amp; Box Plots, Histograms, Pie Charts and Sub-Plots</a></li>
-<li><a href="python/graphs/pandas/bar_plots.html">Bar Plots</a></li>
-</ul></li>
-<li>Axes and Labels
-<ul>
-<li><a href="python/graphs/axes_and_labels/latex_in_labels.html">LaTeX in Labels</a></li>
-<li><a href="python/graphs/axes_and_labels/changing_the_font.html">Changing the Font</a></li>
-</ul></li>
-</ol>
 </div>
-<div id="curve-fitting" class="section level2">
-<h2>Curve Fitting</h2>
-<ol style="list-style-type: decimal">
-<li>Linear Functions
-<ul>
-<li><a href="python/curve_fitting/linear_comparison.html">Comparison of Methods</a></li>
-<li><a href="python/curve_fitting/linear_regression.html">Linear Regression</a></li>
-</ul></li>
-<li><a href="python/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ol>
-</div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li><a href="python/statistics/combinations_permutations.html">Combinations and Permutations</a></li>
-<li><a href="python/statistics/effect_size.html">Effect Size</a></li>
-<li>Hypothesis Testing:
-<ul>
-<li>Regression
-<ul>
-<li><a href="python/statistics/hypothesis_testing/constant_regression.html">Constant Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/simple_linear_regression.html">Simple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/multiple_linear_regression.html">Multiple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/quadratic_regression.html">Quadratic Regression</a></li>
-</ul></li>
-<li><em>t</em>-Tests
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample <em>t</em>-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired Two-Sample <em>t</em>-Test</a></li>
-<li>Two One-Sided <em>t</em>-Test (TOST)
-<ul>
-<li><a href="python/statistics/hypothesis_testing/tost_unpaired.html">Unpaired</a></li>
-<li><a href="python/statistics/hypothesis_testing/tost_paired.html">Paired</a></li>
-</ul></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney <em>U</em> Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement (Accuracy &amp; Precision):
-<ul>
-<li><a href="python/statistics/agreement/passing_bablok.html">Passing–Bablok Regression</a></li>
-<li><a href="python/statistics/agreement/correlation_coefficients.html">Correlation Coefficients</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/coefficient_of_variation.html">Coefficient of Variation</a></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)</li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-</ul></li>
-<li>Risk
-<ul>
-<li><a href="python/statistics/risk/odds_ratio.html">Odds Ratio</a></li>
-<li><a href="python/statistics/risk/hazard_ratio.html">Hazard Ratio</a></li>
-</ul></li>
-</ol>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Management</a></li>
-<li><a href="python/utilities/the_os_module.html">The <code>os</code> Module</a>
-<ul>
-<li><a href="python/utilities/move_and_rename.html">Move and Rename Files</a></li>
-</ul></li>
-</ol>
+<div id="between-subject-coefficient-of-variation" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Between-Subject Coefficient of Variation</h1>
+<p>The Influential Points page goes on to calculate the between-subject coefficient of variation:</p>
+<pre class="python"><code># Between-subject coefficient of variation
+var_means = np.var(means, ddof=1)
+mean_means = np.mean(means)
+n_obs = df.shape[1]
+cv_b = np.sqrt(n_obs * var_means) / mean_means
+
+print(f&#39;cᵥ = {cv_b:5.3f}&#39;)</code></pre>
+<pre><code>## cᵥ = 0.185</code></pre>
+<p>This matches the correct answer of 18.5%.</p>
+<p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
