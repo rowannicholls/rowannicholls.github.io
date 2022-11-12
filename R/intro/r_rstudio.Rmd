@@ -25,31 +25,54 @@ So RStudio is a programme that can be used to create and edit R scripts, and als
 
 Download and Install
 ====================
-- First, install R [from CRAN](https://cran.rstudio.com/) (the Comprehensive R Archive Network)
-    - On Ubuntu, an alternative is to install it from the terminal with:
+
+**macOS**
+
+- First, install **R** [from CRAN](https://cran.rstudio.com/) (the Comprehensive R Archive Network)
+- Then, install **RStudio** by going to [the RStudio website](https://rstudio.com/) > Download > download RStudio Desktop
+- Drag the RStudio icon into the Applications folder so it can be accessed easily
+- Check that it's worked by opening the terminal and running `R --version`. This should show the start-up message (including the version number so you can double check that you've installed the latest stable release).
+- Open R in the terminal by running `R`. This will open an interactive command line where you can enter and run R code manually. Close it by running `q()` and then `n` to not save the workspace image.
+
+**Ubuntu**
+
+- Install **R** from the terminal with:
+    ```{bash, eval = FALSE}
+sudo apt install r-base-core
+    ```
+    or, if you have *Ubuntu 20.04:*
     ```{bash, eval = FALSE}
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
 sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/'
 sudo apt update
 sudo apt install r-base
     ```
-    - Check that it's worked by opening the terminal/command prompt and running `R --version`. This should show the start-up message (including the version number so you can double check that you've installed the latest stable release).
-    - Open R in the terminal by running `R`. This will open an interactive command line where you can enter and run R code manually. Close it by running `q()` and then `n` to not save the workspace image.
-- Then, install RStudio: go to [the RStudio website](https://rstudio.com/) > Download > download RStudio Desktop
-    - On macOS, drag the RStudio icon to the Applications folder so it can be accessed easily
-    - On Ubuntu, download the .deb installer rather than the .tar.gz one (unless you have a particular reason for wanting it)
+- Check that it's worked by opening the terminal and running `R --version`. This should show the start-up message (including the version number so you can double check that you've installed the latest stable release).
+- Open R in the terminal by running `R`. This will open an interactive command line where you can enter and run R code manually. Close it by running `q()` and then `n` to not save the workspace image.
+- You can download and install **RStudio** by going to [its website](https://rstudio.com/) > Download RStudio > under "RStudio Desktop" click "Download RStudio" > scroll down to "Ubuntu 22" (or "Ubuntu 18+" if you have an older version) and download its associated .deb file (`rstudio-2022.07.2-576-amd64.deb`).
+    - If you keep scrolling down the page you will see that you also have the option of downloading a zip/tarball (a .tar.gx file): only do this if you have a specific reason for wanting this type of file instead of a .deb file.
+    - Install the .deb file from the terminal like so (you will be prompted to enter your computer password):
+    ```{bash, eval = FALSE}
+cd Downloads
+sudo dpkg -i rstudio-2022.07.2-576-amd64.deb
+    ```
+- **Troubleshooting**: if you get the following error:
+    ```{bash, eval = FALSE}
+/usr/lib/rstudio/bin/rsession: error while loading shared libraries: libpq.so.5: cannot open shared object file: No
+such file or directory
+    ```
+    It means you need to install PostgreSQL; follow the instructions [here](https://www.postgresql.org/download/linux/ubuntu/) although running `sudo apt-get install postgresql-12` is a good start.
 
-Update
-======
-- To update R, see [here](packages.html#updating-r)
-- To update RStudio, download [the latest version](https://rstudio.com/products/rstudio/download/#download)
-    - On macOS, install it as per normal (ie replace the version you currently have in the Applications folder; any configurations you have will be carried over from the old version to the new version)
-    - On Ubuntu, point your terminal at your Downloads folder and install the .deb file:
-
-```{bash, eval = FALSE}
+Updating
+========
+- To update **R**, see [here](packages.html#updating-r)
+- To update **RStudio**, download [the latest version](https://rstudio.com/products/rstudio/download/#download)
+    - On *macOS*, install it as per normal (ie replace the version you currently have in the Applications folder; any configurations you have will be carried over from the old version to the new version)
+    - On *Ubuntu*, point your terminal at your Downloads folder and install the .deb file:
+    ```{bash, eval = FALSE}
 cd Downloads
 sudo apt install ./rstudio-1.4.1106-amd64.deb
-```
+    ```
 
 Configure RStudio
 =================
