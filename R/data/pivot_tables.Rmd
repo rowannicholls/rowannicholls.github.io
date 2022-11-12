@@ -18,6 +18,12 @@ output:
 options(width = 120)
 ```
 
+<!-- This script needs: -->
+<!-- install.packages("tidyr") -->
+<!-- install.packages("gapminder") -->
+<!-- install.packages("reshape") -->
+<!-- install.packages("reshape2") -->
+
 A "pivot table" is a way of summarising the data in a table. For example, if we have the following results of three tests that were taken by two students:
 
 ```{r, echo = FALSE}
