@@ -14,8 +14,8 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
-Setup {.tabset}
-=====
+{.tabset}
+=========
 
 macOS
 -----
@@ -34,9 +34,94 @@ macOS
     ```
     - Save as `python3.sublime-build` in the default location (which will be `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`)
 
-Ubuntu
+[⇦ Back](../sublime_text.html)
+
+Ubuntu {.tabset}
 ------
-*On Ubuntu 16.04, 18.04 and 20.04:*
+
+### Ubuntu 22.04
+
+**Setup**
+
+- Running Python files in Sublime Text usually works out-of-the-box:
+    - Open a Python file (a file with a `.py` extension) in Sublime Text
+    - From the menu bar, go to Tools > Build (or press Ctrl+B). This should run the Python script.
+- If Sublime Text has tried to run the script using a different language, go to Tools > Build System or Tools > Build With... and choose Python
+
+**Changing the Version of Python used by Sublime Text**
+
+- The Sublime Text Python Build System works by running the `python3` command on the file that is currently open. By default, this will be Python 3.10.6 because that is the version Ubuntu 22.04 comes pre-installed with. If you want to change that (eg if you have Python 3.11 installed and working and want Sublime Text to use that) you will need to create a new build system:
+    - Go to Tools > Build System > New Build System...
+    - Replace all text with:
+    ```json
+    {
+        "shell_cmd": "python3.11 -u \"$file\"",
+        "file_regex": "^[ ]*File \"(...*?)\", line ([0-9]*)",
+        "selector": "source.python",
+
+        "env": {
+            "PYTHONIOENCODING": "utf-8",
+            // Manually set where a Python module looks when it uses shared
+            // object files or static libraries
+            "LD_LIBRARY_PATH": "/usr/local/lib"
+        },
+
+        "variants":
+        [
+            {
+                "name": "Syntax Check",
+                "shell_cmd": "python3.11 -m py_compile \"${file}\"",
+            }
+        ]
+    }
+    ```
+    - Save it to the default location (which is `~/.config/sublime-text/Packages/User`) with a meaningful name like "Python 3.11.sublime-build"
+- Now, go to Tools > Build With.. and select your new Build System (eg Python 3.11)
+
+**Using SublimeREPL**
+
+- Install SublimeREPL via Package Control (Ctrl+Shift+P > search for "install package" > search for "SublimeREPL")
+- Tools > SublimeREPL > Python > Python - RUN current file (you can optionally create a [user key binding](key_bindings.html) to do this via a keyboard shortcut)
+- Shift+Alt+8 creates a lower window which you can drag the Python output console to
+- Troubleshooting:
+    - If the code runs fine but you get the following window:
+    ```text
+    SublimeREPL: obtaining sane environment failed in getenv()
+    Check console and 'getenv_command' setting
+    WARN: Falling back to SublimeText environment
+    ```
+    - Open Preferences > Package Settings > SublimeREPL > Settings - User
+    - Enter the following:
+    ```json
+    {
+      "getenv_command": false
+    }
+    ```
+
+**Using Terminus**
+
+Python files can also be run 'manually' from a **Terminus terminal**, look [here](packages.html) for more info on installing that.
+
+**Troubleshooting: Use LaTeX format with Matplotlib**
+
+This is for when you are using the code `plt.rc('text', usetex=True)` in an attempt to use LaTeX in Matplotlib plots but it's causing them to not render or save. You will be seeing a very long error and/or an error saying that 'dvipng' could not be found.
+
+- Firstly, make sure that LaTeX is installed and working outside of Sublime Text (eg by rendering a .tex file from the terminal or in a LaTeX editor like TeXstudio)
+- Secondly, check that the Sublime Text package "LaTeXTools" is installed and working by running a LaTeX file in Sublime Text
+- If that works, everything should be sorted by installing dvipng from the terminal with:
+```{bash, eval = FALSE}
+sudo apt-get install dvipng
+```
+- If you get an error saying `matplotlib.cbook.Locked.TimeoutError: LOCKERROR`, delete your `tex.cache` folder before trying again:
+```{bash, eval = FALSE}
+rm /home/<username>/.cache/matplotlib/tex.cache
+```
+
+[⇦ Back](../sublime_text.html)
+
+### Ubuntu 16.04, 18.04 and 20.04
+
+**Setup**
 
 - Double check that your default Python is 3.x.x, not 2.x.x:
     - Check your Python version with:
@@ -53,7 +138,7 @@ Ubuntu
     alias python=python3
     ```
     - Save, close and restart the terminal before running `python --version` again. The Python version should now be 3.x.x.
-- Use the default Sublime Text build functionality:
+- Using the default Sublime Text **build functionality**:
     - This usually doesn't work out-of-the-box
     - Go to Tools > Build System > New Build System...
     - Replace all text with:
@@ -79,26 +164,43 @@ Ubuntu
         ]
     }
     ```
-    - Save it to the default location (which is `~/.config/sublime-text-3/Packages/User`) with a meaningful name like "python3.sublime-build"
-- Use SublimeREPL:
+    - Save it to the default location (which is `~/.config/sublime-text/Packages/User`) with a meaningful name like "python3.sublime-build"
+- Using **SublimeREPL**:
     - Install SublimeREPL via Package Control (Ctrl+Shift+P > search for "install package" > search for "SublimeREPL")
     - Tools > SublimeREPL > Python > Python - RUN current file (you can optionally create a [user key binding](key_bindings.html) to do this via a keyboard shortcut)
     - Shift+Alt+8 creates a lower window which you can drag the Python output console to
-- Python files can also be run 'manually' from a Terminus terminal, look in [here](packages.html) for more info on installing that
-- Troubleshooting:
-    - If the code runs fine but you get the following window:
-    ```{bash, eval = FALSE}
-    SublimeREPL: obtaining sane environment failed in getenv()
-    Check console and 'getenv_command' setting
-    WARN: Falling back to SublimeText environment
-    ```
-    - Open Preferences > Package Settings > SublimeREPL > Settings - User
-    - Enter the following:
-    ```json
-        {
-          "getenv_command": false
-        }
-    ```
+    - Troubleshooting:
+        - If the code runs fine but you get the following window:
+        ```text
+        SublimeREPL: obtaining sane environment failed in getenv()
+        Check console and 'getenv_command' setting
+        WARN: Falling back to SublimeText environment
+        ```
+        - Open Preferences > Package Settings > SublimeREPL > Settings - User
+        - Enter the following:
+        ```json
+            {
+              "getenv_command": false
+            }
+        ```
+- Python files can also be run 'manually' from a **Terminus terminal**, look in [here](packages.html) for more info on installing that
+
+**Troubleshooting: Use LaTeX format with Matplotlib**
+
+This is for when you are using the code `plt.rc('text', usetex=True)` in an attempt to use LaTeX in Matplotlib plots but it's causing them to not render or save. You will be seeing a very long error and/or an error saying that 'dvipng' could not be found.
+
+- Firstly, make sure that LaTeX is installed and working outside of Sublime Text (eg by rendering a .tex file from the terminal or in a LaTeX editor like TeXstudio)
+- Secondly, check that the Sublime Text package "LaTeXTools" is installed and working by running a LaTeX file in Sublime Text
+- If that works, everything should be sorted by installing dvipng from the terminal with:
+```{bash, eval = FALSE}
+sudo apt-get install dvipng
+```
+- If you get an error saying `matplotlib.cbook.Locked.TimeoutError: LOCKERROR`, delete your `tex.cache` folder before trying again:
+```{bash, eval = FALSE}
+rm /home/<username>/.cache/matplotlib/tex.cache
+```
+
+[⇦ Back](../sublime_text.html)
 
 Windows
 -------
@@ -132,32 +234,22 @@ Windows
     ```
 - Shift+Alt+8 creates a lower window to which you can drag the Python output console
 
-Troubleshooting: Use Latex format with Matplotlib
-=================================================
-This is for when you are using the code `plt.rc('text', usetex=True)` in an attempt to use Latex in Matplotlib plots but it's causing them to not render or save. You will be seeing a very long error and/or an error saying that 'dvipng' could not be found.
+**Troubleshooting: Use LaTeX format with Matplotlib**
 
-- Firstly, make sure that Latex is installed and that LaTeXTools is working by running a Latex file in Sublime Text
-- *Ubuntu*
-    - Everything should be sorted with:
-    ```{bash, eval = FALSE}
-    sudo apt-get install dvipng
+This is for when you are using the code `plt.rc('text', usetex=True)` in an attempt to use LaTeX in Matplotlib plots but it's causing them to not render or save. You will be seeing a very long error and/or an error saying that 'dvipng' could not be found.
+
+- Delete the matplotlib caches. Run the following in Python, see what folder path is outputted to the console, navigate there and delete everything that is inside it:
+```{python, eval = FALSE}
+import matplotlib as mpl
+print(mpl.get_configdir())
+```
+- After this is done, try to run the code again
+- It might say `'latex' is not recognized as an internal or external command, operable program or batch file.` If this is the case:
+    - Open Preferences > Package Settings > SublimeREPL > Settings - User
+    + Change the PATH to the following:
+    ```text
+    "default_extend_env": {"PATH":"C\\Users\\<username>\\AppData\\Local\\Programs\\Python\\Python36-32\\;C:\\Program Files (x86)\\MiKTeX 2.9\\miktex\\bin"},
     ```
-    - If you get an error saying `matplotlib.cbook.Locked.TimeoutError: LOCKERROR`, delete the folder `/home/<username>/.cache/matplotlib/tex.cache` and try again
-    ```{bash, eval = FALSE}
-    rm /home/<username>/.cache/matplotlib/tex.cache
-    ```
-- *Windows 7, 8, 10*
-    - Delete the matplotlib caches: run the following in Python and delete everything in the folder that is outputted
-    ```{python, eval = FALSE}
-    import matplotlib as mpl
-    print(mpl.get_configdir())
-    ```
-    - After this is done, try to run the code again
-        - It might say `'latex' is not recognized as an internal or external command, operable program or batch file.` If this is the case, open Preferences > Package Settings > SublimeREPL > Settings - User
-        + Change the PATH to the following:
-        ```text
-        "default_extend_env": {"PATH":"C\\Users\\<username>\\AppData\\Local\\Programs\\Python\\Python36-32\\;C:\\Program Files (x86)\\MiKTeX 2.9\\miktex\\bin"},
-        ```
 
 [⇦ Back](../sublime_text.html)
 

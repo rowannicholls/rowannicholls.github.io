@@ -14,26 +14,45 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
-To render R Markdown:
+To render R Markdown documents that are open in Sublime Text:
 
-- The R-IDE and LSP packages need to be installed in Sublime Text:
+Pre-Requisites
+==============
+- You need to have **R** installed on your computer
+    + *Ubuntu:* you can do this from the terminal with `sudo apt install r-base-core`
+    + *macOS:* download RStudio from [its website](https://posit.co/downloads/)
+    + Check that it's worked from the terminal with `R --version`
+- You also need to have the R package **rmarkdown** installed. This can be done by opening R (eg by running `R` in the terminal) and running `install.packages("rmarkdown")`
+- If you will be running Python chunks in your R Markdown files you will need to have the **reticulate** package as well: `install.packages("reticulate")`
+- **Pandoc** must also be installed. Get this from [its website](https://pandoc.org/installing.html) or via the terminal (`sudo apt-get install pandoc`).
+    + Check that you have it from the terminal with `pandoc --version`
+- The **R-IDE** and **LSP** packages need to be installed in Sublime Text:
     - Command Palette > Package Control: Install Package > R-IDE
     - Command Palette > Package Control: Install Package > LSP
-- Render with R-IDE to check that it works:
-    - Open an .Rmd file
+
+Usage
+=====
+- To start with - just to check that it works - use R-IDE to render an R Markdown file:
+    - Open an .Rmd file in Sublime Text
     - From the menu bar: R-IDE > Render R Markdown
-- Create an R Markdown build system:
-    - Tools > Build System > New Build System...
-    - In the "untitled.sublime-build" that appears, replace everything with:
-    ```{json}
-    {
-        "cmd"       : ["Rscript", "-e", "rmarkdown::render('$file')"],
-        "selector"  : "source.shell, source.Rmd",
-    }
-    ```
-    - Save as "Rmarkdown.sublime-build" in the default location. For the record, these default locations are:
-        - *Ubuntu:* `/home/<username>/.config/sublime-text-3/Packages/User`
-        - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`
+    - This should cause a file to be created. The file type of this output will depend on what option was set with the `output` parameter in the .Rmd file's YAML configuration, eg `output: html_document` will give you an HTMl file.
+- Now check to see if you can do this rendering by invoking a Sublime Text "Build System":
+    + From the menu bar: Tools > Build. The keyboard shortcut for this is Ctrl+B (*Ubuntu/Windows*) or Cmd+B (*macOS*).
+    + If this doesn't work, you will need to create a Build System manually:
+
+**Creating an R Markdown Build System Manually**
+
+- From the menu bar: Tools > Build System > New Build System...
+- In the "untitled.sublime-build" file that appears, replace everything with:
+```{json}
+{
+    "cmd"       : ["Rscript", "-e", "rmarkdown::render('$file')"],
+    "selector"  : "source.shell, source.Rmd",
+}
+```
+- Save as "Rmarkdown.sublime-build" in the default location. For the record, these default locations are:
+    - *Ubuntu:* `/home/<username>/.config/sublime-text/Packages/User`
+    - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 4/Packages/User`
 - Render with the Build System:
     - Open an .Rmd file
     - From the menu bar: Tools > Build With...
