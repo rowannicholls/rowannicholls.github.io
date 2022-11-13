@@ -53,7 +53,16 @@ sudo apt-get install python3.11
 
 **Note that the terminal command `python3` will still run Python 3.10**, even after you've installed 3.11. However, the command `python3.11` will now be available and will run 3.11, so use that from now on.
 
-#### Installing Packages
+#### Configuring Python
+If you were to download and install Python 'manually' (eg from the Python website) you would have the option to configure the installation by running `./configure <options>` as one of the installation steps. Using `apt-get` bypasses this opportunity. For many users this won't matter, however there are a couple of use cases where Python needs to be configured so as to have a **shared library**. One example is if you want to use Python in R Markdown using R's "reticulate" package. In general, if you come across the recommendation to build Python using `./configure --enable-shared` this is the sign you want a shared library (because this is what that step creates). Fortunately we can create one manually, using one line of code:
+
+```{bash, eval=FALSE}
+sudo apt-get install libpython3.11
+```
+
+This will download the `libpython3.11` Ubuntu package, which is the shared Python runtime library for Python 3.11 (for the record, this package's homepage is over [here](https://packages.ubuntu.com/jammy-updates/libpython3.11)).
+
+#### Installing Python Packages
 The best option is to use the standard Python package manager, "pip" (aka "pip3" for Python 3), for installing packages.
 
 > The name "pip" is a recursive acronym for "Pip Installs Packages"

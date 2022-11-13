@@ -23,12 +23,41 @@ Pre-Requisites
     + *macOS:* download RStudio from [its website](https://posit.co/downloads/)
     + Check that it's worked from the terminal with `R --version`
 - You also need to have the R package **rmarkdown** installed. This can be done by opening R (eg by running `R` in the terminal) and running `install.packages("rmarkdown")`
-- If you will be running Python chunks in your R Markdown files you will need to have the **reticulate** package as well: `install.packages("reticulate")`
+- If you will be running Python chunks in your R Markdown files you will need to have the **reticulate** package as well (`install.packages("reticulate")`) plus it will be useful to have `libpython` (see the "Additional Setup" note below)
 - **Pandoc** must also be installed. Get this from [its website](https://pandoc.org/installing.html) or via the terminal (`sudo apt-get install pandoc`).
     + Check that you have it from the terminal with `pandoc --version`
 - The **R-IDE** and **LSP** packages need to be installed in Sublime Text:
     - Command Palette > Package Control: Install Package > R-IDE
     - Command Palette > Package Control: Install Package > LSP
+
+**Additional Setup for Python Users:**  
+If you run Python code in R Markdown it will use the `python3` command in the background (ie it will use the same version of Python as when you run `python3` in a terminal). This may be exactly what you want, in which case you can skip ahead. If you have multiple versions of Python installed, however, you might want to use a different version to that associated with `python3`, for example you might want to use Python 3.11 which is associated with the command `python3.11`. That can be achieved by adding the following chunk in your R Markdown file:
+
+````{python, eval = FALSE}
+```{r, echo = FALSE}
+library(knitr)
+opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+````
+
+However, this might result in the following error:
+
+```
+Error: '/usr/bin/python3.11' was not built with a shared library.
+reticulate can only bind to copies of Python built with '--enable-shared'.
+```
+
+As mentioned in the error message, your Python does not have a shared library. If you install Python from source (eg if you are on Ubuntu and you download it from the Python website) you should do so with the following step as part of the process in order to create a shared library:
+
+```{bash, eval = FALSE}
+./configure --enable-shared
+```
+
+On Ubuntu, if you install Python a different way (eg by using `apt-get`) then you can download the shared library `libpython` as an [Ubuntu package](https://packages.ubuntu.com/jammy-updates/libpython3.11), eg `libpython3.11` for Python 3.11:
+
+```{bash, eval = FALSE}
+sudo apt-get install libpython3.11
+```
 
 Usage
 =====

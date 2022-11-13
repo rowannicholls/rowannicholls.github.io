@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Data Handling in Python:</font><br>Drop Columns That Only Contain "False"'
+title: '<font size="5">Data Handling in Python:</font><br>Drop Empty Columns from Pandas Data Frames'
 output:
     html_document:
         theme: paper
@@ -16,12 +16,22 @@ output:
 
 ```{r, echo = FALSE}
 options(width = 120)
+library(knitr)
+opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-Sometimes, you'll come across datasets where certain columns only contain the value "False" and you'll want to remove them. This isn't entirely straightforward to do, so this page explores a few options at your disposal.
+```{python, echo = FALSE}
+import warnings
+warnings.simplefilter(action='ignore', category=FutureWarning)
+```
 
-Example data
+Sometimes, you'll come across datasets where certain columns contain only the values "False", "None", "NaN" or "0" and you'll want to remove them. This isn't entirely straightforward to do, so this page explores a few options at your disposal.
+
+Just to be clear, this page is about removing **entire columns** that contain **only** data that isn't useful. For removing columns or rows that *partially* contain missing data, check out the `.dropna()` method over [here](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html).
+
+Example Data
 ============
+Here's the data frame that will be used for the examples on this page:
 
 ```{python}
 import pandas as pd
@@ -36,35 +46,217 @@ pd.set_option('display.width', 120)
 raw = pd.DataFrame({
     'only_text': ['Value 1', 'Value 2', 'Value 3', 'Value 4'],
     'only_trues': [True, True, True, True],
+    'text_and_nones': ['Value 1', 'Value 2', None, None],
     'only_falses': [False, False, False, False],
     'only_nones': [None, None, None, None],
     'only_nans': [np.NaN, np.NaN, np.NaN, np.NaN],
+    'only_zeroes': [0, 0, 0, 0],
     'falses_and_nones': [False, False, None, None],
-    'falses_and_nan': [False, False, np.NaN, np.NaN],
-    'text_and_nones': ['Value 1', 'Value 2', None, None],
-})
+    'falses_and_nans': [False, False, np.NaN, np.NaN],
+    'falses_and_zeroes': [False, False, 0, 0],
+    'nones_and_nans': [None, None, np.NaN, np.NaN],
+    'nones_and_zeroes': [None, None, 0, 0],
+    'nans_and_zeroes': [np.NaN, np.NaN, 0, 0],
+}, dtype='object')
 
 print(raw)
 ```
 
-The above uses the Pandas and Numpy packages. Install these from the terminal with:
+The above code uses the Pandas and Numpy packages. Install these from the terminal with:
 
-- `python3.10 -m pip install pandas`
-- `python3.10 -m pip install numpy`
+- `python3.11 -m pip install pandas`
+- `python3.11 -m pip install numpy`
 
-...replacing `python3.10` with the version you are using.
+Where `python3.11` is the version of Python you are using (in my case it's 3.11 but replace this with what you have).
+
+As you can see, the example data frame includes columns that have all the different combinations of data that you might want to remove - Falses, Nones, NaNs and zeroes - as well as a few columns at the start that *don't* only contain data to remove.
+
+Drop Columns That Only Contain One Particular Unwanted Value
+============================================================
+
+Drop Columns That Only Contain "False"
+--------------------------------------
+To find the elements which are "False":
+
+- Use the `.any()` method to return whether *any* elements in a column are "True"
+- Take the inverse of this with `~` to get whether *all* elements in a column are "False"
+- Use the `bool_only=True` keyword argument to only look at Boolean values
+    - This ensures that zeroes will *not* be interpreted as Falses, which is the default behaviour
+
+The columns that are found can then be removed with the `.drop()` method:
 
 ```{python}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain Falses, Nones and/or NaNs
-for col in df:
-    if not df[col].any():
-        df = df.drop(col, axis=1)
+# Find which columns contain only Booleans and only Falses. Use the `bool_only=True`
+# option with the `any()` method to have it only recognise Booleans:
+bool_cols = ~df.any(bool_only=True)
+only_falses = bool_cols[bool_cols]
+# Get the names of these columns
+cols_only_falses = only_falses.index.to_list()
+# Remove these columns
+df = df.drop(cols_only_falses, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
+
+The `only_falses` column is the only one to have been dropped.
+
+The same output can be achieved using a loop:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain 'False'
+for col in list(df.any(bool_only=True)[~df.any(bool_only=True)].index):
+    df = df.drop(col, axis=1)
+    
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+Column `only_falses` has been dropped while all the others remain.
+
+Drop Columns That Only Contain "None"
+-------------------------------------
+The secret to finding the values that are "None" as opposed to "NaN" is to check their data types, which can be done by *applying* the `type` function as a *map* across the entire data frame:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the nones
+nones = df.applymap(type) == type(None)
+# Find columns with only nones
+cols = nones.all()[nones.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+The `only_nones` column has been dropped while all the others have been left alone.
+
+Drop Columns That Only Contain "NaN"
+------------------------------------
+We need to find the values that are "NA" using the `.isna()` method, but this will return values that are "None" as well. These can be removed by doing the opposite of what we did above: using the `.applymap()` method to look for values that do *not* have their type equal to "None":
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the nans
+nans = (df.isna()) & (df.applymap(type) != type(None))
+# Find columns with only nans
+cols = nans.all()[nans.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+`only_nans` is the only column to be removed.
+
+Drop Columns That Only Contain "0"
+----------------------------------
+We can search the data frame for values that are equal to "0", but this will return values that are "False" as well! Remove those by using `.applymap()` once again, this time to find values that are integers:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the zeroes
+zeroes = (df == 0) & (df.applymap(type) == int)
+# Find columns with only zeroes
+cols = zeroes.all()[zeroes.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+We have removed the `only_zeroes` column and left the rest.
+
+Drop Columns That Only Contain Two Particular Unwanted Values
+=============================================================
+
+Drop Columns That Only Contain "False" and "None"
+-------------------------------------------------
+Find the Falses by looking for values that are equal to "False" but which are not equal to "0" (as zeroes are interpreted as Falses by default). Find the Nones by searching for values of the same type as "None". Remove the columns that only contain one or a combination of both of these:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the falses
+falses = (df == False) & (df.astype(str) != '0')
+# Find the nones
+nones = df.applymap(type) == type(None)
+# Find both the falses and the nones
+falses_nones = falses | nones
+# Find columns with only falses and nones
+cols = falses_nones.all()[falses_nones.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+Drop Columns That Only Contain "False" and "NaN"
+------------------------------------------------
+Find the Falses and the NaNs as has been described above:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the falses
+falses = (df == False) & (df.astype(str) != '0')
+# Find the nans
+nans = (df.isna()) & (df.applymap(type) != type(None))
+# Find both the falses and the nans
+falses_nans = falses | nans
+# Find columns with only falses and nans
+cols = falses_nans.all()[falses_nans.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+The columns that contain only Falses, NaNs or a combination of the two - `only_falses`, `only_nans` and `falses_and_nans` - have been removed.
+
+Drop Columns That Only Contain "False" and "0"
+----------------------------------------------
+Because "False" and "0" both evaluate to "0" in Python, we can simply search for columns where all the values are equal to "0" using the `.all()` method:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find columns that only contain falses and zeroes
+only_falses_zeroes = (df == 0).all()
+falses_zeroes_cols = only_falses_zeroes[only_falses_zeroes].index.to_list()
+# Remove these columns which are all nones
+df = df.drop(falses_zeroes_cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+The columns that contain only Falses, zeroes or a combination of the two - `only_falses`, `only_zeroes` and `falses_and_zeroes` - have been removed.
+
+Drop Columns That Only Contain "None" and "NaN"
+-----------------------------------------------
+Because "None" and "NaN" are both considered to be 'Nulls', we can simply use the `.isnull()` method to search for them and the `.all()` method to search for the columns containing only them:
 
 ```{python}
 # Make a copy of the data frame
@@ -75,27 +267,107 @@ for col in df:
     if df[col].isnull().all():
         df = df.drop(col, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-Drop Columns That Only Contain "False", "None" and "NaN"
-========================================================
+Columns `only_nones`, `only_nans` and `nones_and_nans` have been dropped.
+
+Equivalently, the `.dropna()` method can be used to drop 'NAs'. Specifically, it can drop `columns` where `all` the values are NAs:
 
 ```{python}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain 'False', 'None' and 'NaN'
-for col in list(df.any()[~df.any()].index):
-    df = df.drop(col, axis=1)
+# Drop the columns that only contain 'None' and/or 'NaN'
+df = df.dropna(axis='columns', how='all')
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-Columns "only_falses", "falses_and_null" and "falses_and_nan" have been dropped.
+In general, the `.dropna()` method is used to remove **missing data** (which means "None"s and "NaN"s). It has a `how` keyword argument which determines *how* it chooses what to remove: in our case we want it to remove columns where **all** values are NAs ("None"s and "NaN"s).
 
-Drop Columns That Only Contain "False" and "None"
-=================================================
+Drop Columns That Only Contain "None" and "0"
+---------------------------------------------
+Find the Nones by applying the `type` function as a map to the data frame via the `.applymap()` method and searching for the values that return the same type as `None`. Find the zeroes by looking for which values become "0" when converted to a string (this avoids values which are equal to "False" which, usually, are considered to be the same as the number "0" by Python):
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the nones
+nones = df.applymap(type) == type(None)
+# Find the zeroes
+zeroes = df.astype(str) == '0'
+# Find both the nones and the zeroes
+nones_zeroes = nones | zeroes
+# Find columns with only nones and nones
+cols = nones_zeroes.all()[nones_zeroes.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+The columns with only Nones, zeroes or a combination thereof have been removed.
+
+Drop Columns That Only Contain "NaN" and "0"
+--------------------------------------------
+Find the values that are "NaN" or "None" by using the `.isna()` method, then remove the Nones by doing the opposite of what we did above: using the `.applymap()` method to look for values that do *not* have their type equal to "None". Find the zeroes as above:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the nans
+nans = (df.isna()) & (df.applymap(type) != type(None))
+# Find the zeroes
+zeroes = df.astype(str) == '0'
+# Find both the nans and the zeroes
+nans_zeroes = nans | zeroes
+# Find columns with only nans and zeroes
+cols = nans_zeroes.all()[nans_zeroes.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+Drop Columns That Only Contain Three Particular Unwanted Values
+===============================================================
+
+Drop Columns That Only Contain "False", "None" and "NaN"
+--------------------------------------------------------
+Find the Falses, Nones and NaNs using methods described above and combine them:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the falses
+falses = (df == False) & (df.astype(str) != '0')
+# Find the nones
+nones = df.applymap(type) == type(None)
+# Find the nans
+nans = (df.isna()) & (df.applymap(type) != type(None))
+# Combine the above
+falses_nones_nans = falses | nones | nans
+# Find columns with only nones and nones
+cols = falses_nones_nans.all()[falses_nones_nans.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+All columns that contain only Falses, Nones, NaNs or a combination thereof have been removed.
+
+Drop Columns That Only Contain "False", "None" and "0"
+------------------------------------------------------
 Converting a copy of each column to 'Boolean' format will change all instances of "None" to "False", but instances of "NaN" will be unaffected:
 
 ```{python}
@@ -107,69 +379,181 @@ for col in list(df):
     if not df[col].astype('bool').any():
         df = df.drop(col, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-Columns "only_falses" and "falses_and_null" have been dropped, but not "falses_and_nan".
+Columns `only_falses`, `only_nones`, `only_zeroes`, `falses_and_nones`, `falses_and_zeroes` and `nones_and_zeroes` have been dropped, but none that contain NaNs.
 
-Drop Columns That Only Contain "False"
-======================================
-Use the `bool_only=True` option with the `any()` function to have it only recognise Booleans:
+Drop Columns That Only Contain "False", "NaN" and "0"
+-----------------------------------------------------
+Find the Falses, NaNs and zeroes separately:
 
 ```{python}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain 'False'
-for col in list(df.any(bool_only=True)[~df.any(bool_only=True)].index):
-    df = df.drop(col, axis=1)
-print(df)
+# Find the falses
+falses = (df == False) & (df.astype(str) != '0')
+# Find the nans
+nans = (df.isna()) & (df.applymap(type) != type(None))
+# Find the zeroes
+zeroes = df.astype(str) == '0'
+# Combine the above
+falses_nans_zeroes = falses | nans | zeroes
+# Find columns with only nones and nones
+cols = falses_nans_zeroes.all()[falses_nans_zeroes.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-Only column "only_falses" has been dropped, "falses_and_null" and "falses_and_nan" are still there.
+Drop Columns That Only Contain "None", "NaN" and "0"
+----------------------------------------------------
+Find the Nones, NaNs and zeroes separately:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Find the nones
+nones = df.applymap(type) == type(None)
+# Find the nans
+nans = (df.isna()) & (df.applymap(type) != type(None))
+# Find the zeroes
+zeroes = df.astype(str) == '0'
+# Combine the above
+nones_nans_zeroes = nones | nans | zeroes
+# Find columns with only nones and nones
+cols = nones_nans_zeroes.all()[nones_nans_zeroes.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+No columns containing "False" have been removed.
+
+Drop Columns That Only Contain Four Particular Unwanted Values
+==============================================================
+
+Drop Columns That Only Contain "False", "None", "NaN" and "0"
+-------------------------------------------------------------
+The `.any()` method is going to be the key to finding which columns are empty: it looks at each column to see if there are **any** elements in it which are:
+
+- True
+- Non-NaN
+- Non-zero
+- Non-empty
+
+Let's take a look:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+print(df.any())
+```
+
+Of course, what we are actually interested in is the columns where **none** of the elements are True, non-NaN, non-zero or non-empty. This is the *opposite* of what the `.any()` method looks for, so we can use the tilda (`~`) operator which returns the *opposite* of what it was given:
+
+```{python}
+print(~df.any())
+```
+
+What we have is a series indicating which columns are empty! We can use the Boolean values (the True/False values) from this series to index this series, leaving us with only the columns that need removing:
+
+```{python}
+print(~df.any()[~df.any()])
+```
+
+Now we can take the column names (which are the indices of this series) and drop them from the original data frame:
+
+```{python}
+# Drop the columns that only contain 'False', 'None', 'NaN' and '0'
+subset = df.drop(df.any()[~df.any()].index, axis=1)
+
+print(subset)
+```
+
+This is the result we were looking for: the original data frame minus the columns that only contain non-values.
+
+Using a Loop
+------------
+The same output as above can be obtained by looping over the columns and testing them individually using the `.any()` method:
+
+```{python}
+# Make a copy of the data frame
+df = raw.copy()
+
+# Drop the columns that only contain Falses, Nones and/or NaNs
+for col in df:
+    if not df[col].any():
+        df = df.drop(col, axis=1)
+
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+```{python}
+# Show the output
+print(df)
+```
 
 Note: 'Category' Columns Can Be a Problem
 =========================================
 If there is a column that is of the 'category' type then the above methods do not always work as expected. To demonstrate, let's convert one of the columns to this type:
 
 ```{python}
-# Change the type of the falses_and_null column
+# Change the type of the falses_and_nones column
 raw['falses_and_nones'] = raw['falses_and_nones'].astype('category')
 
 print(raw)
 ```
 
-Note that the "None" value in the "falses_and_null" column has been changed to a "NaN" by the re-typing process.
+Note that the "None" values in the `falses_and_nones` column has been changed to "NaN"s by the re-typing process.
 
-Drop Columns That Only Contain "False", "None" and "NaN"
---------------------------------------------------------
-Now, let's attempt the 'drop columns containing only "False", "None" and "NaN"' method we used above (ie `bool_only=False`):
+Drop Columns That Only Contain "False", "None", "NaN" and "0"
+-------------------------------------------------------------
+Now, let's attempt the first method we used above to drop columns containing only "False", "None", "NaN" and "0" (ie using `df.any()`):
 
-```{python}
+```{python, eval = FALSE}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain 'False', 'None' and 'NaN'
-for col in list(df.any()[~df.any()].index):
-    df = df.drop(col, axis=1)
+# Drop the columns that only contain 'False', 'None', 'NaN' and '0'
+df = df.drop(df.any()[~df.any()].index, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-**This has not worked as expected!** While "only_falses" and "falses_and_nan" have been dropped, "falses_and_null" is still there. This is despite the fact that it contains the same values as "falses_and_nan"!
+```
+## {'falses_and_zeroes', 'nones_and_zeroes', 'falses_and_nans', 'nans_and_zeroes', 'only_nans', 'only_zeroes', 'only_nones', 'only_falses', 'nones_and_nans'}
+```
+
+**This has not worked as expected** because `falses_and_nones` (the 'category' column) has not been removed!
 
 Using `.fillna()` to fill all "None" and "NaN" values with "False" does not work either, regardless of whether you have `bool_only=True` or not:
 
-```{python}
+```{python, eval = FALSE}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain 'False', 'None' and 'NaN'
+# Drop the columns that only contain 'False', 'None', 'NaN' and '0'
 df = df.fillna(False)
 for col in list(df.any()[~df.any()].index):
     df = df.drop(col, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
+```
+
+```
+## {'only_falses', 'falses_and_nans', 'nones_and_nans', 'only_zeroes', 'nones_and_zeroes', 'only_nones', 'falses_and_zeroes', 'nans_and_zeroes', 'only_nans'}
 ```
 
 ```{python}
@@ -181,53 +565,69 @@ df = df.fillna(False)
 for col in list(df.any(bool_only=True)[~df.any(bool_only=True)].index):
     df = df.drop(col, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
+
+In both cases, `falses_and_nones` has not been removed.
 
 Drop Columns That Only Contain "False" and "None"
 -------------------------------------------------
-Again, we will use the method that worked previously:
+Again, we will attempt the method that worked previously:
 
 ```{python}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain 'False', 'None' and 'NaN'
-for col in list(df):
-    if not df[col].astype('bool').any():
-        df = df.drop(col, axis=1)
+# Find the falses
+falses = (df == False) & (df.astype(str) != '0')
+# Find the nones
+nones = df.applymap(type) == type(None)
+# Find both the falses and the nones
+falses_nones = falses | nones
+# Find columns with only falses and nones
+cols = falses_nones.all()[falses_nones.all()].index.to_list()
+# Drop these columns
+df = df.drop(cols, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-...and this has worked as expected! Columns "only_falses" and "falses_and_null" have been dropped, but not "falses_and_nan".
+...and again this has not worked as expected! The `falses_and_nones` column which we converted to the 'category' type is still not being removed.
 
 Drop Columns That Only Contain "False"
 --------------------------------------
-Now let's try the 'drop columns containing only "False"' method (ie `bool_only=True`):
+Now let's try the method that drops columns containing only "False" (ie using `bool_only=True`):
 
 ```{python}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain 'False'
-for col in list(df.any(bool_only=True)[~df.any(bool_only=True)].index):
-    df = df.drop(col, axis=1)
+# Find which columns contain only Booleans and only Falses. Use the `bool_only=True`
+# option with the `any()` method to have it only recognise Booleans:
+bool_cols = ~df.any(bool_only=True)
+only_falses = bool_cols[bool_cols]
+# Get the names of these columns
+cols_only_falses = only_falses.index.to_list()
+# Remove these columns
+df = df.drop(cols_only_falses, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-This has also worked as expected!
+This *has* worked as expected!
 
 Solution: Just Avoid Columns of Type 'Category'
-===============================================
+-----------------------------------------------
 Iterate though the columns and treat them differently depending on whether they are categorical or not:
 
 ```{python}
 # Make a copy of the data frame
 df = raw.copy()
 
-# Drop the columns that only contain 'False', 'None' and 'NaN'
+# Drop the columns that only contain 'False', 'None', 'NaN' and/or '0'
 for col in list(df):
     if str(df[col].dtype) != 'category':
         # If the column is not categorical, check if it has any True values...
@@ -240,10 +640,11 @@ for col in list(df):
             # ...if there are no True values, remove it
             df = df.drop(col, axis=1)
 
-print(df)
+# Which columns have been removed?
+print(set(list(raw)) - set(list(df)))
 ```
 
-As expected, all columns that only contain 'False', 'None' and 'NaN' have been removed.
+As expected, all columns that only contain "False", "None", "NaN" or "0" (or a combination thereof) have been removed.
 
 [⇦ Back](../../python.html)
 
