@@ -14,25 +14,93 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
+### Choose your OS:
+
 {.tabset}
 =========
 
 macOS
 -----
-*On macOS Sierra, Mojave and Catalina:*
+*Tested on macOS 10.12 (Sierra) to macOS 12 (Monterey).*
 
-- Python works immediately with SublimeREPL in macOS, but double check if it's Python 2 or Python 3
-- Create a custom build file for Python 3:
-    - Tools > Build System > New Build System...
-    - Use the following:
+### Running Python
+As macOS comes with Python pre-installed, Sublime Text can usually run it out-of-the-box:
+
+- **Using the Sublime Text Build System:**
+    - Open a Python script (a file with the ".py" extension) in Sublime Text then try to **build** it using either the menu (Tools > Build) or the keyboard shortcut (Cmd+B)
+    - If a box appears in the lower part of the screen with text detailing information about your build, then Sublime Text has successfully run Python on your script
+    - If no box appears and you see the words "No Build System" in the very bottom-left of the screen (in the bottom grey bar) then it hasn't worked and you need to follow the "Creating a Python Build System" instructions below
+- **Using SublimeREPL:**
+    - A Sublime Text package called **SublimeREPL** can be installed and used to run Python. You may prefer it to the Build System or you may not, it's up to you.
+    - This can be installed through Sublime Text's *Package Control:*
+        + If you do not have Package Control yet, first install it either from the menu (Tools > Install Package Control...) or from the Command Palette (Tools > Command Palette... [or use the keyboard shortcut Shift+Cmd+P], search for "Install Package Control" and press Enter)
+        + Once you have Package Control installed, open the Command Palette again, search for "Package Control: Install Package", hit Enter, search for "SublimeREPL" and hit Enter again
+- **Using Terminus**
+    + **Terminus** is another Sublime Text package. It opens a terminal as a window in Sublime Text which, just like a regular terminal, can be used to run Python on a file.
+    + Install Terminus from Package Control as detailed above: open the Command Palette either from the menu (Tools > Command Palette...) or via the keyboard shortcut (Shift+Cmd+P), search for "Package Control: Install Package", Enter, search for "Terminus", Enter again
+    + It's useful to create a custom key binding for Terminus: from the menu go Sublime Text > Preferences > Package Settings > Terminus > Key Bindings and on the right-hand side (Default (OSX).sublime-keymap) add the following to the JSON file (leave the final comma out if it's the last key binding in the file):
     ```json
-    {
-        "cmd": ["python3", "-i", "-u", "$file"],
-        "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
-        "selector": "source.python"
-    }
+    // Termius key binding
+    { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} },
     ```
-    - Save as `python3.sublime-build` in the default location (which will be `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User`)
+    - Now, you can press Shift+Alt+T to get a terminal window which you can use to run Python like so:
+    ```python
+python3.11 <path to file>/<file name>.py
+    ```
+
+However, even though Python can now be used from within Sublime Text there are a couple of things to be aware of:
+
+### Troubleshooting
+*When changing settings, always close-and-open Sublime Text and/or your terminal to let the changes take effect.*
+
+- What version of Python is being used? And is it Python 2 or Python 3?
+    - Check by running the following script:
+    ```{python, eval = FALSE}
+import platform
+print(platform.python_version())
+    ```
+    - If it's a version of Python 2 you should definitely change it as that version is no longer supported
+    + If you are using the **build system** it will be whatever Python version is specified in the relevant `sublime-build` file (which you may or may not have access to) so, if it isn't using the version you want, see below about how to create a new build system
+    + If you are using **SublimeREPL** you will have to fiddle around with that package's settings to change the Python version
+    + If you are using **Terminus** it will be whatever version corresponds to the terminal command you are using, eg `python3.11` will use 3.11 but `python3` and `python` will either use the computer's default version or whatever version is set as an alias in your terminal's settings file (eg `~/.bash_profile`, `~/.zprofile` or `~/.zshrc`). Either explicitly use the command that corresponds to the Python version you want to use or change the alias(es) in the settings file(s).
+- Which copy of Python?
+    + If you have multiple copies of Python installed - eg one in `/Library/Frameworks/` and another in `/usr/local/bin/` - it will probably not be clear which one Sublime Text is using
+    + Check by running this script:
+    ```{python, eval = FALSE}
+import sys
+print(sys.executable)
+    ```
+    - If you are using the **build system** then it will be using a terminal command in the background to run Python and the copy being used will be that associated with the command. Ensure you know which terminal command is being used by the build system (eg by creating your own build system) then you can edit which copy of Python this command is aliased to in a terminal settings file (`~/.bash_profile`, `~/.zprofile` or `~/.zshrc`)
+    - If you are using **SublimeREPL** you will have to fiddle around with that package's settings to change it
+    - If you are using **Terminus** then, like the build system, you will be using a terminal command. Edit a terminal settings file to change which copy of Python your command is aliased to.
+- Bash or Z Shell?
+    + From macOS 10.15 Catalina onwards, the default shell is Zsh (as opposed to Bash, which is what it was before). This is relevant because it will determine what your terminal settings file is (`~/.zprofile` or `~/.zshrc` for Zsh, `~/.bash_profile` for Bash).
+
+### Creating a Python Build System
+To create a custom build file for Python 3.11:
+
+- Tools > Build System > New Build System...
+- Replace everything with the following:
+```json
+{
+    "cmd": ["python3.11", "-i", "-u", "$file"],
+    "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
+    "selector": "source.python"
+}
+```
+- Save it as `Python 3.11.sublime-build` in the default location (which will be `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User` if you're using Sublime Text 3 or initially installed Sublime Text 3 and have since upgraded to 4)
+- Open a Python file in Sublime Text and go Tools > Build With... (keyboard shortcut: Shift+Cmd+B) > Python 3.11
+- You should only have to do this once as the 'build with' command sets the default build system for a file type. From now on you should be able to just do Tools > Build (Ctrl+B)
+
+For the more generic 'Python 3' (which will use *a* version of Python 3, not necessarily the latest one you have installed) you can use the following (for any other version of Python, just replace the `python3` with the version you want - provided you have it installed, of course):
+
+```json
+{
+    "cmd": ["python3", "-i", "-u", "$file"],
+    "file_regex": "^[ ]File \"(...?)\", line ([0-9]*)",
+    "selector": "source.python"
+}
+```
 
 [⇦ Back](../sublime_text.html)
 
