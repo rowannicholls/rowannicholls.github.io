@@ -50,11 +50,15 @@ Packages I Recommend
         - Open Key Bindings:
             - *macOS:* Sublime Text > Preferences > Key Bindings
             - *Windows & Ubuntu:* Preferences > Key Bindings
-        - Add the following in the right-hand-side (the User key bindings file):
+        - This opens two files: the default key bindings on the left-hand side and the user's key bindings on the right-hand side. Confusingly, both of these files will be called "Default" - even the User key bindings file.
+            - Specifically, both files will be called `Default (Linux).sublime-keymap` on Linux, `Default (OSX).sublime-keymap` on macOS and `Default (Windows).sublime-keymap` on Windows
+        - Add the following in the User key bindings file (on the right-hand side) anywhere between the starting and ending square brackets:
         ```json
+        /* Terminus */
         { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} },
         ```
-        - The keyboard shortcut Shift+Alt+T should now work
+        - The above line should end with a comma if and only if other custom key bindings follow it in the file. If it is the last (or only) custom key binding, omit the comma.
+        - Save and close. The keyboard shortcut Shift+Alt+T should now work.
     - *Note:* instead of reading `.bashrc` upon start up, the Terminus terminal reads `.bash_profile`. This means that any customisation you have done to your terminal will not be applied to these Terminus terminals unless you copy this customisation in `.bashrc` into `.bash_profile` too.
         - The most common such customisation is when people re-define their default version of Python from 2 to 3 by adding `alias python=python3` to `.bashrc`
         - If this is you (and it should be - you should not be using Python 2 anymore!) make sure you do this in `.bash_profile` too, eg:
@@ -84,11 +88,15 @@ Packages I Recommend
         - Go to "Key Bindings"
             - *Ubuntu:* Preferences > Key Bindings
             - *macOS:* Sublime Text > Preferences > Key Bindings
-        - In the right-hand side (the user keybindings file) paste the following:
+        - This opens two files: the default key bindings on the left-hand side and the user's key bindings on the right-hand side. Confusingly, both of these files will be called "Default" - even the User key bindings file.
+            - Specifically, both files will be called `Default (Linux).sublime-keymap` on Linux, `Default (OSX).sublime-keymap` on macOS and `Default (Windows).sublime-keymap` on Windows
+        - Add the following in the User key bindings file (on the right-hand side) anywhere between the starting and ending square brackets:
         ```json
-            /* Pretty JSON */
-            { "keys": ["ctrl+alt+j"], "command": "pretty_json" }
+        /* Pretty JSON */
+        { "keys": ["ctrl+alt+j"], "command": "pretty_json" },
         ```
+        - The above line should end with a comma if and only if other custom key bindings follow it in the file. If it is the last (or only) custom key binding, omit the comma.
+        - Save and close. The keyboard shortcut Ctrl+Alt+T should now work.
 - **MarkdownEditing**
     - A general Markdown plugin. See more about using Markdown in Sublime Text [here](markdown.html).
     + *Note:* this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) to fix it.

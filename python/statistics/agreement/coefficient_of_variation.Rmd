@@ -15,6 +15,7 @@ output:
 [⇦ Back](../../../python.html)
 
 ```{r, include=FALSE}
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 knitr::opts_chunk$set(out.width = "90%")
 ```
 
@@ -29,12 +30,13 @@ where:
 - $\sigma$ is the standard deviation of the numbers. In practice, this will often be the *sample* standard deviation in which case the letter $s$ should be used instead of $\sigma$ (which is reserved for the *population* standard deviation).
 - $\mu$ is the mean of the numbers.
 
-Here's a worked example which comes from [the Wikipedia page](https://en.wikipedia.org/wiki/Coefficient_of_variation) about the coefficient of variation:
+Here are worked examples which comes from [the Wikipedia page](https://en.wikipedia.org/wiki/Coefficient_of_variation#Examples) about the coefficient of variation:
 
 ```{python}
 import numpy as np
 
 data = [1, 5, 6, 8, 10, 40, 65, 88]
+# Mean
 μ = np.mean(data)
 # Sample standard deviation
 s = np.std(data, ddof=1)
@@ -44,7 +46,16 @@ cv = s / μ
 print(f'cᵥ = {cv:4.2f}')
 ```
 
-This matches the answer of 1.18 given on Wikipedia. Here's another worked example that comes from [the Influential Points](https://influentialpoints.com/Training/coefficient_of_variation.htm) page:
+```{python}
+# Population standard deviation
+σ = np.std(data, ddof=0)
+# Coefficient of variation
+cv = σ / μ
+
+print(f'cᵥ = {cv:4.2f}')
+```
+
+These match the answers of 1.18 and 1.10 given on Wikipedia. Here's another worked example that comes from [the Influential Points page](https://influentialpoints.com/Training/coefficient_of_variation.htm):
 
 ```{python}
 data = [280, 295, 245, 310, 285]
@@ -56,9 +67,9 @@ print(f'cᵥ = {cv:6.4f}')
 
 This matches their answer of 0.0853 (or 8.53% in percentage form).
 
-Within-Subject Coefficient of Variation
-=======================================
-When you have *two* (or more) sets of paired numbers the above formula is too simplistic; do you use the standard deviation of all the numbers together, or the mean of the standard deviations of each of the sets? Or do you work it out for each pair of measurements and average that? There are two approaches to answering this (and they are are almost identical so either can be used, see [here](https://www-users.york.ac.uk/~mb55/meas/cv.htm)): the **root-mean-square method** and the **logarithmic method**. A worked example of each will be done and both will use the following fake data which comes from [the same Influential Points page](https://influentialpoints.com/Training/coefficient_of_variation.htm) as was used for the second example above:
+Within-Subject Coefficient of Variation (WCV)
+=============================================
+When you have *two* (or more) sets of paired numbers the above formula is too simplistic; do you use the standard deviation of all of the numbers together, or the mean of the standard deviations of each of the sets? Or do you work it out for each pair of measurements and average that? There are two approaches to answering this (and they are almost identical so either can be used; see [here](https://www-users.york.ac.uk/~mb55/meas/cv.htm)): the **root-mean-square method** and the **logarithmic method**. A worked example of each will be done and both will use the following fake data (which comes from [the same Influential Points page](https://influentialpoints.com/Training/coefficient_of_variation.htm)):
 
 ```{python}
 import pandas as pd
@@ -83,29 +94,29 @@ Here is the implementation of the method as described on the Influential Points 
 means = df.mean(axis=1)
 diffs = df.diff(axis=1).iloc[:, -1]
 # Within-subject variances
-var_w = diffs**2 / 2
+s2 = diffs**2 / 2
 # Individual CVs
-cv_i = np.sqrt(var_w) / means
+cv = np.sqrt(s2) / means
 # Within-subject coefficient of variation
-cv_w = np.sqrt(np.mean(cv_i**2))
+wcv = np.sqrt(np.mean(cv**2))
 
-print(f'cᵥ = {cv_w:6.4f}')
+print(f'WCV = {wcv:6.4f}')
 ```
 
 This matches the correct answer, which is 5.96%.
 
-Martin Bland (of Bland-Altman fame) gives a slightly-differently worded description of how to do the root-mean-square method on [his page](https://www-users.york.ac.uk/~mb55/meas/cv.htm) but it is mathematically equivalently to the above and so gives the same answer:
+Martin Bland (of Bland-Altman fame) gives a slightly-differently worded description of how to do the root-mean-square method on [his page](https://www-users.york.ac.uk/~mb55/meas/cv.htm), but it is mathematically equivalent to the above and so it gives the same answer:
 
 ```{python}
 means = df.mean(axis=1, skipna=False)
 diffs = df.diff(axis=1).iloc[:, -1]
 # Within-subject variances
-var_w = diffs**2 / 2
+s2 = diffs**2 / 2
 # Within-subject coefficient of variation
-s2m2 = (var_w / means**2)
-cv_w = np.sqrt(np.mean(s2m2))
+s2m2 = s2 / means**2
+wcv = np.sqrt(np.mean(s2m2))
 
-print(f'cᵥ = {cv_w:6.4f}')
+print(f'WCV = {wcv:6.4f}')
 ```
 
 Bland goes on to explain how to get the confidence interval around this result:
@@ -119,7 +130,7 @@ ci = (
     np.sqrt(s2m2.mean() + 1.96 * se)
 )
 
-print(f'cᵥ = {cv_w:6.4f} (95% CI [{ci[0]:6.4f}, {ci[1]:6.4f}])')
+print(f'WCV = {wcv:6.4f} (95% CI [{ci[0]:6.4f}, {ci[1]:6.4f}])')
 ```
 
 Out of interest, the "1.96" in the calculation above comes from the fact that this is the number of standard deviations around the mean within which 95% of values randomly selected from a normal distribution will lie. Here's the way to calculate it exactly:
@@ -149,13 +160,13 @@ df_log = np.log(df)
 means_log = df_log.mean(axis=1, skipna=False)
 diffs_log = df_log.diff(axis=1).iloc[:, -1]
 # Within-subject variances
-var_w = diffs_log**2 / 2
+s2_log = diffs_log**2 / 2
 # Within-subject standard deviation
-s_w = np.sqrt(var_w.mean())
+ws_log = np.sqrt(s2_log.mean())
 # Within-subject coefficient of variation
-cv_w = np.exp(s_w) - 1
+wcv = np.exp(ws_log) - 1
 
-print(f'cᵥ = {cv_w:6.4f}')
+print(f'WCV = {wcv:6.4f}')
 ```
 
 ...and the confidence interval around this answer is:
@@ -166,17 +177,17 @@ n = df_log.shape[0]
 # Number of measurements per subject
 m = df_log.shape[1]
 # Standard error
-se = s_w / np.sqrt(2 * n * (m - 1))
+se = ws_log / np.sqrt(2 * n * (m - 1))
 # 95% confidence interval for the within-subject CV
-ci = (np.exp(s_w - 1.96 * se) - 1, np.exp(s_w + 1.96 * se) - 1)
+ci = (np.exp(ws_log - 1.96 * se) - 1, np.exp(ws_log + 1.96 * se) - 1)
 
-print(f'cᵥ = {cv_w:6.4f} (95% CI [{ci[0]:6.4f}, {ci[1]:6.4f}])')
+print(f'WCV = {wcv:6.4f} (95% CI [{ci[0]:6.4f}, {ci[1]:6.4f}])')
 ```
 
 As noted by Bland, the results given by the two methods are similar (5.96% and 6.15% in our example) and so either can be used.
 
-Between-Subject Coefficient of Variation
-========================================
+Between-Subject Coefficient of Variation (BCV)
+==============================================
 The Influential Points page goes on to calculate the between-subject coefficient of variation:
 
 ```{python}
@@ -184,9 +195,9 @@ The Influential Points page goes on to calculate the between-subject coefficient
 var_means = np.var(means, ddof=1)
 mean_means = np.mean(means)
 n_obs = df.shape[1]
-cv_b = np.sqrt(n_obs * var_means) / mean_means
+bcv = np.sqrt(n_obs * var_means) / mean_means
 
-print(f'cᵥ = {cv_b:5.3f}')
+print(f'BCV = {bcv:5.3f}')
 ```
 
 This matches the correct answer of 18.5%.
