@@ -72,6 +72,32 @@ In order to be able to open a file in Sublime Text by double-clicking it you nee
 
 On **macOS Sierra** the default behaviour is for a full stop to be added when the space bar is pressed twice. This is a Sierra thing, not a Sublime Text thing. It can be disabled by going to System Preferences > Keyboard > Text > deselect "Add period with double-space" on the right.
 
+**Open New Files in the Existing Window**
+
+If the default behaviour is for Sublime Text to open files in **new windows** as opposed to the existing windows you have open, you can change this as follows:
+
+- Go to Sublime Text > Preferences > Settings. This will open a new window with two files open: the default programme settings on the left-hand side and the user settings on the right-hand side (both files will be called "Preferences.sublime-settings")
+- Add the following to the right-hand side window (the user settings):
+```json
+    // New files should open as tabs in the currently-open windows
+    "open_files_in_new_window": false
+```
+- Add this line *between* the two curly brackets
+- If this is NOT the last setting in the file, you should also add a comma at the end of the line:
+```json
+    // New files should open as tabs in the currently-open windows
+    "open_files_in_new_window": false,
+```
+
+**Ruler**
+
+For programming languages such as Python, it's [good practice](https://peps.python.org/pep-0008/#maximum-line-length) to have a maximum of 79 characters per line. Sublime Text allows you to put a 'ruler' at a distance of 80 characters away from the left-hand margin to help you stick to this convention while you code, but it gets turned off each time you close out. To make it permanent, open up the user Preferences as described above and add the following (again, with an appending comma if and only if other preferences follow this one):
+
+```json
+    // Set vertical ruler(s) in specified columns
+    "rulers": [80],
+```
+
 ### Dictionaries
 - Turn spell check on by pressing F6 (Fn+F6 on some machines)
 - **Add words to the dictionary:**
@@ -161,6 +187,23 @@ subl <filename>
 It can also be done by right-clicking on a file > Open With Other Application > Sublime Text.
 
 In order to be able to open a file in Sublime Text by double-clicking it *you need to make Sublime Text the default editor for its file type.* To do this, right-click a file in Files > Properties (Ctrl+I is the keyboard shortcut) > Open With > find "Sublime Text" in the menu and click "Set as default".
+
+**Ruler**
+
+For programming languages such as Python, it's [good practice](https://peps.python.org/pep-0008/#maximum-line-length) to have a maximum of 79 characters per line. Sublime Text allows you to put a 'ruler' at a distance of 80 characters away from the left-hand margin to help you stick to this convention while you code, but it gets turned off each time you close out. Here's how to make it permanent:
+
+- Go to Preferences > Settings. This will open a new window with two files open: the default programme settings on the left-hand side and the user settings on the right-hand side (both files will be called "Preferences.sublime-settings")
+- Add the following to the right-hand side window (the user settings):
+```json
+    // Set vertical ruler(s) in specified columns
+    "rulers": [80]
+```
+- Add this line *between* the two curly brackets
+- If this is NOT the last setting in the file, you should also add a comma at the end of the line:
+```json
+    // Set vertical ruler(s) in specified columns
+    "rulers": [80],
+```
 
 #### Dictionaries
 - Turn spell check on by pressing F6 (Fn+F6 on some machines).

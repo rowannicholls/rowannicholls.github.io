@@ -14,20 +14,29 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
-Prerequisites {.tabset}
-=============
-- You must have Latex installed already (eg by installing TexStudio, which can be downloaded from [here](https://www.texstudio.org/)). Make sure it is working by running a Latex file and ensure you know how to install packages (hint: TexStudio does it automatically).
-- You must have the LaTeXTools package for Sublime Text installed:
-    - Command Palette > Package Control: Install Package > LaTeXTools
-    - Close and re-open Sublime Text after the installation is finished
-    - Help: Preferences > Package Settings > LaTeXTools > Documentation
+{.tabset}
+=========
 
 Ubuntu
 ------
 
-*On Ubuntu 20.04:*
+*On Ubuntu 20.04 and 22.04:*
 
-- Install Latex from the terminal with:
+**Prerequisites**
+
+- Before you can use Latex in Sublime Text you need to have it installed on your computer:
+    - Option 1: install TexStudio (which will install Latex as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
+    - Option 2: install it from the terminal with:
+    ```{bash, eval = FALSE}
+sudo apt install texlive-latex-base
+    ```
+- Make sure it is working by running a Latex file and ensure you know how to install packages (hint: TexStudio does it automatically).
+- Install the LaTeXTools package for Sublime Text:
+    - Tools > Command Palette (shortcut: Ctrl+Shift+P) > Package Control: Install Package > LaTeXTools
+    - Close and re-open Sublime Text after the installation is finished
+    - To get help, go to: Preferences > Package Settings > LaTeXTools > Documentation
+
+- Install extra things from the terminal with:
 
 ```{bash, eval = FALSE}
 sudo apt install dvipng
@@ -90,8 +99,14 @@ Windows
 -------
 *On Windows 7, 8 and 10:*
 
-- Must have Sumatra PDF installed (https://www.sumatrapdfreader.org/free-pdf-reader.html)
-- Compile: Ctrl+C+B
+- Before you can use Latex in Sublime Text, you need to have it installed on your computer. One option is to install the "TexStudio" programme as this will install Latex as well. It can be downloaded from [here](https://www.texstudio.org/).
+- Make sure it is working by running a Latex file and ensure you know how to install packages (hint: TexStudio does it automatically).
+- Install the LaTeXTools package for Sublime Text:
+    - Command Palette > Package Control: Install Package > LaTeXTools
+    - Close and re-open Sublime Text after the installation is finished
+    - Help: Preferences > Package Settings > LaTeXTools > Documentation
+- Install Sumatra PDF (https://www.sumatrapdfreader.org/free-pdf-reader.html)
+- You can now compile TeX files that are open in Sublime Text into PDFs by pressing Ctrl+C+B.
 
 [⇦ Back](../sublime_text.html)
 

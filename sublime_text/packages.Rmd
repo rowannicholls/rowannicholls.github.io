@@ -142,10 +142,17 @@ Packages I Recommend
     ```{r, eval = FALSE}
     install.packages('rmarkdown', repos='http://cran.us.r-project.org')
     ```
-    - If you want to render Python scripts with R Markdown you also need to have `reticulate` installed. Run the following in R to do this:
+    - If you want to render Python scripts with R Markdown you also need to have the "reticulate" package installed. Run the following in R to do this:
     ```{r, eval = FALSE}
     install.packages('reticulate', repos='http://cran.us.r-project.org')
     ```
+    - If you are on **macOS** you also need to install Xcode, htmltools and Pandoc (if you are on **Ubuntu** you also need to have the latter two but they might already be installed):
+        + Xcode: you can download this from the App Store or from [the Apple Developer site](https://developer.apple.com/download/all/?q=Xcode)
+        + htmltools: install this as with any other R package:
+        ```{r, eval = FALSE}
+        install.packages('htmltools', repos='http://cran.us.r-project.org')
+        ```
+        - Pandoc: download from [its website](https://pandoc.org/installing.html)
 - **LSP**
     + This package (the Language Server Protocol) needs to be installed for rendering of R Markdown to work
 - **Non Text Files**
@@ -158,12 +165,12 @@ Packages I Recommend
         - Add to the user settings (on the right-hand-side): `"show_panel_on_save": "view"`
     + Install the following linters (there's no harm in installing more rather than fewer):
         - Python:
-            - Install these linters through pip:
-                - `python -m pip install flake8`
-                - `python -m pip install pycodestyle`
-                - `python -m pip install pydocstyle`
-                - `python -m pip install bandit`
-                - `python -m pip install pyflakes`
+            - Install these linters through pip (replace `3.11` with your version of Python):
+                - `python3.11 -m pip install flake8`
+                - `python3.11 -m pip install pycodestyle`
+                - `python3.11 -m pip install pydocstyle`
+                - `python3.11 -m pip install bandit`
+                - `python3.11 -m pip install pyflakes`
             - Install these corresponding Sublime Text linter packages through Package Control:
                 * SublimeLinter-flake8
                 * SublimeLinter-pycodestyle
