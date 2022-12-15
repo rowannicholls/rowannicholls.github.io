@@ -1,0 +1,225 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>Cut and Copy Files'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+```{r, include=FALSE}
+knitr::opts_chunk$set(out.width = "90%")
+```
+
+[⇦ Back](../../python.html)
+
+Following on from [this page](the_os_module.html) about the `os` module, here's how to cut and copy files in Python:
+
+Cut-and-Paste Files
+===================
+Cutting-and-pasting a file is essentially the same as *moving* it which, in the opinion of your computer, is the same as *renaming* its location. As such, the function in Python that achieves this is `rename()` from the `os` module:
+
+```{python}
+import os
+
+# Source file
+src = 'Source Folder/example_file.txt'
+# Destination file
+dst = 'Destination Folder/example_file.txt'
+# Check that the destination folder exists (create it if not)
+os.makedirs('Destination Folder', exist_ok=True)
+# Cut-and-paste
+os.rename(src, dst)
+```
+
+```{python, echo = FALSE}
+# Ụndo the above
+
+import time
+
+time.sleep(3)
+
+src = 'Destination Folder/example_file.txt'
+dst = 'Source Folder/example_file.txt'
+os.rename(src, dst)
+
+time.sleep(3)
+```
+
+It might seem a bit weird that we're using the `rename()` function when the file in question is not being renamed, but that's the way it is.
+
+Move All Files in a Folder
+--------------------------
+The following code will move all files in a folder and its sub-folders into a different folder (and into corresponding sub-folders inside that):
+
+```{python}
+import os
+from pathlib import Path
+
+# Source folder
+src_folder = 'Source Folder'
+# Destination folder
+dst_folder = 'Destination Folder'
+# Walk through the filesystem
+for dirpath, dirnames, filenames in os.walk(src_folder):
+    # Sort the dirnames to iterate over them in alphabetical order
+    dirnames.sort()
+    # Sort the filenames to iterate over them in alphabetical order
+    filenames.sort()
+    # Iterate over the files
+    for filename in filenames:
+        # Ignore hidden files
+        if filename.startswith('.'):
+            continue
+        # Only move one type of file
+        if not filename.endswith('.txt'):
+            continue
+        # Set the source path
+        src_path = Path(dirpath, filename)
+        # Only replace the first instance of the source folder's name
+        dst_dirpath = dirpath.replace(str(src_folder), dst_folder, 1)
+        dst_path = Path(dst_dirpath, filename)
+        # Check that the destination folder exists (create it if not)
+        os.makedirs(dst_dirpath, exist_ok=True)
+        # Move (which is actually a rename operation)
+        print(f'Moving "{src_path}" to "{dst_path}"')
+        os.rename(src_path, dst_path)
+```
+
+- The `os.walk()` function will 'walk' through the source folder and all its sub-folders, finding all files contained within it
+- The `sort()` method is optional; it merely causes the folders and files to be handled in alphabetical order
+- If you don't want to move files of a certain type you can use the `if...continue` block. This is done in the example above to skip hidden files (which are files that start with a full stop).
+- If you *only* want to move files of a certain type you can use the `if not...continue` block. This is done in the example above to ensure that only *text files* are moved.
+- Using `Path()` objects from the `pathlib` module instead of string paths is optional but good practice: a variable that represents a *path* should be stored and handled in Python as a *path* object
+- Use the `os.makedirs()` function with the `exist_ok` parameter set to `True` to ensure that the folder(s) you want to move a file into either already exist or get created before the move is attempted
+
+```{python, echo = FALSE}
+time.sleep(3)
+```
+
+Move Them Back
+--------------
+Because I want this script to work every time I run it, the files should be moved back. This can be achieved by simply reversing the source and destination folders:
+
+```{python}
+# Source folder
+src_folder = 'Destination Folder'
+# Destination folder
+dst_folder = 'Source Folder'
+# Walk through the filesystem
+for dirpath, dirnames, filenames in os.walk(src_folder):
+    # Sort the dirnames to iterate over them in alphabetical order
+    dirnames.sort()
+    # Sort the filenames to iterate over them in alphabetical order
+    filenames.sort()
+    # Iterate over the files
+    for filename in filenames:
+        # Ignore hidden files
+        if filename.startswith('.'):
+            continue
+        # Only move one type of file
+        if not filename.endswith('.txt'):
+            continue
+        # Set the source path
+        src_path = Path(dirpath, filename)
+        # Only replace the first instance of the source folder's name
+        dst_dirpath = dirpath.replace(str(src_folder), dst_folder, 1)
+        dst_path = Path(dst_dirpath, filename)
+        # Check that the destination folder exists (create it if not)
+        os.makedirs(dst_dirpath, exist_ok=True)
+        # Move (which is actually a rename operation)
+        print(f'Moving "{src_path}" to "{dst_path}"')
+        os.rename(src_path, dst_path)
+```
+
+```{python, echo = FALSE}
+os.rmdir(Path('Destination Folder', 'sub_folder'))
+time.sleep(3)
+```
+
+Copy-and-Paste Files
+====================
+This is almost identical to the above, except the files are being *copied* (ie the originals are remaining where they are and duplicates are being created in the destination folders). The `os` module can't perform this operation, but the `shutil` module can via the `copy()` function:
+
+```{python, results='hide'}
+import shutil
+
+# Source folder
+src_folder = 'Source Folder'
+# Destination folder
+dst_folder = 'Destination Folder'
+# Walk through the filesystem
+for dirpath, dirnames, filenames in os.walk(src_folder):
+    # Sort the dirnames to iterate over them in alphabetical order
+    dirnames.sort()
+    # Sort the filenames to iterate over them in alphabetical order
+    filenames.sort()
+    # Iterate over the files
+    for filename in filenames:
+        # Ignore hidden files
+        if filename.startswith('.'):
+            continue
+        # Only move one type of file
+        if not filename.endswith('.txt'):
+            continue
+        # Set the source path
+        src_path = Path(dirpath, filename)
+        # Only replace the first instance of the source folder's name
+        dst_dirpath = dirpath.replace(str(src_folder), dst_folder, 1)
+        dst_path = Path(dst_dirpath, filename)
+        # Check that the destination folder exists (create it if not)
+        os.makedirs(dst_dirpath, exist_ok=True)
+        # Copy file
+        print(f'Copying "{src_path}" to "{dst_path}"')
+        shutil.copy(src_path, dst_path)
+```
+
+```
+## Copying "Source Folder/example_file.txt" to "Destination Folder/example_file.txt"
+## Copying "Source Folder/sub_folder/example_file.txt" to "Destination Folder/sub_folder/example_file.txt"
+```
+
+Delete Them
+-----------
+Again, to reset the folders to their original state so that this script can be re-run, I'll delete the new copies of the files (using the `os.remove()` function):
+
+```{python, echo = FALSE}
+time.sleep(3)
+```
+
+```{python}
+# Folder which contains the files to be deleted
+folder = 'Destination Folder'
+# Walk through the filesystem
+for dirpath, dirnames, filenames in os.walk(folder):
+    # Sort the dirnames to iterate over them in alphabetical order
+    dirnames.sort()
+    # Sort the filenames to iterate over them in alphabetical order
+    filenames.sort()
+    # Iterate over the files
+    for filename in filenames:
+        # Ignore hidden files
+        if filename.startswith('.'):
+            continue
+        # Only move one type of file
+        if not filename.endswith('.txt'):
+            continue
+        # Set the file path
+        path = Path(dirpath, filename)
+        print(f'Deleting "{path}"')
+        os.remove(path)
+        # Delete the directory if it is empty
+        try:
+            os.removedirs(dirpath)
+        except OSError:
+            pass
+```
+
+[⇦ Back](../../python.html)
+
+</font>
