@@ -1,0 +1,754 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Descriptive Statistics'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+```
+
+```{r, echo = FALSE}
+library(knitr)
+opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+```{python, echo = FALSE}
+import pandas as pd
+
+# Pandas display options
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.width', 362)
+```
+
+This page shows some ways of performing **descriptive statistics in Python**. Descriptive statistics are statistics that:
+
+- **Describe** a data set
+- Involve the *exploration*, *summary* and *presentation* of data
+- Are done *first* in a statistical analysis, giving you an **initial**,
+**general** idea about the data you're working with and helping you to make
+sense of large sets of data
+- Allow you to identify broad **patterns** in the data which you can then
+investigate further
+- Help you to spot **outliers** or anomalies
+- Give **initial answers** to research questions
+- Present the full data set in **compact**, **summarised** formats, such as
+tables and charts
+- Can be done on both **categorical** and **quantitative** variables
+
+Descriptive statistics are different to **inferential statistics**, which are
+discussed at the end of this page.
+
+Example Data
+============
+This page will use fake data for its examples. Creating this will use three modules: `random`, which comes pre-installed with Python, and then `pandas` and `mimesis` which can be downloaded and installed from the terminal with the following commands (replace `3.11` with the version of Python you have installed):
+
+```{bash, eval = FALSE}
+python3.11 -m pip install pandas
+python3.11 -m pip install mimesis
+```
+
+Once installed, the fake data can be created in Python as follows:
+
+```{python}
+import random
+import pandas as pd
+import mimesis
+
+# Set the 'seed' to ensure that the random data is the same each time we run the code
+random.seed(20221229)
+# Create fake data generators
+person = mimesis.Person(seed=20221229)
+development = mimesis.Development(seed=20221229)
+
+# Initialize a data frame
+df = pd.DataFrame()
+# Populate the data frame with 120 rows of fake data
+for _ in range(120):
+    previous_donor = development.boolean()
+    new_row = {
+        'name': person.full_name(),
+        'age': person.age(),
+        'blood_type': person.blood_type(),
+        'previous_donor': previous_donor,
+        # If the person has not donated previously, ensure that "times_donated" is zero
+        'times_donated': random.randint(1, 5) * previous_donor,
+        # View on non-reimbursed blood donation
+        'view': person.views_on(),
+    }
+    new_row = pd.DataFrame(new_row, index=[1])
+    df = pd.concat([df, new_row], ignore_index=True)
+
+# Take a look
+print(df.head())
+```
+
+We have created a data set that simulates a blood donation drive that had 120 donors. It includes columns that have five different **data types**:
+
+- Categorical data types:
+    + Nominal (values without quantity): the donors' `blood_type`
+    + Binary (there are only two possible values): whether or not each person is a `previous_donor`
+    + Ordinal (qualitative data where the possible values have an order or a rank): each donor's `view` on non-reimbursed blood donation
+- Quantitative data types:
+    + Discrete (there are gaps between the possible values): `times_donated` - the number of times each donor has donated blood before; only whole numbers are possible
+    + Continuous (there are no gaps between the possible values): each person's `age`. In this particular data set these values are whole numbers but a person's age doesn't *have* to be a whole number; it can be a fraction in between two whole numbers and thus 'age' is a *continuous* variable.
+
+Now, how can we calculate and present information that **describes** this data set? We can do so using **descriptive statistics**.
+
+Categorical Variables (aka Factors)
+===================================
+Let's describe the categorical variables: `blood_type`, `previous_donor` and `view`. For starters, the sample size of each variable is equal to the *length* of the data frame:
+
+```{python}
+# Sample size
+n = len(df)
+
+print(f'Sample size, n = {n}')
+```
+
+Counts and Percentages
+----------------------
+The counts of the **nominal** data (`blood_type`) are:
+
+```{python}
+# Counts
+counts = df['blood_type'].value_counts()
+
+print(counts)
+```
+
+...and the percentages are:
+
+```{python}
+# Percentage
+percentages = df['blood_type'].value_counts() / n * 100
+
+print(f'Percent of donors with O+ blood: {percentages["O+"]:4.1f}%')
+```
+
+Repeating this for the **binary** data (`previous_donor`):
+
+```{python}
+# Counts
+counts = df['previous_donor'].value_counts()
+# Percentage
+percentages = counts / n * 100
+
+print(percentages.round(1))
+```
+
+...and the **ordinal** data (`view`):
+
+```{python}
+# Counts
+counts = df['view'].value_counts()
+# Percentage
+percentages = counts / n * 100
+
+print(percentages.round(1))
+```
+
+Tables and Graphs
+-----------------
+Categorical variables can be descriptively presented in *frequency tables* and *bar plots*.
+
+### One-Way Frequency Table
+A **one-way frequency table** can be used to show the counts and percentages of the nominal `blood_type` data more completely:
+
+```{python}
+# Counts
+counts = df['blood_type'].value_counts().rename('count')
+# Sort the columns alphabetically
+counts = counts.reindex(sorted(counts.index), axis=1)
+# Percentages
+percentages = (counts / n * 100).rename('%')
+# Merge the counts and percentages into one table
+frequency_table = pd.merge(counts, percentages, left_index=True, right_index=True)
+# Calculate the totals
+totals = frequency_table.sum(axis=0).rename('total')
+# Add the totals as a new column
+frequency_table = pd.concat([frequency_table.T, totals], axis=1).round(1)
+
+print(frequency_table)
+```
+
+### Single-Group Bar Plot
+The best way to show this data on a graph would be to make a **single-group bar plot**. More information on creating these can be found on [this page](../graphs/pandas/bar_plots.html) and [this page](../graphs/ax_based/barplots_single_group.html).
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Counts
+counts = df['blood_type'].value_counts(sort=False)
+# Create bar plot
+ax = counts.plot.bar('blood_type', rot=0, color='#95b8d1')
+# Labels
+ax.set_title('Displaying Nominal Data in a Bar Plor')
+ax.set_ylabel('Count')
+ax.set_xlabel('Blood Type')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Counts
+counts = df['blood_type'].value_counts(sort=False)
+# Create bar plot
+ax = counts.plot.bar('blood_type', rot=0, color='#95b8d1')
+# Labels
+ax.set_title('Displaying Nominal Data in a Bar Plor')
+ax.set_ylabel('Count')
+ax.set_xlabel('Blood Type')
+
+plt.show()
+```
+
+### Two-Way Frequency Table (aka a Contingency Table or Cross-Tabulation)
+Use a **two-way frequency table** to show two variables at once. In this example they are the *binary* and the *ordinal* variables (`previous_donor` and `view`):
+
+```{python}
+# Create a cross-tabulation of two variables
+ct = pd.crosstab(df['previous_donor'], df['view'])
+# Re-order the columns
+ct = ct[['Very negative', 'Negative', 'Neutral', 'Compromisable', 'Positive']]
+# Calculate the total counts and add them to the cross-tabulation
+totals = ct.sum(axis=0).rename('total')
+ct = pd.concat([ct.T, totals], axis=1).round(1)
+totals = ct.sum(axis=0).rename('total')
+ct = pd.concat([ct.T, totals], axis=1).round(1)
+
+print(ct)
+```
+
+```{python}
+# Calculate the percentages
+ct = (ct / n * 100).round(1)
+
+print(ct)
+```
+
+### Multi-Group Bar Plot
+The best way to show two categorical variables on a graph at once is to make a **multi-group bar plot**. More information on creating these can be found on [this page](../graphs/pandas/bar_plots.html) and [this page](../graphs/ax_based/barplots_multiple_groups.html).
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Create a cross-tabulation of two variables
+ct = pd.crosstab(df['previous_donor'], df['view'])
+# Re-order the columns
+ct = ct[['Very negative', 'Negative', 'Neutral', 'Compromisable', 'Positive']]
+
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.1, 0.7, 0.84])
+# Create bar plot
+ct.T.plot.bar(rot=0, color=['#95b8d1', '#800000'], ax=ax)
+# Labels
+ax.set_title('Displaying Binary and Ordinal Data in a Bar Plor')
+ax.set_ylabel('Count')
+ax.set_xlabel('Views on Non-Reimbursed Blood Donation')
+# Legend
+plt.gca().legend(
+    title='Previous Donor', fontsize=8,
+    loc='center left', bbox_to_anchor=(1, 0.5)
+)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Create a cross-tabulation of two variables
+ct = pd.crosstab(df['previous_donor'], df['view'])
+# Re-order the columns
+ct = ct[['Very negative', 'Negative', 'Neutral', 'Compromisable', 'Positive']]
+
+# Plot with an adjusted shape to accommodate the legend
+ax = plt.axes([0.1, 0.1, 0.7, 0.84])
+# Create bar plot
+ct.T.plot.bar(rot=0, color=['#95b8d1', '#800000'], ax=ax)
+# Labels
+ax.set_title('Displaying Binary and Ordinal Data in a Bar Plor')
+ax.set_ylabel('Count')
+ax.set_xlabel('Views on Non-Reimbursed Blood Donation')
+# Legend
+plt.gca().legend(
+    title='Previous Donor', fontsize=8,
+    loc='center left', bbox_to_anchor=(1, 0.5)
+)
+
+plt.show()
+```
+
+Quantitative (Numerical) Variables
+==================================
+Now let's describe the two quantitative variables: `times_donated` (which are **discrete** values) and `age` (which are **continuous** values).
+
+Counts and Percentages
+----------------------
+The counts of the **discrete** data are:
+
+```{python}
+# Counts
+counts = df['times_donated'].value_counts()
+# Sort the columns alphabetically
+counts = counts.reindex(sorted(counts.index), axis=1)
+
+print(counts)
+```
+
+The percentages of the **discrete** data are:
+
+```{python}
+# Percentage
+percentages = (counts / n * 100).round(1)
+
+print(percentages)
+```
+
+Frequency Distribution and Histogram
+------------------------------------
+The counts and percentages of the **continuous** data can be shown in a **frequency distribution** whereby the values are grouped into *bins*. The `histogram` function from the Numpy package is useful for this (download and install the Numpy package from the terminal with `python3.11 -m pip install numpy`):
+
+```{python}
+import numpy as np
+
+# Create data
+counts, bins = np.histogram(df['age'])
+
+print(counts)
+print(bins)
+```
+
+These can then be tabulated:
+
+```{python}
+intervals = [f'{int(v)} to {int(bins[i +1])}' for i, v in enumerate(bins[:-1])]
+dct = {
+    'Interval (bin)': intervals,
+    'Frequency': counts,
+    '%': (counts / n * 100).round(1),
+    'Cumulative %': (counts / n * 100).cumsum().round(1)
+}
+frequency_distribution = pd.DataFrame(dct)
+
+print(frequency_distribution)
+```
+
+The data can be plotted in this format in a **histogram** (see more on [this page](../graphs/ax_based/histograms.html) and [this page](../graphs/pandas/line_scatter_box_histograms_pie_subplots.html)):
+
+```{python, eval = FALSE}
+ax = df['age'].plot.hist(bins=11, color='#95b8d1')
+ax.set_title('Histogram of Continuous Data')
+ax.set_xlabel('Age [yrs]')
+ax.set_xlim(16, 66)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = df['age'].plot.hist(bins=11, color='#95b8d1')
+ax.set_title('Histogram of Continuous Data')
+ax.set_xlabel('Age [yrs]')
+ax.set_xlim(16, 66)
+
+plt.show()
+```
+
+Quartiles and Box-and-Whisker Plot
+----------------------------------
+<a name="single_group"></a>
+An alternative to the above would be to instead describe the data with **quartiles** and **box-and-whisker plots**.
+
+### Single Group
+A single group of continuous data can be describe using a **five number summary**:
+
+```{python}
+# Five number summary
+minimum = df['age'].min()
+first_quartile = df['age'].quantile(0.25)
+median = df['age'].median()  # aka the second quartile
+third_quartile = df['age'].quantile(0.75)
+maximum = df['age'].max()
+
+print(minimum, first_quartile, median, third_quartile, maximum)
+```
+
+The five number summary divides the ordered data points into *four* equal parts, hence why these parts are known as **quart**iles. In general, when dividing ordered data points up into equal parts these parts are known as 'quantiles'; specific examples of quantiles include quartiles (four parts), deciles (ten parts) and percentiles (one hundred parts):
+
+```{python}
+# Percentiles
+tenth_percentile = df['age'].quantile(0.1)  # 10th percentile
+ninetieth_percentile = df['age'].quantile(0.9)  # 90th percentile
+
+print(f'10th percentile is {tenth_percentile:4.1f} years; 90th percentile is {ninetieth_percentile:4.1f} years')
+```
+
+Another potentially useful descriptive statistic is the **range**: the largest value minus the smallest:
+
+```{python}
+print(f'The range is {maximum - minimum}')
+```
+
+<a name="box_plot"></a>
+
+### Box-and-Whisker Plot (Box Plot)
+The five number summary can be represented in a **box-and-whisker plot**:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+bp = df.boxplot(column='age', grid=False, return_type='dict', vert=False, ax=ax)
+plt.setp(bp['boxes'], color='k')
+plt.setp(bp['medians'], color='k')
+plt.setp(bp['whiskers'], color='k')
+ax.yaxis.set_ticklabels([])
+ax.yaxis.set_ticks([])
+ax.set_title('Box-and-Whisker Plot of Continuous Data')
+ax.set_xlabel('Age [yrs]')
+ax.scatter(df['age'], np.ones(n) + 0.03 * np.random.randn(n), s=4)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+bp = df.boxplot(column='age', grid=False, return_type='dict', vert=False, ax=ax)
+plt.setp(bp['boxes'], color='k')
+plt.setp(bp['medians'], color='k')
+plt.setp(bp['whiskers'], color='k')
+ax.yaxis.set_ticklabels([])
+ax.yaxis.set_ticks([])
+ax.set_title('Box-and-Whisker Plot of Continuous Data')
+ax.set_xlabel('Age [yrs]')
+ax.scatter(df['age'], np.ones(n) + 0.03 * np.random.randn(n), s=4)
+
+plt.show()
+```
+
+Viewing data in a histogram or a box-and-whisker plot can help in finding extreme observations (outliers) and asymmetric distributions (skewness). In particular, data points that are further than 1.5 times the length of the box away from the relevant quartile can be considered outliers.
+
+### Multiple Groups
+Splitting the data into groups can help in seeing differences or similarities between them.
+
+```{python, eval = FALSE}
+ax = plt.axes()
+bp = df.boxplot(column='age', by='previous_donor', grid=False, return_type='dict', ax=ax)
+# Iterate over each box
+for box in bp:
+    plt.setp(box['boxes'], color='k')
+    plt.setp(box['medians'], color='k')
+    plt.setp(box['whiskers'], color='k')
+plt.suptitle('')
+ax.set_title('Box-and-Whisker Plot of Continuous Data')
+ax.set_ylabel('Age [yrs]')
+ax.set_xlabel('Previous Donor')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+bp = df.boxplot(column='age', by='previous_donor', grid=False, return_type='dict', ax=ax)
+# Iterate over each box
+for box in bp:
+    plt.setp(box['boxes'], color='k')
+    plt.setp(box['medians'], color='k')
+    plt.setp(box['whiskers'], color='k')
+plt.suptitle('')
+ax.set_title('Box-and-Whisker Plot of Continuous Data')
+ax.set_ylabel('Age [yrs]')
+ax.set_xlabel('Previous Donor')
+
+plt.show()
+```
+
+Measures of the Average (Central Tendency)
+------------------------------------------
+
+### Mean
+The mean is based on the *values* of the data points and is usually more representative when the data is **not** skewed. Use "$\mu$" (the lowercase Greek letter 'mu') for the **population** mean (eg if you are doing inferential statistics) and "$\bar{x}$" (pronounced 'x bar') for the **sample** mean (eg if you are doing descriptive statistics):
+
+```{python}
+x_bar = df['age'].mean()
+
+print(f'The mean age is {x_bar:4.1f} years')
+```
+
+### Median
+The median is based on the *ranks* of the data points and is usually more representative when the data **is** skewed:
+
+```{python}
+median = df['times_donated'].median()
+
+print(f'The median number of previous donations is {int(median)}')
+```
+
+### Mode
+The mode is based on the *frequency* at which data points appear and is usually more representative when the data is **nominal**:
+
+```{python}
+mode = df['blood_type'].mode()[0]
+
+print(f'The most common blood type in this sample is {mode}')
+```
+
+For the record, in real life, AB− is the LEAST COMMON blood type!
+
+Measures of Dispersion (Variability)
+------------------------------------
+The dispersion within a set of data points can be described and visualized using:
+
+- The standard deviation and a dot plot (usually better for symmetric data)
+- The interquartile range and a box plot (usually better for skewed data)
+
+### Standard Deviation
+The **standard deviation** is the square root of the variance. The variance is the "mean squared distance of the data points from the mean" - in other words it's a measure of how dispersed the data is around the mean in units that are the same as that of the data itself but squared. By implication, the units of the standard deviation are *exactly* the same as that of the data itself. So the variance is *meaningful* as a measure of variability but the standard deviation is *useful* because it has the same units as the data. An example of this usefulness is the fact that we can make statements like "about 95% of the data is found within two standard deviations either side of the sample mean, assuming a normal distribution" (see the section on [Confidence Levels](#confidence) below), which is only possible because the units of the standard deviation, the mean and the data itself are all the same.
+
+Use "$\sigma$" (the lowercase Greek letter 'sigma') for **population** standard deviation (eg if you are doing inferential statistics) and "$s$" for **sample** standard deviation (eg if you are doing descriptive statistics). Population standard deviation is calculated using a *delta degrees of freedom* ("`ddof`") value of 0 while sample standard deviation has a `ddof` value of 1:
+
+```{python}
+# Population standard deviation
+σ = df['age'].std(ddof=0)
+
+print(σ)
+```
+
+```{python}
+# Sample standard deviation
+s = df['age'].std(ddof=1)
+
+print(f'The mean age is {x_bar:4.1f} years with a sample standard deviation of {s:4.2f} years')
+```
+
+The standard deviation is based on the data points' *values* and gets reported with the *mean* (as has been done above). This is in contrast to the interquartile range which is based on the data points' *ranks* and gets reported with the *median*.
+
+#### Aside: Population vs Sample Standard Deviations: Bessel's Correction
+As mentioned above:
+
+> Population standard deviation is calculated using a *delta degrees of freedom* ("`ddof`") value of 0 while sample standard deviation has a `ddof` value of 1
+
+This is programmers' way of saying that the formula for the *population* standard deviation involves dividing by $n$ (the sample size) whereas the formula for the *sample* standard deviation involves dividing by $n - 1$. The 'ddof' value is how much gets subtracted from the sample size in the formula that you want Python to use.
+
+Broadly speaking, the *degrees of freedom* of a set of numbers is the sample size minus the number of pieces of information known about the numbers. For example, if someone asked you to choose 8 numbers then you would have the *freedom* to choose 8 values of your pleasing. However, if someone asked you to choose 8 numbers *that summed to $x$* then you would only have the freedom to choose 7 values because the 8th value would have to be such that the overall total was $x$. Similarly, if someone asked you to choose 8 numbers that summed to $x$ *and had a product of $y$* then you would only be able to choose 6 values freely; the 7th and 8th values would need to be such that the total sum and product were correct.
+
+When calculating the sample standard deviation the mean of the values is necessarily calculated first, hence one piece of information about the numbers is created and the number of degrees of freedom decreases by one as a result. Thus, the change in the number of degrees of freedom is 1 and, because 'delta' is used in maths to mean 'change', the *delta degrees of freedom* ('ddof') is 1. When calculating the *population* standard deviation, however, considerations about the number of degrees of freedom is irrelevant (the ddof is 0): you have *all* the information that exists about this metric in this population and so you are calculating *exact values*.
+
+This idea of subtracting 1 from the sample size when calculating sample variance (and hence when calculating sample standard deviation) is known as "Bessel's correction". To quote Wikipedia: "it corrects the bias in the estimation of the population variance, and some, but not all of the bias in the estimation of the population standard deviation". See the pages on [Bessel's correction](https://en.wikipedia.org/wiki/Bessel%27s_correction) and on the [Unbiased estimation of standard deviation](https://en.wikipedia.org/wiki/Unbiased_estimation_of_standard_deviation) for more information.
+
+<a name="confidence"></a>
+
+#### Aside: Confidence Levels
+A useful rule-of-thumb is that about 95% of normally-distributed data is found within two standard deviations either side of the sample mean (see the Wikipedia page on this "[68–95–99.7 rule](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule)"). For the sake of interest, here's how to calculate this:
+
+```{python}
+from scipy import stats
+
+# Number of standard deviations
+z_critical = 2
+# Cumulative distribution function of the normal distribution
+phi = stats.norm.cdf(z_critical)
+# Number of tails
+tails = 2
+# Significance level
+alpha = (1 - phi) * tails
+# Confidence level
+c = (1 - alpha) * 100
+
+print(f'{c}% of normally-distributed data is found within two standard deviations of the mean')
+```
+
+The reverse of the above statement is possibly also interesting: "95% of normally-distributed data is found within **about 1.96** standard deviations either side of the sample mean". Again, here's how to calculate this:
+
+```{python}
+from scipy import stats
+
+# Confidence level
+c = 95  # %
+# Significance level
+alpha = 1 - (c / 100)
+# Number of tails
+tails = 2
+# Number of standard deviations
+z_critical = stats.norm.ppf(1 - alpha / tails)
+
+print(f'95% of normally-distributed data is found within {z_critical} standard deviations of the mean')
+```
+
+### Dot Plot
+**Dot plots** are a good way to visualize dispersion (or the lack thereof) when the data is not skewed:
+
+```{python, eval = FALSE}
+# Create axes
+ax = plt.axes()
+# Create scatter plot
+ax.scatter(df['age'], np.ones(n) + 0.1 * np.random.randn(n), s=4)
+# Create straight lines
+ax.axhline(1, c='k')
+ax.axvline(x_bar - s, 0.4, 0.6, c='k', ls='--')
+ax.axvline(x_bar, 0.25, 0.75, c='k', ls='--')
+ax.axvline(x_bar + s, 0.4, 0.6, c='k', ls='--')
+# Axes' customisation
+ax.set_title('Dot Plot of Continuous Data')
+ax.yaxis.set_ticklabels([])
+ax.yaxis.set_ticks([])
+ax.set_ylim([0, 2])
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.set_xlabel('Age [yrs]')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create axes
+ax = plt.axes()
+# Create scatter plot
+ax.scatter(df['age'], np.ones(n) + 0.1 * np.random.randn(n), s=4)
+# Create straight lines
+ax.axhline(1, c='k')
+ax.axvline(x_bar - s, 0.4, 0.6, c='k', ls='--')
+ax.axvline(x_bar, 0.25, 0.75, c='k', ls='--')
+ax.axvline(x_bar + s, 0.4, 0.6, c='k', ls='--')
+# Axes' customisation
+ax.set_title('Dot Plot of Continuous Data')
+ax.yaxis.set_ticklabels([])
+ax.yaxis.set_ticks([])
+ax.set_ylim([0, 2])
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.set_xlabel('Age [yrs]')
+
+plt.show()
+```
+
+### Interquartile Range
+As mentioned [above](#single_group), *quartiles* are useful for describing numerical data and deciding if it is skewed. If it is, it might be decided that the **interquartile range** is be a better measure of dispersion and variability than the standard deviation. Remember that 'quartiles' are a type of 'quantile', hence why the `.quantile()` method is being used below:
+
+```{python}
+first_quartile = df['age'].quantile(0.25)
+second_quartile = df['age'].quantile(0.5)
+third_quartile = df['age'].quantile(0.75)
+iqr = third_quartile - first_quartile
+
+print(f'The median age is {second_quartile} years with an interquartile range of {iqr} years')
+```
+
+In one line of code:
+
+```{python}
+# One-liner
+iqr = df['age'].quantile([0.25, 0.75]).diff().iloc[-1]
+
+print(f'The median age is {second_quartile} years with an interquartile range of {iqr} years')
+```
+
+The interquartile range is based on the data points' *ranks* and gets reported with the *median* (as has been done above). This is in contrast to the standard deviation which is based on the data points' *values* and gets reported with the *mean*.
+
+### Box-and-Whisker Plots
+As mentioned [above](#box_plot), **box-and-whisker plots** are a good way to visualize dispersion (or the lack thereof) when the data is skewed:
+
+```{python, eval = FALSE}
+# Create axes
+ax = plt.axes()
+# Create box plot
+bp = df.boxplot(column='age', grid=False, return_type='dict', vert=False)
+# Edit box plot
+plt.setp(bp['boxes'], color='k')
+plt.setp(bp['medians'], color='k')
+plt.setp(bp['whiskers'], color='k')
+# Edit axes
+ax.set_title('Box Plot')
+ax.yaxis.set_ticklabels([])
+ax.yaxis.set_ticks([])
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.set_xlabel('Age [yrs]')
+# Create scatter plot
+ax.scatter(df['age'], np.ones(n) + 0.03 * np.random.randn(n), s=4)
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create axes
+ax = plt.axes()
+# Create box plot
+bp = df.boxplot(column='age', grid=False, return_type='dict', vert=False)
+# Edit box plot
+plt.setp(bp['boxes'], color='k')
+plt.setp(bp['medians'], color='k')
+plt.setp(bp['whiskers'], color='k')
+# Edit axes
+ax.set_title('Box Plot')
+ax.yaxis.set_ticklabels([])
+ax.yaxis.set_ticks([])
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.spines['bottom'].set_visible(False)
+ax.spines['left'].set_visible(False)
+ax.set_xlabel('Age [yrs]')
+# Create scatter plot
+ax.scatter(df['age'], np.ones(n) + 0.03 * np.random.randn(n), s=4)
+
+plt.show()
+```
+
+A Shortcut
+----------
+The quickest way to get descriptive statistics for numerical data is to use the `.describe()` method:
+
+```{python}
+# Describe a series (a column) of numerical data
+print(df['age'].describe())
+```
+
+```{python}
+# Describe the numerical data in a data frame
+print(df.describe())
+```
+
+Inferential Statistics
+----------------------
+If you wanted to know something about an entire population - eg the average height of all the adults in a city or the proportion of fish in a lake that are of a particular species - it would be **impractical** to measure this directly. While it might be theoretically *possible* to measure everyone's height or to catch all of the fish, a realistic alternative would be to only look at a few individuals and then make **generalizations** about the whole from that limited subset. This is done using **inferential statistics**. These statistics are:
+
+- Used to **infer** information about the underlying distribution or population
+- Used to make **generalizations** about a population from a sample
+- Done on data that is a **subset** of the entire amount of data that exists,
+due to it being **impractical** to collect every piece of data that exists
+- Done **after** descriptive statistics. In the real world, people usually:
+    1. Collect data from a subset (sample) of people in a population
+    2. Do descriptive statistics on the data that was collected (the sample)
+    3. Do inferential statistics to make generalizations about the population
+
+Topics within inferential statistics include:
+
+- Probability distributions
+- Hypothesis testing
+- Correlation testing
+- Regression analysis
+
+Many of these have their own pages; go back to find them:
+
+[⇦ Back](../../python.html)
+
+</font>
