@@ -14,7 +14,12 @@ output:
 
 [⇦ Back](../../../python.html)
 
-> A chi-squared test is used for **discrete, categorical data**. For example: medical data that includes people who are sick and people who are healthy, demographic data comparing people who are male and female, assessment data where people either passed or failed, etc. These tests are not relevant for continuous data, ie where each measurement/observation in the dataset is a 'value' (eg a percentage, a height in cm, a weight in kg, etc).
+```{r, echo = FALSE}
+library(knitr)
+opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+> A chi-squared (χ²) test is used for **discrete, categorical data**. For example: medical data that includes people who are sick and people who are healthy, demographic data comparing people who are male and female, assessment data where people either passed or failed, etc. These tests are not relevant for continuous data, ie where each measurement/observation in the data set is a 'value' (eg a percentage, a height in cm, a weight in kg, etc).
 
 ```{r, echo=FALSE}
 library(DiagrammeR)
@@ -68,6 +73,7 @@ DiagrammeR::grViz(
                         'Goodness-of-fit\ntest' [shape = 'oval']
                         'Independence\ntest' [shape = 'oval']
                         'Homogeneity\ntest' [shape = 'oval']
+                        'Test for\ntrend' [shape = 'oval']
 
             'Start:\nSet a hypothesis' -> 'Continuous data'
                 'Continuous data' -> 'Differences'
@@ -110,6 +116,7 @@ DiagrammeR::grViz(
                     'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
                     'Chi-squared\ntest' -> 'Independence\ntest'
                     'Chi-squared\ntest' -> 'Homogeneity\ntest'
+                    'Chi-squared\ntest' -> 'Test for\ntrend'
 
     labelloc='t';
     fontsize=70;
@@ -127,7 +134,9 @@ There are three main chi-squared tests:
 - Independence
 - Homogeneity
 
-In Python, all three are performed using the same function (`chisquare()`) from the Scipy stats package. For more info about this function, see https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html
+In Python, all three are performed using the same function (`chisquare()`) from the SciPy stats package. For more info about this function, see [its documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html).
+
+A less-common chi-squared test is the "test for trend". This is not yet implemented in Python, but a worked example is provided below.
 
 Goodness-of-Fit Test
 ====================
@@ -203,7 +212,7 @@ chisq = (25 - 30)**2 / 30 + (35 - 40)**2 / 40 + (50 - 40)**2 / 40 + (90 - 90)**2
 print(f'chi-square = {chisq:4.2f}')
 ```
 
-Then the chi-square test statistic can be converted into a p-value using the chi-distribution for 3 degrees of freedom:
+Then the chi-square test statistic can be converted into a *p*-value using the chi-distribution for 3 degrees of freedom:
 
 ```{python}
 from scipy.stats import chi2
@@ -212,7 +221,7 @@ p = 1 - chi2.cdf(chisq, 3)
 print(f'p = {p:3.1f}')
 ```
 
-As the p-value is above 0.05 we *fail to reject the null hypothesis* that the distribution of characters chosen by players is as the developers claimed.
+As the *p*-value is above 0.05 we *fail to reject the null hypothesis* that the distribution of characters chosen by players is as the developers claimed.
 
 Independence Test
 =================
@@ -269,7 +278,7 @@ p = 1 - chi2.cdf(chisq, df)
 print(f'p = {p:3.1f}')
 ```
 
-As p is larger than 0.05 we *fail to reject the null hypothesis* that the distribution of Hogwarts houses is the same for both pineapple-on-pizza lovers and haters.
+As *p* is larger than 0.05 we *fail to reject the null hypothesis* that the distribution of Hogwarts houses is the same for both pineapple-on-pizza lovers and haters.
 
 Stat Trek Example
 -----------------
@@ -307,7 +316,7 @@ p = 1 - chi2.cdf(chisq, df)
 print(f'p = {p:6.4f}')
 ```
 
-To quote: "since the p-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference".
+To quote: "since the *p*-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference".
 
 Homogeneity Test
 ================
@@ -358,8 +367,198 @@ print(f'p = {p:5.3f}')
 
 To quote: "as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a 'line ball' conclusion."
 
-Function to Interpret p-values
-==============================
+Test for Trend (Cochran–Armitage Test)
+======================================
+When a data set has a *nominal* input variable and an *ordinal* output variable, a chi-squared test for trend can be used<sup>[1]</sup>. A nominal variable has no rank or order, for example 'gender' (male or female) or 'presence of illness' (healthy or diseased). An ordinal variable *does* have a rank or an order but the scale is arbitrary, such as 'level of satisfaction' (unsatisfied, neutral, satisfied) or 'dosage group' (low, medium, high). Both are *categorical* variables.
+
+The chi-squared test for trend is also known as the "Cochran–Armitage test for trend"<sup>[2]</sup>. It is not (yet) implemented in Python - neither in SciPy nor in Statsmodels - but it *is* in R (where it is called the `prop.trend.test`)<sup>[3]</sup>. What this means is that we can work through an example of this test in Python and then use the R function to check that what we have done is correct.
+
+The example we'll use comes from [Influential Points](https://influentialpoints.com/Training/chi_square_test_for_trend.htm). The raw data is given as a contingency table, but let's go a step backwards and generate this ourselves from a data set in *long format* to make it more realistic:
+
+```{python}
+# Generate raw data
+x = []
+y = []
+x.extend(['Low'] * 5)
+y.extend(['Infected'] * 5)
+x.extend(['Medium'] * 14)
+y.extend(['Infected'] * 14)
+x.extend(['High'] * 18)
+y.extend(['Infected'] * 18)
+x.extend(['Low'] * 25)
+y.extend(['Uninfected'] * 25)
+x.extend(['Medium'] * 16)
+y.extend(['Uninfected'] * 16)
+x.extend(['High'] * 12)
+y.extend(['Uninfected'] * 12)
+
+print(x)
+print(y)
+```
+
+We now have two lists which are each 90 elements long, corresponding to the 90 patients in our fictitious example. Now we can create the contingency table - also known as a cross-tabulation - using the `crosstab()` function in Pandas:
+
+```{python}
+import pandas as pd
+
+# Create a contingency table from the raw data
+ct = pd.crosstab(y, x)
+
+print(ct)
+```
+
+The columns are not in the same order as on the Influential Points site and the table as a whole is not in the same orientation, but it doesn't matter.
+
+The next thing to define is the scores, which are the arbitrary rankings (weights) which we will attach to each of the output variables ("High" = 3, "Medium" = 2, "Low" = 1). These need to be in the same order as the columns of the contingency table they refer to (High, Low, Medium):
+
+```{python}
+# Scores
+score = [3, 1, 2]
+```
+
+Now we can perform the χ² test for trend. The formula used in the example has three intermediate variables: $T_1$, $T_2$ and $T_3$:
+
+```{python}
+import numpy as np
+
+# T1
+weighted_ct = ct * score
+t_1 = weighted_ct.iloc[0, :].sum()
+# T2
+weighted_col_sums = weighted_ct.sum()
+t_2 = weighted_col_sums.sum()
+# T3
+square_weighted_ct = ct * np.array(score)**2
+square_weighted_col_sums = square_weighted_ct.sum()
+t_3 = square_weighted_col_sums.sum()
+```
+
+We also need the overall sample size:
+
+```{python}
+# Sample size
+col_sums = ct.sum(axis=1)
+n = col_sums.sum()
+```
+
+These are all the elements we need to plug into their formula for χ²:
+
+```{python}
+# χ²
+v = np.prod(col_sums) * (n * t_3 - t_2**2) / (n**2 * (n - 1))
+chi_squared = (t_1 - (col_sums[0] * t_2 / n))**2 / v
+
+print(chi_squared)
+```
+
+This matches their value of 11.51.
+
+The last step is to test this value for significance by calculating the *p*-value by using the CDF (cumulative distribution function) for the χ² distribution:
+
+```{python}
+from scipy import stats
+
+# Degrees of freedom
+dof = np.prod(np.array(ct.shape) - 1) - 1
+# p-value
+# The probability of obtaining test results at least as extreme as the result
+# actually observed, under the assumption that the null hypothesis is correct
+p = 1 - stats.chi2.cdf(chi_squared, dof)
+
+print(p)
+```
+
+This matches their result of 0.0007.
+
+Using R we get the following:
+
+```{r}
+x  <- c(5, 14, 18)
+n <- c(30, 30, 30)
+prop.trend.test(x, n, c(1, 2, 3))
+```
+
+This is not 100% the same, but it's close enough.
+
+<sup>[1]</sup>Study design and choosing a statistical test. The BMJ. 2019. Available from: https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/13-study-design-and-choosing-statisti
+
+<sup>[2]</sup>https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend
+
+<sup>[3]</sup>https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/prop.trend.test
+
+```{python, eval=FALSE, echo=FALSE}
+# ANOTHER WORKED EXAMPLE WHICH, AS FAR AS I CAN TELL, IS INCORRECT IN THE SOURCE
+
+"""
+The chi-square test for trend.
+
+Despina Koletsi, Nikolaos Pandis
+STATISTICS AND RESEARCH DESIGN
+VOLUME 150, ISSUE 6, P1066-1067, DECEMBER 01, 2016
+DOI: https://doi.org/10.1016/j.ajodo.2016.10.001
+https://www.ajodo.org/article/S0889-5406(16)30655-2/fulltext
+"""
+import pandas as pd
+import numpy as np
+from scipy import stats
+
+x = []
+y = []
+x.extend(['Once'] * 16)
+y.extend(['Yes'] * 16)
+x.extend(['Twice'] * 9)
+y.extend(['Yes'] * 9)
+x.extend(['Seven Times'] * 2)
+y.extend(['Yes'] * 2)
+x.extend(['Once'] * 29)
+y.extend(['No'] * 29)
+x.extend(['Twice'] * 36)
+y.extend(['No'] * 36)
+x.extend(['Seven Times'] * 39)
+y.extend(['No'] * 39)
+
+ct = pd.crosstab(y, x)
+
+# Scores
+score = [1, 3, 2]
+
+# Totals
+col_sums = ct.sum(axis=0)
+n = col_sums.sum()
+row_sums = ct.sum(axis=1)
+
+# Mean score for each category
+weighted_ct = ct * score
+weighted_row_sums = weighted_ct.sum(axis=1)
+mean_categories = weighted_row_sums / row_sums
+print(mean_categories)
+
+# Mean score overall
+weighted_col_sums = col_sums * score
+weighted_total = weighted_col_sums.sum()
+mean_overall = weighted_total / n
+print(mean_overall)
+
+# Sample standard deviation of the scores
+weighted_ss = (score - mean_overall)**2 * col_sums
+ddof = 1
+std = np.sqrt(weighted_ss.sum() / (n - ddof))
+print(std)
+
+# χ²
+chi_squared = mean_categories.sum()**2 / (std**2 * (1 / row_sums).sum())
+print(chi_squared)
+
+# *p*-value
+# probability of obtaining test results at least as extreme as the result
+# actually observed, under the assumption that the null hypothesis is correct
+dof = np.prod(np.array(ct.shape) - 1)
+p = 1 - stats.chi2.cdf(chi_squared, dof)
+print(p)
+```
+
+A Function to Interpret *p*-values
+==================================
 Consider a new example:
 
 > A company manufactures widgets. The mass of the widgets that are produced is controlled through batch testing: rather than weighing every single one they take a batch and weigh all of them instead. If the batch as a whole is too light or too heavy, then all of the widgets in that batch are sent for re-manufacture. The company's database shows that 90% of all batches are made within the acceptable mass range, while 5% are too heavy and 5% are too light.
@@ -375,7 +574,13 @@ The null and alternative hypotheses are as follows:
 
 ```{python}
 def perform_chi_squared(obs, exp):
-    """Perform a chi-squared test and interpret the p-value."""
+    """
+    Perform a chi-squared test and interpret the p-value.
+
+    The p-value is the probability of obtaining test results at least as
+    extreme as the result actually observed, under the assumption that the null
+    hypothesis is correct.
+    """
     chisq, p = chisquare(obs, exp)
     if p <= 0.001:
         significance = '***'
