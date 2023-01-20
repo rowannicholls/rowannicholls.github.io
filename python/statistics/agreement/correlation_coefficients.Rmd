@@ -14,7 +14,12 @@ output:
 
 [⇦ Back](../../../python.html)
 
-Let's use the following hypothetical example dataset which comes from Giavarina (2015)<sup>1</sup>. Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements below:
+```{r, echo = FALSE}
+options(width = 120)
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+Let's use the following example data set which comes from Giavarina (2015)<sup>[1]</sup>. Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements shown below:
 
 ```{python}
 import pandas as pd
@@ -33,7 +38,7 @@ df = pd.DataFrame({
 })
 ```
 
-These can be visualised as below:
+These can be visualised on a scatter plot:
 
 ```{python eval = FALSE}
 import matplotlib.pyplot as plt
@@ -73,23 +78,35 @@ ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 plt.show()
 ```
 
-These points seem to roughly show a straight-line relationship, but let's be a bit more precise and start to quantity *exactly* how much they correlate...
+These points seem to roughly show a straight-line relationship, but let's be a bit more precise and start to quantify *exactly* how much they correlate...
 
-Pearson's r
-===========
-As described on its [Wikipedia page](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient), the Pearson's r statistics measures linear correlation between two variables. It assumes that a set of data points can be approximated by a straight line and returns a value that describes how strong the linear correlation is:
+Pearson's Correlation Coefficient (*r*)
+=======================================
+As described on its [Wikipedia page](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient), the Pearson's *r* statistic measures linear correlation between two variables. It assumes that a set of data points can be approximated by a straight line and returns a value that describes how strong the linear correlation is:
 
-- +1 is total positive linear correlation (the data points all line on a straight line with a positive gradient)
+- +1 is total positive linear correlation (the data points all lie on a straight line with a positive gradient)
 - 0 is no linear correlation (the data points are randomly scattered all over the plot area)
-- −1 is total negative linear correlation (the data points all line on a straight line with a negative gradient)
+- −1 is total negative linear correlation (the data points all lie on a straight line with a negative gradient)
+
+For more precise interpretations of the absolute value of *r* the follow can be used as a guideline<sup>[2]</sup>:
+
+- 0 to 0.19: very weak correlation
+- 0.2 to 0.39: weak correlation
+- 0.4 to 0.59: moderate correlation
+- 0.6 to 0.79: strong correlation
+- 0.8 to 1: very strong correlation
+
+...and here's how to calculate it:
 
 ```{python}
 from scipy import stats
 import numpy as np
 
+# Pearson's r
 x = df['Method A']
 y = df['Method B']
 r, p = stats.pearsonr(x, y)
+
 # Transform the correlation coefficient into a Fishers’ Z-score
 r_z = np.arctanh(r)  # These two ways are equivalent
 r_z = 0.5 * np.log((1 + r) / (1 - r))  # These two ways are equivalent
@@ -98,16 +115,17 @@ se = 1 / np.sqrt(x.size - 3)
 # Calculate confidence interval in Z-space
 alpha = 0.05  # 95% CI
 z = stats.norm.ppf(1 - alpha / 2)
-lo_z, hi_z = r_z - z * se, r_z + z * se
+low_z, high_z = r_z - z * se, r_z + z * se
 # Transform back into r-space
-lo, hi = np.tanh((lo_z, hi_z))
-print(f'r = {r:5.3f} (CI: {lo:5.3f} - {hi:5.3f}), p = {p:5.3f}')
+low, high = np.tanh((low_z, high_z))
+
+print(f'r = {r:5.3f} (CI: {low:5.3f} - {high:5.3f}), p = {p:5.3f}')
 ```
 
-This r value is close to 1, which confirms that the points nearly follow a straight-line. Let's visualise this by using the r statistic to generate a line of best-fit:
+This *r* value is close to 1, which confirms that the points nearly follow a straight line. Let's visualise this by using the *r* statistic to generate a line of best fit:
 
 ```{python eval = FALSE}
-# Line of best-fit
+# Line of best fit
 r, p = stats.pearsonr(x, y)
 # Gradient of line of best-fit
 m = r * np.std(y) / np.std(x)
@@ -128,7 +146,7 @@ x = np.array([left, right])
 y = m * x + c
 ax.plot(
     x, y, c='grey', ls='--',
-    label=f'r = {r:5.3f} (CI: {lo:5.3f} - {hi:5.3f}), p = {p:5.3f}'
+    label=f'r = {r:5.3f} (CI: {low:5.3f} - {high:5.3f}), p = {p:5.3f}'
 )
 # Legend
 ax.legend(frameon=False)
@@ -137,7 +155,7 @@ plt.show()
 ```
 
 ```{python echo = FALSE, results = "hide"}
-# Line of best-fit
+# Line of best fit
 r, p = stats.pearsonr(x, y)
 # Gradient of line of best-fit
 m = r * np.std(y) / np.std(x)
@@ -158,7 +176,7 @@ x = np.array([left, right])
 y = m * x + c
 ax.plot(
     x, y, c='grey', ls='--',
-    label=f'r = {r:5.3f} (CI: {lo:5.3f} - {hi:5.3f}), p = {p:5.3f}'
+    label=f'r = {r:5.3f} (CI: {low:5.3f} - {high:5.3f}), p = {p:5.3f}'
 )
 # Legend
 ax.legend(frameon=False)
@@ -180,17 +198,17 @@ def pearsons_correlation_coefficient(x, y):
     # Calculate confidence interval in Z-space
     alpha = 0.05  # 95% CI
     z = stats.norm.ppf(1 - alpha / 2)
-    lo_z, hi_z = r_z - z * se, r_z + z * se
+    low_z, high_z = r_z - z * se, r_z + z * se
     # Transform back into r-space
-    lo, hi = np.tanh((lo_z, hi_z))
+    low, high = np.tanh((low_z, high_z))
 
-    return r, lo, hi, p
+    return r, low, high, p
 
 
 x = df['Method A']
 y = df['Method B']
 r, lo, hi, p = pearsons_correlation_coefficient(x, y)
-print(f'r = {r:5.3f} ({lo:5.3f} - {hi:5.3f}), p = {p:5.3f}')
+print(f'r = {r:5.3f} ({low_z:5.3f} - {high:5.3f}), p = {p:5.3f}')
 ```
 
 Lin's Concordance Correlation Coefficient (CCC)
@@ -202,11 +220,11 @@ agreement. It measures the deviation of the relationship between predicted
 and true values from the 45 degree line.
 
 Read more on [Wikipedia](https://en.wikipedia.org/wiki/Concordance_correlation_coefficient) or
-in the original paper by Lin<sup>2</sup>.
+in the original paper by Lin<sup>[3]</sup>.
 
 This coefficient is used to assess the agreement between estimated values (ie those measured by some person or some instrument) and correct (ground truth) values. The coefficient itself can be between -1 and 1 where 1 indicates perfect agreement between the true and the predicted values.
 
-Let's use the same numbers we've already used in the Pearson's r example, except this time let's pretend that one set is a 'ground truth' list of measurements that are known to be 100% correct while the other set is a list of measurements that were taken using some instrument (and as such they only 'predict' the truth):
+Let's use the same numbers we've already used in the Pearson's *r* example, except this time let's pretend that one set is a 'ground truth' list of measurements that are known to be 100% correct while the other set is a list of measurements that were taken using some instrument (and as such they only 'predict' the truth):
 
 ```{python}
 y_true = df['Method A']
@@ -282,8 +300,9 @@ Note that the numbers used in the example above were taken directly from stylian
 
 References
 ==========
-<sup>1</sup>Giavarina D (2015). "Understanding Bland Altman analysis". *Biochemia Medica*. **25** (2):141-151. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
-<sup>2</sup>Lin LIK (1989). "A concordance correlation coefficient to evaluate reproducibility". *Biometrics*. **45** (1):255-268.
+<sup>[1]</sup>Giavarina D (2015). "Understanding Bland Altman analysis". *Biochemia Medica*. **25** (2):141-151. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).  
+<sup>[2]</sup>Swinscow TDV (1997). "Correlation and regression". *Statistics at Square One*. **9th Ed.** Available [online](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/11-correlation-and-regression).  
+<sup>[3]</sup>Lin LIK (1989). "A concordance correlation coefficient to evaluate reproducibility". *Biometrics*. **45** (1):255-268.
 
 [⇦ Back](../../../python.html)
 
