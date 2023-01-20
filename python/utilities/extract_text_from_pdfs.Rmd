@@ -1,0 +1,103 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>Extract Text From PDFs'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+Text can be extracted from PDF documents using the [pypdf](https://github.com/py-pdf/pypdf) library. Install this from the terminal with the following command (replace "3.11" with the version of Python you have):
+
+```
+$ python3.11 -m pip install pypdf
+```
+
+As an example of a PDF from which to extract text let's use Bland and Altman's 1986 paper "Statistical methods for assessing agreement between two methods of clinical measurement" (the [29th most-cited paper](https://www.nature.com/news/the-top-100-papers-1.16224) of all time). It can be downloaded from [here](https://www-users.york.ac.uk/~mb55/meas/ba.pdf) or from Bland's [own site](https://www-users.york.ac.uk/~mb55/index.html).
+
+Once you've downloaded the PDF, create a Python script in the same folder and you'll be able to use pypdf from there:
+
+```{python}
+from pypdf import PdfReader
+
+# Download this PDF from https://www-users.york.ac.uk/~mb55/meas/ba.pdf
+pdf = PdfReader('ba.pdf')
+```
+
+Once imported into Python, the number of pages in the PDF can be accessed as an attribute:
+
+```{python}
+number_of_pages = len(pdf.pages)
+
+print(f'Number of pages in this PDF: {number_of_pages}')
+```
+
+Access the first page, extract the text and split it into individual lines:
+
+```{python}
+page = pdf.pages[0]
+text = page.extract_text()
+lines = text.split('\n')
+
+for line in lines[:3]:
+    print(line)
+```
+
+You'll notice that the page number appears at the start of the first line. This is annoying, but it's a manageable glitch.
+
+Next, let's access the raw data on page 2:
+
+```{python}
+page = pdf.pages[1]
+text = page.extract_text()
+lines = text.split('\n')
+
+for line in lines[1:21]:
+    print(line)
+```
+
+This is great, we can import the data into Python directly from the PDF! Of course, it will be more usable in a data frame format, so let's import Pandas and re-structure it:
+
+```{python}
+import pandas as pd
+
+# Initialise the output data frame
+df = pd.DataFrame()
+# Iterate over the lines extracted from the PDF
+for line in lines[4:21]:
+    # Remove duplicate white space
+    line = ' '.join(line.split())
+    # Split into its elements
+    line = line.split()
+    # Construct a new row with a MultiIndex as the column names
+    data = [[line[1], line[2], line[3], line[4]]]
+    arrays = [
+        ['Wright'] * 2 + ['Mini Wright'] * 2,
+        ['First', 'Second'] * 2,
+    ]
+    tuples = list(zip(*arrays))
+    columns = pd.MultiIndex.from_tuples(tuples)
+    new_row = pd.DataFrame(data, index=[line[0]], columns=columns)
+    # Add to master data frame
+    df = pd.concat([df, new_row])
+
+print(df)
+```
+
+The analysis can continue from [here](../statistics/agreement/bland_altman.html).
+
+[⇦ Back](../../python.html)
+
+</font>
