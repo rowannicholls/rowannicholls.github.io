@@ -16,6 +16,7 @@ output:
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(out.width = "90%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 In order to access the power of LaTeX when creating text as part of a graph you need to change some of Matplotlib's 'rc parameters'. These are the default settings for your plots.
@@ -95,9 +96,23 @@ plt.legend(fontsize=8)
 Troubleshooting
 ===============
 
+Ubuntu Users
+------------
+If you get errors such as:
+
+```
+! LaTeX Error: File `type1ec.sty' not found.
+```
+
+It is because a couple of packages are missing, and these can all be installed from the terminal via the following:
+
+```{bash, eval=FALSE}
+$ sudo apt-get install dvipng texlive-latex-extra texlive-fonts-recommended cm-super
+```
+
 Style Files
 -----------
-If you get an error such as:
+If you get **additional** errors such as:
 ```
 ! LaTeX Error: File `textgreek.sty' not found.
 ```
@@ -112,8 +127,8 @@ It means that you are missing the LaTeX style file that was mentioned in the err
 On Ubuntu, the last two points can be done from the terminal with:
 
 ```{bash, eval=FALSE}
-sudo mv <package>.sty /usr/share/texmf/tex/latex/<package>.sty
-sudo mktexlsr
+$ sudo mv <package>.sty /usr/share/texmf/tex/latex/<package>.sty
+$ sudo mktexlsr
 ```
 
 Language Elements
@@ -127,7 +142,7 @@ If you get something like:
 This is a Debian error with the textgreek package. Fix it with:
 
 ```{bash, eval=FALSE}
-sudo apt install texlive-lang-greek
+$ sudo apt install texlive-lang-greek
 ```
 
 [⇦ Back](../../../python.html)

@@ -1,0 +1,483 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Clinical Study Design'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+options(width = 120)
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+[Clinical study design](https://en.wikipedia.org/wiki/Clinical_study_design) is needed for medical trials, epidemiological studies and other types of research that involve humans. This is in contrast to *preclinical studies* which, as the name suggests, take place *before* clinical studies and are not in humans (such as computer simulations (*in silico*), laboratory experiments with synthetic material (*in vitro*) or with excised biological material (*ex vivo*) or animal studies (animal *in vivo*)). A breakdown of the most common study designs can be seen in the flowchart below:
+
+```{r, echo=FALSE}
+library(DiagrammeR)
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
+            'Design of\nexperiments'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ffffff', style=filled, fontsize=42]
+                'Preclinical studies'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
+                    'In silico' [shape = 'oval']
+                    'In vitro' [shape = 'oval']
+                    'Ex vivo' [shape = 'oval']
+                    'Animal\nin vivo' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ffffff', style=filled, fontsize=42]
+                'Clinical studies'
+                    'Treatment studies'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9d2e9', style=filled, fontsize=42]
+                        'Randomised\ncontrol trial' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ffffff', style=filled, fontsize=42]
+                    'Observational studies'
+                        'Descriptive'
+        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor='#fce5cd', style=filled]
+                            'Case report' [shape = 'oval']
+                            'Case series' [shape = 'oval']
+                            'Population\nstudy' [shape = 'oval']
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ffffff', style=filled, fontsize=42]
+                        'Analytical'
+        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
+                            'Cross-sectional' [shape = 'oval']
+                            'Case-control' [shape = 'oval']
+                            'Cohort' [shape = 'oval']
+                        
+
+            'Design of\nexperiments' -> 'Preclinical studies'
+                'Preclinical studies' -> 'In silico'
+                'Preclinical studies' -> 'In vitro'
+                'Preclinical studies' -> 'Ex vivo'
+                'Preclinical studies' -> 'Animal\nin vivo'
+            'Design of\nexperiments' -> 'Clinical studies'
+                'Clinical studies' -> 'Treatment studies'
+                    'Treatment studies' -> 'Randomised\ncontrol trial'
+                'Clinical studies' -> 'Observational studies'
+                    'Observational studies' -> 'Descriptive'
+                        'Descriptive' -> 'Case report'
+                        'Descriptive' -> 'Case series'
+                        'Descriptive' -> 'Population\nstudy'
+                    'Observational studies' -> 'Analytical'
+                        'Analytical' -> 'Cross-sectional'
+                        'Analytical' -> 'Case-control'
+                        'Analytical' -> 'Cohort'
+
+    labelloc='t';
+    fontsize=30;
+    }",
+    width=800
+)
+```
+
+For each of the clinical study types shown above an example of a statistical analysis that might be used for such a study will be given and worked through in Python. Note that these are just examples: the statistical analysis best suited for a particular study will always depend on the type of data collected and the questions being asked of it. See [here](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/13-study-design-and-choosing-statisti) for more.
+
+Treatment Studies
+=================
+Treatment studies are *interventional* in nature: the researchers *intervene* by exposing the participants either to the thing under research (eg a new medicine) or to a placebo. These then make up the *experimental* and *control* groups. An example of a statistical hypothesis test that might be used in a **randomised control trial** (a treatment study where the allocation of participants to the experimental and control groups is done randomly) is **Student's *t*-test**, which is dealt with on its [own page](../statistics/hypothesis_testing/unpaired_two_sample_t_test.html) and can also be read about further on [Wikipedia](https://en.wikipedia.org/wiki/Student%27s_t-test). The worked example from there is reproduced below in Python:
+
+> In an experiment, 6 participants are assigned to the experimental group and given the experimental treatment while an equal number are assigned to the control group and given a placebo. Measurements are then taken and are shown below:
+
+```{python}
+from scipy import stats
+
+# Raw data
+experimental = [30.02, 29.99, 30.11, 29.97, 30.01, 29.99]
+control = [29.89, 29.93, 29.72, 29.98, 30.02, 29.98]
+
+# t-Test for the means of two independent samples of scores
+# H0: the true mean value is the same for both groups
+# H1: the true mean value is not the same for both groups
+statistic, pvalue = stats.ttest_ind(experimental, control)
+
+print(f'Unpaired two-sample t-test: s = {statistic:5.3f}, p = {pvalue:7.5f}')
+```
+
+*p* > 0.05 and so we fail to reject the null hypothesis that the means of the two groups are the same.
+
+Phases of Interventional Clinical Trials
+----------------------------------------
+In reality, testing whether a new treatment works is much more complicated than the above example. For one, a drug trial needs to move through a number of **phases**. These are summarised below, indicating what question about the drug needs to be tested at each stage:
+
+- **Phase 0**: is it *safe*?
+- **Phase 1**: what is the *best dose* given the *side effects*?
+- **Phase 2**: does it *work*?
+- **Phase 3**: is it *better* than the current treatment?
+- **Phase 4**: all the above questions but in the *long-term*
+
+Read more [here](https://www.cancerresearchuk.org/about-cancer/find-a-clinical-trial/what-clinical-trials-are/phases-of-clinical-trials).
+
+Observational Studies
+=====================
+In these studies, researchers do not intervene in the participants' lives but instead collect data from them as they are. Broadly speaking, these studies can either:
+
+- *Describe* a specific situation, hypothesising about the factors that caused it and the relationships between them, or...
+- *Analyse* the effect of a specific factor and hypothesise about how it would affect a more general situation. For example, if we observe $x$ in participants with $y$ what are the odds of observing $x$ in a general population with $y$?
+
+Hence we can have *descriptive* and *analytical* observational studies.
+
+Descriptive
+-----------
+
+### Case Report
+A report on a single patient, usually one with a unique and medically or pedagogically valuable presentation. The level of detail that is included is important as it is impossible to know what might turn out to be relevant for future readers. Symptoms, diagnosis, prescribed and actual treatment, patient history and follow-up information should all be included.
+
+As only one participant is included in a case report, no statistics are possible.
+
+### Case Series
+A case series is essentially multiple case reports of patients with similar conditions. Again, no statistics will usually be done.
+
+### Population Study
+On the other end of the sample size spectrum, large-scale surveys, censuses and medical or government records can be used to samples thousands or even millions of people at once. With this size of data set, the sample can often be considered representative of the population from which it was taken as a whole. Examples of statistics that might be done in a population study include *correlation* analysis (which tests for a relationship between two variables) and *regression* analysis (which uses a relationship between two variables to predict the value of one given the other). Here's an example that shows a relationship between the median household income and the median house value in regions in California using data from the 1990 US census (this is available from the scikit-learn 'datasets' sub-module, see [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.fetch_california_housing.html)):
+
+```{python}
+from sklearn import datasets
+import pandas as pd
+
+# Load the dataset
+california = datasets.fetch_california_housing(as_frame=True)
+# Extract the median income in each block group
+x = california['data']['MedInc']
+# Extract the median house value in each block group
+y = california['target']
+# A block group is the smallest geographical unit for which the US Census
+# Bureau publishes sample data (a block group typically has a population
+# of 600 to 3,000 people).
+
+# Merge the two variables
+data = pd.merge(x, y, left_index=True, right_index=True)
+# Remove rounded-off data
+data = data[data['MedHouseVal'] < 5]
+# Separate the values
+x = data['MedInc']
+y = data['MedHouseVal']
+```
+
+Use simple linear regression to fit a straight-line approximation:
+
+```{python}
+import numpy as np
+
+# Simple linear regression (y = m * x + c)
+params = np.polyfit(x, y, 1)
+m = params[0]
+c = params[1]
+```
+
+Calculate the *t*-statistic:
+
+```{python}
+from scipy import stats
+
+# Model using the fit parameters
+y_model = np.polyval(params, x)
+# Calculate the residuals
+resid = y - y_model
+# Degrees of freedom = sample size - number of parameters
+n = x.size
+dof = n - params.size
+# Standard deviation of the error
+s_err = np.sqrt(np.sum(resid**2) / dof)
+# Two-sided 95% t-statistic (used for CI and PI bands)
+alpha = 0.05
+t = stats.t.ppf(1 - alpha / 2, dof)
+```
+
+Plot the data, line-of-best-fit, confidence interval and prediction limits:
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+
+ax = plt.axes()
+# Scatter plot
+ax.scatter(x, y, s=1)
+# Line of best fit
+lobf_x = [np.min(x), np.max(x)]
+lobf_y = [m * np.min(x) + c, m * np.max(x) + c]
+ax.plot(lobf_x, lobf_y, c='k', label='Line of Best Fit')
+# Confidence interval
+ci_x = np.linspace(np.min(x), np.max(x), 100)
+ci_y = np.polyval(params, ci_x)
+ci = t * s_err * np.sqrt(1 / n + (ci_x - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+label = '95% Confidence Interval'
+ax.fill_between(ci_x, ci_y + ci, ci_y - ci, facecolor='g', zorder=0, label=label)
+# Prediction interval
+pi_x = np.linspace(np.min(x), np.max(x), 100)
+pi_y = np.polyval(params, pi_x)
+pi = t * s_err * np.sqrt(1 + 1 / n + (pi_x - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+label = '95% Prediction Limits'
+ax.plot(pi_x, pi_y - pi, '--', color='k', label=label)
+ax.plot(pi_x, pi_y + pi, '--', color='k')
+# Legend
+ax.legend()
+# Axes
+ax.set_xlabel('Median Income')
+ax.set_ylabel('Median House Value')
+ax.set_ylim(0, 5)
+ax.set_xlim(0, ax.get_xlim()[1])
+ax.set_title('California Housing Dataset')
+# Finish
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+import matplotlib.pyplot as plt
+
+ax = plt.axes()
+# Scatter plot
+ax.scatter(x, y, s=1)
+# Line of best fit
+lobf_x = [np.min(x), np.max(x)]
+lobf_y = [m * np.min(x) + c, m * np.max(x) + c]
+ax.plot(lobf_x, lobf_y, c='k', label='Line of Best Fit')
+# Confidence interval
+ci_x = np.linspace(np.min(x), np.max(x), 100)
+ci_y = np.polyval(params, ci_x)
+ci = t * s_err * np.sqrt(1 / n + (ci_x - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+label = '95% Confidence Interval'
+ax.fill_between(ci_x, ci_y + ci, ci_y - ci, facecolor='g', zorder=0, label=label)
+# Prediction interval
+pi_x = np.linspace(np.min(x), np.max(x), 100)
+pi_y = np.polyval(params, pi_x)
+pi = t * s_err * np.sqrt(1 + 1 / n + (pi_x - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
+label = '95% Prediction Limits'
+ax.plot(pi_x, pi_y - pi, '--', color='k', label=label)
+ax.plot(pi_x, pi_y + pi, '--', color='k')
+# Legend
+ax.legend()
+# Axes
+ax.set_xlabel('Median Income')
+ax.set_ylabel('Median House Value')
+ax.set_ylim(0, 5)
+ax.set_xlim(0, ax.get_xlim()[1])
+ax.set_title('California Housing Dataset')
+# Finish
+plt.show()
+```
+
+Analytical
+----------
+
+### Cross-Sectional
+[Cross-sectional studies](https://en.wikipedia.org/wiki/Cross-sectional_study) can include surveys, questionnaires, lab experiments and investigations of patient record to determine the prevalence of a disease or risk factor. A single sample is taken at a single time (without follow-up), although a second cross-sectional study can always be done at a later date to get the *change* in prevalence over that time.
+
+The data collected can look very different from one study to the next but, as an example, let's imagine a study where we sample 90 people one month after they became ill with an infection and ask if they had received a low, medium or high dose of medicine when sick:
+
+- The *input* variable is 'current health status': each person is either 'still infected' or 'recovered' (uninfected). This is a *categorical* variable because it is qualitative (as opposed to numeric or quantitative), and specifically it is *nominal* because the possible values have no rank or order. It also happens to be *binary* as there are only two options.
+- The *output* variable is 'dosage level': low, medium or high. This is also a *categorical* variable but this time it is *ordinal* as the possible values can be ranked or ordered. Indeed, in our example we will give the possible values the following **weights** (also called 'scores') to reflect their relative order: 1 for 'low', 2 for 'medium' and 3 for 'high'.
+
+Here is some example data that comes from the [Influential Points site](https://influentialpoints.com/Training/chi_square_test_for_trend.htm):
+
+```{python}
+import pandas as pd
+
+dct = {
+    'Low': [5, 25],
+    'Medium': [14, 16],
+    'High': [18, 12],
+}
+ct = pd.DataFrame(dct, index=['Infected', 'Uninfected'])
+
+print(ct)
+```
+
+As we have a nominal and an ordinal variable, we can consider using the **chi-squared test for trend** (also known as the [Cochran–Armitage test for trend](https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend)):
+
+```{python}
+from scipy import stats
+import numpy as np
+
+# Scores
+score = [1, 2, 3]
+
+# T1
+weighted_ct = ct * score
+t_1 = weighted_ct.iloc[0, :].sum()
+# T2
+weighted_col_sums = weighted_ct.sum()
+t_2 = weighted_col_sums.sum()
+# T3
+square_weighted_ct = ct * np.array(score)**2
+square_weighted_col_sums = square_weighted_ct.sum()
+t_3 = square_weighted_col_sums.sum()
+# Sample size
+col_sums = ct.sum(axis=1)
+n = col_sums.sum()
+
+# χ²
+v = np.prod(col_sums) * (n * t_3 - t_2**2) / (n**2 * (n - 1))
+chi_squared = (t_1 - (col_sums[0] * t_2 / n))**2 / v
+
+# p-value
+# The probability of obtaining test results at least as extreme as the result
+# actually observed, under the assumption that the null hypothesis is correct
+dof = np.prod(np.array(ct.shape) - 1) - 1
+p = 1 - stats.chi2.cdf(chi_squared, dof)
+
+print(f'χ² = {chi_squared:5.2f}, p = {p:6.4f}')
+```
+
+This matches the Influential Points example: χ² = 11.51 and *p* = 0.0007.
+
+See the page on [chi-squared tests](../statistics/hypothesis_testing/chi_squared.html) for more.
+
+### Case-Control
+A [case-control study](https://en.wikipedia.org/wiki/Case%E2%80%93control_study) is one where the researchers start with a group of participants who **already** have a disease or condition (along with a group of participants who do not) and then look back to see if the factor under study was present prior to the disease or not. This is in contrast to a 'cohort' study where it is **not** initially known if the participants had/will have the disease or not but it **is** known if the factor was present.
+
+The statistic that gets reported in case-control studies is the **odds ratio** (as opposed to the 'relative risk' which gets reported in cohort studies). This tells you the odds of someone having the risk factor given that they have the disease. A page on this is over [here](../statistics/risk/odds_ratio.html) and additional worked examples from [a CDC course](https://www.cdc.gov/training/SIC_CaseStudy/Interpreting_Odds_ptversion.pdf) are below:
+
+**Example 1:**
+
+> An estimated 200 people attended a luncheon of whom 55 became ill. A case-control study was conducted which found that fifty-three of 54 case-patients and 33 of 40 controls reported eating lettuce in their
+sandwich.
+
+First, let's re-create this raw data as a **data frame** (which is a realistic format for data to be in at the start of a statistical analysis):
+
+```{python}
+import pandas as pd
+
+# Create a data frame from a dictionary
+dct = {
+    'exposed': [True] * 54 + [False] * 40,
+    'diseased': [True] * 53 + [False] * 1 + [True] * 33 + [False] * 7,
+}
+df = pd.DataFrame(dct)
+
+print(df.head())
+```
+
+We have 94 rows of data corresponding to the 94 participants in the study. Now let's **pivot** it to create a **contingency table**:
+
+```{python}
+pt = pd.pivot_table(df, index='exposed', columns='diseased', aggfunc='size')
+# Re-format the pivot table into a contingency table by reversing the order of the columns and the rows
+ct = pt.iloc[::-1, ::-1]
+
+print(ct)
+```
+
+Now that we have it in this format, the odds ratio can be calculated easily:
+
+```{python}
+odds = ct[True] / ct[False]
+odds_ratio = odds[True] / odds[False]
+
+print(f'Odds ratio: {odds_ratio:3.1f}')
+```
+
+It would be useful to know the **significance** of this result. We can use **Fisher's exact test** (see [Wikipedia](https://en.wikipedia.org/wiki/Fisher%27s_exact_test) for more) to do this, because this tests the null hypothesis that the odds ratio is equal to 1 against the alternative hypothesis that the odds ratio is not equal to 1:
+
+```{python}
+from scipy import stats
+import numpy as np
+
+# Fisher's exact test
+# H0: OR == 1
+# H1: OR != 1
+odds_ratio, p = stats.fisher_exact(np.array(ct), alternative='two-sided')
+
+print(f'Odds ratio: {odds_ratio:3.1f}; p = {p:4.2f}')
+```
+
+Usefully, the `fisher_exact()` function calculates both the odds ratio and the *p*-value at the same time!
+
+**Example 2:**
+
+A second example from [the CDC course](https://www.cdc.gov/training/SIC_CaseStudy/Interpreting_Odds_ptversion.pdf):
+
+> A case-control study was undertaken to identify risk factors for infection with *E. coli* following a breakout of disease amongst visitors to a fair. 232 visitors were recruited: 45 case-patients who had become ill and 187 controls who had not. 36 (80%) of the case-patients had visited the petting zoo compared with 64 (36%) of the controls.
+
+```{python}
+ct = np.array([
+    [36, 64],
+    [9, 123]
+])
+odds_ratio, p = stats.fisher_exact(ct, alternative='two-sided')
+
+print(f'Odds ratio: {odds_ratio:3.1f}; p = {p:6.4e}')
+```
+
+### Cohort
+A [cohort study](https://en.wikipedia.org/wiki/Cohort_study) is essentially the opposite of a case-control study: a cohort of *healthy* people who either were or were not exposed to a certain thing are followed-up on to see if they developed the disease under study.
+
+- A **case-control study** starts with a group of patients and a group of healthy controls and looks *back* to see if they were exposed to a certain factor. This can only be done retrospectively.
+- A **cohort study** starts with a group of healthy participants who were exposed to a risk factor (and a similar group who were not) and looks *forward* to see if they developed the disease of interest
+    + This can be done retrospectively: the researchers can look back on existing medical records to see if the participants developed the disease
+    - It can also be done prospectively: the researchers can recruit the participants and then follow them over a number of years to see if the disease develops
+    - It is the most powerful type of evidence out of the observational study types
+
+The statistic that gets reported in cohort studies is the **relative risk** or 'risk ratio' (as opposed to the 'odds ratio' which gets reported in case-control studies). This tells you the risk of developing the disease given the existence of the risk factor. It can be calculated using SciPy's `relative_risk()` function, see the documentation over [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.contingency.relative_risk.html) and the following example comes from that documentation:
+
+> A cohort of 609 healthy participants had their circulating catecholamine (CAT) level measured: 122 had 'high' CAT and 487 had 'low' CAT values. After a period of time, a follow-up was performed on the same participants and it was noted whether or not they had developed coronary heart disease (CHD) in that time: 71 had and 538 had not.
+
+Let's start by creating a data frame that replicates this raw data (ie it is in *long format*):
+
+```{python}
+import pandas as pd
+
+# High circulating catecholamine (CAT) values are the 'exposure'
+# Coronary heart disease (CHD) is the 'disease'
+dct = {
+    'exposed': [True] * 122 + [False] * 487,
+    'diseased': [True] * 27 + [False] * 95 + [True] * 44 + [False] * 443,
+}
+df = pd.DataFrame(dct)
+
+print(df.head())
+```
+
+Pivot this raw data into a *contingency table* (cross tabulation):
+
+```{python}
+pt = pd.pivot_table(df, index='exposed', columns='diseased', aggfunc='size')
+# Re-format the pivot table into a contingency table by reversing the order of the columns and the rows
+ct = pt.iloc[::-1, ::-1]
+
+print(ct)
+```
+
+Extract the values and totals we need to calculate the relative risk:
+
+```{python}
+exposed_diseased = ct.loc[True, True]
+exposed_total = exposed_diseased + ct.loc[True, False]
+notexposed_diseased = ct.loc[False, True]
+notexposed_total = notexposed_diseased + ct.loc[False, False]
+
+print(exposed_diseased, exposed_total, notexposed_diseased, notexposed_total)
+```
+
+Now we can plug into the relative risk function:
+
+```{python}
+from scipy import stats
+
+result = stats.contingency.relative_risk(exposed_diseased, exposed_total, notexposed_diseased, notexposed_total)
+
+print(result.relative_risk)
+```
+
+The 95% confidence interval can also be extracted:
+
+```{python}
+ci = result.confidence_interval(confidence_level=0.95)
+
+print(f'Relative risk = {result.relative_risk:4.2f}, 95% CI [{ci[0]:4.2f} to {ci[1]:4.2f}]')
+```
+
+The confidence interval for the relative risk does not contain 1, so we can conclude that the data supports the hypothesis that high CAT is associated with a greater risk of CHD.
+
+[⇦ Back](../../python.html)
+
+</font>
