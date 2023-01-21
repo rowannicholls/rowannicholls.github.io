@@ -46,11 +46,11 @@ where $\sigma_w$ is the *within-subject standard deviation* - the standard devia
 
 A Special Case
 --------------
-In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows:
+In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows[^7] [^8]:
 
 $RC = 1.96 \times \sqrt{\frac{\Sigma\left(m_2 - m_1\right)^2}{n}}$
 
-where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands[^7] [^8]. Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*[^9].
+where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands. Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*[^9].
 
 Where Does the 1.96 Come From?
 ------------------------------
@@ -79,6 +79,7 @@ Similar to the repeatability coefficient, a **reproducibility coefficient (RDC)*
 
 Calculating the Repeatability Coefficient
 =========================================
+The RC requires the standard deviation of your data to be known. This could be the true standard deviation or it could be an estimated value:
 
 Using the True Standard Deviation $\sigma_w$
 --------------------------------------------
@@ -464,10 +465,10 @@ def repeatability_coefficient(df):
 [^4]: British Standards Institution. Precision of test methods 1: Guide for the determination and reproducibility for a standard test method. British Standards. 1975;597(Part 1).
 [^5]: Quantitative Imaging Biomarkers Alliance (QIBA). Indices of Repeatability, Reproducibility, and Agreement. 2013. [Online](http://qibawiki.rsna.org/images/8/8c/FMRITechnicalPerformanceIndices041613.pdf).
 [^6]: Barnhart HX, Haber MJ, Lin LI. An overview on assessing agreement with continuous measurements. J Biopharm Stat. 2007;17(4):529–69. DOI: [10.1080/10543400701376480](https://doi.org/10.1080/10543400701376480).
-[^7]: Van Noorden R, Maher B, Nuzzo R. The top 100 papers. Nature. 2014;514:550-3. [Online](https://www.nature.com/news/the-top-100-papers-1.16224).
-[^8]: Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: [10.1016/S0140-6736(86)90837-8](https://pubmed.ncbi.nlm.nih.gov/2868172/). [Online](https://www-users.york.ac.uk/~mb55/meas/ba.pdf).
-[^9]: Medcalc. Bland-Altman plot. 2020. [Online](https://www.medcalc.org/manual/blandaltman.php).
-[^10]: Bland JM, Altman DG. Measurement error. BMJ. 1996;313(September):744–53. DOI: [10.1136/bmj.312.7047.1654](https://doi.org/10.1136/bmj.312.7047.1654).
+[^7]: Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: [10.1016/S0140-6736(86)90837-8](https://pubmed.ncbi.nlm.nih.gov/2868172/). [Online](https://www-users.york.ac.uk/~mb55/meas/ba.pdf).
+[^8]: Medcalc. Bland-Altman plot. 2020. [Online](https://www.medcalc.org/manual/blandaltman.php).
+[^9]: Bland JM, Altman DG. Measurement error. BMJ. 1996;313(September):744–53. DOI: [10.1136/bmj.312.7047.1654](https://doi.org/10.1136/bmj.312.7047.1654).
+[^10]: Van Noorden R, Maher B, Nuzzo R. The top 100 papers. Nature. 2014;514:550-3. [Online](https://www.nature.com/news/the-top-100-papers-1.16224).
 [^11]: Bland JM, Altman DG. Measuring agreement in method comparison studies. Stat Methods Med Res. 1999;8(2):135–60.
 
 [⇦ Back](../../../python.html)
