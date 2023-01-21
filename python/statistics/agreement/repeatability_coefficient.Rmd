@@ -14,11 +14,16 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+options(width = 120)
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 In theory, if you measure the same thing twice you should get the same reading both times. In reality, however, all measurements will show some *variability* if repeated. The term **repeatability** refers to:
 
-> The closeness of agreement between measurements when measured under the same conditions<sup>[1, 2, 3]</sup>
+> The closeness of agreement between measurements when measured under the same conditions[^1] [^2] [^3]
 
-The **repeatability coefficient (RC)** is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases.<sup>[4, 5]</sup> The *smaller* the repeatability coefficient is, the better.
+The **repeatability coefficient (RC)** is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases[^4] [^5]. The *smaller* the repeatability coefficient is, the better.
 
 When we say that the repeated measurements need to be done under "the same conditions", what we mean is that they need to be done with the same:
 
@@ -28,11 +33,11 @@ When we say that the repeated measurements need to be done under "the same condi
 - Operating conditions
 - Physical location
 
-and be done using the same units and over a short period of time.<sup>[3, 6]</sup>
+and be done using the same units and over a short period of time[^6].
 
 Quantifying Repeatability
 =========================
-As mentioned, the repeatability coefficient is the value under which the difference between any two repeat measurements of the same measurand acquired under repeatability conditions (aka identical conditions) should fall with 95% probability.<sup>[5]</sup> If we assume normality (ie if multiple measurements of the same thing will produce values that are normally distributed around its true value) then this can be mathematically
+As mentioned, the repeatability coefficient is the value under which the difference between any two repeat measurements of the same measurand acquired under repeatability conditions (aka identical conditions) should fall with 95% probability. If we assume normality (ie if multiple measurements of the same thing will produce values that are normally distributed around its true value) then this can be mathematically
 represented as:
 
 $RC = 1.96 \times \sqrt{2\sigma_w^2} = 2.77\sigma_w$
@@ -45,7 +50,7 @@ In the special case where the measurements are performed exactly twice on each m
 
 $RC = 1.96 \times \sqrt{\frac{\Sigma\left(m_2 - m_1\right)^2}{n}}$
 
-where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands.<sup>[7, 8]</sup> Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*.<sup>[9]</sup>
+where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands[^7] [^8]. Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*[^9].
 
 Where Does the 1.96 Come From?
 ------------------------------
@@ -66,11 +71,11 @@ Note that the `stats.norm.ppf` function uses a normal distribution with a mean o
 
 Repeatability vs Reproducibility
 ================================
-Reproducibility is the closeness of agreement between measurements when measured under _**different**_ conditions.<sup>[2, 3, 6]</sup>
+Reproducibility is the closeness of agreement between measurements when measured under _**different**_ conditions.
 
 Like repeatability, it involves the same measurement being performed multiple times except now with *different* locations, operators or measuring systems (aka under **reproducibility conditions**).
 
-Similar to the repeatability coefficient, a **reproducibility coefficient (RDC)** can be used. The equation for this is $RDC = 1.96 \times \sqrt{2\sigma_w^2 + \nu^2}$ which is exactly the same as RC with the addition of the $\nu^2$ term (which is the variability attributed to the differing conditions). The value of $\nu^2$ depends on what variables change between measurements.<sup>[5]</sup>
+Similar to the repeatability coefficient, a **reproducibility coefficient (RDC)** can be used. The equation for this is $RDC = 1.96 \times \sqrt{2\sigma_w^2 + \nu^2}$ which is exactly the same as RC with the addition of the $\nu^2$ term (which is the variability attributed to the differing conditions). The value of $\nu^2$ depends on what variables change between measurements.
 
 Calculating the Repeatability Coefficient
 =========================================
@@ -149,10 +154,13 @@ The numbers used in this example were again taken from normal distributions, thi
 
 Note that on this occasion we couldn't calculate $s_w$ immediately because you can't meaningfully take the average of a list of standard deviations. We first had to calculate the sample variances and take the average of those, before square rooting it to get $s_w$.
 
+Bland-Altman Examples
+=====================
+Most journal papers will cite one of Bland & Altman's papers when they are performing repeatability analyses (indeed, their 1986 paper is the 29th most-cited paper of all time[^10]). Because these papers are so important in this area we will use them for the examples that follow.
+
 Bland-Altman (1986)
 -------------------
-Most journal papers will cite one of Bland & Altman's papers when they are performing repeatability analyses. Because these papers are so important in this area we will use them for the following examples. This next one uses their 1986 paper<sup>[7]</sup> and the data below comes from page 2 of that. This example also uses the Pandas package in Python
-which makes it easier to perform calculations on tabular data:
+This first example uses lung function data from 17 participants. Each person had a first and a second measurement of their peak expiratory flow rate taken. In Python, the 'Pandas' package makes it easier to perform calculations on tabular data, so that is being used in the snippet below:
 
 ```{python}
 import numpy as np
@@ -160,12 +168,8 @@ import pandas as pd
 
 # Raw data
 wright_large = pd.DataFrame({
-    'First Measurement': [
-        494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656, 267, 478, 178, 423, 427
-    ],
-    'Second Measurement': [
-        490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633, 275, 492, 165, 372, 421
-    ],
+    'First Measurement': [494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656, 267, 478, 178, 423, 427],
+    'Second Measurement': [490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633, 275, 492, 165, 372, 421],
 })
 # Within-subject sample variances
 var_w = wright_large[['First Measurement', 'Second Measurement']].var(axis=1, ddof=1)
@@ -175,6 +179,7 @@ var_w = var_w.mean()
 s_w = np.sqrt(var_w)
 # Coefficient of repeatability
 rc = 1.96 * np.sqrt(2) * s_w
+
 print(rc)
 ```
 
@@ -186,12 +191,8 @@ import pandas as pd
 
 # Raw data
 wright_mini = pd.DataFrame({
-    'First Measurement': [
-        512, 430, 520, 428, 500, 600, 364, 380, 658, 445, 432, 626, 260, 477, 259, 350, 451
-    ],
-    'Second Measurement': [
-        525, 415, 508, 444, 500, 625, 460, 390, 642, 432, 420, 605, 227, 467, 268, 370, 443
-    ],
+    'First Measurement': [512, 430, 520, 428, 500, 600, 364, 380, 658, 445, 432, 626, 260, 477, 259, 350, 451],
+    'Second Measurement': [525, 415, 508, 444, 500, 625, 460, 390, 642, 432, 420, 605, 227, 467, 268, 370, 443],
 })
 # Within-subject sample variances
 var_w = wright_mini[['First Measurement', 'Second Measurement']].var(axis=1, ddof=1)
@@ -201,10 +202,11 @@ var_w = var_w.mean()
 s_w = np.sqrt(var_w)
 # Coefficient of repeatability
 rc = 1.96 * np.sqrt(2) * s_w
+
 print(rc)
 ```
 
-Note that Bland & Altman actually rounded off a bit when they did these calculations and also used a distance of 2 standard deviations from the mean instead of the more accurate 1.96. As a result, their answers are 43.2 l/min for the large meter and 56.4 l/min for the mini meter whereas ours are 42.4 and 55.2, respectively. Additionally, they used the simplified version of the calculation that only works when exactly two repeats have been performed, as mentioned above. For completeness, here is their method:
+Note that Bland & Altman actually rounded off a bit when they did these calculations and also used a distance of 2 standard deviations from the mean instead of the more accurate 1.96. As a result, their answers are 43.2 l/min for the large meter and 56.4 l/min for the mini meter whereas ours are 42.4 and 55.2. Additionally, they used the simplified version of the calculation that only works when exactly two repeats have been performed, as mentioned above. For completeness, here is their method:
 
 ```{python}
 # Measurement differences
@@ -217,6 +219,7 @@ var_w = sq_diffs.mean()
 s_w = np.sqrt(var_w)
 # Coefficient of repeatability
 rc = 1.96 * s_w
+
 print(rc)
 ```
 
@@ -227,12 +230,16 @@ diffs = wright_mini['First Measurement'] - wright_mini['Second Measurement']
 sq_diffs = diffs**2
 # Total squared differences
 print(sq_diffs.sum())
+```
+
+```{python}
 # Mean squared difference (aka within-subject variance)
 var_w = sq_diffs.mean()
 # Within-subject sample standard deviation
 s_w = np.sqrt(var_w)
 # Coefficient of repeatability
 rc = 1.96 * s_w
+
 print(rc)
 ```
 
@@ -240,7 +247,9 @@ The above is also calculated [on this page](https://www.medcalc.org/manual/bland
 
 Bland-Altman (1996)
 -------------------
-In their 1996 paper<sup>[9]</sup>, Bland and Altman demonstrate how to calculate the repeatability coefficient when multiple repeats of the same measurement have been performed on each measurand. Instead of copy-pasting the same code we used above to replicate this example, let's create a function to do it:
+In their 1996 paper, Bland and Altman demonstrate how to calculate the repeatability coefficient when multiple repeats of the same measurement have been performed on each measurand.
+
+Instead of copy-pasting the same code we used above to replicate this example, let's create a function to do it:
 
 ```{python}
 import numpy as np
@@ -249,57 +258,63 @@ import pandas as pd
 pd.set_option('display.max_columns', 20)
 
 
-def repeatability_analysis(df):
-    """Calculate agreement statistics."""
-    columns = list(df)
-    df['Sample Standard Deviation'] = df[columns].std(axis=1, ddof=1)
-    df['Sample Variance'] = df['Sample Standard Deviation']**2
-
-    # Create a summary
-    summary = pd.DataFrame()
-    # Mean
-    means = ['Mean of ' + test for test in columns]
-    for i, mean in enumerate(means):
-        summary.loc[1, mean] = df[columns[i]].mean()
-    # Sample size
-    summary.loc[1, 'N'] = df.shape[0]
-    # Degrees of freedom
-    summary.loc[1, 'DoF'] = df.shape[0] - 1
-    # Mean variance
-    summary.loc[1, 'Mean Variance'] = df['Sample Variance'].mean()
-    # Within-subject standard deviation
-    s_w = np.sqrt(df['Sample Variance'].mean())
-    summary.loc[1, 'Within-Subject SD (Sw)'] = s_w
+def repeatability_coefficient(df):
+    """Calculate repeatability coefficient."""
+    # Within-subject sample variances
+    var_w = df.var(axis=1, ddof=1)
+    # Mean within-subject sample variance
+    var_w = var_w.mean()
+    # Within-subject sample standard deviation
+    s_w = np.sqrt(var_w)
     # Coefficient of repeatability
-    col = 'Repeatability Coefficient (RC)'
-    summary.loc[1, col] = np.sqrt(2) * 1.96 * s_w
+    rc = 1.96 * np.sqrt(2) * s_w
 
-    return df, summary
+    return rc
+
+
+def summary_table(df):
+    """Create a summary table of agreement statistics."""
+    summary = {}
+    # Mean
+    for colname, col in df.items():
+        summary['Mean of ' + colname] = col.mean()
+    # Sample size
+    summary['N'] = df.shape[0]
+    # Degrees of freedom
+    summary['DoF'] = df.shape[0] - 1
+    # Sample standard deviations
+    s = df.std(axis=1, ddof=1)
+    # Sample variances
+    var = s**2
+    # Mean variance
+    summary['Mean Variance'] = var.mean()
+    # Within-subject standard deviation
+    s_w = np.sqrt(var.mean())
+    summary['Within-Subject SD (Sw)'] = s_w
+    # Coefficient of repeatability
+    rc = repeatability_coefficient(df)
+    summary['Repeatability Coefficient (RC)'] = rc
+
+    return summary
 
 
 # Raw data
 df = pd.DataFrame({
-    'Measurement 1': [
-        190, 220, 260, 210, 270, 280, 260, 275, 280, 320, 300, 270, 320, 335, 350, 360, 330, 335, 400, 430
-    ],
-    'Measurement 2': [
-        220, 200, 260, 300, 265, 280, 280, 275, 290, 290, 300, 250, 330, 320, 320, 320, 340, 385, 420, 460
-    ],
-    'Measurement 3': [
-        200, 240, 240, 280, 280, 270, 280, 275, 300, 300, 310, 330, 330, 335, 340, 350, 380, 360, 425, 480
-    ],
-    'Measurement 4': [
-        200, 230, 280, 265, 270, 275, 300, 305, 290, 290, 300, 370, 330, 375, 365, 345, 390, 370, 420, 470
-    ]
+    'Read 1': [190, 220, 260, 210, 270, 280, 260, 275, 280, 320, 300, 270, 320, 335, 350, 360, 330, 335, 400, 430],
+    'Read 2': [220, 200, 260, 300, 265, 280, 280, 275, 290, 290, 300, 250, 330, 320, 320, 320, 340, 385, 420, 460],
+    'Read 3': [200, 240, 240, 280, 280, 270, 280, 275, 300, 300, 310, 330, 330, 335, 340, 350, 380, 360, 425, 480],
+    'Read 4': [200, 230, 280, 265, 270, 275, 300, 305, 290, 290, 300, 370, 330, 375, 365, 345, 390, 370, 420, 470],
 })
 # Calculate agreement statistics
-df, summary = repeatability_analysis(df)
-print(summary)
+summary = summary_table(df)
+
+for key, value in summary.items():
+    print(key, '=', round(value, 2))
 ```
 
 Bland-Altman (1999)
 -------------------
-Now that we have a function, let's use it on the data from Bland and Altman's 1999 paper.<sup>[10]</sup> These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:
+Now that we have a function, let's use it on the data from Bland and Altman's 1999 paper[^11]. These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:
 
 ```{python}
 # Raw data
@@ -325,8 +340,10 @@ j = pd.DataFrame({
 })
 
 # Calculate agreement statistics
-j, summary = repeatability_analysis(j)
-print(summary)
+summary = summary_table(j)
+
+for key, value in summary.items():
+    print(key, '=', round(value, 2))
 ```
 
 ```{python}
@@ -353,24 +370,105 @@ s = pd.DataFrame({
 })
 
 # Calculate agreement statistics
-s, summary = repeatability_analysis(s)
-print(summary)
+summary = summary_table(s)
+
+for key, value in summary.items():
+    print(key, '=', round(value, 2))
 ```
 
 As the machine (S) has an RC of 25.27 mmHg while the operator (J) has an RC of 16.95 mmHg, we can say that the repeatability of the machine is 49% greater (ie worse) that operator J.
 
-References
-==========
-1. Joint Committee for Guides in Metrology. Evaluation of measurement data – Guide to the expression of uncertainty in measurement. JCGM. 2008;100. [Online](https://www.bipm.org/utils/common/documents/jcgm/JCGM_100_2008_E.pdf).
-2. Algorithm Comparison Working Group. Quantitative imaging biomarkers: a review of statistical methods for computer algorithm comparisons. Stat Methods Med Res. 2015;24(1):68–106. DOI: [10.1177/0962280214537390](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4263694/pdf/nihms611119.pdf).
-3. QIBA Terminology Working Group. The Emerging Science of Quantitative Imaging Biomarkers: Terminology and Definitions for Scientific Studies and for Regulatory Submissions. Stat Methods Med Res. 2015;8(1):9–26. DOI: [10.1177/0962280214537333](https://doi.org/10.1177/0962280214537333).
-4. British Standards Institution. Precision of test methods 1: Guide for the determination and reproducibility for a standard test method. British Standards. 1975;597(Part 1)
-5. Quantitative Imaging Biomarkers Alliance (QIBA). Indices of Repeatability, Reproducibility, and Agreement. 2013. [Online](http://qibawiki.rsna.org/images/8/8c/FMRITechnicalPerformanceIndices041613.pdf).
-6. Barnhart HX, Haber MJ, Lin LI. An overview on assessing agreement with continuous measurements. J Biopharm Stat. 2007;17(4):529–69. DOI: [10.1080/10543400701376480](https://doi.org/10.1080/10543400701376480).
-7. Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: [10.1016/S0140-6736(86)90837-8](https://pubmed.ncbi.nlm.nih.gov/2868172/).
-8. Medcalc. Bland-Altman plot. 2020. [Online](https://www.medcalc.org/manual/blandaltman.php).
-9. Bland JM, Altman DG. Measurement error. BMJ. 1996;313(September):744–53. DOI: [10.1136/bmj.312.7047.1654](https://doi.org/10.1136/bmj.312.7047.1654).
-10. Bland JM, Altman DG. Measuring agreement in method comparison studies. Stat Methods Med Res. 1999;8(2):135–60.
+Function Documentation
+======================
+Whenever you write a function, it's good practice to **document** it correctly using a *docstring*. Here is the function used above re-produced with a full docstring:
+
+```{python}
+def repeatability_coefficient(df):
+    """
+    Calculate repeatability coefficient.
+
+    See here:
+    https://rowannicholls.github.io/python/statistics/agreement/repeatability_coefficient.html
+
+    Parameters
+    ----------
+    df : DataFrame
+        The observations or measurements made by various observers. One
+        observer's data per column, one observation/measurement per row. This
+        function requires df to only have two sets of observations from the
+        'expert' and any number of sets of observation by others.
+
+    Returns
+    -------
+    rc : float
+        The repeatability coefficient.
+
+    Notes
+    -----
+    The "1.96" in the formula "rc = 1.96 * np.sqrt(2) * s_w" can be calculated
+    more precisely from the normal distribution's percent-point function (PPF)
+    - for a confidence level of 95% and assuming a two-tailed test - as
+    follows:
+
+    >>> from scipy import stats
+    >>> alpha = 0.05
+    >>> tails = 2
+    >>> print(stats.norm.ppf(1 - alpha / tails))
+    1.959963984540054
+
+    Examples
+    --------
+    >>> dct = {
+    ...     'x1': [1, 2, 3, 4, 5],
+    ...     'x2': [2, 3, 3, 5, 5],
+    ...     'y1': [2, 1, 2, 3, 4],
+    ...     'y2': [1, 1, 3, 2, 4],
+    ...     'y3': [2, 3, 2, 4, 5]
+    ... }
+    >>> df = pd.DataFrame(dct)
+    >>> print(repeatability_coefficient(df))
+    2.217486865801013
+
+    This example is taken from Bland (1986), although the value of RC in that
+    paper is given as 43.2 (not 42.4) due to rounding errors.
+
+    >>> df = pd.DataFrame({
+    ...     'First Measurement': [
+    ...         494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656,
+    ...         267, 478, 178, 423, 427
+    ...     ],
+    ...     'Second Measurement': [
+    ...         490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633,
+    ...         275, 492, 165, 372, 421
+    ...     ]
+    ... })
+    >>> rc = repeatability_coefficient(df)
+    >>> print(f'RC = {rc}')
+    RC = 42.42792199372817
+    """
+    # Within-subject sample variances
+    var_w = df.var(axis=1, ddof=1)
+    # Mean within-subject sample variance
+    var_w = var_w.mean()
+    # Within-subject sample standard deviation
+    s_w = np.sqrt(var_w)
+    # Coefficient of repeatability
+    rc = 1.96 * np.sqrt(2) * s_w
+
+    return rc
+```
+
+[^1]: Joint Committee for Guides in Metrology. Evaluation of measurement data – Guide to the expression of uncertainty in measurement. JCGM. 2008;100. [Online](https://www.bipm.org/utils/common/documents/jcgm/JCGM_100_2008_E.pdf).
+[^2]: Algorithm Comparison Working Group. Quantitative imaging biomarkers: a review of statistical methods for computer algorithm comparisons. Stat Methods Med Res. 2015;24(1):68–106. DOI: [10.1177/0962280214537390](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4263694/pdf/nihms611119.pdf).
+[^3]: QIBA Terminology Working Group. The Emerging Science of Quantitative Imaging Biomarkers: Terminology and Definitions for Scientific Studies and for Regulatory Submissions. Stat Methods Med Res. 2015;8(1):9–26. DOI: [10.1177/0962280214537333](https://doi.org/10.1177/0962280214537333).
+[^4]: British Standards Institution. Precision of test methods 1: Guide for the determination and reproducibility for a standard test method. British Standards. 1975;597(Part 1).
+[^5]: Quantitative Imaging Biomarkers Alliance (QIBA). Indices of Repeatability, Reproducibility, and Agreement. 2013. [Online](http://qibawiki.rsna.org/images/8/8c/FMRITechnicalPerformanceIndices041613.pdf).
+[^6]: Barnhart HX, Haber MJ, Lin LI. An overview on assessing agreement with continuous measurements. J Biopharm Stat. 2007;17(4):529–69. DOI: [10.1080/10543400701376480](https://doi.org/10.1080/10543400701376480).
+[^7]: Van Noorden R, Maher B, Nuzzo R. The top 100 papers. Nature. 2014;514:550-3. [Online](https://www.nature.com/news/the-top-100-papers-1.16224).
+[^8]: Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: [10.1016/S0140-6736(86)90837-8](https://pubmed.ncbi.nlm.nih.gov/2868172/). [Online](https://www-users.york.ac.uk/~mb55/meas/ba.pdf).
+[^9]: Medcalc. Bland-Altman plot. 2020. [Online](https://www.medcalc.org/manual/blandaltman.php).
+[^10]: Bland JM, Altman DG. Measurement error. BMJ. 1996;313(September):744–53. DOI: [10.1136/bmj.312.7047.1654](https://doi.org/10.1136/bmj.312.7047.1654).
+[^11]: Bland JM, Altman DG. Measuring agreement in method comparison studies. Stat Methods Med Res. 1999;8(2):135–60.
 
 [⇦ Back](../../../python.html)
 
