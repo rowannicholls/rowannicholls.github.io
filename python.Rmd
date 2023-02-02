@@ -12,6 +12,11 @@ output:
 
 <font size="3">
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 ## Introduction to Python
 1. [Getting Started](python/intro/getting_started.html)
     - [Check Your Python Installation](python/intro/installation_check.html)

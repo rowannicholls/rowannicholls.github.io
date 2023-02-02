@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 > This page is the third part of a series on data frames:
 > 
 > 1. [Introduction to Data Frames](data_frames_intro.html)
@@ -440,6 +445,22 @@ df['Age'] = df['Age'].astype('bool')
 ```{python, echo = FALSE}
 # Undo
 df['Age'] = [29, 34, 21, 26, 22, 29, 24, 21]
+```
+
+Split Up Strings Into Multiple Columns
+--------------------------------------
+To access the functions and methods associated with *strings* for use on columns that contain strings, the `.str` method is needed. For example, here's how to use the `.split()` method on a Pandas series:
+
+```{python}
+# Split the athletes' names up into individual words
+print(df['Athlete'].str.split(' '))
+```
+
+The `expand=True` argument will cause the results to be returned as multiple series (as opposed to one series where each element is a list as seen above):
+
+```{python}
+# Split the athletes' names up into individual columns
+print(df['Athlete'].str.split(' ', expand=True))
 ```
 
 Sanitise data using RegEx

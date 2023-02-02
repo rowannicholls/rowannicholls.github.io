@@ -335,7 +335,7 @@ Sets are *NOT* lists, but they are similar! The main differences are that:
 - A set is **unordered**: the order of the elements is not remembered by Python
 - A set is **not subscriptable** and so cannot be indexed with square brackets: if `a` was a set then running `a[0]` would result in an error. How can an object where the elements are unordered have a 0th, 1st, 2nd, etc, element?
 
-Sets are either created by using curly brackets (note that the elements in the output are not necessarily in the same order as in the input, due to sets being unordered):
+Sets are created either by using curly brackets (note that the elements in the output are not necessarily in the same order as in the input, due to sets being unordered):
 
 ```{python, eval = FALSE}
 st = {'A', 'B', 'C'}
@@ -363,7 +363,7 @@ Notice that in the second example the duplicate values were removed. This is bec
 
 Finding the Unique Values in Lists
 ----------------------------------
-To remove duplicate values from a list, convert it to a set:
+To remove duplicate values from a list, convert it into a set:
 
 ```{python}
 ls = ['First', 'Second', 'Third', 'First', 'Second', 'Third']
@@ -384,7 +384,22 @@ print(ls)
 ## ['Second', 'First', 'Third']
 ```
 
-Notice that this **does _not_ preserve order**: we would have expected the result to be `['First', 'Second', 'Third']` but instead it was `['Second', 'First', 'Third']`. The easiest way to get the unique values in a list *in the same order* they appear in that list is to use a Pandas Series object, see [here](../advanced/data_frames_searching.html#bonus-removing-duplicates-from-a-list-whilst-preserving-the-order).
+Notice that this **does _not_ preserve order**: we would have expected the result to be `['First', 'Second', 'Third']` but instead it was `['Second', 'First', 'Third']`. The easiest way to get the unique values in a list *in the same order* that they appear is to use a Pandas Series object, see [here](../advanced/data_frames_searching.html#bonus-removing-duplicates-from-a-list-whilst-preserving-the-order).
+
+Finding the Duplicated Values in Two Lists
+------------------------------------------
+Considering that a set *removes* duplicates, it seems weird that they can be used to *find* duplicates. However, if you have two lists, here's how you can find the values that exist in both of them using a set and a [list comprehension](../advanced/lists.html):
+
+```{python}
+ls1 = ['First', 'Second', 'Third']
+ls2 = ['Third', 'Fourth', 'Fifth']
+
+# Get duplicates in two lists
+combo = ls1 + ls2
+duplicates = set([x for x in combo if combo.count(x) == 2])
+
+print(duplicates)
+```
 
 Removing Multiple Values from Lists
 -----------------------------------
@@ -402,8 +417,10 @@ We are left with the elements from set 1 *minus* the elements from set 2. This c
 
 ```{python, eval = FALSE}
 ls_1 = ['A', 'B', 'C', 'D', 'E', 'F']
+# Elements to remove
+to_remove = ['A', 'B', 'C']
 # Convert lists to sets, subtract them, convert result into a list
-ls = list(set(ls_1) - set(['A', 'B', 'C']))
+ls = list(set(ls_1) - set(to_remove))
 print(ls)
 ```
 
