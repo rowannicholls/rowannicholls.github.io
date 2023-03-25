@@ -37,7 +37,7 @@ Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or 
         }
         ```
     - If it starts to think that .txt files are Markdown file, open a .txt file (ie have that window active) and go: View > Syntax > Open all with current extension as... > your syntax choice
-- **MarkdownPreview**
+- **Markdown Preview**
     - View rendered Markdown in your browser
     - Allows you to create an HTML file from a Markdown file by pressing Ctrl+B/Cmd+B
     - You can create a [user key binding](key_bindings.html) (see below) to immediately open the current Markdown file as a rendered HTML page in your web browser
@@ -69,9 +69,9 @@ To create custom key bindings, go to Preferences > Key Bindings and edit the rig
 
 Rendering Maths
 ===============
-How to have Latex equations in your Markdown be rendered by MarkdownPreview in Sublime Text:
+How to have Latex equations in your Markdown be rendered by Markdown Preview in Sublime Text:
 
-- Open the MarkdownPreview Package Settings:
+- Open the Markdown Preview Package Settings:
     - *macOS:* Menu bar > Sublime Text > Preferences > Package Settings > Markdown Preview > Settings
     - *Linux/Windows:* Preferences > Package Settings > Markdown Preview > Settings
 - In the User settings (on the right-hand side), you need to add two things:
@@ -192,14 +192,20 @@ How to have Latex equations in your Markdown be rendered by MarkdownPreview in S
 ```
 
 ### More details:
-MarkdownPreview uses MathJax to turn Latex equations into HTML. The settings for how this works are contained in two files:
+Markdown Preview uses MathJax to turn LaTeX equations into HTML. The settings for how this works are contained in two files:
 
-- The **MathJax JavaScript configuration file** that gets installed by default when you install the MarkdownPreview package. This is hidden on your system so it can't be opened normally (even if you un-hide hidden files or search for it in the terminal) so use the PackageResourceViewer package:
+- The **MathJax JavaScript configuration file** that gets installed by default when you install the Markdown Preview package. This is hidden on your system so it can't be opened normally (even if you un-hide hidden files or search for it in the terminal) so use the PackageResourceViewer package:
     - Install it via Command Palette > search for "Package Control: Install Package" > search for "PackageResourceViewer"
     - Use it via Command Palette > search for "PackageResourceViewer: Open Resource" > MarkdownPreview > js/ > math_config.js
-- The **Markdown Preview Package Settings** which can be opened from inside Sublime Text but for reference are located here:
-    - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 3/Packages/User/MarkdownPreview.sublime-settings`
-    - *Linux:* `/home/<username>/.config/sublime-text-3/Packages/User/MarkdownPreview.sublime-settings`
+- The **Markdown Preview Package User Settings**
+    + This is the file mentioned above under "Rendering Maths"
+    - This file does not exist when Markdown Preview is first installed (and if you are happy with how Markdown Preview works then that is fine)
+    - If you *do* want to change how Markdown Preview works, this file can be created (and subsequently edited) from inside Sublime Text:
+        - *Linux:* Preferences > Package Settings > Markdown Preview > Settings
+        - The right-hand side file contains the user settings (this file is editable) while the left-hand side one has the default settings (this file is not editable but these settings get overridden by the user settings)
+    - For reference, once this user settings file has been created it will be located here:
+        - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text/Packages/User/MarkdownPreview.sublime-settings`
+        - *Linux:* `/home/<username>/.config/sublime-text/Packages/User/MarkdownPreview.sublime-settings`
 
 [⇦ Back](../sublime_text.html)
 
