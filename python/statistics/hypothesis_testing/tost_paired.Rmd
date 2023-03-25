@@ -14,11 +14,16 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 > This page on the *paired* two one-sided t-test ('paired TOST') is a follow-on from [this one](tost_unpaired.html) which introduces the *unpaired* two one-sided t-test ('unpaired TOST')
 
 The Paired TOST
 ===============
-We'll use the same example data that was used on the unpaired TOST page. It comes from [the documentation](https://pingouin-stats.org/generated/pingouin.tost.html) for Pingouin's `tost()` function.
+We'll use the same example data that was used on the unpaired TOST page. It comes from [the documentation](https://pingouin-stats.org/build/html/generated/pingouin.tost.html) for Pingouin's `tost()` function.
 
 ```{python}
 # Example data

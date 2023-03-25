@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 This page is a follow-on of [this one](bland_altman.html) on Bland-Altman analysis.
 
 **Bland-Altman analysis** is used to assess the agreement between two methods of measuring something, usually clinical information. It was discussed in Bland & Altman's 1986 paper<sup>[1]</sup> and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
@@ -75,7 +80,7 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 Regression Analysis
 ===================
-Just like the Bland-Altman paper, the first recommended step is to visualise the data. Giavarina takes the extra step of performing Passing-Bablok regression, which is explained on [this page](passing_bablok.html):
+Just like the Bland-Altman paper, the first recommended step is to visualise the data. Giavarina takes the extra step of performing Passing-Bablok regression, which is explained on [this page](../hypothesis_testing/passing_bablok.html):
 
 ```{python, echo = FALSE}
 import math

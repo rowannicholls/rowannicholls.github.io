@@ -14,7 +14,12 @@ output:
 
 [⇦ Back](../../../python.html)
 
-In Python, the intraclass correlation coefficient (ICC) can be calculated using the `intraclass_corr()` function from the `pingouin` library. This function's [documentation](https://pingouin-stats.org/generated/pingouin.intraclass_corr.html) tells us that:
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+In Python, the intraclass correlation coefficient (ICC) can be calculated using the `intraclass_corr()` function from the `pingouin` library. This function's [documentation](https://pingouin-stats.org/build/html/generated/pingouin.intraclass_corr.html) tells us that:
 
 > The intraclass correlation assesses the reliability of ratings by comparing the variability of different ratings of the same subject to the total variation across all ratings and all subjects
 

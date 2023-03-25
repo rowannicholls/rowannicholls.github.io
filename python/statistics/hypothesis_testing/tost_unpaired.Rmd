@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 > This page is about the *unpaired* two one-sided t-test ('unpaired TOST'). The *paired* two one-sided t-test ('paired TOST') is covered on [this](tost_paired.html) page.
 
 The unpaired TOST can be used to test **equivalence**: do the means of two populations differ by less than a given amount?
@@ -22,7 +27,7 @@ The unpaired TOST can be used to test **equivalence**: do the means of two popul
 - These populations and samples should be **independent** of each other: a change in one of them should not affect any of the others
 - We assume that the values in the populations are **normally distributed**
 
-The test was originally published by Donald J Schuirmann (not Donald **L** Schuirmann as appears in the [R](https://www.rdocumentation.org/packages/equivalence/versions/0.7.2/topics/tost.stat) and [Pingouin](https://pingouin-stats.org/generated/pingouin.tost.html) documentation):
+The test was originally published by Donald J Schuirmann (not Donald **L** Schuirmann as appears in the [R](https://www.rdocumentation.org/packages/equivalence/versions/0.7.2/topics/tost.stat) and [Pingouin](https://pingouin-stats.org/build/html/generated/pingouin.tost.html) documentation):
 
 - Schuirmann, Donald J. On hypothesis testing to determine if the mean of a normal distribution is contained in a known interval. Biometrics. 1981;37:617
 - Schuirmann, Donald J. A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability. Journal of Pharmacokinetics and Biopharmaceutics. 1987;15(6):657–680. DOI: [10.1007/BF01068419](https://link.springer.com/article/10.1007/BF01068419).
@@ -43,7 +48,7 @@ This is why it's called the **two** one-sided t-test: the fact that you have two
 
 Example One: Pingouin
 =====================
-This comes from [the documentation](https://pingouin-stats.org/generated/pingouin.tost.html) for Pingouin's `tost()` function. Here's the example data:
+This comes from [the documentation](https://pingouin-stats.org/build/html/generated/pingouin.tost.html) for Pingouin's `tost()` function. Here's the example data:
 
 ```{python}
 # Example data
