@@ -5,7 +5,7 @@ output:
         theme: paper
         highlight: textmate
         # number_sections: true
-        # toc: true
+        toc: true
         includes:
             before_body: ../../google_analytics.html
 ---
@@ -15,15 +15,19 @@ output:
 [⇦ Back](../../python.html)
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
+Example Data
+============
 Let's start with some example data. Create a series of 20 numbers distributed normally about a mean value of 100 and with a standard deviation of 5:
 
 ```{python}
 import numpy as np
 
-# Set a seed for the random number generator so we get the same random numbers each time
+# Set a seed for the random number generator
+# (so we get the same random numbers each time)
 np.random.seed(20210710)
 
 # Create fake data
@@ -43,15 +47,13 @@ import matplotlib.pyplot as plt
 # Formatting options for plots
 A = 6  # Want figure to be A6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
 
-#
-# Plot
-#
+# Create plot axes
 ax = plt.axes()
-# Add jitter to separate the points out
+# Add jitter to separate out the points
 y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
 # Create scatter plot
 ax.scatter(x, y, s=10)
@@ -79,15 +81,13 @@ import matplotlib.pyplot as plt
 # Formatting options for plots
 A = 6  # Want figure to be A6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
 
-#
-# Plot
-#
+# Create plot axes
 ax = plt.axes()
-# Add jitter to separate the points out
+# Add jitter to separate out the points
 y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
 # Create scatter plot
 ax.scatter(x, y, s=10)
@@ -112,49 +112,44 @@ plt.close()
 These 20 numbers are a random *sample* drawn from the full *population* of numbers that have a **true mean** of 100 and a true standard deviation (the **population standard deviation**) of 5. Here's a graph representing the full population (more correctly, this is a graph of the **probability distribution function** - the function which produced our 20 numbers):
 
 ```{python, eval=FALSE}
-from scipy.stats import norm
-
-# Formatting options for plots
-A = 6  # Want figure to be A6
-plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+import scipy.stats as st
 
 # Create data
 x_pdf = np.linspace(84, 116, 1000)
 mean = 100
 std = 5
-y_pdf = norm.pdf(x_pdf, mean, std)
+y_pdf = st.norm.pdf(x_pdf, mean, std)
 
-#
-# Plot
-#
+# Create plot
 ax = plt.axes()
 ax.plot(x_pdf, y_pdf)
 ax.set_title('Probability Distribution Function')
 ax.set_ylabel('Relative Likelihood')
 ax.set_xlabel('Value')
-ax.set_ylim(0, norm.pdf(mean, mean, std) * 1.08)
+ax.set_ylim(0, np.max(y_pdf) * 1.08)
 ax.set_xlim(84, 116)
-# Vertical lines
-ax.vlines(mean, 0, norm.pdf(mean, mean, std), colors='k', linestyles='dashed')
-ax.vlines(mean - std, 0, norm.pdf(mean - std, mean, std), colors='k', linestyles='dotted')
-ax.vlines(mean + std, 0, norm.pdf(mean + std, mean, std), colors='k', linestyles='dotted')
-# Text
-plt.text(mean - std, norm.pdf(mean - std, mean, std) * 1.04, r'$\bar x - \sigma$', ha='right')
-plt.text(mean, norm.pdf(mean, mean, std) * 1.02, r'Mean, $\bar x$', ha='center')
-plt.text(mean + std, norm.pdf(mean + std, mean, std) * 1.04, r'$\bar x + \sigma$', ha='left')
+# Minus one standard deviation
+y = st.norm.pdf(mean - std, mean, std)
+ax.vlines(mean - std, 0, y, colors='k', ls='dotted')
+plt.text(mean - std, y * 1.05, r'$\mu - \sigma$', ha='right')
+# Mean
+y = st.norm.pdf(mean, mean, std)
+ax.vlines(mean, 0, y, colors='k', ls='dashed')
+plt.text(mean, y * 1.02, r'Mean, $\mu$', ha='center')
+# Plus one standard deviation
+y = st.norm.pdf(mean + std, mean, std)
+ax.vlines(mean + std, 0, y, colors='k', ls='dotted')
+plt.text(mean + std, y * 1.05, r'$\mu + \sigma$', ha='left')
 # Finish
 plt.show()
 plt.close()
 ```
 
 ```{python, echo=FALSE, results='hide'}
-from scipy.stats import norm
+import scipy.stats as st
 import matplotlib as mpl
 
-# Formatting options for plots
+# Re-do the formatting options
 mpl.rcParams.update(mpl.rcParamsDefault)
 A = 6  # Want figure to be A6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
@@ -166,145 +161,288 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 x_pdf = np.linspace(84, 116, 1000)
 mean = 100
 std = 5
-y_pdf = norm.pdf(x_pdf, mean, std)
+y_pdf = st.norm.pdf(x_pdf, mean, std)
 
-#
-# Plot
-#
+# Create plot
 ax = plt.axes()
 ax.plot(x_pdf, y_pdf)
 ax.set_title('Probability Distribution Function')
 ax.set_ylabel('Relative Likelihood')
 ax.set_xlabel('Value')
-ax.set_ylim(0, norm.pdf(mean, mean, std) * 1.08)
+ax.set_ylim(0, np.max(y_pdf) * 1.08)
 ax.set_xlim(84, 116)
-# Vertical lines
-ax.vlines(mean, 0, norm.pdf(mean, mean, std), colors='k', linestyles='dashed')
-ax.vlines(mean - std, 0, norm.pdf(mean - std, mean, std), colors='k', linestyles='dotted')
-ax.vlines(mean + std, 0, norm.pdf(mean + std, mean, std), colors='k', linestyles='dotted')
-# Text
-plt.text(mean - std, norm.pdf(mean - std, mean, std) * 1.04, r'$\bar x - \sigma$', ha='right')
-plt.text(mean, norm.pdf(mean, mean, std) * 1.02, r'Mean, $\bar x$', ha='center')
-plt.text(mean + std, norm.pdf(mean + std, mean, std) * 1.04, r'$\bar x + \sigma$', ha='left')
+# Minus one standard deviation
+y = st.norm.pdf(mean - std, mean, std)
+ax.vlines(mean - std, 0, y, colors='k', ls='dotted')
+plt.text(mean - std, y * 1.05, r'$\mu - \sigma$', ha='right')
+# Mean
+y = st.norm.pdf(mean, mean, std)
+ax.vlines(mean, 0, y, colors='k', ls='dashed')
+plt.text(mean, y * 1.02, r'Mean, $\mu$', ha='center')
+# Plus one standard deviation
+y = st.norm.pdf(mean + std, mean, std)
+ax.vlines(mean + std, 0, y, colors='k', ls='dotted')
+plt.text(mean + std, y * 1.05, r'$\mu + \sigma$', ha='left')
 # Finish
 plt.show()
 plt.close()
 ```
 
-Of course, the only reason we know that the true mean and standard deviation of these numbers is 100 and 5, respectively, is because we've artificially created this data. However, if these were real-world measurements we wouldn't know these and so could only *estimate* them:
+Best Estimates
+==============
+Of course, the only reason we know that the true mean and true standard deviation of our numbers is 100 and 5, respectively, is because we've artificially created this data. If these were real-world measurements we wouldn't know these and so could only *estimate* them from the sample we have:
 
 ```{python}
-mean = np.mean(x)
+# Sample mean
+x_bar = np.mean(x)
+# Sample standard deviation
 s = np.std(x, ddof=1)  # Use ddof=1 to get the sample standard deviation
 
-print(rf'Sample mean = {mean:4.1f}; sample standard deviation = {s:3.1f}')
+print(rf'Sample mean = {x_bar:4.1f}; sample standard deviation = {s:3.1f}')
 ```
 
-So our *best estimate* for the **true mean** ($\bar x$) is 99.5 and for the **true standard deviation** it is 5.7. Note that we use the **sample standard deviation** ($s$) of a sample when trying to estimate the population standard deviation from that sample.
+So our best estimate for the true mean is the **sample mean**, $\bar x$, and is 99.5. Similarly, our best estimate for the true standard deviation is the **sample standard deviation**, $s$, and is 5.7.
 
-Now, having an estimate of the true mean is fine and all but we can do better: we can calculate a **confidence interval** (CI) in which we know the true mean will lie with a certain amount of confidence, $C$. For example, we can calculate the interval within which we are 95% sure that the true mean lies, in which case $C = 0.95$. If the population standard deviation is not known (which is the case in most real-world examples) then the formula for the confidence interval is:
+In summary: we use the *sample* mean and standard deviation when trying to estimate the population ('true') mean and standard deviation from that *sample*.
 
-$\left( \bar x + t^* \times\frac{s}{\sqrt{n}}, \bar x - t^* \times\frac{s}{\sqrt{n}} \right)$
+Note that we use *Roman* letters ($x$ and $s$) when referring to *sample* statistics and *Greek* letters ($\mu$ and $\sigma$) when referring to *population* statistics.
 
-where $\bar x$ is the **sample mean**, $s$ is the **sample standard deviation**, $n$ is the **sample size** and $t^*$ is the **critical value** as calculated using the *Student's t distribution*:
+Confidence Interval of the Mean of a Small Sample
+=================================================
+Now, having an estimate of the true population mean is fine and all but we can do better: we can calculate a **confidence interval**, $CI$, around our estimate and we can have a certain amount of confidence, $C$, that this interval will contain the true mean. If we want 95% confidence ($C = 0.95$), it means that there will be a 95% chance that the interval contains the true population mean. Expressed mathematically:
 
-$t^* = t_{\alpha} (df)$
+\begin{equation}
+    \tag{1}
+    P \left( \bar x - CI < \mu < \bar x + CI \right) = 0.95
+\end{equation}
 
-where $df$ is the number of **degree of freedom** and $\alpha$ is the **significance level**:
+In other words, there is a 95% chance that either:
 
-$df = n - 1$
+- Our sample mean plus the confidence interval will be larger than the population mean ($\mu < \bar x + CI$), or:
+- Our sample mean minus the confidence interval will be smaller than the population mean ($\bar x - CI < \mu$)
 
-$\alpha = \frac{1-C}{2}$
+Now that we know the definition of the confidence interval, how do we calculate it? We do so by using the __*t*-statistic__. The *t*-statistic is the difference between an estimated value and its true value divided by its standard error, so in our case it's the difference between our best estimate of the true mean (the sample mean, $\bar x$) and the actual true mean (the population mean, $\mu$) as a ratio of the standard error of our estimate of the mean ($SE_{\bar x}$):
 
-where $C$ is the **confidence level**, eg 0.95 for a 95% confidence interval.
+$$t = \dfrac{\bar x - \mu}{SE_{\bar x}}$$
 
-Here's how to calculate the CI for our example:
+Given that the standard error is the ratio of the standard deviation to the square root of the sample size ($SE = s / \sqrt{n}$ where $n$ is the sample size) we can re-write this as:
+
+\begin{equation}
+    \tag{2}
+    t = \dfrac{\bar x - \mu}{s / \sqrt{n}}
+\end{equation}
+
+The values of *t*-statistics follow a Student's *t*-distribution with $n - 1$ degrees of freedom. This is a useful fact, because it is known that we can calculate the endpoints of intervals of a Student's *t*-distribution that correspond to any proportion $C$ of that distribution. For example, we could calculate the __critical *t*-value__, $t^*$, that would correspond to the endpoints of the central interval of the *t*-distribution that contains $C = 0.95$ of it. This implies that, for a *t*-statistic $t$ randomly sampled from the *t*-distribution, we would have:
+
+$$P\left(-t^* < t < t^*\right) = 0.95$$
+
+Substituting in equation (2) - the equation for the *t*-statistic - we get:
+
+$$P\left(-t^* < \dfrac{\bar x - \mu}{s / \sqrt{n}} < t^*\right) = 0.95$$
+
+Re-arranging:
+
+$$P\left(\bar x - t^* \times \dfrac{s}{\sqrt{n}} < \mu < \bar x + t^* \times \dfrac{s}{\sqrt{n}}\right) = 0.95$$
+
+Comparing this with equation (1) - the definition of the 95% confidence interval - shows that:
+
+$$CI = t^* \times \dfrac{s}{\sqrt{n}}$$
+
+and so the full confidence interval for the sample mean $\bar x$ is:
+
+$$\bar x \pm t^* \times \dfrac{s}{\sqrt{n}}$$
+
+Of course, while this equation was derived for a 95% confidence interval, it is valid for any confidence level for which you calculate $t^*$.
+
+In our worked example, we already have $\bar x$, $s$ and $n$ so we just need to get $t^*$ from the Student's *t*-distribution:
 
 ```{python}
-from scipy.stats import t
-
-# Descriptive statistics
-n = len(x)  # Sample size
-x_bar = np.mean(x)  # Mean
-s = np.std(x, ddof=1)  # Sample standard deviation
-
-# Desired confidence level
-C = 0.95
-
-# Calculate confidence interval
-df = n - 1
-alpha = (1 - C) / 2
-t_star = t.ppf(alpha, df)
-ci_lower = x_bar + t_star * s / np.sqrt(n)
-ci_upper = x_bar - t_star * s / np.sqrt(n)
+# Sample size
+n = len(x)
+# Confidence level
+C = 0.95  # 95%
+# Significance level, α
+alpha = 1 - C
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Degrees of freedom
+dof = n - 1
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+t_star = st.t.ppf(q, dof)
+# Confidence interval
+ci_upper = x_bar + t_star * s / np.sqrt(n)
+ci_lower = x_bar - t_star * s / np.sqrt(n)
 
 print(f'We are 95% sure that the true mean lies between {ci_lower:4.1f} and {ci_upper:5.1f}')
 ```
 
-> Note 1: ideally, the sample size will be greater than 30 (it is 20 in this example)
+Confidence Interval of the Mean of a Large Sample
+=================================================
+If the sample size is 30 or greater, the sample standard deviation and the estimated population standard deviation will be close enough in value that you can consider them to be equal:
 
-> Note 2: the value of $t^*$ that corresponds to a 95% confidence level is ~2.093, ie approximately 2. If you want to use $t^* = 2$ in your calculation in order to keep it simple you will get almost exactly the same result ($t^* = 2$ corresponds to a confidence level of ~93.9997%).
+$$\sigma = s$$
 
-If the population standard deviation **IS** known then the formula for the confidence interval is:
-
-$\left( \bar x + z^* \times\frac{\sigma}{\sqrt{n}}, \bar x - z^* \times\frac{\sigma}{\sqrt{n}} \right)$
-
-where the **critical value**, $z^*$, is calculated using the **standard normal distribution**:
-
-$z^* = \Phi^{-1} (1 - \alpha)$
-
-As we know the value for the population standard deviation, we can use this formula on our example data as well:
+More specifically, for this sample size (or greater) the Bonferroni correction (aka the delta degrees of freedom, DDOF) whereby you subtract 1 from the sample size to get the degrees of freedom as part of the sample standard deviation calculation - but not as part of the population standard deviation calculation - is negligible. Is this a good assumption? Here's a quick example with $n = 30$ to get a feel:
 
 ```{python}
-# Descriptive statistics
-n = len(x)  # Sample size
-x_bar = np.mean(x)  # Mean
-sigma = 5  # Population standard deviation
+# Set a seed for the random number generator
+# (so we get the same random numbers each time)
+np.random.seed(20210710)
 
-# Desired confidence level
-C = 0.95
+# Create fake data
+mean = 100
+standard_deviation = 5
+sample_size = 30
+x = np.random.normal(mean, standard_deviation, sample_size)
 
-# Calculate confidence interval
-alpha = (1 - C) / 2
-z_star = norm.ppf(alpha)
-ci_lower_2 = x_bar + z_star * sigma / np.sqrt(n)
-ci_upper_2 = x_bar - z_star * sigma / np.sqrt(n)
+# Sample size
+n = len(x)
+# Sample mean
+x_bar = np.mean(x)
+# Population standard deviation
+σ = np.std(x, ddof=0)  # Use ddof=0 to estimate the population standard deviation
+# Sample standard deviation
+s = np.std(x, ddof=1)  # Use ddof=1 to get the sample standard deviation
 
-print(f'We are 95% sure that the true mean lies between {ci_lower_2:4.1f} and {ci_upper_2:5.1f}')
+print(f's = {np.round(s, 2)}; σ = {np.round(σ, 2)}')
 ```
 
-As you can see, the confidence interval as calculated using the population standard deviation (ie using $\sigma$) is narrower than when using the sample standard deviation (ie using $s$). This makes sense: if you know more information (ie the true standard deviation as opposed to an estimate) you would expect a better estimate of the true mean. Unfortunately, in most real-world situations you don't know the true standard deviation of the population.
+```{python, eval=FALSE, echo=FALSE}
+diff = s - σ
+mean = (s + σ) / 2
+print(diff)
+print(mean)
+print(diff / mean * 100)
+```
 
-> Note: for a confidence interval of 95% the $z^*$ value is ~1.960 which can be rounded up to 2 if there is a need to keep the calculation simple. This will give approximately the same end result because a $z^*$ value of 2 corresponds to ~95.44997% confidence.
+The difference between these values for the standard deviation is 0.09, or 1.70% of their mean value. So our assumption that they are equal can be considered valid if you think that this is sufficiently small. In the "Interval Width" section below we will see that using one or the other will lead to about a **6%** difference in the width of the confidence interval when the sample size is 30.
 
-Here are our results represented on a scatter plot:
+In addition to allowing us to set $\sigma$ equal to $s$, the fact that we now have a large sample size means that the **central limit theorem** becomes valid. This theorem states that:
+
+> The distribution of the sample means is approximately normally distributed
+
+So, the facts that we now:
+
+- Have a value for $\sigma$
+- Can assume the central limit theorem
+
+means that we don't have to use the *t*-statistic and the *t*-distribution, but can instead use the z-score and the normal distribution. This will produce tighter confidence intervals, which makes sense because larger sample sizes lead to more precise results.
+
+> Note that this means we are now producing our example data using the normal distribution and also calculating the confidence intervals using the normal distribution. Don't get confused by these two uses of the same thing. Also note that the central limit theorem can often apply even if the original data source is *not* normally distributed. So: sometimes confidence intervals are calculated on normally distributed data using the normal distribution, sometimes not.
+
+The derivation of the formula for this z-score-based confidence interval is the same as it was for the *t*-statistic-based confidence interval, changing only what is different between the two distributions:
+
+\begin{equation}
+    \tag{3}
+    z = \dfrac{\bar x - \mu}{\sigma / \sqrt{n}}
+\end{equation}
+
+Note the simularities between equation (3) and equation (2). Continuing on the derivation from there we have:
+
+$$P\left(-z^* < z < z^*\right) = 0.95$$
+
+where $z^*$ is the **critical z-score** that corresponds to the endpoints of the central interval of the normal distribution that contains $C$ of it, eg $C = 0.95$ for 95%. Substituting in equation (3) we get:
+
+$$P\left(-z^* < \dfrac{\bar x - \mu}{\sigma / \sqrt{n}} < z^*\right) = 0.95$$
+
+Re-arranging:
+
+$$P\left(\bar x - z^* \times \dfrac{\sigma}{\sqrt{n}} < \mu < \bar x + z^* \times \dfrac{\sigma}{\sqrt{n}}\right) = 0.95$$
+
+Comparing this with equation (1) - the definition of the 95% confidence interval - shows that:
+
+$$CI = z^* \times \dfrac{\sigma}{\sqrt{n}}$$
+
+and so the full confidence interval for the sample mean $\bar x$ is:
+
+$$\bar x \pm z^* \times \dfrac{\sigma}{\sqrt{n}}$$
+
+As the normal distribution is not dependent on the sample size (unlike the *t*-distribution), the value of $z^*$ for a 95% confidence level will remain constant. Let's calculate it:
+
+```{python}
+# Confidence level
+C = 0.95  # 95%
+# Significance level, α
+alpha = 1 - C
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Critical z-score, calculated using the percent-point function (aka the
+# quantile function) of the normal distribution
+z_star = st.norm.ppf(q)
+
+print(z_star)
+```
+
+This is why you will often see the endpoints of confidence intervals described as being "1.96 standard deviations away from the mean":
+
+$$\bar x \pm 1.96 \times \dfrac{\sigma}{\sqrt{n}}$$
+
+In our worked example, we already have $\bar x$, $\sigma$ and $n$ so we can calculate the confidence interval immediately:
+
+```{python}
+ci = x_bar + np.array(st.norm.interval(C)) * σ / np.sqrt(n)
+
+print(f'We are 95% sure that the true mean lies between {ci[0]:4.1f} and {ci[1]:5.1f}')
+```
+
+Interval Width
+==============
+In the above example with a 'large' (≥30) sample size, the endpoints of the confidence interval were calculated using the normal distribution and the estimated population standard deviation. If we instead use the *t*-distribution and the sample standard deviation (ie we use the formula for small sample sizes) we get:
+
+```{python}
+# Degrees of freedom
+dof = n - 1
+# Confidence interval
+ci = x_bar + np.array(st.t.interval(C, dof)) * s / np.sqrt(n)
+
+print(f'We are 95% sure that the true mean lies between {ci[0]:4.1f} and {ci[1]:5.1f}')
+```
+
+This confidence interval is very slightly wider than when we used the formula for large sample sizes:
+
+```{python}
+ci_z = x_bar + np.array(st.norm.interval(C)) * σ / np.sqrt(n)
+ci_width_z = ci_z[1] - ci_z[0]
+ci_t = x_bar + np.array(st.t.interval(C, dof)) * s / np.sqrt(n)
+ci_width_t = ci_t[1] - ci_t[0]
+
+print(f'Confidence interval widths: {ci_width_z:4.2f} vs {ci_width_t:4.2f}')
+```
+
+Presented visually:
 
 ```{python, eval=FALSE}
-# Formatting options for plots
-A = 6  # Want figure to be A6
+# Re-do the formatting options
+mpl.rcParams.update(mpl.rcParamsDefault)
+A = 6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
-#
-# Plot
-#
+# Create plot
 ax = plt.axes()
 y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
 ax.scatter(x, y, s=10)
 ax.set_title(r'95\% Confidence Intervals for the True Mean')
 # Vertical lines
 ax.axvline(100, c='k', ls='--')
-ax.vlines(ci_lower, 1, 2, colors='g', linestyles='dashed')
-ax.vlines(ci_upper, 1, 2, colors='g', linestyles='dashed')
-ax.vlines(ci_lower_2, 0, 1, colors='b', linestyles='dashed')
-ax.vlines(ci_upper_2, 0, 1, colors='b', linestyles='dashed')
+ax.vlines(ci_t[0], 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_t[1], 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_z[0], 0, 1, colors='b', linestyles='dashed')
+ax.vlines(ci_z[1], 0, 1, colors='b', linestyles='dashed')
 # Arrows
-ax.arrow(ci_lower, 1.5, ci_upper - ci_lower, 0, head_width=0.15, color='g', length_includes_head=True)
-ax.arrow(ci_upper, 1.5, ci_lower - ci_upper, 0, head_width=0.15, color='g', length_includes_head=True)
-ax.arrow(ci_lower_2, 0.5, ci_upper_2 - ci_lower_2, 0, head_width=0.15, color='b', length_includes_head=True)
-ax.arrow(ci_upper_2, 0.5, ci_lower_2 - ci_upper_2, 0, head_width=0.15, color='b', length_includes_head=True)
+kwargs = {'head_width': 0.15, 'color': 'g', 'length_includes_head': True}
+ax.arrow(ci_t[0], 1.5, ci_t[1] - ci_t[0], 0, **kwargs)
+ax.arrow(ci_t[1], 1.5, ci_t[0] - ci_t[1], 0, **kwargs)
+kwargs = {'head_width': 0.15, 'color': 'b', 'length_includes_head': True}
+ax.arrow(ci_z[0], 0.5, ci_z[1] - ci_z[0], 0, **kwargs)
+ax.arrow(ci_z[1], 0.5, ci_z[0] - ci_z[1], 0, **kwargs)
 # Remove axes and add arrows on x-axis
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
@@ -325,31 +463,32 @@ plt.show()
 ```
 
 ```{python, echo=FALSE, results='hide'}
-# Formatting options for plots
-A = 6  # Want figure to be A6
+# Re-do the formatting options
+mpl.rcParams.update(mpl.rcParamsDefault)
+A = 6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A) * 0.3])
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
-#
-# Plot
-#
+# Create plot
 ax = plt.axes()
 y = np.ones(len(x)) + np.random.uniform(-0.2, 0.2, size=len(x))
 ax.scatter(x, y, s=10)
 ax.set_title(r'95\% Confidence Intervals for the True Mean')
 # Vertical lines
 ax.axvline(100, c='k', ls='--')
-ax.vlines(ci_lower, 1, 2, colors='g', linestyles='dashed')
-ax.vlines(ci_upper, 1, 2, colors='g', linestyles='dashed')
-ax.vlines(ci_lower_2, 0, 1, colors='b', linestyles='dashed')
-ax.vlines(ci_upper_2, 0, 1, colors='b', linestyles='dashed')
+ax.vlines(ci_t[0], 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_t[1], 1, 2, colors='g', linestyles='dashed')
+ax.vlines(ci_z[0], 0, 1, colors='b', linestyles='dashed')
+ax.vlines(ci_z[1], 0, 1, colors='b', linestyles='dashed')
 # Arrows
-ax.arrow(ci_lower, 1.5, ci_upper - ci_lower, 0, head_width=0.15, color='g', length_includes_head=True)
-ax.arrow(ci_upper, 1.5, ci_lower - ci_upper, 0, head_width=0.15, color='g', length_includes_head=True)
-ax.arrow(ci_lower_2, 0.5, ci_upper_2 - ci_lower_2, 0, head_width=0.15, color='b', length_includes_head=True)
-ax.arrow(ci_upper_2, 0.5, ci_lower_2 - ci_upper_2, 0, head_width=0.15, color='b', length_includes_head=True)
+kwargs = {'head_width': 0.15, 'color': 'g', 'length_includes_head': True}
+ax.arrow(ci_t[0], 1.5, ci_t[1] - ci_t[0], 0, **kwargs)
+ax.arrow(ci_t[1], 1.5, ci_t[0] - ci_t[1], 0, **kwargs)
+kwargs = {'head_width': 0.15, 'color': 'b', 'length_includes_head': True}
+ax.arrow(ci_z[0], 0.5, ci_z[1] - ci_z[0], 0, **kwargs)
+ax.arrow(ci_z[1], 0.5, ci_z[0] - ci_z[1], 0, **kwargs)
 # Remove axes and add arrows on x-axis
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
@@ -367,23 +506,209 @@ ax.legend()
 # Finish
 plt.subplots_adjust(left=0.1, bottom=0.2, right=0.9, top=0.8)
 plt.show()
+plt.close()
 ```
 
-The true mean (100) lies inside both of the confidence intervals.
+Notice that the true mean (100) lies inside both of the confidence intervals.
+
+This difference in the widths of the confidence intervals is about 6% of their mean:
+
+```{python}
+diff = ci_width_t - ci_width_z
+mean = (ci_width_t + ci_width_z) / 2
+
+print(f'Difference relative to the mean: {diff / mean * 100:4.2f}%')
+```
+
+This won't always be the case, it just happens to be true for this random sample of 30 numbers drawn from a normal distribution with a mean of 100 and standard deviation of 5. In general, however, a confidence interval calculated using the *t*-statistic and the *t*-distribution ('the small sample formula') will always be wider than one calculated using the z-score and the normal distribution ('the large sample formula'). As already mentioned, this makes sense: for smaller samples the margins of error are larger and so the associated statistics are less precise. Said another way: if you know more information (eg if you use an estimate of the true standard deviation as opposed to the sample standard deviation) you would expect a better estimate of the true mean.
+
+Here's a demonstration of the above: for each sample size from 2 to 40, confidence intervals for the mean are calculated using both the 'small sample' and the 'large sample' method and the difference between the widths of these intervals (as a percentage of the mean of the widths) is plotted:
+
+```{python, eval=FALSE}
+# Initialise lists that will be plotted
+sample_sizes = []
+ci_differences = []
+
+# Iterate over various sample sizes
+for n in range(2, 41):
+    # Create fake data
+    mean = 100
+    standard_deviation = 5
+    sample_size = n
+    x = np.random.normal(mean, standard_deviation, sample_size)
+
+    # Sample size
+    n = len(x)
+    # Sample mean
+    x_bar = np.mean(x)
+
+    # Confidence level
+    C = 0.95  # 95%
+    # Significance level, α
+    alpha = 1 - C
+    # Number of tails
+    tails = 2
+    # Quantile (the cumulative probability)
+    q = 1 - (alpha / tails)
+
+    # Degrees of freedom
+    dof = n - 1
+    # Critical t-statistic, calculated using the percent-point function (aka
+    # the quantile function) of the t-distribution
+    t_star = st.t.ppf(q, dof)
+    # Sample standard deviation
+    s = np.std(x, ddof=1)  # Use ddof=1 to get the sample standard deviation
+    # Confidence interval
+    ci_upper = x_bar + t_star * s / np.sqrt(n)
+    ci_lower = x_bar - t_star * s / np.sqrt(n)
+    ci_width_t = ci_upper - ci_lower
+
+    # Critical z-score, calculated using the percent-point function (aka the
+    # quantile function) of the normal distribution
+    z_star = st.norm.ppf(q)
+    # Population standard deviation
+    σ = np.std(x, ddof=0)  # Use ddof=0 to estimate the population SD
+    # Confidence interval
+    ci_upper = x_bar + z_star * σ / np.sqrt(n)
+    ci_lower = x_bar - z_star * σ / np.sqrt(n)
+    ci_width_z = ci_upper - ci_lower
+
+    # Calculate the difference in the widths of the confidence intervals
+    diff = ci_width_t - ci_width_z
+    mean = (ci_width_t + ci_width_z) / 2
+    # print(n, diff, diff / mean * 100)
+    sample_sizes.append(n)
+    ci_differences.append(diff / mean * 100)
+
+# Re-do the formatting options
+mpl.rcParams.update(mpl.rcParamsDefault)
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create plot
+ax = plt.axes()
+ax.axhline(6, c='0.7', ls='--')
+ax.vlines(30, 0, 6, colors='0.7', ls='--')
+ax.scatter(sample_sizes, ci_differences, c='k', s=5)
+# Labels
+ax.set_title('The Difference Between the Methods Decreases as $n$ Increases')
+ax.set_ylabel(r"\% Difference Between Confidence Intervals' Widths")
+ax.set_xlabel('Sample Size, $n$')
+# Axes' settings
+ax.set_ylim(0, max(ci_differences) * 1.05)
+ax.set_xlim(0, max(sample_sizes))
+# Text
+s = 'At around $n = 30$, the\n difference drops to below 6\%'
+ax.text(30, 15, s, ha='center')
+
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Initialise lists that will be plotted
+sample_sizes = []
+ci_differences = []
+
+# Iterate over various sample sizes
+for n in range(2, 41):
+    # Create fake data
+    mean = 100
+    standard_deviation = 5
+    sample_size = n
+    x = np.random.normal(mean, standard_deviation, sample_size)
+
+    # Sample size
+    n = len(x)
+    # Sample mean
+    x_bar = np.mean(x)
+
+    # Confidence level
+    C = 0.95  # 95%
+    # Significance level, α
+    alpha = 1 - C
+    # Number of tails
+    tails = 2
+    # Quantile (the cumulative probability)
+    q = 1 - (alpha / tails)
+
+    # Degrees of freedom
+    dof = n - 1
+    # Critical t-statistic, calculated using the percent-point function (aka
+    # the quantile function) of the t-distribution
+    t_star = st.t.ppf(q, dof)
+    # Sample standard deviation
+    s = np.std(x, ddof=1)  # Use ddof=1 to get the sample standard deviation
+    # Confidence interval
+    ci_upper = x_bar + t_star * s / np.sqrt(n)
+    ci_lower = x_bar - t_star * s / np.sqrt(n)
+    ci_width_t = ci_upper - ci_lower
+
+    # Critical z-score, calculated using the percent-point function (aka the
+    # quantile function) of the normal distribution
+    z_star = st.norm.ppf(q)
+    # Population standard deviation
+    σ = np.std(x, ddof=0)  # Use ddof=0 to estimate the population SD
+    # Confidence interval
+    ci_upper = x_bar + z_star * σ / np.sqrt(n)
+    ci_lower = x_bar - z_star * σ / np.sqrt(n)
+    ci_width_z = ci_upper - ci_lower
+
+    # Calculate the difference in the widths of the confidence intervals
+    diff = ci_width_t - ci_width_z
+    mean = (ci_width_t + ci_width_z) / 2
+    # print(n, diff, diff / mean * 100)
+    sample_sizes.append(n)
+    ci_differences.append(diff / mean * 100)
+
+# Re-do the formatting options
+mpl.rcParams.update(mpl.rcParamsDefault)
+A = 6  # Want figure to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+
+# Create plot
+ax = plt.axes()
+ax.axhline(6, c='0.7', ls='--')
+ax.vlines(30, 0, 6, colors='0.7', ls='--')
+ax.scatter(sample_sizes, ci_differences, c='k', s=5)
+# Labels
+ax.set_title('The Difference Between the Methods Decreases as $n$ Increases')
+ax.set_ylabel(r"\% Difference Between Confidence Intervals' Widths")
+ax.set_xlabel('Sample Size, $n$')
+# Axes' settings
+ax.set_ylim(0, max(ci_differences) * 1.05)
+ax.set_xlim(0, max(sample_sizes))
+# Text
+s = 'At around $n = 30$, the\n difference drops to below 6\%'
+ax.text(30, 15, s, ha='center')
+
+plt.show()
+```
+
+In other words, for sample sizes below 30, it's very important to not use the normal distribution when calculating confidence intervals because the central limit theorem doesn't hold and this makes a big difference to the result. For sample sizes of 30 or greater, the two methods will yield similar results but the intervals calculated using the normal distribution will always be tighter than those calculated using the *t*-distribution. As the central limit theorem holds for these sample sizes, this is the method that should be used.
 
 Sample Size Calculations
 ========================
 If you want to set up an experiment, how many samples should you include?
 
-Let's imagine you are running an experiment with two populations - a control group and an experimental group - and take one measurement from each participant. This will allow you to calculate a mean, and a confidence interval for that mean, for that variable for each group. Now, if the two confidence intervals for the two means were to be so large that they overlapped each other we would have a problem; we couldn't be sure that the means were different or even which one was larger! Thus, we want to be able to ensure that, if the means of our groups are indeed different, our confidence intervals will be smaller than the difference between them. Of course, we can't control what the **sample standard deviation** ($s$) or the difference between the means of our results are going to be beforehand, but what we can do is estimate what they might be (and what a **meaningful difference between the means** ($\delta$) would actually be) and plug those into the formula for the width of a confidence interval:
+Let's imagine you are running an experiment with two populations - a control group and an experimental group - and take one measurement from each participant in both groups. This will allow you to calculate a mean, and a confidence interval for that mean, for that variable for each group. Of course, you don't know if there is a *true* difference between the two groups or not, but if there **is** a difference you want to be able to detect it (and if there **isn't** a difference you want to have confidence in your inability to detect one). As such, having confidence intervals that are too wide could be a problem: if they overlap we can't be sure that the means are different or not, or even if one is larger! Thus, we want to be able to ensure that, if the means of our groups are indeed different, our confidence intervals will be smaller than the difference between them. Of course, we can't control what the **sample standard deviation** ($s$) or the difference between the means of our results are going to be beforehand, but what we can do is *estimate* what they might be (and what a **meaningful difference between the means** ($\delta$) would actually be) and plug those into the formula for the width of a confidence interval:
 
-$t^* \times\frac{s}{\sqrt{n}} < \delta$
+$$t^* \times\dfrac{s}{\sqrt{n}} < \delta$$
 
-In other words, we want *the width of the confidence intervals to be smaller than the smallest meaningful difference* between the mean. This can be re-arranged to be in terms of the **sample size** ($n$):
+In other words, we want *the width of the confidence interval to be smaller than the smallest meaningful difference* between the means. This can be re-arranged to be in terms of the **sample size** ($n$):
 
-$n > \left( t^* \times\frac{s}{\delta}\right)^2$
+$$n > \left( t^* \times\frac{s}{\delta}\right)^2$$
 
 The above formula can be used as a guide when choosing the sample size for an experiment.
+
+Reference
+=========
+Sullivan L. Confidence Intervals [Internet]. Boston University School of Public Health; Available from [here](https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_confidence_intervals/bs704_confidence_intervals_print.html)
 
 [⇦ Back](../../python.html)
 
