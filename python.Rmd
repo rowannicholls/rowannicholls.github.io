@@ -74,7 +74,7 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 2. [Symbols, Line Styles and Colours](python/graphs/symbols_linestyles_colours.html)
     - [Colours that Look Good in Figures](python/graphs/colours_good_figures.html)
 3. [Working with Time-Based Data](python/graphs/time_data.html)
-4. Graphing using the 'state machine interface' (aka the pyplot style) _- This is quicker than the object-orientated style for simple plots but it gives you less control_
+4. Graphing using the 'state machine interface' (aka the pyplot style) _- This is quicker than the object-orientated style for simple plots but it gives you less control:_
     - [Line Plots](python/graphs/plt_based/lineplots.html)
     - [Scatter Plots](python/graphs/plt_based/scatterplots.html)
     - [Bland-Altman Plots](python/graphs/plt_based/bland_altman.html)
@@ -87,7 +87,7 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
     + [Histograms](python/graphs/plt_based/histograms.html)
     + [Pie Charts](python/graphs/plt_based/pie_charts.html)
     - [Receiver Operating Characteristic (ROC) Curves](python/graphs/plt_based/roc_curves.html)
-5. Graphing using axes objects (aka the object-orientated style) _- This is more complicated than the pyplot style but it gives you more control_
+5. Graphing using axes objects (aka the object-orientated style) _- This is more complicated than the pyplot style but it gives you more control:_
     - [Line Plots](python/graphs/ax_based/lineplots.html)
     - [Scatter Plots](python/graphs/ax_based/scatterplots.html)
     - [Bland-Altman Plots](python/graphs/ax_based/bland_altman.html)
@@ -101,15 +101,15 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
     - [Histograms](python/graphs/ax_based/histograms.html)
     - [Pie Charts](python/graphs/ax_based/pie_charts.html)
     - [Receiver Operating Characteristic (ROC) Curves](python/graphs/ax_based/roc_curves.html)
-6. Graphing directly from Pandas data frames _- This is essentially the same as the above methods because Pandas uses Matplotlib in the background_
+6. Graphing directly from Pandas data frames _- This is essentially the same as the above methods because Pandas uses Matplotlib in the background:_
     - [Line, Scatter & Box Plots, Histograms, Pie Charts and Sub-Plots](python/graphs/pandas/line_scatter_box_histograms_pie_subplots.html)
     - [Bar Plots](python/graphs/pandas/bar_plots.html)
-7. Axes and Labels
+7. Axes and Labels:
     - [LaTeX in Labels](python/graphs/axes_and_labels/latex_in_labels.html)
     - [Changing the Font](python/graphs/axes_and_labels/changing_the_font.html)
 
 ## Curve Fitting
-1. Linear Functions
+1. Linear Functions:
     - [Comparison of Methods](python/curve_fitting/linear_comparison.html)
     - [Linear Regression](python/curve_fitting/linear_regression.html)
 2. [Exponential Functions](python/curve_fitting/exponential.html)
@@ -121,33 +121,37 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 3. [Combinations and Permutations](python/statistics/combinations_permutations.html)
 4. [Effect Size](python/statistics/effect_size.html)
 5.  Hypothesis Testing:
-    - Regression
+    - Regression:
         + [Constant Regression](python/statistics/hypothesis_testing/constant_regression.html)
         + [Simple Linear Regression](python/statistics/hypothesis_testing/simple_linear_regression.html)
         + [Multiple Linear Regression](python/statistics/hypothesis_testing/multiple_linear_regression.html)
         + [Quadratic Regression](python/statistics/hypothesis_testing/quadratic_regression.html)
-    - *t*-Tests
+        - [Passing–Bablok Regression](python/statistics/hypothesis_testing/passing_bablok.html)
+    - *t*-Tests:
         - [One-Sample *t*-Test](python/statistics/hypothesis_testing/one_sample_t_test.html)
         - [Unpaired Two-Sample *t*-Test](python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html)
-        - Two One-Sided *t*-Test (TOST)
+        - Two One-Sided *t*-Test (TOST):
             + [Unpaired](python/statistics/hypothesis_testing/tost_unpaired.html)
             + [Paired](python/statistics/hypothesis_testing/tost_paired.html)
     - [Mann-Whitney *U* Test](python/statistics/hypothesis_testing/mann_whitney_u_test.html)
         + [Comparison of Mann-Whitney Methods](python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html)
     - [ANOVA](python/statistics/hypothesis_testing/anova.html)
     - [Chi-Squared Tests](python/statistics/hypothesis_testing/chi_squared.html)
-6. Agreement (Accuracy & Precision):
-    - [Passing–Bablok Regression](python/statistics/agreement/passing_bablok.html)
-    - [Correlation Coefficients](python/statistics/agreement/correlation_coefficients.html)
-    - [Intraclass Correlation Coefficient](python/statistics/agreement/intraclass_correlation.html)
+6. Agreement *(incl accuracy, precision (repeatability and reproducibility), variability and equivalence):*
+    - [Cohen’s Kappa](python/statistics/agreement/cohens_kappa.html)
     - [Repeatability Coefficient](python/statistics/agreement/repeatability_coefficient.html)
     - [Coefficient of Variation](python/statistics/agreement/coefficient_of_variation.html)
+    - Correlation Coefficients:
+        - [Correlation Coefficients](python/statistics/agreement/correlation_coefficients.html)
+        <!-- - Pearson Correlation Coefficient, *r* -->
+        <!-- - Spearman's Rank Correlation Coefficient, *ρ* -->
+        <!-- - Concordance Correlation Coefficient (CCC) -->
+        - [Intraclass Correlation Coefficient (ICC)](python/statistics/agreement/intraclass_correlation.html)
     - Bland-Altman Analysis:
         - [Traditional Bland-Altman Analysis](python/statistics/agreement/bland_altman.html) (native space)
         - [Giavarina Analysis](python/statistics/agreement/giavarina.html) (percentage space)
         - [Euser Analysis](python/statistics/agreement/euser.html) (log 10 space)
-    - [Cohen’s Kappa](python/statistics/agreement/cohens_kappa.html)
-7. Risk
+7. Risk:
     - [Odds Ratio](python/statistics/risk/odds_ratio.html)
     - [Hazard Ratio](python/statistics/risk/hazard_ratio.html)
 

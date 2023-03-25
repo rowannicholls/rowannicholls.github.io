@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 This type of regression analysis was first published in Passing & Bablok (1983)<sup>1</sup>. As the [Wikipedia article](https://en.wikipedia.org/wiki/Passing%E2%80%93Bablok_regression) states:
 
 > Passing–Bablok regression is a statistical method for non-parametric regression analysis suitable for method comparison studies.
@@ -63,23 +68,22 @@ plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 ax = plt.axes()
-ax.set(
-    title='The Raw Data',
-    xlabel='Method A',
-    ylabel='Method B'
-)
+ax.set_title('The Raw Data')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
 # Scatter plot
 ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 # Get axis limits
 left, right = plt.xlim()
-top, bottom = plt.ylim()
-# Keep current axis limits
-ax.set_xlim(left, right)
-ax.set_ylim(top, bottom)
+bottom, top = plt.ylim()
+# Change axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, top)
 # Reference line
-ax.plot(
-    [left, right], [left, right], c='grey', ls='--', label='Reference line'
-)
+label = 'Reference line'
+ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
+# Set aspect ratio
+ax.set_aspect('equal')
 # Legend
 ax.legend(frameon=False)
 # Show
@@ -97,23 +101,22 @@ plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 ax = plt.axes()
-ax.set(
-    title='The Raw Data',
-    xlabel='Method A',
-    ylabel='Method B'
-)
+ax.set_title('The Raw Data')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
 # Scatter plot
 ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 # Get axis limits
 left, right = plt.xlim()
-top, bottom = plt.ylim()
-# Keep current axis limits
-ax.set_xlim(left, right)
-ax.set_ylim(top, bottom)
+bottom, top = plt.ylim()
+# Change axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, top)
 # Reference line
-ax.plot(
-    [left, right], [left, right], c='grey', ls='--', label='Reference line'
-)
+label = 'Reference line'
+ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
+# Set aspect ratio
+ax.set_aspect('equal')
 # Legend
 ax.legend(frameon=False)
 # Show
@@ -219,23 +222,20 @@ We can again visualise this, with the line-of-best-fit and its confidence interv
 # Plot
 #
 ax = plt.axes()
-ax.set(
-    title='Passing-Bablok Regression',
-    xlabel='Method A',
-    ylabel='Method B'
-)
+ax.set_title('Passing-Bablok Regression')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
 # Scatter plot
 ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 # Get axis limits
 left, right = plt.xlim()
-top, bottom = plt.ylim()
-# Keep current axis limits
-ax.set_xlim(left, right)
-ax.set_ylim(top, bottom)
+bottom, top = plt.ylim()
+# Change axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, top)
 # Reference line
-ax.plot(
-    [left, right], [left, right], c='grey', ls='--', label='Reference line'
-)
+label = 'Reference line'
+ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
 # Passing-Bablok regression line
 x = np.array([left, right])
 y = gradient_est * x + int_est
@@ -244,15 +244,13 @@ ax.plot(x, y, label=f'{gradient_est:4.2f}x + {int_est:4.2f}')
 x = np.array([left, right])
 y_lb = gradient_lb * x + int_lb
 y_ub = gradient_ub * x + int_ub
-ax.plot(
-    x, y_ub, c='tab:blue', alpha=0.2,
-    label=f'Upper CI: {gradient_ub:4.2f}x + {int_ub:4.2f}'
-)
-ax.plot(
-    x, y_lb, c='tab:blue', alpha=0.2,
-    label=f'Lower CI: {gradient_lb:4.2f}x + {int_lb:4.2f}'
-)
+label = f'Upper CI: {gradient_ub:4.2f}x + {int_ub:4.2f}'
+ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
+label = f'Lower CI: {gradient_lb:4.2f}x + {int_lb:4.2f}'
+ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
 ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+# Set aspect ratio
+ax.set_aspect('equal')
 # Legend
 ax.legend(frameon=False)
 # Show
@@ -264,23 +262,20 @@ plt.show()
 # Plot
 #
 ax = plt.axes()
-ax.set(
-    title='Passing-Bablok Regression',
-    xlabel='Method A',
-    ylabel='Method B'
-)
+ax.set_title('Passing-Bablok Regression')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
 # Scatter plot
 ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 # Get axis limits
 left, right = plt.xlim()
-top, bottom = plt.ylim()
-# Keep current axis limits
-ax.set_xlim(left, right)
-ax.set_ylim(top, bottom)
+bottom, top = plt.ylim()
+# Change axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, top)
 # Reference line
-ax.plot(
-    [left, right], [left, right], c='grey', ls='--', label='Reference line'
-)
+label = 'Reference line'
+ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
 # Passing-Bablok regression line
 x = np.array([left, right])
 y = gradient_est * x + int_est
@@ -289,15 +284,13 @@ ax.plot(x, y, label=f'{gradient_est:4.2f}x + {int_est:4.2f}')
 x = np.array([left, right])
 y_lb = gradient_lb * x + int_lb
 y_ub = gradient_ub * x + int_ub
-ax.plot(
-    x, y_ub, c='tab:blue', alpha=0.2,
-    label=f'Upper CI: {gradient_ub:4.2f}x + {int_ub:4.2f}'
-)
-ax.plot(
-    x, y_lb, c='tab:blue', alpha=0.2,
-    label=f'Lower CI: {gradient_lb:4.2f}x + {int_lb:4.2f}'
-)
+label = f'Upper CI: {gradient_ub:4.2f}x + {int_ub:4.2f}'
+ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
+label = f'Lower CI: {gradient_lb:4.2f}x + {int_lb:4.2f}'
+ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
 ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+# Set aspect ratio
+ax.set_aspect('equal')
 # Legend
 ax.legend(frameon=False)
 # Show
@@ -394,23 +387,20 @@ beta, alpha = passing_bablok(df['Method A'], df['Method B'])
 # Plot
 #
 ax = plt.axes()
-ax.set(
-    title='Passing-Bablok Regression',
-    xlabel='Method A',
-    ylabel='Method B'
-)
+ax.set_title('Passing-Bablok Regression')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
 # Scatter plot
 ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 # Get axis limits
 left, right = plt.xlim()
-top, bottom = plt.ylim()
-# Keep current axis limits
-ax.set_xlim(left, right)
-ax.set_ylim(top, bottom)
+bottom, top = plt.ylim()
+# Change axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, top)
 # Reference line
-ax.plot(
-    [left, right], [left, right], c='grey', ls='--', label='Reference line'
-)
+label = 'Reference line'
+ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
 # Passing-Bablok regression line
 x = np.array([left, right])
 y = beta[0] * x + alpha[0]
@@ -419,15 +409,13 @@ ax.plot(x, y, label=f'{beta[0]:4.2f}x + {alpha[0]:4.2f}')
 x = np.array([left, right])
 y_lb = beta[1] * x + alpha[1]
 y_ub = beta[2] * x + alpha[2]
-ax.plot(
-    x, y_ub, c='tab:blue', alpha=0.2,
-    label=f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
-)
-ax.plot(
-    x, y_lb, c='tab:blue', alpha=0.2,
-    label=f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
-)
+label = f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
+ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
+label = f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
+ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
 ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+# Set aspect ratio
+ax.set_aspect('equal')
 # Legend
 ax.legend(frameon=False)
 # Show
@@ -454,23 +442,20 @@ beta, alpha = passing_bablok(df['Method A'], df['Method B'])
 # Plot
 #
 ax = plt.axes()
-ax.set(
-    title='Passing-Bablok Regression',
-    xlabel='Method A',
-    ylabel='Method B'
-)
+ax.set_title('Passing-Bablok Regression')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
 # Scatter plot
 ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
 # Get axis limits
 left, right = plt.xlim()
-top, bottom = plt.ylim()
-# Keep current axis limits
-ax.set_xlim(left, right)
-ax.set_ylim(top, bottom)
+bottom, top = plt.ylim()
+# Change axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, top)
 # Reference line
-ax.plot(
-    [left, right], [left, right], c='grey', ls='--', label='Reference line'
-)
+label = 'Reference line'
+ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
 # Passing-Bablok regression line
 x = np.array([left, right])
 y = beta[0] * x + alpha[0]
@@ -479,15 +464,13 @@ ax.plot(x, y, label=f'{beta[0]:4.2f}x + {alpha[0]:4.2f}')
 x = np.array([left, right])
 y_lb = beta[1] * x + alpha[1]
 y_ub = beta[2] * x + alpha[2]
-ax.plot(
-    x, y_ub, c='tab:blue', alpha=0.2,
-    label=f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
-)
-ax.plot(
-    x, y_lb, c='tab:blue', alpha=0.2,
-    label=f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
-)
+label = f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
+ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
+label = f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
+ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
 ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+# Set aspect ratio
+ax.set_aspect('equal')
 # Legend
 ax.legend(frameon=False)
 # Show
