@@ -279,6 +279,12 @@ ci_lower = x_bar - t_star * s / np.sqrt(n)
 print(f'We are 95% sure that the true mean lies between {ci_lower:4.1f} and {ci_upper:5.1f}')
 ```
 
+A more correct format for reporting the confidence interval is: **\<answer\> \<unit\>, 95% CI [\<lower limit\>, \<upper limit\>]**
+
+```{python}
+print(f'Mean = {x_bar:.1f}, 95% CI [{ci_lower:.1f}, {ci_upper:.1f}]')
+```
+
 Confidence Interval of the Mean of a Large Sample
 =================================================
 If the sample size is 30 or greater, the sample standard deviation and the estimated population standard deviation will be close enough in value that you can consider them to be equal:
@@ -390,6 +396,12 @@ ci = x_bar + np.array(st.norm.interval(C)) * σ / np.sqrt(n)
 print(f'We are 95% sure that the true mean lies between {ci[0]:4.1f} and {ci[1]:5.1f}')
 ```
 
+In the more correct format:
+
+```{python}
+print(f'Mean = {x_bar:.1f}, 95% CI [{ci[0]:.1f}, {ci[1]:.1f}]')
+```
+
 Interval Width
 ==============
 In the above example with a 'large' (≥30) sample size, the endpoints of the confidence interval were calculated using the normal distribution and the estimated population standard deviation. If we instead use the *t*-distribution and the sample standard deviation (ie we use the formula for small sample sizes) we get:
@@ -400,7 +412,7 @@ dof = n - 1
 # Confidence interval
 ci = x_bar + np.array(st.t.interval(C, dof)) * s / np.sqrt(n)
 
-print(f'We are 95% sure that the true mean lies between {ci[0]:4.1f} and {ci[1]:5.1f}')
+print(f'Mean = {x_bar:.1f}, 95% CI [{ci[0]:.1f}, {ci[1]:.1f}]')
 ```
 
 This confidence interval is very slightly wider than when we used the formula for large sample sizes:

@@ -29,23 +29,19 @@ In Python, the intraclass correlation coefficient (ICC) can be calculated using 
 
 Note also that an [*inter*class correlation coefficient](https://en.wikipedia.org/wiki/Interclass_correlation) is a thing that exists; it is similar but different.
 
-Set-Up
-======
-As mentioned, the `pingouin` library will be used to calculate the ICC. This can be installed from the terminal with:
+Setup
+=====
+As mentioned, the `pingouin` library will be used to calculate the ICC, and the `pandas` library will also be needed. These can be installed from the terminal with:
 
 ```
-python3.9 -m pip install pingouin
+python3.11 -m pip install pingouin
+python3.11 -m pip install pandas
 ```
 
-After this it can be imported into Python with:
+After this they can be imported into Python scripts with:
 
 ```{python}
 import pingouin as pg
-```
-
-The Pandas library will also be needed:
-
-```{python}
 import pandas as pd
 ```
 
@@ -78,11 +74,13 @@ In order to use the `intraclass_corr()` function we need to give it four inputs:
 The first of these is a dataframe and the other three are strings (as they are column names). In our example, the things being rated are **Wines**, the raters are the **Judges** and the ratings are the **Scores**, so here's how to calculate the ICC:
 
 ```{python}
-icc = pg.intraclass_corr(data=data, targets='Wine', raters='Judge', ratings='Scores')
+results = pg.intraclass_corr(data=data, targets='Wine', raters='Judge', ratings='Scores')
 
+# Pandas display options
 pd.set_option('display.max_columns', 8)
 pd.set_option('display.width', 200)
-print(icc)
+# Show results
+print(results)
 ```
 
 This output is very verbose! You get a whole table when you probably only want one number. Here's how to choose which of the six ICC values you want:
@@ -99,9 +97,10 @@ The different types of ICC models are detailed briefly on [the Wikipedia page](h
 For this example the Real Statistics page uses ICC2 (**single random raters**) which is correct for this example: a group of four judges does not represent the entire population of people who could rate wine, each judge tasted all 8 wines and we want to know the reliability of the raters as individuals:
 
 ```{python}
-icc = icc.set_index('Description')
+results = results.set_index('Description')
+icc = results.loc['Single random raters', 'ICC']
 
-print(icc.loc['Single random raters', 'ICC'].round(3))
+print(icc.round(3))
 ```
 
 This is the same value as in the original example.
@@ -111,10 +110,10 @@ Confidence Interval
 The function also gives the 95% confidence interval:
 
 ```{python}
-lower_ci = icc.loc['Single random raters', 'CI95%'][0]
-upper_ci = icc.loc['Single random raters', 'CI95%'][1]
+lower_ci = results.loc['Single random raters', 'CI95%'][0]
+upper_ci = results.loc['Single random raters', 'CI95%'][1]
 
-print(f'95% confidence interval: {lower_ci} - {upper_ci}')
+print(f'ICC = {icc:.3f}, 95% CI [{lower_ci}, {upper_ci}]')
 ```
 
 How the Function Works
@@ -123,7 +122,7 @@ The source code for this function might be useful if you want to take a look at 
 
 Interpretation
 ==============
-Again we can look at the Wikipedia page for help, as it gives this guide for interpreting the ICC (re-produced from Cicchetti (1994)<sup>[1]</sup>):
+Again we can look at the Wikipedia page for help, as it gives this guide for interpreting the ICC (re-produced from Cicchetti<sup>1</sup>):
 
 | Inter-rater agreement | Intraclass correlation |
 |-----------------------|------------------------|
@@ -132,7 +131,7 @@ Again we can look at the Wikipedia page for help, as it gives this guide for int
 | Good                  | Between 0.60 and 0.74  |
 | Excellent             | Between 0.75 and 1.00  |
 
-...plus this alternative one from Koo and Li (2016)<sup>[2]</sup>:
+...plus this alternative one from Koo and Li<sup>2</sup>:
 
 | Inter-rater agreement | Intraclass correlation |
 |-----------------------|------------------------|
@@ -141,8 +140,8 @@ Again we can look at the Wikipedia page for help, as it gives this guide for int
 | Good                  | Between 0.75 and 0.90  |
 | Excellent             | Between 0.90 and 1.00  |
 
-<sup>[1]</sup>Cicchetti D. Guidelines, criteria, and rules of thumb for evaluating normed and standardized assessment instruments in psychology. Psychological Assessment. 1994;6(4):284-290  
-<sup>[2]</sup>2. Koo T, Li M. A Guideline of Selecting and Reporting Intraclass Correlation Coefficients for Reliability Research. Journal of Chiropractic Medicine. 2016;15(2):155-163
+1. Cicchetti D. Guidelines, criteria, and rules of thumb for evaluating normed and standardized assessment instruments in psychology. Psychological Assessment. 1994;6(4):284-290
+2. Koo T, Li M. A Guideline of Selecting and Reporting Intraclass Correlation Coefficients for Reliability Research. Journal of Chiropractic Medicine. 2016;15(2):155-163
 
 These can be coded up into functions as follows:
 
@@ -178,15 +177,17 @@ def interpret_icc_koo_li(icc):
 Our result of 0.728 can now be interpreted automatically:
 
 ```{python}
-agreement = interpret_icc_cicchetti(icc.loc['Single random raters', 'ICC'])
+icc = results.loc['Single random raters', 'ICC']
+agreement = interpret_icc_cicchetti(icc)
 
-print(f"The inter-rate agreement ({icc.loc['Single random raters', 'ICC'].round(3)}) is {agreement}")
+print(f"An inter-rater agreement of {icc.round(3)} is {agreement}")
 ```
 
 ```{python}
-agreement = interpret_icc_koo_li(icc.loc['Single random raters', 'ICC'])
+icc = results.loc['Single random raters', 'ICC']
+agreement = interpret_icc_koo_li(icc)
 
-print(f"The inter-rate agreement ({icc.loc['Single random raters', 'ICC'].round(3)}) is {agreement}")
+print(f"An inter-rater agreement of {icc.round(3)} is {agreement}")
 ```
 
 Variations
@@ -198,12 +199,11 @@ If you are only interested in the agreement amongst a subset of the raters you c
 
 ```{python}
 data = data[data['Judge'].isin(['A', 'B'])]
-icc = pg.intraclass_corr(
-    data=data, targets='Wine', raters='Judge', ratings='Scores'
-)
-icc = icc.set_index('Type')
+results = pg.intraclass_corr(data, 'Wine', 'Judge', 'Scores')
+results = results.set_index('Type')
+icc = results.loc['ICC1', 'ICC']
 
-print(icc.loc['ICC1', 'ICC'].round(3))
+print(icc.round(3))
 ```
 
 Wide-Format
@@ -211,12 +211,13 @@ Wide-Format
 Often you will have raw data that is in **wide format**:
 
 ```{python}
-df = pd.DataFrame({
+dct = {
     'Judge A': [1, 1, 3, 6, 6, 7, 8, 9],
     'Judge B': [2, 3, 8, 4, 5, 5, 7, 9],
     'Judge C': [0, 3, 1, 3, 5, 6, 7, 9],
     'Judge D': [1, 2, 4, 3, 6, 2, 9, 8],
-})
+}
+df = pd.DataFrame(dct)
 
 print(df)
 ```
@@ -233,12 +234,11 @@ print(df)
 The ICC can then be calculated as per normal:
 
 ```{python}
-icc = pg.intraclass_corr(
-    data=df, targets='index', raters='variable', ratings='value'
-)
-icc = icc.set_index('Description')
+results = pg.intraclass_corr(df, 'index', 'variable', 'value')
+results = results.set_index('Description')
+icc = results.loc['Single random raters', 'ICC']
 
-print(icc.loc['Single random raters', 'ICC'].round(3))
+print(icc.round(3))
 ```
 
 [⇦ Back](../../../python.html)
