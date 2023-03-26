@@ -14,26 +14,31 @@ output:
 
 [⇦ Back](../../../python.html)
 
-**Bland-Altman analysis** is used to assess the agreement between two methods of measuring something, usually clinical information. It was discussed in Bland & Altman's 1986 paper<sup>[1]</sup> and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+**Bland-Altman analysis** is used to assess the agreement between two methods of measuring something, usually clinical information. It was discussed in Bland & Altman's 1986 paper,<sup>[1]</sup> and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
 
 Calculating agreement is useful when discussing:
 
 - Test-retest experiments
-- Repeatability and reproducibility
+- Repeatability and reproducibility (aka precision)
 - Reliability
-- Intra- and inter-operator agreement
-- Intra- and inter-test agreement
+- Intra- and inter-operator variability
+- Intra- and inter-test variability
 
-> [1] Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: [10.1016/S0140-6736(86)90837-8](https://linkinghub.elsevier.com/retrieve/pii/S0140673686908378). PMID: [2868172](https://pubmed.ncbi.nlm.nih.gov/2868172/).
+> [1] Bland JM, Altman DG. Statistical methods for assessing agreement between two methods of clinical measurement. Lancet. 1986 Feb;327(8476):307–10. DOI: [10.1016/S0140-6736(86)90837-8](https://linkinghub.elsevier.com/retrieve/pii/S0140673686908378). PMID: [2868172](https://pubmed.ncbi.nlm.nih.gov/2868172/). Available [here](https://www-users.york.ac.uk/~mb55/meas//ba.pdf).
 
 Where to Start: Bland & Altman's Difference Plot
 ================================================
-The example shown in Bland & Altman's paper uses data created especially for the paper. Bland measured the maximum speed of expiration (peak expiratory flow rate or PEFR) of 17 people, mainly his family and friends, using two different devices: a large and a mini Wright peak flow meter. This data is shown below:
+The example shown in Bland & Altman's paper uses data created especially for the paper. Bland measured the maximum speed of expiration (peak expiratory flow rate or PEFR) of 17 people - mainly his family and friends - using two different devices: a large and a mini Wright peak flow meter. This data is shown below:
 
 ```{python}
 import pandas as pd
 
-df = pd.DataFrame({
+dct = {
     'Wright Mini': [
         512, 430, 520, 428, 500, 600, 364, 380, 658,
         445, 432, 626, 260, 477, 259, 350, 451
@@ -42,7 +47,8 @@ df = pd.DataFrame({
         494, 395, 516, 434, 476, 557, 413, 442, 650,
         433, 417, 656, 267, 478, 178, 423, 427
     ]
-})
+}
+df = pd.DataFrame(dct)
 ```
 
 Visualise the Data
@@ -52,26 +58,22 @@ Here are the measurements taken by the two different devices plotted against one
 ```{python, eval = FALSE}
 import matplotlib.pyplot as plt
 
-# Options
-x = 5  # Want figures to be A5
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+# Formatting options for plots
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
 
-#
-# Plot
-#
+# Create plot
 ax = plt.axes()
-ax.set(
-    title='Peak Expiratory Flow Rate',
-    xlabel='Large Meter (L/min)', ylabel='Mini Meter (L/min)'
-)
-# Scatter plot
-ax.scatter(
-    df['Wright Large'], df['Wright Mini'],
-    c='k', s=20, alpha=0.6, marker='o'
-)
+x = df['Wright Large']
+y = df['Wright Mini']
+ax.scatter(x, y, c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('Peak Expiratory Flow Rate')
+ax.set_xlabel('Large Meter (L/min)')
+ax.set_ylabel('Mini Meter (L/min)')
 # Get axis limits
 left, right = plt.xlim()
 # Set axis limits
@@ -90,26 +92,22 @@ plt.show()
 ```{python, echo = FALSE, results = 'hide'}
 import matplotlib.pyplot as plt
 
-# Options
-x = 5  # Want figures to be A5
-plt.rc('figure', figsize=[46.82 * .5**(.5 * x), 33.11 * .5**(.5 * x)])
-plt.rc('text', usetex=True)
-plt.rc('font', family='serif')
-plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+# Formatting options for plots
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
 
-#
-# Plot
-#
+# Create plot
 ax = plt.axes()
-ax.set(
-    title='Peak Expiratory Flow Rate',
-    xlabel='Large Meter (L/min)', ylabel='Mini Meter (L/min)'
-)
-# Scatter plot
-ax.scatter(
-    df['Wright Large'], df['Wright Mini'],
-    c='k', s=20, alpha=0.6, marker='o'
-)
+x = df['Wright Large']
+y = df['Wright Mini']
+ax.scatter(x, y, c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('Peak Expiratory Flow Rate')
+ax.set_xlabel('Large Meter (L/min)')
+ax.set_ylabel('Mini Meter (L/min)')
 # Get axis limits
 left, right = plt.xlim()
 # Set axis limits
@@ -127,24 +125,35 @@ plt.show()
 
 Time for Regression Analysis?
 =============================
-As Bland and Altman say in their paper, at this point it's usual to [calculate the correlation coefficient](correlation_coefficients.html) (*r*) between the two methods. Doing so will give *r* = 0.94 (p < 0.001). They continue: "The null hypothesis here is that the measurements by the two methods are not linearly related. The probability is very small and we can safely conclude that PEFR measurements by the mini and large meters are **related**. However, this high correlation does *not* mean that the two methods **agree**", to paraphrase:
+As Bland and Altman say in their paper, at this point researchers will often calculate the [Pearson correlation coefficient](correlation_coefficients.html) ($r$) between the two methods. Doing so will give $r = 0.94$ with $p < 0.001$:
 
-- *r* measures how *correlated* two variables are, not the extent to which they *agree*. Perfect agreement implies that all the points lie along the line of equality, while a large *r* value merely implies that they all lie on a straight line (which could be *any* straight line)
-- Correlation depends on the range over which you test. If we only look at the data below 500 L/min or only the data above 500 L/min we get smaller values of *r* (0.88 and 0.90 respectively) than when we look at all the data together (*r* = 0.94). However, it would be absurd to argue that agreement is worse below 500 L/min *and* worse above 500 L/min than it is for everybody.
+```{python}
+import scipy.stats as st
+
+r, p = st.pearsonr(x, y)
+
+print(f'r = {r:.2f} (p = {p:.2e})')
+```
+
+However, they continue: "The null hypothesis here is that the measurements by the two methods are not linearly related. The probability is very small and we can safely conclude that PEFR measurements by the mini and large meters are **related**. However, this high correlation does *not* mean that the two methods **agree**". To paraphrase:
+
+- The Pearson correlation coefficient $r$ measures how *correlated* two variables are, not the extent to which they *agree*. Perfect agreement implies that all the points lie along the line of equality, while a large $r$ value merely implies that they all lie on *a* straight line (which could be *any* straight line)
+- Correlation does not depend on the scale of the measurements. If one device was calibrated incorrectly and as such gave measurements in units of mL/min instead of L/min the correlation would remain the same, but the two devices would definitely not agree!
+- Correlation depends on the range over which you test. If we only look at the data below 500 L/min or only the data above 500 L/min we get smaller values of $r$ (0.88 and 0.90 respectively) than when we look at all the data together ($r = 0.94$). However, it would be absurd to argue that agreement is worse below 500 L/min *and* worse above 500 L/min than it is for everybody.
 - The test of significance may show that the two methods are related, but it would be amazing if two methods designed to measure the same quantity were not related! The test of significance is irrelevant to the question of agreement.
-- The *r* statistic is difficult to interpret: is an *r* value of 0.992 much worse than one of 0.996? How much worse?
+- The $r$ statistic is difficult to interpret: is an $r$ value of 0.992 much worse than one of 0.996? How much worse?
 
 All the above leads us towards looking for a new method of measuring agreement:
 
 Bland-Altman Analysis
 =====================
-In essence, if we are interested in knowing to what extent two measurement methods differ we should calculate the average difference between the values they produce when measuring the same participant. If this is small it means that it is effectively irrelevant which method you use; both will yield a similar result. The two methods or devices can thus be used interchangeably, or one can be used instead of the other if it is preferable for whatever reason. To check that this measurement difference is not related to the actual value that is being measured, it is useful to plot it against the mean value of the two values (ideally you would plot it against the true value, but as this is unknown the mean value that was measured is your best guess).
+In essence, if we are interested in knowing to what extent two measurement methods differ we should calculate the average difference between the values they produce when measuring the same participant. If this is small it means that it is effectively irrelevant which method you use; both will yield a similar result. The two methods or devices can thus be used interchangeably, or one can be used instead of the other if it is preferable for whatever reason. To check that the measurement differences are not related to the actual values that are being measured, it is useful to plot them against the means of the pairs of values (ideally you would plot them against the true values, but as these are unknown the means of the pairs of values that were measured are your best guesses).
 
-First calculate the means and differences. This is the data that will be plotted:
+As such, we start by calculating the means and differences of the pairs of measurements. This is the data that will be plotted:
 
 ```{python}
-means = df.mean(axis=1)
-diffs = df.diff(axis=1).iloc[:, -1]
+means = (x + y) / 2
+diffs = x - y
 ```
 
 Then find the average difference and the standard deviation of the differences. These are good indicators of whether or not a method is biased and how consistent this bias is, respectively:
@@ -155,81 +164,128 @@ import numpy as np
 # Average difference (aka the bias)
 bias = np.mean(diffs)
 # Sample standard deviation
-sd = np.std(diffs, ddof=1)
+s = np.std(diffs, ddof=1)  # Use ddof=1 to get the sample standard deviation
+
+print(f'For the differences, x̄ = {bias:.2f} L/min and s = {s:.2f} L/min')
 ```
 
-If we assume that the data is Normally distributed it means that 95% of the points lie within two standard deviations of the mean (use 1.96 standard deviations if you want to be more accurate). The endpoints of this 95% range are known as the "limits of agreement" (LOA): 
+If we assume that the differences are normally distributed\* it means that approximately 95% of them lie within two standard deviations of the mean difference (use 1.96 standard deviations if you want to be more accurate). The endpoints of this 95% range are known as the "limits of agreement" (LOAs): 
 
 ```{python}
-upper_loa = bias + 2 * sd
-lower_loa = bias - 2 * sd
+# Limits of agreement (LOAs)
+upper_loa = bias + 1.96 * s
+lower_loa = bias - 1.96 * s
+
+print(f'The limits of agreement are {upper_loa:.2f} L/min and {lower_loa:.2f} L/min')
 ```
 
-Now we can plot this data (this plot re-produces Figure 2 of Bland & Altman (1986)):
+*\*Assuming a normal distribution for the difference is reasonable here because, even if the raw measurements themselves are not normally distributed, by taking the difference between pairs of measurements we remove a lot of the variation and probably end up with mostly measurement error.*
+
+Aside: Values for the Z-Scores
+------------------------------
+The number of standard deviations away from the mean (the z-score) that corresponds to the endpoints of an interval that contains the central 95% of the standard normal distribution is approximately equal to 1.96. This value is used in the calculation above and yield LOAs of 73.86 L/min and -78.10 L/min. Bland and Altman used a rounded value of 2 in their paper (and also used a rounded value of 38.8 for the sample standard deviation) and thus got the slightly less accurate answers of 75.5 L/min and -79.7 L/min. For maximum precision, we can calculate the z-score for a confidence level of 95% directly:
+
+```{python}
+# Confidence level
+C = 0.95  # 95%
+# Significance level, α
+alpha = 1 - C
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Critical z-score, calculated using the percent-point function (aka the
+# quantile function) of the normal distribution
+z_star = st.norm.ppf(q)
+
+print(f'95% of normally distributed data lies within {z_star}σ of the mean')
+```
+
+The above yields LOAs of:
+
+```{python}
+# Limits of agreement (LOAs)
+loas = (bias - z_star * s, bias + z_star * s)
+
+print(f'The limits of agreement are {loas} L/min')
+```
+
+A more convenient function that gets to this answer quicker is `norm.interval()` as shown below:
+
+```{python}
+# Limits of agreement (LOAs)
+loas = st.norm.interval(C, bias, s)
+
+print(np.round(loas, 2))
+```
+
+Bland-Altman Plot
+-----------------
+Now we can plot this data, re-producing Figure 2 of Bland & Altman (1986):
 
 ```{python, eval = FALSE}
+# Create plot
 ax = plt.axes()
-ax.set(
-    title='Bland-Altman Plot for Two Methods of Measuring PEFR',
-    xlabel='Mean (L/min)', ylabel='Difference (L/min)'
-)
-# Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
 # Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
-ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=loas[1], c='grey', ls='--')
 ax.axhline(y=bias, c='grey', ls='--')
-ax.axhline(y=lower_loa, c='grey', ls='--')
+ax.axhline(y=loas[0], c='grey', ls='--')
+# Labels
+ax.set_title('Bland-Altman Plot for Two Methods of Measuring PEFR')
+ax.set_xlabel('Mean (L/min)')
+ax.set_ylabel('Difference (L/min)')
 # Get axis limits
-left, right = plt.xlim()
-bottom, top = plt.ylim()
+left, right = ax.get_xlim()
+bottom, top = ax.get_ylim()
 # Set y-axis limits
 max_y = max(abs(bottom), abs(top))
 ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 # Set x-axis limits
 domain = right - left
 ax.set_xlim(left, left + domain * 1.1)
-# Add the annotations
-ax.annotate('+2×SD', (right, upper_loa), (0, 7), textcoords='offset pixels')
+# Annotations
+ax.annotate('+LoA', (right, upper_loa), (0, 7), textcoords='offset pixels')
 ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), (0, -25), textcoords='offset pixels')
 ax.annotate('Bias', (right, bias), (0, 7), textcoords='offset pixels')
 ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -25), textcoords='offset pixels')
-ax.annotate('-2×SD', (right, lower_loa), (0, 7), textcoords='offset pixels')
+ax.annotate('-LoA', (right, lower_loa), (0, 7), textcoords='offset pixels')
 ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), (0, -25), textcoords='offset pixels')
 # Show plot
 plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
+# Create plot
 ax = plt.axes()
-ax.set(
-    title='Bland-Altman Plot for Two Methods of Measuring PEFR',
-    xlabel='Mean (L/min)', ylabel='Difference (L/min)'
-)
-# Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
 # Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
-ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=loas[1], c='grey', ls='--')
 ax.axhline(y=bias, c='grey', ls='--')
-ax.axhline(y=lower_loa, c='grey', ls='--')
+ax.axhline(y=loas[0], c='grey', ls='--')
+# Labels
+ax.set_title('Bland-Altman Plot for Two Methods of Measuring PEFR')
+ax.set_xlabel('Mean (L/min)')
+ax.set_ylabel('Difference (L/min)')
 # Get axis limits
-left, right = plt.xlim()
-bottom, top = plt.ylim()
+left, right = ax.get_xlim()
+bottom, top = ax.get_ylim()
 # Set y-axis limits
 max_y = max(abs(bottom), abs(top))
 ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 # Set x-axis limits
 domain = right - left
 ax.set_xlim(left, left + domain * 1.1)
-# Add the annotations
-ax.annotate('+2×SD', (right, upper_loa), (0, 7), textcoords='offset pixels')
+# Annotations
+ax.annotate('+LoA', (right, upper_loa), (0, 7), textcoords='offset pixels')
 ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), (0, -25), textcoords='offset pixels')
 ax.annotate('Bias', (right, bias), (0, 7), textcoords='offset pixels')
 ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -25), textcoords='offset pixels')
-ax.annotate('-2×SD', (right, lower_loa), (0, 7), textcoords='offset pixels')
+ax.annotate('-LoA', (right, lower_loa), (0, 7), textcoords='offset pixels')
 ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), (0, -25), textcoords='offset pixels')
 # Show plot
 plt.show()
@@ -237,171 +293,273 @@ plt.show()
 
 Confidence Intervals
 ====================
-Neither the bias line nor the limits of agreement are known with certainty. The standard error of the bias can be estimate as:
+Neither the bias line nor the limits of agreement are known with certainty; they each have a 'standard error' associated with them. The standard error ($se$) of the **bias** is:
 
-${se}_{bias} = \sqrt{\frac{ {sd}^2}{n}}$
+$${se}_{bias} = \sqrt{\frac{{s}^2}{n}}$$
 
-where $sd$ is the sample standard deviation and $n$ is the sample size. Similarly, the standard errors of the limits of agreement are approximately:
+where $s$ is the sample standard deviation and $n$ is the sample size. The standard error of the **limits of agreement** is approximately:
 
-${se}_{LOA} = \sqrt{\frac{3{sd}^2}{n}}$
+$${se}_{LOA} = \sqrt{\frac{3{s}^2}{n}}$$
 
-If we use the Student's t distribution we can calculate a "t-statistic" that corresponds to a 95% confidence interval given $n-1$ degrees of freedom. This will then give us the confidence intervals on the bias and LOA lines as follows:
+These standard errors can be converted into 'confidence intervals', for example 95% confidence intervals in which we can say with 95% confidence that the true values of the bias and of the LOAs lie. If we use the Student's *t*-distribution\*, the formula for the endpoints of a confidence interval is:
 
-${CI} = y\pm\left(t\times{se}\right)$
+$$y \pm \left(t^* \times {se} \right)$$
 
-where $y$ is the horizontal line in question (bias, upper LOA or lower LOA) and $t$ is the t-statistic. In Python, these calculations look as follows:
+where $y$ is the horizontal line in question (the bias, upper LOA or lower LOA) and $t^*$ is the critical *t*-statistic for this confidence level and this sample size. The derivation of this formula is on [this page](../confidence_intervals.html).
+
+*\*The *t*-distribution is appropriate when working with a relatively small sample size ($n < 30$) and/or when the population standard deviation isn't known, both of which are true in this case*
+
+In Python, these calculations look as follows:
 
 ```{python}
-import scipy.stats as stats
-
 # Sample size
-n = df.shape[0]
-# Variance
-var = sd**2
+n = len(df)
+# Degrees of freedom
+dof = n - 1
 # Standard error of the bias
-se_bias = np.sqrt(var / n)
-# Standard error of the limits of agreement
-se_loas = np.sqrt(3 * var / n)
-# Endpoints of the range that contains 95% of the Student’s t distribution
-t_interval = stats.t.interval(alpha=0.95, df=n - 1)
-# Confidence intervals
-ci_bias = bias + np.array(t_interval) * se_bias
-ci_upperloa = upper_loa + np.array(t_interval) * se_loas
-ci_lowerloa = lower_loa + np.array(t_interval) * se_loas
+se_bias = s / np.sqrt(n)
+# Standard error of the LOAs
+se_loas = np.sqrt(3 * s**2 / n)
+
+# Confidence interval for the bias
+ci_bias = st.t.interval(C, dof, bias, se_bias)
+# Confidence interval for the lower LOA
+ci_lower_loa = st.t.interval(C, dof, loas[0], se_loas)
+# Confidence interval for the upper LOA
+ci_upper_loa = st.t.interval(C, dof, loas[1], se_loas)
+
+print(
+    f'Lower LOA = {np.round(lower_loa, 2)} {np.round(ci_lower_loa, 2)};',
+    f'Bias = {np.round(bias, 2)} {np.round(ci_bias, 2)};',
+    f'Upper LOA = {np.round(upper_loa, 2)} {np.round(ci_upper_loa, 2)}'
+)
 ```
 
-These can now be added to the plot:
+```{python, eval = FALSE, echo = FALSE}
+#
+# Re-creating Bland-Altman (1986)
+#
+bias = -2.1
+se_bias = 9.4
+loas = np.array([-79.7, 75.5])
+se_loas = 16.3
+
+# Confidence interval for the bias
+ci_bias = st.t.interval(C, dof, bias, se_bias)
+# Confidence interval for the lower LOA
+ci_lower_loa = st.t.interval(C, dof, loas[0], se_loas)
+# Confidence interval for the upper LOA
+ci_upper_loa = st.t.interval(C, dof, loas[1], se_loas)
+
+print(f'Lower LOA = {np.round(lower_loa, 2)} {np.round(ci_lower_loa, 2)}')
+print(f'Bias = {np.round(bias, 2)} {np.round(ci_bias, 2)}')
+print(f'Upper LOA = {np.round(upper_loa, 2)} {np.round(ci_upper_loa, 2)}')
+# Lower LOA = -78.1 [-114.25  -45.15]
+# Bias = -2.1 [-22.03  17.83]
+# Upper LOA = 73.86 [ 40.95 110.05]
+```
+
+To recap:
+
+- We are *not* assuming that the raw measurements are normally distributed (although they might be)
+- We *are* assuming that the differences between pairs of raw measurements are normally distributed (because subtracting them from each other removes a lot of the variation between subjects while leaving measurement error)
+    + We are therefore using the **normal distribution** to calculate the limits of agreement (via us using 1.96 standard deviations)
+- The sample size is small ($n = 17$)
+    + We are therefore using the __*t*-distribution__ to calculate the confidence intervals. If the sample size was large ($n ≥ 30$) we could use the normal distribution to calculate the confidence intervals as well, see [the page on confidence intervals](../confidence_intervals.html) for more.
+
+Add Confidence Intervals to the Plot
+------------------------------------
 
 ```{python, eval = FALSE}
-# Plot the confidence intervals
-ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--', alpha=0.5)
+# Confidence intervals
+ax.plot([left] * 2, list(ci_upper_loa), c='grey', ls='--', alpha=0.5)
 ax.plot([left] * 2, list(ci_bias), c='grey', ls='--', alpha=0.5)
-ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--', alpha=0.5)
-# Plot the confidence intervals' caps
+ax.plot([left] * 2, list(ci_lower_loa), c='grey', ls='--', alpha=0.5)
+# Confidence intervals' caps
 x_range = [left - domain * 0.025, left + domain * 0.025]
-ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--', alpha=0.5)
-ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_upper_loa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_upper_loa[0]] * 2, c='grey', ls='--', alpha=0.5)
 ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--', alpha=0.5)
 ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--', alpha=0.5)
-ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--', alpha=0.5)
-ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lower_loa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lower_loa[0]] * 2, c='grey', ls='--', alpha=0.5)
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
+# Create plot
 ax = plt.axes()
-ax.set(
-    title='Bland-Altman Plot for Two Methods of Measuring PEFR',
-    xlabel='Mean (L/min)', ylabel='Difference (L/min)'
-)
-# Scatter plot
 ax.scatter(means, diffs, c='k', s=20, alpha=0.6, marker='o')
 # Plot the zero line
 ax.axhline(y=0, c='k', lw=0.5)
 # Plot the bias and the limits of agreement
-ax.axhline(y=upper_loa, c='grey', ls='--')
+ax.axhline(y=loas[1], c='grey', ls='--')
 ax.axhline(y=bias, c='grey', ls='--')
-ax.axhline(y=lower_loa, c='grey', ls='--')
+ax.axhline(y=loas[0], c='grey', ls='--')
+# Labels
+ax.set_title('Bland-Altman Plot for Two Methods of Measuring PEFR')
+ax.set_xlabel('Mean (L/min)')
+ax.set_ylabel('Difference (L/min)')
 # Get axis limits
-left, right = plt.xlim()
-bottom, top = plt.ylim()
+left, right = ax.get_xlim()
+bottom, top = ax.get_ylim()
 # Increase the y-axis limits to create space for the confidence intervals
-max_y = max(abs(ci_lowerloa[0]), abs(ci_upperloa[1]), abs(bottom), abs(top))
+max_y = max(abs(ci_lower_loa[0]), abs(ci_upper_loa[1]), abs(bottom), abs(top))
 ax.set_ylim(-max_y * 1.1, max_y * 1.1)
 # Set x-axis limits
 domain = right - left
 ax.set_xlim(left - domain * 0.05, left + domain * 1.1)
-# Add the annotations
-ax.annotate(
-    '+2×SD', (right, upper_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{upper_loa:+4.2f}', (right, upper_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    'Bias', (right, bias), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{bias:+4.2f}', (right, bias), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-ax.annotate(
-    '-2×SD', (right, lower_loa), xytext=(0, 7), textcoords='offset pixels'
-)
-ax.annotate(
-    f'{lower_loa:+4.2f}', (right, lower_loa), xytext=(0, -25),
-    textcoords='offset pixels'
-)
-# Plot the confidence intervals
-ax.plot([left] * 2, list(ci_upperloa), c='grey', ls='--', alpha=0.5)
+# Annotations
+ax.annotate('+LoA', (right, upper_loa), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{upper_loa:+4.2f}', (right, upper_loa), (0, -25), textcoords='offset pixels')
+ax.annotate('Bias', (right, bias), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{bias:+4.2f}', (right, bias), (0, -25), textcoords='offset pixels')
+ax.annotate('-LoA', (right, lower_loa), (0, 7), textcoords='offset pixels')
+ax.annotate(f'{lower_loa:+4.2f}', (right, lower_loa), (0, -25), textcoords='offset pixels')
+# Confidence intervals
+ax.plot([left] * 2, list(ci_upper_loa), c='grey', ls='--', alpha=0.5)
 ax.plot([left] * 2, list(ci_bias), c='grey', ls='--', alpha=0.5)
-ax.plot([left] * 2, list(ci_lowerloa), c='grey', ls='--', alpha=0.5)
-# Plot the confidence intervals' caps
+ax.plot([left] * 2, list(ci_lower_loa), c='grey', ls='--', alpha=0.5)
+# Confidence intervals' caps
 x_range = [left - domain * 0.025, left + domain * 0.025]
-ax.plot(x_range, [ci_upperloa[1]] * 2, c='grey', ls='--', alpha=0.5)
-ax.plot(x_range, [ci_upperloa[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_upper_loa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_upper_loa[0]] * 2, c='grey', ls='--', alpha=0.5)
 ax.plot(x_range, [ci_bias[1]] * 2, c='grey', ls='--', alpha=0.5)
 ax.plot(x_range, [ci_bias[0]] * 2, c='grey', ls='--', alpha=0.5)
-ax.plot(x_range, [ci_lowerloa[1]] * 2, c='grey', ls='--', alpha=0.5)
-ax.plot(x_range, [ci_lowerloa[0]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lower_loa[1]] * 2, c='grey', ls='--', alpha=0.5)
+ax.plot(x_range, [ci_lower_loa[0]] * 2, c='grey', ls='--', alpha=0.5)
 # Show plot
 plt.show()
 ```
 
-How Does the Accuracy of the Test Change with Sample Size?
-==========================================================
-The widths of the 95% confidence intervals depend on two factors: the standard deviation and the sample size. Obviously, when designing an experiment, you can't control what the deviation of you data will be, but you CAN control the number of samples you test. Hence, it's useful to know how this number will affect the confidence you will have in your result.
+Aside: the *t*-Statistic
+------------------------
+In Python, the *t*-statistic can be calculated for a given confidence level and a given sample size by using SciPy's percent-point function (PPF) for the *t*-distribution:
+
+```{python}
+import scipy.stats as st
+
+# Sample size
+n = len(df)
+# Degrees of freedom
+dof = n - 1
+# Confidence level
+C = 0.95  # 95%
+# Significance level, α
+alpha = 1 - C
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+t_star = st.t.ppf(q, dof)
+
+print(f't* = {t_star:.2f}')
+```
+
+This value of 2.12 is used in the Bland & Altman paper.
+
+Be careful not to assign the *t*-statistic to the variable `t` if you have imported SciPy's *t*-distribution sub-module as `t` (via `from scipy.stats import t`) as it will overwrite it. We have avoided this in the above snippet by using `import scipy.stats as st`.
+
+Usually, it's simpler to calculate the *t*-statistic as an interval:
+
+```{python}
+# Sample size
+n = len(df)
+# Degrees of freedom
+dof = n - 1
+# Confidence level
+C = 0.95  # 95%
+# Endpoints of the range that contains 95% of Student's t-distribution
+ci = st.t.interval(C, dof)
+
+print(np.round(ci, 2))
+```
+
+The *t*-statistic that corresponds to a 95% confidence interval given $n - 1$ degrees of freedom can then be used to get the confidence intervals on the bias and LOA lines, as has been done above.
+
+Aside: the *t*-Statistic vs the Z-Score
+---------------------------------------
+- The *t*-statistic is the distance of the mean of a sample of values from the expected mean, as a multiple of standard errors
+- The z-score is the distance of a single value from the expected value, as a multiple of standard deviations
+
+Using a *t*-statistic with the *t*-distribution is analogous to using a z-score with the normal distribution:
+
+- For a given *t*-statistic and sample size (more specifically, for a given *t*-statistic and number of degrees of freedom), a certain percentage of the *t*-distribution will lie within that distance from the mean
+- For a given z-score, a certain percentage of the normal distribution will lie with that distance from the mean
+
+How Does the Precision of the Test Change with Sample Size?
+===========================================================
+The widths of the 95% confidence intervals depend on two factors: the sample standard deviation and the sample size. Obviously, when designing an experiment, you can't control what the deviation of your data will be, but you CAN control the number of samples you test. Hence, it's useful to know how this number will affect the confidence you will have in your result.
 
 As mentioned above, the confidence intervals are calculated as:
 
-${CI} = y\pm\left(t\times{se}\right)$
+$$y \pm \left(t^* \times {se} \right)$$
 
 which implies that the half-widths of the confidence intervals are:
 
-$t\times{se}$
+$$t^* \times {se}$$
 
 which means that the full-widths of the confidence intervals for the bias and LOA lines, respectively, are twice these:
 
-${CI}^{width}_{bias} = 2\times t\times \sqrt{\frac{ {sd}^2}{n}}$
+$${CI}_{bias} = 2 \times t^* \times \sqrt{\dfrac{ {s}^2}{n}}$$
 
-${CI}^{width}_{LOA} = 2\times t\times \sqrt{\frac{3 {sd}^2}{n}}$
+$${CI}_{LOAs} = 2 \times t^* \times \sqrt{\dfrac{3 {s}^2}{n}}$$
 
 so the widths of the confidence intervals *relative to the sample standard deviations* are:
 
-${CI}^{width}_{bias} = 2\times t\times \sqrt{\frac{1}{n}}$
+$${CI}_{bias} = 2 \times t^* \times \sqrt{\dfrac{1}{n}}$$
 
-${CI}^{width}_{LOA} = 2\times t\times \sqrt{\frac{3}{n}}$
+$${CI}_{LOA} = 2 \times t^* \times \sqrt{\dfrac{3}{n}}$$
 
 In Python, these are calculated as:
 
-```{python, eval = FALSE}
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+```{python}
+# Confidence level
+C = 0.95  # 95%
+# Significance level, α
+alpha = 1 - C
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+t_star = st.t.ppf(q, dof)
+
+ci_width_bias = 2 * t_star * np.sqrt(1 / n)
+ci_width_loas = 2 * t_star * np.sqrt(3 / n)
 ```
 
 and they can be plotted as follows:
 
 ```{python, eval = FALSE}
+# Create plot
 ax = plt.axes()
-ax.set(
-    title=r'The widths of the confidence intervals (relative to the\\sample standard deviation) decrease if there are more samples',
-    xlabel='Sample Size (n)',
-    ylabel=r'Width of Confidence Intervals\\(Relative to Sample Standard Deviation)'
-)
 # Scatter plots
 n = np.arange(5, 51)
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
-ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
-ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
+dof = n - 1
+t_star = st.t.ppf(q, dof)
+ci_width_loas = 2 * t_star * np.sqrt(3 / n)
+ax.scatter(n, ci_width_loas, c='k', s=20, alpha=0.6, marker='o')
+ci_width_bias = 2 * t_star * np.sqrt(1 / n)
+ax.scatter(n, ci_width_bias, c='k', s=20, alpha=0.6, marker='o')
 # Smooth curves
 n = np.arange(5, 50, 0.1)
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
-ax.plot(n, width, label=r'LOAs $\left(2\times t\times\sqrt{\frac{3}{n}}\right)$')
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
-ax.plot(n, width, c='tab:blue', alpha=0.2, label=r'Bias $\left(2\times t\times\sqrt{\frac{1}{n}}\right)$')
+dof = n - 1
+t_star = st.t.ppf(q, dof)
+ci_width_loas = 2 * t_star * np.sqrt(3 / n)
+label = r'LOAs $\left(2 \times t^* \times \sqrt{\frac{3}{n}}\right)$'
+ax.plot(n, ci_width_loas, label=label)
+ci_width_bias = 2 * t_star * np.sqrt(1 / n)
+label = r'Bias $\left(2 \times t^* \times \sqrt{\frac{1}{n}}\right)$'
+ax.plot(n, ci_width_bias, c='tab:blue', alpha=0.2, label=label)
+# Labels
+ax.set_title(r'The widths of the confidence intervals (relative to the\\sample standard deviation) decrease if there are more samples')
+ax.set_xlabel('Sample Size (n)')
+ax.set_ylabel(r'Width of Confidence Intervals\\(Relative to Sample Standard Deviation)')
 # Set y-axis limits
-bottom, top = plt.ylim()
+bottom, top = ax.get_ylim()
 ax.set_ylim(0, top)
 # Set x-axis limits
 ax.set_xlim(5, 50)
@@ -412,26 +570,32 @@ plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
+# Create plot
 ax = plt.axes()
-ax.set(
-    title=r'The widths of the confidence intervals (relative to the\\sample standard deviation) decrease if there are more samples',
-    xlabel='Sample Size (n)',
-    ylabel=r'Width of Confidence Intervals\\(Relative to Sample Standard Deviation)'
-)
 # Scatter plots
 n = np.arange(5, 51)
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
-ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
-ax.scatter(n, width, c='k', s=20, alpha=0.6, marker='o')
+dof = n - 1
+t_star = st.t.ppf(q, dof)
+ci_width_loas = 2 * t_star * np.sqrt(3 / n)
+ax.scatter(n, ci_width_loas, c='k', s=20, alpha=0.6, marker='o')
+ci_width_bias = 2 * t_star * np.sqrt(1 / n)
+ax.scatter(n, ci_width_bias, c='k', s=20, alpha=0.6, marker='o')
 # Smooth curves
 n = np.arange(5, 50, 0.1)
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
-ax.plot(n, width, label=r'LOAs $\left(2\times t\times\sqrt{\frac{3}{n}}\right)$')
-width = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(1 / n)
-ax.plot(n, width, c='tab:blue', alpha=0.2, label=r'Bias $\left(2\times t\times\sqrt{\frac{1}{n}}\right)$')
+dof = n - 1
+t_star = st.t.ppf(q, dof)
+ci_width_loas = 2 * t_star * np.sqrt(3 / n)
+label = r'LOAs $\left(2 \times t^* \times \sqrt{\frac{3}{n}}\right)$'
+ax.plot(n, ci_width_loas, label=label)
+ci_width_bias = 2 * t_star * np.sqrt(1 / n)
+label = r'Bias $\left(2 \times t^* \times \sqrt{\frac{1}{n}}\right)$'
+ax.plot(n, ci_width_bias, c='tab:blue', alpha=0.2, label=label)
+# Labels
+ax.set_title(r'The widths of the confidence intervals (relative to the\\sample standard deviation) decrease if there are more samples')
+ax.set_xlabel('Sample Size (n)')
+ax.set_ylabel(r'Width of Confidence Intervals\\(Relative to Sample Standard Deviation)')
 # Set y-axis limits
-bottom, top = plt.ylim()
+bottom, top = ax.get_ylim()
 ax.set_ylim(0, top)
 # Set x-axis limits
 ax.set_xlim(5, 50)
@@ -444,13 +608,28 @@ plt.show()
 As an example, if you decrease your sample size from 40 to 30, the widths of the confidence intervals of your limits of agreement will increase by 16.8%:
 
 ```{python}
+# Sample size
 n = 40
-width_40 = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+# Degrees of freedom
+dof = n - 1
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+t_star = st.t.ppf(q, dof)
+# Confidence interval width
+width_40 = 2 * t_star * np.sqrt(3 / n)
+
+# Sample size
 n = 30
-width_30 = 2 * stats.t.interval(alpha=0.95, df=n - 1)[1] * np.sqrt(3 / n)
+# Degrees of freedom
+dof = n - 1
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+t_star = st.t.ppf(q, dof)
+width_30 = 2 * t_star * np.sqrt(3 / n)
+
 increase = (width_30 - width_40) / width_40 * 100
 print(
-    f"Your confidence intervals' widths have gone from {width_40:4.2f} standard deviations to " +
+    f"Your confidence intervals' widths have gone from {width_40:4.2f} standard deviations to",
     f"{width_30:4.2f} standard deviations, an increase of {increase:4.1f}%"
 )
 ```
@@ -464,11 +643,11 @@ def bland_altman_analysis(df):
     """Calculate agreement statistics."""
     tests = list(df)
 
-    # Individual sample calculations
-    df['Mean'] = df[tests].mean(axis=1)
-    df['Diff'] = df[tests].diff(axis=1)[tests[-1]]
-    df['SD'] = df[tests].std(axis=1, ddof=1)
-    df['Variance'] = df['SD']**2
+    # Individual subject calculations
+    df['Means'] = df[tests].mean(axis=1)
+    df['Differences'] = df[tests].diff(axis=1)[tests[-1]]
+    df['s'] = df[tests].std(axis=1, ddof=1)
+    df['var'] = df['s']**2
 
     # Whole sample calculations
     summary = pd.DataFrame()
@@ -476,19 +655,19 @@ def bland_altman_analysis(df):
     for i, mean in enumerate(means):
         summary.loc[1, mean] = df[tests[i]].mean()
     # Sample size
-    summary.loc[1, 'N'] = df.shape[0]
+    summary.loc[1, 'n'] = df.shape[0]
     # Degrees of freedom
-    summary.loc[1, 'DoF'] = df.shape[0] - 1
+    summary.loc[1, 'DOF'] = df.shape[0] - 1
     # Bias (mean difference)
-    mean_diff = df['Diff'].mean()
-    summary.loc[1, 'Mean Diff (Bias)'] = mean_diff
-    # Standard deviation of the differences
-    st_dev_diff = df['Diff'].std(ddof=0)
-    summary.loc[1, 'SD Diffs'] = st_dev_diff
-    summary.loc[1, 'Lower LoA'] = mean_diff - 1.96 * st_dev_diff
-    summary.loc[1, 'Upper LoA'] = mean_diff + 1.96 * st_dev_diff
+    mean_diff = df['Differences'].mean()
+    summary.loc[1, 'Bias'] = mean_diff
+    # Sample standard deviations of the differences
+    s_diff = df['Differences'].std(ddof=1)
+    summary.loc[1, 's'] = s_diff
+    summary.loc[1, 'Lower LOA'] = mean_diff - 1.96 * s_diff
+    summary.loc[1, 'Upper LOA'] = mean_diff + 1.96 * s_diff
     # Within-subject standard deviation
-    s_w = np.sqrt(df['Variance'].mean())
+    s_w = np.sqrt(df['var'].mean())
     summary.loc[1, 'Within-Subject SD (Sw)'] = s_w
     # Coefficient of repeatability
     col = 'Repeatability Coefficient (RC)'
@@ -541,14 +720,15 @@ These examples come from the same Bland & Altman (1986) paper<sup>[1]</sup>:
 
 ```{python}
 # Raw data
-wright_large = pd.DataFrame({
+dct = {
     'First Measurement': [
         494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656, 267, 478, 178, 423, 427
     ],
     'Second Measurement': [
         490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633, 275, 492, 165, 372, 421
     ],
-})
+}
+wright_large = pd.DataFrame(dct)
 # Bland-Altman analysis
 df, summary = bland_altman_analysis(wright_large)
 print(summary)
@@ -556,14 +736,15 @@ print(summary)
 
 ```{python}
 # Raw data
-wright_mini = pd.DataFrame({
+dct = {
     'First Measurement': [
         512, 430, 520, 428, 500, 600, 364, 380, 658, 445, 432, 626, 260, 477, 259, 350, 451
     ],
     'Second Measurement': [
         525, 415, 508, 444, 500, 625, 460, 390, 642, 432, 420, 605, 227, 467, 268, 370, 443
     ],
-})
+}
+wright_mini = pd.DataFrame(dct)
 # Bland-Altman analysis
 df, summary = bland_altman_analysis(wright_mini)
 print(summary)
@@ -571,9 +752,9 @@ print(summary)
 
 Giavarina and Euser Analyses?
 =============================
-Other authors has expanded upon Bland and Altman's ideas:
+Other authors have expanded upon Bland and Altman's ideas:
 
-**Giavarina analysis** is identical to Bland-Altman analysis except that it accounts for [heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity). It does this by using percentage differences (relative to the means) on the y-axis instead of raw differences. It was published in Giavarina's 2015 paper<sup>[2]</sup> and a tutorial that replicates elements of that paper is over [here](giavarina.html).
+**Giavarina analysis** is identical to Bland-Altman analysis except that it accounts for [heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity). It does this by using percentage differences (relative to the means) on the y-axis instead of arithmetic differences. It was published in Giavarina's 2015 paper<sup>[2]</sup> and a tutorial that replicates elements of that paper is over [here](giavarina.html).
 
 **Euser analysis** also accounts for heteroscedasticity except that it does so via a logarithmic transformation. While this approach was mentioned in Bland & Altman (1986) it was Euser, Dekker & Le Cessie who published a method to transform the data back into the native space and calculate a meaningful coefficient of variation<sup>[3]</sup>. A tutorial is over [here](euser.html).
 
