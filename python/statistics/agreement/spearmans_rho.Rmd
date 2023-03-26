@@ -1,0 +1,179 @@
+---
+title: "<font size='5'>Statistics in Python:</font><br>Spearman's Rank Correlation Coefficient, *ρ*"
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+**Spearman's rank correlation coefficient** is the correlation (the Pearson correlation coefficient) between the *rank* of your data's y-values and the *rank* of your data's x-values. If your y-values strictly increase as your x-values increase (with no exceptions; a larger x strictly implies a larger y) then the coefficient will be 1.
+
+The opposite (a strictly decreasing y for an increasing x) will result in a coefficient of -1.
+
+The Greek letter *ρ* (rho) is used for the coefficient.
+
+Example Data
+============
+Using the example from [Wikipedia](https://en.wikipedia.org/wiki/Spearman%27s_rank_correlation_coefficient): peoples' IQs and the numbers of hours of TV they watch per week:
+
+```{python}
+import pandas as pd
+
+dct = {
+    'IQ': [106, 100, 86, 101, 99, 103, 97, 113, 112, 110],
+    'Hours of TV': [7, 27, 2, 50, 28, 29, 20, 12, 6, 17],
+}
+df = pd.DataFrame(dct)
+
+print(df)
+```
+
+Presented visually:
+
+```{python, eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
+
+# Create plot
+ax = plt.axes()
+x = df['IQ']
+y = df['Hours of TV']
+ax.scatter(x, y, c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('Fake Data to Demonstrate Correlation')
+ax.set_ylabel('Hours of TV Watched per Week')
+ax.set_xlabel('IQ')
+# Show plot
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 6  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
+
+# Create plot
+ax = plt.axes()
+x = df['IQ']
+y = df['Hours of TV']
+ax.scatter(x, y, c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('Fake Data to Demonstrate Correlation')
+ax.set_ylabel('Hours of TV Watched per Week')
+ax.set_xlabel('IQ')
+# Show plot
+plt.show()
+```
+
+Manual Calculation
+==================
+As is done on the Wikipedia page:
+
+```{python}
+import numpy as np
+import scipy.stats as st
+
+# Rank the values in the column (ties receive the average rank of the group)
+df['rank x_i'] = df['IQ'].rank()
+df['rank y_i'] = df['Hours of TV'].rank()
+# Differences between ranks
+df['d_i'] = df['rank x_i'] - df['rank y_i']
+# Squared differences between ranks
+df['d_i**2'] = df['d_i']**2
+
+print(df)
+```
+
+The above table matches what is shown in the example. Now we can use the formula to calculate *ρ*:
+
+```{python}
+# Sum of squared differences
+x = df['d_i**2'].sum()
+# Sample size
+n = len(df)
+# Spearman's rank correlation coefficient, ρ
+rho = 1 - (6 * x) / (n * (n**2 - 1))
+
+print(f'ρ = {rho}')
+```
+
+...and the associated p-value:
+
+```{python}
+# t-statistics
+t = rho * np.sqrt((n - 2) / (1 - rho**2))
+# Degrees of freedom
+dof = n - 2
+# Number of tails
+tails = 2
+# Significance
+p = st.t.cdf(t, df=dof) * tails
+
+print(f'p = {p}')
+```
+
+These match the values in the example.
+
+Using SciPy
+===========
+Of course, the above can be done quicker using packages:
+
+```{python}
+import scipy.stats as st
+
+rho, p = st.spearmanr(df['IQ'], df['Hours of TV'])
+
+print(f'ρ = {rho:.3f}; p = {p:.3f}')
+```
+
+Using Pandas
+============
+
+```{python}
+import pandas as pd
+
+col = ['IQ', 'Hours of TV']
+
+print(df[col].corr(method='spearman'))
+```
+
+There's no way to get the p-value directly using this method (you can, of course, calculate it manually as shown above).
+
+Using Pingouin
+==============
+
+```{python}
+import pingouin as pg
+
+print(pg.corr(df['IQ'], df['Hours of TV'], method='spearman'))
+```
+
+This is the quickest way to get the confidence interval.
+
+[⇦ Back](../../../python.html)
+
+</font>

@@ -1,0 +1,268 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Pearson Correlation Coefficient, *r*'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+Example Data
+============
+Let's use the following example data set from Giavarina's paper.<sup>1</sup> Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements shown below:
+
+```{python}
+import pandas as pd
+
+dct = {
+    'Method A': [
+        1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
+        150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
+        650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
+    ],
+    'Method B': [
+        8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
+        181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
+        738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
+    ]
+}
+df = pd.DataFrame(dct)
+```
+
+These can be visualised on a scatter plot:
+
+```{python eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
+
+# Create plot
+ax = plt.axes()
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('The Raw Data')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
+# Get axis limits
+left, right = ax.get_xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Set aspect ratio
+ax.set_aspect('equal')
+# Show plot
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
+
+# Create plot
+ax = plt.axes()
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('The Raw Data')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
+# Get axis limits
+left, right = ax.get_xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Set aspect ratio
+ax.set_aspect('equal')
+# Show plot
+plt.show()
+```
+
+These points seem to roughly show a straight-line relationship, but let's be a bit more precise and start to quantify *exactly* how much they correlate...
+
+Pearson Correlation Coefficient, *r*
+====================================
+As described on its [Wikipedia page](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient), the Pearson *r* statistic measures linear correlation between two variables. It assumes that a set of data points can be approximated by a straight line and returns a value that describes how strong the linear correlation is:
+
+- +1 is total positive linear correlation (the data points all lie on a straight line with a positive gradient)
+- 0 is no linear correlation (the data points are randomly scattered all over the plot area)
+- −1 is total negative linear correlation (the data points all lie on a straight line with a negative gradient)
+
+For more precise interpretations of the absolute value of *r* the follow can be used as a guideline<sup>2</sup>:
+
+- 0 to 0.19: very weak correlation
+- 0.2 to 0.39: weak correlation
+- 0.4 to 0.59: moderate correlation
+- 0.6 to 0.79: strong correlation
+- 0.8 to 1: very strong correlation
+
+...and here's how to calculate it:
+
+```{python}
+import scipy.stats as st
+import numpy as np
+
+# Pearson correlation coefficient, r
+x = df['Method A']
+y = df['Method B']
+r, p = st.pearsonr(x, y)
+
+# Transform r into a z-score via Fisher transformation
+r_z = np.arctanh(r)  # These two ways are equivalent
+r_z = 0.5 * np.log((1 + r) / (1 - r))  # These two ways are equivalent
+# Sample size
+n = len(df)
+# Standard error
+se = 1 / np.sqrt(n - 3)
+# Significance level, α
+alpha = 0.05  # 95% confidence level
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Critical z-score, calculated using the percent-point function (aka the
+# quantile function) of the normal distribution
+z_crit = st.norm.ppf(q)
+# Confidence interval in z-space
+low_z, high_z = r_z - z_crit * se, r_z + z_crit * se
+# Transform back into r-space
+low, high = np.tanh((low_z, high_z))
+
+print(f'r = {r:5.3f}, 95% CI: [{low:5.3f}, {high:5.3f}]; p = {p:.2e}')
+```
+
+This *r*-value is close to 1, which confirms that the points nearly follow a straight line. Let's visualise this by using the *r* statistic to generate a line of best fit:
+
+```{python, eval = FALSE}
+# Pearson correlation coefficient, r
+r, p = st.pearsonr(x, y)
+# Gradient of line of best fit
+m = r * np.std(y) / np.std(x)
+# Y-intercept of line of best-fit
+c = np.mean(y) - m * np.mean(x)
+
+# Create plot
+ax = plt.axes()
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Get axis limits
+left, right = ax.get_xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Line of best fit
+x = np.array([left, right])
+y = m * x + c
+label = rf'r = {r:5.3f}, 95\% CI: [{low:5.3f}, {high:5.3f}]; p = {p:.2e}'
+ax.plot(x, y, c='grey', ls='--', label=label)
+# Labels
+ax.set_title('Pearson Correlation Analysis')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
+# Set aspect ratio
+ax.set_aspect('equal')
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+# Pearson correlation coefficient, r
+r, p = st.pearsonr(x, y)
+# Gradient of line of best fit
+m = r * np.std(y) / np.std(x)
+# Y-intercept of line of best-fit
+c = np.mean(y) - m * np.mean(x)
+
+# Create plot
+ax = plt.axes()
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Get axis limits
+left, right = ax.get_xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Line of best fit
+x = np.array([left, right])
+y = m * x + c
+label = rf'r = {r:5.3f}, 95\% CI: [{low:5.3f}, {high:5.3f}]; p = {p:.2e}'
+ax.plot(x, y, c='grey', ls='--', label=label)
+# Labels
+ax.set_title('Pearson Correlation Analysis')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
+# Set aspect ratio
+ax.set_aspect('equal')
+# Legend
+ax.legend(frameon=False)
+# Show plot
+plt.show()
+```
+
+As a Custom Function
+====================
+It's often more useful to be able to do this calculation in a function so that it can be easily called as many times as you need it:
+
+```{python}
+def pearson_correlation_coefficient(x, y):
+    """Calculate Pearson's r with confidence interval and significance."""
+    r, p = st.pearsonr(x, y)
+    # Transform r into a z-score via Fisher transformation
+    r_z = np.arctanh(r)
+    # Sample size
+    n = len(df)
+    # Standard error
+    se = 1 / np.sqrt(n - 3)
+    # Significance level, α
+    alpha = 0.05  # 95% confidence level
+    # Number of tails
+    tails = 2
+    # Quantile (the cumulative probability)
+    q = 1 - (alpha / tails)
+    # Critical z-score, calculated using the percent-point function (aka the
+    # quantile function) of the normal distribution
+    z_crit = st.norm.ppf(q)
+    # Confidence interval in z-space
+    low_z, high_z = r_z - z_crit * se, r_z + z_crit * se
+    # Transform back into r-space
+    low, high = np.tanh((low_z, high_z))
+
+    return r, low, high, p
+
+
+x = df['Method A']
+y = df['Method B']
+r, ci_lower, ci_upper, p = pearson_correlation_coefficient(x, y)
+
+print(f'r = {r:5.3f}, 95% CI: [{ci_lower:5.3f}, {ci_upper:5.3f}]; p = {p:.2e}')
+```
+
+References
+==========
+1. Giavarina D. Understanding Bland Altman analysis. Biochemia Medica. 2015;25(2):141–51. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
+2. Swinscow TDV. Correlation and regression. In: Statistics at Square One. 9th ed. The BMJ; 1997. Available [online](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/11-correlation-and-regression).
+
+[⇦ Back](../../../python.html)
+
+</font>

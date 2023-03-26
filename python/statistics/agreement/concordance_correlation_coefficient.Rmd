@@ -1,0 +1,208 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Concordance Correlation Coefficient (CCC)'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+Example Data
+============
+Let's use the following example data set from Giavarina's paper.<sup>1</sup> Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements shown below:
+
+```{python}
+import pandas as pd
+
+dct = {
+    'Method A': [
+        1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
+        150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
+        650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
+    ],
+    'Method B': [
+        8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
+        181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
+        738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
+    ]
+}
+df = pd.DataFrame(dct)
+```
+
+These can be visualised on a scatter plot:
+
+```{python eval = FALSE}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
+
+# Create plot
+ax = plt.axes()
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('The Raw Data')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
+# Get axis limits
+left, right = ax.get_xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Set aspect ratio
+ax.set_aspect('equal')
+# Show plot
+plt.show()
+```
+
+```{python echo = FALSE, results = "hide"}
+import matplotlib.pyplot as plt
+
+# Formatting options for plots
+A = 5  # Want figures to be A5
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)  # Use LaTeX
+plt.rc('font', family='serif')  # Use a serif font
+plt.rc('text.latex', preamble=r'\usepackage{textgreek}')  # Load Greek letters
+
+# Create plot
+ax = plt.axes()
+ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
+# Labels
+ax.set_title('The Raw Data')
+ax.set_xlabel('Method A')
+ax.set_ylabel('Method B')
+# Get axis limits
+left, right = ax.get_xlim()
+# Set axis limits
+ax.set_xlim(0, right)
+ax.set_ylim(0, right)
+# Set aspect ratio
+ax.set_aspect('equal')
+# Show plot
+plt.show()
+```
+
+These points seem to roughly show a straight-line relationship, but let's be a bit more precise and start to quantify *exactly* how much they correlate...
+
+Concordance Correlation Coefficient (CCC)
+=========================================
+This is not yet fully implemented in Python's sklearn package, but we can use the version created by stylianos-kampakis on GitHub (available [here](https://github.com/stylianos-kampakis/supervisedPCA-Python/blob/master/Untitled.py)). As he says:
+
+> The concordance correlation coefficient is a measure of inter-rater
+agreement. It measures the deviation of the relationship between predicted
+and true values from the 45 degree line.
+
+Read more on [Wikipedia](https://en.wikipedia.org/wiki/Concordance_correlation_coefficient) or in the original paper by Lin.<sup>2</sup>
+
+This coefficient is used to assess the agreement between estimated values (ie those measured by some person or some instrument) and correct (ground truth) values. The coefficient can have a value of between -1 and 1, where 1 indicates perfect agreement between the true and the predicted values and -1 indicates perfect disagreement.
+
+Using our example data, let's pretend that 'Method A' is the 'ground truth': a list of measurements that are known to be 100% correct. 'Method B' is then a list of measurements that were taken using some instrument (and as such they only 'predict' the truth):
+
+```{python}
+y_true = df['Method A']
+y_pred = df['Method B']
+```
+
+Here we go with calculating the CCC:
+
+```{python}
+import numpy as np
+
+# Raw data
+dct = {
+    'y_true': y_true,
+    'y_pred': y_pred
+}
+df = pd.DataFrame(dct)
+# Remove NaNs
+df = df.dropna()
+# Pearson product-moment correlation coefficients
+y_true = df['y_true']
+y_pred = df['y_pred']
+cor = np.corrcoef(y_true, y_pred)[0][1]
+# Means
+mean_true = np.mean(y_true)
+mean_pred = np.mean(y_pred)
+# Population variances
+var_true = np.var(y_true)
+var_pred = np.var(y_pred)
+# Population standard deviations
+sd_true = np.std(y_true)
+sd_pred = np.std(y_pred)
+# Calculate CCC
+numerator = 2 * cor * sd_true * sd_pred
+denominator = var_true + var_pred + (mean_true - mean_pred)**2
+ccc = numerator / denominator
+
+print(ccc)
+```
+
+As a Custom Function
+====================
+It's often more useful to be able to do this calculation in a function so that it can be easily called as many times as you need it:
+
+```{python}
+def concordance_correlation_coefficient(y_true, y_pred):
+    """Concordance correlation coefficient."""
+    # Raw data
+    dct = {
+        'y_true': y_true,
+        'y_pred': y_pred
+    }
+    df = pd.DataFrame(dct)
+    # Remove NaNs
+    df = df.dropna()
+    # Pearson product-moment correlation coefficients
+    y_true = df['y_true']
+    y_pred = df['y_pred']
+    cor = np.corrcoef(y_true, y_pred)[0][1]
+    # Means
+    mean_true = np.mean(y_true)
+    mean_pred = np.mean(y_pred)
+    # Population variances
+    var_true = np.var(y_true)
+    var_pred = np.var(y_pred)
+    # Population standard deviations
+    sd_true = np.std(y_true)
+    sd_pred = np.std(y_pred)
+    # Calculate CCC
+    numerator = 2 * cor * sd_true * sd_pred
+    denominator = var_true + var_pred + (mean_true - mean_pred)**2
+
+    return numerator / denominator
+
+
+y_true = [3, -0.5, 2, 7, np.NaN]
+y_pred = [2.5, 0.0, 2, 8, 3]
+ccc = concordance_correlation_coefficient(y_true, y_pred)
+
+print(ccc)
+```
+
+Note that the numbers used in the example above were taken directly from stylianos-kampakis's [code](https://github.com/stylianos-kampakis/supervisedPCA-Python/blob/master/Untitled.py).
+
+References
+==========
+1. Giavarina D. Understanding Bland Altman analysis. Biochemia Medica. 2015;25(2):141–51. DOI: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
+2. Lin LI-K. A Concordance Correlation Coefficient to Evaluate Reproducibility. Biometrics. 1989;45(1):255-268. DOI: [10.2307/2532051](https://doi.org/10.2307/2532051). PMID: [2720055](https://pubmed.ncbi.nlm.nih.gov/2720055/).
+
+[⇦ Back](../../../python.html)
+
+</font>

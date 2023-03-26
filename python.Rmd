@@ -138,14 +138,13 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
     - [ANOVA](python/statistics/hypothesis_testing/anova.html)
     - [Chi-Squared Tests](python/statistics/hypothesis_testing/chi_squared.html)
 6. Agreement *(incl accuracy, precision (repeatability and reproducibility), variability and equivalence):*
-    - [Cohen’s Kappa](python/statistics/agreement/cohens_kappa.html)
+    - [Cohen's Kappa](python/statistics/agreement/cohens_kappa.html)
     - [Repeatability Coefficient](python/statistics/agreement/repeatability_coefficient.html)
     - [Coefficient of Variation](python/statistics/agreement/coefficient_of_variation.html)
     - Correlation Coefficients:
-        - [Correlation Coefficients](python/statistics/agreement/correlation_coefficients.html)
-        <!-- - Pearson Correlation Coefficient, *r* -->
-        <!-- - Spearman's Rank Correlation Coefficient, *ρ* -->
-        <!-- - Concordance Correlation Coefficient (CCC) -->
+        - [Pearson Correlation Coefficient, *r*](python/statistics/agreement/pearsons_r.html)
+        - [Spearman's Rank Correlation Coefficient, *ρ*](python/statistics/agreement/spearmans_rho.html)
+        - [Concordance Correlation Coefficient (CCC)](python/statistics/agreement/concordance_correlation_coefficient.html)
         - [Intraclass Correlation Coefficient (ICC)](python/statistics/agreement/intraclass_correlation.html)
     - Bland-Altman Analysis:
         - [Traditional Bland-Altman Analysis](python/statistics/agreement/bland_altman.html) (native space)
