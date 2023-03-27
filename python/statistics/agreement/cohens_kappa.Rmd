@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 **Cohen's kappa** is a measure of how much two judges agree with each other when they are rating things *qualitatively*.
 
 - Another name for 'judges' in this context is **raters** because they are rating things, hence Cohen's kappa is used to measure *inter-rater reliability*
@@ -25,7 +30,9 @@ Worked Examples - High Level
 ============================
 Cohen's kappa can be quickly found using the **scikit-learn** Python package. This can be installed from the terminal with:
 
-`pip install sklearn`
+```
+python3.11 -m pip install sklearn
+```
 
 Here are two examples that demonstrate how to use the `cohen_kappa_score()` function from this package:
 
@@ -199,6 +206,7 @@ psychologist2 = [
 
 ```{python}
 cm = sklearn.metrics.confusion_matrix(psychologist2, psychologist1, labels=['P', 'B', 'N'])
+
 print(cm)
 ```
 
@@ -206,6 +214,7 @@ print(cm)
 
 ```{python}
 kappa = sklearn.metrics.cohen_kappa_score(psychologist1, psychologist2)
+
 print(kappa)
 ```
 
@@ -223,6 +232,7 @@ Both [the Wikipedia page](https://en.wikipedia.org/wiki/Cohen's_kappa#Simple_exa
 
 ```{python}
 cm = sklearn.metrics.confusion_matrix(readerA, readerB, labels=['Y', 'N'])
+
 print(cm)
 ```
 
@@ -306,7 +316,7 @@ by_chance = np.sum(judge1_totals_prop * judge2_totals_prop * n)
 # Calculate Cohen's kappa
 kappa = (agreement - by_chance) / (n - by_chance)
 
-print(f'agreement = {agreement}, by_chance = {by_chance}, kappa = {kappa}')
+print(f'agreement = {agreement}, by_chance = {by_chance:.3f}, kappa = {kappa:.3f}')
 ```
 
 These results are the same as on the original page.
@@ -357,14 +367,14 @@ lower = kappa - 1.96 * se
 upper = kappa + 1.96 * se
 
 print(
-    f'p_o = {p_o}, p_e = {p_e}, kappa = {kappa:3.1f}\n',
-    f'standard error = {se}\n',
-    f'lower confidence interval = {lower}\n',
-    f'upper confidence interval = {upper}', sep=''
+    f'p_o = {p_o}, p_e = {p_e}, kappa = {kappa:.1f}\n',
+    f'standard error = {se:.3f}\n',
+    f'lower confidence interval = {lower:.3f}\n',
+    f'upper confidence interval = {upper:.3f}', sep=''
 )
 ```
 
-And using this formula on the data from the Real statistics example gives:
+And using this formula on the data from the Real Statistics example gives:
 
 ```{python, echo = FALSE}
 # Confusion matrix
@@ -391,10 +401,10 @@ lower = kappa - 1.96 * se
 upper = kappa + 1.96 * se
 
 print(
-    f'p_o = {p_o}, p_e = {p_e}, kappa = {kappa}\n',
-    f'standard error = {se}\n',
-    f'lower confidence interval = {lower}\n',
-    f'upper confidence interval = {upper}', sep=''
+    f'p_o = {p_o}, p_e = {p_e:.3f}, kappa = {kappa:.3f}\n',
+    f'standard error = {se:.3f}\n',
+    f'lower confidence interval = {lower:.3f}\n',
+    f'upper confidence interval = {upper:.3f}', sep=''
 )
 ```
 
@@ -514,10 +524,10 @@ upper = kappa + se * z_crit
 
 print(
     f'kappa = {kappa}\n',
-    f'a = {a}, b = {b}, c = {c}\n',
-    f'standard error = {se}\n',
-    f'lower confidence interval = {lower}\n',
-    f'upper confidence interval = {upper}',
+    f'a = {a:.3f}, b = {b:.3f}, c = {c:.3f}\n',
+    f'standard error = {se:.3f}\n',
+    f'lower confidence interval = {lower:.3f}\n',
+    f'upper confidence interval = {upper:.3f}',
     sep=''
 )
 ```
@@ -587,11 +597,11 @@ lower = kappa - se * z_crit
 upper = kappa + se * z_crit
 
 print(
-    f'kappa = {kappa}\n',
-    f'a = {a}, b = {b}, c = {c}\n',
-    f'standard error = {se}\n',
-    f'lower confidence interval = {lower}\n',
-    f'upper confidence interval = {upper}',
+    f'kappa = {kappa:.3f}\n',
+    f'a = {a:.3f}, b = {b:.3f}, c = {c:.3f}\n',
+    f'standard error = {se:.3f}\n',
+    f'lower confidence interval = {lower:.5f}\n',
+    f'upper confidence interval = {upper:.5f}',
     sep=''
 )
 ```
