@@ -17,7 +17,7 @@ output:
 Synopsis
 ========
 - A 'package' is the same as a 'library'
-- Increase the number of functions you can call by installing __*packages*__
+- Installing __*packages*__ increases the number of functions you can call
 - Once installed, you still need to __*import*__ the library into your script
 
 What are Packages and Libraries, and Why Do I Need Them?
@@ -25,7 +25,7 @@ What are Packages and Libraries, and Why Do I Need Them?
 When you download and install R or RStudio you get access to what is known as __*base*__ R. It's very powerful and can do a lot of things but, as the name suggests, it's very basic. In order to add functionality and be able to use other functions you need to __*install packages*__ and __*import libraries*__.
 
 > **What's the difference between a library and a package?**  
-> Nothing. They are two names for the same thing. For some reason you *install* a package and *import* a library but I don't know why.
+> Nothing. They are two names for the same thing. For some reason you *install* a package from the internet and, once it has been installed to your local machine, you *import* it as a library into R. I don't know why the act of installing it changes its name.
 
 Install a Package
 =================
@@ -114,29 +114,47 @@ If you are using Ubuntu, you have the option of updating R from the terminal (th
 
 Updating R from the Terminal on Ubuntu
 --------------------------------------
-If you are using Ubuntu and aren't using RStudio, update R by first opening `/etc/apt/sources.list` and adding whichever of the following lines corresponds to your Ubuntu version:
+If you are using Ubuntu and aren't using RStudio, update R by first opening the `/etc/apt/sources.list` file for editing with sudo permission, for example:
 
 ```{bash eval = FALSE}
-# 18.04
-deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
-# 16.04
-deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran40/
-# 14.04
-deb https://cloud.r-project.org/bin/linux/ubuntu trusty-cran40/
+sudo nano /etc/apt/sources.list
 ```
 
-The above are relevant for R version 4.0. Change the `...-cran40/` part to whatever version numbers you are interested in. Then run the following:
+Then add whichever of the following lines corresponds to your Ubuntu version:
+
+```{bash eval = FALSE}
+# Ubuntu 22.04 (Jammy Jellyfish)
+deb https://cloud.r-project.org/bin/linux/ubuntu jammy-cran40/
+# Ubuntu 20.04 (Focal Fossa)
+deb https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/
+# Ubuntu 18.04 (Bionic Beaver)
+deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/
+# Ubuntu 16.04 (Xenial Xerus)
+deb https://cloud.r-project.org/bin/linux/ubuntu xenial-cran40/
+```
+
+The above are relevant for R version 4. Change the `-cran40/` part to whatever version number you are interested in. Then run the following:
 
 ```{bash eval = FALSE}
 sudo apt-get update
 sudo apt-get install r-base r-base-dev
-# To update any R libraries installed via APT:
-sudo apt-get upgrade
 ```
+
+To update any R libraries installed via APT, you might need to run `sudo apt-get upgrade` again.
+
+If the above doesn't work and gives you errors similar to the following:
+
+```
+W: An error occurred during the signature verification. The repository is not updated and the previous index files will be used. GPG error: https://cloud.r-project.org/bin/linux/ubuntu focal-cran40/ InRelease: The following signatures were invalid: EXPKEYSIG 51716619E084DAB9 Michael Rutter <marutter@gmail.com>
+W: Failed to fetch https://cloud.r-project.org/bin/linux/ubuntu/focal-cran40/InRelease  The following signatures were invalid: EXPKEYSIG 51716619E084DAB9 Michael Rutter <marutter@gmail.com>
+W: Some index files failed to download. They have been ignored, or old ones used instead.
+```
+
+...it is because you need to add the signing key for the R binaries. See [here](https://cloud.r-project.org/bin/linux/ubuntu/) for how to do that.
 
 Import a Library
 ================
-When you want to use functionality that is part of a particular package, you need to import the package as a library in the script by using the `library()` function:
+When you want to use functionality that is part of a particular package you have installed you need to import that package as a library into your script by using the `library()` function:
 
 ```{r, eval = FALSE}
 # Import the 'dplyr' library in order to be able to use its functions
@@ -184,6 +202,14 @@ library(logging)
 
 # The rest of your code follows from here...
 ```
+
+If you get an error message like the following:
+
+```
+Error in loadNamespace(x) : there is no package called ‘dplyr’
+```
+
+It means you do not have that package - in this case the `dplyr` package - installed (or it has not installed correctly). Use the `install.packages()` function again.
 
 Call a Function From a Library
 ==============================

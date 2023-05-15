@@ -18,7 +18,14 @@ This page just talks about how to _plot_ receiver operating characteristic (ROC)
 
 Example Data
 ============
-A good data set to use is the training data subset from the `Titanic` package. This contains information about the passengers on board the Titanic, how much they paid for their fare and whether or not they survived:
+A good data set to use is the training data subset from the `titanic` package. This contains information about the passengers on board the Titanic, how much they paid for their fare and whether or not they survived. Install this package in R with:
+
+```{r, eval=FALSE}
+# Install the package
+install.packages("titanic", repos = "http://cran.us.r-project.org")
+```
+
+Then load and take a look at the data:
 
 ```{r}
 # Load the package
@@ -31,7 +38,14 @@ head(titanic_train[c("Survived", "Pclass", "Name", "Sex", "Age", "Fare", "Cabin"
 
 Calculating Thresholds
 ======================
-Fortunately for us, there is a function that can do most of the work: the unsurprisingly named `roc()` function:
+Fortunately for us, there is a function that can do most of the work when it comes to ROC analysis: the unsurprisingly named `roc()` function. It comes with the `pROC` library which you can install via the following:
+
+```{r, eval=FALSE}
+# Install the package
+install.packages("pROC", repos = "http://cran.us.r-project.org")
+```
+
+Then load and use:
 
 ```{r message = FALSE}
 library(pROC)
