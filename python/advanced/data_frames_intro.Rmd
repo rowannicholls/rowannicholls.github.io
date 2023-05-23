@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 > This page is the first part of a series on data frames:
 > 
 > 1. Introduction to Data Frames
@@ -208,7 +213,7 @@ Rows in a Data Frame
 
 Append a row
 ------------
-Append a data frame as a new row (this is the recommended way of doing it as this method **preserves the order of the columns**:
+Append a data frame as a new row by **concat**enating it to the bottom of the existing data frame via the `concat()` function. This is the recommended way of doing it as this method **preserves the order of the columns**:
 
 ```{python}
 new_row_dct = {
@@ -220,11 +225,11 @@ new_row_dct = {
     'Final': None,
 }
 new_row_df = pd.DataFrame(new_row_dct, index=[1])
-df_extended = df.append(new_row_df, ignore_index=True)
+df_extended = pd.concat([df, new_row_df], ignore_index=True)
 print(df_extended)
 ```
 
-Append a dictionary as a new row:
+To append a **series** as a new row you need to convert it into a data frame with `.to_frame()`, then transpose it with `.T` and also ignore the index:
 
 ```{python}
 new_row_dct = {
@@ -235,11 +240,12 @@ new_row_dct = {
     'Semi-Final': 10.01,
     'Final': None,
 }
-df_extended = df.append(new_row_dct, ignore_index=True)
+new_row_ser = pd.Series(new_row_dct)
+df_extended = pd.concat([df, new_row_ser.to_frame().T], ignore_index=True)
 print(df_extended)
 ```
 
-If a dictionary's values are lists like in the example below, first convert it into a data frame before appending it:
+If a dictionary's values are *lists* like in the example below, you can still convert it into a data frame and append it as normal:
 
 ```{python}
 new_row_dct = {
@@ -251,7 +257,7 @@ new_row_dct = {
     'Final': [None],
 }
 new_row_df = pd.DataFrame(new_row_dct)
-df_extended = df.append(new_row_df, ignore_index=True)
+df_extended = pd.concat([df, new_row_df], ignore_index=True)
 print(df_extended)
 ```
 
@@ -280,26 +286,19 @@ print(df_indexed)
 
 Insert a row
 ------------
-'Appending' a row will add it onto the bottom, whereas 'inserting' a row will place it at whatever position you specify (in this case it will be at index 5).
+Whereas 'appending' a row will add it onto the *bottom* of a data frame, the code below 'inserts' it into whatever position you specify (in this example it is index 5):
 
 ```{python}
-def insert_row(row, df, index):
-    """Insert a given row in a given DataFrame at a given index."""
-    an_array = np.array([row])
-    row_df = pd.DataFrame(an_array, columns=list(df))
-    df = df.iloc[:index, :]\
-        .append(row_df, ignore_index=True)\
-        .append(df.iloc[index:, :], ignore_index=True)
-    return df
-
-
-row = ['Chijindu Ujah', 'Great Britain', 22, 10.13, 10.01, None]
+new_row = ['Chijindu Ujah', 'Great Britain', 22, 10.13, 10.01, None]
+new_row = np.array([new_row])
+new_row = pd.DataFrame(new_row, columns=list(df))
 insert_at = 5
-df_new = insert_row(row, df, insert_at)
+objs = [df.iloc[:insert_at, :], new_row, df.iloc[insert_at:, :]]
+df_new = pd.concat(objs, ignore_index=True)
 print(df_new)
 ```
 
-Similarly, the above code works best with 'default' indices.
+Similarly, the above code works best with the default indices (0, 1, 2, etc).
 
 Concatenate a data frame as new rows
 ------------------------------------
@@ -480,12 +479,10 @@ Insert a column
 'Appending' a column will place it on the end, whereas 'inserting' a column will place it at the location specified (in this case it will be at position 1).
 
 ```{python}
-new_df.insert(
-    1, 'Country',
-    [
-        'Jamaica', 'United States', 'Canada', 'Jamaica', 'South Africa', 'Ivory Coast', 'France', 'United States'
-    ]
-)
+new_col = [
+    'Jamaica', 'United States', 'Canada', 'Jamaica', 'South Africa', 'Ivory Coast', 'France', 'United States'
+]
+new_df.insert(1, 'Country', new_col)
 print(new_df)
 ```
 
@@ -593,10 +590,10 @@ for row in df.itertuples():
 
 Column-by-column
 ----------------
-Iterate over a data frame's columns using `.iteritems()`
+Iterate over a data frame's columns using `.items()`
 
 ```{python}
-for colname, col in df.iteritems():
+for colname, col in df.items():
     Gatlin = col[1]
     Simbine = col[4]
     print(colname, Gatlin, Simbine)
@@ -612,7 +609,7 @@ for colname in list(df):
 
 Cell-by-cell
 ------------
-Iterate over every cell in a data frame by using BOTH `.iterrows()` and `.iteritems()`
+Iterate over every cell in a data frame by using BOTH `.iterrows()` and `.items()`
 
 ```{python}
 # Use a smaller data frame for this example
@@ -627,7 +624,7 @@ dct = {
 df_small = pd.DataFrame(dct)
 # Iterate over every cell
 for i, row in df_small.iterrows():
-    for colname, cell in row.iteritems():
+    for colname, cell in row.items():
         print(f'{colname:10} {cell}')
 ```
 
@@ -637,7 +634,7 @@ single row then iterating through the columns:
 ```{python}
 # Iterate over every cell in row 3 (index number 2)
 idx = 2
-for colname, col in df[idx:idx + 1].iteritems():
+for colname, col in df[idx:idx + 1].items():
     cell = col.values[0]
     print(cell)
 ```
