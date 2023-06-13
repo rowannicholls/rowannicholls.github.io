@@ -41,9 +41,13 @@ A guide to using the GitKraken GUI.
 - The remote settings should have the SSH URL of the Bitbucket repo
 
 ### Update
+- You'll know that an update for GitKraken is available because a green message will appear in the bottom-left corner. Click this.
 - On **Ubuntu**:
-    - Download the latest version as a .deb file from the GitKraken [website](https://www.gitkraken.com/download/linux-deb)
-    + Install it from the terminal with `sudo dpkg -i gitkraken-amd64.deb`
+    + Choose the `.deb` option to download the Debian package ("deb file")
+    + Choose where to save it and click "Save"
+    + Install it from the terminal with `sudo dpkg -i GitKraken-vx.y.z.deb` (replace `x`, `y` and `z` with your downloaded file's version numbers) after `cd`-ing into the correct folder
+    + Alternatively, you can download the latest deb file from the GitKraken website (click [here](https://www.gitkraken.com/download/linux-deb)) and install it from the terminal with `sudo dpkg -i gitkraken-amd64.deb` when in the Downloads folder
+    + Either way, you will then need to close and re-open GitKraken for the update to take effect
 
 [⇦ Back](../../git.html)
 
