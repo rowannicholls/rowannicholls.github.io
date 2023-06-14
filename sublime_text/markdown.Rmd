@@ -37,7 +37,7 @@ Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or 
         }
         ```
     - If it starts to think that .txt files are Markdown file, open a .txt file (ie have that window active) and go: View > Syntax > Open all with current extension as... > your syntax choice
-- **Markdown Preview**
+- **MarkdownPreview**
     - View rendered Markdown in your browser
     - Allows you to create an HTML file from a Markdown file by pressing Ctrl+B/Cmd+B
     - You can create a [user key binding](key_bindings.html) (see below) to immediately open the current Markdown file as a rendered HTML page in your web browser
@@ -66,6 +66,18 @@ To create custom key bindings, go to Preferences > Key Bindings and edit the rig
 - The first key binding created above is "Shift-Alt-M" which, when activated while a Markdown file is open and in focus (ie your caret is in the Markdown file, not a different file that is open), will render that file and display it in your browser
 - The other five key bindings created above merely override the conflict created by the MarkdownEditing package
 - Markdown Table Formatter uses "Shift+Ctrl+Alt+T"
+
+Troubleshooting
+===============
+
+'No Build System'
+-----------------
+If you try to build a Markdown file (if you have an .md file open and either press Ctrl+B/Cmd+B or go Tools > Build) and it doesn't work, take a look at the bottom left corner. If it has the message "No build system" then take a look in the Tools > Build System menu. If that contains "Markdown" then it means that Sublime Text has a problem with the *syntax highlighting* (color scheme), not the build system. You can double check this by looking in the View > Syntax menu (or at the bottom right corner where the detected syntax is shown - clicking on this will being up the same menu) and seeing that "Markdown" does not exist.
+
+Fix this problem by uninstalling and re-installing the **MarkdownEditing** package:
+
+- Tools > Command Palette... (Ctrl+Shift+P/Cmd+Shift+P) > search for "Package Control: Remove Package" > search for "MarkdownEditing"
+- Once uninstalled, do the reverse (searching the Command Palette for "Package Control: Install Package")
 
 Rendering Maths
 ===============

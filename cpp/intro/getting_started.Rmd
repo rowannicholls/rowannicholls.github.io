@@ -1,0 +1,302 @@
+---
+title: '<font size="5">Introduction to C++:</font><br>Getting Started'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../cpp.html)
+
+This page introduces **the C++ programming language** and walks through how to create a program from the ground up.
+
+Step 0: A Program that does Nothing
+===================================
+Before you can write your first program in C++ there are some things you need to know right up front:
+
+### Data Types
+Fundamentally, when you write a program you will be creating, storing, changing and outputting *data*. In C++, for each piece of data you use, you first need to specify what *type* it is before you can do any of those things. Some of the main types are:
+
+- `int`: **int**eger numbers, eg 1, 2 or 3
+- `double`: floating-point numbers (with a decimal point), eg 1.0, 2.0 or 3.0
+- `char`: individual text **char**acters, eg "h", "W" or "1"
+- `string`: a sequence of characters, eg "Hello", "World" or "123"
+- `bool`: **Bool**ean values: true or false
+
+### Functions
+A **function** is a piece of code that takes inputs, does something with them and returns outputs. Every C++ program needs to have - as a minimum - a function called `main`, so let's see how to create one of these:
+
+When you create a function you need to specify:
+
+- The **data type** of the output(s)
+- The **name** of the function
+- The names of the inputs (known as the **arguments**) of the function
+- The code that makes up the function
+- The names of the results that are **returned**
+
+This needs to be done in a particular order: the data type comes first, then a single space, then the function name, then the arguments inside *round brackets* (with no space between the name and the arguments), then the code inside *curly brackets* (with a space after the closing round bracket and the lines of code on new lines).
+
+Here's an example of a very boring `main` function: it takes 0 inputs, does nothing with them and then doesn't return them!
+
+```{Rcpp}
+int main() {
+}
+```
+
+As promised, it's very boring and does nothing. But it's valid C++ code! In other words, this is the most basic C++ program!
+
+### C++ Files
+Open a text editor (such as TextEdit on macOS, Notepad on Windows or gedit on Linux), a code editor (eg VS Code or Sublime Text) or an IDE (Visual Studio, or Sublime Text after packages have been installed), copy in the above minimal example and save it with the extension `.cpp` (eg with the filename `hello_world.cpp`). You've now created your first C++ program! You (and your computer) will be able to tell which files are C++ programs because of this `.cpp` extension, although C++ programs of specific types can have other extensions (such as `.h`) so this isn't a hard-and-fast rule.
+
+### Comments
+With `hello_world.cpp` still open in your editor/IDE, we can add our first **comment**. This is a line of text that will get *completely ignored* by your program, so it's only purpose (and it's an important purpose!) is to provide information to the person reading it.
+
+A *single-line* comment can be made by using two forward slashes:
+
+```{Rcpp}
+// This text is a single-line comment. It is not part of the program and gets ignored by C++.
+int main() {
+}
+```
+
+Comments can also go on the right of code:
+
+```{Rcpp}
+int main() { // This is the start of the main function
+}
+```
+
+*Multi-line* comments can also be created by using `/*` to start the comment and `*/` to end it:
+
+```{Rcpp}
+// This is the start of the main function
+int main() {
+    /* There is no code here yet
+    but some should be added */
+}
+```
+
+Step 1: A Program that does Something
+=====================================
+We've created a valid C++ program, but it won't do anything if we run it as-is because we haven't told it to do anything yet. Let's change this:
+
+### Variables
+As already mentioned, C++ programs do stuff with *data*. So now we need a way to have a piece of data in our code. This is done by creating **variables** as these store data and give it a name so we can refer to it and use it. Creating a variable is known as **declaring** it, and we declare a variable by:
+
+- Specifying its data type
+- Specifying its name
+- Ending the line with a semi-colon
+
+The semi-colon is like a full stop in C++, it finishes a **statement** (one instruction within your program) in the same way that a full stop finishes a sentence.
+
+```{Rcpp}
+int main() {
+    // Declare a variable called "age"
+    // that will be an integer number
+    int age;
+}
+```
+
+Once a variable has been *declared* it can be *initialised*, which means to have a value **assigned** to it. This is done with a single equals sign:
+
+```{Rcpp}
+int main() {
+    // Declare a variable
+    int age;
+    // Initialise a variable
+    age = 0;
+}
+```
+
+Note that this single equals sign *assigns* the value of zero to the variable "age". It is not like in maths when the equals sign means *equality*:
+
+```{Rcpp}
+int main() {
+    // Declare a variable
+    int age;
+    // Initialise a variable
+    age = 0;
+    // Update a variable
+    age = age + 1;
+}
+```
+
+The line `age = age + 1;` is not claiming that the age is equal to itself plus one! It is *overwriting* its values with itself plus one (and thus this program will end with the variable `age` having the value of 1 - it was initialised as 0 then updated by adding 1).
+
+Another thing to note is that variables can be declared and initialise at the same time:
+
+```{Rcpp}
+int main() {
+    // Declare and initialise a variable at the same time
+    int age = 0;
+}
+```
+
+With regards to variables' names, you can only use letters (lower- or upper-case), digits and/or underscores when making these. No spaces or other characters! And, also, you can't start a variable's name with a digit.
+
+### Arithmetic
+As already seen in a previous example, we can use the plus sign to add a number to a variable that has already been declared and initialised to a value that is itself a number (as you would expect from the plus sign!). Other arithmetic operators exist and some of the most common are:
+
+- `+` add
+- `-` subtract
+- `*` multiply
+- `/` divide
+- `%` the remainder after division (the 'modulus')
+- Brackets - `(` and `)` - can be used to set the order of operations, just like in regular maths
+
+These can be used to perform calculations in the way you would expect:
+
+```{Rcpp}
+int main() {
+    // Declare and initialise a variable
+    int diameter = 10;
+    // Perform an arithmetic calculation
+    double area = 3.142 * (diameter / 2) * (diameter / 2);
+}
+```
+
+The variable `area` finishes with a value of 78.55. Note our use of the `double` data type because we are working with a floating point number.
+
+Step 2: Hello World
+===================
+It's all good and well calculating a value, but up until now we haven't created a program that will show us the result! The examples above, if run, would just perform their calculations and then end. As things stand, there's no way to have C++ show us anything, but the functionality to do this does exist, it's just *inside a library*.
+
+### Libraries
+C++ can only do a limited number of things when you use it out-of-the-box, but by including **libraries** that contain additional code we can have access to them and the additional functionality they contain. For example, the `iostream` library contains the ability to edit the standard input/output streams, and this can be used to display results!
+
+Include a library that you have installed (and `iostream` comes pre-installed with C++) by using `#include` and then the library name inside angle brackets:
+
+```{Rcpp}
+#include <iostream>
+```
+
+This now gives us access to two *objects* that will come in use: `std::cout` and `std::cin`.
+
+### Input and Output to the Terminal
+Using `std::cout` (pronounced "see-out") we will be able to have **c**haracters **out**put to the terminal so that we can see them. We need to use the `<<` *operator* to send text to `std::cout` which will then send it to what is known as the standard output *steam*, or `stdout` for short:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // Output characters
+    std::cout << "Hello World\n";
+}
+```
+
+Note:
+
+- The semi-colon at the end of the line with `std::cout`. This is because it is a statement just like what we've seen previously.
+- The double quotation marks around the text. This lets C++ know where your text starts and ends.
+- The `\n` at the end of the text string. That is a special character that creates a **n**ew line once your text has been outputted.
+
+We are now ready to create a program that, for the first time, you will be able to see has done something!
+
+For the record, the complement to `std::cout` is the object `std::cin` (**c**haracter **in**put; "see-in"). This will prompt the user to enter a value at the terminal, and this will then be passed through into the program:
+
+```{Rcpp, eval=FALSE}
+#include <iostream>
+
+int main() {
+    // Display an instruction in the terminal
+    std::cout << "Enter the score: ";
+    // Take values in as inputs
+    std::cin >> score;
+}
+```
+
+Note that the angle brackets that form the operator point the other way with `std::cin`.
+
+### Compiling and Executing
+C++ is what is known as a **compiled language**. This means that it gets *compiled* before it gets run (*executed*). More specifically:
+
+- You, the programmer, writes **source code**
+- This source code gets *compiled* (by a *compiler*) into **object code**. Sometimes you will see this as a file with the `.o` extension.
+- A *linker* then links the object code with the standard library - which contains things that the program uses - producing an executable file. This has the `.out` extension by default but often it will have no extension (there is a convention that some programmers adhere to that says executable files should be extension-less). It's pointless opening this file because it's illegible; humans can't read machine code!
+
+In reality, both the compiling and the linking steps together (going from a `.cpp` file to an executable file) get referred to as 'compiling'.
+
+This compiling can be done from the terminal (macOS or Linux) or the Command Prompt (Windows). Open this program in the folder where the file is saved and running the `g++` program on your `.cpp` file:
+
+```{bash, eval=FALSE}
+g++ hello_world.cpp
+```
+
+This will produce a `hello_world.out` executable file, although you can use the `-o` flag (which controls the name of this output file) to have it just be named `hello_world` (and thus follow the convention of having executable files be extension-less):
+
+```{bash, eval=FALSE}
+g++ hello_world.cpp -o hello_world
+```
+
+This file can then be executed (run) from the terminal/Command Prompt:
+
+```{bash, eval=FALSE}
+./hello_world
+```
+
+```
+Hello World
+```
+
+The words `Hello World` have appeared on the terminal!
+
+The entire process can also be done from within an IDE (eg Visual Studio or Sublime Text with the necessary packages), and often it will be simpler. In Sublime Text, for example, it just requires the `.cpp` file to be open and for you to build it with the default build system (via Ctrl+B or by clicking Tools > Build). It gives you two options: "C++ Single File" to do the compilation only and "C++ Single File - Run" to compile and then execute.
+
+Step 3: Building Up
+===================
+If we now go back to the code that calculated the area of a circle, we can now add in the code that will display the answer on the terminal:
+
+```{Rcpp}
+// Load a library
+#include <iostream>
+
+int main() {
+    // Declare and initialise a variable
+    int diameter = 10;
+    // Perform an arithmetic calculation
+    double area = 3.142 * (diameter / 2) * (diameter / 2);
+    // Output to the terminal
+    std::cout << "The area of the circle is ";
+    std::cout << area;
+    // Don't forget to end by starting a new line
+    std::cout << "\n";
+}
+```
+
+```
+The area of the circle is 78.55
+```
+
+The text (defined using the double quotation marks, known as a 'literal string') gets displayed first, then the value of the area (no quotation marks get used around that because we're using it as a variable, not a literal string) on the same line. Finally, the line is ended by the newline character.
+
+Note, however, that we can be cleaner by combining these last three lines into a single statement:
+
+```{Rcpp}
+// Load a library
+#include <iostream>
+
+int main() {
+    // Declare and initialise a variable
+    int diameter = 10;
+    // Perform an arithmetic calculation
+    double area = 3.142 * (diameter / 2) * (diameter / 2);
+    // Output to the terminal
+    std::cout << "The area of the circle is " << area << "\n";
+}
+```
+
+```
+The area of the circle is 78.55
+```
+
+See what we've done? The literal string and the numerical answer to our calculation, plus the newline character, are all being sent to `std::cout` at the same time by three `<<` operators. This is known as **chaining**.
+
+[⇦ Back](../../cpp.html)
+
+</font>
