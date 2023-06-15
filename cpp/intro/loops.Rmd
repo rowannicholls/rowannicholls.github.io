@@ -1,0 +1,165 @@
+---
+title: '<font size="5">Introduction to C++:</font><br>Loops'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../cpp.html)
+
+Code within a **loop** will run repeatedly until a condition is met. Each repeat is called an *iteration*. There are two kinds of loops:
+
+- **For loops** will run *for* a set number of iterations
+- **While loops** will run *while* a condition is true
+
+For Loops
+=========
+If we know how many times we want to run a certain piece of code, we can use a **for loop**. This requires the following components:
+
+- The word `for`
+- Round brackets with three elements:
+    - An initialisation of a *counter* (a variable that counts the number of iterations that have occurred)
+    - A 'continue condition' (the condition for which the loop will continue to repeat)
+    - The change that takes place to the counter at the end of each loop (usually this will be an increase of 1, which can be written in C++ using `++`)
+- Curly brackets with the code to be run in each loop
+
+As an example, we can calculate the first 10 square numbers:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    int square;
+    for (int i = 0; i < 10; i++) {
+        square = i * i;
+        std::cout << square << "\n";
+    }
+}
+```
+
+```
+0
+1
+4
+9
+16
+25
+36
+49
+64
+81
+```
+
+Or we could do it backwards by starting the counter at 9 and using the 'decrease of 1' (decrement) operation (`--`):
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    int square;
+    for (int i = 9; i >= 0; i--) {
+        square = i * i;
+        std::cout << square << "\n";
+    }
+}
+```
+
+```
+81
+64
+49
+36
+25
+16
+9
+4
+1
+0
+```
+
+While Loops
+===========
+A **while loop** is like an if statement: it will run the code inside the curly brackets if the statement inside the round brackets evaluates to true. However, the while loop will *continue* to run the code inside the curly brackets over and over again until the statement becomes false (it will continue to run *while* the statement is true).
+
+Here's an example: imagine you have a 1000 ml jug of water along with an empty 110 ml glass. You can use the jug to fill the glass, then after you have drunk the water from the glass you can use the jug again to re-fill it. This can repeat for a total of 10 pours, the first 9 of which will fill the glass completely and cause the volume in the jug to reduce by 990 ml in total (9 times 110 ml) leaving the final pour to transfer the remaining 10 ml into the glass. This can be simulated in C++ using a **while loop**, which will continue to run *while* the jug still has water in it:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // Set up the simulation
+    int jug_volume = 1000;
+    int glass_volume = 110;
+    int pours = 0;
+    // Simulate pouring the jug into the glass while there is still water in
+    // the jug
+    while (jug_volume > 0) {
+        jug_volume = jug_volume - glass_volume;
+        pours++;
+    }
+    std::cout << "Total number of pours: " << pours << "\n";
+}
+```
+
+```
+Total number of pours: 10
+```
+
+Using a While Loop as a For Loop
+================================
+Generally speaking, we say that a for loop runs *for* a given number of iterations and a while loop runs *while* a condition is true. But, as a point of interest, a while loop can actually be used to runs *for* a given number of iterations. Here's how to use one to re-create the first for loop example from above and print the first 10 square numbers:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // Initialise the answer
+    int square;
+    // Initialise the counter
+    int i;
+    // Iterate while a condition is met
+    while (i<10) {
+        square = i * i;
+        std::cout << square << "\n";
+        i++;
+    }
+}
+```
+
+```
+0
+1
+4
+9
+16
+25
+36
+49
+64
+81
+```
+
+<!--     // Hangman
+    std::string guess = "0";
+    int tries = 0;
+    while (guess != "LOOP" && tries < 7) {
+        std::cout << "Enter your guess: ";
+        std::cin >> guess;
+        tries++;
+    }
+    if (guess == "LOOP") {
+        std::cout << "Correct!\n";
+    } else {
+        std::cout << "You lost!\n";
+    } -->
+
+[⇦ Back](../../cpp.html)
+
+</font>

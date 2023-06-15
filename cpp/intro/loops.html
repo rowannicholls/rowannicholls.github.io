@@ -11,7 +11,7 @@
 
 
 
-<title>C++</title>
+<title>Introduction to C++: Loops</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -694,19 +694,141 @@ Kc=Hu;Gz();if(R(102)){for(var u=Xe["7"],v=u?u.split("|"):[],w={},x=0;x<v.length;
 
 
 
-<h1 class="title toc-ignore">C++</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to C++:</font><br>Loops</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#for-loops">For Loops</a></li>
+<li><a href="#while-loops">While Loops</a></li>
+<li><a href="#using-a-while-loop-as-a-for-loop">Using a While Loop as a For Loop</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-c" class="section level2">
-<h2>Introduction to C++</h2>
-<ol style="list-style-type: decimal">
-<li><a href="cpp/intro/getting_started.html">Getting Started</a></li>
-<li><a href="cpp/intro/booleans_if_statements.html">Booleans and If Statements</a></li>
-<li><a href="cpp/intro/loops.html">Loops</a></li>
-</ol>
+<p><a href="../../cpp.html">⇦ Back</a></p>
+<p>Code within a <strong>loop</strong> will run repeatedly until a condition is met. Each repeat is called an <em>iteration</em>. There are two kinds of loops:</p>
+<ul>
+<li><strong>For loops</strong> will run <em>for</em> a set number of iterations</li>
+<li><strong>While loops</strong> will run <em>while</em> a condition is true</li>
+</ul>
+<div id="for-loops" class="section level1">
+<h1>For Loops</h1>
+<p>If we know how many times we want to run a certain piece of code, we can use a <strong>for loop</strong>. This requires the following components:</p>
+<ul>
+<li>The word <code>for</code></li>
+<li>Round brackets with three elements:
+<ul>
+<li>An initialisation of a <em>counter</em> (a variable that counts the number of iterations that have occurred)</li>
+<li>A ‘continue condition’ (the condition for which the loop will continue to repeat)</li>
+<li>The change that takes place to the counter at the end of each loop (usually this will be an increase of 1, which can be written in C++ using <code>++</code>)</li>
+</ul></li>
+<li>Curly brackets with the code to be run in each loop</li>
+</ul>
+<p>As an example, we can calculate the first 10 square numbers:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    int square;
+    for (int i = 0; i &lt; 10; i++) {
+        square = i * i;
+        std::cout &lt;&lt; square &lt;&lt; &quot;\n&quot;;
+    }
+}</code></pre>
+<pre><code>0
+1
+4
+9
+16
+25
+36
+49
+64
+81</code></pre>
+<p>Or we could do it backwards by starting the counter at 9 and using the ‘decrease of 1’ (decrement) operation (<code>--</code>):</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    int square;
+    for (int i = 9; i &gt;= 0; i--) {
+        square = i * i;
+        std::cout &lt;&lt; square &lt;&lt; &quot;\n&quot;;
+    }
+}</code></pre>
+<pre><code>81
+64
+49
+36
+25
+16
+9
+4
+1
+0</code></pre>
+</div>
+<div id="while-loops" class="section level1">
+<h1>While Loops</h1>
+<p>A <strong>while loop</strong> is like an if statement: it will run the code inside the curly brackets if the statement inside the round brackets evaluates to true. However, the while loop will <em>continue</em> to run the code inside the curly brackets over and over again until the statement becomes false (it will continue to run <em>while</em> the statement is true).</p>
+<p>Here’s an example: imagine you have a 1000 ml jug of water along with an empty 110 ml glass. You can use the jug to fill the glass, then after you have drunk the water from the glass you can use the jug again to re-fill it. This can repeat for a total of 10 pours, the first 9 of which will fill the glass completely and cause the volume in the jug to reduce by 990 ml in total (9 times 110 ml) leaving the final pour to transfer the remaining 10 ml into the glass. This can be simulated in C++ using a <strong>while loop</strong>, which will continue to run <em>while</em> the jug still has water in it:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // Set up the simulation
+    int jug_volume = 1000;
+    int glass_volume = 110;
+    int pours = 0;
+    // Simulate pouring the jug into the glass while there is still water in
+    // the jug
+    while (jug_volume &gt; 0) {
+        jug_volume = jug_volume - glass_volume;
+        pours++;
+    }
+    std::cout &lt;&lt; &quot;Total number of pours: &quot; &lt;&lt; pours &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>Total number of pours: 10</code></pre>
+</div>
+<div id="using-a-while-loop-as-a-for-loop" class="section level1">
+<h1>Using a While Loop as a For Loop</h1>
+<p>Generally speaking, we say that a for loop runs <em>for</em> a given number of iterations and a while loop runs <em>while</em> a condition is true. But, as a point of interest, a while loop can actually be used to runs <em>for</em> a given number of iterations. Here’s how to use one to re-create the first for loop example from above and print the first 10 square numbers:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // Initialise the answer
+    int square;
+    // Initialise the counter
+    int i;
+    // Iterate while a condition is met
+    while (i&lt;10) {
+        square = i * i;
+        std::cout &lt;&lt; square &lt;&lt; &quot;\n&quot;;
+        i++;
+    }
+}</code></pre>
+<pre><code>0
+1
+4
+9
+16
+25
+36
+49
+64
+81</code></pre>
+<!--     // Hangman
+    std::string guess = "0";
+    int tries = 0;
+    while (guess != "LOOP" && tries < 7) {
+        std::cout << "Enter your guess: ";
+        std::cin >> guess;
+        tries++;
+    }
+    if (guess == "LOOP") {
+        std::cout << "Correct!\n";
+    } else {
+        std::cout << "You lost!\n";
+    } -->
+<p><a href="../../cpp.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
