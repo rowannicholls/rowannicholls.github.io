@@ -1,0 +1,338 @@
+---
+title: '<font size="5">Introduction to C++:</font><br>Booleans and If Statements'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../cpp.html)
+
+A **Boolean** is a data type and variables of this data type can only have one of two values: `true` or `false` (although, technically, they can have a value of `NULL` too):
+
+```{Rcpp}
+#include <stdlib.h>
+
+int main() {
+    bool variable1 = true;
+    bool variable2 = false;
+    bool variable3 = NULL;
+}
+```
+
+In reality, C++ interprets the value `true` as "1" and `false` as "0":
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    bool variable1 = true;
+    bool variable2 = false;
+    
+    std::cout << variable1 << "\n";
+    std::cout << variable2 << "\n";
+}
+```
+
+```
+1
+0
+```
+
+Relational Operators
+====================
+In order to create a Boolean we can construct a *statement* that will *evaluate* to either true or false. For example, the statement "1 is equal to 1" will evaluate to "true", while the statement "1 is not equal to 1" will evaluate to "false". In C++, we use symbols called **relational operators** to represent the phrases "is equal to", "is not equal to", etc, and these are shown below:
+
+- `==`: is equal to
+- `!=`: is not equal to
+- `>`: is greater than
+- `<`: is less than
+- `>=`: is greater than or equal to
+- `<=`: is less than or equal to
+
+Here is how to use them to evaluate the statements "1 is equal to 1" and "1 is not equal to 1" (note the round brackets around the statements being evaluated):
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // 1 is equal to 1
+    bool new_variable = (1 == 1);
+    std::cout << new_variable << "\n";
+    // 1 is not equal to 1
+    new_variable = (1 != 1);
+    std::cout << new_variable << "\n";
+}
+```
+
+```
+1
+0
+```
+
+Logical Operators
+=================
+In order to create more complicated statements we need to introduce **logic**. For example, a statement such as "1 is equal to 1 AND 1 is not equal to 1" is essentially two separate statements ("1 is equal to 1" and "1 is not equal to 1") that both need to be correct in order for the entire statement to be true (spoiler: they aren't!). In C++, we again have symbols to implement these concepts:
+
+- `&&`: and
+- `||`: or
+- `!`: not
+
+So here's how to evaluate if "1 is equal to 1 AND 1 is not equal to 1":
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // 1 is equal to 1
+    bool a = (1 == 1);
+    // 1 is not equal to 1
+    bool b = (1 != 1);
+    // 1 is equal to 1 AND 1 is not equal to 1
+    bool answer = (a && b);
+    std::cout << answer << "\n";
+}
+```
+
+```
+0
+```
+
+If Statements
+=============
+We've seen above how to construct statements that will evaluate to either true or false. These can be used to create **if statement**: these are statements that, if they evaluate to true, will cause some code to run. They require the following components:
+
+- The word `if`
+- A statement inside round brackets which will evaluate to either true or false
+- Code inside curly brackets that will run if the statement is true
+
+Here is a very simple example where the statement in question is "`true`". We definitely expect that that will evaluate to true and cause the code in curly brackets to run:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    if (true) {
+        std::cout << "The statement evaluated to 'true'\n";
+    }
+}
+```
+
+```
+The statement evaluated to 'true'
+```
+
+Here is an example with a statement that uses a relational operator: if a student's test score is 50 or above then they have passed that test:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // A student's test score
+    int test_score = 51;
+    // Has the student passed?
+    if (test_score >= 50) {
+        std::cout << "Pass\n";
+    }
+}
+```
+
+```
+Pass
+```
+
+> Note that an if statement is a *statement* not a *question*, but they achieve the same thing within a program. The statement "the student's score **is** 50 or above" is the programming equivalent of asking "**is** the student's score 50 or above?"
+
+Here's an example with a statement that uses a logical operator:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    bool logged_in = false;
+    // Is the user not logged in?
+    if (!logged_in) {
+        std::cout << "Please log in\n";
+    }
+}
+```
+
+```
+Please log in
+```
+
+Else Statements
+===============
+An **else statement** (or an else 'clause') can be used after an if statement to run a piece of code in the event that the if statement evaluates to false. In other words, *if* the statement is true then the first piece of code is run, *else* the second piece of code is run:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // A student's test score
+    int test_score = 51;
+    // Has the student passed?
+    if (test_score >= 50) {
+        std::cout << "Pass\n";
+    } else {
+        std::cout << "Fail\n";
+    }
+}
+```
+
+```
+Pass
+```
+
+As expected, logical operators still work:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // A student's test scores
+    int test1 = 51;
+    int test2 = 49;
+    // Has the student passed both tests?
+    if (test1 >= 50 && test2 >= 50) {
+        std::cout << "Pass\n";
+    } else {
+        std::cout << "Fail\n";
+    }
+}
+```
+
+```
+Fail
+```
+
+Just for a bit of variation, here's the same example but with inverse logic:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // A student's test scores
+    int test1 = 51;
+    int test2 = 49;
+    // A student's test results
+    bool fail1 = (test1 < 50);
+    bool fail2 = (test2 < 50);
+    // Has the student failed either test?
+    if ( fail1 || fail2 ) {
+        std::cout << "Fail\n";
+    } else {
+        std::cout << "Pass\n";
+    }
+}
+```
+
+```
+Fail
+```
+
+Else If Statements
+==================
+In between if and else statements you can have **else if statements**:
+
+- *If* a statement is true then the first piece of code is run
+- *Else if* a second statement is true the second piece of code is run
+- *Else* the third piece of code is run
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // A student's test score
+    int test_score = 50;
+    // Has the student passed?
+    if (test_score > 50) {
+        std::cout << "Pass\n";
+    } else if (test_score == 50) {
+        std::cout << "Neither pass nor fail\n";
+    } else {
+        std::cout << "Fail\n";
+    }
+}
+```
+
+```
+Neither pass nor fail
+```
+
+Of course, multiple else if statements can be used:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // An app's rating out of 5
+    int rating = 4;
+    // How many stars does the app have?
+    if (rating == 1) {
+        std::cout << "★\n";
+    } else if (rating == 2) {
+        std::cout << "★★\n";
+    } else if (rating == 3) {
+        std::cout << "★★★\n";
+    } else if (rating == 4) {
+        std::cout << "★★★★\n";
+    } else {
+        std::cout << "★★★★★\n";
+    }
+}
+```
+
+```
+★★★★
+```
+
+Switch Statements
+=================
+The previous example was pretty clumsy: we had 5 statements that got evaluated from the top to the bottom in order to cover all possible values for the rating using logic tests. But if we're rating an app out of 5 stars then there are only 5 possible values, so a much cleaner way to write this code would be to treat each of the limited number of options as a *case*. This can be done using a **switch statement**:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // An app's rating out of 5
+    int rating = 4;
+    // How many stars does the app have?
+    switch (rating) {
+        case 1:
+            std::cout << "★\n";
+        break;
+        case 2:
+            std::cout << "★★\n";
+        break;
+        case 3:
+            std::cout << "★★★\n";
+        break;
+        case 4:
+            std::cout << "★★★★\n";
+        break;
+        case 5:
+            std::cout << "★★★★★\n";
+        break;
+        default:
+            std::cout << "Invalid\n";
+        break;
+    }
+}
+```
+
+```
+★★★★
+```
+
+This achieves the same goal but is much more readable. Note the use of the `break;` statement at the end of each case; without that, all subsequent cases would also execute!
+
+[⇦ Back](../../cpp.html)
+
+</font>

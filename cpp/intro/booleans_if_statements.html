@@ -11,7 +11,7 @@
 
 
 
-<title>C++</title>
+<title>Introduction to C++: Booleans and If Statements</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -694,18 +694,261 @@ Kc=Hu;Gz();if(R(102)){for(var u=Xe["7"],v=u?u.split("|"):[],w={},x=0;x<v.length;
 
 
 
-<h1 class="title toc-ignore">C++</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to C++:</font><br>Booleans and If Statements</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#relational-operators">Relational Operators</a></li>
+<li><a href="#logical-operators">Logical Operators</a></li>
+<li><a href="#if-statements">If Statements</a></li>
+<li><a href="#else-statements">Else Statements</a></li>
+<li><a href="#else-if-statements">Else If Statements</a></li>
+<li><a href="#switch-statements">Switch Statements</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-c" class="section level2">
-<h2>Introduction to C++</h2>
-<ol style="list-style-type: decimal">
-<li><a href="cpp/intro/getting_started.html">Getting Started</a></li>
-<li><a href="cpp/intro/booleans_if_statements.html">Booleans and If Statements</a></li>
-</ol>
+<p><a href="../../cpp.html">⇦ Back</a></p>
+<p>A <strong>Boolean</strong> is a data type and variables of this data type can only have one of two values: <code>true</code> or <code>false</code> (although, technically, they can have a value of <code>NULL</code> too):</p>
+<pre class="cpp"><code>#include &lt;stdlib.h&gt;
+
+int main() {
+    bool variable1 = true;
+    bool variable2 = false;
+    bool variable3 = NULL;
+}</code></pre>
+<p>In reality, C++ interprets the value <code>true</code> as “1” and <code>false</code> as “0”:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    bool variable1 = true;
+    bool variable2 = false;
+    
+    std::cout &lt;&lt; variable1 &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; variable2 &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>1
+0</code></pre>
+<div id="relational-operators" class="section level1">
+<h1>Relational Operators</h1>
+<p>In order to create a Boolean we can construct a <em>statement</em> that will <em>evaluate</em> to either true or false. For example, the statement “1 is equal to 1” will evaluate to “true”, while the statement “1 is not equal to 1” will evaluate to “false”. In C++, we use symbols called <strong>relational operators</strong> to represent the phrases “is equal to”, “is not equal to”, etc, and these are shown below:</p>
+<ul>
+<li><code>==</code>: is equal to</li>
+<li><code>!=</code>: is not equal to</li>
+<li><code>&gt;</code>: is greater than</li>
+<li><code>&lt;</code>: is less than</li>
+<li><code>&gt;=</code>: is greater than or equal to</li>
+<li><code>&lt;=</code>: is less than or equal to</li>
+</ul>
+<p>Here is how to use them to evaluate the statements “1 is equal to 1” and “1 is not equal to 1” (note the round brackets around the statements being evaluated):</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // 1 is equal to 1
+    bool new_variable = (1 == 1);
+    std::cout &lt;&lt; new_variable &lt;&lt; &quot;\n&quot;;
+    // 1 is not equal to 1
+    new_variable = (1 != 1);
+    std::cout &lt;&lt; new_variable &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>1
+0</code></pre>
+</div>
+<div id="logical-operators" class="section level1">
+<h1>Logical Operators</h1>
+<p>In order to create more complicated statements we need to introduce <strong>logic</strong>. For example, a statement such as “1 is equal to 1 AND 1 is not equal to 1” is essentially two separate statements (“1 is equal to 1” and “1 is not equal to 1”) that both need to be correct in order for the entire statement to be true (spoiler: they aren’t!). In C++, we again have symbols to implement these concepts:</p>
+<ul>
+<li><code>&amp;&amp;</code>: and</li>
+<li><code>||</code>: or</li>
+<li><code>!</code>: not</li>
+</ul>
+<p>So here’s how to evaluate if “1 is equal to 1 AND 1 is not equal to 1”:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // 1 is equal to 1
+    bool a = (1 == 1);
+    // 1 is not equal to 1
+    bool b = (1 != 1);
+    // 1 is equal to 1 AND 1 is not equal to 1
+    bool answer = (a &amp;&amp; b);
+    std::cout &lt;&lt; answer &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>0</code></pre>
+</div>
+<div id="if-statements" class="section level1">
+<h1>If Statements</h1>
+<p>We’ve seen above how to construct statements that will evaluate to either true or false. These can be used to create <strong>if statement</strong>: these are statements that, if they evaluate to true, will cause some code to run. They require the following components:</p>
+<ul>
+<li>The word <code>if</code></li>
+<li>A statement inside round brackets which will evaluate to either true or false</li>
+<li>Code inside curly brackets that will run if the statement is true</li>
+</ul>
+<p>Here is a very simple example where the statement in question is “<code>true</code>”. We definitely expect that that will evaluate to true and cause the code in curly brackets to run:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    if (true) {
+        std::cout &lt;&lt; &quot;The statement evaluated to &#39;true&#39;\n&quot;;
+    }
+}</code></pre>
+<pre><code>The statement evaluated to &#39;true&#39;</code></pre>
+<p>Here is an example with a statement that uses a relational operator: if a student’s test score is 50 or above then they have passed that test:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // A student&#39;s test score
+    int test_score = 51;
+    // Has the student passed?
+    if (test_score &gt;= 50) {
+        std::cout &lt;&lt; &quot;Pass\n&quot;;
+    }
+}</code></pre>
+<pre><code>Pass</code></pre>
+<blockquote>
+<p>Note that an if statement is a <em>statement</em> not a <em>question</em>, but they achieve the same thing within a program. The statement “the student’s score <strong>is</strong> 50 or above” is the programming equivalent of asking “<strong>is</strong> the student’s score 50 or above?”</p>
+</blockquote>
+<p>Here’s an example with a statement that uses a logical operator:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    bool logged_in = false;
+    // Is the user not logged in?
+    if (!logged_in) {
+        std::cout &lt;&lt; &quot;Please log in\n&quot;;
+    }
+}</code></pre>
+<pre><code>Please log in</code></pre>
+</div>
+<div id="else-statements" class="section level1">
+<h1>Else Statements</h1>
+<p>An <strong>else statement</strong> (or an else ‘clause’) can be used after an if statement to run a piece of code in the event that the if statement evaluates to false. In other words, <em>if</em> the statement is true then the first piece of code is run, <em>else</em> the second piece of code is run:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // A student&#39;s test score
+    int test_score = 51;
+    // Has the student passed?
+    if (test_score &gt;= 50) {
+        std::cout &lt;&lt; &quot;Pass\n&quot;;
+    } else {
+        std::cout &lt;&lt; &quot;Fail\n&quot;;
+    }
+}</code></pre>
+<pre><code>Pass</code></pre>
+<p>As expected, logical operators still work:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // A student&#39;s test scores
+    int test1 = 51;
+    int test2 = 49;
+    // Has the student passed both tests?
+    if (test1 &gt;= 50 &amp;&amp; test2 &gt;= 50) {
+        std::cout &lt;&lt; &quot;Pass\n&quot;;
+    } else {
+        std::cout &lt;&lt; &quot;Fail\n&quot;;
+    }
+}</code></pre>
+<pre><code>Fail</code></pre>
+<p>Just for a bit of variation, here’s the same example but with inverse logic:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // A student&#39;s test scores
+    int test1 = 51;
+    int test2 = 49;
+    // A student&#39;s test results
+    bool fail1 = (test1 &lt; 50);
+    bool fail2 = (test2 &lt; 50);
+    // Has the student failed either test?
+    if ( fail1 || fail2 ) {
+        std::cout &lt;&lt; &quot;Fail\n&quot;;
+    } else {
+        std::cout &lt;&lt; &quot;Pass\n&quot;;
+    }
+}</code></pre>
+<pre><code>Fail</code></pre>
+</div>
+<div id="else-if-statements" class="section level1">
+<h1>Else If Statements</h1>
+<p>In between if and else statements you can have <strong>else if statements</strong>:</p>
+<ul>
+<li><em>If</em> a statement is true then the first piece of code is run</li>
+<li><em>Else if</em> a second statement is true the second piece of code is run</li>
+<li><em>Else</em> the third piece of code is run</li>
+</ul>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // A student&#39;s test score
+    int test_score = 50;
+    // Has the student passed?
+    if (test_score &gt; 50) {
+        std::cout &lt;&lt; &quot;Pass\n&quot;;
+    } else if (test_score == 50) {
+        std::cout &lt;&lt; &quot;Neither pass nor fail\n&quot;;
+    } else {
+        std::cout &lt;&lt; &quot;Fail\n&quot;;
+    }
+}</code></pre>
+<pre><code>Neither pass nor fail</code></pre>
+<p>Of course, multiple else if statements can be used:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // An app&#39;s rating out of 5
+    int rating = 4;
+    // How many stars does the app have?
+    if (rating == 1) {
+        std::cout &lt;&lt; &quot;★\n&quot;;
+    } else if (rating == 2) {
+        std::cout &lt;&lt; &quot;★★\n&quot;;
+    } else if (rating == 3) {
+        std::cout &lt;&lt; &quot;★★★\n&quot;;
+    } else if (rating == 4) {
+        std::cout &lt;&lt; &quot;★★★★\n&quot;;
+    } else {
+        std::cout &lt;&lt; &quot;★★★★★\n&quot;;
+    }
+}</code></pre>
+<pre><code>★★★★</code></pre>
+</div>
+<div id="switch-statements" class="section level1">
+<h1>Switch Statements</h1>
+<p>The previous example was pretty clumsy: we had 5 statements that got evaluated from the top to the bottom in order to cover all possible values for the rating using logic tests. But if we’re rating an app out of 5 stars then there are only 5 possible values, so a much cleaner way to write this code would be to treat each of the limited number of options as a <em>case</em>. This can be done using a <strong>switch statement</strong>:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // An app&#39;s rating out of 5
+    int rating = 4;
+    // How many stars does the app have?
+    switch (rating) {
+        case 1:
+            std::cout &lt;&lt; &quot;★\n&quot;;
+        break;
+        case 2:
+            std::cout &lt;&lt; &quot;★★\n&quot;;
+        break;
+        case 3:
+            std::cout &lt;&lt; &quot;★★★\n&quot;;
+        break;
+        case 4:
+            std::cout &lt;&lt; &quot;★★★★\n&quot;;
+        break;
+        case 5:
+            std::cout &lt;&lt; &quot;★★★★★\n&quot;;
+        break;
+        default:
+            std::cout &lt;&lt; &quot;Invalid\n&quot;;
+        break;
+    }
+}</code></pre>
+<pre><code>★★★★</code></pre>
+<p>This achieves the same goal but is much more readable. Note the use of the <code>break;</code> statement at the end of each case; without that, all subsequent cases would also execute!</p>
+<p><a href="../../cpp.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
