@@ -1,0 +1,278 @@
+---
+title: '<font size="5">Introduction to C++:</font><br>Classes and Objects'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../cpp.html)
+
+Although the standard data types are useful, we often want to have things that give us more specific functionality. For example, using `std::string name = "Bob";` will create a string that, in your mind, will represent a person called Bob. But it only contains the string "Bob" - it doesn't contain any more specific information such as his age or year of birth. In C++, however, we have the option to create new **classes** which are essentially custom data types. We can give these new classes *attributes* such as age and year of birth and, in doing so, we can make them more specific to the types of things they represent.
+
+When an *instance* of a class is created, it is known as an **object**. For example, a person called Bob might be represented by an object in C++ called `bob` that is an instance of the `Person` class.
+
+Creating a Class
+================
+Here's a programme that defines an empty class called `Person`:
+
+```{Rcpp}
+class Person {
+};
+
+int main() {
+}
+```
+
+Notice the semi-colon at the end of the class definition, and also notice that we usually start with a capital letter when we name a class.
+
+Adding Class Members
+====================
+There are two types of class members: **attributes** and **methods**:
+
+Attributes
+----------
+Attributes are pieces of data that can be stored in an object of a particular class. For example, objects of the `Person` class might have `name` as an attribute:
+
+```{Rcpp}
+#include <string>
+
+class Person {
+    // Create an attribute
+    std::string name;
+};
+
+int main() {
+}
+```
+
+Methods
+-------
+Methods are functions that do something specific with an instance of a class. The `Person` class might have a method `birthday` which increases an `age` attribute by 1:
+
+```{Rcpp}
+#include <string>
+
+class Person {
+    // Create attributes
+    std::string name;
+    int age;
+    // Create a method
+    void birthday() {
+        age++;
+    }
+};
+
+int main() {
+}
+```
+
+Public vs Private Class Members
+===============================
+By default, all attributes and methods are **private** which means that they are only valid inside the object's scope. The examples above are no exception: the attributes and the method are private which means that you can't access them from the main loop (because the main loop is a different scope). In other words, there's no way to set a `Person`'s name or to give them a birthday! It would make more sense to set some of these class members to **public** which would make them editable. This is done with the `public` statement - everything that follows this statement is public and everything before the statement is private:
+
+```{Rcpp}
+#include <iostream>
+#include <string>
+
+class Person {
+    // Create a private attribute
+    std::string name;
+    public:
+        // Create a public attribute
+        int age;
+        // Create a public method
+        void birthday() {
+            age++;
+        }
+};
+
+int main() {
+    // Create a new instance of the Person class
+    Person bob;
+    // Give this Person object an age
+    bob.age = 25;
+    std::cout << "Bob's age is " << bob.age <<"\n";
+    // Celebrate a birthday
+    bob.birthday();
+    std::cout << "Bob's age is " << bob.age <<"\n";
+}
+```
+
+```
+Bob's age is 25
+Bob's age is 26
+```
+
+Having `age` and `birthday()` as public makes sense because these change often; a person has a birthday and their age changes once a year! So we would want to have them accessible. A person's name, on the other hand, is something that usually stays unchanged for life, so we would want to keep it as a private attribute to make it harder to change (and thus it's less likely that it will be edited accidentally).
+
+So, now that we've decided that `name` will stay a private attribute, how do we give it a value? It can't be done directly, so we need to write public methods that will do it for us. In this example, `set_name()` will set the name and `get_name()` will return it:
+
+```{Rcpp}
+#include <iostream>
+#include <string>
+
+class Person {
+    // Create a private attribute
+    std::string name;
+    public:
+        // Create a public attribute
+        int age;
+        // Create public methods
+        void birthday() {
+            age++;
+        }
+        void set_name(std::string new_name) {
+            name = new_name;
+        }
+        std::string get_name() {
+            return name;
+        }
+};
+
+int main() {
+    // Create a new instance of the Person class
+    Person bob;
+    // Give this Person object a name and an age
+    bob.set_name("Robert");
+    bob.age = 25;
+    // Display both the private and public attributes
+    std::cout << bob.get_name() << "'s age is " << bob.age <<"\n";
+    // Celebrate a birthday
+    bob.birthday();
+    std::cout << bob.get_name() << "'s age is " << bob.age <<"\n";
+}
+```
+
+```
+Robert's age is 25
+Robert's age is 26
+```
+
+Constructors
+============
+If you want some data to be compulsory for each instance of a class, you can use a **constructor**. This will cause it to be a requirement that certain attributes be set upon the initialisation of an object. For example, every person has a birth year, so we could make it compulsory to set this every time a new `Person` is defined. A constructor is created in the same way as a public method, except a constructor's name is the same as the class itself (in this case, `Person`) and *there is no return type*. This constructor is then executed every time a new object is initialised:
+
+```{Rcpp}
+#include <iostream>
+#include <string>
+
+class Person {
+    // Create private attributes
+    std::string name;
+    int birth_year;
+    public:
+        // Create a public attribute
+        int age;
+        // Create public methods
+        void birthday() {
+            age++;
+        }
+        void set_name(std::string new_name) {
+            name = new_name;
+        }
+        std::string get_name() {
+            return name;
+        }
+        int get_birth_year() {
+            return birth_year;
+        }
+        // Create a constructor
+        Person(int year) {
+            birth_year = year;
+        }
+};
+
+int main() {
+    // Create a new instance of the Person class
+    Person bob(1997);
+    // Give this Person object a name and an age
+    bob.set_name("Robert");
+    bob.age = 25;
+    // Display both the private and public attributes
+    std::cout << bob.get_name() << "'s age is " << bob.age << " (born in " << bob.get_birth_year() << ")\n";
+    // Celebrate a birthday
+    bob.birthday();
+    std::cout << bob.get_name() << "'s age is " << bob.age << " (born in " << bob.get_birth_year() << ")\n";
+}
+```
+
+```
+Robert's age is 25 (born in 1997)
+Robert's age is 26 (born in 1997)
+```
+
+The new person was created using `Person bob(1997);` because the constructor takes `int year` as an argument.
+
+Destructors
+===========
+**Destructors** define code that runs whenever an instance of a class is deleted or moves out of scope (or when the programme ends). They are created in the same way as constructors (public methods with no return type and the same name as the class itself) except:
+
+- They have a tilde (`~`) at the start of their name
+- They do not have any parameters
+
+```{Rcpp}
+#include <iostream>
+#include <string>
+
+class Person {
+    // Create private attributes
+    std::string name;
+    int birth_year;
+    public:
+        // Create a public attribute
+        int age;
+        // Create public methods
+        void birthday() {
+            age++;
+        }
+        void set_name(std::string new_name) {
+            name = new_name;
+        }
+        std::string get_name() {
+            return name;
+        }
+        int get_birth_year() {
+            return birth_year;
+        }
+        // Create a constructor
+        Person(int year) {
+            birth_year = year;
+        }
+        // Create a destructor
+        ~Person() {
+            std::cout << name << " got deleted\n";
+        }
+};
+
+int main() {
+    // Create a new instance of the Person class
+    Person bob(1997);
+    // Give this Person object a name and an age
+    bob.set_name("Robert");
+    bob.age = 25;
+    // Display both the private and public attributes
+    std::cout << bob.get_name() << "'s age is " << bob.age << " (born in " << bob.get_birth_year() << ")\n";
+    // Celebrate a birthday
+    bob.birthday();
+    std::cout << bob.get_name() << "'s age is " << bob.age << " (born in " << bob.get_birth_year() << ")\n";
+}
+```
+
+```
+Robert's age is 25 (born in 1997)
+Robert's age is 26 (born in 1997)
+Robert got deleted
+```
+
+Note that the destructor was never called, it ran automatically when the `main()` loop ended!
+
+[⇦ Back](../../cpp.html)
+
+</font>
