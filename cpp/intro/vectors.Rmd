@@ -1,0 +1,229 @@
+---
+title: '<font size="5">Introduction to C++:</font><br>Vectors'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../cpp.html)
+
+A **vector** is a list of objects.
+
+- They are *ordered:* 1, 2, 3 is different to 1, 3, 2
+- The objects themselves are the *elements* of the vector
+    + We say that a vector is a "sequence of elements"
+- The positions of the elements in the vector are their *indices*/*indexes*. The first element is at index 0 (not index 1!), the second element is at index 1 (not index 2!) and so on. We say that vectors are 'zero-indexed' for this reason: the positions of the elements start at 0, not 1.
+- The `vector` header needs to be included in your source code in order to use vectors
+
+Declaring and Initialising
+==========================
+The syntax to declare a vector called `name` where the elements of `name` are all of the data type `type` is `std::vector<type> name;`:
+
+```{Rcpp}
+// The vector header needs to be included in your source code in order to use vectors
+#include <vector>
+
+int main() {
+    // Declare a vector of floating-point numbers
+    std::vector<double> numbers;
+}
+```
+
+The data type of a vector cannot be changed once you have declared it.
+
+To declare and intialise at the same time, assign values to the variable using curly brackets:
+
+```{Rcpp}
+#include <vector>
+#include <string>
+
+int main() {
+    // Declare and initialise four vectors of different types
+    std::vector<int> squares = {0, 1, 4, 9, 16};
+    std::vector<double> coordinates = {51.5002149, -0.1249473};
+    std::vector<char> letters = {'a', 'b', 'c', 'd'};  // Single quotation marks
+    std::vector<std::string> beatles = {"John", "Paul", "George", "Ringo"};  // Double quotation marks
+}
+```
+
+If you don't know *what* elements will be going into your vector but you do know *how many* elements there will be, you can provide a size in round brackets when you declare it. This is known as *presizing:*
+
+```{Rcpp}
+#include <vector>
+
+int main() {
+    // Declaring and presizing
+    std::vector<int> variable(2);
+}
+```
+
+Info about a Vector
+===================
+
+Length
+------
+Get the number of elements in a vector using `size()`:
+
+```{Rcpp}
+#include <vector>
+#include <string>
+#include <iostream>
+
+int main() {
+    // Declare and initialise
+    std::vector<std::string> beatles = {"John", "Paul", "George", "Ringo"};
+    // Get the length
+    std::cout << beatles.size() << "\n";
+}
+```
+
+```
+4
+```
+
+Indexing
+--------
+Get the element that exists at a particular index by using square brackets: `variable[2]` will return the element in the third position (2nd index):
+
+```{Rcpp}
+#include <vector>
+#include <iostream>
+
+int main() {
+    // Declaring and initialising
+    std::vector<int> squares = {0, 1, 4, 9, 16};
+    std::vector<double> coordinates = {51.5002149, -0.1249473};
+    std::vector<char> letters = {'a', 'b', 'c', 'd'};
+    std::vector<std::string> beatles = {"John", "Paul", "George", "Ringo"};
+    // Indexing
+    std::cout << squares[0] << "\n";
+    std::cout << coordinates[1] << "\n";
+    std::cout << letters[2] << "\n";
+    std::cout << beatles[3] << "\n";
+}
+```
+
+```
+0
+-0.124947
+c
+Ringo
+```
+
+Iterating (and Displaying)
+--------------------------
+Loop through a vector ('iterate over it') by using a `for` loop with the size of the vector as your terminal condition. Then, you can use the counter to index it. By iterating over a vector this way you can, as an example, display each element in turn:
+
+```{Rcpp}
+#include <vector>
+#include <iostream>
+#include <string>
+
+int main() {
+    // Declare and initialise
+    std::vector<std::string> beatles = {"John", "Paul", "George", "Ringo"};
+    // Iterate
+    for (int i = 0; i < beatles.size(); i++) {
+        // Display
+        std::cout << beatles[i] << " ";
+    }
+    std::cout << "\n";
+}
+```
+
+```
+John Paul George Ringo 
+```
+
+Editing a Vector
+================
+
+Updating Values
+---------------
+You can edit each element in turn by iterating with a `for` loop and using the counter to both get and update the element at that index:
+
+```{Rcpp}
+#include <vector>
+#include <iostream>
+
+int main() {
+    // Declare and initialise
+    std::vector<int> squares = {0, 1, 4, 9, 16};
+    // Iterate over vector
+    for (int i = 0; i < squares.size(); i++) {
+        // Update the element by adding 1 to it
+        squares[i] = squares[i] + 1;
+    }
+    // Display
+    for (int i=0; i<squares.size(); i++) {
+        std::cout << squares[i] << " ";
+    }
+    std::cout << "\n";
+}
+```
+
+```
+1 2 5 10 17 
+```
+
+Adding Elements
+---------------
+Use `.push_back()` to *push* a new element to the *back* of the vector (aka append to the vector):
+
+```{Rcpp}
+#include <vector>
+#include <iostream>
+#include <string>
+
+int main() {
+    // Declare and initialise
+    std::vector<std::string> beatles = {"John", "Paul", "George", "Ringo"};
+    // Append
+    beatles.push_back("Pete");
+    // Display
+    for(int i=0; i<beatles.size(); i++) {
+        std::cout << beatles[i] << " ";
+    }
+    std::cout << "\n";
+}
+```
+
+```
+John Paul George Ringo Pete 
+```
+
+Removing Elements
+-----------------
+Use `.pop_back()` to *pop* an element out from the *back* of the vector:
+
+```{Rcpp}
+#include <vector>
+#include <iostream>
+
+int main() {
+    // Declare and initialise
+    std::vector<char> letters = {'a', 'b', 'c', 'd'};
+    // Remove
+    letters.pop_back();  // No argument inside the round brackets
+    // Display
+    for (int i=0; i<letters.size(); i++) {
+        std::cout << letters[i] << " ";
+    }
+    std::cout << "\n";
+}
+```
+
+```
+a b c 
+```
+
+[⇦ Back](../../cpp.html)
+
+</font>

@@ -11,7 +11,7 @@
 
 
 
-<title>C++</title>
+<title>Introduction to C++: Vectors</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -689,21 +689,195 @@ zt();Ve(1);Q(131)&&Cr();Ee=Ga();Lz.bootstrap=Ee;if(Q(70)){}}});
 
 
 
-<h1 class="title toc-ignore">C++</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to C++:</font><br>Vectors</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#declaring-and-initialising"><span class="toc-section-number">1</span> Declaring and Initialising</a></li>
+<li><a href="#info-about-a-vector"><span class="toc-section-number">2</span> Info about a Vector</a>
+<ul>
+<li><a href="#length"><span class="toc-section-number">2.1</span> Length</a></li>
+<li><a href="#indexing"><span class="toc-section-number">2.2</span> Indexing</a></li>
+<li><a href="#iterating-and-displaying"><span class="toc-section-number">2.3</span> Iterating (and Displaying)</a></li>
+</ul></li>
+<li><a href="#editing-a-vector"><span class="toc-section-number">3</span> Editing a Vector</a>
+<ul>
+<li><a href="#updating-values"><span class="toc-section-number">3.1</span> Updating Values</a></li>
+<li><a href="#adding-elements"><span class="toc-section-number">3.2</span> Adding Elements</a></li>
+<li><a href="#removing-elements"><span class="toc-section-number">3.3</span> Removing Elements</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-c" class="section level2">
-<h2>Introduction to C++</h2>
-<ol style="list-style-type: decimal">
-<li><a href="cpp/intro/getting_started.html">Getting Started</a></li>
-<li><a href="cpp/intro/booleans_if_statements.html">Booleans and If Statements</a></li>
-<li><a href="cpp/intro/loops.html">Loops</a></li>
-<li><a href="cpp/intro/vectors.html">Vectors</a></li>
-</ol>
+<p><a href="../../cpp.html">⇦ Back</a></p>
+<p>A <strong>vector</strong> is a list of objects.</p>
+<ul>
+<li>They are <em>ordered:</em> 1, 2, 3 is different to 1, 3, 2</li>
+<li>The objects themselves are the <em>elements</em> of the vector
+<ul>
+<li>We say that a vector is a “sequence of elements”</li>
+</ul></li>
+<li>The positions of the elements in the vector are their <em>indices</em>/<em>indexes</em>. The first element is at index 0 (not index 1!), the second element is at index 1 (not index 2!) and so on. We say that vectors are ‘zero-indexed’ for this reason: the positions of the elements start at 0, not 1.</li>
+<li>The <code>vector</code> header needs to be included in your source code in order to use vectors</li>
+</ul>
+<div id="declaring-and-initialising" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Declaring and Initialising</h1>
+<p>The syntax to declare a vector called <code>name</code> where the elements of <code>name</code> are all of the data type <code>type</code> is <code>std::vector&lt;type&gt; name;</code>:</p>
+<pre class="cpp"><code>// The vector header needs to be included in your source code in order to use vectors
+#include &lt;vector&gt;
+
+int main() {
+    // Declare a vector of floating-point numbers
+    std::vector&lt;double&gt; numbers;
+}</code></pre>
+<p>The data type of a vector cannot be changed once you have declared it.</p>
+<p>To declare and intialise at the same time, assign values to the variable using curly brackets:</p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+#include &lt;string&gt;
+
+int main() {
+    // Declare and initialise four vectors of different types
+    std::vector&lt;int&gt; squares = {0, 1, 4, 9, 16};
+    std::vector&lt;double&gt; coordinates = {51.5002149, -0.1249473};
+    std::vector&lt;char&gt; letters = {&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;};  // Single quotation marks
+    std::vector&lt;std::string&gt; beatles = {&quot;John&quot;, &quot;Paul&quot;, &quot;George&quot;, &quot;Ringo&quot;};  // Double quotation marks
+}</code></pre>
+<p>If you don’t know <em>what</em> elements will be going into your vector but you do know <em>how many</em> elements there will be, you can provide a size in round brackets when you declare it. This is known as <em>presizing:</em></p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+
+int main() {
+    // Declaring and presizing
+    std::vector&lt;int&gt; variable(2);
+}</code></pre>
+</div>
+<div id="info-about-a-vector" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Info about a Vector</h1>
+<div id="length" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> Length</h2>
+<p>Get the number of elements in a vector using <code>size()</code>:</p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+#include &lt;string&gt;
+#include &lt;iostream&gt;
+
+int main() {
+    // Declare and initialise
+    std::vector&lt;std::string&gt; beatles = {&quot;John&quot;, &quot;Paul&quot;, &quot;George&quot;, &quot;Ringo&quot;};
+    // Get the length
+    std::cout &lt;&lt; beatles.size() &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>4</code></pre>
+</div>
+<div id="indexing" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Indexing</h2>
+<p>Get the element that exists at a particular index by using square brackets: <code>variable[2]</code> will return the element in the third position (2nd index):</p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+#include &lt;iostream&gt;
+
+int main() {
+    // Declaring and initialising
+    std::vector&lt;int&gt; squares = {0, 1, 4, 9, 16};
+    std::vector&lt;double&gt; coordinates = {51.5002149, -0.1249473};
+    std::vector&lt;char&gt; letters = {&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;};
+    std::vector&lt;std::string&gt; beatles = {&quot;John&quot;, &quot;Paul&quot;, &quot;George&quot;, &quot;Ringo&quot;};
+    // Indexing
+    std::cout &lt;&lt; squares[0] &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; coordinates[1] &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; letters[2] &lt;&lt; &quot;\n&quot;;
+    std::cout &lt;&lt; beatles[3] &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>0
+-0.124947
+c
+Ringo</code></pre>
+</div>
+<div id="iterating-and-displaying" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> Iterating (and Displaying)</h2>
+<p>Loop through a vector (‘iterate over it’) by using a <code>for</code> loop with the size of the vector as your terminal condition. Then, you can use the counter to index it. By iterating over a vector this way you can, as an example, display each element in turn:</p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main() {
+    // Declare and initialise
+    std::vector&lt;std::string&gt; beatles = {&quot;John&quot;, &quot;Paul&quot;, &quot;George&quot;, &quot;Ringo&quot;};
+    // Iterate
+    for (int i = 0; i &lt; beatles.size(); i++) {
+        // Display
+        std::cout &lt;&lt; beatles[i] &lt;&lt; &quot; &quot;;
+    }
+    std::cout &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>John Paul George Ringo </code></pre>
+</div>
+</div>
+<div id="editing-a-vector" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Editing a Vector</h1>
+<div id="updating-values" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Updating Values</h2>
+<p>You can edit each element in turn by iterating with a <code>for</code> loop and using the counter to both get and update the element at that index:</p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+#include &lt;iostream&gt;
+
+int main() {
+    // Declare and initialise
+    std::vector&lt;int&gt; squares = {0, 1, 4, 9, 16};
+    // Iterate over vector
+    for (int i = 0; i &lt; squares.size(); i++) {
+        // Update the element by adding 1 to it
+        squares[i] = squares[i] + 1;
+    }
+    // Display
+    for (int i=0; i&lt;squares.size(); i++) {
+        std::cout &lt;&lt; squares[i] &lt;&lt; &quot; &quot;;
+    }
+    std::cout &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>1 2 5 10 17 </code></pre>
+</div>
+<div id="adding-elements" class="section level2" number="3.2">
+<h2 number="3.2"><span class="header-section-number">3.2</span> Adding Elements</h2>
+<p>Use <code>.push_back()</code> to <em>push</em> a new element to the <em>back</em> of the vector (aka append to the vector):</p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+int main() {
+    // Declare and initialise
+    std::vector&lt;std::string&gt; beatles = {&quot;John&quot;, &quot;Paul&quot;, &quot;George&quot;, &quot;Ringo&quot;};
+    // Append
+    beatles.push_back(&quot;Pete&quot;);
+    // Display
+    for(int i=0; i&lt;beatles.size(); i++) {
+        std::cout &lt;&lt; beatles[i] &lt;&lt; &quot; &quot;;
+    }
+    std::cout &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>John Paul George Ringo Pete </code></pre>
+</div>
+<div id="removing-elements" class="section level2" number="3.3">
+<h2 number="3.3"><span class="header-section-number">3.3</span> Removing Elements</h2>
+<p>Use <code>.pop_back()</code> to <em>pop</em> an element out from the <em>back</em> of the vector:</p>
+<pre class="cpp"><code>#include &lt;vector&gt;
+#include &lt;iostream&gt;
+
+int main() {
+    // Declare and initialise
+    std::vector&lt;char&gt; letters = {&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;};
+    // Remove
+    letters.pop_back();  // No argument inside the round brackets
+    // Display
+    for (int i=0; i&lt;letters.size(); i++) {
+        std::cout &lt;&lt; letters[i] &lt;&lt; &quot; &quot;;
+    }
+    std::cout &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>a b c </code></pre>
+<p><a href="../../cpp.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 

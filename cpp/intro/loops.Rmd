@@ -25,9 +25,10 @@ If we know how many times we want to run a certain piece of code, we can use a *
 
 - The word `for`
 - Round brackets with three elements:
-    - An initialisation of a *counter* (a variable that counts the number of iterations that have occurred)
-    - A 'continue condition' (the condition for which the loop will continue to repeat)
+    - An initialisation of a *counter* (a variable that counts the number of iterations that have occurred), ending with a semi-colon
+    - A 'continue condition' (the condition for which the loop will continue to repeat), ending with a semi-colon
     - The change that takes place to the counter at the end of each loop (usually this will be an increase of 1, which can be written in C++ using `++`)
+    - These three elements are separated by spaces (as well as the semi-colons)
 - Curly brackets with the code to be run in each loop
 
 As an example, we can calculate the first 10 square numbers:

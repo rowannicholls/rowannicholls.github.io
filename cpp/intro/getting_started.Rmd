@@ -129,7 +129,7 @@ int main() {
 
 The line `age = age + 1;` is not claiming that the age is equal to itself plus one! It is *overwriting* its values with itself plus one (and thus this program will end with the variable `age` having the value of 1 - it was initialised as 0 then updated by adding 1).
 
-Another thing to note is that variables can be declared and initialise at the same time:
+Another thing to note is that variables can be declared and initialised at the same time:
 
 ```{Rcpp}
 int main() {
