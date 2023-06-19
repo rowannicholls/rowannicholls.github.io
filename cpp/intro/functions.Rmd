@@ -169,6 +169,89 @@ int main() {
 The remainder is 1
 ```
 
+Default Parameters
+------------------
+Setting a parameter equal to a value in a function's declaration will make that value its *default value.* This means you can now call the function without specifying a value for this argument (and it will assume you want to use the default value):
+
+```{Rcpp}
+#include <iostream>
+
+// Calculate and return the remainder when one number is divided by another
+int modulo(int dividend, int divisor = 10) {
+    int remainder = dividend % divisor;
+    return remainder;
+}
+
+int main() {
+    // Call a custom function
+    int answer = modulo(11);
+    std::cout << "The remainder is " << answer << "\n";
+}
+```
+
+```
+The remainder is 1
+```
+
+Notice that in the above example we just did the call with `modulo(11);` instead of `modulo(11, 10);` because the function definition had `int divisor = 10` setting the default value of `divisor`.
+
+Function Overloading
+--------------------
+In C++ you can define multiple functions with the same name! This is possible as long as the functions have different types (or different numbers) of parameters:
+
+```{Rcpp}
+#include <iostream>
+
+void print_number(int num) {
+    std::cout << "The number is " << num << "\n";
+}
+
+void print_number(std::string num) {
+    std::cout << "The number is spelt '" << num << "'\n";
+}
+
+int main() {
+    print_number(8);
+    print_number("eight");
+}
+```
+
+```
+The number is 8
+The number is spelt 'eight'
+```
+
+C++ automatically knows which function to use from what data type the argument is!
+
+Function Templates
+------------------
+Up until now, each parameter in a function definition has had one and only one data type. If you want a parameter to be able to have one of a number of types, you can use a **template** to essentially create a generic data type:
+
+```{Rcpp}
+#include <iostream>
+
+template <typename T>
+void print_number(T num) {
+    // This will work with variables of int, string, double and Boolean data types
+    std::cout << "The number is " << num << "\n";
+}
+int main() {
+    print_number(8);
+    print_number("eight");
+    print_number(8.1);
+    print_number(true);
+}
+```
+
+```
+The number is 8
+The number is eight
+The number is 8.1
+The number is 1
+```
+
+This will only work if the code inside the function can use variables of any of those data types! Trying to pass in a vector, for example, wouldn't work.
+
 [⇦ Back](../../cpp.html)
 
 </font>

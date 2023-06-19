@@ -1,0 +1,169 @@
+---
+title: '<font size="5">Introduction to C++:</font><br>Scope'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../cpp.html)
+
+Global Variables
+================
+When you define a variable outside of any function, you can still use it inside a function. This is an example of a **global variable**: it is defined in (and thus can be used in) all **scopes** (a scope is the region of code that has access to an element):
+
+```{Rcpp}
+#include <iostream>
+
+// A variable defined outside of any function (a 'global variable')
+std::string greeting = "Hello World";
+
+void my_function() {
+    // Use a global variable
+    std::cout << greeting << "\n";
+}
+
+int main() {
+    // Use a global variable
+  std::cout << greeting << "\n";
+  my_function();
+}
+```
+
+```
+Hello World
+Hello World
+```
+
+Local Variables
+===============
+However, if you define a variable inside of a function, you can only use it in that function (even if you call a function from within that function, you would need to pass it in as an argument in order to use it). This is an example of a **local variable**: it is defined in (and thus can only be used in) one scope - the function itself:
+
+```{Rcpp, eval=FALSE}
+#include <iostream>
+
+// A variable defined outside of any functions (a 'global variable')
+std::string greeting = "Hello World";
+
+void my_function() {
+    // This won't work!
+    std::cout << reply << "\n";
+}
+
+int main() {
+    // Use a global variable
+    std::cout << greeting << "\n";
+    // Initialise a local variable
+    std::string reply = "Hello User";
+    my_function();
+}
+```
+
+```
+error: ‘reply’ was not declared in this scope
+```
+
+You need to pass local variables into functions as arguments, or return them from functions as return values, before you can use them in a different scope:
+
+```{Rcpp}
+#include <iostream>
+#include <string>
+
+std::string my_function(std::string message) {
+    // Use the variable passed in
+    std::cout << message << "\n";
+    // Initialise a local variable
+    std::string reply = "Hello User";
+    // Return the local variable
+    return reply;
+}
+
+int main() {
+    // Initialise a local variable
+    std::string greeting = "Hello World";
+    // Pass argument in and get value out
+    std::string message = my_function(greeting);
+    // Use the returned variable
+    std::cout << message << "\n";
+}
+```
+
+```
+Hello World
+Hello User
+```
+
+Multi-File Programmes
+=====================
+If your programme is long and has many functions, it's usually better to separate some of them out into different files. These files will then need to be included as 'headers' at the top of your source code:
+
+**main.cpp**:
+
+```{Rcpp, eval=FALSE}
+#include <iostream>
+// Include the other file where the function(s) are defined
+#include "functions.cpp"
+
+int main() {
+    // Initialise a local variable
+    std::string greeting = "Hello World";
+    // Pass argument in and get value out
+    std::string message = my_function(greeting);
+    // Use the returned variable
+    std::cout << message << "\n";
+}
+```
+
+**functions.cpp**:
+
+```{Rcpp, eval=FALSE}
+std::string my_function(std::string message) {
+    // Use the variable passed in
+    std::cout << message << "\n";
+    // Initialise a local variable
+    std::string reply = "Hello User";
+    // Return the local variable
+    return reply;
+}
+```
+
+Running `main.cpp` will give you:
+
+```
+Hello World
+Hello User
+```
+
+Inline Functions
+----------------
+Using the `inline` statement will, when the code is compiled, cause a function's body to be inserted into where the function gets called. This might make the execution speed faster or slower, depending on the exact programme itself.
+
+**functions.cpp**:
+
+```{Rcpp, eval=FALSE}
+inline
+std::string my_function(std::string message) {
+    // Use the variable passed in
+    std::cout << message << "\n";
+    // Initialise a local variable
+    std::string reply = "Hello User";
+    // Return the local variable
+    return reply;
+}
+```
+
+Confusingly, the phrase *inline function* also refers to a function that is so short it gets defined on one line:
+
+```{Rcpp, eval=FALSE}
+std::string my_function(std::string message) {std::cout << message << "\n";}
+```
+
+[⇦ Back](../../cpp.html)
+
+</font>
