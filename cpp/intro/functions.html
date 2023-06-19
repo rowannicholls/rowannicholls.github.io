@@ -11,7 +11,7 @@
 
 
 
-<title>C++</title>
+<title>Introduction to C++: Functions</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -689,22 +689,147 @@ zt();Ve(1);Q(131)&&Cr();Ee=Ga();Lz.bootstrap=Ee;if(Q(70)){}}});
 
 
 
-<h1 class="title toc-ignore">C++</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to C++:</font><br>Functions</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#built-in-functions"><span class="toc-section-number">1</span> Built-In Functions</a></li>
+<li><a href="#custom-functions"><span class="toc-section-number">2</span> Custom Functions</a>
+<ul>
+<li><a href="#with-no-parameters-and-no-return-value"><span class="toc-section-number">2.1</span> With No Parameters and No Return Value</a></li>
+<li><a href="#with-no-parameters-but-a-return-value"><span class="toc-section-number">2.2</span> With No Parameters but a Return Value</a></li>
+<li><a href="#with-parameters-but-no-return-value"><span class="toc-section-number">2.3</span> With Parameters but No Return Value</a></li>
+<li><a href="#with-parameters-and-also-a-return-value"><span class="toc-section-number">2.4</span> With Parameters and also a Return Value</a></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-c" class="section level2">
-<h2>Introduction to C++</h2>
-<ol style="list-style-type: decimal">
-<li><a href="cpp/intro/getting_started.html">Getting Started</a></li>
-<li><a href="cpp/intro/booleans_if_statements.html">Booleans and If Statements</a></li>
-<li><a href="cpp/intro/loops.html">Loops</a></li>
-<li><a href="cpp/intro/vectors.html">Vectors</a></li>
-<li><a href="cpp/intro/functions.html">Functions</a></li>
-</ol>
+<p><a href="../../cpp.html">⇦ Back</a></p>
+<p>Often when coding you will find yourself wanting to reuse the same block of code over-and-over. That’s where <strong>functions</strong> come into use: they allow you to <em>call</em> a block of code whenever you want.</p>
+<p>Functions are sometimes also called <em>methods</em>, <em>procedures</em> or <em>sub-routines</em>.</p>
+<p>Every C++ programme needs to have at least a <code>main</code> function:</p>
+<pre class="cpp"><code>// The most basic C++ programme consists of one function called main
+int main() {
+}</code></pre>
+<div id="built-in-functions" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Built-In Functions</h1>
+<p>C++ comes with a lot of functions already built-in. For example, taking the square root of a number is a fairly common operation so it’s useful to remember that a function to do this is already included in C++’s standard library. It’s called <code>sqrt()</code> and it’s in the <code>cmath</code> header, so we need to remember to include that in our source code:</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+
+int main() {
+    // Take the square root of a number
+    std::cout &lt;&lt; sqrt(16) &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>4</code></pre>
+<p>Another example is generating a random number. This can be done with <code>rand() % x</code> where <code>x</code> is one more than the largest number you would want to see (ie <code>rand() % 6</code> will generate a random number between 0 and 5):</p>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+int main() {
+    // Simulate a dice roll
+    int dice_roll = rand() % 6 + 1;
+    std::cout &lt;&lt; dice_roll &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>2</code></pre>
+</div>
+<div id="custom-functions" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Custom Functions</h1>
+<p>Writing your own function can be done with the following syntax:</p>
+<ul>
+<li>The <strong>declaration</strong> of the function needs to have the following:
+<ul>
+<li>A data type for the return value of the function. Some possible return types include:
+<ul>
+<li><code>void</code>: indicates that your function has no return value</li>
+<li><code>int</code>: integer number</li>
+<li><code>double</code>: floating-point number</li>
+<li><code>bool</code>: Boolean (true/false)</li>
+<li><code>char</code>: letter</li>
+<li><code>std::string</code>: word</li>
+<li><code>std::vector</code>: vector</li>
+</ul></li>
+<li>A name for the function</li>
+<li>The function’s parameters - if there are any - must be declared inside round brackets. If there are more than one they should be comma-separated.</li>
+</ul></li>
+<li>The <strong>definition</strong> (or <em>body</em> of the function) will have:
+<ul>
+<li>Code statements, written inside a pair of curly brackets</li>
+<li>If you have a return value (ie if your function’s type is not <code>void</code>) then it must be returned using the <code>return</code> statement on the last line of your function’s definition. If you return a value before the end of the function the code that follows the <code>return</code> statement will not run! The <code>return</code> statement causes a function to end.</li>
+</ul></li>
+<li>Your new function can be <strong>called</strong> from inside the <code>main</code> function (or from inside another function)
+<ul>
+<li>Call your function by using its name and providing arguments (values for the parameters) inside round brackets if there are any. These arguments must be in the same order as the parameters were declared in the function declaration. If there are no parameters you still need to have the round brackets, but these will be empty.</li>
+<li>If there is a return value, initialise a variable equal to the function and the return value will then be assigned to this variable</li>
+</ul></li>
+</ul>
+<div id="with-no-parameters-and-no-return-value" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> With No Parameters and No Return Value</h2>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+void modulo() {
+    std::cout &lt;&lt; &quot;The modulo is the remainder after a division&quot; &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    // Call a custom function
+    modulo();
+}</code></pre>
+<pre><code>The modulo is the remainder after a division</code></pre>
+</div>
+<div id="with-no-parameters-but-a-return-value" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> With No Parameters but a Return Value</h2>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+#include &lt;string&gt;
+
+std::string modulo() {
+    return &quot;The modulo is the remainder after a division&quot;;
+}
+
+int main() {
+    // Call a custom function
+    std::string message = modulo();
+    std::cout &lt;&lt; message &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>The modulo is the remainder after a division</code></pre>
+</div>
+<div id="with-parameters-but-no-return-value" class="section level2" number="2.3">
+<h2 number="2.3"><span class="header-section-number">2.3</span> With Parameters but No Return Value</h2>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+// Calculate and print the remainder when one number is divided by another
+void modulo(int dividend, int divisor) {
+    int remainder = dividend % divisor;
+    std::cout &lt;&lt; &quot;The remainder is &quot; &lt;&lt; remainder &lt;&lt; &quot;\n&quot;;
+}
+
+int main() {
+    // Call a custom function
+    modulo(11, 10);
+}</code></pre>
+<pre><code>The remainder is 1</code></pre>
+</div>
+<div id="with-parameters-and-also-a-return-value" class="section level2" number="2.4">
+<h2 number="2.4"><span class="header-section-number">2.4</span> With Parameters and also a Return Value</h2>
+<pre class="cpp"><code>#include &lt;iostream&gt;
+
+// Calculate and return the remainder when one number is divided by another
+int modulo(int dividend, int divisor) {
+    int remainder = dividend % divisor;
+    return remainder;
+}
+
+int main() {
+    // Call a custom function
+    int answer = modulo(11, 10);
+    std::cout &lt;&lt; &quot;The remainder is &quot; &lt;&lt; answer &lt;&lt; &quot;\n&quot;;
+}</code></pre>
+<pre><code>The remainder is 1</code></pre>
+<p><a href="../../cpp.html">⇦ Back</a></p>
 <p></font></p>
+</div>
 </div>
 
 
