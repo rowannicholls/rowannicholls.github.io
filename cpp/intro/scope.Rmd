@@ -140,6 +140,10 @@ Hello World
 Hello User
 ```
 
+The string `Hello World` was created in the `main` function which is in the `main.cpp` file, but it was printed in the `my_function` function which is in the `functions.cpp` file.
+
+The string `Hello User` was created in the `my_function` function which is in the `functions.cpp` file, but it was printed in the `main` function which is in the `main.cpp` file.
+
 Inline Functions
 ----------------
 Using the `inline` statement will, when the code is compiled, cause a function's body to be inserted into where the function gets called. This might make the execution speed faster or slower, depending on the exact programme itself.
