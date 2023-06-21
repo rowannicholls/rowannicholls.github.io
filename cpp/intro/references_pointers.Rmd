@@ -1,0 +1,245 @@
+---
+title: '<font size="5">Introduction to C++:</font><br>References and Pointers'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../cpp.html)
+
+When a variable is declared in C++ the data type is specified along with it. The fact that C++ knows this data type is important because it means that it knows how much space in the computer's memory it must reserve for it: if you declare an `int` it will set aside a chunk of memory 4 bytes in size for that variable. If you declare a `double` on the other hand, it will allocate 8 bytes of memory (that's why it's known as a 'double' - it's double the size of an `int`!). These memory allocations will initially not contain anything useful, it's only once you *initialise* the variables that these spaces in the memory will then get filled with the data.
+
+In C++ you can manipulate how your data is stored in memory, which helps in optimising a programme's performance.
+
+Memory Addresses
+================
+A memory **address** is a location in the memory that corresponds to a section that has been allocated to a declared variable. It is *where* a variable's data is (or will be) stored. It will be a hexadecimal value, because that it how computers number their memory addresses. You can see a variable's memory address by using the ampersand symbol (`&`) in front of the variable in question:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    int age = 26;
+    std::cout << "The age is " << age <<"\n";
+    std::cout << "The memory address where this data is stored is " << &age <<"\n";
+}
+```
+
+```
+The age is 26
+The memory address where this data is stored is 0x7fffce790b84
+```
+
+Pointers
+========
+A **pointer** is a stored memory address. In other words:
+
+- A programmer declares (and possibly also initialises) a variable
+- This causes a chunk of memory to be reserved ('allocated') for the purpose of storing the value of this variable
+- The location of this chunk of memory is the *memory address*
+- A *pointer* can then be created, which would reserve a new chunk of memory (at a new memory address) and the memory address of the original variable will then get stored there
+
+Pointers are created using an asterisk; here's full the syntax: `int* ptr = &age;`
+
+- The asterisk at the end of `int*` means you will create a pointer rather than a normal variable. The spacing between `int`, the asterisk and the pointer's name doesn't matter.
+- `ptr` is the pointer's name
+- `&age` is the memory address of the variable `age`
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    int age = 26;
+    // Create a pointer
+    int* ptr = &age;
+
+    std::cout << "The age is " << age <<"\n";
+    std::cout << "The memory address where this data is stored is " << &age <<"\n";
+    std::cout << "The pointer is " << ptr <<"\n";
+}
+```
+
+```
+The age is 26
+The memory address where this data is stored is 0x7ffffa61b99c
+The pointer is 0x7ffffa61b99c
+```
+
+So the pointer and the memory address are the same! A pointer IS a memory address!
+
+Null Pointer
+------------
+Just like variables, it's possible to declare a pointer without initialising it. This should be done with the following syntax:
+
+`int* ptr = nullptr;`
+
+Do not declare it like a regular variable:
+
+`int* ptr;`
+
+The latter can lead to errors because there will essentially be noise stored in your new pointer. The `nullptr` approach, on the other hand, will actively clear anything out from within your new pointer, leaving it less likely to be accidentally interpreted as being meaningful before you initialise it.
+
+Dereference
+===========
+A **dereference** is the reverse of a pointer: you get the value at a memory address instead of getting the memory address of a value:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    int age = 26;
+    // Create a pointer
+    int* ptr = &age;
+    // Create a dereference
+    int age_check = *ptr;
+
+    std::cout << "The age is " << age <<"\n";
+    std::cout << "The pointer is " << ptr <<"\n";
+    std::cout << "The dereference is " << age_check <<"\n";
+}
+
+```
+
+```
+The age is 26
+The pointer is 0x7ffdbb0307e8
+The dereference is 26
+```
+
+References
+==========
+**References** are *aliases* for variables. Changing a reference will change the variable it references as well. References are created by using an ampersand (`&`) before the variable name when declaring/initialising it, which can lead to confusion:
+
+- Memory addresses are accessed by using `&` before the variable name when *calling* (using) that variable
+- References are created by using `&` before the variable name when *declaring or initialising* that reference as a new variable
+
+Here's an example:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // Declare and initialise a variable
+    int years_alive = 25;
+    // Declare and initialise a reference to that variable
+    int &age = years_alive;
+    // Declare and initialise a pointer by setting it equal to a memory address
+    int* ptr = &years_alive;
+
+    // Celebrate a birthday
+    years_alive++;
+
+    // Check the new values
+    std::cout << years_alive <<"\n";
+    std::cout << age <<"\n";
+    std::cout << ptr <<"\n";
+}
+```
+
+```
+26
+26
+0x7ffdadd81cc4
+```
+
+So `int &age = years_alive;` had the ampersand at the start of the variable on the *left-hand side* of the equals sign and so this line created a *reference* to `years_alive`. This meant that, when `years_alive` incremented by 1, so did `age`.
+
+The line `int* ptr = &years_alive;` had the ampersand at the start of the variable on the *right-hand side* of the equals sign and so this accessed the *memory address* of `years_alive` and created a *pointer*. In summary:
+
+- `int &reference = original;` will create a *reference*
+- `int* pointer = &original;` will create a *pointer*
+
+References are useful when passing arguments into functions. Usually, arguments are passed in as *values* so let's check what difference it makes when we pass them in as *references* instead:
+
+Pass-by-Value vs Pass-By-Reference
+----------------------------------
+Here's a 'normal' example where a variable, `current_age`, is declared and initialised in the `main` function and then passed into a function as a *value:*
+
+```{Rcpp}
+#include <iostream>
+
+int birthday(int value) {
+    // Increment the value
+    value++;
+    // Return the value to the main function
+    return value;
+}
+
+int main() {
+    // Declare and initialise a variable
+    int current_age = 25;
+    // Pass the variable into a function as a value, and overwrite it with the returned value
+    current_age = birthday(current_age);
+    // Check the new value
+    std::cout << "The current age is " << current_age <<"\n";
+}
+```
+
+```
+The current age is 26
+```
+
+Notice that the variable `current_age` is not changed inside the `birthday` function: it exists in the `main` function's scope but not in the `birthday` function's scope so it cannot be changed inside the latter. The variable `current_age` first has to be changed into the variable `value` which *is* in the `birthday` function's scope and so which then can get incremented. However, `value` is then not valid in the `main` function, and so `value` needs to be *returned* and used to overwrite `current_age` once back in the `main` function.
+
+**Passing-by-reference** allows us to skip this use of a distinct intermediate variable. By passing a reference into a function and changing it inside that function we change the initial variable that we declared outside the function as well!
+
+```{Rcpp}
+#include <iostream>
+
+void birthday(int &value) {
+    // Increment the value
+    value++;
+}
+
+int main() {
+    // Declare and initialise a variable
+    int current_age = 25;
+    // Pass the variable into a function as a reference
+    birthday(current_age);
+    // Check the new value
+    std::cout << "The current age is " << current_age <<"\n";
+}
+```
+
+```
+The current age is 26
+```
+
+We still have a variable call `value` in the function but this time it is a reference to the variable `current_age`. When we change `value` inside the function we change `current_age` outside the function as well. This means we don't need to return `value`, and we don't need to overwrite `current_age`.
+
+Constants
+---------
+When we use the `const` keyword during a variable declaration it creates a *constant* - a variable whose value cannot be changed. This is useful for data we know we don't want to change, such as the year in which a person was born.
+
+If a function's parameter happens to be a constant, it means that that parameter's value will not be changed by the function, but this is inefficient! The implication is that you are creating a variable in the `main` function, re-creating it in the function you are passing it into and then not changing it! A more efficient approach would be to use a reference, as this saves on the computational cost of re-creating a variable in the function's scope.
+
+```{Rcpp}
+#include <iostream>
+
+int calculate_age(int const &birth_year) {
+    // Calculate age from birth year
+    return 2023 - birth_year;
+}
+
+int main() {
+    int age = calculate_age(1997);
+    std::cout << "The current age is " << age <<"\n";
+}
+```
+
+```
+The current age is 26
+```
+
+In other words, if you use the `const` keyword in a function's parameter declaration, you should always follow it with a reference.
+
+[⇦ Back](../../cpp.html)
+
+</font>
