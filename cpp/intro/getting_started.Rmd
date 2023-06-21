@@ -297,6 +297,21 @@ The area of the circle is 78.55
 
 See what we've done? The literal string and the numerical answer to our calculation, plus the newline character, are all being sent to `std::cout` at the same time by three `<<` operators. This is known as **chaining**.
 
+Another thing to note is that a newline can also be created by the `std::endl` statement:
+
+```{Rcpp}
+#include <iostream>
+
+int main() {
+    // Output to the terminal
+    std::cout << "The area of the circle is 78.55"  << std::endl;
+}
+```
+
+```
+The area of the circle is 78.55
+```
+
 [⇦ Back](../../cpp.html)
 
 </font>
