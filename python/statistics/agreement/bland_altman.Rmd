@@ -502,15 +502,15 @@ $$t^* \times {se}$$
 
 which means that the full-widths of the confidence intervals for the bias and LOA lines, respectively, are twice these:
 
-$${CI}_{bias} = 2 \times t^* \times \sqrt{\dfrac{ {s}^2}{n}}$$
+$$CI_{bias} = 2 \times t^* \times \sqrt{\dfrac{ {s}^2}{n}}$$
 
-$${CI}_{LOAs} = 2 \times t^* \times \sqrt{\dfrac{3 {s}^2}{n}}$$
+$$CI_{LOAs} = 2 \times t^* \times \sqrt{\dfrac{3 {s}^2}{n}}$$
 
 so the widths of the confidence intervals *relative to the sample standard deviations* are:
 
-$$\dfrac{{CI}_{bias}}{s} = 2 \times t^* \times \sqrt{\dfrac{1}{n}}$$
+$$\dfrac{CI_{bias}}{s} = 2 \times t^* \times \sqrt{\dfrac{1}{n}}$$
 
-$$\dfrac{{CI}_{LOAs}}{s} = 2 \times t^* \times \sqrt{\dfrac{3}{n}}$$
+$$\dfrac{CI_{LOAs}}{s} = 2 \times t^* \times \sqrt{\dfrac{3}{n}}$$
 
 In Python, these are calculated as:
 
