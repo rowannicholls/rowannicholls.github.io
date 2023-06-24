@@ -394,7 +394,6 @@ pre code {
 </ul></li>
 <li><a href="#for-studies-using-acs-related-to-the-bias"><span class="toc-section-number">2.2</span> For Studies Using ACs Related to the Bias</a></li>
 </ul></li>
-<li><a href="#references"><span class="toc-section-number">3</span> References</a></li>
 </ul>
 </div>
 
@@ -419,7 +418,7 @@ python3.11 -m pip install scipy</code></pre>
 </div>
 <div id="sample-size-calculations" class="section level1" number="2">
 <h1 number="2"><span class="header-section-number">2</span> Sample Size Calculations</h1>
-<p>Next, once the acceptance criteria are set, you will want to be able to get an idea as to whether or not your data will meet these criteria <em>before</em> you commit to a full-blown study. So, usually, a <strong>pilot test</strong> is done and that data is tested first. A paper published by Zhou et al<sup>1</sup> on the topic of the agreement between two measurement methods documented exactly this: it included the results of a “pre-experiment” (‘pilot test’) wherein the molar concentration of an antigen was measured in 24 subjects via two different methods:</p>
+<p>Next, once the acceptance criteria are set, you will want to be able to get an idea as to whether or not your data will meet these criteria <em>before</em> you commit to a full-blown study. So, usually, a <strong>pilot test</strong> is done and that data is tested first. A paper published by Zhou et al<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> on the topic of the agreement between two measurement methods documented exactly this: it included the results of a “pre-experiment” (‘pilot test’) wherein the molar concentration of an antigen was measured in 24 subjects via two different methods:</p>
 <pre class="python"><code>import numpy as np
 import pandas as pd
 
@@ -532,7 +531,7 @@ print(
 </div>
 <div id="method-2-lus-method" class="section level3" number="2.1.2">
 <h3 number="2.1.2"><span class="header-section-number">2.1.2</span> Method 2: Lu’s Method</h3>
-<p>This method is not fundamentally different from Bland’s method, it just explicitly calculates the power (1 - the probability of making a type II error) and thus allows for this to be set by the experimenter. It is detailed in Lu et al’s paper<sup>2</sup> and uses the same example data and acceptance criterion as before:</p>
+<p>This method is not fundamentally different from Bland’s method, it just explicitly calculates the power (1 - the probability of making a type II error) and thus allows for this to be set by the experimenter. It is detailed in Lu et al’s paper<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> and uses the same example data and acceptance criterion as before:</p>
 <pre class="python"><code># Raw data
 measurement1 = df[&#39;Measurement 1 (mmol/L)&#39;]
 measurement2 = df[&#39;Measurement 2 (mmol/L)&#39;]
@@ -638,7 +637,7 @@ print(c(n, power))</code></pre>
 <p>Sometimes you’ll find a data source that reports the LOAs but not the bias (mean difference, <span class="math inline">\(\bar d\)</span>) or the sample standard deviation (<span class="math inline">\(s\)</span>). That’s not a problem, because you can work these out by considering the definitions of the LOAs:</p>
 <p><span class="math display">\[ {LOA}_{upper} = \bar d + 1.96 \times s,\: {LOA}_{lower} = \bar d - 1.96 \times s\]</span></p>
 <p><span class="math display">\[ \implies \bar d = {LOA}_{upper} - 1.96 \times s = {LOA}_{lower} + 1.96 \times s \]</span></p>
-<p><span class="math display">\[ \implies s = \dfrac{{LOA}_{upper} - {LOA}_{lower}}{2 \times 1.96} \]</span></p>
+<p><span class="math display">\[ \implies s = \dfrac{ {LOA}_{upper} - {LOA}_{lower} }{2 \times 1.96} \]</span></p>
 <p>Here it is in Python:</p>
 <pre class="python"><code># Limits of agreement
 lower_loa = -0.0010467586944627883
@@ -655,7 +654,7 @@ print(f&#39;Bias = {round(bias, 6)}, standard deviation = {round(s, 6)}&#39;)</c
 </div>
 <div id="for-studies-using-acs-related-to-the-bias" class="section level2" number="2.2">
 <h2 number="2.2"><span class="header-section-number">2.2</span> For Studies Using ACs Related to the Bias</h2>
-<p>A good test for an acceptably small bias is to see if it is equivalent to zero. For this, the TOST (two one-sided <em>t</em>-tests) procedure can be used (see Schuirmann (1987)<sup>3</sup>, the <a href="https://en.wikipedia.org/wiki/Equivalence_test">Wikipedia page</a> and <a href="../hypothesis_testing/tost_unpaired.html">this tutorial</a>). Specifically, we want to use the one-sample TOST because that will compare the one group of data points we have with the zero line (the fact that our data points are the differences between repeated measurements is irrelevant - using the two-sample or paired-sample TOST would be incorrect for this application).</p>
+<p>A good test for an acceptably small bias is to see if it is equivalent to zero. For this, the TOST (two one-sided <em>t</em>-tests) procedure can be used (see Schuirmann (1987)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>, the <a href="https://en.wikipedia.org/wiki/Equivalence_test">Wikipedia page</a> and <a href="../hypothesis_testing/tost_unpaired.html">this tutorial</a>). Specifically, we want to use the one-sample TOST because that will compare the one group of data points we have with the zero line (the fact that our data points are the differences between repeated measurements is irrelevant - using the two-sample or paired-sample TOST would be incorrect for this application).</p>
 <p>For the acceptance criteria, let’s use 10% of the AC that was applied to the LOAs. In other words, the region of equivalence in which the bias must lie in order for us to conclude that it is equivalent to zero is one-tenth as wide as the region used for the LOAs.</p>
 <pre class="python"><code># Acceptance criterion
 Δ = 0.0004  # mmol/L</code></pre>
@@ -710,19 +709,17 @@ for n in np.arange(2, 100):
 print(f&#39;A full study will need {n} participants to have a power of {round(power, 3)}&#39;)</code></pre>
 <pre><code>## A full study will need 14 participants to have a power of 0.815</code></pre>
 <p>Remember that <span class="math inline">\(n\)</span> is the number of <em>pairs</em> of data points, ie 28 total measurements will need to be made.</p>
-</div>
-</div>
-<div id="references" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> References</h1>
-<ol style="list-style-type: decimal">
-<li>Zhou, YH, Zang, JJ, Wu, MJ, Xu, JF, He, J. “Allowable Total Error and Limits for Erroneous Results (ATE/LER) zones for agreement measurement”. Journal of Clinical Laboratory Analysis 2011; 25(2):83-89. DOI: <a href="https://doi.org/10.1002/jcla.20437">10.1002/jcla.20437</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/21437998/">21437998</a>. Available <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6647559/pdf/JCLA-25-83.pdf">here</a>.</li>
-<li>Lu, MJ, Zhong, WH, Liu, YX, Miao, HZ, Li, YC, Ji, MH. “Sample size for assessing agreement between two methods of measurement by Bland-Altman method”. The International Journal of Biostatistics 2016; 12(2):20150039. DOI: <a href="https://doi.org/10.1515/ijb-2015-0039">10.1515/ijb-2015-0039</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/27838682/">27838682</a>. Available <a href="https://www.degruyter.com/document/doi/10.1515/ijb-2015-0039/pdf">here</a>.</li>
-<li>Schuirmann, D. “A comparison of the Two One-Sided Tests Procedure and the Power Approach for assessing the equivalence of average bioavailability”. Journal of Pharmacokinetics and Biopharmaceutics 1987; 15(6):657–680. DOI: <a href="https://doi.org/10.1007/BF01068419">10.1007/BF01068419</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/3450848/">3450848</a>. Available <a href="https://zenodo.org/record/1232484">here</a>.</li>
-<li>Mansournia, M, Waters, R, Nazemipour, M, Bland, J, Altman, D. “Bland-Altman methods for comparing methods of measurement and response to criticisms”. Global Epidemiology 2021; 3:100045. Available <a href="https://www.sciencedirect.com/science/article/pii/S2590113320300298/pdfft?md5=3b6ce8c594e1929d7ba71b5b08437b6d&amp;pid=1-s2.0-S2590113320300298-main.pdf">here</a>.</li>
-<li>Flegal, K, Graubard, B, Ioannidis, J. “Use and reporting of Bland-Altman analyses in studies of self-reported versus measured weight and height”. International Journal of Obesity 2020; 44(6):1311-1318. DOI: <a href="https://doi.org/10.1038/s41366-019-0499-5">10.1038/s41366-019-0499-5</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/31792334/">31792334</a>. Available <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7261640/pdf/nihms-1062726.pdf">here</a>.</li>
-</ol>
 <p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Zhou, YH, Zang, JJ, Wu, MJ, Xu, JF, He, J. “Allowable Total Error and Limits for Erroneous Results (ATE/LER) zones for agreement measurement”. Journal of Clinical Laboratory Analysis 2011; 25(2):83-89. DOI: <a href="https://doi.org/10.1002/jcla.20437">10.1002/jcla.20437</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/21437998/">21437998</a>. Available <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6647559/pdf/JCLA-25-83.pdf">here</a>. Jump to reference: <a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>Lu, MJ, Zhong, WH, Liu, YX, Miao, HZ, Li, YC, Ji, MH. “Sample size for assessing agreement between two methods of measurement by Bland-Altman method”. The International Journal of Biostatistics 2016; 12(2):20150039. DOI: <a href="https://doi.org/10.1515/ijb-2015-0039">10.1515/ijb-2015-0039</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/27838682/">27838682</a>. Available <a href="https://www.degruyter.com/document/doi/10.1515/ijb-2015-0039/pdf">here</a>. Jump to reference: <a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Schuirmann, D. “A comparison of the Two One-Sided Tests Procedure and the Power Approach for assessing the equivalence of average bioavailability”. Journal of Pharmacokinetics and Biopharmaceutics 1987; 15(6):657–680. DOI: <a href="https://doi.org/10.1007/BF01068419">10.1007/BF01068419</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/3450848/">3450848</a>. Available <a href="https://zenodo.org/record/1232484">here</a>. Jump to reference: <a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

@@ -43,7 +43,7 @@ The decision as to what is a good criterion for acceptable agreement is a clinic
 
 Sample Size Calculations
 ========================
-Next, once the acceptance criteria are set, you will want to be able to get an idea as to whether or not your data will meet these criteria *before* you commit to a full-blown study. So, usually, a **pilot test** is done and that data is tested first. A paper published by Zhou et al<sup>1</sup> on the topic of the agreement between two measurement methods documented exactly this: it included the results of a "pre-experiment" ('pilot test') wherein the molar concentration of an antigen was measured in 24 subjects via two different methods:
+Next, once the acceptance criteria are set, you will want to be able to get an idea as to whether or not your data will meet these criteria *before* you commit to a full-blown study. So, usually, a **pilot test** is done and that data is tested first. A paper published by Zhou et al[^1] on the topic of the agreement between two measurement methods documented exactly this: it included the results of a "pre-experiment" ('pilot test') wherein the molar concentration of an antigen was measured in 24 subjects via two different methods:
 
 ```{python}
 import numpy as np
@@ -176,7 +176,7 @@ Both -0.001666 and 0.003999 are less than the AC (0.004) in magnitude, so we can
 Remember, $n$ is the number of *pairs* of data points you will need in the full study. So, in this case, you will need 70 participants each measured twice (once with each method).
 
 ### Method 2: Lu's Method
-This method is not fundamentally different from Bland's method, it just explicitly calculates the power (1 - the probability of making a type II error) and thus allows for this to be set by the experimenter. It is detailed in Lu et al's paper<sup>2</sup> and uses the same example data and acceptance criterion as before:
+This method is not fundamentally different from Bland's method, it just explicitly calculates the power (1 - the probability of making a type II error) and thus allows for this to be set by the experimenter. It is detailed in Lu et al's paper[^2] and uses the same example data and acceptance criterion as before:
 
 ```{python}
 # Raw data
@@ -423,7 +423,7 @@ $$ {LOA}_{upper} = \bar d + 1.96 \times s,\: {LOA}_{lower} = \bar d - 1.96 \time
 
 $$ \implies \bar d = {LOA}_{upper} - 1.96 \times s = {LOA}_{lower} + 1.96 \times s $$
 
-$$ \implies s = \dfrac{{LOA}_{upper} - {LOA}_{lower}}{2 \times 1.96} $$
+$$ \implies s = \dfrac{ {LOA}_{upper} - {LOA}_{lower} }{2 \times 1.96} $$
 
 Here it is in Python:
 
@@ -443,7 +443,7 @@ These values match those given in Section 5 of Lu et al.
 
 For Studies Using ACs Related to the Bias
 -----------------------------------------
-A good test for an acceptably small bias is to see if it is equivalent to zero. For this, the TOST (two one-sided *t*-tests) procedure can be used (see Schuirmann (1987)<sup>3</sup>, the [Wikipedia page](https://en.wikipedia.org/wiki/Equivalence_test) and [this tutorial](../hypothesis_testing/tost_unpaired.html)). Specifically, we want to use the one-sample TOST because that will compare the one group of data points we have with the zero line (the fact that our data points are the differences between repeated measurements is irrelevant - using the two-sample or paired-sample TOST would be incorrect for this application).
+A good test for an acceptably small bias is to see if it is equivalent to zero. For this, the TOST (two one-sided *t*-tests) procedure can be used (see Schuirmann (1987)[^3], the [Wikipedia page](https://en.wikipedia.org/wiki/Equivalence_test) and [this tutorial](../hypothesis_testing/tost_unpaired.html)). Specifically, we want to use the one-sample TOST because that will compare the one group of data points we have with the zero line (the fact that our data points are the differences between repeated measurements is irrelevant - using the two-sample or paired-sample TOST would be incorrect for this application).
 
 For the acceptance criteria, let's use 10% of the AC that was applied to the LOAs. In other words, the region of equivalence in which the bias must lie in order for us to conclude that it is equivalent to zero is one-tenth as wide as the region used for the LOAs.
 
@@ -559,14 +559,11 @@ power <- power_t_TOST(
 print(power)
 ```
 
-References
-==========
-
-1. Zhou, YH, Zang, JJ, Wu, MJ, Xu, JF, He, J. "Allowable Total Error and Limits for Erroneous Results (ATE/LER) zones for agreement measurement". Journal of Clinical Laboratory Analysis 2011; 25(2):83-89. DOI: [10.1002/jcla.20437](https://doi.org/10.1002/jcla.20437). PMID: [21437998](https://pubmed.ncbi.nlm.nih.gov/21437998/). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6647559/pdf/JCLA-25-83.pdf).
-2. Lu, MJ, Zhong, WH, Liu, YX, Miao, HZ, Li, YC, Ji, MH. "Sample size for assessing agreement between two methods of measurement by Bland-Altman method". The International Journal of Biostatistics 2016; 12(2):20150039. DOI: [10.1515/ijb-2015-0039](https://doi.org/10.1515/ijb-2015-0039). PMID: [27838682](https://pubmed.ncbi.nlm.nih.gov/27838682/). Available [here](https://www.degruyter.com/document/doi/10.1515/ijb-2015-0039/pdf).
-3. Schuirmann, D. "A comparison of the Two One-Sided Tests Procedure and the Power Approach for assessing the equivalence of average bioavailability". Journal of Pharmacokinetics and Biopharmaceutics 1987; 15(6):657–680. DOI: [10.1007/BF01068419](https://doi.org/10.1007/BF01068419). PMID: [3450848](https://pubmed.ncbi.nlm.nih.gov/3450848/). Available [here](https://zenodo.org/record/1232484).
-4. Mansournia, M, Waters, R, Nazemipour, M, Bland, J, Altman, D. "Bland-Altman methods for comparing methods of measurement and response to criticisms". Global Epidemiology 2021; 3:100045. Available [here](https://www.sciencedirect.com/science/article/pii/S2590113320300298/pdfft?md5=3b6ce8c594e1929d7ba71b5b08437b6d&pid=1-s2.0-S2590113320300298-main.pdf).
-5. Flegal, K, Graubard, B, Ioannidis, J. "Use and reporting of Bland-Altman analyses in studies of self-reported versus measured weight and height". International Journal of Obesity 2020; 44(6):1311-1318. DOI: [10.1038/s41366-019-0499-5](https://doi.org/10.1038/s41366-019-0499-5). PMID: [31792334](https://pubmed.ncbi.nlm.nih.gov/31792334/). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7261640/pdf/nihms-1062726.pdf).
+[^1]: Zhou, YH, Zang, JJ, Wu, MJ, Xu, JF, He, J. "Allowable Total Error and Limits for Erroneous Results (ATE/LER) zones for agreement measurement". Journal of Clinical Laboratory Analysis 2011; 25(2):83-89. DOI: [10.1002/jcla.20437](https://doi.org/10.1002/jcla.20437). PMID: [21437998](https://pubmed.ncbi.nlm.nih.gov/21437998/). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6647559/pdf/JCLA-25-83.pdf). Jump to reference:&nbsp;
+[^2]: Lu, MJ, Zhong, WH, Liu, YX, Miao, HZ, Li, YC, Ji, MH. "Sample size for assessing agreement between two methods of measurement by Bland-Altman method". The International Journal of Biostatistics 2016; 12(2):20150039. DOI: [10.1515/ijb-2015-0039](https://doi.org/10.1515/ijb-2015-0039). PMID: [27838682](https://pubmed.ncbi.nlm.nih.gov/27838682/). Available [here](https://www.degruyter.com/document/doi/10.1515/ijb-2015-0039/pdf). Jump to reference:&nbsp;
+[^3]: Schuirmann, D. "A comparison of the Two One-Sided Tests Procedure and the Power Approach for assessing the equivalence of average bioavailability". Journal of Pharmacokinetics and Biopharmaceutics 1987; 15(6):657–680. DOI: [10.1007/BF01068419](https://doi.org/10.1007/BF01068419). PMID: [3450848](https://pubmed.ncbi.nlm.nih.gov/3450848/). Available [here](https://zenodo.org/record/1232484). Jump to reference:&nbsp;
+[^4]: Mansournia, M, Waters, R, Nazemipour, M, Bland, J, Altman, D. "Bland-Altman methods for comparing methods of measurement and response to criticisms". Global Epidemiology 2021; 3:100045. Available [here](https://www.sciencedirect.com/science/article/pii/S2590113320300298/pdfft?md5=3b6ce8c594e1929d7ba71b5b08437b6d&pid=1-s2.0-S2590113320300298-main.pdf). Jump to reference:&nbsp;
+[^5]: Flegal, K, Graubard, B, Ioannidis, J. "Use and reporting of Bland-Altman analyses in studies of self-reported versus measured weight and height". International Journal of Obesity 2020; 44(6):1311-1318. DOI: [10.1038/s41366-019-0499-5](https://doi.org/10.1038/s41366-019-0499-5). PMID: [31792334](https://pubmed.ncbi.nlm.nih.gov/31792334/). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7261640/pdf/nihms-1062726.pdf). Jump to reference:&nbsp;
 
 [⇦ Back](../../../python.html)
 

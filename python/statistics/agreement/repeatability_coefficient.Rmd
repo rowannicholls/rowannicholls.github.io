@@ -21,9 +21,9 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 
 In theory, if you measure the same thing twice you should get the same reading both times. In reality, however, all measurements will show some *variability* if repeated. The term **repeatability** refers to:
 
-> The closeness of agreement between measurements when measured under the same conditions[^1] [^2] [^3]
+> The closeness of agreement between measurements when measured under the same conditions[^1]<sup>,</sup> [^2]<sup>,</sup> [^3]
 
-The **repeatability coefficient (RC)** is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases[^4] [^5]. The *smaller* the repeatability coefficient is, the better.
+The **repeatability coefficient (RC)** is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases.[^4]<sup>,</sup> [^5] The *smaller* the repeatability coefficient is, the better.
 
 When we say that the repeated measurements need to be done under "the same conditions", what we mean is that they need to be done with the same:
 
@@ -33,7 +33,7 @@ When we say that the repeated measurements need to be done under "the same condi
 - Operating conditions
 - Physical location
 
-and be done using the same units and over a short period of time[^6].
+and be done using the same units and over a short period of time.[^6]
 
 Quantifying Repeatability
 =========================
@@ -46,11 +46,11 @@ where $\sigma_w$ is the *within-subject standard deviation* - the standard devia
 
 A Special Case
 --------------
-In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows[^7] [^8]:
+In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows[^7]<sup>,</sup> [^8]:
 
 $RC = 1.96 \times \sqrt{\frac{\Sigma\left(m_2 - m_1\right)^2}{n}}$
 
-where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands. Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*[^9].
+where $m_1$ and $m_2$ are the two measurements performed on each of the $n$ measurands. Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that *the variance of two observations is equal to half the square of their difference*.[^9]
 
 Where Does the 1.96 Come From?
 ------------------------------
@@ -315,7 +315,7 @@ for key, value in summary.items():
 
 Bland-Altman (1999)
 -------------------
-Now that we have a function, let's use it on the data from Bland and Altman's 1999 paper[^11]. These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:
+Now that we have a function, let's use it on the data from Bland and Altman's 1999 paper.[^11] These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:
 
 ```{python}
 # Raw data
