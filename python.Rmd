@@ -130,14 +130,14 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
     - *t*-Tests:
         - [One-Sample *t*-Test](python/statistics/hypothesis_testing/one_sample_t_test.html)
         - [Unpaired Two-Sample *t*-Test](python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html)
-        - Two One-Sided *t*-Test (TOST):
+        - Two One-Sided *t*-Tests (TOST):
             + [Unpaired](python/statistics/hypothesis_testing/tost_unpaired.html)
             + [Paired](python/statistics/hypothesis_testing/tost_paired.html)
     - [Mann-Whitney *U* Test](python/statistics/hypothesis_testing/mann_whitney_u_test.html)
         + [Comparison of Mann-Whitney Methods](python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html)
     - [ANOVA](python/statistics/hypothesis_testing/anova.html)
     - [Chi-Squared Tests](python/statistics/hypothesis_testing/chi_squared.html)
-6. Agreement *(incl accuracy, precision (repeatability and reproducibility), variability and equivalence):*
+6. Agreement _- Including accuracy, precision (repeatability and reproducibility), variability and equivalence:_
     - [Cohen's Kappa](python/statistics/agreement/cohens_kappa.html)
     - [Repeatability Coefficient](python/statistics/agreement/repeatability_coefficient.html)
     - [Coefficient of Variation](python/statistics/agreement/coefficient_of_variation.html)
@@ -148,6 +148,7 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
         - [Intraclass Correlation Coefficient (ICC)](python/statistics/agreement/intraclass_correlation.html)
     - Bland-Altman Analysis:
         - [Traditional Bland-Altman Analysis](python/statistics/agreement/bland_altman.html) (native space)
+            + [Sample Size Calculations](python/statistics/agreement/bland_altman_sample_size.html)
         - [Giavarina Analysis](python/statistics/agreement/giavarina.html) (percentage space)
         - [Euser Analysis](python/statistics/agreement/euser.html) (log 10 space)
 7. Risk:

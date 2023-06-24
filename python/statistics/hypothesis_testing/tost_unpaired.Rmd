@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Statistics in Python:</font><br>Unpaired Two One-Sided t-Test (TOST)'
+title: '<font size="5">Statistics in Python:</font><br><font size="6">The Unpaired TOST (Two One-Sided *t*-Tests) Procedure</font>'
 output:
     html_document:
         theme: paper
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(out.width = "100%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-> This page is about the *unpaired* two one-sided t-test ('unpaired TOST'). The *paired* two one-sided t-test ('paired TOST') is covered on [this](tost_paired.html) page.
+> This page is about the *unpaired* two one-sided *t*-tests procedure ('unpaired TOST'). The *paired* two one-sided *t*-tests procedure ('paired TOST') is covered on [this page](tost_paired.html).
 
 The unpaired TOST can be used to test **equivalence**: do the means of two populations differ by less than a given amount?
 
@@ -27,10 +27,7 @@ The unpaired TOST can be used to test **equivalence**: do the means of two popul
 - These populations and samples should be **independent** of each other: a change in one of them should not affect any of the others
 - We assume that the values in the populations are **normally distributed**
 
-The test was originally published by Donald J Schuirmann (not Donald **L** Schuirmann as appears in the [R](https://www.rdocumentation.org/packages/equivalence/versions/0.7.2/topics/tost.stat) and [Pingouin](https://pingouin-stats.org/build/html/generated/pingouin.tost.html) documentation):
-
-- Schuirmann, Donald J. On hypothesis testing to determine if the mean of a normal distribution is contained in a known interval. Biometrics. 1981;37:617
-- Schuirmann, Donald J. A comparison of the two one-sided tests procedure and the power approach for assessing the equivalence of average bioavailability. Journal of Pharmacokinetics and Biopharmaceutics. 1987;15(6):657–680. DOI: [10.1007/BF01068419](https://link.springer.com/article/10.1007/BF01068419).
+The test was originally published by Donald J Schuirmann<sup>1, 2</sup> (not Donald **L** Schuirmann as appears in the [R](https://www.rdocumentation.org/packages/equivalence/versions/0.7.2/topics/tost.stat) and [Pingouin](https://pingouin-stats.org/build/html/generated/pingouin.tost.html) documentation).
 
 Statistical Hypotheses
 ======================
@@ -44,7 +41,7 @@ where $\mu_x$ and $\mu_y$ are the means of the two populations and $\delta$ is t
 - $H_0:\ \mu_x - \mu_y \leq -\delta$
 - $H_1:\ \mu_x - \mu_y \gt -\delta$
 
-This is why it's called the **two** one-sided t-test: the fact that you have two pairs of hypotheses means that you need to do the one-sided t-test **twice**. It is also why, ultimately, you only choose the result of one of these t-tests as your final answer: it's because you only care about the one where the difference between the means has the same sign as $\delta$.
+This is why it's called the **two** one-sided *t*-tests procedure: the fact that you have two pairs of hypotheses means that you need to do the one-sided *t*-test **twice**. It is also why, ultimately, you only choose the result of one of these *t*-tests as your final answer: it's because you only care about the one where the difference between the means has the same sign as $\delta$.
 
 Example One: Pingouin
 =====================
@@ -58,9 +55,19 @@ b = [6, 8, 7, 10, 11, 9]
 
 Doing it with Pingouin
 ----------------------
-Pingouin can be installed from the terminal with `python3.10 -m pip install pingouin` (replace `3.10` with whichever version of Python you have installed). This gives you access to the `tost()` function which, as the name suggests, performs the TOST.
+The Pingouin package gives you access to the `tost()` function which, as the name suggests, performs the TOST. It can be installed from the terminal with:
 
-As mentioned, the TOST asks "do the means of two populations differ by less than a given amount?". This given amount is called the 'bound' and, by default, Pingouin gives it a value of 1.
+```{bash, eval = FALSE}
+python3.11 -m pip install pingouin
+```
+
+Replace `3.11` with whichever version of Python you have installed and are using. If you see a message saying `OutdatedPackageWarning: The package pingouin is out of date.` it means you need to update (upgrade) Pingouin. Do this from the terminal with:
+
+```{bash, eval = FALSE}
+python3.11 -m pip install pingouin --upgrade
+```
+
+As mentioned, the TOST asks "do the means of two populations differ by less than a given amount?". This given amount is called the 'bound' and, by default, Pingouin gives it a value of 1:
 
 ```{python}
 import pingouin as pg
@@ -70,13 +77,11 @@ pval = pg.tost(a, b).loc['TOST', 'pval']
 print(f'TOST: p = {pval:.3f}')
 ```
 
-If you're interested in seeing exactly what this function is doing in the background, you can take a look at [the source code](https://github.com/raphaelvallat/pingouin/blob/master/pingouin/equivalence.py).
-
-If you see a message saying `OutdatedPackageWarning: The package pingouin is out of date.` it means you need to update (upgrade) Pingouin. Do this from the terminal with `python3.10 -m pip install pingouin --upgrade`.
+If you're interested in seeing exactly what this function is doing in the background, you can take a look at the [source code](https://github.com/raphaelvallat/pingouin/blob/master/pingouin/equivalence.py).
 
 Doing it with SciPy
 -------------------
-While SciPy doesn't have a dedicated TOST function, it does have the t-test. So we can use that twice in its 'one-sided' configuration. Specifically, we're using the unpaired (independent) two-sample t-test:
+While SciPy doesn't have a dedicated TOST function, it does have the *t*-test. So we can use that twice in its 'one-sided' configuration. Specifically, we're using the unpaired (independent) two-sample *t*-test:
 
 ```{python}
 from scipy import stats
@@ -100,10 +105,12 @@ As expected, this gives us the same answer as Pingouin.
 
 SciPy and Numpy can be installed from the terminal with:
 
-- `python3.10 -m pip install scipy`
-- `python3.10 -m pip install numpy`
+```{bash, eval = FALSE}
+python3.11 -m pip install scipy
+python3.11 -m pip install numpy
+```
 
-where `python3.10` is the version of Python you have installed.
+Again, `3.11` should be the version of Python you have installed and are using.
 
 Doing it Explicitly
 -------------------
@@ -158,7 +165,11 @@ data = {
 df = pd.DataFrame(data)
 ```
 
-Pandas can be installed from the terminal with `python3.10 -m pip install pandas`
+Pandas can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+python3.11 -m pip install pandas
+```
 
 Summary Statistics
 ------------------
@@ -197,8 +208,8 @@ cohens_d = diff_mean / np.sqrt(mean_var)
 print(f"Cohen's d = {cohens_d:.3f}")
 ```
 
-t-Test: Equal Variances
------------------------
+*t*-Test: Equal Variances
+-------------------------
 Here's how to replicate the values in the middle table of Figure 1 in [the example](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/):
 
 ```{python}
@@ -218,7 +229,7 @@ dof = n.sum() - 2
 print(f"Degrees of freedom = {dof['values']}")
 ```
 
-Now it's time to do the t-tests. Let's re-configure the raw data so it's slightly easier to work with:
+Now it's time to do the *t*-tests. Let's re-configure the raw data so it's slightly easier to work with:
 
 ```{python}
 # Data frame to dictionary
@@ -246,9 +257,9 @@ t_stat, pval = stats.ttest_ind(x, y, alternative='two-sided')
 print(f't-stat = {t_stat:.3f}; p-value = {pval:.3f}')
 ```
 
-> Note that using a bound of 0 is not practical: if your research question is asking if the difference between the means of two groups is between +0 and -0 you should rather be testing for equivalence! In other words, you should be using a single two-sample t-test, not the TOST (which, remember, is *two* two-sample t-tests). This is actually what the example is doing, but it's not very clear!
+> Note that using a bound of 0 is not practical: if your research question is asking if the difference between the means of two groups is between +0 and -0 you should rather be testing for equivalence! In other words, you should be using a single two-sample *t*-test, not the TOST (which, remember, is *two* two-sample *t*-tests). This is actually what the example is doing, but it's not very clear!
 
-If we use a significance level of 0.1, here are the critical t-values we would need to reach in order to get significance:
+If we use a significance level of 0.1, here are the critical *t*-values we would need to reach in order to get significance:
 
 ```{python}
 # Significance level
@@ -264,7 +275,7 @@ t_crit_two = stats.t.ppf(1 - (alpha / 2), dof)[0]
 print(f't-crit (two-tailed): {t_crit_two:.3f}')
 ```
 
-Now for the confidence interval for the difference of the means (the fact that we're finding an interval that extends *both* sides of the difference of the means implies we need to use the critical t-value from the *two-sided* test):
+Now for the confidence interval for the difference of the means (the fact that we're finding an interval that extends *both* sides of the difference of the means implies we need to use the critical *t*-value from the *two-sided* test):
 
 ```{python}
 # Margin of error
@@ -278,7 +289,7 @@ print(f'Difference of the means = {diff_mean:.3f} 95% CI [{ci_lower:.3f}, {ci_up
 
 Final Answer
 ------------
-[The example](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/) only shows one one-sided t-test for equal variances in Figure 1, which is only one-half of the full TOST. Here's the full thing with a bound of 25:
+[The example](https://www.real-statistics.com/students-t-distribution/equivalence-testing-tost/) only shows one one-sided *t*-test for equal variances in Figure 1, which is only one-half of the full TOST. Here's the full thing with a bound of 25:
 
 ```{python}
 #
@@ -345,108 +356,12 @@ else:
     print('Fail to reject both null hypotheses; the means of the two samples are not equivalent')
 ```
 
-Power Calculations
-==================
-A function that finds the power of the TOST is as follows:
+References
+==========
 
-<!-- https://perspectum.atlassian.net/wiki/spaces/I/pages/1425638615/STATS+TOST+Test+for+Equivalence+Testing -->
+1. Schuirmann, D. "On hypothesis testing to determine if the mean of a normal distribution is contained in a known interval". Biometrics 1981; 37:617.
+2. Schuirmann, D. "A comparison of the Two One-Sided Tests Procedure and the Power Approach for assessing the equivalence of average bioavailability". Journal of Pharmacokinetics and Biopharmaceutics 1987; 15(6):657–680. DOI: [10.1007/BF01068419](https://doi.org/10.1007/BF01068419). PMID: [3450848](https://pubmed.ncbi.nlm.nih.gov/3450848/). Available [here](https://zenodo.org/record/1232484).
 
-```{python}
-import numpy as np
-from scipy import stats
-
-
-def tost_power(n, alpha, delta, cv):
-    """Calculate the power of a TOST."""
-    mt1 = -(delta * np.sqrt(n)) / cv
-    mt2 = (delta * np.sqrt(n)) / cv
-    ta = stats.t.ppf(1 - alpha, df=n - 1)
-    power = stats.t.cdf(mt2 - ta, df=n-1) - stats.t.cdf(mt1 + ta, df=n-1)
-    # Change negative values for power to 0
-    try:
-        power[power < 0] = 0
-    except TypeError:
-        pass
-
-    return power
-```
-
-This function takes the following parameters:
-
-- `n` - the sample size (which can be a range of numbers)
-- `alpha` - the significance level, aka the sensitivity of the test
-- `delta` - the 'acceptance region', 'bound' or 'magnitude of region of similarity'
-- `cv` - the coefficient of variation
-
-If we choose the following values for the constants (in practice these would be estimated by looking at existing data):
-
-```{python}
-# Significance level/sensitivity of the test
-alpha = 0.05
-# Acceptance region/bound/magnitude of region of similarity
-delta = 0.1  # 10%
-# Coefficient of variation
-cv = 0.08
-```
-
-...then we can calculate the power of the test for a sample size of 2 to 30 participants:
-
-```{python}
-# Sample size
-n = np.arange(2, 31)
-# Run the test
-print(tost_power(n, alpha, delta, cv))
-```
-
-This is easier to visualise in a graph:
-
-```{python, eval = FALSE}
-import matplotlib.pyplot as plt
-
-plt.plot(n, tost_power(n, alpha, delta, cv))
-plt.title('Estimating Power from Sample Size')
-plt.ylabel('Power')
-plt.xlabel('Sample Size')
-plt.ylim(0, 1.005)
-plt.xlim(2, 30)
-```
-
-```{python, echo = FALSE, results = 'hide'}
-import matplotlib.pyplot as plt
-
-plt.plot(n, tost_power(n, alpha, delta, cv))
-plt.title('Estimating Power from Sample Size')
-plt.ylabel('Power')
-plt.xlabel('Sample Size')
-plt.ylim(0, 1.005)
-plt.xlim(2, 30)
-plt.show()
-```
-
-Of course, the reverse question is usually more important: how many participants do I need for my study to achieve a certain power? If you want a power of 0.8, here's how to use Scipy's optimize module - specifically the routine known as 'Brent’s method' - to calculate that:
-
-```{python}
-from scipy import optimize
-
-
-def func(n):
-    """Generate a residual to minimise."""
-    res = tost_power(n, alpha, delta, cv) - desired_power
-
-    return res
-
-
-# Desired power for your study
-desired_power = 0.8  # 80%
-# Give a range of sample sizes in which the optimiser can search
-min_guess = 2
-max_guess = 100
-# Find the number of participants that gives the desired power level
-sol = optimize.brentq(func, min_guess, max_guess)
-print(sol)
-```
-
-So we would need 8 participants for this level of power.
 
 [⇦ Back](../../../python.html)
 

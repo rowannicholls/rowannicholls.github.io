@@ -1,0 +1,573 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Bland-Altman Analysis Sample Size Calculations'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        # includes:
+        #     before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+This page complements [this one](bland_altman.html) on Bland-Altman analysis.
+
+Packages needed: `pandas`, `numpy` and `scipy`.  
+Install these from the terminal with:  
+```{bash, eval=FALSE}
+python3.11 -m pip install pandas
+python3.11 -m pip install numpy
+python3.11 -m pip install scipy
+```
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Acceptance Criteria
+===================
+Bland-Altman analysis is done in order to assess the agreement between two things, but in order to make an assessment you first need to have some benchmark against which you can judge your results, termed an **acceptance criterion** (AC). This might be:
+
+- A maximum absolute value for the **limits of agreement** (LOAs)
+- A maximum absolute value for the **bias**
+
+Usually, the Greek letter delta is used for both of these types of acceptance criteria. To avoid confusion, this page will use a lowercase delta ($\delta$) to refer to an AC applied to the LOAs and a capital delta ($\Delta$) to refer to an AC applied to the bias. This is by no means a standard distinction.
+
+The decision as to what is a good criterion for acceptable agreement is a clinical one, not a statistical one, although it should be made *a priori* (ie you should decide on what your ACs will be before performing the Bland-Altman analysis). Often there will be a standard or a set of guidelines as to how good the agreement must be - in other words, you will often be *given* an acceptance criterion. Other times you might need clinical consultation in order to determine the [minimal important difference](https://en.wikipedia.org/wiki/Minimal_important_difference) from which the smallest clinically-relevant amount of disagreement - and thus your AC - could be deduced. Essentially, the differences between the measurements produced by the two methods you are investigating must be small enough so as to not be *clinically important*.
+
+Sample Size Calculations
+========================
+Next, once the acceptance criteria are set, you will want to be able to get an idea as to whether or not your data will meet these criteria *before* you commit to a full-blown study. So, usually, a **pilot test** is done and that data is tested first. A paper published by Zhou et al<sup>1</sup> on the topic of the agreement between two measurement methods documented exactly this: it included the results of a "pre-experiment" ('pilot test') wherein the molar concentration of an antigen was measured in 24 subjects via two different methods:
+
+```{python}
+import numpy as np
+import pandas as pd
+
+# Pilot test data from Zhou et al (2011)
+dct = {
+    'Measurement 1 (mmol/L)': [
+        0.023, 0.022, 0.025, 0.013, 0.008, 0.017, 0.026, 0.017,
+        0.034, 0.007, 0.011, 0.006, 0.001, 0.006, 0.005, 0.007,
+        0.011, 0.002, 0.037, 0.002, 0.003, 0.013, 0.008, 0.023,
+    ],
+    'Measurement 2 (mmol/L)': [
+        0.021, 0.023, 0.024, 0.013, 0.007, 0.016, 0.022, 0.016,
+        0.032, 0.006, 0.009, 0.004, 0.001, 0.007, 0.003, 0.005,
+        0.009, 0.002, 0.036, 0.001, 0.001, 0.011, 0.007, 0.023,
+    ],
+}
+df = pd.DataFrame(dct)
+
+print(df.head())
+```
+
+The question then is: for a full study, *what should the sample size be?* How can we calculate this using only the pilot data?
+
+For Studies Using ACs Related to the LOAs
+-----------------------------------------
+For our example, an acceptance criterion of 0.004 mmol/L was prescribed:
+
+```{python}
+# Acceptance criterion
+δ = 0.004  # mmol/L
+```
+
+This is the maximum absolute value that the two limits of agreement can have. The test of agreement fails if the absolute value of one (or both) LOA is larger than this, and it passes if both are less than this.
+
+### Method 1: Bland's Method
+This method is loosely introduced on [Bland's website](https://www-users.york.ac.uk/~mb55/meas/sizemeth.htm), but is presented more completely here.
+
+Once you have pilot data, use it to calculate the pilot 95% limits of agreement. These are your best estimates as to what the limits of agreement for the full study will be. Then calculate the 99% confidence intervals (CIs) around these pilot limits of agreement; we can be 99% sure that the full limits of agreement will be within these intervals. As such, if the extreme endpoints of these intervals - the upper endpoint of the upper LOA's CI and the lower endpoint of the lower LOA's CI - fall within your acceptance criteria we can be 99% sure that the full study will pass. If this is insufficient certainty, you can increase the confidence level when calculating the CIs - for example to 99.9% - but then it will be less likely that the endpoints of these CIs will meet the acceptance criteria.
+
+```{python}
+# Raw data
+measurement1 = df['Measurement 1 (mmol/L)']
+measurement2 = df['Measurement 2 (mmol/L)']
+# Means
+means = (measurement1 + measurement2) / 2
+# Differences
+diffs = measurement1 - measurement2
+# Average difference (aka the bias)
+bias = np.mean(diffs)
+# Sample standard deviation
+s = np.std(diffs, ddof=1)  # Use ddof=1 to get the sample standard deviation
+
+print(f'Bias = {round(bias, 6)}, standard deviation = {round(s, 6)}')
+```
+
+The *level of agreement* - the distance of the limits of agreement from the mean difference - will be set, as per usual, at 95%:
+
+```{python}
+import scipy.stats as st
+
+# Level of agreement
+agreement = 0.95  # 95%
+# Limits of agreement (LOAs)
+loas = st.norm.interval(agreement, bias, s)
+
+print(f'The LOAs are {round(loas[0], 6)} and {round(loas[1], 6)}')
+```
+
+Now the confidence intervals are calculated. The *level of confidence* - the width of the confidence intervals - will be taken as 99%:
+
+```{python}
+# Confidence level
+confidence = 0.99  # 99%
+# Significance level, α
+alpha = 1 - confidence
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Sample size
+n = len(df)
+# Degrees of freedom
+dof = n - 1
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+t_star = st.t.ppf(q, dof)
+# Standard error of the LOAs
+se_loas = np.sqrt(3 * s**2 / n)
+# Endpoints of the confidence intervals
+upper_ci_upper_loa = loas[1] + t_star * se_loas
+lower_ci_lower_loa = loas[0] - t_star * se_loas
+```
+
+Now that we have the endpoints of the confidence intervals we're going to use the acceptance criteria to reverse-engineer the required sample size. What we want is to find the sample size $n$ such that the endpoints of the CIs just match the acceptance criterion (ie the point at which the test is just barely still passing):
+
+$$ \delta = {LOA}_{upper} + t^* \times {se}_{LOAs} $$
+
+$$ -\delta = {LOA}_{lower} - t^* \times {se}_{LOAs} $$
+
+but, because this is a little tricky to calculate (because both $t^*$ and ${se}_{LOAs}$ depend on $n$) we will just loop through different values of $n$ and stop when we reach the point where the AC is met:
+
+```{python}
+# Loop through different sample sizes
+# Start at 2, because if we start at 1 the number of degrees of freedom is 0
+for n in np.arange(2, 1000):
+    # Degrees of freedom
+    dof = n - 1
+    # Critical t-statistic
+    t_star = st.t.ppf(q, dof)
+    # Standard error of the LOAs
+    se_loas = np.sqrt(3 * s**2 / n)
+    # Endpoints of the confidence intervals
+    upper_ci_upper_loa = loas[1] + t_star * se_loas
+    lower_ci_lower_loa = loas[0] - t_star * se_loas
+    # Test if the acceptance criterion is met
+    if upper_ci_upper_loa < δ:
+        if lower_ci_lower_loa > -δ:
+            break
+
+print(
+    f'A sample size of {n} gives endpoints of the 99% CIs at',
+    f'{round(lower_ci_lower_loa, 6)} and {round(upper_ci_upper_loa, 6)}'
+)
+```
+
+Both -0.001666 and 0.003999 are less than the AC (0.004) in magnitude, so we can be 99% sure that the full study will pass.
+
+Remember, $n$ is the number of *pairs* of data points you will need in the full study. So, in this case, you will need 70 participants each measured twice (once with each method).
+
+### Method 2: Lu's Method
+This method is not fundamentally different from Bland's method, it just explicitly calculates the power (1 - the probability of making a type II error) and thus allows for this to be set by the experimenter. It is detailed in Lu et al's paper<sup>2</sup> and uses the same example data and acceptance criterion as before:
+
+```{python}
+# Raw data
+measurement1 = df['Measurement 1 (mmol/L)']
+measurement2 = df['Measurement 2 (mmol/L)']
+# Means
+means = (measurement1 + measurement2) / 2
+# Differences
+diffs = measurement1 - measurement2
+# Average difference (aka the bias)
+bias = np.mean(diffs)
+# Sample standard deviation
+s = np.std(diffs, ddof=1)  # Use ddof=1 to get the sample standard deviation
+
+# Acceptance criterion
+δ = 0.004  # mmol/L
+```
+
+We could use a loop to try out different values for the sample size like we did last time, but the code will be cleaner if we just do the calculations for many different sample sizes from the start:
+
+```{python}
+# Sample sizes to check
+n = np.arange(2, 1000)
+```
+
+The limits of agreement and confidence intervals are calculated in a similar fashion to before, although note that the two different significance levels are now given the names $\gamma$ and $\alpha$ (and their corresponding critical values are $z_\gamma$ and $t_\alpha$) so that we can tell them apart. We are also using 95% for the confidence intervals, not 99%.
+
+```{python}
+#
+# Limits of agreement
+#
+# Agreement level for the LOAs
+agreement = 0.95  # 95% limits of agreement
+# Significance level for the LOAs
+gamma = 1 - agreement
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (gamma / tails)
+# Critical z-score, calculated using the percent-point function (aka the
+# quantile function) of the normal distribution
+zgamma = st.norm.ppf(q)  # 1.96
+# Standard error of the LOAs
+se = s * np.sqrt(1 / n + zgamma**2 / (2 * (n - 1)))
+
+#
+# Confidence intervals
+#
+# Confidence level for the confidence intervals
+confidence = 0.95  # 95%
+# Significance level for the confidence intervals
+alpha = 1 - confidence
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Degrees of freedom
+dof = n - 1
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+talpha = st.t.ppf(q, dof)
+```
+
+Here comes the new stuff: Lu et al calculate the probabilities of Type II errors ($\beta_1$ and $\beta_2$) explicitly, assuming a non-central *t*-distribution with non-centrality parameters $\tau_1$ and $\tau_2$. The function that does this in Python is `nct.cdf()` for a 'non-central *t* cumulative distribution function':
+
+```{python}
+#
+# Estimate type-II error using non-central t-distribution
+#
+# Non-centrality parameters
+tau1 = (δ - bias - zgamma * s) / se
+tau2 = (δ + bias - zgamma * s) / se
+# Cumulative distribution function for a non-central Student's t continuous
+# random variable
+beta1 = st.nct.cdf(talpha, dof, tau1)  # Lu (2016) equation 3
+beta2 = st.nct.cdf(talpha, dof, tau2)  # Lu (2016) equation 4
+```
+
+The statistical power can now be estimated after combining the two Type II error probabilities:
+
+```{python}
+# Power
+power = 1 - (beta1 + beta2)  # Lu (2016) equation 5
+```
+
+This has given us a value for the power for every one of the candidate sample sizes we initialised. We're only interested in the ones that are large enough to make our test robust, and if we use a cutoff of 0.80 we can find the exact value of $n$ where the power crosses this cutoff for the first time:
+
+```{python}
+# Use a cutoff of 0.80 for the power (power = 1 - β)
+desired_power = 0.80
+# Find where the power reaches this level for the first time
+i, p = next((i, v) for i, v in enumerate(power) if v >= desired_power)
+# Find the corresponding value for the sample size
+n = n[i]
+
+print(f'A sample size of {n} will ensure that the test has a statistical power of {round(p, 3)}')
+```
+
+This is interesting: we have calculated an $n$ of 79 when Lu et al calculated a value of 83 (see Section 5 of their paper). Moreover, [MedCalc](https://www.medcalc.org/manual/sample-size-bland-altman.php) used the same data and method and also calculated 83! Let's have a go at doing it in R:
+
+### Method 3: blandPowerCurve from SimplyAgree in R
+Importing the `SimplyAgree` library gives us access to the `blandPowerCurve` function (see the [documentation](https://aaroncaldwell.us/SimplyAgree/reference/blandPowerCurve.html) and the [source code](https://github.com/arcaldwell49/SimplyAgree/blob/master/R/blandPowerCurve.R)). Let's use that to run the same example from Section 5 of Lu et al in R:
+
+```{R}
+# https://aaroncaldwell.us/SimplyAgree/
+# install.packages("SimplyAgree", repos = "http://cran.us.r-project.org")
+library(SimplyAgree)
+
+powerCurve <- blandPowerCurve(
+    samplesizes = seq(2, 200, 1),
+    mu = 0.001167,
+    SD = 0.001129,
+    delta = 0.004,
+    conf.level = 0.95,
+    agree.level = 0.95
+)
+found_n <- find_n(powerCurve, power = 0.80)
+n <- found_n[["N"]]
+power <- found_n[["power"]]
+
+print(c(n, power))
+```
+
+We get $n = 79$ and $p = 0.802$, so at least we agree with R!
+
+```{R, eval = FALSE, echo = FALSE}
+library(SimplyAgree)
+
+#
+# Full example using Zhou et al (2011)'s' data
+#
+# Pilot test data
+measurement1 <- c(
+    0.023, 0.022, 0.025, 0.013, 0.008, 0.017, 0.026, 0.017,
+    0.034, 0.007, 0.011, 0.006, 0.001, 0.006, 0.005, 0.007,
+    0.011, 0.002, 0.037, 0.002, 0.003, 0.013, 0.008, 0.023
+)
+measurement2 <- c(
+    0.021, 0.023, 0.024, 0.013, 0.007, 0.016, 0.022, 0.016,
+    0.032, 0.006, 0.009, 0.004, 0.001, 0.007, 0.003, 0.005,
+    0.009, 0.002, 0.036, 0.001, 0.001, 0.011, 0.007, 0.023
+)
+# Means
+means <- (measurement1 + measurement2) / 2
+# Differences
+diffs <- measurement1 - measurement2
+# Average difference (aka the bias)
+bias <- mean(diffs)
+# Sample standard deviation
+s <- sd(diffs)
+# Acceptance criterion
+delta = 0.004
+
+powerCurve <- blandPowerCurve(
+    samplesizes = seq(2, 200, 1),
+    mu = bias,
+    SD = s,
+    delta = delta,
+    conf.level = 0.95,
+    agree.level = 0.95
+)
+found_n <- find_n(powerCurve, power = 0.80)
+n <- found_n[["N"]]
+power <- found_n[["power"]]
+
+print(c(n, power))
+```
+
+```{python, eval = FALSE, echo = FALSE}
+"""
+Python code that replicates the blandPowerCurve example script.
+
+See bottom of:
+https://aaroncaldwell.us/SimplyAgree/reference/blandPowerCurve.html
+"""
+delta = 8
+s = 3.3
+bias = 0
+
+# Sample sizes
+n = np.arange(2, 1000)
+
+#
+# Limits of agreement
+#
+# Agreement level for the LOAs
+agreement = 0.95  # 95% limits of agreement
+# Significance level for the LOAs
+gamma = 1 - agreement
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (gamma / tails)
+# Critical z-score, calculated using the percent-point function (aka the
+# quantile function) of the normal distribution
+zgamma = st.norm.ppf(q)  # 1.96
+# Standard error of the LOAs
+se = s * np.sqrt(1 / n + zgamma**2 / (2 * (n - 1)))
+
+#
+# Confidence intervals
+#
+# Confidence level for the confidence intervals
+confidence = 0.95  # 95%
+# Significance level for the confidence intervals
+alpha = 1 - confidence
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Degrees of freedom
+dof = n - 1
+# Critical t-statistic, calculated using the percent-point function (aka the
+# quantile function) of the t-distribution
+talpha = st.t.ppf(q, dof)
+
+#
+# Estimate type-II error using non-central t-distribution
+#
+# Non-centrality parameters
+tau1 = (delta - bias - zgamma * s) / se
+tau2 = (delta + bias - zgamma * s) / se
+# Cumulative distribution function for a non-central Student's t continuous
+# random variable
+beta1 = st.nct.cdf(talpha, dof, tau1)  # Lu (2016) equation 3
+beta2 = st.nct.cdf(talpha, dof, tau2)  # Lu (2016) equation 4
+
+# Power
+power = 1 - (beta1 + beta2)  # Lu (2016) equation 5
+# Use a cutoff of 0.80 for the power (power = 1 - β)
+desired_power = 0.8
+# Find where the power reaches this level for the first time
+i, p = next((i, v) for i, v in enumerate(power) if v >= desired_power)
+# Find the corresponding value for the sample size
+n = n[i]
+
+print(f'A sample size of {n} will ensure that the test has a statistical power of {round(p, 3)}')
+```
+
+### Aside: Calculating Bias and Standard Deviation from LOAs
+Sometimes you'll find a data source that reports the LOAs but not the bias (mean difference, $\bar d$) or the sample standard deviation ($s$). That's not a problem, because you can work these out by considering the definitions of the LOAs:
+
+$$ {LOA}_{upper} = \bar d + 1.96 \times s,\: {LOA}_{lower} = \bar d - 1.96 \times s$$
+
+$$ \implies \bar d = {LOA}_{upper} - 1.96 \times s = {LOA}_{lower} + 1.96 \times s $$
+
+$$ \implies s = \dfrac{{LOA}_{upper} - {LOA}_{lower}}{2 \times 1.96} $$
+
+Here it is in Python:
+
+```{python}
+# Limits of agreement
+lower_loa = -0.0010467586944627883
+upper_loa = 0.0033800920277961216
+# Sample standard deviation
+s = (upper_loa - lower_loa) / (2 * 1.96)
+# Mean difference
+bias = upper_loa - 1.96 * s
+
+print(f'Bias = {round(bias, 6)}, standard deviation = {round(s, 6)}')
+```
+
+These values match those given in Section 5 of Lu et al.
+
+For Studies Using ACs Related to the Bias
+-----------------------------------------
+A good test for an acceptably small bias is to see if it is equivalent to zero. For this, the TOST (two one-sided *t*-tests) procedure can be used (see Schuirmann (1987)<sup>3</sup>, the [Wikipedia page](https://en.wikipedia.org/wiki/Equivalence_test) and [this tutorial](../hypothesis_testing/tost_unpaired.html)). Specifically, we want to use the one-sample TOST because that will compare the one group of data points we have with the zero line (the fact that our data points are the differences between repeated measurements is irrelevant - using the two-sample or paired-sample TOST would be incorrect for this application).
+
+For the acceptance criteria, let's use 10% of the AC that was applied to the LOAs. In other words, the region of equivalence in which the bias must lie in order for us to conclude that it is equivalent to zero is one-tenth as wide as the region used for the LOAs.
+
+```{python}
+# Acceptance criterion
+Δ = 0.0004  # mmol/L
+```
+
+We again calculate the average and the sample standard deviation of the differences between the pairs of raw data points:
+
+```{python}
+# Raw data
+measurement1 = df['Measurement 1 (mmol/L)']
+measurement2 = df['Measurement 2 (mmol/L)']
+# Means
+means = (measurement1 + measurement2) / 2
+# Differences
+diffs = measurement1 - measurement2
+# Average difference (aka the bias)
+bias = np.mean(diffs)
+# Sample standard deviation
+s = np.std(diffs, ddof=1)  # Use ddof=1 to get the sample standard deviation
+```
+
+Now, while there is currently no function in Python to calculate the power of the TOST procedure in the way that we want, there IS a function in R: `power_t_TOST` from the `TOSTER` library (see the documentation [here](https://aaroncaldwell.us/TOSTERpkg/reference/power_t_TOST.html) and [here](https://cran.r-project.org/web/packages/TOSTER/TOSTER.pdf) and an example [here](https://cran.r-project.org/web/packages/TOSTER/vignettes/IntroTOSTt.html)). Looking at the [source code](https://github.com/Lakens/TOSTER/blob/master/R/power_t_TOST.R) allows us to 'translate' some of it into Python:
+
+```{python}
+#
+# power_t_TOST.R
+# Calculates the exact power of two one-sided t-tests (TOST) for one, two, and
+# paired samples.
+#
+# Assumed true difference
+delta = 0
+# Equivalence bound
+high_eqbound = Δ
+low_eqbound = -Δ
+# Significance level, α
+alpha = 0.05
+# Desired statistical power, 1 - β
+desired_power = 0.80
+
+# Iterate of many potential values for the sample size
+for n in np.arange(2, 100):
+    # Degrees of freedom
+    dof = n - 1
+    nc = np.sum(1 / n)
+    se_fac = np.sqrt(1 * nc)
+    # Standard error of the mean
+    sem = s * se_fac
+    # Non-centrality parameters
+    delta1 = (delta - low_eqbound) / sem
+    delta2 = (delta - high_eqbound) / sem
+    # Cumulative distribution function for a non-central Student's t continuous
+    # random variable
+    p1 = st.nct.cdf(0, dof, delta1)
+    p2 = st.nct.cdf(0, dof, delta2)
+    # Power
+    power = p2 - p1
+    if power > desired_power:
+        break
+
+print(f'A full study will need {n} participants to have a power of {round(power, 3)}')
+```
+
+Remember that $n$ is the number of *pairs* of data points, ie 28 total measurements will need to be made.
+
+```{r, eval = FALSE, echo = FALSE}
+#
+# R code to replicate the above example
+#
+
+# https://aaroncaldwell.us/TOSTERpkg/
+# https://cran.r-project.org/web/packages/TOSTER/TOSTER.pdf
+# install.packages("TOSTER", repos = "http://cran.us.r-project.org")
+library(TOSTER)
+
+# Assumed true difference
+delta <- 0
+# Sample standard deviation
+s <- 0.00112931940514656
+# Equivalence bound
+eqb <- 0.0004
+# Significance level, α
+alpha <- 0.5
+# Desired statistical power, 1 - β
+power <- 0.80
+# Use the one-sample TOST
+test_type = "one.sample"
+
+# Calculate the required sample size
+n <- power_t_TOST(
+  n = NULL,
+  delta = delta,
+  sd = s,
+  eqb = eqb,
+  alpha = alpha,
+  power = power,
+  type = test_type
+)
+print(n)
+
+# Calculate the power that this sample size will give us
+power <- power_t_TOST(
+  n = 14,
+  delta = delta,
+  sd = s,
+  eqb = eqb,
+  alpha = alpha,
+  power = NULL,
+  type = test_type
+)
+print(power)
+```
+
+References
+==========
+
+1. Zhou, YH, Zang, JJ, Wu, MJ, Xu, JF, He, J. "Allowable Total Error and Limits for Erroneous Results (ATE/LER) zones for agreement measurement". Journal of Clinical Laboratory Analysis 2011; 25(2):83-89. DOI: [10.1002/jcla.20437](https://doi.org/10.1002/jcla.20437). PMID: [21437998](https://pubmed.ncbi.nlm.nih.gov/21437998/). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6647559/pdf/JCLA-25-83.pdf).
+2. Lu, MJ, Zhong, WH, Liu, YX, Miao, HZ, Li, YC, Ji, MH. "Sample size for assessing agreement between two methods of measurement by Bland-Altman method". The International Journal of Biostatistics 2016; 12(2):20150039. DOI: [10.1515/ijb-2015-0039](https://doi.org/10.1515/ijb-2015-0039). PMID: [27838682](https://pubmed.ncbi.nlm.nih.gov/27838682/). Available [here](https://www.degruyter.com/document/doi/10.1515/ijb-2015-0039/pdf).
+3. Schuirmann, D. "A comparison of the Two One-Sided Tests Procedure and the Power Approach for assessing the equivalence of average bioavailability". Journal of Pharmacokinetics and Biopharmaceutics 1987; 15(6):657–680. DOI: [10.1007/BF01068419](https://doi.org/10.1007/BF01068419). PMID: [3450848](https://pubmed.ncbi.nlm.nih.gov/3450848/). Available [here](https://zenodo.org/record/1232484).
+4. Mansournia, M, Waters, R, Nazemipour, M, Bland, J, Altman, D. "Bland-Altman methods for comparing methods of measurement and response to criticisms". Global Epidemiology 2021; 3:100045. Available [here](https://www.sciencedirect.com/science/article/pii/S2590113320300298/pdfft?md5=3b6ce8c594e1929d7ba71b5b08437b6d&pid=1-s2.0-S2590113320300298-main.pdf).
+5. Flegal, K, Graubard, B, Ioannidis, J. "Use and reporting of Bland-Altman analyses in studies of self-reported versus measured weight and height". International Journal of Obesity 2020; 44(6):1311-1318. DOI: [10.1038/s41366-019-0499-5](https://doi.org/10.1038/s41366-019-0499-5). PMID: [31792334](https://pubmed.ncbi.nlm.nih.gov/31792334/). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7261640/pdf/nihms-1062726.pdf).
+
+[⇦ Back](../../../python.html)
+
+</font>

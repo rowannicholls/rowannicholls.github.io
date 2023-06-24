@@ -640,7 +640,13 @@ When doing multiple Bland-Altman calculations it's often useful to have it as a 
 
 ```{python}
 def bland_altman_analysis(df):
-    """Calculate agreement statistics."""
+    """
+    Calculate agreement statistics.
+
+    Within-subject SD and repeatability coefficient are defined in Shukla-Dave
+    (2019), available here:
+    https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6526078/
+    """
     tests = list(df)
 
     # Individual subject calculations
