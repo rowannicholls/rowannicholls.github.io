@@ -1,0 +1,245 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>Time a Script'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+[⇦ Back](../../python.html)
+
+There are a number of different ways to measure the execution time of a script, some of which are better than others. This page will take a look at a couple of options.
+
+Using the `time` Module
+=======================
+
+Option 1: Using `time.time()`
+-----------------------------
+This function returns the length of time in seconds that have passed since the epoch: 00:00:00 (UTC) on 1 January 1970. So calling it at the start of your programme and then again at the end of your programme will enable you to find the difference and hence the time it took for the programme to run:
+
+```{python, eval = FALSE}
+import time
+
+# Start the timer
+start_time = time.time()
+
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
+
+# End the timer
+end_time = time.time()
+# Elapsed time
+delta = end_time - start_time
+
+print(
+    f'Start time: {start_time} seconds since the epoch',
+    f'End time:   {end_time} seconds since the epoch',
+    f'Running time: {delta} s',
+    sep='\n'
+)
+```
+
+```
+## Start time: 1687653207.7965286 seconds since the epoch
+## End time:   1687653208.8294632 seconds since the epoch
+## Running time: 1.0329346656799316 s
+```
+
+Note that:
+
+- On most computers, leap seconds are *not* counted in the seconds since the epoch time (because most computers use what is known as 'Unix time' which excludes these)
+- The `time.time()` function uses the computer's clock time, which can be adjusted by the user
+- The precision of the timekeeping depends on the computer itself (because different systems have clocks of different precision). A different function - `time.time_ns()` - avoids this problem by returning the number of *nano*seconds since the epoch, as an integer.
+
+In other words, if you time a script that runs during a period when a leap second occurs or when the system clock is changed this method will be inaccurate. Also, the precision of this method might not be the same from one computer to the next.
+
+Option 2: Using `time.process_time()`
+-------------------------------------
+This option records the elapsed time of the current *process*, ie the system and CPU time spent running the script.
+
+- Time spent sleeping (ie time elapsed due to the `time.sleep()` function) is NOT counted
+- There is no reference time (such as the epoch used by `time.time()`) which means that only the difference between two calls to `time.process_time()` has meaning
+- Similar to before, a related function `process_time_ns()` can be used for more consistent precision
+
+```{python, eval = FALSE}
+import time
+
+# Start the timer
+start = time.process_time()
+
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
+
+# End the timer
+end = time.process_time()
+# Elapsed time
+delta = end - start
+
+print(f'Running time: {delta} s')
+```
+
+```
+## Running time: 0.049245309999999876 s
+```
+
+Option 3: Using `time.perf_counter()`
+-------------------------------------
+This is a similar function to `time.process_time()` except it has more resolution and it DOES include the time elapsed due to `time.sleep()`. But, like `time.process_time()`, it has no reference time and so only the difference between two calls has meaning. There again exists a sister function that avoids precision loss: `time.perf_counter_ns()`
+
+```{python, eval = FALSE}
+import time
+
+# Start the timer
+start = time.perf_counter()
+
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
+
+# End the timer
+stop = time.perf_counter()
+# Elapsed time
+delta = stop - start
+
+print(f'Running time: {delta} s')
+```
+
+```
+## Running time: 1.039348770998913 s
+```
+
+Using the `datetime` Module
+===========================
+This is the same idea as using `time.time()` except using `datetime.now()` instead:
+
+```{python, eval = FALSE}
+import time
+from datetime import datetime
+
+# Start the timer
+start_time = datetime.now()
+
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
+
+# End the timer
+end_time = datetime.now()
+# Elapsed time
+delta = end_time - start_time
+
+print(
+    f'Start time: {start_time}',
+    f'End time:   {end_time}',
+    f'Running time: {delta}',
+    sep='\n'
+)
+```
+
+```
+## Start time: 2023-06-26 14:06:33.198809
+## End time:   2023-06-26 14:06:34.226956
+## Running time: 0:00:01.028147
+```
+
+Using the `timeit` Module
+=========================
+This module is used for measuring the execution time of small code snippets. Your programme needs to be defined as a text string and then it can be run multiple times and averaged to give a more accurate answer. It also turns off garbage collection (the process of freeing memory when it is not used anymore) which makes the timings more consistent:
+
+```{python, eval = FALSE}
+from timeit import timeit
+
+# Define a programme in text
+stmt = """
+time.sleep(1)
+for n in range(1000000):
+    pass
+"""
+# Choose how many times to run it
+n = 10
+# Run this programme the given number of times and calculate the average time
+t = timeit(stmt, number=n) / n
+
+print(f'Running time: {t} s (average of {n} repeats)')
+```
+
+```
+Running time: 1.016366180499972 s (average of 10 repeats)
+```
+
+For the record, `timeit()` uses `time.perf_counter()` in the background to record the time of the script.
+
+Comparison of Methods
+=====================
+In order to choose the most appropriate method for your use case you need to ask yourself *why* you are measuring the time it took for your script to run. Are you interested in knowing how long you will have to wait for it to finish the next time you run it (ie do you care about the execution time on a human scale) or are you interested in knowing how efficient your code is (ie do you care about the execution time on a micro scale)?
+
+- If the first (human scale), will your programme take seconds to run or tens of minutes plus to run? Do you also care about *when* your code was run (eg if you're keeping a lab notebook to record and take notes about your work)?
+    - If your programme takes seconds to run and you aren't too fussed about when you ran it, use `time.time()`. This will give you the execution time in seconds by default and, if you decide later that you *do* want to know when you ran it, you'll have the option to work this out from the seconds since the epoch value (if you recorded it!).
+    - If your programme takes tens of minutes to run and/or you want to know when it was run, use the `datetime.now()` method. This will show the execution time in a more relevant `h:mm:ss` format and the date and time when it was run in a more relevant `YYYY-MM-DD hh:mm:ss` format.
+- If you're interested in the execution time on a micro scale (eg to know about your code's efficiency):
+    - Use `time.perf_counter()` if you want to know the *real* time your code takes to run (as if you were using a stopwatch)
+    - Use `time.process_time()` if you want to know the time your computer spends on running your code. Your computer usually does lots of things at the same time so won't spend 100% of its time on your code, hence this `time.process_time()` value should theoretically always be smaller than the `time.perf_counter()` value\*.
+    - Use `timeit()` for small sections of code, eg to work out which of two functions is more efficient. This is the best method for performance testing code because it can run it multiple times to reduce the variation and it turns off garbage collection to increase consistency, but it requires a bit more set up than the other options.
+
+\*Here's a demonstration to show that this is not always true:
+
+```{python, eval = FALSE}
+import time
+
+# Start the timers
+start_pt = time.process_time()
+start_pc = time.perf_counter()
+
+# Run a programme
+for n in range(1000000):
+    pass
+
+# End the timers
+stop_pt = time.process_time()
+stop_pc = time.perf_counter()
+# Elapsed time
+delta_pt = stop_pt - start_pt
+delta_pc = stop_pc - start_pc
+
+print(
+    'Running time:',
+    f'{delta_pt} s for the process time',
+    f'{delta_pc} s for the performance counter',
+    sep='\n'
+)
+```
+
+```
+Running time:
+0.022885440000000003 s for the process time
+0.022890950998771586 s for the performance counter
+```
+
+```
+Running time:
+0.018469575999999998 s for the process time
+0.01846678900074039 s for the performance counter
+```
+
+The first time I ran this the process time was the smaller of the two, but the second time the performance counter was smaller! Of course, this demonstration is not perfect because the process time is including the time used to record the start of the performance counter and the performance counter is including the time used to record the end of the process time. However, I reckon that this is enough to demonstrate that one method will not *always* give a lower value than the other. Also note the large variation in the length of time the code took to run: 0.023 seconds vs 0.018 seconds! The variation in the time a programme takes to run on a regular computer (with an out-of-the box operating system) is vastly more than the precision of these functions.
+
+[⇦ Back](../../python.html)
+
+</font>

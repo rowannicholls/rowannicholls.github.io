@@ -11,7 +11,7 @@
 
 
 
-<title>Statistics in Python: Repeatability Coefficient</title>
+<title>Utilities in Python: Time a Script</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -445,7 +445,7 @@ Ch:"us_privacy_string",X:"value",uc:"wbraid",Dh:"wbraid_multiple_conversions",Ih
 Zd[N.g.kc]=1,Zd[N.g.me]=1,Zd[N.g.ne]=1,Zd[N.g.oe]=1,Zd[N.g.jh]=1,Zd[N.g.Za]=1,Zd[N.g.lh]=1,Zd[N.g.te]=1,Zd[N.g.yf]=1,Zd[N.g.tb]=1,Zd[N.g.ub]=1,Zd[N.g.sa]=1,Zd[N.g.Bf]=1,Zd[N.g.we]=1,Zd[N.g.Ib]=1,Zd[N.g.La]=1,Zd[N.g.Jb]=1,Zd[N.g.xe]=1,Zd[N.g.bd]=1,Zd[N.g.Df]=1,Zd[N.g.dd]=1,Zd[N.g.qc]=1,Zd[N.g.sc]=1,Zd[N.g.Hf]=1,Zd[N.g.Ma]=1,Zd[N.g.vd]=1,Zd));Object.freeze([N.g.da,N.g.Aa,N.g.wb,N.g.ra,N.g.Cf,N.g.wa,N.g.vf,N.g.lj]);
 var ae={},be=Object.freeze((ae[N.g.Si]=1,ae[N.g.Ti]=1,ae[N.g.Ui]=1,ae[N.g.Vi]=1,ae[N.g.Wi]=1,ae[N.g.Yi]=1,ae[N.g.Zi]=1,ae[N.g.aj]=1,ae[N.g.cj]=1,ae[N.g.Zd]=1,ae)),ce={},de=Object.freeze((ce[N.g.Mg]=1,ce[N.g.Ng]=1,ce[N.g.Xb]=1,ce[N.g.Yb]=1,ce[N.g.Og]=1,ce[N.g.Cb]=1,ce[N.g.Zb]=1,ce[N.g.Ta]=1,ce[N.g.nb]=1,ce[N.g.Ua]=1,ce[N.g.xa]=1,ce[N.g.ac]=1,ce[N.g.Ca]=1,ce[N.g.Pg]=1,ce)),ee=Object.freeze([N.g.R,N.g.pb,N.g.Xa]),fe=Object.freeze([].concat(ee)),ge=Object.freeze([N.g.za,N.g.ne,N.g.bd,N.g.Df,N.g.je]),
 he=Object.freeze([].concat(ge)),ie={},je=(ie[N.g.C]="1",ie[N.g.K]="2",ie),ke={},me=Object.freeze((ke[N.g.R]=1,ke[N.g.be]=1,ke[N.g.ya]=1,ke[N.g.Db]=1,ke[N.g.nf]=1,ke[N.g.ce]=1,ke[N.g.de]=1,ke[N.g.ee]=1,ke[N.g.T]=1,ke[N.g.fe]=1,ke[N.g.Ea]=1,ke[N.g.qa]=1,ke[N.g.Ia]=1,ke[N.g.za]=1,ke[N.g.Ja]=1,ke[N.g.Fa]=1,ke[N.g.na]=1,ke[N.g.he]=1,ke[N.g.U]=1,ke[N.g.oj]=1,ke[N.g.Yc]=1,ke[N.g.ke]=1,ke[N.g.vf]=1,ke[N.g.oe]=1,ke[N.g.tb]=1,ke[N.g.ub]=1,ke[N.g.ra]=1,ke[N.g.Zc]=1,ke[N.g.da]=1,ke[N.g.Aa]=1,ke[N.g.rh]=1,ke[N.g.sh]=
-1,ke[N.g.th]=1,ke[N.g.uh]=1,ke[N.g.Ib]=1,ke[N.g.La]=1,ke[N.g.Jb]=1,ke[N.g.xe]=1,ke[N.g.dd]=1,ke[N.g.ka]=1,ke[N.g.qc]=1,ke[N.g.sc]=1,ke[N.g.cb]=1,ke[N.g.la]=1,ke[N.g.wa]=1,ke[N.g.X]=1,ke));Object.freeze(N.g);var ne={},oe=z.google_tag_manager=z.google_tag_manager||{},pe=Math.random();ne.Mf="36l0";ne.ud=Number("0")||0;ne.ba="dataLayer";ne.Mi="ChAI8KjapAYQ+9Dq1crmi8svEicACH33Ju74FqqkYxriVqu5DpVT2lOruDa3zM/T1BUMKbmJ1tOl+NAaAgwd";var qe={__cl:1,__ecl:1,__ehl:1,__evl:1,__fal:1,__fil:1,__fsl:1,__hl:1,__jel:1,__lcl:1,__sdl:1,__tl:1,__ytl:1},re={__paused:1,__tg:1},se;for(se in qe)qe.hasOwnProperty(se)&&(re[se]=1);var te=Ba(""),ue,ve=!1;ve=!0;
+1,ke[N.g.th]=1,ke[N.g.uh]=1,ke[N.g.Ib]=1,ke[N.g.La]=1,ke[N.g.Jb]=1,ke[N.g.xe]=1,ke[N.g.dd]=1,ke[N.g.ka]=1,ke[N.g.qc]=1,ke[N.g.sc]=1,ke[N.g.cb]=1,ke[N.g.la]=1,ke[N.g.wa]=1,ke[N.g.X]=1,ke));Object.freeze(N.g);var ne={},oe=z.google_tag_manager=z.google_tag_manager||{},pe=Math.random();ne.Mf="36l0";ne.ud=Number("0")||0;ne.ba="dataLayer";ne.Mi="ChEI8O7kpAYQhcWartSk/771ARInAJn8URkYE2aQeHDUXRgqSwfzlfk0guNjyFK4fHuRhgF7F9h5Bmo2GgIVrg\x3d\x3d";var qe={__cl:1,__ecl:1,__ehl:1,__evl:1,__fal:1,__fil:1,__fsl:1,__hl:1,__jel:1,__lcl:1,__sdl:1,__tl:1,__ytl:1},re={__paused:1,__tg:1},se;for(se in qe)qe.hasOwnProperty(se)&&(re[se]=1);var te=Ba(""),ue,ve=!1;ve=!0;
 ue=ve;var we,xe=!1;we=xe;var ye,ze=!1;ye=ze;var Ae,Be=!1;Ae=Be;ne.Yd="www.googletagmanager.com";
 var Ce=""+ne.Yd+(ue?"/gtag/js":"/gtm.js"),De=null,Ee=null,Fe={},Ge={},He={},Ie=function(){var a=oe.sequence||1;oe.sequence=a+1;return a};ne.Li="";var Je="";ne.He=Je;var Ke=new wa,Le={},Me={},Pe={name:ne.ba,set:function(a,b){J(Ma(a,b),Le);Ne()},get:function(a){return Oe(a,2)},reset:function(){Ke=new wa;Le={};Ne()}},Oe=function(a,b){return 2!=b?Ke.get(a):Qe(a)},Qe=function(a){var b,c=a.split(".");b=b||[];for(var d=Le,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},Re=function(a,b){Me.hasOwnProperty(a)||(Ke.set(a,b),J(Ma(a,b),Le),Ne())},Ne=function(a){k(Me,function(b,c){Ke.set(b,c);J(Ma(b),Le);J(Ma(b,
 c),Le);a&&delete Me[b]})},Se=function(a,b){var c,d=1!==(void 0===b?2:b)?Qe(a):Ke.get(a);"array"===$b(d)||"object"===$b(d)?c=J(d):c=d;return c};var Te=[],Ue=function(a){return void 0==Te[a]?!1:Te[a]};var O=[];O[7]=!0;O[9]=!0;O[27]=!0;
@@ -697,452 +697,210 @@ Ft();Ve(1);P(131)&&Ir();Ee=Ga();Rz.bootstrap=Ee;if(P(70)){}}});
 
 
 
-<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>Repeatability Coefficient</h1>
+<h1 class="title toc-ignore"><font size="5">Utilities in Python:</font><br>Time a Script</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#quantifying-repeatability"><span class="toc-section-number">1</span> Quantifying Repeatability</a>
+<li><a href="#using-the-time-module"><span class="toc-section-number">1</span> Using the <code>time</code> Module</a>
 <ul>
-<li><a href="#a-special-case"><span class="toc-section-number">1.1</span> A Special Case</a></li>
-<li><a href="#where-does-the-1.96-come-from"><span class="toc-section-number">1.2</span> Where Does the 1.96 Come From?</a></li>
+<li><a href="#option-1-using-time.time"><span class="toc-section-number">1.1</span> Option 1: Using <code>time.time()</code></a></li>
+<li><a href="#option-2-using-time.process_time"><span class="toc-section-number">1.2</span> Option 2: Using <code>time.process_time()</code></a></li>
+<li><a href="#option-3-using-time.perf_counter"><span class="toc-section-number">1.3</span> Option 3: Using <code>time.perf_counter()</code></a></li>
 </ul></li>
-<li><a href="#repeatability-vs-reproducibility"><span class="toc-section-number">2</span> Repeatability vs Reproducibility</a></li>
-<li><a href="#calculating-the-repeatability-coefficient"><span class="toc-section-number">3</span> Calculating the Repeatability Coefficient</a>
-<ul>
-<li><a href="#using-the-true-standard-deviation-sigma_w"><span class="toc-section-number">3.1</span> Using the True Standard Deviation <span class="math inline">\(\sigma_w\)</span></a></li>
-<li><a href="#using-the-estimated-standard-deviation-s_w"><span class="toc-section-number">3.2</span> Using the Estimated Standard Deviation <span class="math inline">\(s_w\)</span></a></li>
-</ul></li>
-<li><a href="#bland-altman-examples"><span class="toc-section-number">4</span> Bland-Altman Examples</a>
-<ul>
-<li><a href="#bland-altman-1986"><span class="toc-section-number">4.1</span> Bland-Altman (1986)</a></li>
-<li><a href="#bland-altman-1996"><span class="toc-section-number">4.2</span> Bland-Altman (1996)</a></li>
-<li><a href="#bland-altman-1999"><span class="toc-section-number">4.3</span> Bland-Altman (1999)</a></li>
-</ul></li>
-<li><a href="#function-documentation"><span class="toc-section-number">5</span> Function Documentation</a></li>
+<li><a href="#using-the-datetime-module"><span class="toc-section-number">2</span> Using the <code>datetime</code> Module</a></li>
+<li><a href="#using-the-timeit-module"><span class="toc-section-number">3</span> Using the <code>timeit</code> Module</a></li>
+<li><a href="#comparison-of-methods"><span class="toc-section-number">4</span> Comparison of Methods</a></li>
 </ul>
 </div>
 
 <p><font size="3"></p>
-<p><a href="../../../python.html">⇦ Back</a></p>
-<p>In theory, if you measure the same thing twice you should get the same reading both times. In reality, however, all measurements will show some <em>variability</em> if repeated. The term <strong>repeatability</strong> refers to:</p>
-<blockquote>
-<p>The closeness of agreement between measurements when measured under the same conditions<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a><sup>,</sup> <a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a><sup>,</sup> <a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a></p>
-</blockquote>
-<p>The <strong>repeatability coefficient (RC)</strong> is a number that, if you make two measurements of the same thing under the same conditions, the difference between those two measurements will be less than the RC in 95% of cases.<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a><sup>,</sup> <a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> The <em>smaller</em> the repeatability coefficient is, the better.</p>
-<p>When we say that the repeated measurements need to be done under “the same conditions”, what we mean is that they need to be done with the same:</p>
+<p><a href="../../python.html">⇦ Back</a></p>
+<p>There are a number of different ways to measure the execution time of a script, some of which are better than others. This page will take a look at a couple of options.</p>
+<div id="using-the-time-module" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Using the <code>time</code> Module</h1>
+<div id="option-1-using-time.time" class="section level2" number="1.1">
+<h2 number="1.1"><span class="header-section-number">1.1</span> Option 1: Using <code>time.time()</code></h2>
+<p>This function returns the length of time in seconds that have passed since the epoch: 00:00:00 (UTC) on 1 January 1970. So calling it at the start of your programme and then again at the end of your programme will enable you to find the difference and hence the time it took for the programme to run:</p>
+<pre class="python"><code>import time
+
+# Start the timer
+start_time = time.time()
+
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
+
+# End the timer
+end_time = time.time()
+# Elapsed time
+delta = end_time - start_time
+
+print(
+    f&#39;Start time: {start_time} seconds since the epoch&#39;,
+    f&#39;End time:   {end_time} seconds since the epoch&#39;,
+    f&#39;Running time: {delta} s&#39;,
+    sep=&#39;\n&#39;
+)</code></pre>
+<pre><code>## Start time: 1687653207.7965286 seconds since the epoch
+## End time:   1687653208.8294632 seconds since the epoch
+## Running time: 1.0329346656799316 s</code></pre>
+<p>Note that:</p>
 <ul>
-<li>Measurement procedure</li>
-<li>Operator(s)</li>
-<li>Measuring system</li>
-<li>Operating conditions</li>
-<li>Physical location</li>
+<li>On most computers, leap seconds are <em>not</em> counted in the seconds since the epoch time (because most computers use what is known as ‘Unix time’ which excludes these)</li>
+<li>The <code>time.time()</code> function uses the computer’s clock time, which can be adjusted by the user</li>
+<li>The precision of the timekeeping depends on the computer itself (because different systems have clocks of different precision). A different function - <code>time.time_ns()</code> - avoids this problem by returning the number of <em>nano</em>seconds since the epoch, as an integer.</li>
 </ul>
-<p>and be done using the same units and over a short period of time.<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
-<div id="quantifying-repeatability" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Quantifying Repeatability</h1>
-<p>As mentioned, the repeatability coefficient is the value under which the difference between any two repeat measurements of the same measurand acquired under repeatability conditions (aka identical conditions) should fall with 95% probability. If we assume normality (ie if multiple measurements of the same thing will produce values that are normally distributed around its true value) then this can be mathematically represented as:</p>
-<p><span class="math inline">\(RC = 1.96 \times \sqrt{2\sigma_w^2} = 2.77\sigma_w\)</span></p>
-<p>where <span class="math inline">\(\sigma_w\)</span> is the <em>within-subject standard deviation</em> - the standard deviation of the values you will get if you measure the same subject multiple times. In practice, it is not always feasible to attempt to calculate the within-subject standard deviation exactly (as it might require too many repeats, which can be expensive) and it isn’t always possible either (ie it might be a function instead of a single number) so it is usually <em>approximated</em> as the average (mean) sample standard deviation of multiple sets of repeated measurements. When approximating in this way, we use the symbol <span class="math inline">\(s_w\)</span> to differentiate from the true value of the within-subject standard deviation, <span class="math inline">\(\sigma_w\)</span>.</p>
-<div id="a-special-case" class="section level2" number="1.1">
-<h2 number="1.1"><span class="header-section-number">1.1</span> A Special Case</h2>
-<p>In the special case where the measurements are performed exactly twice on each measurand the above equation can be re-written as follows<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a><sup>,</sup> <a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>:</p>
-<p><span class="math inline">\(RC = 1.96 \times \sqrt{\frac{\Sigma\left(m_2 - m_1\right)^2}{n}}\)</span></p>
-<p>where <span class="math inline">\(m_1\)</span> and <span class="math inline">\(m_2\)</span> are the two measurements performed on each of the <span class="math inline">\(n\)</span> measurands. Although this equation looks more complicated than the first it is actually less computationally intense. The reason this simplification works is because it just so happens that <em>the variance of two observations is equal to half the square of their difference</em>.<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a></p>
+<p>In other words, if you time a script that runs during a period when a leap second occurs or when the system clock is changed this method will be inaccurate. Also, the precision of this method might not be the same from one computer to the next.</p>
 </div>
-<div id="where-does-the-1.96-come-from" class="section level2" number="1.2">
-<h2 number="1.2"><span class="header-section-number">1.2</span> Where Does the 1.96 Come From?</h2>
-<p>If a random number is chosen from a normal distribution that has a mean of 0 and a standard deviation of 1, the probability that the number will be less than or equal to 1.96 is 0.95 (ie a 95% chance). Therefore, this number appears a lot in formulas that use a 95% confidence level, such as this one. It can be calculated more exactly in Python by using the percent-point function (aka the quantile function) of the normal distribution as found in Scipy’s “stats” module:</p>
-<pre class="python"><code>from scipy import stats
+<div id="option-2-using-time.process_time" class="section level2" number="1.2">
+<h2 number="1.2"><span class="header-section-number">1.2</span> Option 2: Using <code>time.process_time()</code></h2>
+<p>This option records the elapsed time of the current <em>process</em>, ie the system and CPU time spent running the script.</p>
+<ul>
+<li>Time spent sleeping (ie time elapsed due to the <code>time.sleep()</code> function) is NOT counted</li>
+<li>There is no reference time (such as the epoch used by <code>time.time()</code>) which means that only the difference between two calls to <code>time.process_time()</code> has meaning</li>
+<li>Similar to before, a related function <code>process_time_ns()</code> can be used for more consistent precision</li>
+</ul>
+<pre class="python"><code>import time
 
-# Significance level
-alpha = 0.05
-# Two-tailed test
-tails = 2
+# Start the timer
+start = time.process_time()
 
-print(stats.norm.ppf(1 - alpha / tails))</code></pre>
-<pre><code>## 1.959963984540054</code></pre>
-<p>Note that the <code>stats.norm.ppf</code> function uses a normal distribution with a mean of 0 and a standard deviation of 1 by default but, for the record, this can be changed using the <code>loc</code> and <code>scale</code> keyword arguments.</p>
-</div>
-</div>
-<div id="repeatability-vs-reproducibility" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Repeatability vs Reproducibility</h1>
-<p>Reproducibility is the closeness of agreement between measurements when measured under <em><strong>different</strong></em> conditions.</p>
-<p>Like repeatability, it involves the same measurement being performed multiple times except now with <em>different</em> locations, operators or measuring systems (aka under <strong>reproducibility conditions</strong>).</p>
-<p>Similar to the repeatability coefficient, a <strong>reproducibility coefficient (RDC)</strong> can be used. The equation for this is <span class="math inline">\(RDC = 1.96 \times \sqrt{2\sigma_w^2 + \nu^2}\)</span> which is exactly the same as RC with the addition of the <span class="math inline">\(\nu^2\)</span> term (which is the variability attributed to the differing conditions). The value of <span class="math inline">\(\nu^2\)</span> depends on what variables change between measurements.</p>
-</div>
-<div id="calculating-the-repeatability-coefficient" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Calculating the Repeatability Coefficient</h1>
-<p>The RC requires the standard deviation of your data to be known. This could be the true standard deviation or it could be an estimated value:</p>
-<div id="using-the-true-standard-deviation-sigma_w" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Using the True Standard Deviation <span class="math inline">\(\sigma_w\)</span></h2>
-<p>Here’s an example that ostensibly uses the true value of the within-subject standard deviation. In reality, however, it’s impossible to known the true value unless you have an infinite number of measurements, so this is still just an estimate:</p>
-<pre class="python"><code>import numpy as np
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
 
-# Fake data: 10 hypothetical measurements of some measurand
-measurements = [13.63, 6.82, 10.76, 11.03, 11.49, 11.31, 7.33, 13.30, 9.77, 8.79]
-# Within-subject sample standard deviation
-sigma_w = np.std(measurements, ddof=1)
-# Repeatability coefficient
-rc = 1.96 * np.sqrt(2) * sigma_w
-print(rc)</code></pre>
-<pre><code>## 6.308007598388999</code></pre>
-<p>The 10 numbers used in the above example were generated by selecting from a normal distribution with mean 10 and standard deviation 2. The true value of <span class="math inline">\(\sigma_w\)</span> for this example was thus 2 and the ‘correct’ value of RC was therefore <span class="math inline">\(2.77\times 2 = 5.54\)</span>.</p>
-<p>Notice that in the above example we used <code>ddof=1</code> when calculating the standard deviation. This is the ‘delta degrees of freedom’ where <code>N - ddof</code> forms the denominator in the standard deviation calculation. In other words, when <code>ddof=0</code> the function will calculate the <em>population</em> standard deviation whereas when <code>ddof=1</code> the function will calculate the <em>sample</em> standard deviation.</p>
-</div>
-<div id="using-the-estimated-standard-deviation-s_w" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> Using the Estimated Standard Deviation <span class="math inline">\(s_w\)</span></h2>
-<p>In this example we only have two repeats of the measurements as opposed to the 10 we had in the first example. To make up for it, however, we have performed these repeats on 7 different measurands:</p>
-<pre class="python"><code>import numpy as np
+# End the timer
+end = time.process_time()
+# Elapsed time
+delta = end - start
 
-# Fake data: two hypothetical measurements of seven different measurands
-repeat_1 = [2.73, 2.01]
-repeat_2 = [1.93, 9.10]
-repeat_3 = [5.47, 7.36]
-repeat_4 = [11.71, 8.26]
-repeat_5 = [10.44, 9.05]
-repeat_6 = [10.66, 9.97]
-repeat_7 = [12.66, 10.01]
-# Within-subject sample variances
-var_1 = np.var(repeat_1, ddof=1)
-var_2 = np.var(repeat_2, ddof=1)
-var_3 = np.var(repeat_3, ddof=1)
-var_4 = np.var(repeat_4, ddof=1)
-var_5 = np.var(repeat_5, ddof=1)
-var_6 = np.var(repeat_6, ddof=1)
-var_7 = np.var(repeat_7, ddof=1)
-# Mean within-subject sample variance
-var_w = np.mean([var_1, var_2, var_3, var_4, var_5, var_6, var_7])
-# Within-subject sample standard deviation
-s_w = np.sqrt(var_w)
-# Coefficient of repeatability
-rc = 1.96 * np.sqrt(2) * s_w
-print(rc)</code></pre>
-<pre><code>## 6.493514524508281</code></pre>
-<p>The numbers used in this example were again taken from normal distributions, this time with means of 5 through to 11 and all with standard deviations of 2. So the ‘correct’ answer for RC was again <span class="math inline">\(2.77\times 2 = 5.54\)</span>.</p>
-<p>Note that on this occasion we couldn’t calculate <span class="math inline">\(s_w\)</span> immediately because you can’t meaningfully take the average of a list of standard deviations. We first had to calculate the sample variances and take the average of those, before square rooting it to get <span class="math inline">\(s_w\)</span>.</p>
+print(f&#39;Running time: {delta} s&#39;)</code></pre>
+<pre><code>## Running time: 0.049245309999999876 s</code></pre>
+</div>
+<div id="option-3-using-time.perf_counter" class="section level2" number="1.3">
+<h2 number="1.3"><span class="header-section-number">1.3</span> Option 3: Using <code>time.perf_counter()</code></h2>
+<p>This is a similar function to <code>time.process_time()</code> except it has more resolution and it DOES include the time elapsed due to <code>time.sleep()</code>. But, like <code>time.process_time()</code>, it has no reference time and so only the difference between two calls has meaning. There again exists a sister function that avoids precision loss: <code>time.perf_counter_ns()</code></p>
+<pre class="python"><code>import time
+
+# Start the timer
+start = time.perf_counter()
+
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
+
+# End the timer
+stop = time.perf_counter()
+# Elapsed time
+delta = stop - start
+
+print(f&#39;Running time: {delta} s&#39;)</code></pre>
+<pre><code>## Running time: 1.039348770998913 s</code></pre>
 </div>
 </div>
-<div id="bland-altman-examples" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Bland-Altman Examples</h1>
-<p>Most journal papers will cite one of Bland &amp; Altman’s papers when they are performing repeatability analyses (indeed, their 1986 paper is the 29th most-cited paper of all time<a href="#fn10" class="footnote-ref" id="fnref10"><sup>10</sup></a>). Because these papers are so important in this area we will use them for the examples that follow.</p>
-<div id="bland-altman-1986" class="section level2" number="4.1">
-<h2 number="4.1"><span class="header-section-number">4.1</span> Bland-Altman (1986)</h2>
-<p>This first example uses lung function data from 17 participants. Each person had a first and a second measurement of their peak expiratory flow rate taken. In Python, the ‘Pandas’ package makes it easier to perform calculations on tabular data, so that is being used in the snippet below:</p>
-<pre class="python"><code>import numpy as np
-import pandas as pd
+<div id="using-the-datetime-module" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Using the <code>datetime</code> Module</h1>
+<p>This is the same idea as using <code>time.time()</code> except using <code>datetime.now()</code> instead:</p>
+<pre class="python"><code>import time
+from datetime import datetime
 
-# Raw data
-wright_large = pd.DataFrame({
-    &#39;First Measurement&#39;: [494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656, 267, 478, 178, 423, 427],
-    &#39;Second Measurement&#39;: [490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633, 275, 492, 165, 372, 421],
-})
-# Within-subject sample variances
-var_w = wright_large[[&#39;First Measurement&#39;, &#39;Second Measurement&#39;]].var(axis=1, ddof=1)
-# Mean within-subject sample variance
-var_w = var_w.mean()
-# Within-subject sample standard deviation
-s_w = np.sqrt(var_w)
-# Coefficient of repeatability
-rc = 1.96 * np.sqrt(2) * s_w
+# Start the timer
+start_time = datetime.now()
 
-print(rc)</code></pre>
-<pre><code>## 42.42792199372817</code></pre>
-<p>The second example from the same paper:</p>
-<pre class="python"><code>import numpy as np
-import pandas as pd
+# Run a programme
+time.sleep(1)
+for n in range(1000000):
+    pass
 
-# Raw data
-wright_mini = pd.DataFrame({
-    &#39;First Measurement&#39;: [512, 430, 520, 428, 500, 600, 364, 380, 658, 445, 432, 626, 260, 477, 259, 350, 451],
-    &#39;Second Measurement&#39;: [525, 415, 508, 444, 500, 625, 460, 390, 642, 432, 420, 605, 227, 467, 268, 370, 443],
-})
-# Within-subject sample variances
-var_w = wright_mini[[&#39;First Measurement&#39;, &#39;Second Measurement&#39;]].var(axis=1, ddof=1)
-# Mean within-subject sample variance
-var_w = var_w.mean()
-# Within-subject sample standard deviation
-s_w = np.sqrt(var_w)
-# Coefficient of repeatability
-rc = 1.96 * np.sqrt(2) * s_w
+# End the timer
+end_time = datetime.now()
+# Elapsed time
+delta = end_time - start_time
 
-print(rc)</code></pre>
-<pre><code>## 55.19000676806285</code></pre>
-<p>Note that Bland &amp; Altman actually rounded off a bit when they did these calculations and also used a distance of 2 standard deviations from the mean instead of the more accurate 1.96. As a result, their answers are 43.2 l/min for the large meter and 56.4 l/min for the mini meter whereas ours are 42.4 and 55.2. Additionally, they used the simplified version of the calculation that only works when exactly two repeats have been performed, as mentioned above. For completeness, here is their method:</p>
-<pre class="python"><code># Measurement differences
-diffs = wright_large[&#39;First Measurement&#39;] - wright_large[&#39;Second Measurement&#39;]
-# Squared differences
-sq_diffs = diffs**2
-# Mean squared difference (aka within-subject variance)
-var_w = sq_diffs.mean()
-# Within-subject sample standard deviation
-s_w = np.sqrt(var_w)
-# Coefficient of repeatability
-rc = 1.96 * s_w
-
-print(rc)</code></pre>
-<pre><code>## 42.42792199372816</code></pre>
-<pre class="python"><code># Measurement differences
-diffs = wright_mini[&#39;First Measurement&#39;] - wright_mini[&#39;Second Measurement&#39;]
-# Squared differences
-sq_diffs = diffs**2
-# Total squared differences
-print(sq_diffs.sum())</code></pre>
-<pre><code>## 13479</code></pre>
-<pre class="python"><code># Mean squared difference (aka within-subject variance)
-var_w = sq_diffs.mean()
-# Within-subject sample standard deviation
-s_w = np.sqrt(var_w)
-# Coefficient of repeatability
-rc = 1.96 * s_w
-
-print(rc)</code></pre>
-<pre><code>## 55.19000676806285</code></pre>
-<p>The above is also calculated <a href="https://www.medcalc.org/manual/blandaltman.php">on this page</a> except that they use 2 standard deviations instead of 1.96 and hence their answer is 56.3163 as opposed to 55.1900.</p>
+print(
+    f&#39;Start time: {start_time}&#39;,
+    f&#39;End time:   {end_time}&#39;,
+    f&#39;Running time: {delta}&#39;,
+    sep=&#39;\n&#39;
+)</code></pre>
+<pre><code>## Start time: 2023-06-26 14:06:33.198809
+## End time:   2023-06-26 14:06:34.226956
+## Running time: 0:00:01.028147</code></pre>
 </div>
-<div id="bland-altman-1996" class="section level2" number="4.2">
-<h2 number="4.2"><span class="header-section-number">4.2</span> Bland-Altman (1996)</h2>
-<p>In their 1996 paper, Bland and Altman demonstrate how to calculate the repeatability coefficient when multiple repeats of the same measurement have been performed on each measurand.</p>
-<p>Instead of copy-pasting the same code we used above to replicate this example, let’s create a function to do it:</p>
-<pre class="python"><code>import numpy as np
-import pandas as pd
+<div id="using-the-timeit-module" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Using the <code>timeit</code> Module</h1>
+<p>This module is used for measuring the execution time of small code snippets. Your programme needs to be defined as a text string and then it can be run multiple times and averaged to give a more accurate answer. It also turns off garbage collection (the process of freeing memory when it is not used anymore) which makes the timings more consistent:</p>
+<pre class="python"><code>from timeit import timeit
 
-pd.set_option(&#39;display.max_columns&#39;, 20)
+# Define a programme in text
+stmt = &quot;&quot;&quot;
+time.sleep(1)
+for n in range(1000000):
+    pass
+&quot;&quot;&quot;
+# Choose how many times to run it
+n = 10
+# Run this programme the given number of times and calculate the average time
+t = timeit(stmt, number=n) / n
 
-
-def repeatability_coefficient(df):
-    &quot;&quot;&quot;Calculate repeatability coefficient.&quot;&quot;&quot;
-    # Within-subject sample variances
-    var_w = df.var(axis=1, ddof=1)
-    # Mean within-subject sample variance
-    var_w = var_w.mean()
-    # Within-subject sample standard deviation
-    s_w = np.sqrt(var_w)
-    # Coefficient of repeatability
-    rc = 1.96 * np.sqrt(2) * s_w
-
-    return rc
-
-
-def summary_table(df):
-    &quot;&quot;&quot;Create a summary table of agreement statistics.&quot;&quot;&quot;
-    summary = {}
-    # Mean
-    for colname, col in df.items():
-        summary[&#39;Mean of &#39; + colname] = col.mean()
-    # Sample size
-    summary[&#39;N&#39;] = df.shape[0]
-    # Degrees of freedom
-    summary[&#39;DoF&#39;] = df.shape[0] - 1
-    # Sample standard deviations
-    s = df.std(axis=1, ddof=1)
-    # Sample variances
-    var = s**2
-    # Mean variance
-    summary[&#39;Mean Variance&#39;] = var.mean()
-    # Within-subject standard deviation
-    s_w = np.sqrt(var.mean())
-    summary[&#39;Within-Subject SD (Sw)&#39;] = s_w
-    # Coefficient of repeatability
-    rc = repeatability_coefficient(df)
-    summary[&#39;Repeatability Coefficient (RC)&#39;] = rc
-
-    return summary
-
-
-# Raw data
-df = pd.DataFrame({
-    &#39;Read 1&#39;: [190, 220, 260, 210, 270, 280, 260, 275, 280, 320, 300, 270, 320, 335, 350, 360, 330, 335, 400, 430],
-    &#39;Read 2&#39;: [220, 200, 260, 300, 265, 280, 280, 275, 290, 290, 300, 250, 330, 320, 320, 320, 340, 385, 420, 460],
-    &#39;Read 3&#39;: [200, 240, 240, 280, 280, 270, 280, 275, 300, 300, 310, 330, 330, 335, 340, 350, 380, 360, 425, 480],
-    &#39;Read 4&#39;: [200, 230, 280, 265, 270, 275, 300, 305, 290, 290, 300, 370, 330, 375, 365, 345, 390, 370, 420, 470],
-})
-# Calculate agreement statistics
-summary = summary_table(df)
-
-for key, value in summary.items():
-    print(key, &#39;=&#39;, round(value, 2))</code></pre>
-<pre><code>## Mean of Read 1 = 299.75
-## Mean of Read 2 = 305.25
-## Mean of Read 3 = 315.25
-## Mean of Read 4 = 322.0
-## N = 20
-## DoF = 19
-## Mean Variance = 460.52
-## Within-Subject SD (Sw) = 21.46
-## Repeatability Coefficient (RC) = 59.48</code></pre>
+print(f&#39;Running time: {t} s (average of {n} repeats)&#39;)</code></pre>
+<pre><code>Running time: 1.016366180499972 s (average of 10 repeats)</code></pre>
+<p>For the record, <code>timeit()</code> uses <code>time.perf_counter()</code> in the background to record the time of the script.</p>
 </div>
-<div id="bland-altman-1999" class="section level2" number="4.3">
-<h2 number="4.3"><span class="header-section-number">4.3</span> Bland-Altman (1999)</h2>
-<p>Now that we have a function, let’s use it on the data from Bland and Altman’s 1999 paper.<a href="#fn11" class="footnote-ref" id="fnref11"><sup>11</sup></a> These are systolic blood pressure measurements in mmHg taken by an operator J and a machine S:</p>
-<pre class="python"><code># Raw data
-j = pd.DataFrame({
-    &#39;Measurement 1&#39;: [
-        100, 108, 76, 108, 124, 122, 116, 114, 100, 108, 100, 108, 112, 104, 106, 122, 100, 118, 140, 150, 166, 148,
-        174, 174, 140, 128, 146, 146, 220, 208, 94, 114, 126, 124, 110, 90, 106, 218, 130, 136, 100, 100, 124, 164, 100,
-        136, 114, 148, 160, 84, 156, 110, 100, 100, 86, 106, 108, 168, 166, 146, 204, 96, 134, 138, 134, 156, 124, 114,
-        112, 112, 202, 132, 158, 88, 170, 182, 112, 120, 110, 112, 154, 116, 108, 106, 122
-    ],
-    &#39;Measurement 2&#39;: [
-        106, 110, 84, 104, 112, 140, 108, 110, 108, 92, 106, 112, 112, 108, 108, 122, 102, 118, 134, 148, 154, 156, 172,
-        166, 144, 134, 138, 152, 218, 200, 84, 124, 120, 124, 120, 90, 106, 202, 128, 136, 96, 98, 116, 168, 102, 126,
-        108, 120, 150, 92, 162, 98, 106, 102, 74, 100, 110, 188, 150, 142, 198, 94, 126, 144, 136, 160, 138, 110, 116,
-        116, 220, 136, 162, 76, 174, 176, 114, 118, 108, 112, 134, 112, 110, 98, 112
-    ],
-    &#39;Measurement 3&#39;: [
-        107, 108, 82, 104, 112, 124, 102, 112, 112, 100, 104, 122, 110, 104, 102, 114, 102, 120, 138, 144, 154, 134,
-        166, 150, 144, 130, 140, 148, 220, 192, 86, 116, 122, 132, 128, 94, 110, 208, 130, 130, 88, 88, 122, 154, 100,
-        122, 122, 132, 148, 98, 152, 98, 106, 94, 76, 110, 106, 178, 154, 132, 188, 86, 124, 140, 142, 154, 138, 114,
-        122, 134, 228, 134, 152, 88, 176, 180, 124, 120, 106, 106, 130, 94, 114, 100, 112
-    ],
-})
+<div id="comparison-of-methods" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Comparison of Methods</h1>
+<p>In order to choose the most appropriate method for your use case you need to ask yourself <em>why</em> you are measuring the time it took for your script to run. Are you interested in knowing how long you will have to wait for it to finish the next time you run it (ie do you care about the execution time on a human scale) or are you interested in knowing how efficient your code is (ie do you care about the execution time on a micro scale)?</p>
+<ul>
+<li>If the first (human scale), will your programme take seconds to run or tens of minutes plus to run? Do you also care about <em>when</em> your code was run (eg if you’re keeping a lab notebook to record and take notes about your work)?
+<ul>
+<li>If your programme takes seconds to run and you aren’t too fussed about when you ran it, use <code>time.time()</code>. This will give you the execution time in seconds by default and, if you decide later that you <em>do</em> want to know when you ran it, you’ll have the option to work this out from the seconds since the epoch value (if you recorded it!).</li>
+<li>If your programme takes tens of minutes to run and/or you want to know when it was run, use the <code>datetime.now()</code> method. This will show the execution time in a more relevant <code>h:mm:ss</code> format and the date and time when it was run in a more relevant <code>YYYY-MM-DD hh:mm:ss</code> format.</li>
+</ul></li>
+<li>If you’re interested in the execution time on a micro scale (eg to know about your code’s efficiency):
+<ul>
+<li>Use <code>time.perf_counter()</code> if you want to know the <em>real</em> time your code takes to run (as if you were using a stopwatch)</li>
+<li>Use <code>time.process_time()</code> if you want to know the time your computer spends on running your code. Your computer usually does lots of things at the same time so won’t spend 100% of its time on your code, hence this <code>time.process_time()</code> value should theoretically always be smaller than the <code>time.perf_counter()</code> value*.</li>
+<li>Use <code>timeit()</code> for small sections of code, eg to work out which of two functions is more efficient. This is the best method for performance testing code because it can run it multiple times to reduce the variation and it turns off garbage collection to increase consistency, but it requires a bit more set up than the other options.</li>
+</ul></li>
+</ul>
+<p>*Here’s a demonstration to show that this is not always true:</p>
+<pre class="python"><code>import time
 
-# Calculate agreement statistics
-summary = summary_table(j)
+# Start the timers
+start_pt = time.process_time()
+start_pc = time.perf_counter()
 
-for key, value in summary.items():
-    print(key, &#39;=&#39;, round(value, 2))</code></pre>
-<pre><code>## Mean of Measurement 1 = 128.54
-## Mean of Measurement 2 = 127.29
-## Mean of Measurement 3 = 126.39
-## N = 85
-## DoF = 84
-## Mean Variance = 37.41
-## Within-Subject SD (Sw) = 6.12
-## Repeatability Coefficient (RC) = 16.95</code></pre>
-<pre class="python"><code># Raw data
-s = pd.DataFrame({
-    &#39;Measurement 1&#39;: [
-        122, 121, 95, 127, 140, 139, 122, 130, 119, 126, 107, 123, 131, 123, 127, 142, 104, 117, 139, 143, 181, 149,
-        173, 160, 158, 139, 153, 138, 228, 190, 103, 131, 131, 126, 121, 97, 116, 215, 141, 153, 113, 109, 145, 192,
-        112, 152, 141, 206, 151, 112, 162, 117, 119, 136, 112, 120, 117, 194, 167, 173, 228, 77, 154, 154, 145, 200,
-        188, 149, 136, 128, 204, 184, 163, 93, 178, 202, 162, 227, 133, 202, 158, 124, 114, 137, 121
-    ],
-    &#39;Measurement 2&#39;: [
-        128, 127, 94, 127, 131, 142, 112, 129, 122, 113, 113, 125, 129, 126, 119, 133, 116, 113, 127, 155, 170, 156,
-        170, 155, 152, 144, 150, 144, 228, 183, 99, 131, 123, 129, 114, 94, 121, 201, 133, 143, 107, 105, 102, 178, 116,
-        144, 141, 188, 147, 125, 165, 118, 131, 116, 115, 118, 118, 191, 160, 161, 218, 89, 156, 155, 154, 180, 147,
-        217, 132, 125, 222, 187, 160, 88, 181, 199, 166, 227, 127, 190, 121, 149, 118, 135, 123
-    ],
-    &#39;Measurement 3&#39;: [
-        124, 128, 98, 135, 124, 136, 112, 135, 122, 111, 111, 125, 122, 114, 126, 137, 115, 112, 113, 133, 166, 140,
-        154, 170, 154, 141, 154, 131, 226, 184, 106, 124, 124, 125, 125, 96, 127, 207, 146, 138, 102, 97, 137, 171, 116,
-        147, 137, 166, 136, 124, 189, 109, 124, 113, 104, 132, 115, 196, 161, 154, 189, 101, 141, 148, 166, 179, 139,
-        192, 133, 142, 224, 192, 152, 88, 181, 195, 148, 219, 126, 213, 134, 137, 126, 134, 128
-    ],
-})
+# Run a programme
+for n in range(1000000):
+    pass
 
-# Calculate agreement statistics
-summary = summary_table(s)
+# End the timers
+stop_pt = time.process_time()
+stop_pc = time.perf_counter()
+# Elapsed time
+delta_pt = stop_pt - start_pt
+delta_pc = stop_pc - start_pc
 
-for key, value in summary.items():
-    print(key, &#39;=&#39;, round(value, 2))</code></pre>
-<pre><code>## Mean of Measurement 1 = 144.84
-## Mean of Measurement 2 = 142.74
-## Mean of Measurement 3 = 141.51
-## N = 85
-## DoF = 84
-## Mean Variance = 83.14
-## Within-Subject SD (Sw) = 9.12
-## Repeatability Coefficient (RC) = 25.27</code></pre>
-<p>As the machine (S) has an RC of 25.27 mmHg while the operator (J) has an RC of 16.95 mmHg, we can say that the repeatability of the machine is 49% greater (ie worse) that operator J.</p>
-</div>
-</div>
-<div id="function-documentation" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Function Documentation</h1>
-<p>Whenever you write a function, it’s good practice to <strong>document</strong> it correctly using a <em>docstring</em>. Here is the function used above re-produced with a full docstring:</p>
-<pre class="python"><code>def repeatability_coefficient(df):
-    &quot;&quot;&quot;
-    Calculate repeatability coefficient.
-
-    See here:
-    https://rowannicholls.github.io/python/statistics/agreement/repeatability_coefficient.html
-
-    Parameters
-    ----------
-    df : DataFrame
-        The observations or measurements made by various observers. One
-        observer&#39;s data per column, one observation/measurement per row. This
-        function requires df to only have two sets of observations from the
-        &#39;expert&#39; and any number of sets of observation by others.
-
-    Returns
-    -------
-    rc : float
-        The repeatability coefficient.
-
-    Notes
-    -----
-    The &quot;1.96&quot; in the formula &quot;rc = 1.96 * np.sqrt(2) * s_w&quot; can be calculated
-    more precisely from the normal distribution&#39;s percent-point function (PPF)
-    - for a confidence level of 95% and assuming a two-tailed test - as
-    follows:
-
-    &gt;&gt;&gt; from scipy import stats
-    &gt;&gt;&gt; alpha = 0.05
-    &gt;&gt;&gt; tails = 2
-    &gt;&gt;&gt; print(stats.norm.ppf(1 - alpha / tails))
-    1.959963984540054
-
-    Examples
-    --------
-    &gt;&gt;&gt; dct = {
-    ...     &#39;x1&#39;: [1, 2, 3, 4, 5],
-    ...     &#39;x2&#39;: [2, 3, 3, 5, 5],
-    ...     &#39;y1&#39;: [2, 1, 2, 3, 4],
-    ...     &#39;y2&#39;: [1, 1, 3, 2, 4],
-    ...     &#39;y3&#39;: [2, 3, 2, 4, 5]
-    ... }
-    &gt;&gt;&gt; df = pd.DataFrame(dct)
-    &gt;&gt;&gt; print(repeatability_coefficient(df))
-    2.217486865801013
-
-    This example is taken from Bland (1986), although the value of RC in that
-    paper is given as 43.2 (not 42.4) due to rounding errors.
-
-    &gt;&gt;&gt; df = pd.DataFrame({
-    ...     &#39;First Measurement&#39;: [
-    ...         494, 395, 516, 434, 476, 557, 413, 442, 650, 433, 417, 656,
-    ...         267, 478, 178, 423, 427
-    ...     ],
-    ...     &#39;Second Measurement&#39;: [
-    ...         490, 397, 512, 401, 470, 611, 415, 431, 638, 429, 420, 633,
-    ...         275, 492, 165, 372, 421
-    ...     ]
-    ... })
-    &gt;&gt;&gt; rc = repeatability_coefficient(df)
-    &gt;&gt;&gt; print(f&#39;RC = {rc}&#39;)
-    RC = 42.42792199372817
-    &quot;&quot;&quot;
-    # Within-subject sample variances
-    var_w = df.var(axis=1, ddof=1)
-    # Mean within-subject sample variance
-    var_w = var_w.mean()
-    # Within-subject sample standard deviation
-    s_w = np.sqrt(var_w)
-    # Coefficient of repeatability
-    rc = 1.96 * np.sqrt(2) * s_w
-
-    return rc</code></pre>
-<p><a href="../../../python.html">⇦ Back</a></p>
+print(
+    &#39;Running time:&#39;,
+    f&#39;{delta_pt} s for the process time&#39;,
+    f&#39;{delta_pc} s for the performance counter&#39;,
+    sep=&#39;\n&#39;
+)</code></pre>
+<pre><code>Running time:
+0.022885440000000003 s for the process time
+0.022890950998771586 s for the performance counter</code></pre>
+<pre><code>Running time:
+0.018469575999999998 s for the process time
+0.01846678900074039 s for the performance counter</code></pre>
+<p>The first time I ran this the process time was the smaller of the two, but the second time the performance counter was smaller! Of course, this demonstration is not perfect because the process time is including the time used to record the start of the performance counter and the performance counter is including the time used to record the end of the process time. However, I reckon that this is enough to demonstrate that one method will not <em>always</em> give a lower value than the other. Also note the large variation in the length of time the code took to run: 0.023 seconds vs 0.018 seconds! The variation in the time a programme takes to run on a regular computer (with an out-of-the box operating system) is vastly more than the precision of these functions.</p>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
-</div>
-<div class="footnotes">
-<hr />
-<ol>
-<li id="fn1"><p>BIPM, IEC, IFCC, ILAC, ISO, IUPAC, IUPAP, OIML. “Evaluation of measurement data –- Guide to the expression of uncertainty in measurement”. Joint Committee for Guides in Metrology, JCGM 100:2008. Available <a href="https://www.bipm.org/utils/common/documents/jcgm/JCGM_100_2008_E.pdf">here</a>. Jump to reference: <a href="#fnref1" class="footnote-back">↩︎</a></p></li>
-<li id="fn2"><p>Algorithm Comparison Working Group. “Quantitative imaging biomarkers: a review of statistical methods for computer algorithm comparisons”. Statistical Methods in Medical Research 2015; 24(1):68–106. DOI: <a href="https://doi.org/10.1177/0962280214537390">10.1177/0962280214537390</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/24919829">24919829</a>. Available <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4263694/pdf/nihms611119.pdf">here</a>. Jump to reference: <a href="#fnref2" class="footnote-back">↩︎</a></p></li>
-<li id="fn3"><p>QIBA Terminology Working Group. “The emerging science of quantitative imaging biomarkers terminology and definitions for scientific studies and regulatory submissions”. Statistical Methods in Medical Research 2015; 24(1):9-26. DOI: <a href="https://doi.org/10.1177/0962280214537333">10.1177/0962280214537333</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/24919826">24919826</a>. Jump to reference: <a href="#fnref3" class="footnote-back">↩︎</a></p></li>
-<li id="fn4"><p>British Standards Institution. “Precision of test methods 1: Guide for the determination and reproducibility for a standard test method”. British Standards 1975; 597(Part 1). Jump to reference: <a href="#fnref4" class="footnote-back">↩︎</a></p></li>
-<li id="fn5"><p>Quantitative Imaging Biomarkers Alliance (QIBA). “Indices of Repeatability, Reproducibility, and Agreement”. 2013. Available <a href="http://qibawiki.rsna.org/images/8/8c/FMRITechnicalPerformanceIndices041613.pdf">here</a>. Jump to reference: <a href="#fnref5" class="footnote-back">↩︎</a></p></li>
-<li id="fn6"><p>Barnhart, H, Haber, M, Lin, L. “An overview on assessing agreement with continuous measurements”. Journal of Biopharmaceutical Statistics 2007; 17(4):529-569. DOI: <a href="https://doi.org/10.1080/10543400701376480">10.1080/10543400701376480</a>. Jump to reference: <a href="#fnref6" class="footnote-back">↩︎</a></p></li>
-<li id="fn7"><p>Bland, M, Altman, D. “Statistical methods for assessing agreement between two methods of clinical measurement”. Lancet 1986; 327(8476):307–310. DOI: <a href="https://linkinghub.elsevier.com/retrieve/pii/S0140673686908378">10.1016/S0140-6736(86)90837-8</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/2868172/">2868172</a>. Available <a href="https://www-users.york.ac.uk/~mb55/meas/ba.pdf">here</a>. Jump to reference: <a href="#fnref7" class="footnote-back">↩︎</a></p></li>
-<li id="fn8"><p>MedCalc Software Ltd. Bland-Altman plot. 2020. Available <a href="https://www.medcalc.org/manual/blandaltman.php">here</a>. Jump to reference: <a href="#fnref8" class="footnote-back">↩︎</a></p></li>
-<li id="fn9"><p>Bland, J, Altman, D. “Statistics notes: Measurement error”. The BMJ 1996; 312:1654. DOI: <a href="https://doi.org/10.1136/bmj.312.7047.1654">10.1136/bmj.312.7047.1654</a>. Jump to reference: <a href="#fnref9" class="footnote-back">↩︎</a></p></li>
-<li id="fn10"><p>Van Noorden, R, Maher, B, Nuzzo, R. “The top 100 papers”. Nature. 2014; 514:550-553. Available <a href="https://www.nature.com/news/polopoly_fs/1.16224!/menu/main/topColumns/topLeftColumn/pdf/514550a.pdf">here</a>. Jump to reference: <a href="#fnref10" class="footnote-back">↩︎</a></p></li>
-<li id="fn11"><p>Bland, J, Altman, D. “Measuring agreement in method comparison studies”. Statistical Methods in Medical Research 1999; 8(2):135-160. DOI: <a href="https://doi.org/10.1177/096228029900800204">10.1177/096228029900800204</a>. PMID: <a href="https://pubmed.ncbi.nlm.nih.gov/10501650">10501650</a>. Jump to reference: <a href="#fnref11" class="footnote-back">↩︎</a></p></li>
-</ol>
 </div>
 
 
