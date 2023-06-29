@@ -1,0 +1,293 @@
+---
+title: SQL
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: google_analytics.html
+---
+
+<font size="3">
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+[⇦ Back](index.html)
+
+**Structured Query Language** (SQL) - pronounced "*es cue el*", not "*sequel*" - is a programming language used to manage data in a database.
+
+SQLite
+======
+SQL is not a programme itself but it is used in many programmes, one of the most accessible of which is SQLite[^1]. This is a database *engine* - software that allows users to change the data in a database - that uses the SQL language[^2]. It stores the database in a single file on your local machine and can be run offline from your terminal, which makes it very simple for small projects and for beginners.
+
+[^1]: Technically, SQLite is not a programme but a library (ie it is embedded in fully-fledged programmes).&nbsp;
+[^2]: Also, technically, SQLite uses 'PostgreSQL' which is an extension of SQL. The distinction between PostgreSQL and SQL (as well as the distinction between a library and a programme) is irrelevant for this page.&nbsp;
+
+Install SQLite from the terminal with:
+
+```{bash, eval = FALSE}
+$ sudo apt install sqlite3
+```
+
+You can then open it with the following (but beware that you will be working in 'memory' as opposed to having what you do be saved to a file):
+
+```{bash, eval = FALSE}
+$ sqlite3
+```
+
+Usually you will want to have your work be saved to a file. To launch SQLite and create a new database file (or open an existing database file if you specify the name of one that already exists) the command is as follows:
+
+```{bash, eval = FALSE}
+$ sqlite3 database_name.db
+```
+
+Usage
+=====
+Here is a cheat sheet that covers most of the common functionality of SQL:
+
+Databases
+---------
+- Create database:  
+`CREATE DATABASE database_name;`
+- Show databases:  
+`SHOW DATABASES;`
+- Delete a database:  
+`DROP DATABASE database_name;`
+- Select a database:  
+`USE database_name;`
+
+Tables
+------
+- Create a new table:  
+    - With multiple columns:  
+    `CREATE TABLE table_name(column_1 data_type, column_2 data_type, column_3 data_type);`  
+    Possible data types that can be used:
+        - `INTEGER`: a whole number
+        - `REAL`: a decimal number
+        - `TEXT`: a string of text characters. Quotation marks are needed.
+        - `DATE`: a date (in YYYY-MM-DD format). Quotation marks are needed.
+    - Use a 'primary key' column to uniquely identify each row:  
+    `CREATE TABLE table_name(column_1 data_type PRIMARY KEY);`
+    - Prevent nulls for being added:  
+    `CREATE TABLE table_name(column_1 data_type NOT NULL);`
+    - Prevent duplicates from being added:  
+    `CREATE TABLE table_name(column_1 data_type UNIQUE);`
+    - Define a default value which gets used if nothing else is specified:  
+    `CREATE TABLE table_name(column_1 data_type DEFAULT 'default_value');`
+- Delete a table:  
+`DROP TABLE table_name;`
+
+Rows
+----
+- Create and populate a new row:  
+    - Create a new row with a value in one column (other columns will be filled with NULL):  
+    `INSERT INTO table_name(column_name) VALUES(value);`
+    - Create a new row with values in three columns:  
+    `INSERT INTO table_name(column_1, column_2, column_3) VALUES(value_1, value_2, value_3);`
+- Edit a row:  
+`UPDATE table_name SET column_1 = new_value WHERE column_2 = value;`
+- Delete a row:  
+`DELETE FROM table_name WHERE column_name = value;`
+
+Columns
+-------
+- Create a new column:  
+`ALTER TABLE table_name ADD COLUMN new_column data_type;`
+- Rename a column:  
+`ALTER TABLE column_1 RENAME TO column_2;`
+
+Show a Table
+------------
+- Show one column:  
+`SELECT column_name FROM table_name;`
+- Show some columns:  
+`SELECT column_1, column_2, column_3 FROM table_name;`
+- Show all columns:  
+`SELECT * FROM table_name;`
+- Show all columns, some rows:  
+`SELECT * FROM table_name LIMIT 10;`
+- Select and assign an alias to the selection:  
+`SELECT column_name AS 'alias' FROM table_name;`
+- Filter a table:
+    - Filter out duplicates:  
+    `SELECT DISTINCT column_name FROM table_name;`
+    - Filter out NULLs from one column:  
+    `SELECT * FROM table_name WHERE column_name IS NOT NULL;`
+    - Filter using one column and comparisons operators:  
+    `SELECT * FROM table_name WHERE column_name > value;`  
+    The comparisons operators are:
+        - `=`: equal to
+        - `!=`: not equal to
+        - `>`: greater than
+        - `<`: less than
+        - `>=`: greater than or equal to
+        - `<=`: less than or equal to
+    - Filter using one column to get a range:  
+    `SELECT * FROM table_name WHERE column_name BETWEEN value_1 AND value_2;`
+    - Filter using two columns and conditionals:  
+    `SELECT * FROM table_name WHERE column_1 > value AND column_2 < value;`  
+    `SELECT * FROM table_name WHERE column_1 BETWEEN value_1 AND value_2 AND column_2 > value_3;`  
+    `SELECT * FROM table_name WHERE column_1 BETWEEN value_1 AND value_2 OR column_2 > value_3;`  
+    The possible conditionals are:
+        - `AND`
+        - `OR`
+    - Filter using matching:  
+    `SELECT * FROM table_name WHERE column_name LIKE 'te_t';`  
+    `SELECT * FROM table_name WHERE column_name LIKE '%substring%';`
+- Sort a table:  
+    - Sort ascending/alphabetically:  
+    `SELECT * FROM table_name ORDER BY column_name;`
+    - Sort descending/reverse alphabetically:  
+    `SELECT * FROM table_name ORDER BY column_name DESC;`
+- Filter and sort a table:  
+`SELECT * FROM table_name WHERE column_1 > value ORDER BY column_2 DESC;`
+- Round the values in a column:  
+`SELECT column_1, ROUND(column_2, num_decimal_places) FROM table_name;`
+- Aggregates (return one value):  
+    - Count rows:  
+    `SELECT COUNT(*) FROM table_name;`  
+    `SELECT COUNT(*) FROM table_name WHERE column_name = value;`
+    - Add up values:  
+    `SELECT SUM(column_name) FROM table_name;`  
+    `SELECT SUM(column_1) FROM table_name WHERE column_2 = value;`
+    - Find the maximum value:  
+    `SELECT MAX(column_name) FROM table_name;`  
+    `SELECT MAX(column_1) FROM table_name WHERE column_2 = value;`
+    - Find the minimum value:  
+    `SELECT MIN(column_name) FROM table_name;`  
+    `SELECT MIN(column_1) FROM table_name WHERE column_2 = value;`
+    - Find the average value:  
+    `SELECT AVG(column_name) FROM table_name;`  
+    `SELECT AVG(column_1) FROM table_name WHERE column_2 = value;`
+- Group by (pivot table):  
+    - Show all columns:  
+    `SELECT * FROM table_name GROUP BY column_name;`
+    - Show average for each group and sort them:  
+    `SELECT column_1, AVG(column_2) FROM table_name GROUP BY column_1 ORDER BY column_1;`  
+    - When multiple columns are selected, you can refer to them by name:  
+    `SELECT column_1, AVG(column_2) FROM table_name GROUP BY column_1 ORDER BY column_1;`
+    - ...or, you can just refer to them by number (`1` is the first column selected, `2` is the second, etc):  
+    `SELECT column_1, AVG(column_2) FROM table_name GROUP BY 1 ORDER BY 1;`
+    - Filter values, then get the average for each group:  
+    `SELECT column_1, AVG(column_2) FROM table_name WHERE column_3 > value GROUP BY column_1 ORDER BY column_1;`
+    - Get the average for each group, then filter by these average:  
+    `SELECT column_1, COUNT(column_2) FROM table_name GROUP BY column_1 HAVING COUNT(column_2) > value;`
+
+Join Tables
+-----------
+- Join via an inner join:  
+    - Join two tables and select all columns:  
+    `SELECT * FROM table_1 JOIN table_2 ON table_1.column_1 = table_2.column_1;`
+    - Join two tables and select one column from each:  
+    `SELECT table_1.column_2, table_2.column_3 FROM table_1 JOIN table_2 ON table_1.column_1 = table_2.column_1;`
+    - Join two tables and filter:  
+    `SELECT * FROM table_1 JOIN table_2 ON table_1.column_1 = table_2.column_1 WHERE column_2 = value;`
+- Join via a left join:  
+    - Join two tables and select all columns:  
+    `SELECT * FROM table_1 LEFT JOIN table_2 ON table_1.column_1 = table_2.column_1;`
+- Join via an outer join (cross join; no `ON` statement is required):  
+    - Join two tables and select all columns:  
+    `SELECT * FROM table_1 CROSS JOIN table_2;`
+    - Join two tables and select one column from each:  
+    `SELECT table_1.column_1, table_2.column_2 FROM table_1 CROSS JOIN table_2;`
+- Append a table to the bottom of another:  
+    - Append a table to another and select all columns from both:  
+    `SELECT * FROM table_1 UNION SELECT * FROM table_2;`
+
+Cases
+-----
+```{sql, eval = FALSE}
+SELECT column_1
+ CASE
+  WHEN column_2 = 5 THEN 'Great'
+  WHEN column_2 >= 4 THEN 'Good'
+  WHEN column_2 >= 3 THEN 'Average'
+  WHEN column_2 >= 2 THEN 'Ok'
+  ELSE 'Poor'
+ END AS 'new_column_name'
+FROM table_name;
+```
+
+Statements inside Statements
+----------------------------
+```{sql, eval = FALSE}
+WITH previous_results AS (
+   SELECT column_1 AS 'alias' FROM table_1 UNION SELECT * FROM table_2
+)
+SELECT * FROM previous_results JOIN table_3 ON table_3.column_2 = previous_query.alias;
+```
+
+Other
+-----
+- Press the up arrow to repeat a previous statement
+- Open (or re-open) a persistent database:  
+`.open dabase.db`
+- Show a list of the tables:  
+`.tables`
+- Show the statements used to create all tables:  
+`.schema`
+- Show the statements used to create a specific table:  
+`.schema table_name`
+- Show the current settings:  
+`.show`
+- Modes:  
+`.mode mode_type`  
+Examples:
+    - `.mode column`
+    - `.mode line`
+    - `.mode html`
+    - `.mode insert`
+    - `.mode tabs`
+    - `.mode csv`
+    - `.mode tcl`
+- Change the null value to "NULL":  
+`.nullvalue 'NULL'`
+- Show headers:  
+`.headers on`
+- Set column width:  
+`.width 15 20`
+- Show everything:  
+`.dump`
+- Exit:  
+`.exit`
+
+Input and Output
+----------------
+- Output to text file (can then open with a text editor):  
+```{sql, eval = FALSE}
+.output path.sql
+.dump --or `select * from table_name;`
+.output stdout
+```
+- Output to CSV:  
+```{sql, eval = FALSE}
+.mode csv
+.output path.csv
+select * from table_name;
+.output stdout
+```
+- Output to html:  
+```{sql, eval = FALSE}
+.mode html
+.output path.html
+select * from table_name;
+.output stdout
+```
+- Import table:  
+```{sql, eval = FALSE}
+.read path.sql
+```
+- Import csv:  
+```{sql, eval = FALSE}
+.mode csv
+.import path.csv
+```
+
+[⇦ Back](index.html)
+
+</font>
