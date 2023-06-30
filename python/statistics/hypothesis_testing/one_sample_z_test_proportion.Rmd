@@ -1,0 +1,205 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>One-Sample *Z*-Test for a Proportion'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+If you have:
+
+- a *sample* of data,
+- of which a certain *proportion* has some characteristic
+- and you want to see if this proportion is significantly different from the proportion that you *expect*,
+
+...then the **one-sample *Z*-test for a proportion** might be for you.
+
+This test, like all *Z*-tests, involves calculating a *Z*-statistic which, loosely, is the distance between what you have (the proportion actually seen in your sample) and what random chance would give you (the proportion seen in a sample that was perfectly randomly-generated). Alternatively, the *Z*-statistic can be thought of as a signal-to-noise ratio: a large value would indicate that the difference (between the observed and expected proportions) is large relative to random variation (a difference that could occur by chance).
+
+Under the assumption that *Z*-statistics are normally-distributed, we can then calculate how unlikely it is that your sample has produced the *Z*-statistic that it has. More specifically, the *Z*-statistic is compared with its reference distribution (the standard normal distribution) to return a *p*-value.
+
+The code on this page uses the `numpy`, `scipy` and `statsmodels` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install statsmodels
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Example Data
+============
+As an example we will use the "Spector and Mazzeo (1980) - Program Effectiveness Data" which is included in the `statsmodels` package as `spector`, see [here](https://www.statsmodels.org/dev/datasets/generated/spector.html) for more. This dataset records the test results of students:
+
+```{python}
+import statsmodels.api as sm
+
+# Load the data set as a dataframe-of-dataframes
+data = sm.datasets.spector.load_pandas()
+# Extract the complete dataset
+df = data['data']
+# Rename
+df = df.rename(columns={
+    'TUCE': 'test_score',
+    'PSI': 'participated',
+    'GRADE': 'grade_improved'
+})
+
+print(df[15:22])
+```
+
+Hypotheses
+==========
+One of the columns in our dataset is `grade_improved` which records whether or not the student's test scores improved (`1` for yes, `0` for no). Now, if it were the case that 50% of students' scores improved (and 50% did not) then that would be interesting: it would suggest that it might be completely random as to whether a student improves or not. This might tell us something about the students, or the test, or the teaching method, or maybe not. In any case, it's worth taking a look.
+
+When working with categorical data like we have here (specifically, we have binary data) we talk about proportion, $\pi$, instead of mean, $\mu$. We are interested in whether or not 50% of students improved their test score - ie if the true proportion of students who improved is 0.5 - hence our *null hypothesis* is that $\pi = 0.5$. Conversely, our *alternative hypothesis* is that the true proportion is not 50%; $\pi \neq 0.5$:
+
+- $H_0: \pi = 0.5$
+- $H_1: \pi \neq 0.5$
+
+Test the Hypotheses
+===================
+If the sample size is large ($n > 30$) or the population variance is known, we can use a *Z*-test as opposed to a *t*-test for our hypothesis testing. In our example, we don't know the population variance (we haven't investigated the test scores of all humans) but our sample size is above 30 (it's only 32, but that's good enough for an example). So we'll use the one-sample *Z*-test for a proportion.
+
+Using `statsmodels`
+-------------------
+This test is available in `statsmodels` as `proportions_ztest`, see [here](https://www.statsmodels.org/stable/generated/statsmodels.stats.proportion.proportions_ztest.html) for the documentation.
+
+```{python}
+from statsmodels.stats.proportion import proportions_ztest
+
+# Number of successes
+count = len(df[df['grade_improved'] == 1])
+# Number of observations
+nobs = len(df)
+# Proportion under the null hypothesis
+pi_0 = 0.5
+# Perform a one-sample Z-test for a proportion
+z_stat, p_value = proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
+# Proportion successful
+pi = count / nobs
+
+print(f'Proportion, π = {pi:.1%}; Z-statistic = {z_stat:.3f}; p = {p_value:.3f}')
+```
+
+Using `scipy` and `numpy`
+-------------------------
+We don't have to use the `statsmodels` function; we can do it 'manually' with `scipy` and `numpy` as shown below:
+
+```{python}
+from scipy import stats
+import numpy as np
+
+z_stat = (pi - pi_0) / np.sqrt(pi_0 * (1 - pi_0) / nobs)
+p_value = stats.norm.cdf(z_stat) * 2
+
+print(f'Proportion, π = {pi:.1%}; Z-statistic = {z_stat:.3f}; p = {p_value:.3f}')
+```
+
+Comparison with Pearson's Chi-Squared Goodness-of-Fit Test
+==========================================================
+An important insight to note is that this *p*-value is the same as that of Pearson's chi-squared (pronounced "*kai-squared*") goodness-of-fit test:
+
+```{python}
+# Frequency of successful observations
+f_obs = [count, nobs - count]
+# Frequency of successful observations we expect under the null hypothesis
+f_exp = [nobs * pi_0, nobs * pi_0]
+# Perform a one-way chi-square test
+chisq, p = stats.chisquare(f_obs, f_exp)
+# Proportion of successful observations
+pi = count / nobs
+
+print(f'Proportion, π = {pi:.1%}; chi-squared, χ² = {chisq:.3f}; p = {p:.3f}')
+```
+
+This isn't a fluke: both tests have the same hypotheses so we would expect the same results!
+
+Confidence Interval
+===================
+Use the [binomial proportion confidence interval](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval):
+
+```{python}
+# Standard error of the proportion
+se = np.sqrt((pi * (1 - pi)) / nobs)
+# Significance level
+alpha = 0.05
+# Percent-point function (aka quantile function) of the normal distribution
+z_critical = stats.norm.ppf(1 - (alpha / 2))
+# Margin of error
+d = z_critical * se
+# Confidence interval
+ci_lower = pi - d
+ci_upper = pi + d
+
+print(f'π = {pi:.1%} ± {d:.1%}')
+```
+
+or
+
+```{python}
+print(f'π = {pi:.1%}, 95% CI [{ci_lower:.1%}, {ci_upper:.1%}]')
+```
+
+Interpretation
+==============
+- We fail to reject the null hypothesis in favour of the alternative, because the observed data does not provide evidence against it.
+- We conclude that the true proportion of students improving their scores could be 50%.
+- When generalising to the target population, we are 95% confident that the interval between 17.9% and 50.8% contains the true underlying proportion of students who improved their mark.
+- We are 95% confident that our sample proportion of 34.4% is within 16.5 pp (percentage points) of the true underlying proportion.
+
+Is the Sample Size Too Small?
+=============================
+As a rule of thumb, we want both the number of observed events and non-events to be at least 5. Here's what happens if we only use a subset of our full dataset:
+
+```{python}
+too_small = df[15:22]
+
+# Number of successes
+count = len(too_small[too_small['grade_improved'] == 1])
+# Number of observations
+nobs = len(too_small)
+# Proportion under the null hypothesis
+pi_0 = 0.5
+# Perform a one-sample Z-test for a proportion
+zstat, pvalue = proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
+# Proportion successful
+pi = count / nobs
+# Standard error of the proportion
+se = np.sqrt((pi * (1 - pi)) / nobs)
+# Significance level
+alpha = 0.05
+# Percent-point function (aka quantile function) of the normal distribution
+z_critical = stats.norm.ppf(1 - (alpha / 2))
+# Margin of error
+d = z_critical * se
+# Confidence interval
+ci_lower = pi - d
+ci_upper = pi + d
+
+print(
+    f'Z-statistic = {zstat:.3f}; p = {pvalue:.3f}',
+    f'\nProportion, π = {pi:.1%} ± {d:.1%}',
+    f'ie 95% CI [{ci_lower:.1%}, {ci_upper:.1%}]'
+)
+```
+
+Having -4.9% as the lower bound of a 95% confidence interval for a true proportion is clearly nonsense: a proportion cannot be less than zero! We need more data.
+
+[⇦ Back](../../../python.html)
+
+</font>

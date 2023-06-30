@@ -1,0 +1,226 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Two-Sample *Z*-Test for a Proportion'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+If you have:
+
+- two *samples* of data,
+- where a certain *proportion* of each has some characteristic
+- and you want to see if these proportions are significantly different from each other,
+
+...then the **two-sample *Z*-test for a proportion** might be for you.
+
+This test, like all *Z*-tests, involves calculating a *Z*-statistic which, loosely, is the distance between what you have (the difference between the proportions actually seen in your samples) and what random chance would give you (the difference between the proportions that would be seen in samples that were perfectly randomly-generated). Alternatively, the *Z*-statistic can be thought of as a signal-to-noise ratio: a large value would indicate that the difference (between the two samples' proportions) is large relative to random variation (a difference that could occur by chance).
+
+Under the assumption that *Z*-statistics are normally-distributed, we can then calculate how unlikely it is that your samples have produced the *Z*-statistic that they have. More specifically, the *Z*-statistic is compared with its reference distribution (the standard normal distribution) to return a *p*-value.
+
+The code on this page uses the `numpy`, `scipy` and `statsmodels` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install statsmodels
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Example Data
+============
+As an example we will use the "Spector and Mazzeo (1980) - Program Effectiveness Data" which is included in the `statsmodels` package as `spector`, see [here](https://www.statsmodels.org/dev/datasets/generated/spector.html) for more. This dataset records the test results of students:
+
+```{python}
+import statsmodels.api as sm
+
+# Load the data set as a dataframe-of-dataframes
+data = sm.datasets.spector.load_pandas()
+# Extract the complete dataset
+df = data['data']
+# Rename
+df = df.rename(columns={
+    'TUCE': 'test_score',
+    'PSI': 'participated',
+    'GRADE': 'grade_improved'
+})
+
+print(df[15:22])
+```
+
+Hypotheses
+==========
+One of the columns in our dataset is `grade_improved` which records whether or not the student's test scores improved (`1` for yes, `0` for no). Another column is `participated` which indicates if that student participated in a programme where they received more personalised teaching (again, `1` for yes, `0` for no). We can hypothesise that a different proportion of students who got the personalised teaching saw their scores improve compared to those who didn't:
+
+- $H_0: \pi_{group, \, 0} = \pi_{group, \, 1}$
+- $H_1: \pi_{group, \, 0} \neq \pi_{group, \, 1}$
+
+or
+
+- $H_0: \pi_{group, \, 0} - \pi_{group, \, 1} = 0$
+- $H_1: \pi_{group, \, 0} - \pi_{group, \, 1} \neq 0$
+
+where group 0 did **not** participate in the programme and group 1 **did**. Stated in words the hypotheses are:
+
+- The true proportion of students improving their test score is unrelated to/does not depend on whether or not they participated in the personalized system of instruction programme, against:
+- The true proportion of students improving their test score is related to/depends on whether or not they participated in the personalized system of instruction programme
+
+Test the Hypotheses
+===================
+We test $H_0$ against $H_1$ using a two-sample *Z*-test for a proportion:
+
+```{python}
+import numpy as np
+from statsmodels.stats.proportion import proportions_ztest
+
+# Subset out the two groups
+group0 = df[df['participated'] == 0]
+group1 = df[df['participated'] == 1]
+
+# Number of successes
+count = np.array([
+    len(group0[group0['grade_improved'] == 1]),
+    len(group1[group1['grade_improved'] == 1])
+])
+# Number of observations
+nobs = np.array([len(group0), len(group1)])
+# Perform a two-sample Z-test for a proportion
+z_stat, p_value = proportions_ztest(count, nobs)
+
+print(f'Z-statistic = {z_stat:.3f}; p = {p_value:.3f}')
+```
+
+```{python}
+# Proportion successful
+pi = count / nobs
+
+print(
+    f'Proportion of students who improved after not participating in the programme: {pi[0]:.1%}',
+    f'\nProportion of students who improved after participating in the programme: {pi[1]:.1%}'
+)
+```
+
+Comparison with Pearson's Chi-Squared Independence Test
+=======================================================
+An important insight to note is that this *p*-value is the same as that of Pearson's chi-squared (pronounced "*kai-squared*") independence test:
+
+```{python}
+from scipy import stats
+
+# Are two distributions independent?
+count1 = np.array([
+    len(group0[group0['grade_improved'] == 1]),
+    len(group1[group1['grade_improved'] == 1])
+])
+count0 = np.array([
+    len(group0[group0['grade_improved'] == 0]),
+    len(group1[group1['grade_improved'] == 0])
+])
+observations = np.array(
+    [
+        count1,
+        count0
+    ]
+)
+row_totals = np.array([np.sum(observations, axis=1)])
+col_totals = np.array([np.sum(observations, axis=0)])
+n = np.sum(observations)
+# Calculate the expected observations
+expected = np.dot(row_totals.T, col_totals) / n
+# Calculate the chi-square test statistic
+chisq, p = stats.chisquare(observations, expected)
+chisq = np.sum(chisq)
+# Degrees of freedom
+rows = observations.shape[0]
+cols = observations.shape[1]
+df = (rows - 1) * (cols - 1)
+
+# Convert chi-square test statistic to p-value
+p = 1 - stats.chi2.cdf(chisq, df)
+
+print(f'p = {p}')
+```
+
+This isn't a fluke: both tests have the same hypotheses so we would expect the same results!
+
+Confidence Interval
+===================
+Use the [binomial proportion confidence interval](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval):
+
+```{python}
+# Difference of the proportions
+diff_pi = pi[1] - pi[0]
+# Standard errors of the proportions
+se = np.sqrt((pi * (1 - pi)) / nobs)
+# Standard error of the difference of the proportions
+se_diff_pi = np.sqrt(np.sum(se**2))
+# Significance level
+alpha = 0.05
+# Percent-point function (aka quantile function) of the normal distribution
+z_critical = stats.norm.ppf(1 - (alpha / 2))
+# Margin of error
+d = z_critical * se_diff_pi
+# Confidence interval
+ci_lower = diff_pi - d
+ci_upper = diff_pi + d
+
+print(
+    f'π₁ - π₀ = {diff_pi:.1%}, 95% CI [{ci_lower:.1%}, {ci_upper:.1%}]',
+    f'\nThe proportion of group 1 that improved is {abs(diff_pi):.1%} ± {d:.1%} greater than group 2.'
+)
+```
+
+Interpretation
+==============
+- We reject the null hypothesis in favour of the alternative because the observed data provides evidence against it at the 5% significance level.
+- We conclude that the true proportion of students improving their test score is not the same for both groups. In other words, the proportion of students improving their mark is associated with programme participation.
+- When generalising to the target population, we are 95% confident that the interval between 9.4% and 71.6% contains the true difference between the underlying proportions of improvement between the groups.
+- We are 95% confident that our sample difference of 40.5% is within 31.1 pp (percentage points) of the true difference between underlying proportions.
+
+Exact Test
+==========
+Instead of a *Z*-test we could consider using an *exact test*:
+
+```{python}
+# Expected counts
+# (the frequencies/proportions we expect to see under the null hypothesis)
+pi_overall = np.sum(count) / np.sum(nobs)
+expected_counts = pi_overall * nobs
+
+print(expected_counts)
+```
+
+```{python}
+# The most common exact test for comparing two proportions is a Fisher's exact
+# test (when there are expected counts lower than 5)
+table = [
+    [count[0], nobs[0] - count[0]],
+    [count[1], nobs[1] - count[1]]
+]
+odds_ratio, p_value = stats.fisher_exact(table)
+
+print(f"Fisher's exact test: p = {p_value:.3f}")
+```
+
+Remember that a difference must be statistically significant AND sufficiently large to be of practical importance. For example, the Higher Education Statistics Agency (HESA) requires differences between groups under investigation to be:
+
+- Statistically significant at the 0.3% level, and
+- Larger than 3%
+
+[⇦ Back](../../../python.html)
+
+</font>

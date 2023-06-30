@@ -79,6 +79,8 @@ Tables
     `CREATE TABLE table_name(column_1 data_type UNIQUE);`
     - Define a default value which gets used if nothing else is specified:  
     `CREATE TABLE table_name(column_1 data_type DEFAULT 'default_value');`
+- Show all tables:  
+`SHOW TABLES;`
 - Delete a table:  
 `DROP TABLE table_name;`
 
