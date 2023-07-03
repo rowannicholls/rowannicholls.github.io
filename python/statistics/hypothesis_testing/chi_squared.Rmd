@@ -19,9 +19,16 @@ library(knitr)
 opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-> A chi-squared (χ²) test is used for **discrete, categorical data**. For example: medical data that includes people who are sick and people who are healthy, demographic data comparing people who are male and female, assessment data where people either passed or failed, etc. These tests are not relevant for continuous data, ie where each measurement/observation in the data set is a 'value' (eg a percentage, a height in cm, a weight in kg, etc).
+A chi-squared (χ², pronounced "*kai-squared*") test is used for **discrete, categorical data**. For example:
+
+- Medical data that includes two groups: people who are sick and people who are healthy
+- Demographic data comparing people who are male and female
+- Assessment data where people either passed or failed an assignment
+
+Chi-squared tests are not relevant for continuous data, ie where each measurement/observation in the data set is a 'value' (eg a percentage, a height in cm, a weight in kg, etc).
 
 ```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
 library(DiagrammeR)
 DiagrammeR::grViz(
     "digraph statistical_tests {
@@ -134,9 +141,9 @@ There are three main chi-squared tests:
 - Independence
 - Homogeneity
 
-In Python, all three are performed using the same function (`chisquare()`) from the SciPy stats package. For more info about this function, see [its documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html).
+In Python, all three are performed using the same function: `chisquare()` from the SciPy stats package. For more info about this function, see [its documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html).
 
-A less-common chi-squared test is the "test for trend". This is not yet implemented in Python, but a worked example is provided below.
+A less-common chi-squared test is the "test for trend". This is not yet implemented in Python but worked examples are provided below.
 
 Goodness-of-Fit Test
 ====================
@@ -147,9 +154,10 @@ Wikipedia Example
 The following example comes from [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit#Pearson's_chi-squared_test). If you randomly picked 100 people out of a population and 44 were male, is that population 50% male? You would have *observed* 44 males and 56 females, but your *expectation* would have been 50 males and 50 females. There are more than 5 samples in each group and the data is categorical (in this case it is *binary* - either male or female), as opposed to each data point being a measurement, so a chi-squared test can be considered. Take a look at how the information is entered into the `chisquare()` function in order to test the goodness-of-fit of your sample to the expected distribution:
 
 ```{python}
-from scipy.stats import chisquare
+from scipy import stats
 
-chisq, p = chisquare([44, 56], [50, 50])
+chisq, p = stats.chisquare([44, 56], [50, 50])
+
 print(f'p = {p:4.2f}')
 ```
 
@@ -158,21 +166,24 @@ As you can see, the `chisquare()` statement takes the numbers that were *observe
 As it happens, if you omit the second argument the `chisquare()` function assumes you expect equal numbers of each type of observation. Therefore, in this example (because we *expect* equal numbers of males and females) we can actually leave the second argument out:
 
 ```{python}
-chisq, p = chisquare([44, 56])
+chisq, p = stats.chisquare([44, 56])
+
 print(f'p = {p:4.2f}')
 ```
 
 If we observed 50 males and 50 females, the test would tell use that there is a 100% chance that the population is 50% male/female:
 
 ```{python}
-chisq, p = chisquare([50, 50])
+chisq, p = stats.chisquare([50, 50])
+
 print(f'p = {p:4.2f}')
 ```
 
 Note that the test does __NOT__ work properly if you give it your data as proportions or percentages:
 
 ```{python}
-chisq, p = chisquare([0.44, 0.56])
+chisq, p = stats.chisquare([0.44, 0.56])
+
 print(f'p = {p:4.2f}')
 ```
 
@@ -187,10 +198,11 @@ The following example comes from [the Crash Course Youtube video](https://www.yo
 | Observed | 25     | 35   | 50       | 90      |
 | Expected | 30     | 40   | 40       | 90      |
 
-Again, the data is categorical and each 'bin' (cell in the table) has more than 5 samples so a chi-squared test is appropriate.
+Again, the data is categorical and each 'bin' (cell in the table) has more than 5 samples. So a chi-squared test is appropriate.
 
 ```{python}
-chisq, p = chisquare([25, 35, 50, 90], [30, 40, 40, 90])
+chisq, p = stats.chisquare([25, 35, 50, 90], [30, 40, 40, 90])
+
 print(f'p = {p:3.1f}')
 ```
 
@@ -200,6 +212,7 @@ Note that this example has 3 degrees of freedom. In general, the formula for deg
 nrows = 2
 ncols = 4
 df = (nrows - 1) * (ncols - 1)
+
 print(f'Degrees of freedom = {df}')
 ```
 
@@ -209,15 +222,15 @@ $\chi^2 = \sum\frac{\left(observed - expected\right)^2}{expected}$
 
 ```{python}
 chisq = (25 - 30)**2 / 30 + (35 - 40)**2 / 40 + (50 - 40)**2 / 40 + (90 - 90)**2 / 90
+
 print(f'chi-square = {chisq:4.2f}')
 ```
 
 Then the chi-square test statistic can be converted into a *p*-value using the chi-distribution for 3 degrees of freedom:
 
 ```{python}
-from scipy.stats import chi2
+p = 1 - stats.chi2.cdf(chisq, 3)
 
-p = 1 - chi2.cdf(chisq, 3)
 print(f'p = {p:3.1f}')
 ```
 
@@ -267,14 +280,15 @@ n = np.sum(observations)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
 # Calculate the chi-square test statistic
-chisq, p = chisquare(observations, expected)
+chisq, p = stats.chisquare(observations, expected)
 chisq = np.sum(chisq)
 # Degrees of freedom
 rows = observations.shape[0]
 cols = observations.shape[1]
 df = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p = 1 - chi2.cdf(chisq, df)
+p = 1 - stats.chi2.cdf(chisq, df)
+
 print(f'p = {p:3.1f}')
 ```
 
@@ -305,14 +319,15 @@ n = np.sum(observations)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
 # Calculate chi-square test statistic
-chisq, p = chisquare(observations, expected)
+chisq, p = stats.chisquare(observations, expected)
 chisq = np.sum(chisq)
 # Degrees of freedom
 rows = observations.shape[0]
 cols = observations.shape[1]
 df = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p = 1 - chi2.cdf(chisq, df)
+p = 1 - stats.chi2.cdf(chisq, df)
+
 print(f'p = {p:6.4f}')
 ```
 
@@ -354,26 +369,103 @@ n = np.sum(observations)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
 # Calculate chi-square test statistic
-chisq, p = chisquare(observations, expected)
+chisq, p = stats.chisquare(observations, expected)
 chisq = np.sum(chisq)
 # Degrees of freedom
 rows = observations.shape[0]
 cols = observations.shape[1]
 df = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p = 1 - chi2.cdf(chisq, df)
+p = 1 - stats.chi2.cdf(chisq, df)
+
 print(f'p = {p:5.3f}')
 ```
 
 To quote: "as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a 'line ball' conclusion."
 
+Statsmodels Example
+-------------------
+Following on from [this page](one_sample_z_test_proportion.html) about the **one**-sample *Z*-test for a proportion and [this page](two_sample_z_test_proportion.html) about the **two**-sample *Z*-test for a proportion, it seems natural to want to do an example with **three** samples:
+
+- $H_0: \pi_1 = \pi_2 = \pi_3$
+- $H_1: \pi_1 \neq \pi_2$, $\pi_1 \neq \pi_3$ or $\pi_2 \neq \pi_3$
+
+where $\pi$ indicates the true proportion of 'successes' for each cohort.
+
+However, this is not yet possible with Statsmodels in Python:
+
+```{python, eval = FALSE}
+from statsmodels.stats.proportion import proportions_ztest
+
+# Create example data: three cohorts of students take a test and these are the
+# numbers that pass:
+count = [39, 57, 54]
+# While these are the total number in each cohort:
+nobs = [60, 70, 65]
+
+z_stat, p_value = proportions_ztest(count, nobs)
+```
+
+```
+NotImplementedError: more than two samples are not implemented yet
+```
+
+*(Note also that Fisher's exact test for three (or more) groups is also currently not implemented in any Python package)*
+
+However, as the *Z*-test for a proportion is mathematically equivalent to a chi-squared test, we can use `proportions_chisquare` from Statsmodels instead:
+
+```{python}
+from statsmodels.stats.proportion import proportions_chisquare
+
+# Create example data: three cohorts of students take a test and these are the
+# numbers that pass in each cohort:
+count = [39, 57, 54]
+# While these are the total number of students in each cohort:
+nobs = [60, 70, 65]
+
+# Three-Sample Chi-Squared Test for a Proportion
+chi2_stat, p_value, table = proportions_chisquare(count, nobs)
+```
+
+Note that this takes `nobs` - the *total* number of observations - as the second input. This is different from SciPy's `chisquare` function which takes the numbers of observations in each *individual group* as its inputs.
+
+As it outputs, `proportions_chisquare` gives us the tabulation of the number of observations:
+
+```{python}
+print(table[0])
+```
+
+...as well as the tabulation of expected observations:
+
+```{python}
+print(table[1])
+```
+
+...and the results:
+
+```{python}
+print(f'χ² = {chi2_stat:.2f}, p = {p_value:.3f}')
+```
+
+This low *p*-value can be understood by looking at the percentage of students who passed in each of the three cohorts:
+
+```{python}
+print(np.array(count) / np.array(nobs) * 100)
+```
+
+While the percentage of students achieving a pass mark was very similar for cohorts 2 and 3 (about 82%) the percentage was significantly lower for cohort 1 (65%). So, we shouldn't be surprised that the *p*-value suggests significance.
+
 Test for Trend (Cochran–Armitage Test)
 ======================================
-When a data set has a *nominal* input variable and an *ordinal* output variable, a chi-squared test for trend can be used<sup>[1]</sup>. A nominal variable has no rank or order, for example 'gender' (male or female) or 'presence of illness' (healthy or diseased). An ordinal variable *does* have a rank or an order but the scale is arbitrary, such as 'level of satisfaction' (unsatisfied, neutral, satisfied) or 'dosage group' (low, medium, high). Both are *categorical* variables.
+When a data set has a *nominal* input variable and an *ordinal* output variable, a chi-squared test for trend can be used[^1]. A nominal variable has no rank or order, for example 'gender' (male or female) or 'presence of illness' (healthy or diseased). An ordinal variable *does* have a rank or an order but the scale is arbitrary, such as 'level of satisfaction' (unsatisfied, neutral, satisfied) or 'dosage group' (low, medium, high). Both are *categorical* variables.
 
-The chi-squared test for trend is also known as the "Cochran–Armitage test for trend"<sup>[2]</sup>. It is not (yet) implemented in Python - neither in SciPy nor in Statsmodels - but it *is* in R (where it is called the `prop.trend.test`)<sup>[3]</sup>. What this means is that we can work through an example of this test in Python and then use the R function to check that what we have done is correct.
+[^1]: Swinscow, TDV. Study design and choosing a statistical test. In: Campbell, MJ, editors. Statistics at Square One. BMJ Publishing Group; 1997. Available [here](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/13-study-design-and-choosing-statisti). Jump to reference:&nbsp;
 
-The example we'll use comes from [Influential Points](https://influentialpoints.com/Training/chi_square_test_for_trend.htm). The raw data is given as a contingency table, but let's go a step backwards and generate this ourselves from a data set in *long format* to make it more realistic:
+The chi-squared test for trend is also known as the "Cochran–Armitage test for trend" (see [here](https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend) for more). It is not yet implemented in Python - neither in SciPy nor in Statsmodels - but it *is* implemented in R where it is called the `prop.trend.test` (see the documentation [here](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/prop.trend.test)). What this means is that we can work through an example of this test in Python and then use the R function to check that what we have done is correct.
+
+Influential Points Example
+--------------------------
+The first example we'll use comes from [Influential Points](https://influentialpoints.com/Training/chi_square_test_for_trend.htm). The raw data is given as a contingency table, but let's go a step backwards and generate this ourselves from a data set in *long format* to make it more realistic:
 
 ```{python}
 # Generate raw data
@@ -391,9 +483,6 @@ x.extend(['Medium'] * 16)
 y.extend(['Uninfected'] * 16)
 x.extend(['High'] * 12)
 y.extend(['Uninfected'] * 12)
-
-print(x)
-print(y)
 ```
 
 We now have two lists which are each 90 elements long, corresponding to the 90 patients in our fictitious example. Now we can create the contingency table - also known as a cross-tabulation - using the `crosstab()` function in Pandas:
@@ -456,8 +545,6 @@ This matches their value of 11.51.
 The last step is to test this value for significance by calculating the *p*-value by using the CDF (cumulative distribution function) for the χ² distribution:
 
 ```{python}
-from scipy import stats
-
 # Degrees of freedom
 dof = np.prod(np.array(ct.shape) - 1) - 1
 # p-value
@@ -480,11 +567,57 @@ prop.trend.test(x, n, c(1, 2, 3))
 
 This is not 100% the same, but it's close enough.
 
-<sup>[1]</sup>Study design and choosing a statistical test. The BMJ. 2019. Available from: https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/13-study-design-and-choosing-statisti
+Another Example
+---------------
+Let's take an imaginary example where students in various classes were asked if they were satisfied with the feedback they got for an assignment. We could hypothesise that there is an inverse trend between the amount of feedback a teaching assistant has the time to give and the size of the class, so let's look for this:
 
-<sup>[2]</sup>https://en.wikipedia.org/wiki/Cochran%E2%80%93Armitage_test_for_trend
+- $H_0:$ No true linear trend between the true proportion satisfied with assignment feedback and the size of class attended
+- $H_1:$ True linear trend between the true proportion satisfied with assignment feedback and the size of class attended
 
-<sup>[3]</sup>https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/prop.trend.test
+```{python}
+# Number of students satisfied with their level of feedback
+count = [20, 15, 12, 8]
+# Number of students who gave feedback
+nobs = [30, 27, 23, 23]
+# Relative size of class
+weights = [1, 2, 3, 4]
+```
+
+Let's visualise the data:
+
+```{python}
+import matplotlib.pyplot as plt
+
+percent_satisfied = np.array(count) / np.array(nobs)
+plt.plot(weights, percent_satisfied)
+plt.ylabel('Students Satisfied with their Feedback (%)')
+plt.xlabel('Relative Class Size')
+```
+
+Now let's look for a trend:
+
+```{python}
+#
+# Chi-squared test for trend
+#
+count_total = np.sum(count)
+nobs_total = np.sum(nobs)
+fails_total = nobs_total - count_total
+T1 = np.sum(count * np.array(weights))
+T2 = np.sum(nobs * np.array(weights))
+T3 = np.sum(nobs * np.array(weights)**2)
+V = count_total * fails_total * (nobs_total * T3 - T2**2) / (
+    nobs_total**2 * (nobs_total - 1)
+)
+chi2_stat = (T1 - (count_total * T2 / nobs_total))**2 / V
+p_value = 1 - stats.chi2.cdf(chi2_stat, df=1)
+
+print(f'χ² = {chi2_stat:.3f}, p = {p_value:.3f}')
+```
+
+The chi-squared test for trend gives a *p*-value of less than 0.05, so we reject the null hypothesis in favour of the alternative. We conclude that there is evidence that the proportion of students satisfied with assignment feedback is truly related to the size of the class attended. As the size of the class attended increases, the proportion of satisfied students decreases.
+
+This is consistent with the plot of the data which shows a downward trend. However, unlike linear regression, this hypothesis test does not provide an estimate of the constant rate of decrease of the proportion, i.e. an estimate of the gradient of the plot.
 
 ```{python, eval=FALSE, echo=FALSE}
 # ANOTHER WORKED EXAMPLE WHICH, AS FAR AS I CAN TELL, IS INCORRECT IN THE SOURCE
@@ -561,7 +694,7 @@ A Function to Interpret *p*-values
 ==================================
 Consider a new example:
 
-> A company manufactures widgets. The mass of the widgets that are produced is controlled through batch testing: rather than weighing every single one they take a batch and weigh all of them instead. If the batch as a whole is too light or too heavy, then all of the widgets in that batch are sent for re-manufacture. The company's database shows that 90% of all batches are made within the acceptable mass range, while 5% are too heavy and 5% are too light.
+> A company manufactures widgets. The mass of the widgets that are produced is controlled through batch testing: rather than weighing every single one they take a batch and weigh those instead. If the batch as a whole is too light or too heavy, then all of the widgets in that batch are sent for re-manufacture. The company's database shows that 90% of all batches are made within the acceptable mass range, while 5% are too heavy and 5% are too light.
 >
 > If the company were to install new manufacturing equipment they would want to know if they could expect this same distribution of acceptance and rejection. If they tested the first 1000 batches after installing the new equipment and 30 were too light and 60 were to heavy, would this be the case?
 
@@ -581,25 +714,26 @@ def perform_chi_squared(obs, exp):
     extreme as the result actually observed, under the assumption that the null
     hypothesis is correct.
     """
-    chisq, p = chisquare(obs, exp)
+    chisq, p = stats.chisquare(obs, exp)
     if p <= 0.001:
         significance = '***'
-        interpretation = 'H_1 is accepted at a 99.9% confidence level.'
+        interpretation = 'H_0 is rejected at a 99.9% confidence level.'
     elif p <= 0.01:
         significance = '**'
-        interpretation = 'H_1 is accepted at a 99% confidence level.'
+        interpretation = 'H_0 is rejected at a 99% confidence level.'
     elif p <= 0.05:
         significance = '*'
-        interpretation = 'H_1 is accepted at a 95% confidence level.'
+        interpretation = 'H_0 is rejected at a 95% confidence level.'
     else:
         significance = ''
-        interpretation = 'H_0 is accepted'
+        interpretation = 'H_0 is not rejected'
     return p, significance, interpretation
 
 
 observations = [30, 910, 60]
 expected = [50, 900, 50]
 p, sig, inter = perform_chi_squared(observations, expected)
+
 print(f'p = {p:5.3f}{sig}. {inter}')
 ```
 
