@@ -19,11 +19,127 @@ knitr::opts_chunk$set(out.width = "100%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-**Spearman's rank correlation coefficient** is the correlation (the Pearson correlation coefficient) between the *rank* of your data's y-values and the *rank* of your data's x-values. If your y-values strictly increase as your x-values increase (with no exceptions; a larger x strictly implies a larger y) then the coefficient will be 1.
+**Spearman's rank correlation coefficient** is the correlation between the *rank* of your data's y-values and the *rank* of your data's x-values.
 
-The opposite (a strictly decreasing y for an increasing x) will result in a coefficient of -1.
+- If your y-values strictly increase as your x-values increase (with no exceptions; a larger x strictly implies a larger y) then the coefficient will be 1
+- The opposite (a strictly decreasing y for an increasing x) will result in a coefficient of -1.
 
 The Greek letter *ρ* (rho) is used for the coefficient.
+
+It can be calculated from data where the dependent variable (y-values) and independent variable (x-values) are both *continuous*, where a confounding factor exists (ie the independent variable is *not truly independent*) and where the parametric assumptions are *not* met:
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
+library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                    sc_true [label='True independent\nvariable?', fillcolor='#c9daf8']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?', fillcolor='#c9daf8']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [fillcolor='#d9ead3', label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?']
+                    binary_datatype [label='Data type of\nthe IV?']
+                        'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
+
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'One-sample Z-test' [label='None\n(no IV)']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
+
+    labelloc='t';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
+    }",
+    height=650,
+    width=1000
+)
+```
+
+**Python Packages:**
+
+The code on this page uses the `pandas`, `matplotlib`, `numpy`, `scipy` and `pingouin` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install pingouin
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
 
 Example Data
 ============
@@ -94,9 +210,6 @@ Manual Calculation
 As is done on the Wikipedia page:
 
 ```{python}
-import numpy as np
-import scipy.stats as st
-
 # Rank the values in the column (ties receive the average rank of the group)
 df['rank x_i'] = df['IQ'].rank()
 df['rank y_i'] = df['Hours of TV'].rank()
@@ -118,12 +231,15 @@ n = len(df)
 # Spearman's rank correlation coefficient, ρ
 rho = 1 - (6 * x) / (n * (n**2 - 1))
 
-print(f'ρ = {rho}')
+print(f'ρ = {rho:.4f}')
 ```
 
-...and the associated p-value:
+...and the associated *p*-value:
 
 ```{python}
+import numpy as np
+import scipy.stats as st
+
 # t-statistics
 t = rho * np.sqrt((n - 2) / (1 - rho**2))
 # Degrees of freedom
@@ -133,7 +249,7 @@ tails = 2
 # Significance
 p = st.t.cdf(t, df=dof) * tails
 
-print(f'p = {p}')
+print(f'p = {p:.4f}')
 ```
 
 These match the values in the example.
@@ -147,7 +263,7 @@ import scipy.stats as st
 
 rho, p = st.spearmanr(df['IQ'], df['Hours of TV'])
 
-print(f'ρ = {rho:.3f}; p = {p:.3f}')
+print(f'ρ = {rho:.4f}; p = {p:.4f}')
 ```
 
 Using Pandas
@@ -161,7 +277,7 @@ col = ['IQ', 'Hours of TV']
 print(df[col].corr(method='spearman'))
 ```
 
-There's no way to get the p-value directly using this method (you can, of course, calculate it manually as shown above).
+There's no way to get the *p*-value directly using this method (you can, of course, calculate it manually as shown above).
 
 Using Pingouin
 ==============

@@ -14,8 +14,9 @@ output:
 
 [⇦ Back](../../../python.html)
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(out.width = "90%")
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 **Linear regression** involves fitting a straight-line relationship to one group of continuous numerical data that has one dependent variable and at least one independent variable. If there is only one independent variable then it is **simple** linear regression whereas more than one independent variable makes it **multiple** linear regression. In other words:
@@ -27,118 +28,102 @@ knitr::opts_chunk$set(out.width = "90%")
 
 If the above criteria are met then, as we can see from the flowchart below, linear regression is needed.
 
-```{r, echo = FALSE}
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
 library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
 DiagrammeR::grViz(
     "digraph statistical_tests {
         rankdir='LR'
 
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
-            'Start:\nSet a hypothesis'
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
-                'Continuous data'
-                    'Relationships'
-                        RIndependent [label='True independent\nvariable(s)']
-                            'Regression\nanalysis'
-                                'One independent\nvariable'
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
-                                    'Simple linear\nregression' [shape = 'oval']
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                                    'Quadratic\nregression' [shape = 'oval']
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
-                                'Multiple independent\nvariables'
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
-                                    'Multiple linear\nregression' [shape = 'oval']
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                        RNonindependent [label='No true\nindependent\nvariable']
-                            'Correlation\nanalysis'
-                                RParametric [label='Parametric']
-                                    Pearsons_r [label=<Pearson's r>,  shape = 'oval']
-                                RNonparametric [label='Non-parametric']
-                                    Spearmans_rho [label=<Spearman's ρ>, shape = 'oval']
-                    'Differences'
-                        'Variances'
-                        'Averages (means\nor medians)'
-                            'One group'
-                                OGParametric [label='Parametric']
-                                    'One-sample t-test' [shape = 'oval']
-                            'Two groups'
-                                TGParametric [label='Parametric']
-                                    PIndependent [label='Independent\ngroups']
-                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
-                                    PNonIndependent [label='Non-independent\ngroups']
-                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
-                                TGNonparametric [label='Non-parametric']
-                                    TGIndependent [label='Independent\ngroups']
-                                        'Mann-Whitney\nU test' [shape = 'oval']
-                                    TGNonindependent [label='Non-independent\ngroups']
-                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
-                            'More than\ntwo groups'
-                                MGParametric [label='Parametric']
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                    sc_true [label='True independent\nvariable?', fillcolor='#c9daf8']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?', fillcolor='#c9daf8']
+                            one_choose [label='Choose a fit', fillcolor='#c9daf8']
+                                'Simple Linear\nRegression' [fillcolor='#d9ead3']
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [fillcolor='#d9ead3']
+                        no_parametric [label='Parametric?']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?']
+                    binary_datatype [label='Data type of\nthe IV?']
+                        'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
 
-                                    'ANOVA' [shape = 'oval']
-                                MGNonparametric [label='Non-parametric']
-                                    MGIndependent [label='Independent\ngroups']
-                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
-                                    MGNonindependent [label='Non-independent\ngroups']
-                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
-                'Discrete,\ncategorical data'
-                    'Chi-squared\ntest'
-                        'Goodness-of-fit\ntest' [shape = 'oval']
-                        'Independence\ntest' [shape = 'oval']
-                        'Homogeneity\ntest' [shape = 'oval']
-
-            'Start:\nSet a hypothesis' -> 'Continuous data'
-                'Continuous data' -> 'Differences'
-                    'Differences' -> 'Averages (means\nor medians)'
-                        'Averages (means\nor medians)' -> 'One group'
-                            'One group' -> OGParametric
-                                OGParametric -> 'One-sample t-test'
-                        'Averages (means\nor medians)' -> 'Two groups'
-                            'Two groups' -> TGParametric
-                                TGParametric -> PIndependent
-                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
-                                TGParametric -> PNonIndependent
-                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
-                            'Two groups' -> TGNonparametric
-                                TGNonparametric -> TGIndependent
-                                    TGIndependent -> 'Mann-Whitney\nU test'
-                                TGNonparametric -> TGNonindependent
-                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
-                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
-                            'More than\ntwo groups' -> MGParametric
-                                MGParametric -> 'ANOVA'
-                            'More than\ntwo groups' -> MGNonparametric
-                                MGNonparametric -> MGIndependent
-                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
-                                MGNonparametric -> MGNonindependent
-                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
-                    'Differences' -> 'Variances'
-                'Continuous data' -> 'Relationships'
-                    'Relationships' -> RIndependent
-                        RIndependent -> 'Regression\nanalysis'
-                            'Regression\nanalysis' -> 'One independent\nvariable'
-                                'One independent\nvariable' -> 'Simple linear\nregression'
-                                'One independent\nvariable' -> 'Quadratic\nregression'
-                            'Regression\nanalysis' -> 'Multiple independent\nvariables'
-                                'Multiple independent\nvariables' -> 'Multiple linear\nregression'
-                    'Relationships' -> RNonindependent
-                        RNonindependent -> 'Correlation\nanalysis'
-                            'Correlation\nanalysis' -> RParametric
-                                RParametric -> Pearsons_r
-                            'Correlation\nanalysis' -> RNonparametric
-                                RNonparametric -> Spearmans_rho
-            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
-                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
-                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
-                    'Chi-squared\ntest' -> 'Independence\ntest'
-                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'One-sample Z-test' [label='None\n(no IV)']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
 
     labelloc='t';
-    fontsize=70;
-    label='Flowchart for Choosing a Statistical Test\n\n';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
     }",
-    width=900
+    height=650,
+    width=1000
 )
 ```
 
@@ -225,6 +210,21 @@ Conceptually, multiple linear regression can be thought of as simple linear regr
 
 So multiple linear regression is *literally* linear regression done multiple times!
 
+**Python Packages:**
+
+The code on this page uses the `sklearn`, `matplotlib`, `numpy`, `scipy`, `pandas` and `statsmodels` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install sklearn
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install statsmodels
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
 Example Data
 ============
 For this example we're going to use the Linnerud dataset from Scikit-learn. This contains physical exercise data from 20 volunteers (middle-aged non-elite-athlete men) that can be used as *explanatory variables* (independent variables) to explain the *scalar response* or *target* (dependent variable) which, in this case, is physiological health.
@@ -302,8 +302,11 @@ matplotlib.use('TkAgg')
 plt.show()
 ```
 
-This requires the 'tkinter' (Tk interface) package to be installed. To do this, run the following from the terminal:  
-```sudo apt-get install python3-tk```
+This requires the 'tkinter' (Tk interface) package to be installed. To do this, run the following from the terminal:
+
+```{bash, eval = FALSE}
+$ sudo apt-get install python3-tk
+```
 
 In lieu of that, here's the same data in two 2D plots:
 

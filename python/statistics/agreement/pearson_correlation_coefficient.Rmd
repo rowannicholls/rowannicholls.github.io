@@ -19,9 +19,125 @@ knitr::opts_chunk$set(out.width = "100%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
+The **Pearson Correlation Coefficient**, *r*, can be calculated from data where the dependent and independent variables are both *continuous*, where a confounding factor exists (ie the independent variable is *not truly independent*) and where the *parametric* assumptions are met.
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
+library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                    sc_true [label='True independent\nvariable?', fillcolor='#c9daf8']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?', fillcolor='#c9daf8']
+                            'Pearson\ncorrelation\ncoefficient' [fillcolor='#d9ead3']
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?']
+                    binary_datatype [label='Data type of\nthe IV?']
+                        'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
+
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'One-sample Z-test' [label='None\n(no IV)']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
+
+    labelloc='t';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
+    }",
+    height=650,
+    width=1000
+)
+```
+
+**Python Packages:**
+
+The code on this page uses the `pandas`, `matplotlib`, `scipy`, and `numpy` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install numpy
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
 Example Data
 ============
-Let's use the following example data set from Giavarina's paper.<sup>1</sup> Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements shown below:
+Let's use the following example data set from Giavarina's paper.[^1] Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements shown below:
+
+[^1]: Giavarina, D. "Understanding Bland Altman analysis". Biochemia Medica 2015; 25(2):141-151. DOI: [10.11613/BM.2015.015](https://doi.org/10.11613/BM.2015.015). PMID: [26110027](https://pubmed.ncbi.nlm.nih.gov/26110027). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf). Jump to reference:&nbsp;
 
 ```{python}
 import pandas as pd
@@ -109,13 +225,15 @@ As described on its [Wikipedia page](https://en.wikipedia.org/wiki/Pearson_corre
 - 0 is no linear correlation (the data points are randomly scattered all over the plot area)
 - −1 is total negative linear correlation (the data points all lie on a straight line with a negative gradient)
 
-For more precise interpretations of the absolute value of *r* the follow can be used as a guideline<sup>2</sup>:
+For more precise interpretations of the absolute value of *r* the follow can be used as a guideline[^2]:
 
 - 0 to 0.19: very weak correlation
 - 0.2 to 0.39: weak correlation
 - 0.4 to 0.59: moderate correlation
 - 0.6 to 0.79: strong correlation
 - 0.8 to 1: very strong correlation
+
+[^2]: Swinscow, TDV. Study design and choosing a statistical test. In: Campbell, MJ, editors. Statistics at Square One. BMJ Publishing Group; 1997. Available [here](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/13-study-design-and-choosing-statisti). Jump to reference:&nbsp;
 
 ...and here's how to calculate it:
 
@@ -257,11 +375,6 @@ r, ci_lower, ci_upper, p = pearson_correlation_coefficient(x, y)
 
 print(f'r = {r:5.3f}, 95% CI: [{ci_lower:5.3f}, {ci_upper:5.3f}]; p = {p:.2e}')
 ```
-
-References
-==========
-1. Giavarina D. Understanding Bland Altman analysis. Biochemia Medica. 2015;25(2):141–51. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
-2. Swinscow TDV. Correlation and regression. In: Statistics at Square One. 9th ed. The BMJ; 1997. Available [online](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/11-correlation-and-regression).
 
 [⇦ Back](../../../python.html)
 

@@ -25,7 +25,106 @@ If you have:
 - where a certain *proportion* of each has some characteristic
 - and you want to see if these proportions are significantly different from each other,
 
-...then the **two-sample *Z*-test for a proportion** might be for you.
+...then the **two-sample *Z*-test for a proportion** might be for you. Consult the following flowchart for a more complete decision-making process:
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
+library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?']
+                    sc_true [label='True independent\nvariable?']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?', fillcolor='#c9daf8']
+                    binary_datatype [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                        'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [fillcolor='#d9ead3', label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
+
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'One-sample Z-test' [label='None\n(no IV)']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
+
+    labelloc='t';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
+    }",
+    height=650,
+    width=1000
+)
+```
 
 This test, like all *Z*-tests, involves calculating a *Z*-statistic which, loosely, is the distance between what you have (the difference between the proportions actually seen in your samples) and what random chance would give you (the difference between the proportions that would be seen in samples that were perfectly randomly-generated). Alternatively, the *Z*-statistic can be thought of as a signal-to-noise ratio: a large value would indicate that the difference (between the two samples' proportions) is large relative to random variation (a difference that could occur by chance).
 
@@ -66,15 +165,15 @@ Hypotheses
 ==========
 One of the columns in our dataset is `grade_improved` which records whether or not the student's test scores improved (`1` for yes, `0` for no). Another column is `participated` which indicates if that student participated in a programme where they received more personalised teaching (again, `1` for yes, `0` for no). We can hypothesise that a different proportion of students who got the personalised teaching saw their scores improve compared to those who didn't:
 
-- $H_0: \pi_{group, \, 0} = \pi_{group, \, 1}$
-- $H_1: \pi_{group, \, 0} \neq \pi_{group, \, 1}$
+- $H_0: \pi_{group \, 0} = \pi_{group \, 1}$
+- $H_1: \pi_{group \, 0} \neq \pi_{group \, 1}$
 
 or
 
-- $H_0: \pi_{group, \, 0} - \pi_{group, \, 1} = 0$
-- $H_1: \pi_{group, \, 0} - \pi_{group, \, 1} \neq 0$
+- $H_0: \pi_{group \, 0} - \pi_{group \, 1} = 0$
+- $H_1: \pi_{group \, 0} - \pi_{group \, 1} \neq 0$
 
-where group 0 did **not** participate in the programme and group 1 **did**. Stated in words the hypotheses are:
+where $\pi$ is the proportion of students whose grades improved and where group 0 is those who did not participate in the programme while group 1 is those who did. Stated in words the hypotheses are:
 
 - The true proportion of students improving their test score is unrelated to/does not depend on whether or not they participated in the personalized system of instruction programme, against:
 - The true proportion of students improving their test score is related to/depends on whether or not they participated in the personalized system of instruction programme

@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Statistics in Python:</font><br>One-Sample t-Tests'
+title: '<font size="5">Statistics in Python:</font><br>One-Sample *t*-Tests'
 output:
     html_document:
         theme: paper
@@ -14,117 +14,123 @@ output:
 
 [⇦ Back](../../../python.html)
 
-> A t-test can be used when **continuous data** has been measured - for example height in cm or weight in kg - as opposed to binary pass/fail results or qualitative judgements
-
-For the *one-sample* t-test the data in question will be a single sample of measurements and the statistical question will, roughly, ask if the mean of this sample is the same as the mean of the population as a whole. In general, it can be used if the population of data from which the sample is drawn is normally distributed, or if it is not normally distributed but the sample size is large.
-
 ```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+> A *t*-test can be used when **continuous data** has been measured - for example height in cm or weight in kg - as opposed to binary pass/fail results or qualitative judgements
+
+For the *one-sample* *t*-test the data in question will be a single sample of measurements and the statistical question will, roughly, ask if the mean of this sample is the same as the mean of the population as a whole. In general, it can be used if the population of data from which the sample is drawn is normally distributed, or if it is not normally distributed but the sample size is large.
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
 library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
 DiagrammeR::grViz(
     "digraph statistical_tests {
         rankdir='LR'
 
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
-            'Start:\nSet a hypothesis'
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
-                'Continuous data'
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                    'Relationships'
-                        RIndependent [label='Independent\ngroups']
-                            'Regression\nanalysis'
-                                'Multiple\nlinear\nregression' [shape = 'oval']
-                        RNonindependent [label='Non-independent\ngroups']
-                            'Correlation\nanalysis'
-                                RParametric [label='Parametric']
-                                    'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
-                                RNonparametric [label='Non-parametric']
-                                    'Spearman\nrank correlation' [shape = 'oval']
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
-                    'Differences'
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                        'Variances'
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
-                        'Averages (means\nor medians)'
-                            'One group'
-                                OGParametric [label='Parametric']
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
-                                    'One-sample t-test' [shape = 'oval']
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                            'Two groups'
-                                TGParametric [label='Parametric']
-                                    PIndependent [label='Independent\ngroups']
-                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
-                                    PNonIndependent [label='Non-independent\ngroups']
-                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
-                                TGNonparametric [label='Non-parametric']
-                                    TGIndependent [label='Independent\ngroups']
-                                        'Mann-Whitney\nU test' [shape = 'oval']
-                                    TGNonindependent [label='Non-independent\ngroups']
-                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
-                            'More than\ntwo groups'
-                                MGParametric [label='Parametric']
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                    sc_true [label='True independent\nvariable?']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?', fillcolor='#c9daf8']
+                        'One-sample t-test' [fillcolor='#d9ead3', label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?']
+                    binary_datatype [label='Data type of\nthe IV?']
+                        'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
 
-                                    'ANOVA' [shape = 'oval']
-                                MGNonparametric [label='Non-parametric']
-                                    MGIndependent [label='Independent\ngroups']
-                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
-                                    MGNonindependent [label='Non-independent\ngroups']
-                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
-                'Discrete,\ncategorical data'
-                    'Chi-squared\ntest'
-                        'Goodness-of-fit\ntest' [shape = 'oval']
-                        'Independence\ntest' [shape = 'oval']
-                        'Homogeneity\ntest' [shape = 'oval']
-
-            'Start:\nSet a hypothesis' -> 'Continuous data'
-                'Continuous data' -> 'Differences'
-                    'Differences' -> 'Averages (means\nor medians)'
-                        'Averages (means\nor medians)' -> 'One group'
-                            'One group' -> OGParametric
-                                OGParametric -> 'One-sample t-test'
-                        'Averages (means\nor medians)' -> 'Two groups'
-                            'Two groups' -> TGParametric
-                                TGParametric -> PIndependent
-                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
-                                TGParametric -> PNonIndependent
-                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
-                            'Two groups' -> TGNonparametric
-                                TGNonparametric -> TGIndependent
-                                    TGIndependent -> 'Mann-Whitney\nU test'
-                                TGNonparametric -> TGNonindependent
-                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
-                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
-                            'More than\ntwo groups' -> MGParametric
-                                MGParametric -> 'ANOVA'
-                            'More than\ntwo groups' -> MGNonparametric
-                                MGNonparametric -> MGIndependent
-                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
-                                MGNonparametric -> MGNonindependent
-                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
-                    'Differences' -> 'Variances'
-                'Continuous data' -> 'Relationships'
-                    'Relationships' -> RIndependent
-                        RIndependent -> 'Regression\nanalysis'
-                            'Regression\nanalysis' -> 'Multiple\nlinear\nregression'
-                    'Relationships' -> RNonindependent
-                        RNonindependent -> 'Correlation\nanalysis'
-                            'Correlation\nanalysis' -> RParametric
-                                RParametric -> 'Pearson\nproduct-moment\nr correlation'
-                            'Correlation\nanalysis' -> RNonparametric
-                                RNonparametric -> 'Spearman\nrank correlation'
-            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
-                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
-                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
-                    'Chi-squared\ntest' -> 'Independence\ntest'
-                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'One-sample Z-test' [label='None\n(no IV)']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
 
     labelloc='t';
-    fontsize=70;
-    label='Flowchart for Choosing a Statistical Test\n\n';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
     }",
-    width=900
+    height=650,
+    width=1000
 )
 ```
+
+The code on this page uses the `numpy`, `matplotlib` and `scipy` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install scipy
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
 
 Example Data
 ============
@@ -236,17 +242,17 @@ sem = s / np.sqrt(n)
 print(f'Sample size = {n}, mean = {x_bar:.2f}, sample std deviation = {s:.2f}, std error of the mean = {sem:.2f}')
 ```
 
-One-Sample t-Tests
-==================
-The Scipy package has a 'stats' sub-package which contains the `ttest_1samp()` function. This performs t-tests with one sample. It has two compulsory inputs:
+One-Sample *t*-Tests
+====================
+The Scipy package has a 'stats' sub-package which contains the `ttest_1samp()` function. This performs *t*-tests with one sample. It has two compulsory inputs:
 
 - The sample observation (ie your data; the numbers you have measured)
 - The population mean (ie the expected value you want to test the mean of the sample against)
 
 There are two values returned by this function:
 
-- The t-statistic, which can be thought of as the 'result' of the test
-- The p-value, which can be thought of as the odds that that result happened
+- The *t*-statistic, which can be thought of as the 'result' of the test
+- The *p*-value, which can be thought of as the odds that that result happened
 
 Two-Sided Tests
 ---------------
@@ -265,7 +271,7 @@ statistic, pvalue = stats.ttest_1samp(x, popmean)
 print(f'p = {pvalue:5.3f}')
 ```
 
-This low p-value tells us that there is a small (less than 5%) chance that this sample was drawn randomly from a population with a mean of 98.5. If we had decided to use a 95% confidence level as our acceptance criteria, we would have **rejected the null hypothesis** after seeing this result.
+This low *p*-value tells us that there is a small (less than 5%) chance that this sample was drawn randomly from a population with a mean of 98.5. If we had decided to use a 95% confidence level as our acceptance criteria, we would have **rejected the null hypothesis** after seeing this result.
 
 One-Sided Tests
 ---------------
@@ -303,11 +309,11 @@ In summary:
 
 Two-Sided vs Greater vs Less
 ============================
-You might not have noticed it, but the results of the three t-tests we did above are related:
+You might not have noticed it, but the results of the three *t*-tests we did above are related:
 
-- The p-value of the **two-sided** test was double that of the **one-sided, greater than** test
-- The p-value of the **one-sided, greater than** test plus the p-value of the **one-sided, less than** test added to 1
-- The p-value of the **one-sided, less than** test added to half the p-value of the **two-sided** test gives a value of 1
+- The *p*-value of the **two-sided** test was double that of the **one-sided, greater than** test
+- The *p*-value of the **one-sided, greater than** test plus the *p*-value of the **one-sided, less than** test added to 1
+- The *p*-value of the **one-sided, less than** test added to half the *p*-value of the **two-sided** test gives a value of 1
 
 These are not coincidences: the two-sided test asks if the population mean is neither less than nor greater than the sample mean, while the one-sided, greater than test only asks if the population mean is not less than the sample mean. It only asks half the questions, so we can be doubly sure of the result! Likewise, the one-sided, less than test asks if the population mean is not greater than the sample mean...and surely the chance of not being greater than something and the chance of not being less than something should add to 1 (ie you're 100% sure that one of them is true!). But don't take my word for it, let's check:
 
@@ -330,8 +336,8 @@ print(pvalue_less + pvalue_twosided / 2 == 1)
 
 As promised, all three statements were true.
 
-Confidence Intervals vs the One-Sample t-Test
-=============================================
+Confidence Intervals vs the One-Sample *t*-Test
+===============================================
 95% confidence intervals for the value of the mean of the sample can be calculated as follows:
 
 ```{python}
@@ -356,7 +362,7 @@ Put another way, the conclusion is:
 print(f'You can be 95% confident that the range {lower_ci:.2f} to {upper_ci:.2f} contains the true population mean')
 ```
 
-This implies that 98.5 is just outside the range of numbers we expect to contain the true population mean and so we can say, with 95% certainty, that the true population mean and 98.5 are not equal. But hang on, was that not the conclusion of the two-sided t-test we did? And given that we were just on the cusp of making the opposite conclusion there (our p value for that test was 0.049), is 98.5 being on the cusp of the above confidence interval a fluke? It turns out...no. The question of whether a given number lies within the 95% confidence interval of a sample mean is mathematically the same as performing a two-sided one-sample t-test if all the assumptions are the same. To check this, let's do a test with the number 98.52, which lies *just* within the confidence interval and so, if we're right, the t-test should *just* not reach significance:
+This implies that 98.5 is just outside the range of numbers we expect to contain the true population mean and so we can say, with 95% certainty, that the true population mean and 98.5 are not equal. But hang on, was that not the conclusion of the two-sided *t*-test we did? And given that we were just on the cusp of making the opposite conclusion there (our *p*-value for that test was 0.049), is 98.5 being on the cusp of the above confidence interval a fluke? It turns out...no. The question of whether a given number lies within the 95% confidence interval of a sample mean is mathematically the same as performing a two-sided one-sample *t*-test if all the assumptions are the same. To check this, let's do a test with the number 98.52, which lies *just* within the confidence interval and so, if we're right, the *t*-test should *just* not reach significance:
 
 ```{python}
 # The population mean
@@ -367,7 +373,7 @@ statistic, pvalue = stats.ttest_1samp(x, popmean)
 print(f'p = {pvalue:5.3f}')
 ```
 
-As suspected, p > 0.05.
+As suspected, *p* > 0.05.
 
 [⇦ Back](../../../python.html)
 

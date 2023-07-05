@@ -19,15 +19,14 @@ knitr::opts_chunk$set(out.width = "100%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-This page complements [this one](bland_altman.html) on Bland-Altman analysis.
+This page complements [this one](bland_altman.html) on Bland-Altman analysis. It uses the `pandas`, `numpy` and `scipy` packages; these can be installed from the terminal with:
 
-Packages needed: `pandas`, `numpy` and `scipy`.  
-Install these from the terminal with:  
-```{bash, eval=FALSE}
-python3.11 -m pip install pandas
-python3.11 -m pip install numpy
-python3.11 -m pip install scipy
+```{bash, eval = FALSE}
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
 ```
+
 where `python3.11` corresponds to the version of Python you have installed and are using.
 
 Acceptance Criteria

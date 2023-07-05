@@ -16,383 +16,623 @@ output:
 
 ```{r, echo = FALSE}
 library(knitr)
-opts_chunk$set(engine.path = "/usr/bin/python3.11")
+opts_chunk$set(engine.path="/usr/bin/python3.11")
 ```
 
-A chi-squared (χ², pronounced "*kai-squared*") test is used for **discrete, categorical data**. For example:
+A chi-squared (χ², pronounced "*kai-squared*") test will often be used with **discrete, categorical data**. For example:
 
 - Medical data that includes two groups: people who are sick and people who are healthy
 - Demographic data comparing people who are male and female
 - Assessment data where people either passed or failed an assignment
 
-Chi-squared tests are not relevant for continuous data, ie where each measurement/observation in the data set is a 'value' (eg a percentage, a height in cm, a weight in kg, etc).
+Chi-squared tests are not relevant for continuous data, ie where each measurement/observation in the data set is a 'value' (eg a percentage, a height in cm, a weight in kg, etc). Also note that for a chi-squared test to be valid there must be more than 5 samples of each type.
 
-```{r, echo=FALSE}
-# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
-library(DiagrammeR)
-DiagrammeR::grViz(
-    "digraph statistical_tests {
-        rankdir='LR'
-
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#ea9999', style=filled, fontsize=42]
-            'Start:\nSet a hypothesis'
-        node [fontname=Helvetica, shape=box, width=5, fontsize=42, fillcolor=white, style=filled]
-                'Continuous data'
-                    'Relationships'
-                        RIndependent [label='Independent\ngroups']
-                            'Regression\nanalysis'
-                                'Multiple\nlinear\nregression' [shape = 'oval']
-                        RNonindependent [label='Non-independent\ngroups']
-                            'Correlation\nanalysis'
-                                RParametric [label='Parametric']
-                                    'Pearson\nproduct-moment\nr correlation' [shape = 'oval']
-                                RNonparametric [label='Non-parametric']
-                                    'Spearman\nrank correlation' [shape = 'oval']
-                    'Differences'
-                        'Variances'
-                        'Averages (means\nor medians)'
-                            'One group'
-                                OGParametric [label='Parametric']
-                                    'One-sample t-test' [shape = 'oval']
-                            'Two groups'
-                                TGParametric [label='Parametric']
-                                    PIndependent [label='Independent\ngroups']
-                                        'Paired\ntwo-sample\nt-test' [shape = 'oval']
-                                    PNonIndependent [label='Non-independent\ngroups']
-                                        'Unpaired\ntwo-sample\nt-test' [shape = 'oval']
-                                TGNonparametric [label='Non-parametric']
-                                    TGIndependent [label='Independent\ngroups']
-                                        'Mann-Whitney\nU test' [shape = 'oval']
-                                    TGNonindependent [label='Non-independent\ngroups']
-                                        'Wilcoxon\nsigned-rank test' [shape = 'oval']
-                            'More than\ntwo groups'
-                                MGParametric [label='Parametric']
-                                    'ANOVA' [shape = 'oval']
-                                MGNonparametric [label='Non-parametric']
-                                    MGIndependent [label='Independent\ngroups']
-                                        'Kruskal-Wallis\none-way ANOVA' [shape = 'oval']
-                                    MGNonindependent [label='Non-independent\ngroups']
-                                        'Friedman\ntwo-way ANOVA' [shape = 'oval']
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#c9daf8', style=filled, fontsize=42]
-                'Discrete,\ncategorical data'
-                    'Chi-squared\ntest'
-        node [fontname=Helvetica, shape=box, width=5, fillcolor='#d9ead3', style=filled, fontsize=42]
-                        'Goodness-of-fit\ntest' [shape = 'oval']
-                        'Independence\ntest' [shape = 'oval']
-                        'Homogeneity\ntest' [shape = 'oval']
-                        'Test for\ntrend' [shape = 'oval']
-
-            'Start:\nSet a hypothesis' -> 'Continuous data'
-                'Continuous data' -> 'Differences'
-                    'Differences' -> 'Averages (means\nor medians)'
-                        'Averages (means\nor medians)' -> 'One group'
-                            'One group' -> OGParametric
-                                OGParametric -> 'One-sample t-test'
-                        'Averages (means\nor medians)' -> 'Two groups'
-                            'Two groups' -> TGParametric
-                                TGParametric -> PIndependent
-                                    PIndependent -> 'Unpaired\ntwo-sample\nt-test'
-                                TGParametric -> PNonIndependent
-                                    PNonIndependent -> 'Paired\ntwo-sample\nt-test'
-                            'Two groups' -> TGNonparametric
-                                TGNonparametric -> TGIndependent
-                                    TGIndependent -> 'Mann-Whitney\nU test'
-                                TGNonparametric -> TGNonindependent
-                                    TGNonindependent -> 'Wilcoxon\nsigned-rank test'
-                        'Averages (means\nor medians)' -> 'More than\ntwo groups'
-                            'More than\ntwo groups' -> MGParametric
-                                MGParametric -> 'ANOVA'
-                            'More than\ntwo groups' -> MGNonparametric
-                                MGNonparametric -> MGIndependent
-                                    MGIndependent -> 'Kruskal-Wallis\none-way ANOVA'
-                                MGNonparametric -> MGNonindependent
-                                    MGNonindependent -> 'Friedman\ntwo-way ANOVA'
-                    'Differences' -> 'Variances'
-                'Continuous data' -> 'Relationships'
-                    'Relationships' -> RIndependent
-                        RIndependent -> 'Regression\nanalysis'
-                            'Regression\nanalysis' -> 'Multiple\nlinear\nregression'
-                    'Relationships' -> RNonindependent
-                        RNonindependent -> 'Correlation\nanalysis'
-                            'Correlation\nanalysis' -> RParametric
-                                RParametric -> 'Pearson\nproduct-moment\nr correlation'
-                            'Correlation\nanalysis' -> RNonparametric
-                                RNonparametric -> 'Spearman\nrank correlation'
-            'Start:\nSet a hypothesis' -> 'Discrete,\ncategorical data'
-                'Discrete,\ncategorical data' -> 'Chi-squared\ntest'
-                    'Chi-squared\ntest' -> 'Goodness-of-fit\ntest'
-                    'Chi-squared\ntest' -> 'Independence\ntest'
-                    'Chi-squared\ntest' -> 'Homogeneity\ntest'
-                    'Chi-squared\ntest' -> 'Test for\ntrend'
-
-    labelloc='t';
-    fontsize=70;
-    label='Flowchart for Choosing a Statistical Test\n\n';
-    }",
-    width=900
-)
-```
-
-Also note that for a chi-squared test to be valid *there must be more than 5 samples of each type*.
-
-There are three main chi-squared tests:
+There are three main chi-squared tests (known as [Pearson's chi-squared tests](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test)):
 
 - Goodness-of-fit
 - Independence
 - Homogeneity
 
-In Python, all three are performed using the same function: `chisquare()` from the SciPy stats package. For more info about this function, see [its documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html).
+In Python, all three are performed using the same function: `chisquare()` from the SciPy stats package. For more info about this function see [its documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.chisquare.html). In the special cases where the dependent variable is binary and the independent variable has one, two or three levels then these three tests give the same answers as the one-, two- and three-sample *Z*-tests, respectively. Examples are provided that demonstrate this.
 
-A less-common chi-squared test is the "test for trend". This is not yet implemented in Python but worked examples are provided below.
+A less-common chi-squared test is the "test for trend". This is not yet implemented in Python but worked examples are nonetheless provided on this page.
+
+All four types of chi-squared test are highlighted in green in the below flowchart, illustrating the decision processes that would lead to each being chosen for use with a particular data set:
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
+library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?']
+                    sc_true [label='True independent\nvariable?']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?', fillcolor='#c9daf8']
+                    binary_datatype [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                        'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [fillcolor='#d9ead3']
+                    ordinal_datatype [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                        'χ² test for trend' [fillcolor='#d9ead3']
+                    nominal_datatype [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                        none_additional [label='Additional DV?', fillcolor='#c9daf8']
+                            'χ² goodness-of-fit test' [fillcolor='#d9ead3']
+                            'χ² independence test' [fillcolor='#d9ead3']
+                        'χ² homogeneity test' [fillcolor='#d9ead3']
+
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'One-sample Z-test' [label='None\n(no IV)']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
+
+    labelloc='t';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
+    }",
+    height=650,
+    width=1000
+)
+```
 
 Goodness-of-Fit Test
 ====================
-This test answers the question __*does my distribution of numbers come from the distribution I expect*__?
+This test answers the question *"does my distribution of numbers come from the distribution I expect?"*.
 
 Wikipedia Example
 -----------------
-The following example comes from [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit#Pearson's_chi-squared_test). If you randomly picked 100 people out of a population and 44 were male, is that population 50% male? You would have *observed* 44 males and 56 females, but your *expectation* would have been 50 males and 50 females. There are more than 5 samples in each group and the data is categorical (in this case it is *binary* - either male or female), as opposed to each data point being a measurement, so a chi-squared test can be considered. Take a look at how the information is entered into the `chisquare()` function in order to test the goodness-of-fit of your sample to the expected distribution:
+The following example comes from [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit#Pearson's_chi-squared_test):
+
+> If you randomly picked 100 people out of a population and 44 of that sample were men, is that population made up of 50% men or is it skewed?
+
+You would have *observed* 44 men and 56 women but your *expectation* would have been 50 men and 50 women. Let's check to see if we can use a chi-squared test to test our question:
+
+- The **dependent variable** is whether a person in your sample is a man or a women. This is a *categorical/discrete* type of data (specifically, it is *nominal*)
+- There are **two** categories/levels (ie two possible values) to this dependent variable (it is *binary*)
+- There is no **independent variable**: you are choosing a single sample of people without controlling for any factors
+- There is no additional dependent variable because you are not measuring or recording anything else about these people
+- There are more than 5 samples in each group
+
+As per the flowchart for choosing a statistical test that is shown above, we could either use a one-sample *Z*-test or a χ² goodness-of-fit test to investigate this question. We will do both, but let's start with the latter: testing the 'goodness-of-fit' of your sample with the expected distribution:
 
 ```{python}
 from scipy import stats
 
-chisq, p = stats.chisquare([44, 56], [50, 50])
+# We observed 44 men and 56 women
+observed = [44, 56]
+# We expected 50 men and 50 women
+expected = [50, 50]
+# Perform the chi-squared goodness-of-fit test
+chisq, p = stats.chisquare(observed, expected)
 
-print(f'p = {p:4.2f}')
+print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
 
-As you can see, the `chisquare()` statement takes the numbers that were *observed* in a list as the first argument and the numbers that were *expected* in a list as the second argument. The p-value of 0.23 suggests that there is a 23% chance that the population is 50% male/female.
+As you can see, the `chisquare()` function takes the numbers that were *observed* in a list as the first argument and the numbers that were *expected* in a list as the second argument. The *p*-value of 0.23 suggests that there is a 23% chance that the population is 50% male/female.
 
-As it happens, if you omit the second argument the `chisquare()` function assumes you expect equal numbers of each type of observation. Therefore, in this example (because we *expect* equal numbers of males and females) we can actually leave the second argument out:
+As it happens, if you omit the second argument the `chisquare()` function assumes you expect equal numbers of each type of observation by default. Therefore, in this example (because we *expect* equal numbers of men and women) we can actually leave the second argument out:
 
 ```{python}
-chisq, p = stats.chisquare([44, 56])
+# We observed 44 men and 56 women
+observed = [44, 56]
+# Perform the chi-squared goodness-of-fit test
+chisq, p = stats.chisquare(observed)
 
-print(f'p = {p:4.2f}')
+print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
 
-If we observed 50 males and 50 females, the test would tell use that there is a 100% chance that the population is 50% male/female:
+If, in a different sample, we observed 50 men and 50 women, the test would tell use that there is a 100% chance that the population is 50% male/female:
 
 ```{python}
-chisq, p = stats.chisquare([50, 50])
+# We observed 50 men and 50 women
+observed = [50, 50]
+# Perform the chi-squared goodness-of-fit test
+chisq, p = stats.chisquare(observed)
 
-print(f'p = {p:4.2f}')
+print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
 
 Note that the test does __NOT__ work properly if you give it your data as proportions or percentages:
 
 ```{python}
-chisq, p = stats.chisquare([0.44, 0.56])
+observed = [0.44, 0.56]
+chisq, p = stats.chisquare(observed)
 
-print(f'p = {p:4.2f}')
+print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
 
 You must always provide the *actual numbers* observed and expected.
 
+### Equivalence with the One-Sample *Z*-Test
+As mentioned, the flowchart for choosing a statistical test suggests that we can use either a one-sample *Z*-test *or* a χ² goodness-of-fit test. The reason for this is that we only have one sample (ie there is no independent variable) and our dependent variable is binary. So let's have a look at what the `proportions_ztest()` function from Statsmodels gives us (see [this page](one_sample_z_test_proportion.html) for more on the one-sample *Z*-test):
+
+```{python}
+from statsmodels.stats.proportion import proportions_ztest
+
+# Number of men
+count = 44
+# Number of observations
+nobs = 100
+# Proportion under the null hypothesis
+pi_0 = 0.5
+# Perform a one-sample Z-test for a proportion
+z_stat, p_value = proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
+
+print(f'Z-statistic = {z_stat:.2f}, p = {p_value:.2f}')
+```
+
+So, the *Z*-statistic is different to the χ² value (-1.20 vs 1.44) but the *p*-values are the same. In other words, these two tests are different ways to get to the same answer. Of course, that's only true in the special case where you have a binary dependent variable and no independent variable (ie one sample). Our next example will have more than two levels to the dependent variable, so it will not be possible to do it with the one-sample *Z*-test.
+
 Crash Course Example
 --------------------
-The following example comes from [the Crash Course Youtube video](https://www.youtube.com/watch?v=7_cs1YlZoug):
+The following example comes from [this Crash Course Youtube video](https://www.youtube.com/watch?v=7_cs1YlZoug):
+
+> It is claimed by a game's developers that 15% of players choose a 'healer' as their character, 20% choose a 'tank', 20% choose an 'assassin' and 45% choose a 'fighter'. You do some of your own observations of people playing and you record that 25 choose healers, 35 choose tanks, 50 choose assassins and 90 choose fighters. Does this data support the distribution purported by the developers?
+
+Firstly, count the number of characters you observed and calculate the proportion of each type that you would have expected to see, if the developers were correct:
+
+```{python}
+import numpy as np
+
+# Numbers you observed
+observed = np.array([25, 35, 50, 90])
+# Total observed
+n = np.sum(observed)
+# Distribution purported by the developers
+distribution = np.array([0.15, 0.20, 0.20, 0.45])
+# Calculate the expected distribution
+expected = n * distribution
+
+print(expected)
+```
+
+So here's our data in a table:
 
 |          | Healer | Tank | Assassin | Fighter |
 |----------|--------|------|----------|---------|
 | Observed | 25     | 35   | 50       | 90      |
 | Expected | 30     | 40   | 40       | 90      |
 
-Again, the data is categorical and each 'bin' (cell in the table) has more than 5 samples. So a chi-squared test is appropriate.
+Let's double check that the goodness-of-fit test is appropriate:
+
+- The **dependent variable** is the type of character chosen. Again, this is *categorical/discrete* (specifically, *nominal*) data
+- There are **four** categories/levels (ie four possible values) to this dependent variable
+- There is no **independent variable**: a single set of observations was made without controlling for any factors
+- There is no additional dependent variable because you are not measuring or recording anything else
+- Each 'bin' (cell in the table) has more than 5 samples
+
+So a chi-squared test is appropriate:
 
 ```{python}
-chisq, p = stats.chisquare([25, 35, 50, 90], [30, 40, 40, 90])
+# Perform the chi-squared goodness-of-fit test
+chisq, p = stats.chisquare(observed, expected)
 
-print(f'p = {p:3.1f}')
+print(f'χ² = {chisq:.3f}, p = {p:.2f}')
 ```
 
+This matches their answer.
+
+### Degrees of Freedom
 Note that this example has 3 degrees of freedom. In general, the formula for degrees of freedom is `(nrows - 1) * (ncols - 1)`:
 
 ```{python}
 nrows = 2
 ncols = 4
-df = (nrows - 1) * (ncols - 1)
+dof = (nrows - 1) * (ncols - 1)
 
-print(f'Degrees of freedom = {df}')
+print(f'Degrees of freedom = {dof}')
 ```
 
+### Doing it by Hand
 This example can also be done manually by calculating the chi-square test statistic by hand:
 
-$\chi^2 = \sum\frac{\left(observed - expected\right)^2}{expected}$
+$$\chi^2 = \sum_{i=1}^{n}\frac{\left(observed_i - expected_i\right)^2}{expected_i}$$
 
 ```{python}
 chisq = (25 - 30)**2 / 30 + (35 - 40)**2 / 40 + (50 - 40)**2 / 40 + (90 - 90)**2 / 90
 
-print(f'chi-square = {chisq:4.2f}')
+print(f'χ² = {chisq:.3f}')
 ```
 
-Then the chi-square test statistic can be converted into a *p*-value using the chi-distribution for 3 degrees of freedom:
+Then, this test statistic can be converted into a *p*-value by using the chi-distribution for 3 degrees of freedom:
 
 ```{python}
-p = 1 - stats.chi2.cdf(chisq, 3)
+p_value = 1 - stats.chi2.cdf(chisq, dof)
 
-print(f'p = {p:3.1f}')
+print(f'p = {p_value:.2f}')
 ```
 
 As the *p*-value is above 0.05 we *fail to reject the null hypothesis* that the distribution of characters chosen by players is as the developers claimed.
 
 Independence Test
 =================
-The chi-squared independence test answers the question __*do these two (or more) samples come from the same distribution*__?
+The chi-squared independence test answers the question *"are these **two** categorical variables independent of each other?"*. Data used in goodness-of-fit tests has **one** categorical dependent variable, so this is one step more complicated.
 
 Crash Course Example
 --------------------
-Again using [an example from the Crash Course Youtube video](https://www.youtube.com/watch?v=7_cs1YlZoug):
+Again, using an example from [the Crash Course Youtube video](https://www.youtube.com/watch?v=7_cs1YlZoug):
+
+> Is someone's Hogwarts house independent of whether or not they like pineapple on pizza?
+
+Here's the raw data:
 
 **Observed:**
 
-|     | Gryffindor | Hufflepuff | Ravenclaw | Slytherin |
-|-----|------------|------------|-----------|-----------|
-| No  | 79         | 122        | 204       | 74        |
-| Yes | 82         | 139        | 240       | 69        |
+|                           | Gryffindor | Hufflepuff | Ravenclaw | Slytherin |
+|---------------------------|------------|------------|-----------|-----------|
+| No to pineapple on pizza  | 79         | 122        | 204       | 74        |
+| Yes to pineapple on pizza | 82         | 130        | 240       | 69        |
 
-**Expected:**
+Check the flowchart to confirm that a chi-squared test of independence is appropriate: we have two dependent variables, both are categorical (specifically, nominal) and no independent variable (only one sample was taken). So we're all good.
 
-|     | Gryffindor | Hufflepuff | Ravenclaw | Slytherin |
-|-----|------------|------------|-----------|-----------|
-| No  | 77.12      | 120.71     | 212.68    | 68.5      |
-| Yes | 83.88      | 131.29     | 231.32    | 74.5      |
-
-In Python, this is calculated in the same way as the previous example except:
-
-- An extra dimension is needed in each of the function's inputs
-- The expected distribution is calculated from the row and column totals from the observed distribution
-- The number of degrees of freedom is calculated instead of being hard-coded
+If the two dependent variables - Hogwarts house and pineapple on pizza preference - are indeed independent we can work out what we would expect the data to look like given the number of people who were surveyed:
 
 ```{python}
 import numpy as np
 
-# Are two distributions independent?
-observations = np.array(
+#
+# Are two categorical variables independent?
+#
+# Collate the observed data
+observed = np.array(
     [
         [79, 122, 204, 74],
         [82, 130, 240, 69]
     ]
 )
-row_totals = np.array([np.sum(observations, axis=1)])
-col_totals = np.array([np.sum(observations, axis=0)])
-n = np.sum(observations)
+# Calculate totals
+row_totals = np.array([np.sum(observed, axis=1)])
+col_totals = np.array([np.sum(observed, axis=0)])
+n = np.sum(observed)
+# Calculate the expected observations
+expected = np.dot(row_totals.T, col_totals) / n
+
+print(np.round(expected, 2))
+```
+
+Here it is in a table:
+
+**Expected:**
+
+|                           | Gryffindor | Hufflepuff | Ravenclaw | Slytherin |
+|---------------------------|------------|------------|-----------|-----------|
+| No to pineapple on pizza  | 77.12      | 120.71     | 212.68    | 68.5      |
+| Yes to pineapple on pizza | 83.88      | 131.29     | 231.32    | 74.5      |
+
+In Python, if we try to use the `chisquare()` function in the same way as we did before it will assume we are trying to do four goodness-of-fit tests and so it will give us four answers:
+
+```{python}
+# Calculate the chi-square test statistic
+chisq, p_value = stats.chisquare(observed, expected)
+
+print(chisq, p_value)
+```
+
+So we need to do some post-hoc calculation on our own:
+
+```{python}
+# Sum the answers
+chisq = np.sum(chisq)
+# Degrees of freedom
+rows = observed.shape[0]
+cols = observed.shape[1]
+dof = (rows - 1) * (cols - 1)
+# Convert chi-square test statistic to p-value
+p_value = 1 - stats.chi2.cdf(chisq, dof)
+
+print(f'χ² = {chisq:.3f}, p = {p_value:.2f}')
+```
+
+This is the same as what they got in the video (note that Python rounds to the nearest *even* number by default and the rounded *p*-value of 0.6 matches what the video shows).
+
+As the *p*-value is larger than 0.05 we *fail to reject the null hypothesis* that the distribution of Hogwarts houses is the same for both pineapple on pizza lovers and haters.
+
+### Equivalence with the Two-Sample *Z*-Test
+Let's reduce the example so that we only have two houses:
+
+**Observed:**
+
+|                           | Gryffindor | Hufflepuff |
+|---------------------------|------------|------------|
+| No to pineapple on pizza  | 79         | 122        |
+| Yes to pineapple on pizza | 82         | 130        |
+
+We can still use the chi-squared independence test:
+
+```{python}
+# Collate the observed data
+observed = np.array(
+    [
+        [79, 122],
+        [82, 130]
+    ]
+)
+# Calculate totals
+row_totals = np.array([np.sum(observed, axis=1)])
+col_totals = np.array([np.sum(observed, axis=0)])
+n = np.sum(observed)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
 # Calculate the chi-square test statistic
-chisq, p = stats.chisquare(observations, expected)
+chisq, p_value = stats.chisquare(observed, expected)
+# Sum the answers
 chisq = np.sum(chisq)
 # Degrees of freedom
-rows = observations.shape[0]
-cols = observations.shape[1]
-df = (rows - 1) * (cols - 1)
+rows = observed.shape[0]
+cols = observed.shape[1]
+dof = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p = 1 - stats.chi2.cdf(chisq, df)
+p_value = 1 - stats.chi2.cdf(chisq, dof)
 
-print(f'p = {p:3.1f}')
+print(f'χ² = {chisq:.3f}, p = {p_value:.3f}')
 ```
 
-As *p* is larger than 0.05 we *fail to reject the null hypothesis* that the distribution of Hogwarts houses is the same for both pineapple-on-pizza lovers and haters.
+However, we can also use the two-sample *Z*-test for a proportion (see more [here](two_sample_z_test_proportion.html)) to get the same *p*-value (albeit from a different test statistic):
+
+- $H_0: \pi_{group \, 0} = \pi_{group \, 1}$
+- $H_1: \pi_{group \, 0} \neq \pi_{group \, 1}$
+
+where $\pi$ is the proportion who gave a certain response.
+
+```{python}
+from statsmodels.stats.proportion import proportions_ztest
+
+# Number of one type of response
+count = [79, 122]
+# Number of observations
+nobs = [79 + 82, 122 + 130]
+# Perform a two-sample Z-test for a proportion
+z_stat, p_value = proportions_ztest(count, nobs)
+
+print(f'Z-statistic = {z_stat:.3f}; p = {p_value:.3f}')
+```
+
+Note that it doesn't make a difference mathematically if we swap the variables:
+
+```{python}
+# Number of one type of response
+count = [79, 82]
+# Number of observations
+nobs = [79 + 122, 82 + 130]
+# Perform a two-sample Z-test for a proportion
+z_stat, p_value = proportions_ztest(count, nobs)
+
+print(f'Z-statistic = {z_stat:.3f}; p = {p_value:.3f}')
+```
 
 Stat Trek Example
 -----------------
 Using [an example from Stat Trek](https://stattrek.com/chi-square-test/independence.aspx):
 
+> Do men and women in America have different voting preferences?
+
+The results of a fictitious survey are as follows:
+
 **Observed:**
 
-|        | Rep | Dem | Ind |
-|--------|-----|-----|-----|
-| Male   | 200 | 150 | 50  |
-| Female | 250 | 300 | 50  |
+|        | Republican | Democrat | Independent |
+|--------|------------|----------|-------------|
+| Men    | 200        | 150      | 50          |
+| Women  | 250        | 300      | 50          |
+
+Quick check of the flowchart: we have two categorical dependent variables (voting preference and gender, both of which are nominal and the latter is binary) and no independent variable (only one survey was taken). So a chi-squared test of independence is the way to go:
 
 ```{python}
-# Are two distributions independent?
-observations = np.array(
+# Collate the observed data
+observed = np.array(
     [
         [200, 150, 50],
         [250, 300, 50]
     ]
 )
-row_totals = np.array([np.sum(observations, axis=1)])
-col_totals = np.array([np.sum(observations, axis=0)])
-n = np.sum(observations)
+# Calculate totals
+row_totals = np.array([np.sum(observed, axis=1)])
+col_totals = np.array([np.sum(observed, axis=0)])
+n = np.sum(observed)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
-# Calculate chi-square test statistic
-chisq, p = stats.chisquare(observations, expected)
+# Calculate the chi-square test statistic
+chisq, p_value = stats.chisquare(observed, expected)
+# Sum the answers
 chisq = np.sum(chisq)
 # Degrees of freedom
-rows = observations.shape[0]
-cols = observations.shape[1]
-df = (rows - 1) * (cols - 1)
+rows = observed.shape[0]
+cols = observed.shape[1]
+dof = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p = 1 - stats.chi2.cdf(chisq, df)
+p_value = 1 - stats.chi2.cdf(chisq, dof)
 
-print(f'p = {p:6.4f}')
+print(f'χ² = {chisq:.3f}, p = {p_value:.4f}')
 ```
 
-To quote: "since the *p*-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference".
+To quote the source: "since the *p*-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference".
 
 Homogeneity Test
 ================
-The chi-squared homogeneity test answers the question __*do these two (or more) samples come from the same population*__?
+The chi-squared homogeneity test answers the question *"do these two (or more) samples come from the same population?"*.
 
 The homogeneity test is that same as the independence test *in practice* (ie the way it is calculated in Python is the same) but it is different conceptually:
 
-> The difference between a chi-squared independence test and a chi-squared homogeneity test is that, in the former, there is one group of people (ie one sample of the population) surveyed whereas in the second there are multiple groups surveyed.
+- In a chi-squared **independence** test there is *one* group of people (ie one sample of the population) surveyed and *two* things are measured: no independent variable and two dependent variables
+- In a chi-squared **homogeneity** test there are *multiple* groups surveyed but *one* thing is measured: one independent variable and one dependent variable
 
-As a result, the question you are asking about the equivalency of the sample distribution and the population distribution is different.
+Because there is no mathematical difference between different types of variables, the calculation looks the same.
 
 DisplayR Example
 ----------------
 Using [an example from DisplayR](https://www.displayr.com/what-is-the-chi-square-test-of-homogeneity/):
 
+> As part of an investigation into the effects of different living conditions, people who were living alone and people who were living with others were both surveyed. One question that was asked is whether or not a difference in living situation affects peoples' eating habits.
+
+Here is the recorded data:
+
 **Observed:**
 
-|                            | Living alone | Living with others |
-|----------------------------|--------------|--------------------|
-| On a diet                  | 2            | 25                 |
-| Watch what I eat and drink | 23           | 146                |
-| Whatever I feel like       | 7            | 124                |
+|                    | I'm on a diet | I watch what I eat | I eat whatever I feel like |
+|--------------------|---------------|--------------------|----------------------------|
+| Living with others | 25            | 146                | 124                        |
+| Living alone       | 2             | 23                 | 7                          |
+
+
+Check the flowchart:
+
+- Categorical (nominal) dependent variable - eating habits - with three categories
+- Categorical (nominal, binary) independent variable: living situation
+
+So either a chi-squared homogeneity test or a two-sample *Z*-test would be appropriate. We'll use a chi-squared test for this example and a *Z*-test for the next example.
 
 ```{python}
-# Do different samples come from the same population?
-observations = np.array(
+# Collate the observed data
+observed = np.array(
     [
         [25, 146, 124],
         [2, 23, 7]
     ]
 )
-row_totals = np.array([np.sum(observations, axis=1)])
-col_totals = np.array([np.sum(observations, axis=0)])
-n = np.sum(observations)
+# Calculate totals
+row_totals = np.array([np.sum(observed, axis=1)])
+col_totals = np.array([np.sum(observed, axis=0)])
+n = np.sum(observed)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
-# Calculate chi-square test statistic
-chisq, p = stats.chisquare(observations, expected)
-chisq = np.sum(chisq)
-# Degrees of freedom
-rows = observations.shape[0]
-cols = observations.shape[1]
-df = (rows - 1) * (cols - 1)
-# Convert chi-square test statistic to p-value
-p = 1 - stats.chi2.cdf(chisq, df)
 
-print(f'p = {p:5.3f}')
+print(np.round(expected, 1))
 ```
 
-To quote: "as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a 'line ball' conclusion."
+**Expected:**
+
+|                    | I'm on a diet | I watch what I eat | I eat whatever I feel like |
+|--------------------|---------------|--------------------|----------------------------|
+| Living with others | 24.4          | 152.5              | 118.2                      |
+| Living alone       | 2.6           | 16.5               | 12.8                       |
+
+```{python}
+# Calculate the chi-square test statistic
+chisq, p_value = stats.chisquare(observed, expected)
+# Sum the answers
+chisq = np.sum(chisq)
+# Degrees of freedom
+rows = observed.shape[0]
+cols = observed.shape[1]
+dof = (rows - 1) * (cols - 1)
+# Convert chi-square test statistic to p-value
+p_value = 1 - stats.chi2.cdf(chisq, dof)
+
+print(f'χ² = {chisq:.3f}, p = {p_value:.3f}')
+```
+
+To quote the source: "as this is greater than 0.05, by convention the conclusion is that the difference is due to sampling error, although the closeness of 0.05 to 0.052 makes this very much a 'line ball' conclusion."
 
 Statsmodels Example
 -------------------
+A data set with a binary dependent variable and a nominal independent variable that has three levels can be addressed either with a chi-squared homogeneity test *or* a three-sample *Z*-test:
+
+> Let's pretend we have three cohorts of students taking a test and 39, 57 and 54 pass out of total class sizes of 60, 70 and 65. Are the proportions of students passing the same in each cohort?
+
+The dependent variable is binary (a student either passed or failed) and the independent variable is nominal with three levels (there are three cohorts of students). We can use a chi-squared homogeneity test as above:
+
+```{python}
+# Collate the observed data
+observed = np.array(
+    [
+        [39, 57, 54],
+        [60 - 39, 70 - 57, 65 - 54]
+    ]
+)
+# Calculate totals
+row_totals = np.array([np.sum(observed, axis=1)])
+col_totals = np.array([np.sum(observed, axis=0)])
+n = np.sum(observed)
+# Calculate the expected observations
+expected = np.dot(row_totals.T, col_totals) / n
+# Calculate the chi-square test statistic
+chisq, p_value = stats.chisquare(observed, expected)
+# Sum the answers
+chisq = np.sum(chisq)
+# Degrees of freedom
+rows = observed.shape[0]
+cols = observed.shape[1]
+dof = (rows - 1) * (cols - 1)
+# Convert chi-square test statistic to p-value
+p_value = 1 - stats.chi2.cdf(chisq, dof)
+
+print(f'χ² = {chisq:.3f}, p = {p_value:.3f}')
+```
+
+Now, let's treat the same example as if we wanted to do a *Z*-test:
+
+### Equivalence with the Three-Sample *Z*-Test
 Following on from [this page](one_sample_z_test_proportion.html) about the **one**-sample *Z*-test for a proportion and [this page](two_sample_z_test_proportion.html) about the **two**-sample *Z*-test for a proportion, it seems natural to want to do an example with **three** samples:
+
+Our hypotheses are as follows:
 
 - $H_0: \pi_1 = \pi_2 = \pi_3$
 - $H_1: \pi_1 \neq \pi_2$, $\pi_1 \neq \pi_3$ or $\pi_2 \neq \pi_3$
 
-where $\pi$ indicates the true proportion of 'successes' for each cohort.
-
-However, this is not yet possible with Statsmodels in Python:
+where $\pi$ indicates the true proportion of 'successes' (passes) for each cohort. Unfortunately, it is not yet possible to answer this question by using a thee-sample *Z*-test with Statsmodels in Python; if we try we get a 'Not Implemented' error:
 
 ```{python, eval = FALSE}
 from statsmodels.stats.proportion import proportions_ztest
@@ -412,7 +652,7 @@ NotImplementedError: more than two samples are not implemented yet
 
 *(Note also that Fisher's exact test for three (or more) groups is also currently not implemented in any Python package)*
 
-However, as the *Z*-test for a proportion is mathematically equivalent to a chi-squared test, we can use `proportions_chisquare` from Statsmodels instead:
+However, as the *Z*-test for a proportion is mathematically equivalent to a chi-squared test, we can use `proportions_chisquare()` from Statsmodels instead:
 
 ```{python}
 from statsmodels.stats.proportion import proportions_chisquare
@@ -427,9 +667,9 @@ nobs = [60, 70, 65]
 chi2_stat, p_value, table = proportions_chisquare(count, nobs)
 ```
 
-Note that this takes `nobs` - the *total* number of observations - as the second input. This is different from SciPy's `chisquare` function which takes the numbers of observations in each *individual group* as its inputs.
+Note that this takes `nobs` - the *total* number of observations - as the second input. This is different from SciPy's `chisquare()` function which takes the numbers of observations in each *individual group* as its inputs.
 
-As it outputs, `proportions_chisquare` gives us the tabulation of the number of observations:
+As its outputs, `proportions_chisquare()` gives us the tabulation of the number of observations:
 
 ```{python}
 print(table[0])
@@ -444,20 +684,24 @@ print(table[1])
 ...and the results:
 
 ```{python}
-print(f'χ² = {chi2_stat:.2f}, p = {p_value:.3f}')
+print(f'χ² = {chi2_stat:.3f}, p = {p_value:.3f}')
 ```
 
 This low *p*-value can be understood by looking at the percentage of students who passed in each of the three cohorts:
 
 ```{python}
-print(np.array(count) / np.array(nobs) * 100)
+print(np.round(np.array(count) / np.array(nobs) * 100, 2))
 ```
 
-While the percentage of students achieving a pass mark was very similar for cohorts 2 and 3 (about 82%) the percentage was significantly lower for cohort 1 (65%). So, we shouldn't be surprised that the *p*-value suggests significance.
+While the percentage of students achieving a pass mark was very similar for cohorts 2 and 3 (about 82%) the percentage was significantly lower for cohort 1 (65%). So, we shouldn't be surprised that the *p*-value suggests significance: the cohorts appear to be different!
 
 Test for Trend (Cochran–Armitage Test)
 ======================================
-When a data set has a *nominal* input variable and an *ordinal* output variable, a chi-squared test for trend can be used[^1]. A nominal variable has no rank or order, for example 'gender' (male or female) or 'presence of illness' (healthy or diseased). An ordinal variable *does* have a rank or an order but the scale is arbitrary, such as 'level of satisfaction' (unsatisfied, neutral, satisfied) or 'dosage group' (low, medium, high). Both are *categorical* variables.
+When a data set has a *binary* nominal input variable and an *ordinal* output variable (or vice-versa), a chi-squared test for trend can be used[^1]. As a reminder:
+
+- A **nominal** variable has no rank or order, for example 'gender' (male or female) or 'presence of illness' (healthy or diseased). Both these examples are **binary** (only two options) which is a subset of the nominal data type.
+- An **ordinal** variable *does* have a rank or an order but the scale is arbitrary, such as 'level of satisfaction' (unsatisfied, neutral, satisfied) or 'dosage group' (low, medium, high)
+- Both are **categorical** variables
 
 [^1]: Swinscow, TDV. Study design and choosing a statistical test. In: Campbell, MJ, editors. Statistics at Square One. BMJ Publishing Group; 1997. Available [here](https://www.bmj.com/about-bmj/resources-readers/publications/statistics-square-one/13-study-design-and-choosing-statisti). Jump to reference:&nbsp;
 
@@ -485,7 +729,7 @@ x.extend(['High'] * 12)
 y.extend(['Uninfected'] * 12)
 ```
 
-We now have two lists which are each 90 elements long, corresponding to the 90 patients in our fictitious example. Now we can create the contingency table - also known as a cross-tabulation - using the `crosstab()` function in Pandas:
+We now have two lists which are each 90 elements long, corresponding to the 90 patients in our fictitious example. Now we can create the contingency table - also known as a cross-tabulation - using the `crosstab()` function from Pandas:
 
 ```{python}
 import pandas as pd
@@ -505,7 +749,7 @@ The next thing to define is the scores, which are the arbitrary rankings (weight
 score = [3, 1, 2]
 ```
 
-Now we can perform the χ² test for trend. The formula used in the example has three intermediate variables: $T_1$, $T_2$ and $T_3$:
+Now we can perform the chi-squared test for trend. The formula used in the example has three intermediate variables: $T_1$, $T_2$ and $T_3$:
 
 ```{python}
 import numpy as np
@@ -535,14 +779,14 @@ These are all the elements we need to plug into their formula for χ²:
 ```{python}
 # χ²
 v = np.prod(col_sums) * (n * t_3 - t_2**2) / (n**2 * (n - 1))
-chi_squared = (t_1 - (col_sums[0] * t_2 / n))**2 / v
+chisq = (t_1 - (col_sums[0] * t_2 / n))**2 / v
 
-print(chi_squared)
+print(f'χ² = {chisq:.2f}')
 ```
 
 This matches their value of 11.51.
 
-The last step is to test this value for significance by calculating the *p*-value by using the CDF (cumulative distribution function) for the χ² distribution:
+The last step is to test this value for significance by calculating the *p*-value by using the CDF (cumulative distribution function) for the chi-squared distribution:
 
 ```{python}
 # Degrees of freedom
@@ -550,9 +794,9 @@ dof = np.prod(np.array(ct.shape) - 1) - 1
 # p-value
 # The probability of obtaining test results at least as extreme as the result
 # actually observed, under the assumption that the null hypothesis is correct
-p = 1 - stats.chi2.cdf(chi_squared, dof)
+p_value = 1 - stats.chi2.cdf(chisq, dof)
 
-print(p)
+print(f'p = {p_value:.4f}')
 ```
 
 This matches their result of 0.0007.
@@ -577,7 +821,7 @@ Let's take an imaginary example where students in various classes were asked if 
 ```{python}
 # Number of students satisfied with their level of feedback
 count = [20, 15, 12, 8]
-# Number of students who gave feedback
+# Number of students who got feedback
 nobs = [30, 27, 23, 23]
 # Relative size of class
 weights = [1, 2, 3, 4]
@@ -615,9 +859,9 @@ p_value = 1 - stats.chi2.cdf(chi2_stat, df=1)
 print(f'χ² = {chi2_stat:.3f}, p = {p_value:.3f}')
 ```
 
-The chi-squared test for trend gives a *p*-value of less than 0.05, so we reject the null hypothesis in favour of the alternative. We conclude that there is evidence that the proportion of students satisfied with assignment feedback is truly related to the size of the class attended. As the size of the class attended increases, the proportion of satisfied students decreases.
+The chi-squared test for trend gives a *p*-value of less than 0.05 so we reject the null hypothesis in favour of the alternative. We conclude that there is evidence that the proportion of students satisfied with assignment feedback is truly related to the size of the class attended. As the size of the class attended increases, the proportion of satisfied students decreases.
 
-This is consistent with the plot of the data which shows a downward trend. However, unlike linear regression, this hypothesis test does not provide an estimate of the constant rate of decrease of the proportion, i.e. an estimate of the gradient of the plot.
+This is consistent with the plot of the data which shows a downward trend. However, unlike linear regression, this hypothesis test does not provide an estimate of the constant rate of decrease of the proportion, ie an estimate of the gradient of the plot.
 
 ```{python, eval=FALSE, echo=FALSE}
 # ANOTHER WORKED EXAMPLE WHICH, AS FAR AS I CAN TELL, IS INCORRECT IN THE SOURCE
@@ -734,7 +978,7 @@ observations = [30, 910, 60]
 expected = [50, 900, 50]
 p, sig, inter = perform_chi_squared(observations, expected)
 
-print(f'p = {p:5.3f}{sig}. {inter}')
+print(f'p = {p:.3f}{sig}. {inter}')
 ```
 
 Thus, at a 99% confidence level, we can say that the new equipment has a different distribution of overweight-underweight widget production compared to the old equipment.
