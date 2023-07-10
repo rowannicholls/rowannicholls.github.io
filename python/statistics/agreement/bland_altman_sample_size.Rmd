@@ -274,7 +274,11 @@ n = n[i]
 print(f'A sample size of {n} will ensure that the test has a statistical power of {round(p, 3)}')
 ```
 
-This is interesting: we have calculated an $n$ of 79 when Lu et al calculated a value of 83 (see Section 5 of their paper). Moreover, [MedCalc](https://www.medcalc.org/manual/sample-size-bland-altman.php) used the same data and method and also calculated 83! Let's have a go at doing it in R:
+**Is this right?**
+
+We have calculated our required $n$ to be 79. However, in Section 5 of Lu et al (2016) they reported that they got an $n$ of 83 for the exact same example! Moreover, one of the [MedCalc](https://www.medcalc.org/manual/sample-size-bland-altman.php) pages also gets an answer of 83 using this data and method! The reason for this seems to be that both Lu and MedCalc used an approximation of the full method when doing this example: specifically, they probably used Equation 6 from the 2016 paper. When using the PASS (Power Analysis & Sample Size) programme from NCSS - often considered a gold standard for sample size calculations and which uses Equation 5 from the 2016 paper - the answer is confirmed as being 79.
+
+Thanks to Aaron Caldwell for advising on the above.
 
 ### Method 3: blandPowerCurve from SimplyAgree in R
 Importing the `SimplyAgree` library gives us access to the `blandPowerCurve` function (see the [documentation](https://aaroncaldwell.us/SimplyAgree/reference/blandPowerCurve.html) and the [source code](https://github.com/arcaldwell49/SimplyAgree/blob/master/R/blandPowerCurve.R)). Let's use that to run the same example from Section 5 of Lu et al in R:
@@ -299,7 +303,7 @@ power <- found_n[["power"]]
 print(c(n, power))
 ```
 
-We get $n = 79$ and $p = 0.802$, so at least we agree with R!
+We get $n = 79$ and $p = 0.802$, so we agree with the gold standard solution.
 
 ```{R, eval = FALSE, echo = FALSE}
 library(SimplyAgree)
