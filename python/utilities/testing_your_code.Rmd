@@ -1,0 +1,444 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>Testing Your Code'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+Once you've written code, you should **test it**.
+
+Testing ensures that:
+
+- Your script/module/package works as intended, even if it's given incorrect inputs
+- Bugs are found quicker
+- Documentation can be written more easily
+
+and, overall, that your code is of a higher quality.
+
+There is a difference between *unit tests* and *integration tests*, but this page will focus on unit tests.
+
+Testing using `assert`
+======================
+Let's take a look at the following module which contains a function that returns the firing distance of a spud gun given an initial velocity, height and angle:
+
+```{python}
+import numpy as np
+
+
+def spud_gun_firing_distance(v_0, r_y0, theta):
+    """
+    Determine the distance that a spud gun fires.
+
+    Projectile motion with uniform acceleration in a straight line (downwards)
+    is described by the following equations:
+
+    - Equation 1: v_1 = a * t + v_0
+    - Equation 2: r_1 = r_0 + v_0 * t + 0.5 * a * t**2
+    - Equation 3: r_1 = r_0 + 0.5 * (v_1 + v_0) * t
+    - Equation 4: v_1**2 = v_0**2 + 2 * a * (r_1 - r_0)
+    - Equation 5: r_1 = r_0 + v_1 * t - 0.5 * a * t**2
+
+    See https://en.wikipedia.org/wiki/Equations_of_motion
+
+    Parameters
+    ----------
+    v_0 : float
+        Initial velocity.
+    r_y0 : float
+        Initial y position (height about the ground).
+    theta : float
+        Angle of inclination in **radians**.
+    """
+    # Known variables
+    v_x0 = v_0 * np.cos(theta)  # m/s
+    v_y0 = v_0 * np.sin(theta)  # m/s
+    r_x0 = 0  # m
+    r_y1 = 0  # m
+    a_x = 0  # m/s²
+    a_y = -9.81  # m/s²
+
+    # Equation 5
+    a = 0.5 * a_y
+    b = v_y0
+    c = r_y0 - r_y1
+    # Only take the positive root
+    t1 = (-b + np.sqrt(b**2 - 4 * a * c)) / (2 * a)
+    t2 = (-b - np.sqrt(b**2 - 4 * a * c)) / (2 * a)
+    if t1 > t2:
+        t = t1  # s
+    else:
+        t = t2  # s
+
+    # Equation 2
+    r_x1 = r_x0 + v_x0 * t + 0.5 * a_x * t**2  # m
+
+    return r_x1
+```
+
+This code looks good, but is it correct? Let's take a worked example from a physics textbook:
+
+*"How far away will a cricket ball land after being thrown by a 1.8 m tall cricketer at a speed of 27 m/s and an angle of 58° to the ground?"*
+
+Let's see if their answer of 67.9 m matches our code's output (note that our code works with radians, not degrees):
+
+```{python}
+v_0 = 27  # m/s
+r_y0 = 1.8  # m
+theta = 58  # degrees
+distance = spud_gun_firing_distance(v_0, r_y0, theta * np.pi / 180)
+
+print(distance, 'm')
+```
+
+That looks correct. So, now we can use this as our **test case** - as long as our function continues to produce this result for those inputs we can assume it is working for this specific type of functionality. However, it would be annoying if every time we ran our script this test case also ran and output `67.89755324030912 m` onto the console. Luckily, there is a way to check that this example test case is passing without us having to worry about it: the `assert` statement:
+
+```{python}
+v_0 = 27  # m/s
+r_y0 = 1.8  # m
+theta = 58  # degrees
+actual = spud_gun_firing_distance(v_0, r_y0, theta * np.pi / 180)
+expected = 67.89755324030912
+
+assert actual == expected, f'Expected "{expected}" but got "{actual}"'
+```
+
+When this snippet runs there is no output! What happens is that a comparison is made between `actual` and `expected` and, because they are equal, the script just continues going. If they do not agree an "`AssertionError`" is triggered to let us know and our custom error message is shown:
+
+```{python, eval = FALSE}
+actual = spud_gun_firing_distance(v_0, r_y0, theta * np.pi / 180)
+expected = 68
+
+assert actual == expected, f'Expected "{expected}" but got "{actual}"'
+```
+
+```
+## Error: AssertionError: Expected "68" but got "67.89755324030912"
+```
+
+We can go one step further: if this function is part of a module that is intended to be imported into a script (ie if this file would never be run directly in production) then we can put this assertion inside a "dunder name" guard:
+
+```{python, eval = FALSE}
+if __name__ == "__main__":
+    actual = spud_gun_firing_distance(v_0, r_y0, theta * np.pi / 180)
+    expected = 68
+
+    assert actual == expected, f'Expected "{expected}" but got "{actual}"'
+```
+
+This way, the test will not be run when your package is used as intended (ie when it is imported into a main script) but it can still be run if you want to check it by running the module file directly. An even cleaner version that helps in cases where you have many tests is as follows:
+
+```{python, eval = FALSE}
+def test_case():
+    actual = spud_gun_firing_distance(v_0, r_y0, theta * np.pi / 180)
+    expected = 68
+
+    assert actual == expected, f'Expected "{expected}" but got "{actual}"'
+
+
+if __name__ == "__main__":
+    test_case()
+```
+
+This doesn't change how the code works, but it can make things neater and more readable.
+
+Testing using `unittest`
+========================
+There are a number of packages and libraries in Python that make testing even easier and more useful. One drawback of the `assert` method shown above is that, if one test fails, the entire script comes to a halt. A better way to do things is to use what is known as a 'test runner' which, as the name suggests, runs tests. An example is the `unittest` module which is included in the Standard Library (ie you don't need to install it!). This allows you to write 'unittest test cases': these are test cases that use a special `TestCase` class. Here's how to adapt the code from the previous example to make it into a unittest test case:
+
+- Import the `unittest` module
+- Create a `TestCases` class that inherits from the `unittest.TestCase` class
+- Move your test case function inside this new class and put `self` as the first argument
+- Change the `assert` statement to the `self.assertEqual()` method
+- Change the 'entry-point' to the test case from a function call (`test_case()`) to `unittest.main()`
+
+```{python, eval = FALSE}
+import unittest
+
+
+class TestCases(unittest.TestCase):
+    """Test cases."""
+
+    def test_case(self):
+        """Test case."""
+        v_0 = 27  # m/s
+        r_y0 = 1.8  # m
+        theta = 58  # degrees
+        actual = spud_gun_firing_distance(v_0, r_y0, theta * np.pi / 180)
+        expected = 67.89755324030912
+        error_message = f'Expected "{expected}", got "{actual}"'
+        self.assertEqual(expected, actual, error_message)
+
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+```
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+OK
+```
+
+The `.` in the first line of the output represents the one test case that was run (if more test cases are run there will be more dots - one to represent each case). As you can see from the third line of the output, 1 test was run and it passed (as we would expect!). You can do the same thing from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m unittest test_unittest
+```
+
+where `python3.11` is the version of Python you have installed and are using and `test_unittest.py` is the name of the file that contains your code (note that you don't include the `.py` extension in the terminal command).
+
+As your code and your project starts getting larger and more complicated it makes sense to separate it out into different files and folders. For example, a standard folder structure for a coding project would look like this:
+
+```
+project/
+│
+├── src/
+│   ├── __init__.py
+│   └── module.py
+│
+└── tests/
+    ├── __init__.py
+    └── test_unittest.py
+```
+
+The function `spud_gun_firing_distance()` would be defined in `module.py` and the test cases would be defined in `test_unittest.py`. Running the unit tests from the terminal can still be done: use the following from within the top-level `project` folder:
+
+```{bash, eval = FALSE}
+$ python3.11 -m unittest discover
+```
+
+This will cause `unittest` to search the entire folder structure, 'discover' all files that have names with the pattern `test*.py` (ie `test_unittest.py` would be discovered) and run the unittest test cases inside of them!
+
+However, with this new folder structure, running `test_unittest.py` directly would no longer work because it can no longer find the `spud_gun_firing_distance()` function. We can get around this problem with a little hack: adding the `src` folder to the system path and then importing our `module.py` file:
+
+```{python, eval = FALSE}
+import unittest
+import numpy as np
+import sys
+import os
+sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
+import module
+
+
+class TestCases(unittest.TestCase):
+    """Test cases."""
+
+    def test_case(self):
+        """Test case."""
+        v_0 = 27  # m/s
+        r_y0 = 1.8  # m
+        theta = 58 * np.pi / 180  # radians
+        actual = module.spud_gun_firing_distance(v_0, r_y0, theta)
+        expected = 67.89755324030912
+        error_message = f'Expected "{expected}", got "{actual}"'
+        self.assertEqual(expected, actual, error_message)
+
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+Testing using `pytest`
+======================
+The `pytest` framework is built on top of `unittest`. It can run unittest test cases but it can also run 'pytest test cases', which makes it extremely useful! It does not come with the Standard Library, however, so it must be installed via the following or similar:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install pytest
+```
+
+This library *can* use the `assert` statement - in addition to the `TestCase` class - so pytest test cases look exactly the same as the functions we wrote at the end of the "Testing using `assert`" section (but note that these functions *must* start with the letters "`test`"):
+
+```{python, eval = FALSE}
+def test_case():
+    """Test case."""
+    v_0 = 27  # m/s
+    r_y0 = 1.8  # m
+    theta = 58 * np.pi / 180  # radians
+    actual = module.spud_gun_firing_distance(v_0, r_y0, theta)  # m
+    expected = 67.89755324030912  # m
+    assert expected == actual, f'Expected "{expected}", got "{actual}"'
+```
+
+Again, if we have the folder structure where the source and test code are separated into `src` and `tests` folders, we need to include the hack to insert `src` into the path:
+
+```{python, eval = FALSE}
+import numpy as np
+import sys
+import os
+sys.path.insert(1, os.path.join(os.path.dirname(__file__), '..', 'src'))
+import module
+
+
+def test_case():
+    """Test case."""
+    v_0 = 27  # m/s
+    r_y0 = 1.8  # m
+    theta = 58 * np.pi / 180  # radians
+    actual = module.spud_gun_firing_distance(v_0, r_y0, theta)
+    expected = 67.89755324030912
+    assert expected == actual, f'Expected "{expected}", got "{actual}"'
+```
+
+Running this test module file directly won't do anything, but we can run `pytest` from the terminal:
+
+```{bash, eval = FALSE}
+$ pytest
+```
+
+```
+collected 2 items                                                              
+
+test_pytest.py .                                                         [ 50%]
+test_unittest.py .                                                       [100%]
+
+============================== 2 passed in 0.09s ===============================
+```
+
+This finds all files with the name pattern `test_*.py` and all test cases - both unittest and pytest - and runs them.
+
+Reminder: `pytest` needs test cases to start with the letters "`test`" and files to start with the letters "`test_`" and end with the letters "`.py`". Any variation will result in test cases not being found.
+
+Testing using `nose2`
+=====================
+The `nose2` package (a newer version of a defunct package called `nose`) is similar to `pytest` but closer to `unittest`. It can also handle both pytest- and unittest-style test cases and it also runs from the terminal. Install it with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install nose2
+```
+
+and use it with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m nose2
+```
+
+```
+..
+----------------------------------------------------------------------
+Ran 2 tests in 0.000s
+
+OK
+```
+
+The first line of the output is `..` which tells us that two test cases were run and both passed. This is confirmed in the third and fifth lines.
+
+Testing using `doctest`
+=======================
+Another module included in the Standard Library is `doctest` which runs test cases that are in the docstrings of functions:
+
+```{python, eval = FALSE}
+"""Content of the module.py file."""
+import numpy as np
+
+
+def spud_gun_firing_distance(v_0, r_y0, theta):
+    """
+    Determine the distance that a spud gun fires.
+
+    Projectile motion with uniform acceleration in a straight line (downwards)
+    is described by the following equations:
+
+    - Equation 1: v_1 = a * t + v_0
+    - Equation 2: r_1 = r_0 + v_0 * t + 0.5 * a * t**2
+    - Equation 3: r_1 = r_0 + 0.5 * (v_1 + v_0) * t
+    - Equation 4: v_1**2 = v_0**2 + 2 * a * (r_1 - r_0)
+    - Equation 5: r_1 = r_0 + v_1 * t - 0.5 * a * t**2
+
+    See https://en.wikipedia.org/wiki/Equations_of_motion
+
+    Parameters
+    ----------
+    v_0 : float
+        Initial velocity.
+    r_y0 : float
+        Initial y position (height about the ground).
+    theta : float
+        Angle of inclination in **radians**.
+
+    Examples
+    --------
+    >>> spud_gun_firing_distance(10, 125, 0)
+    50.48187773461522
+    >>> spud_gun_firing_distance(10, 0, 53 * np.pi / 180)
+    9.79879404626217
+    >>> spud_gun_firing_distance(27, 1.8, 58 * np.pi / 180)
+    67.89755324030912
+    """
+    # Known variables
+    v_x0 = v_0 * np.cos(theta)  # m/s
+    v_y0 = v_0 * np.sin(theta)  # m/s
+    r_x0 = 0  # m
+    r_y1 = 0  # m
+    a_x = 0  # m/s²
+    a_y = -9.81  # m/s²
+
+    # Equation 5
+    a = 0.5 * a_y
+    b = v_y0
+    c = r_y0 - r_y1
+    # Only take the positive root
+    t1 = (-b + np.sqrt(b**2 - 4 * a * c)) / (2 * a)
+    t2 = (-b - np.sqrt(b**2 - 4 * a * c)) / (2 * a)
+    if t1 > t2:
+        t = t1  # s
+    else:
+        t = t2  # s
+
+    # Equation 2
+    r_x1 = r_x0 + v_x0 * t + 0.5 * a_x * t**2  # m
+
+    return r_x1
+
+
+def _test():
+    import doctest
+    doctest.testmod()
+
+
+if __name__ == '__main__':
+    _test()
+```
+
+Running the above code will run the examples shown in the "Examples" section of the docstring as well, but nothing will be displayed in the console because all the tests will pass. However, if we change the last example to say the following:
+
+```{python, eval = FALSE}
+    >>> spud_gun_firing_distance(27, 1.8, 58 * np.pi / 180)
+    68
+```
+
+The script will fail with the following message:
+
+```
+Failed example:
+    spud_gun_firing_distance(27, 1.8, 58 * np.pi / 180)
+Expected:
+    68
+Got:
+    67.89755324030912
+**********************************************************************
+1 items had failures:
+   1 of   3 in __main__.spud_gun_firing_distance
+***Test Failed*** 1 failures.
+```
+
+It tells you what failed where, but does nothing if all the tests passed!
+
+[⇦ Back](../../python.html)
+
+</font>
