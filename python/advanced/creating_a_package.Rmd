@@ -1,0 +1,324 @@
+---
+title: '<font size="5">Advanced Python:</font><br>Creating a Package'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+This page replicates the [Packaging Python Projects](https://packaging.python.org/en/latest/tutorials/packaging-projects/) tutorial from the Python Packaging Authority.
+
+What is a Package?
+==================
+But first, an aside...what *is* a package? And how does it differ from a script, a module and a library? Here's a quick rundown:
+
+- A **script** is a *file* that contains commands that *do something* (ie a script will have an output when it is run)
+- A **module** is a *file* that contains the definitions of functions and/or classes, but which *doesn't do anything* when run itself. It exists to be imported into a script (or other modules) so that its functions/classes can be used there.
+- A **package** is a *folder* (possibly with sub-folders) that contains a collection of related modules (it could just be one module though) that provide a specific piece of functionality
+- A **library** is a large collection of modules, so large you could consider it to *comprehensively* address a piece of functionality:
+    + Matplotlib is a *library* that could comprehensively cover your need for plotting functionality
+    + TensorFlow is a *library* that could comprehensively cover your need for machine learning and artificial intelligence functionality
+    + The Python Standard *Library* could comprehensively cover your need for basic Python functionality
+
+A file containing only the following would be a **module**:
+
+```{python}
+def hello_world():
+    print('Hello, World!')
+```
+
+Adding a call to the function would make it a **script** because it now actually does something:
+
+```{python}
+def hello_world():
+    print('Hello, World!')
+
+
+hello_world()
+```
+
+In other words, scripts are intended to be run directly; modules are intended to be imported.
+
+Below is a structure for a **package** - a folder (and possibly sub-folders) containing a bunch of modules (Python files that have functions and classes in them) and an `__init__.py` file:
+
+```
+package/
+├── __init__.py
+├── module1.py
+├── module2.py
+└── sub_package/
+    └── module3.py
+```
+
+By importing the single *package* into your script everything inside the multiple *modules* can then be used. The `__init__.py` file gets read when the package is imported so it may contain code that helps with that importation.
+
+A **library** would essentially be a large package or collection of packages.
+
+Creating a Package
+==================
+Now that we've establish what a package is, here's how to create one. Start by initialising the following structure inside a folder called `packaging_tutorial` or similar:
+
+```
+packaging_tutorial/
+├── LICENSE
+├── pyproject.toml
+├── README.md
+├── src/
+│   └── example_package_YOUR_USERNAME_HERE/
+│       ├── __init__.py
+│       └── module.py
+└── tests/
+```
+
+All the files should be empty at this point. Commands that can be run from the terminal to create this structure are as follows:
+
+```{bash, eval = FALSE}
+$ touch LICENSE
+$ touch pyproject.toml
+$ touch README.md
+$ mkdir src
+$ mkdir src/example_package_YOUR_USERNAME_HERE
+$ touch src/example_package_YOUR_USERNAME_HERE/__init__.py
+$ touch src/example_package_YOUR_USERNAME_HERE/module.py
+$ mkdir tests
+```
+
+Populate the Module
+-------------------
+Open `module.py` and write some Python code that defines one or more function and/or class:
+
+```{python, eval = FALSE}
+"""Content of the example_package_YOUR_USERNAME_HERE package."""
+
+
+def hello_world():
+    """Send a greeting to the console."""
+    print('Hello, World!')
+```
+
+Configuration File
+------------------
+Add the following to the `pyproject.toml` file to configure a basic build system:
+
+```
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "example_package_YOUR_USERNAME_HERE"
+version = "0.0.1"
+authors = [
+  { name="Example Author", email="author@example.com" },
+]
+description = "A small example package"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pypa/sampleproject"
+"Bug Tracker" = "https://github.com/pypa/sampleproject/issues"
+```
+
+The `[project]` section can be updated to fit your own package while the `[project.urls]` section can be used if and when you have a site or GitHub repo for your code.
+
+Documentation
+-------------
+Add details to the `README.md` file to help anyone who wants to use your package (including you in the future!). If you upload your code to GitHub this will automatically be used as your package's front page, so take some time to make it worthwhile. You can use [Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/) to write your content.
+
+```
+Package Name
+============
+
+Installation
+------------
+How to install the package.
+
+Configuration
+-------------
+How to configure the package.
+
+Usage
+-----
+How to use the package, its modules and classes/functions.
+
+Known Bugs
+----------
+A list of any known bugs.
+
+Troubleshooting
+---------------
+How to fix problems that might arise.
+
+TODO
+----
+A list of changes and improvements that could be made in the future.
+
+Changelog
+---------
+A list of changes and improvements that have already been made.
+
+File Manifest
+-------------
+A list of files in the directory and sub-directories.
+
+Credits and Acknowledgments
+---------------------------
+The package's authors, their contributions and their contact details.
+
+Copyright and Licensing Information
+-----------------------------------
+Copyright (c) 2018 The Python Packaging Authority
+```
+
+License
+-------
+It's important to tell users the terms under which they can use your package and this is what the `LICENSE` file is for. Use [Choose A License](https://choosealicense.com/) to find one that fits your needs or use the MIT license below:
+
+```
+Copyright (c) 2018 The Python Packaging Authority
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+Generating Distribution Archives
+================================
+A *distribution archive* or *distribution package* is the thing that is actually uploaded to the Python Package Index and which can be installed via pip. It is the 'output' of your efforts to create a package. Firstly, you need to have the "build" package installed:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install --upgrade build
+```
+
+where `python3.11` is the version of Python you have installed and are using. Once installed, run the following command in the terminal from the same directory where `pyproject.toml` is located:
+
+```{bash, eval = FALSE}
+$ python3.11 -m build
+```
+
+This should create your distribution archive in a new `dist` folder:
+
+```
+dist/
+├── example_package_YOUR_USERNAME_HERE-0.0.1-py3-none-any.whl
+└── example_package_YOUR_USERNAME_HERE-0.0.1.tar.gz
+```
+
+Uploading to TestPyPI
+=====================
+Instead of uploading your example package to the actual Python Package Index, upload it to the *test* Python Package Index first to check that it works. This is a public sandbox for testing and experimenting which will eventually delete your package and account, so you don't have to worry about creating anything that is permanent.
+
+- In order to use TestPyPI you will need an account, which you can create [here](https://test.pypi.org/account/register/). Verify your account by clicking the link in the email that will be sent to you.
+- Create a PyPI API token. This can be done [here](https://test.pypi.org/manage/account/#api-tokens).
+    + Enter a "Token name" (I usually use the name of the computer I'm using)
+    + Set the "Scope" to "Entire account (all projects)"
+    + Click "Add token"
+    + Copy the token
+- This token can either be used 'manually' (pasted into the terminal when required) or it can be pasted into a `.pypirc` file you create in your home directory:
+
+```
+[testpypi]
+  username = __token__
+  password = [your token including the "pypi-" prefix]
+```
+
+- Next, install "Twine" (this is needed to upload your package):
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install --upgrade twine
+```
+
+- Now you can use Twine to upload your archive/package that is inside the `dist` folder:
+
+```{bash, eval = FALSE}
+$ python3.11 -m twine upload --repository testpypi dist/*
+```
+
+- If successful, you'll see a message in your terminal similar to:
+
+```{bash, eval = FALSE}
+View at:
+https://test.pypi.org/project/example-package-YOUR-USERNAME-HERE/0.0.1/
+```
+
+Installing your Package
+=======================
+Your newly-created package can now be installed like any other package using pip, although it's recommended to do this from within a virtual environment if you're just testing it out:
+
+```{bash, eval = FALSE}
+$ python3.11 -m venv venv
+```
+
+Activate your virtual environment with:
+
+```{bash, eval = FALSE}
+$ source venv/bin/activate
+```
+
+and install your package with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install --index-url https://test.pypi.org/simple/ --no-deps example-package-YOUR-USERNAME-HERE
+```
+
+It should say `Successfully installed example-package-YOUR-USERNAME-HERE-0.0.1`. You can now use you package by first opening Python:
+
+```{bash, eval = FALSE}
+$ python3.11
+```
+
+then importing it and calling your function:
+
+```{bash, eval = FALSE}
+>>> from example_package_YOUR_USERNAME_HERE import module
+>>> module.hello_world()
+Hello, World!
+```
+
+You can now exit Python with `exit()`, deactivate your virtual environment with `deactivate` and remove it by deleting the `venv` folder.
+
+Doing It For Real
+=================
+To upload a package to PyPI (the real one, not TestPyPI) follow the same process as above with the following changes:
+
+- The name for your package has to be unique. You don't have to include your username in it but be sure to make it memorable.
+- Your account will need to be a PyPI account, not a TestPyPI one. Go [here](https://pypi.org/) to create that.
+- Use `python3.11 -m twine upload dist/*` to do the uploading. You don't have to specify the `repository` in the command as the default value is the real PyPI.
+- Use `python3.11 -m pip install [your-package-name]` to do the installing
+
+[⇦ Back](../../python.html)
+
+</font>
