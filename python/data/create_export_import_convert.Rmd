@@ -15,15 +15,16 @@ output:
 [⇦ Back](../../python.html)
 
 ```{r, echo = FALSE}
-options(width = 120)
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 This script will demonstrate how to:
 
-- Create a whole bunch of Python objects (lists, arrays, data frames, etc)
-- Export them to your hard drive in various formats (Excel spreadsheets, text files, JSON files, etc)
-- Import them into Python again
-- Convert from one object type to another
+- **Create** a whole bunch of Python objects (lists, arrays, data frames, etc)
+- **Export** them to your hard drive in various formats (Excel spreadsheets, text files, JSON files, etc)
+- **Import** them back into Python
+- **Convert** them from one object type to another
 
 Start by creating folders to export the data to:
 
@@ -35,17 +36,31 @@ for folder in ['csv', 'html', 'json', 'mat', 'npy', 'ods', 'tab', 'tsv', 'txt', 
     os.makedirs(folder, exist_ok=True)
 ```
 
+and install the packages that will be needed from the terminal:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install sqlite3
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install pyexcel_ods
+$ python3.11 -m pip install xlwt
+$ python3.11 -m pip install xlsxwriter
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
 Create Data
 ===========
 
-Lists
------
-Create list:
+Create Lists
+------------
+Create a list:
 ```{python}
 ls = [1, 2, 3, 4, 5] + list('ABCDE') + list(range(5))
 ```
 
-Create list-of-lists:
+Create a list-of-lists:
 ```{python}
 ls_of_ls = [
     [1, 'Bulbasaur', 'Grass', 'Poison'],
@@ -60,14 +75,14 @@ ls_of_ls = [
 ]
 ```
 
-Tuples
-------
-Create tuple:
+Create Tuples
+-------------
+Create a tuple:
 ```{python}
 tupl = (1, 2, 3, 4, 5)
 ```
 
-Create tuple of tuples:
+Create a tuple of tuples:
 ```{python}
 tupl_of_tupl = (
     (1, 2),
@@ -76,19 +91,19 @@ tupl_of_tupl = (
 )
 ```
 
-Numpy Arrays
-------------
+Create Numpy Arrays
+-------------------
 Import Numpy:
 ```{python}
 import numpy as np
 ```
 
-Create array:
+Create an array:
 ```{python}
 array = np.arange(5)
 ```
 
-Create array-of-arrays:
+Create an array-of-arrays:
 ```{python}
 array_of_arrays = np.array([
     [1, 2, 3, 4, 5],
@@ -97,14 +112,14 @@ array_of_arrays = np.array([
 ])
 ```
 
-Strings
--------
-Create string:
+Create Strings
+--------------
+Create a string:
 ```{python}
 st = 'Hello, World!'
 ```
 
-Create multi-line string:
+Create a multi-line string:
 ```{python}
 st_multi = """Paragraph 1:
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut tellus vel nisi semper faucibus. Praesent ultricies
@@ -118,22 +133,22 @@ hendrerit.
 """
 ```
 
-Create comma-separated values:
+Create a string of comma-separated values:
 ```{python}
 st_csv = '30,40,50'
 ```
 
-Create tab-separated values:
+Create a string of tab-separated values:
 ```{python}
 st_tsv = '30\t40\t50'
 ```
 
-Create space-separated values:
+Create a string of space-separated values:
 ```{python}
 st_ssv = '30 40 50'
 ```
 
-Create multi-line space-separated values:
+Create a multi-line string of space-separated values:
 ```{python}
 st_multi_ssv = """
 Year NDay Pos0 Pos1 Pos2 Pos3 Pos4
@@ -145,9 +160,9 @@ Year NDay Pos0 Pos1 Pos2 Pos3 Pos4
 """
 ```
 
-Dictionaries
-------------
-Create dictionary:
+Create Dictionaries
+-------------------
+Create a dictionary:
 ```{python}
 dct = {
     'Fibonacci': [0, 1, 1, 2, 3, 5, 8, 13],
@@ -155,35 +170,30 @@ dct = {
 }
 ```
 
-Pandas Objects
---------------
+Create Pandas Objects
+---------------------
 Import Pandas:
 ```{python}
 import pandas as pd
 ```
 
-Create series:
+Create a series:
 ```{python}
 ser = pd.Series(['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'])
 ```
 
-Create data frame:
+Create a data frame:
 ```{python}
-df = pd.DataFrame(
-    {
-        'Person': [
-            'Charles Babbage', 'Ada Lovelace', 'Alan Turing', 'Mary Somerville', 'John Conway',
-            'Katherine Johnson'
-        ],
-        'Age': [79, 36, 41, 91, 82, 101],
-        'DOB': ['1791-12-26', '1815-12-10', '1912-06-23', '1780-12-26', '1937-12-26', '1918-08-26'],
-    }
-)
+df = pd.DataFrame({
+    'Name': ['Charles Babbage', 'Ada Lovelace', 'Alan Turing', 'Mary Somerville', 'John Conway', 'Katherine Johnson'],
+    'Age': [79, 36, 41, 91, 82, 101],
+    'DOB': ['1791-12-26', '1815-12-10', '1912-06-23', '1780-12-26', '1937-12-26', '1918-08-26'],
+})
 ```
 
-SQL Databases
--------------
-Create SQL database:
+Create SQL Databases
+--------------------
+Create an SQL database:
 ```{python, results = "hide", echo = FALSE, eval = FALSE}
 import sqlite3
 
@@ -209,51 +219,61 @@ Export
 
 Export Data Frames
 ------------------
-Export data frame to comma-separated values (.csv):
+Export a data frame as comma-separated values (.csv):
 ```{python}
 df.to_csv('csv/data frame.csv', index=False)
 ```
 
-Export data frame to tab-separated values (.tsv):
+Export a data frame as tab-separated values (.tsv):
 ```{python}
 df.to_csv('tsv/data frame.tsv', index=False, sep='\t')
 ```
 
-Export data frame to tab-separated values (.tab):
+Export a data frame as tab-separated values (.tab):
 ```{python}
 df.to_csv('tab/data frame.tab', index=False, sep='\t')
 ```
 
-Export data frame to Excel 97-2004 workbook (.xls):
+Export a data frame as an Excel 97-2004 workbook (.xls):
 ```{python}
-df.to_excel('xls/data frame.xls')
+import xlwt
+
+wb = xlwt.Workbook()
+ws = wb.add_sheet('Sheet1')
+for col_num in range(df.shape[1]):
+    # Write column headers
+    ws.write(0, col_num, list(df)[col_num])
+    for row_num in range(df.shape[0]):
+        # Write the data frame's content
+        ws.write(row_num + 1, col_num, str(df.iloc[row_num, col_num]))
+wb.save('xls/data frame.xls')
 ```
 
-Export data frame to Excel 2007 workbook (.xlsx):
+Export a data frame as an Excel 2007 workbook (.xlsx):
 ```{python}
 df.to_excel('xlsx/data frame.xlsx')
 ```
 
-Export data frames to multiple sheets of an Excel 2007 workbook (.xlsx):
+Export multiple data frames as individual sheets of an Excel 2007 workbook (.xlsx):
 ```{python}
 with pd.ExcelWriter('xlsx/multiple data frames.xlsx') as writer:
     df.to_excel(writer, sheet_name='Sheet_1')
     df.to_excel(writer, sheet_name='Sheet_2')
 ```
 
-Export data frame to space-separated values in a text file:
+Export a data frame as space-separated values in a text file (.txt):
 ```{python}
 import numpy as np
 
 np.savetxt('txt/data frame - space-separated values.txt', df, fmt='%s')
 ```
 
-Export data frame to comma-separated values in a text file:
+Export a data frame as comma-separated values in a text file (.txt):
 ```{python}
 np.savetxt('txt/data frame - comma-separated values.txt', df, fmt='%s', delimiter=',')
 ```
 
-Export data frame to tab-separated values in a text file:
+Export a data frame as tab-separated values in a text file (.txt):
 ```{python}
 output = [df.columns.tolist()] + df.values.tolist()
 np.savetxt('txt/data frame - tab-separated values.txt', output, fmt='%s', delimiter='\t')
@@ -261,111 +281,133 @@ np.savetxt('txt/data frame - tab-separated values.txt', output, fmt='%s', delimi
 
 Export Dictionaries
 -------------------
+```{python}
+dct = {
+    'Fibonacci': [0, 1, 1, 2, 3, 5, 8, 13],
+    'Primes': [2, 3, 5, 7, 11, 13, 17, 19]
+}
+```
 
-Export dictionary as a MATLAB object (.mat):
+Export a dictionary as a MATLAB object (.mat):
 ```{python}
 import scipy.io
 
-scipy.io.savemat('mat/dictionary.mat', dct, oned_as='row')
+filepath = 'mat/dictionary.mat'
+scipy.io.savemat(filepath, dct, oned_as='row')
 ```
 
-Export dictionary as a Numpy object (.npy):
+Export a dictionary as a Numpy object (.npy):
 ```{python}
 import numpy as np
 
-np.save('npy/dictionary.npy', dct)
+filepath = 'npy/dictionary.npy'
+np.save(filepath, dct)
 ```
 
-Export dictionary to comma-separated values (.csv) in four different ways:
+Export a dictionary as comma-separated values (.csv) in four different ways:
 ```{python, results = "hide"}
 import csv
 
-with open('csv/dictionary - multiple columns, single cell in each.csv', 'w') as file:
+filepath = 'csv/dictionary - multiple columns, single cell in each.csv'
+with open(filepath, 'w') as file:
     w = csv.DictWriter(file, dct.keys())
     w.writeheader()
     w.writerow(dct)
 
-with open('csv/dictionary - multiple columns, multiple cells in each.csv', 'w') as file:
+filepath = 'csv/dictionary - multiple columns, multiple cells in each.csv'
+with open(filepath, 'w') as file:
     w = csv.writer(file)
     w.writerow(dct.keys())
     for i in range(len(list(dct.values())[0])):
         w.writerow([ls[i] for ls in list(dct.values())])
 
-with open('csv/dictionary - multiple rows, single cell in each.csv', 'w') as file:
+filepath = 'csv/dictionary - multiple rows, single cell in each.csv'
+with open(filepath, 'w') as file:
     w = csv.writer(file)
     for key in list(dct.keys()):
         w.writerow([key, str(dct[key])])
 
-with open('csv/dictionary - multiple rows, multiple cells in each.csv', 'w') as file:
+filepath = 'csv/dictionary - multiple rows, multiple cells in each.csv'
+with open(filepath, 'w') as file:
     w = csv.writer(file)
     for key in list(dct.keys()):
         w.writerow([key] + dct[key])
 ```
 
-Export dictionary to tab-separated values (.tsv) in four different ways:
+Export a dictionary as tab-separated values (.tsv) in four different ways:
 ```{python, results = "hide"}
 import csv
 
-with open('tsv/dictionary - multiple columns, single cell in each.tsv', 'w') as file:
+filepath = 'tsv/dictionary - multiple columns, single cell in each.tsv'
+with open(filepath, 'w') as file:
     w = csv.DictWriter(file, dct.keys(), delimiter='\t')
     w.writeheader()
     w.writerow(dct)
 
-with open('tsv/dictionary - multiple columns, multiple cells in each.tsv', 'w') as file:
+filepath = 'tsv/dictionary - multiple columns, multiple cells in each.tsv'
+with open(filepath, 'w') as file:
     w = csv.writer(file, delimiter='\t')
     w.writerow(dct.keys())
     for i in range(len(list(dct.values())[0])):
         w.writerow([ls[i] for ls in list(dct.values())])
 
-with open('tsv/dictionary - multiple rows, single cell in each.tsv', 'w') as file:
+filepath = 'tsv/dictionary - multiple rows, single cell in each.tsv'
+with open(filepath, 'w') as file:
     w = csv.writer(file, delimiter='\t')
     for key in list(dct.keys()):
         w.writerow([key, str(dct[key])])
 
-with open('tsv/dictionary - multiple rows, multiple cells in each.tsv', 'w') as file:
+filepath = 'tsv/dictionary - multiple rows, multiple cells in each.tsv'
+with open(filepath, 'w') as file:
     w = csv.writer(file, delimiter='\t')
     for key in list(dct.keys()):
         w.writerow([key] + dct[key])
 ```
 
-Export dictionary to tab-separated values (.tab) in four different ways:
+Export a dictionary as tab-separated values (.tab) in four different ways:
 ```{python, results = "hide"}
 import csv
 
-with open('tab/dictionary - multiple columns, single cell in each.tab', 'w') as file:
+filepath = 'tab/dictionary - multiple columns, single cell in each.tab'
+with open(filepath, 'w') as file:
     w = csv.DictWriter(file, dct.keys(), delimiter='\t')
     w.writeheader()
     w.writerow(dct)
 
-with open('tab/dictionary - multiple columns, multiple cells in each.tab', 'w') as file:
+filepath = 'tab/dictionary - multiple columns, multiple cells in each.tab'
+with open(filepath, 'w') as file:
     w = csv.writer(file, delimiter='\t')
     w.writerow(dct.keys())
     for i in range(len(list(dct.values())[0])):
         w.writerow([ls[i] for ls in list(dct.values())])
 
-with open('tab/dictionary - multiple rows, single cell in each.tab', 'w') as file:
+filepath = 'tab/dictionary - multiple rows, single cell in each.tab'
+with open(filepath, 'w') as file:
     w = csv.writer(file, delimiter='\t')
     for key in list(dct.keys()):
         w.writerow([key, str(dct[key])])
 
-with open('tab/dictionary - multiple rows, multiple cells in each.tab', 'w') as file:
+filepath = 'tab/dictionary - multiple rows, multiple cells in each.tab'
+with open(filepath, 'w') as file:
     w = csv.writer(file, delimiter='\t')
     for key in list(dct.keys()):
         w.writerow([key] + dct[key])
 ```
 
-Export dictionary to text file:
+Export a dictionary to a text file (.txt):
 ```{python}
 import json
 
-json.dump(dct, open('txt/dictionary.txt', 'w'))
+filepath = 'txt/dictionary.txt'
+json.dump(dct, open(filepath, 'w'))
 ```
 
-Export dictionary to JSON file:
+Export a dictionary to a JSON file (.json):
 ```{python}
 import json
 
-with open('json/dictionary.json', 'w') as file:
+filepath = 'json/dictionary.json'
+with open(filepath, 'w') as file:
     json.dump(dct, file)
 ```
 
@@ -1066,49 +1108,63 @@ dct = import_spreadsheet_dict('ods/list-of-lists.ods')
 Convert
 =======
 
-Pandas Objects
---------------
-Convert data frame to dictionary:
+Convert Pandas Objects
+----------------------
+Convert a data frame to a dictionary:
 ```{python}
 import pandas as pd
 
+# Create a data frame
+df = pd.DataFrame({
+    'Name': ['Charles Babbage', 'Ada Lovelace', 'Alan Turing', 'Mary Somerville', 'John Conway', 'Katherine Johnson'],
+    'Age': [79, 36, 41, 91, 82, 101],
+    'DOB': ['1791-12-26', '1815-12-10', '1912-06-23', '1780-12-26', '1937-12-26', '1918-08-26'],
+})
+
+# Convert to a dictionary
 dct = df.to_dict()
+
+print(dct)
 ```
 
-Convert data frame to a list-of-lists:
+Convert a data frame to a list-of-lists:
 ```{python}
 ls_of_ls = df.values.tolist()
 # Add the column headings to the start of the list-of-lists
 ls_of_ls = [df.columns.tolist()] + ls_of_ls
+
+print(ls_of_ls)
 ```
 
-Convert series to list:
+Convert a series to a list:
 ```{python}
+# Create a series
+ser = pd.Series(['Alpha', 'Bravo', 'Charlie', 'Delta', 'Echo'])
+
+# Convert to a list
 ls = list(ser)
+
+print(ls)
 ```
 
-Lists with Text and Numbers
----------------------------
-Convert list-of-lists to a dictionary (row headers as keys):
+Convert Lists of Strings and Numbers
+------------------------------------
+Convert a list-of-lists to a dictionary (using *row headers* as keys):
 ```{python}
+# Create a list-of-lists
+ls_of_ls = [
+    ['Name', 'Charles Babbage', 'Ada Lovelace', 'Alan Turing'],
+    ['Age', 79, 36, 41],
+    ['DOB', '1791-12-26', '1815-12-10', '1912-06-23'],
+]
+
+# Convert to a dictionary
 dct = {rows[0]: rows[1:] for rows in ls_of_ls}
+
+print(dct['Name'])
 ```
 
-Convert list-of-lists to a dictionary for each row (column headers as keys):
-```{python}
-for row in ls_of_ls[1:]:
-    # Create a dictionary for each row from the second onwards
-    globals()[str(row[0]).replace(' ', '_')] = {}
-# For each column, add each row's information to its dictionary
-for column_idx, column_value in enumerate(ls_of_ls[0]):
-    # For each element in the first row
-    for row in ls_of_ls[1:]:
-        # For each row from the second onwards
-        globals()[str(row[0]).replace(' ', '_')][column_value] = row[column_idx]
-# print(Charles_Babbage['Age'])
-```
-
-Convert list-of-lists to a dictionary for each row (row headers as keys):
+Convert a list-of-lists to a dictionary **for each row** (using *row headers* as keys):
 ```{python}
 for column_idx, column_value in enumerate(ls_of_ls[0]):
     # Create a dictionary for each element in the first row
@@ -1124,113 +1180,266 @@ for row in ls_of_ls[1:]:
         # These blank ones need to be passed
         except ValueError:
             pass
-# print(Age['Charles Babbage'])
+
+print(Charles_Babbage['Age'])
 ```
 
-Convert list-of-lists to a data frame:
+Convert a list-of-lists to a data frame (using *row headers* as column names):
 ```{python}
-df = pd.DataFrame(ls_of_ls)
+import pandas as pd
+import numpy as np
+
+# Convert to a data frame
+colnames = [row[0] for row in ls_of_ls]
+data = np.transpose([row[1:] for row in ls_of_ls])
+df = pd.DataFrame(data, columns=colnames)
+
+print(df)
 ```
 
-Convert list-of-lists to a data frame using the first element as the column names:
+Convert a list-of-lists to a dictionary (using *column headers* as keys):
 ```{python}
+# Create a list-of-lists
+ls_of_ls = [
+    ['Name', 'Age', 'DOB'],
+    ['Charles Babbage', 79, '1791-12-26'],
+    ['Ada Lovelace', 36, '1815-12-10'],
+    ['Alan Turing', 41, '1912-06-23'],
+]
+
+# Convert to a dictionary
+dct = {}
+for i, colname in enumerate(ls_of_ls[0]):
+    dct[colname] = [row[i] for row in ls_of_ls[1:]]
+
+print(dct['Name'])
+```
+
+Convert a list-of-lists to a dictionary **for each row** (using *column headers* as keys):
+```{python}
+# Convert to a dictionary
+for row in ls_of_ls[1:]:
+    # Create a dictionary for each row from the second onwards
+    globals()[str(row[0]).replace(' ', '_')] = {}
+# For each column, add each row's information to its dictionary
+for column_idx, column_value in enumerate(ls_of_ls[0]):
+    # For each element in the first row
+    for row in ls_of_ls[1:]:
+        # For each row from the second onwards
+        globals()[str(row[0]).replace(' ', '_')][column_value] = row[column_idx]
+
+print(Charles_Babbage['Age'])
+```
+
+Convert a list-of-lists to a data frame (using *column headers* as column names):
+```{python}
+import pandas as pd
+
+# Convert to a data frame
 df = pd.DataFrame(ls_of_ls[1:], columns=ls_of_ls[0])
+
+print(df)
 ```
 
-Arrays
-------
-Convert array to list:
+Convert Lists of Numbers
+------------------------
+Convert a list to an array:
 ```{python}
-ls = list(array)
+import numpy as np
+
+# Create a list
+ls = [2, 3, 5, 7, 11]
+
+# Convert to an array
+ar = np.array(ls)
 ```
 
-Convert array-of-arrays to list-of-lists:
+Convert a list of numbers to a list of strings:
 ```{python}
-ls_of_ls = [list(array) for array in array_of_arrays]
+ls_of_str = [str(x) for x in ls]
 ```
 
-Lists with numbers only
------------------------
-Convert list to array:
+Convert a list-of-lists to an array-of-arrays:
 ```{python}
-array = np.array(ls)
+# Create a list-of-lists
+ls_of_ls = [[1, 2, 3], [10, 20, 30], [100, 200, 300]]
+
+ar = np.array(ls_of_ls)
 ```
 
-Convert list-of-lists to array-of-arrays:
+Convert a list-of-lists of numbers to a list-of-lists of strings:
 ```{python}
-array = np.array(ls_of_ls)
+ls_of_ls_str = [[str(x) for x in ls] for ls in ls_of_ls]
 ```
 
-Convert list of numbers to list of strings:
+Convert Lists of Strings
+------------------------
+Convert a list of strings to a list of floating-point numbers:
 ```{python}
-ls = [str(x) for x in ls]
-```
+ls = [float(x) for x in ls_of_str]
 
-Convert list of strings to list of numbers (can handle scientific notation):
-```{python}
-ls = [float(x) for x in ls]
-```
-
-Convert list-of-lists of numbers to list-of-lists of strings:
-```{python}
-ls_of_ls = [[str(x) for x in ls] for ls in ls_of_ls]
-```
-
-Convert list-of-lists of strings to list-of-lists of numbers (can handle scientific notation):
-```{python}
-ls_of_ls_floats = [[float(j) for j in i] for i in ls_of_ls]
-```
-
-Convert lists-of-list of strings to list-of-lists of numbers (doesn't handle scientific notation):
-```{python}
-ls_of_ls_ints = [[int(j) for j in i] for i in ls_of_ls]
-```
-
-Convert string of space-separated values to list of numbers:
-```{python}
-ls = [int(x) for x in st_ssv.split(' ')]
-```
-
-Tuples
-------
-Convert tuple to list:
-```{python}
-ls = list(tupl)
-```
-
-Convert tuple-of-tuples to list-of-lists:
-```{python}
-ls_of_ls = [list(i) for i in tupl_of_tupl]
-```
-
-Text
-----
-Convert text to a list, removing empty lines:
-```{python}
-ls = [y for y in (x.strip() for x in st_multi.splitlines()) if y]
 print(ls)
 ```
 
-Convert text to a list, keeping empty lines:
+Convert a list of strings to a list of integer numbers:
 ```{python}
-ls = [y for y in st_multi.splitlines()]
+ls = [int(x) for x in ls_of_str]
+
 print(ls)
 ```
 
-Convert text to dictionary:
+Convert a list-of-lists of strings to a list-of-lists of floating-point numbers:
 ```{python}
-ls = [y for y in (x.strip() for x in st_multi.splitlines()) if y]
+ls_of_ls = [[float(j) for j in i] for i in ls_of_ls_str]
+
+print(ls_of_ls)
+```
+
+Convert a list-of-lists of strings to a list-of-lists of integer numbers:
+```{python}
+ls_of_ls = [[int(j) for j in i] for i in ls_of_ls_str]
+
+print(ls_of_ls)
+```
+
+Convert a list of strings to a dictionary:
+```{python}
+# Create a list of strings
+ls = [
+    'the village', 'das Dorf',
+    'the bread', 'das Brot',
+    'the cheese', 'der Käse'
+]
+
+# Convert to a dictionary
 dct = {}
 for i in range(len(ls)):
     if i % 2 == 0:
         dct[ls[i]] = ls[i + 1]
-print(dct['Paragraph 1:'])
+
+print(dct['the bread'])
+```
+
+Convert Arrays
+--------------
+Convert an array to a list:
+```{python}
+import numpy as np
+
+# Create an array
+ar = np.arange(5)
+
+# Convert to a list
+ls = list(ar)
+
+print(ls)
+```
+
+Convert an array-of-arrays to a list-of-lists:
+```{python}
+# Create an array-of-arrays
+ar_of_ars = np.array([
+    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5],
+    [1, 2, 3, 4, 5],
+])
+
+# Convert to a list-of-lists
+ls_of_ls = [list(a) for a in ar_of_ars]
+
+print(ls_of_ls)
+```
+
+Convert Tuples
+--------------
+Convert a tuple to a list:
+```{python}
+# Create a tuple
+tpl = (1, 2, 3, 4, 5)
+
+# Convert to a list
+ls = list(tpl)
+
+print(ls)
+```
+
+Convert a tuple-of-tuples to a list-of-lists:
+```{python}
+# Create a tuple-of-tuples
+tpl_of_tpls = (
+    (1, 2),
+    (3, 4),
+    (5, 6)
+)
+
+# Convert to a list-of-lists
+ls_of_ls = [list(i) for i in tpl_of_tpls]
+
+print(ls_of_ls)
+```
+
+Convert Text
+------------
+Convert multi-line text to a list, removing empty lines:
+```{python}
+# Create a multi-line string
+st_multi = """Line 1
+Line 2
+
+Line 3
+Line 4
+"""
+
+# Convert to a list
+ls = [y for y in (x.strip() for x in st_multi.splitlines()) if y]
+
+print(ls)
+```
+
+Convert multi-line text to a list, keeping empty lines:
+```{python}
+# Convert to a list
+ls = [y for y in st_multi.splitlines()]
+
+print(ls)
+```
+
+Convert multi-line text to a dictionary:
+```{python}
+# Convert to a list
+ls = [y for y in (x.strip() for x in st_multi.splitlines()) if y]
+# Convert to a dictionary
+dct = {}
+for i in range(len(ls)):
+    if i % 2 == 0:
+        dct[ls[i]] = ls[i + 1]
+
+print(dct['Line 1'])
+```
+
+Convert a string of space-separated values to a list of numbers:
+```{python}
+# Create a string of space-separated values
+st_ssv = '30 40 50'
+
+# Convert to a list
+ls = [int(x) for x in st_ssv.split(' ')]
+
+print(ls)
 ```
 
 Convert text formatted as a table to a data frame:
 ```{python}
 import pandas as pd
 from io import StringIO
+
+# Create a multi-line space-separated values:
+st_multi_ssv = """
+Year NDay Pos0 Pos1 Pos2 Pos3 Pos4
+2023    4    8   11   13   14   18
+2024    4   18   18   19   18   17
+2025    4   17   20   25   26   27
+"""
 
 # Remove duplicate whitespace and convert to list of strings
 text = [' '.join(row.split()) for row in st_multi_ssv.split('\n')]
@@ -1241,18 +1450,8 @@ text = [row + '\n' for row in text]
 # Collapse to string
 text = ''.join(text)
 df = pd.read_csv(StringIO(text), sep=' ')
-print(df)
-```
 
-Lists with Strings Only
------------------------
-Convert list to dictionary:
-```{python}
-dct = {}
-for i in range(len(ls)):
-    if i % 2 == 0:
-        dct[ls[i]] = ls[i + 1]
-print(dct['Paragraph 1:'])
+print(df)
 ```
 
 [⇦ Back](../../python.html)

@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 If you have two groups of measurements with very different means you might be tempted to immediately attach significance to that (and conclude that the measurements in one group will generally always be larger than those in the other). However, if there is a lot of **variability** in the data then even a large difference in means might be meaningless. Think of it like a dartboard:
 
 - If someone isn't very good at darts then there will be a lot of variation in where their dart lands

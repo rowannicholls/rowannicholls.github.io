@@ -15,12 +15,8 @@ output:
 [⇦ Back](../../python.html)
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "75%")
-```
-
-```{r, echo = FALSE}
-library(knitr)
-opts_chunk$set(engine.path = "/usr/bin/python3.11")
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 ```{python, echo = FALSE}
@@ -195,7 +191,7 @@ counts = df['blood_type'].value_counts(sort=False)
 # Create bar plot
 ax = counts.plot.bar('blood_type', rot=0, color='#95b8d1')
 # Labels
-ax.set_title('Displaying Nominal Data in a Bar Plor')
+ax.set_title('Displaying Nominal Data in a Bar Plot')
 ax.set_ylabel('Count')
 ax.set_xlabel('Blood Type')
 
@@ -210,7 +206,7 @@ counts = df['blood_type'].value_counts(sort=False)
 # Create bar plot
 ax = counts.plot.bar('blood_type', rot=0, color='#95b8d1')
 # Labels
-ax.set_title('Displaying Nominal Data in a Bar Plor')
+ax.set_title('Displaying Nominal Data in a Bar Plot')
 ax.set_ylabel('Count')
 ax.set_xlabel('Blood Type')
 
@@ -257,7 +253,7 @@ ax = plt.axes([0.1, 0.1, 0.7, 0.84])
 # Create bar plot
 ct.T.plot.bar(rot=0, color=['#95b8d1', '#800000'], ax=ax)
 # Labels
-ax.set_title('Displaying Binary and Ordinal Data in a Bar Plor')
+ax.set_title('Displaying Binary and Ordinal Data in a Bar Plot')
 ax.set_ylabel('Count')
 ax.set_xlabel('Views on Non-Reimbursed Blood Donation')
 # Legend
@@ -282,7 +278,7 @@ ax = plt.axes([0.1, 0.1, 0.7, 0.84])
 # Create bar plot
 ct.T.plot.bar(rot=0, color=['#95b8d1', '#800000'], ax=ax)
 # Labels
-ax.set_title('Displaying Binary and Ordinal Data in a Bar Plor')
+ax.set_title('Displaying Binary and Ordinal Data in a Bar Plot')
 ax.set_ylabel('Count')
 ax.set_xlabel('Views on Non-Reimbursed Blood Donation')
 # Legend
