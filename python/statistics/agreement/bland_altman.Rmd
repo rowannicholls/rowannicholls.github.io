@@ -19,7 +19,7 @@ knitr::opts_chunk$set(out.width = "100%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-**Bland-Altman analysis** is used to assess the agreement between two methods of measuring something, usually clinical information. It was introduced in Bland & Altman's 1986 paper,<sup>1</sup> and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
+**Bland-Altman analysis** is used to assess the agreement between two methods of measuring something, usually clinical information. It was introduced in Bland & Altman's 1986 paper,[^1] and see also the [Wikipedia page](https://en.wikipedia.org/wiki/Bland%E2%80%93Altman_plot).
 
 Calculating agreement is useful when discussing:
 
@@ -28,8 +28,6 @@ Calculating agreement is useful when discussing:
 - Reliability
 - Intra- and inter-operator variability
 - Intra- and inter-test variability
-
-> 1. Bland, M, Altman, D. "Statistical methods for assessing agreement between two methods of clinical measurement". Lancet 1986; 327(8476):307–310. DOI: [10.1016/S0140-6736(86)90837-8](https://linkinghub.elsevier.com/retrieve/pii/S0140673686908378). PMID: [2868172](https://pubmed.ncbi.nlm.nih.gov/2868172/). Available [here](https://www-users.york.ac.uk/~mb55/meas/ba.pdf).
 
 Where to Start: Bland & Altman's Difference Plot
 ================================================
@@ -760,13 +758,15 @@ Giavarina and Euser Analyses?
 =============================
 Other authors have expanded upon Bland and Altman's ideas:
 
-**Giavarina analysis** is identical to Bland-Altman analysis except that it accounts for [heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity). It does this by using percentage differences (relative to the means) on the y-axis instead of arithmetic differences. It was published in Giavarina's 2015 paper<sup>2</sup> and a tutorial that replicates elements of that paper is over [here](giavarina.html).
+**Giavarina analysis** is identical to Bland-Altman analysis except that it accounts for [heteroscedasticity](https://en.wikipedia.org/wiki/Heteroscedasticity). It does this by using percentage differences (relative to the means) on the y-axis instead of arithmetic differences. It was published in Giavarina's 2015 paper[^2] and a tutorial that replicates elements of that paper is over [here](giavarina.html).
 
-**Euser analysis** also accounts for heteroscedasticity except that it does so via a logarithmic transformation. While this approach was mentioned in Bland & Altman (1986) it was Euser, Dekker & Le Cessie who published a method to transform the data back into the native space and calculate a meaningful coefficient of variation.<sup>3</sup> A tutorial is over [here](euser.html).
+**Euser analysis** also accounts for heteroscedasticity except that it does so via a logarithmic transformation. While this approach was mentioned in Bland & Altman (1986) it was Euser, Dekker & Le Cessie who published a method to transform the data back into the native space and calculate a meaningful coefficient of variation.[^3] A tutorial is over [here](euser.html).
 
-> 2. Giavarina, D. "Understanding Bland Altman analysis". Biochemia Medica 2015; 25(2):141-151. DOI: [10.11613/BM.2015.015](https://doi.org/10.11613/BM.2015.015). PMID: [26110027](https://pubmed.ncbi.nlm.nih.gov/26110027). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
->
-> 3. Euser, A, Dekker, F, Cessie, S. "A practical approach to Bland-Altman plots and variation coefficients for log transformed variables". Journal of Clinical Epidemiology 2008; 61(10):978–982. DOI: [10.1016/j.jclinepi.2007.11.003](https://doi.org/10.1016/j.jclinepi.2007.11.003). PMID: [18468854](https://pubmed.ncbi.nlm.nih.gov/18468854/). Available [here](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.9186&rep=rep1&type=pdf).
+[^1]: Bland, M, Altman, D. "Statistical methods for assessing agreement between two methods of clinical measurement". Lancet 1986; 327(8476):307–310. DOI: [10.1016/S0140-6736(86)90837-8](https://linkinghub.elsevier.com/retrieve/pii/S0140673686908378). PMID: [2868172](https://pubmed.ncbi.nlm.nih.gov/2868172/). Available [here](https://www-users.york.ac.uk/~mb55/meas/ba.pdf). Jump to reference:&nbsp;
+
+[^2]: Giavarina, D. "Understanding Bland Altman analysis". Biochemia Medica 2015; 25(2):141-151. DOI: [10.11613/BM.2015.015](https://doi.org/10.11613/BM.2015.015). PMID: [26110027](https://pubmed.ncbi.nlm.nih.gov/26110027). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf). Jump to reference:&nbsp;
+
+[^3]: Euser, A, Dekker, F, Cessie, S. "A practical approach to Bland-Altman plots and variation coefficients for log transformed variables". Journal of Clinical Epidemiology 2008; 61(10):978–982. DOI: [10.1016/j.jclinepi.2007.11.003](https://doi.org/10.1016/j.jclinepi.2007.11.003). PMID: [18468854](https://pubmed.ncbi.nlm.nih.gov/18468854/). Available [here](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.564.9186&rep=rep1&type=pdf). Jump to reference:&nbsp;
 
 [⇦ Back](../../../python.html)
 
