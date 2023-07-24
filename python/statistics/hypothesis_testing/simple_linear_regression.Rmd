@@ -26,7 +26,7 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 - There is exactly one independent variable and it is a *true* independent variable (which means that all other variables are being controlled for and stay the same when this variable is being read)
 - The shape of the data when plotted suggests that a *straight-line* relationship is appropriate, as opposed to a parabolic line or some other curve
 
-If the above criteria are met then, as we can see from the flowchart below, simple linear regression is needed.
+If the above criteria are met then, as we can see from the flowchart below, simple linear regression is appropriate:
 
 ```{r, echo=FALSE}
 # install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
@@ -144,7 +144,7 @@ where `python3.11` corresponds to the version of Python you have installed and a
 
 Example Data
 ============
-Use the 'diabetes' dataset from Scikit-learn. This contains measurements of 10 health-related variables from 442 patients and one 'target' variable: a quantitative measure of disease progression one year after baseline. For this example we will only use one of the 10 variables - body mass index (BMI) - and see if it alone can predict the target ('outcome') variable. We will also only use 25 patients worth of measurements:
+We will use the 'diabetes' example dataset from Scikit-learn. This contains measurements from 442 patients including 10 health-related variables and one 'target' variable: a quantitative measure of disease progression one year after baseline. For this example we will only use one of the 10 variables - body mass index (BMI) - and see if it alone can predict the target ('outcome') variable. We will also only use 25 patients worth of measurements:
 
 ```{python}
 from sklearn import datasets
@@ -169,25 +169,36 @@ Exploring the Data
 ==================
 Use graphs and descriptive statistics to make an initial decision as to what summary model to use:
 
-```{python}
-import matplotlib.pyplot as plt
+Set the Format for the Plots
+----------------------------
 
-# Make figures A6 in size
-A = 6
+```{python}
+from matplotlib import pyplot as plt
+
+# Make figures A7 in size
+A = 7
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
-# Image quality
-plt.rc('figure', dpi=141)
+# Font size
+plt.rc('font', size=6)
 # Be able to add Latex
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+```
 
+Plot the Data
+-------------
+
+```{python}
 # Plot
-plt.scatter(df['bmi'], df['target'], c='k', s=10)
+plt.scatter(df['bmi'], df['target'], c='k', s=6)
 plt.title('Diabetes Dataset')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
 ```
+
+Descriptive Statistics
+----------------------
 
 ```{python}
 import numpy as np
@@ -232,40 +243,40 @@ Defining the Model
 ==================
 Having a look at the data, it seems that a linear regression model (a straight, slanted line) might be appropriate here. Our **alternative model** is thus a linear relationship between the true change in disease progression and an increase in a patient's BMI, whereas the **null model** has no such relationship and disease progression is merely equal to the average (mean) disease progression of the sample. Both of these models can be written in the form 'Data = Pattern + Residual' as follows:
 
-- Null model: y = α + ε
-- Alternative model: y = α + βx + ε
+- Null model: $y = \alpha + \epsilon$
+- Alternative model: $y = \alpha + \beta x + \epsilon$
 
-where y is the 'data' ie the dependent variable (in this case, disease progression), ε is the unexplained 'residual' (AKA 'noise') and α and α + βx are the possible 'patterns': α is the mean disease progression under the null model and α + βx is a line-of-best-fit with gradient β and y-intercept α under the alternative model. Note that, effectively, the sample mean **is** the null model. The hypotheses associated with these models are:
+where $y$ is the 'data' ie the dependent variable (in this case, disease progression), $\epsilon$ is the unexplained 'residual' (AKA 'noise') and $\alpha$ and $\alpha + \beta x$ are the possible 'patterns': $\alpha$ is the mean disease progression under the null model and $\alpha + \beta x$ is a line-of-best-fit with gradient $\beta$ and y-intercept $\alpha$ under the alternative model. Note that, effectively, the sample mean **is** the null model. The hypotheses associated with these models are:
 
-- Null hypothesis, H₀: β = 0
-- Alternative hypothesis, H₁: β ≠ 0
+- Null hypothesis, $H_0: \beta = 0$
+- Alternative hypothesis, $H_1: \beta \neq 0$
 
 Here's what the models look like graphically:
 
 Null Model
 ----------
-The null model states that there is **no** relationship between the response variable y and explanatory variable x, ie y = α + ε (or, equivalently, y = α + βx + ε with β = 0) where α is the sample mean. In other words, disease progression = average disease progression + unexplained residual.
+The null model states that there is **no** relationship between the response variable $y$ and explanatory variable $x$, ie $y = \alpha + \epsilon$ (or, equivalently, $y = \alpha + \beta x + \epsilon$ with $\beta = 0$) where $\alpha$ is the sample mean. In other words, disease progression = average disease progression + unexplained residual.
 
 ```{python}
-plt.scatter(df['bmi'], df['target'], c='k', s=10)
+plt.scatter(df['bmi'], df['target'], c='k', s=6)
 mean = df['target'].mean()
-plt.axhline(mean, c='lightblue', ls='--', ms=5, label=f'Mean = {mean:.1f}')
+plt.axhline(mean, c='lightblue', ls='--', ms=5, label=f'Mean = {mean:.1f}', lw=1)
 plt.title('Null Model')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
-plt.legend(fontsize=8)
+plt.legend(fontsize=5)
 ```
 
 Alternative Model
 -----------------
-The alternative model states that there **is** a relationship between BMI and disease progression, namely a straight-line regression y = α + βx + ε (disease progression = BMI + unexplained residual):
+The alternative model states that there **is** a relationship between BMI and disease progression, namely a straight-line regression $y = \alpha + \beta x + \epsilon$ (disease progression = BMI + unexplained residual):
 
 ```{python, eval = FALSE}
 m, c, r, p, se = stats.linregress(df['bmi'], df['target'])
 
-plt.scatter(df['bmi'], df['target'], c='k', s=10)
+plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
-plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', ms=5)
+plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', lw=1, ms=5)
 plt.xlim(xlim)
 plt.title('Alternative Model')
 plt.xlabel('BMI [kg/m²]')
@@ -275,9 +286,9 @@ plt.ylabel('Target Variable (Disease Progression)')
 ```{python, echo = FALSE, results = 'hide'}
 m, c, r, p, se = stats.linregress(df['bmi'], df['target'])
 
-plt.scatter(df['bmi'], df['target'], c='k', s=10)
+plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
-plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', ms=5)
+plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', lw=1, ms=5)
 plt.xlim(xlim)
 plt.title('Alternative Model')
 plt.xlabel('BMI [kg/m²]')
@@ -286,7 +297,7 @@ plt.ylabel('Target Variable (Disease Progression)')
 
 Fitting the Model
 =================
-Each time you perform a 'simple linear regression' analysis you are comparing two competing summary models: the null model and the straight-line regression model. Indeed, all hypothesis tests are a choice between two models: a two-sample t-test, for example, is a choice between using one or two means as the model for two groups of data (one mean for both groups or one mean for each group).
+Each time you perform a 'simple linear regression' analysis you are comparing two competing summary models: the null model and the straight-line regression model. Indeed, all hypothesis tests are a choice between two models: a two-sample *t*-test, for example, is a choice between using one or two means as the model for two groups of data (one mean for both groups or one mean for each group).
 
 Test of Between-Subject Effects
 -------------------------------
@@ -304,13 +315,13 @@ aov = sm.stats.anova_lm(results, typ=2)
 print(aov)
 ```
 
-The first column is the source of between-subject effects/the factors: 'ones' is the intercept parameter and 'Residual' is the error. 'PR(>F)' is the p-value from the statistical test of the null hypothesis. The sum of the rows is useful if you're interested in the total between-subject effects:
+The first column is the source of between-subject effects/the factors: 'ones' is the intercept parameter and 'Residual' is the error. '`PR(>F)`' is the *p*-value from the statistical test of the null hypothesis. The sum of the rows is useful if you're interested in the total between-subject effects:
 
 ```{python}
 print(aov.sum())
 ```
 
-Here is the relevant p-value:
+Here is the relevant *p*-value:
 
 ```{python}
 p = aov.loc['bmi', 'PR(>F)']
@@ -322,7 +333,7 @@ Parameter Estimates
 -------------------
 
 ### Using Statsmodels
-Estimate the parameters of the model and get the associated p-values, again using ordinary least-squares from Statsmodels but this time the `OLS()` function as opposed to the `ols()` function (they are different):
+Estimate the parameters of the model and get the associated *p*-values, again using ordinary least-squares from Statsmodels but this time the `OLS()` function as opposed to the `ols()` function (they are different):
 
 ```{python}
 import statsmodels.api as sm
@@ -351,7 +362,7 @@ p = results.pvalues[1]
 print(f't = {t:.3f}, p = {p:.3f}')
 ```
 
-As p < 0.05, we reject H₀ (β = 0) in favour of H₁ (β ≠ 0) at significance level 0.05.
+As $p \lt 0.05$, we reject $H_0 \left( \beta = 0 \right)$ in favour of $H_1 \left( \beta \neq 0 \right)$ at significance level 0.05.
 
 ### Using SciPy
 Here's how to do it using the `linregress()` function from SciPy:
@@ -381,9 +392,9 @@ print(f'target = {α:.2f} {β:=+7.3f} × bmi')
 print(f'p = {p:.3f}')
 ```
 
-As p < 0.05, we reject H₀ (β = 0) in favour of H₁ (β ≠ 0) at significance level 0.05.
+As $p \lt 0.05$, we reject $H_0 \left( \beta = 0 \right)$ in favour of $H_1 \left( \beta \neq 0 \right)$ at significance level 0.05.
 
-The t-statistic is calculated inside of linregress but, for the record, here it is:
+The *t*-statistic is calculated inside of linregress but, for the record, here it is:
 
 ```{python}
 t_stat = stats.t.ppf(1 - (p / 2), df.shape[0] - 2)
@@ -443,7 +454,7 @@ R2 = metrics.r2_score(Y, predictions)
 print(f'Coefficient of determination, R²: {R2:.3f}')
 ```
 
-Calculate the p-values. This uses code taken from [here](https://stackoverflow.com/questions/27928275/find-p-value-significance-in-scikit-learn-linearregression):
+Calculate the *p*-values. This uses code taken from [here](https://stackoverflow.com/questions/27928275/find-p-value-significance-in-scikit-learn-linearregression):
 
 ```{python}
 from scipy import stats
@@ -492,7 +503,7 @@ output['Probabilities'] = p_values
 print(output)
 ```
 
-As p < 0.05 for the gradient (β), we reject H₀ (β = 0) in favour of H₁ (β ≠ 0) at significance level 0.05.
+As $p \lt 0.05$ for the gradient $\beta$, we reject $H_0 \left(\beta = 0 \right)$ in favour of $H_1 \left( \beta \neq 0 \right)$ at significance level 0.05.
 
 Coefficient of Determination (R-Squared)
 ----------------------------------------
@@ -510,13 +521,13 @@ R2 = r**2
 print(f'R² = {R2:.3f}')
 ```
 
-R² = 19.2%. This indicates that 19.2% of the total variability observed in disease progression has been explained by the straight-line regression on BMI. The higher R² is, the more adherent the straight line is to the observed relationship between y and x. In other words, R² represents how much of the variability observed in y ignoring x (ie in the null regression) is explained by taking into account the change in x (ie by taking into account the straight-line regression).
+$R^2$ = 19.2%. This indicates that 19.2% of the total variability observed in disease progression has been explained by the straight-line regression on BMI. The higher $R^2$ is, the more adherent the straight line is to the observed relationship between $y$ and $x$. In other words, $R^2$ represents how much of the variability observed in $y$ ignoring $x$ (ie in the null regression) is explained by taking into account the change in $x$ (ie by taking into account the straight-line regression).
 
-R² = 1 − (residual sum of squares / total sum of squares) where 'total sum of squares' is the residual variability around the null model and the 'residual sum of squares' is the residual variability around the straight-line regression.
+$R^2$ = 1 − (residual sum of squares / total sum of squares) where 'total sum of squares' is the residual variability around the null model and the 'residual sum of squares' is the residual variability around the straight-line regression.
 
 Confidence Interval
 -------------------
-Calculate the 95% confidence interval for the slope and the intercept using the two-sided inverse Student's t-distribution:
+Calculate the 95% confidence interval for the slope and the intercept using the two-sided inverse Student's *t*-distribution:
 
 ```{python}
 from scipy import stats
@@ -615,10 +626,10 @@ std_err = np.sqrt(sum(resid**2) / dof)
 Plot:
 
 ```{python, eval = FALSE}
-plt.scatter(df['bmi'], df['target'], c='k', s=10)
+plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
 # Line of best fit
-plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression')
+plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression', lw=1)
 # Fit
 x2 = np.linspace(xlim[0], xlim[1], 100)
 y2 = np.polyval(params, x2)
@@ -630,23 +641,23 @@ plt.fill_between(
 )
 # Prediction Interval
 pi = t_critical * std_err * np.sqrt(1 + 1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
-plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits')
-plt.plot(x2, y2 + pi, '--', color='0.5')
+plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits', lw=1)
+plt.plot(x2, y2 + pi, '--', color='0.5', lw=1)
 # Title and labels
 plt.title('Simple Linear Regression')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
 # Finished
-plt.legend(fontsize=8)
+plt.legend(fontsize=5)
 plt.xlim(xlim)
 plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
-plt.scatter(df['bmi'], df['target'], c='k', s=10)
+plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
 # Line of best fit
-plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression')
+plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression', lw=1)
 # Fit
 x2 = np.linspace(xlim[0], xlim[1], 100)
 y2 = np.polyval(params, x2)
@@ -658,14 +669,14 @@ plt.fill_between(
 )
 # Prediction Interval
 pi = t_critical * std_err * np.sqrt(1 + 1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
-plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits')
-plt.plot(x2, y2 + pi, '--', color='0.5')
+plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits', lw=1)
+plt.plot(x2, y2 + pi, '--', color='0.5', lw=1)
 # Title and labels
 plt.title('Simple Linear Regression')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
 # Finished
-plt.legend(fontsize=8)
+plt.legend(fontsize=5)
 plt.xlim(xlim)
 plt.show()
 ```

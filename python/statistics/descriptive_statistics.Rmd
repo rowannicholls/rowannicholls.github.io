@@ -52,8 +52,8 @@ Example Data
 This page will use fake data for its examples. Creating this will use three modules: `random`, which comes pre-installed with Python, and then `pandas` and `mimesis` which can be downloaded and installed from the terminal with the following commands (replace `3.11` with the version of Python you have installed):
 
 ```{bash, eval = FALSE}
-python3.11 -m pip install pandas
-python3.11 -m pip install mimesis
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install mimesis
 ```
 
 Once installed, the fake data can be created in Python as follows:
@@ -288,6 +288,17 @@ plt.gca().legend(
 )
 
 plt.show()
+```
+
+The Categorical Data Type
+-------------------------
+As it stands, Python doesn't realise that the ordinal data (the `views` column) has an inherent order. Logically, a `Neutral` viewpoint should exist *between* a `Negative` and a `Positive` viewpoint - they are *ordered.* Fortunately, Python has a special 'Categorical' data type that enables both a name and an order to be stored, and the `view` column can be converted to Categorical via the `.Categorical()` method as shown below:
+
+```{python}
+order = ['Very negative', 'Negative', 'Neutral', 'Compromisable', 'Positive']
+df['view'] = pd.Categorical(df['view'], order, ordered=True)
+
+print(df['view'].unique())
 ```
 
 Quantitative (Numerical) Variables
