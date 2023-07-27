@@ -26,12 +26,21 @@ Installing Git
 To install Git on:
 
 - **Windows**: download it from https://git-scm.com/download/win
-- **Ubuntu**: open a terminal and run `sudo apt-get install git`
+- **Ubuntu**: open a terminal and run:
+```{bash, eval = FALSE}
+$ sudo apt-get install git
+```
 - **macOS**:
     - Install Xcode Command Line Tools, which will install Git at the same time
     - If you run `git` on the terminal and you don't have it installed, it will prompt you to install it
 
-Double check that you have Git installed (and see what version you have at the same time) by running `git --version` from the terminal. This should return the version number, eg `git version 2.34.1`. See the full documentation for installing Git [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+Double check that you have Git installed (and see what version you have at the same time) by running:
+
+```{bash, eval = FALSE}
+$ git --version
+```
+
+This should return the version number, eg `git version 2.34.1`. See the full documentation for installing Git [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
 
 GUIs
 ----

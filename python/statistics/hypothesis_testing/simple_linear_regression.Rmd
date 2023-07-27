@@ -144,17 +144,15 @@ where `python3.11` corresponds to the version of Python you have installed and a
 
 Example Data
 ============
-We will use the 'diabetes' example dataset from Scikit-learn. This contains measurements from 442 patients including 10 health-related variables and one 'target' variable: a quantitative measure of disease progression one year after baseline. For this example we will only use one of the 10 variables - body mass index (BMI) - and see if it alone can predict the target ('outcome') variable. We will also only use 25 patients worth of measurements:
+We will use the 'diabetes' example dataset from Scikit-learn. This contains measurements from 442 patients including 10 health-related variables and one 'target' variable: a quantitative measure of disease progression one year after baseline. For this example we will only use one of the 10 variables - body mass index (BMI) - and see if it alone can predict the target ('outcome') variable:
 
-```{python}
+```{python, warning = FALSE}
 from sklearn import datasets
 
 # Load the dataset as a 'bunch' object that contains a data frame
 diabetes = datasets.load_diabetes(as_frame=True)
 # Extract the data frame
 df = diabetes['frame']
-# Use a subset of 25 rows for this example (not all 442 rows)
-df = df.head(25)
 # We'll look at 2 columns:
 # 'bmi': the body mass index
 # 'target': a quantitative measure of disease progression one year after baseline
@@ -162,7 +160,7 @@ df = df[['bmi', 'target']]
 # Undo the scaling factor that was applied
 df['bmi'] = (df['bmi'] * 3.19 / df['bmi'].std(ddof=1)) + 24.4
 
-print(df)
+print(df.head())
 ```
 
 Exploring the Data
@@ -175,11 +173,9 @@ Set the Format for the Plots
 ```{python}
 from matplotlib import pyplot as plt
 
-# Make figures A7 in size
-A = 7
+# Make figures A6 in size
+A = 6
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
-# Font size
-plt.rc('font', size=6)
 # Be able to add Latex
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
@@ -237,7 +233,7 @@ lower_ci = y_bar - d
 print(f'The sample mean is {y_bar:.1f}, 95% CI [{lower_ci:.1f}, {upper_ci:.1f}].')
 ```
 
-You can be 95% confident that the population mean falls between 111.9 and 163.2.
+You can be 95% confident that the population mean falls between 144.9 and 159.3.
 
 Defining the Model
 ==================
@@ -260,11 +256,11 @@ The null model states that there is **no** relationship between the response var
 ```{python}
 plt.scatter(df['bmi'], df['target'], c='k', s=6)
 mean = df['target'].mean()
-plt.axhline(mean, c='lightblue', ls='--', ms=5, label=f'Mean = {mean:.1f}', lw=1)
+plt.axhline(mean, c='lightblue', ls='--', label=f'Mean = {mean:.1f}')
 plt.title('Null Model')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
-plt.legend(fontsize=5)
+plt.legend(frameon=False, fontsize=9)
 ```
 
 Alternative Model
@@ -276,11 +272,14 @@ m, c, r, p, se = stats.linregress(df['bmi'], df['target'])
 
 plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
-plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', lw=1, ms=5)
+x = np.array(xlim)
+y = m * np.array(xlim) + c
+plt.plot(x, y, c='lightblue', ls='--', label='Line of Best Fit')
 plt.xlim(xlim)
 plt.title('Alternative Model')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
+plt.legend(frameon=False, fontsize=9)
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -288,34 +287,36 @@ m, c, r, p, se = stats.linregress(df['bmi'], df['target'])
 
 plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
-plt.plot(np.array(xlim), m * np.array(xlim) + c, c='lightblue', ls='--', lw=1, ms=5)
+x = np.array(xlim)
+y = m * np.array(xlim) + c
+plt.plot(x, y, c='lightblue', ls='--', label='Line of Best Fit')
 plt.xlim(xlim)
 plt.title('Alternative Model')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
+plt.legend(frameon=False, fontsize=9)
 ```
 
 Fitting the Model
 =================
-Each time you perform a 'simple linear regression' analysis you are comparing two competing summary models: the null model and the straight-line regression model. Indeed, all hypothesis tests are a choice between two models: a two-sample *t*-test, for example, is a choice between using one or two means as the model for two groups of data (one mean for both groups or one mean for each group).
+Each time you perform a simple linear regression analysis you are comparing two competing summary models: the null model and the straight-line regression model. Indeed, all hypothesis tests are a choice between two models: a two-sample *t*-test, for example, is a choice between using one or two means as the model for two groups of data (one mean for both groups or one mean for each group).
 
 Test of Between-Subject Effects
 -------------------------------
-For this, we can use ordinary least-squares (`ols()`) from the Statsmodels package:
+For this, we can use the ordinary least-squares (`OLS()`) function from the Statsmodels package:
 
 ```{python}
-import statsmodels.formula.api as smf
 import statsmodels.api as sm
 
 # Create and fit the ANOVA model
-model = smf.ols('target ~ bmi', data=df)
+model = sm.OLS.from_formula('target ~ bmi', df)
 results = model.fit()
 aov = sm.stats.anova_lm(results, typ=2)
 
 print(aov)
 ```
 
-The first column is the source of between-subject effects/the factors: 'ones' is the intercept parameter and 'Residual' is the error. '`PR(>F)`' is the *p*-value from the statistical test of the null hypothesis. The sum of the rows is useful if you're interested in the total between-subject effects:
+The indices are the sources of between-subject effects (ie the factors): 'bmi' is the intercept parameter and 'Residual' is the error. The `PR(>F)` column is the *p*-value from, in this case, the statistical test of the null hypothesis only (there is only one non-NaN value). The sum of the columns is useful if you're interested in the total between-subject effects:
 
 ```{python}
 print(aov.sum())
@@ -326,14 +327,14 @@ Here is the relevant *p*-value:
 ```{python}
 p = aov.loc['bmi', 'PR(>F)']
 
-print(f'p-value = {p:.3f}')
+print(f'p-value = {p:.3e}')
 ```
 
 Parameter Estimates
 -------------------
 
 ### Using Statsmodels
-Estimate the parameters of the model and get the associated *p*-values, again using ordinary least-squares from Statsmodels but this time the `OLS()` function as opposed to the `ols()` function (they are different):
+Estimate the parameters of the model and get the associated *p*-values, again using ordinary least-squares from Statsmodels:
 
 ```{python}
 import statsmodels.api as sm
@@ -352,14 +353,14 @@ Final results of the simple linear regression:
 α = results.params[0]
 β = results.params[1]
 
-print(f'target = {α:.2f} {β:=+7.3f} × bmi')
+print(f'target = {α:.2f} {β:=+8.3f} × bmi')
 ```
 
 ```{python}
 t = results.tvalues[1]
 p = results.pvalues[1]
 
-print(f't = {t:.3f}, p = {p:.3f}')
+print(f't = {t:.3f}, p = {p:.3e}')
 ```
 
 As $p \lt 0.05$, we reject $H_0 \left( \beta = 0 \right)$ in favour of $H_1 \left( \beta \neq 0 \right)$ at significance level 0.05.
@@ -385,21 +386,25 @@ se_α = result.intercept_stderr
 Results of the simple linear regression:
 
 ```{python}
-print(f'target = {α:.2f} {β:=+7.3f} × bmi')
+print(f'target = {α:.2f} {β:=+8.3f} × bmi')
 ```
 
 ```{python}
-print(f'p = {p:.3f}')
+print(f'p = {p:.3e}')
 ```
 
 As $p \lt 0.05$, we reject $H_0 \left( \beta = 0 \right)$ in favour of $H_1 \left( \beta \neq 0 \right)$ at significance level 0.05.
 
 The *t*-statistic is calculated inside of linregress but, for the record, here it is:
 
-```{python}
+```{python, eval = FALSE}
 t_stat = stats.t.ppf(1 - (p / 2), df.shape[0] - 2)
 
 print(f't = {t_stat:.3f}')
+```
+
+```
+## t = 15.187
 ```
 
 ### Using Scikit-Learn
@@ -407,20 +412,6 @@ Scikit-learn as a package is geared towards machine learning so its method for d
 
 ```{python}
 from sklearn import datasets, linear_model, metrics
-import numpy as np
-
-# Load the dataset as a 'bunch' object that contains a data frame
-diabetes = datasets.load_diabetes(as_frame=True)
-# Extract the data frame
-df = diabetes['frame']
-# Use a subset of 25 rows for this example (not all 442 rows)
-df = df.head(25)
-# We'll look at 2 columns:
-# 'bmi': the body mass index
-# 'target': a quantitative measure of disease progression one year after baseline
-df = df[['bmi', 'target']]
-# Undo the scaling factor that was applied
-df['bmi'] = (df['bmi'] * 3.19 / df['bmi'].std(ddof=1)) + 24.4
 
 # Separate out the data we need
 X = df[['bmi']]
@@ -448,7 +439,8 @@ print(f'Mean squared error: {mse:.2f}')
 ```
 
 ```{python}
-# The coefficient of determination: 1 is perfect prediction
+# The coefficient of determination
+# (1 is perfect prediction)
 R2 = metrics.r2_score(Y, predictions)
 
 print(f'Coefficient of determination, R²: {R2:.3f}')
@@ -595,7 +587,7 @@ params = np.polyfit(x, y, 1)
 β = params[0]
 α = params[1]
 
-print(f'target = {α:.2f} {β:=+7.3f} × bmi')
+print(f'target = {α:.2f} {β:=+8.3f} × bmi')
 ```
 
 ```{python}
@@ -629,7 +621,7 @@ Plot:
 plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
 # Line of best fit
-plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression', lw=1)
+plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression')
 # Fit
 x2 = np.linspace(xlim[0], xlim[1], 100)
 y2 = np.polyval(params, x2)
@@ -641,14 +633,14 @@ plt.fill_between(
 )
 # Prediction Interval
 pi = t_critical * std_err * np.sqrt(1 + 1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
-plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits', lw=1)
-plt.plot(x2, y2 + pi, '--', color='0.5', lw=1)
+plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits')
+plt.plot(x2, y2 + pi, '--', color='0.5')
 # Title and labels
 plt.title('Simple Linear Regression')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
 # Finished
-plt.legend(fontsize=5)
+plt.legend(frameon=False, fontsize=8)
 plt.xlim(xlim)
 plt.show()
 ```
@@ -657,7 +649,7 @@ plt.show()
 plt.scatter(df['bmi'], df['target'], c='k', s=6)
 xlim = plt.xlim()
 # Line of best fit
-plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression', lw=1)
+plt.plot(np.array(xlim), α + β * np.array(xlim), label='Linear Regression')
 # Fit
 x2 = np.linspace(xlim[0], xlim[1], 100)
 y2 = np.polyval(params, x2)
@@ -669,14 +661,14 @@ plt.fill_between(
 )
 # Prediction Interval
 pi = t_critical * std_err * np.sqrt(1 + 1 / n + (x2 - np.mean(x))**2 / np.sum((x - np.mean(x))**2))
-plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits', lw=1)
-plt.plot(x2, y2 + pi, '--', color='0.5', lw=1)
+plt.plot(x2, y2 - pi, '--', color='0.5', label=r'95\% Prediction Limits')
+plt.plot(x2, y2 + pi, '--', color='0.5')
 # Title and labels
 plt.title('Simple Linear Regression')
 plt.xlabel('BMI [kg/m²]')
 plt.ylabel('Target Variable (Disease Progression)')
 # Finished
-plt.legend(fontsize=5)
+plt.legend(frameon=False, fontsize=8)
 plt.xlim(xlim)
 plt.show()
 ```
@@ -692,7 +684,85 @@ maximum = max(df['bmi'])
 print(f'{minimum:.1f}, {maximum:.1f}')
 ```
 
-This means we can predict the disease progression for any patient with a BMI between about 18 and 29 kg/m². For predictions outside of this range we would need more data.
+This means we can predict the disease progression for any patient with a BMI between about 18 and 36 kg/m². For predictions outside of this range we would need more data. With this in mind, let's re-visit the code that will fit the model and give us the parameters but this time let's use those to actually make a prediction about someone who has a BMI of, let's say, 25:
+
+```{python}
+# Fit the model
+model = sm.OLS.from_formula('target ~ bmi', df)
+results = model.fit()
+
+# Use the model parameters to make a prediction
+# (y = mx + c)
+bmi = 25
+prediction = results.params[1] * 25 + results.params[0]
+
+print(round(prediction, 1))
+```
+
+We predict that someone with a BMI of 25 kg/m² will have a target of 160.6. This can also be done using the `.predict()` method which takes in a dictionary as its argument:
+
+```{python}
+# Use the predict method to make a prediction
+newdata = {'bmi': 25}
+prediction = results.predict(newdata)
+
+print(round(prediction[0], 1))
+```
+
+As expected, we get the same answer.
+
+Normality Assumption
+====================
+Simple linear regression gives us a model to explain the variability in a dataset, but it does not account for *all* the variability. The fact that not every single data point lies exactly on the line of best fit (indeed, it's likely that *none* of the points lie on this line) is due to this unaccounted for error. This is known as the 'measurement error' or the 'residual(s)'. One of the fundamental assumptions that simple linear regression makes is that these residuals are normally distributed, so it's a good idea to check that this is at least reasonably valid. If it is, then it means that our results (parameters, predictions, confidence intervals, etc) are also reasonably valid. We can 'eyeball' this by:
+
+- Calculating the fitted values (using our model to predict our raw data)
+- Calculating the residuals (how wrong our predictions are)
+- Plotting a histogram of these residuals and checking that it's roughly Gaussian in shape with a mean of approximately zero
+
+```{python, eval = FALSE}
+# Calculate fitted values
+fitted_values = results.predict(df)
+# Calculate residuals
+residuals = df['target'] - fitted_values
+
+# Plot
+plt.hist(residuals, color='gray', edgecolor='black')
+# Title and labels
+plt.title('Distribution of the Values of the Residuals')
+plt.xlabel('Residuals')
+plt.ylabel('Frequency')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Calculate fitted values
+fitted_values = results.predict(df)
+# Calculate residuals
+residuals = df['target'] - fitted_values
+
+# Plot
+plt.hist(residuals, color='gray', edgecolor='black')
+# Title and labels
+plt.title('Distribution of the Values of the Residuals')
+plt.xlabel('Residuals')
+plt.ylabel('Frequency')
+```
+
+There is no clear skewness, kurtosis, offset or presence of multiple 'humps', so we're probably fine with our normality assumption.
+
+Homoscedasticity Assumption
+===========================
+A second assumption that is necessary in order to make our simple linear regression results valid is that the residuals have equal variation across all values of the predictor variable (in our example this is BMI). By plotting the fitted values against the residuals we can again 'eyeball' how reasonable this assumption is: we want the points to appear randomly scattered about around a centre of y = 0:
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+plt.scatter(fitted_values, residuals, c='k', s=6)
+# Title and labels
+plt.title('Checking the Homoscedasticity Assumption')
+plt.xlabel('Fitted Values')
+plt.ylabel('Residuals')
+```
+
+This assumption looks reasonable to me.
 
 [⇦ Back](../../../python.html)
 

@@ -17,54 +17,101 @@ output:
 {.tabset}
 =========
 
-Ubuntu
+Ubuntu {.tabset}
 ------
 
-*On Ubuntu 20.04 and 22.04:*
+### 20.04 and 22.04
 
-**Prerequisites**
+**1. Install LaTeX**
 
-- Before you can use LaTeX in Sublime Text you need to have it installed on your computer:
-    - Option 1: install TexStudio (which will install LaTeX as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
-    - Option 2: install it from the terminal with:
+Before you can use LaTeX in Sublime Text you need to have it installed on your computer:
+
+- Option 1: install TexStudio (which will install LaTeX as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
+- Option 2: install it from the terminal with:
+```{bash, eval = FALSE}
+$ sudo apt install texlive-latex-base
+```
+
+You can check that it has worked by running the following in the terminal:
+
+```{bash, eval = FALSE}
+$ latex --version
+$ pdflatex --version
+$ lualatex --version
+$ bibtex --version
+```
+
+Each of the above should return a block of text with version, author and license information.
+
+Another way to check that it has worked is to actually create and compile a document:
+
+```{bash, eval = FALSE}
+$ echo '\documentclass{article}\begin{document}Hello, World!\end{document}' > test.tex
+$ pdflatex test.tex
+```
+
+Next, install some extra things that are missing from the base LaTeX installation:
+
+```{bash, eval = FALSE}
+$ sudo apt install dvipng
+$ sudo apt install texlive-latex-extra
+$ sudo apt install texlive-fonts-recommended
+$ sudo apt install texlive-pictures
+$ sudo apt install texlive-extra-utils
+$ sudo apt install magick
+$ sudo apt install texlive-font-utils  # Needed for eps figures to work
+$ sudo apt install latexmk  # Needed for running LaTeX in Sublime Text
+$ sudo apt install texlive-lang-greek  # Needed for the textgreek package
+$ sudo apt install cm-super  # Needed for using LaTeX in Matplotlib plot labels
+```
+
+**2. Install the Sublime Text Extensions for LaTeX**
+
+Specifically, install the **LaTeXTools** package for Sublime Text:
+
+- Tools > Command Palette (keyboard shortcut: Ctrl+Shift+P) > Package Control: Install Package > LaTeXTools
+- Close and re-open Sublime Text after the installation is finished
+- To read the help manual, go to: Preferences > Package Settings > LaTeXTools > Documentation
+
+Check that it has worked by opening a LaTeX file (one with the `.tex` extension) in Sublime Text and compiling it:
+
+- If the `.tex` file doesn't open in Sublime Text:
+    - Open it this one time in Sublime Text by right-clicking on it > Open With Other Application > select Sublime Text (go to View All Applications to find it if it isn't there)
+    - To set this as the default behaviour for `.tex` files, right-click > Properties (keyboard shortcut: Ctrl+I) > Open With > select Sublime Text > Set as default
+- Once open in Sublime Text, building the file via Tools > Build (keyboard shortcut: Ctrl+B) should produce a PDF file
+- If this doesn't work, it might be because Sublime Text has not yet associated `.tex` files with LaTeX. Go to Tools > Build System > LaTeX and try to Build it again. If this works, remember to change the Build System back to automatic (Tools > Build System > Automatic).
+- If this still doesn't work, go to Preferences > Package Settings > LaTeXTools > Check System. It's fine if `xelatex` and `biber` are missing and if `display_log` is false, but everything else should be there and be green.
+
+Note that if you have a bibliography you need to copy the bibstyle file (eg `apa.bst`) into the working directory.
+
+To see all the keyboard shortcuts that will work when a `.tex` file is open and active, go to Preferences > Package Settings > LaTeXTools > Key Bindings - Default. Probably the most useful is the shortcut that will display the word count: Ctrl+L, W
+
+**3. Installing LaTeX Packages**
+
+- Go to [CTAN](https://www.ctan.org/) > search for and download the package you want
+- It will either download as a `.sty` file or as a `.zip` file. If the latter, unzip it and run LaTeX on the `.ins` file which will create the `.sty` file:
+    + Unzip it by double-clicking on it > Extract > Extract > Close > Close
+    + In a terminal, `cd` into the unzipped folder and run:
     ```{bash, eval = FALSE}
-sudo apt install texlive-latex-base
+$ latex {package_name}.ins
     ```
-- Make sure it is working by running a LaTeX file and ensure you know how to install packages (hint: TexStudio does it automatically).
-- Install the LaTeXTools package for Sublime Text:
-    - Tools > Command Palette (shortcut: Ctrl+Shift+P) > Package Control: Install Package > LaTeXTools
-    - Close and re-open Sublime Text after the installation is finished
-    - To get help, go to: Preferences > Package Settings > LaTeXTools > Documentation
-
-- Install extra things from the terminal with:
-
+    - Follow any advice printed to the terminal, eg it might detail how to produce the documentation
+- Move the `.sty` file to the following directory: `/usr/share/texmf/tex/latex`. This can be done with:
 ```{bash, eval = FALSE}
-sudo apt install dvipng
-sudo apt install texlive-latex-extra
-sudo apt install texlive-fonts-recommended
-sudo apt install texlive-pictures
-sudo apt install texlive-font-utils  # Needed for eps figures to work
-sudo apt install latexmk  # Needed for running LaTeX in Sublime Text
-sudo apt install texlive-lang-greek
-sudo apt install texlive-extra-utils
+$ sudo mv {package_name}.sty /usr/share/texmf/tex/latex/{package_name}.sty
+```
+- Update the ls-R file in this source tree. Because the folder you moved the `.sty` file into might not be searched by default, the ls-R file must be updated to make the system aware of the new package:
+```{bash, eval=FALSE}
+$ sudo mktexlsr
 ```
 
-- Then install ImageMagick with:
+Check that it has worked by opening a LaTeX file and adding `\usepackage{}` to the preamble with your new package's name between the curly brackets and compiling it.
 
-```{bash, eval = FALSE}
-cd ~/Downloads
-wget https://www.imagemagick.org/download/ImageMagick.tar.gz
-tar xvzf ImageMagick.tar.gz
-cd ImageMagick-7.0.x-xx/  # Replace the "x"s with the right version numbers
-./configure
-make
-sudo make install
-sudo ldconfig /usr/local/lib
-```
+[⇦ Back](../sublime_text.html)
 
-- Check it has worked with `magick -version`
+### 16.04 and 18.04
 
-*On Ubuntu 16.04 and 18.04:*
+**Install LaTeX:**
 
 - Install TeXLive (from https://www.tug.org/texlive/acquire-netinstall.html, not via Terminal!):
     + Download and unpack the .tar.gz
@@ -82,6 +129,19 @@ sudo ldconfig /usr/local/lib
 sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex-extra
 ```
 
+Also install ImageMagick:
+
+```{bash, eval = FALSE}
+$ cd ~/Downloads
+$ wget https://www.imagemagick.org/download/ImageMagick.tar.gz
+$ tar xvzf ImageMagick.tar.gz
+$ cd ImageMagick-7.0.x-xx/  # Replace the "x"s with the right version numbers
+$ ./configure
+$ make
+$ sudo make install
+$ sudo ldconfig /usr/local/lib
+```
+
 **Once finished:**
 
 - In Sublime Text, go to Preferences > Package Settings > LaTeXTools > Check System
@@ -94,7 +154,9 @@ sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex
     - eg Ctrl+L,W for word count
 - To turn off the "NO BIB FILE" Warning:
     - Place cursor in an open .tex file
-    - Ctrl-L,T,A,C (ie press Ctrl+L, then press t, then press a, then press c)
+    - Ctrl+L,T,A,C (ie press Ctrl+L, then press t, then press a, then press c)
+
+[⇦ Back](../sublime_text.html)
 
 Windows
 -------
