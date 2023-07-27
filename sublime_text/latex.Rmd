@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Sublime Text 4</font><br>Using Latex in Sublime Text'
+title: '<font size="5">Sublime Text 4</font><br>Using LaTeX in Sublime Text'
 output:
     html_document:
         theme: paper
@@ -24,13 +24,13 @@ Ubuntu
 
 **Prerequisites**
 
-- Before you can use Latex in Sublime Text you need to have it installed on your computer:
-    - Option 1: install TexStudio (which will install Latex as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
+- Before you can use LaTeX in Sublime Text you need to have it installed on your computer:
+    - Option 1: install TexStudio (which will install LaTeX as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
     - Option 2: install it from the terminal with:
     ```{bash, eval = FALSE}
 sudo apt install texlive-latex-base
     ```
-- Make sure it is working by running a Latex file and ensure you know how to install packages (hint: TexStudio does it automatically).
+- Make sure it is working by running a LaTeX file and ensure you know how to install packages (hint: TexStudio does it automatically).
 - Install the LaTeXTools package for Sublime Text:
     - Tools > Command Palette (shortcut: Ctrl+Shift+P) > Package Control: Install Package > LaTeXTools
     - Close and re-open Sublime Text after the installation is finished
@@ -44,8 +44,9 @@ sudo apt install texlive-latex-extra
 sudo apt install texlive-fonts-recommended
 sudo apt install texlive-pictures
 sudo apt install texlive-font-utils  # Needed for eps figures to work
-sudo apt install latexmk  # Needed for running Latex in Sublime Text
+sudo apt install latexmk  # Needed for running LaTeX in Sublime Text
 sudo apt install texlive-lang-greek
+sudo apt install texlive-extra-utils
 ```
 
 - Then install ImageMagick with:
@@ -86,8 +87,8 @@ sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex
 - In Sublime Text, go to Preferences > Package Settings > LaTeXTools > Check System
     - `xelatex` and `biber` might be missing and `display_log` might be false, but everything else should be there and be green
 - Test that it works:
-    - Open a Latex file and compile it with the build system (Tools > Build System > LaTeX)
-    - Compile it via Ctrl+C+B (the key binding doesn't work until you've made the association between the tex file and the Latex build system which happens when you run it via Tools > Build System > LaTeX)
+    - Open a LaTeX file and compile it with the build system (Tools > Build System > LaTeX)
+    - Compile it via Ctrl+C+B (the key binding doesn't work until you've made the association between the tex file and the LaTeX build system which happens when you run it via Tools > Build System > LaTeX)
 - If you have a bibliography, you need to copy the bibstyle file (eg apa.bst) into the working directory
 - For more key bindings, see Preferences > Package Settings > LaTeX Tools > Key Bindings-Default
     - eg Ctrl+L,W for word count
@@ -99,8 +100,8 @@ Windows
 -------
 *On Windows 7, 8 and 10:*
 
-- Before you can use Latex in Sublime Text, you need to have it installed on your computer. One option is to install the "TexStudio" programme as this will install Latex as well. It can be downloaded from [here](https://www.texstudio.org/).
-- Make sure it is working by running a Latex file and ensure you know how to install packages (hint: TexStudio does it automatically).
+- Before you can use LaTeX in Sublime Text, you need to have it installed on your computer. One option is to install the "TexStudio" programme as this will install LaTeX as well. It can be downloaded from [here](https://www.texstudio.org/).
+- Make sure it is working by running a LaTeX file and ensure you know how to install packages (hint: TexStudio does it automatically).
 - Install the LaTeXTools package for Sublime Text:
     - Command Palette > Package Control: Install Package > LaTeXTools
     - Close and re-open Sublime Text after the installation is finished
