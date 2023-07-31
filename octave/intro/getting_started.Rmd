@@ -1,0 +1,214 @@
+---
+title: '<font size="5">Introduction to Octave:</font><br>Getting Started'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../octave.html)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  engine.path = list(
+    octave = "/usr/bin/octave"
+  )
+)
+```
+
+GNU Octave is a programming language focused on scientific and mathematical computation. It's particularly good when working with arrays (scalars, vectors, matrices and higher-dimensional arrays) and is generally seen as a free alternative to MATLAB.
+
+Octave was initially developed by John W Eaton and first released in 1993 (although early prototypes had already existed for a few years by then). It is named after Octave Levenspiel, a former professor of chemical engineering at Oregon State University who had taught Eaton.
+
+Installing Octave
+=================
+
+**macOS**
+
+- There's no official installer for Octave on macOS but you can download it from the Octave.app project [here](https://octave-app.org/Download.html)
+- You can also download the latest version (ie the developer version) using Homebrew. Instructions are [here](https://solarianprogrammer.com/2019/07/11/install-gnu-octave-macos-getting-started-image-processing/)
+
+**Ubuntu**
+
+On Ubuntu 22.04 you can run the following from the terminal:
+
+```{bash, eval = FALSE}
+$ sudo apt-get install octave
+```
+
+*Don't* install from the Snap Store as this produces lots of warnings when you try to run it. For the record, installing from the Snap Store involves installing from the Ubuntu Software programme or from the terminal via the following command:
+
+```{bash, eval = FALSE}
+# Don't install this way
+$ sudo snap install octave
+```
+
+Once installed, you can open Octave in interactive mode from the terminal with:
+
+```{bash, eval = FALSE}
+$ octave
+```
+
+This will also tell you what version you have but, for the record, this information can also be found by running:
+
+```{bash, eval = FALSE}
+$ octave --version
+```
+
+Exit this Octave interactive mode with:
+
+```{octave, eval = FALSE}
+exit()
+```
+
+Check *where* it has been installed to with:
+
+```{bash, eval = FALSE}
+$ which octave
+```
+
+It will probably be located here:
+
+```{bash, eval = FALSE}
+/usr/bin/octave
+```
+
+If you installed it from the Snap Store (hopefully you didn't) it will be here:
+
+```{bash, eval = FALSE}
+/snap/bin/octave
+```
+
+Running Octave
+==============
+- Octave can be run:
+    - Via the default GUI that comes with the installation when downloading it from the Octave website (as opposed to when downloading it from the terminal), or
+    - It can be run in interactive mode via a command-line interface (CLI)
+- In the GUI:
+    - There is a terminal window in where the CLI interactive mode can be accessed
+    - Scripts can be created, edited and run
+- Octave scripts are saved in 'm-files' - files with the `.m` extension. This helps with MATLAB compatibility.
++ With the CLI, only the interactive mode is available but script files can of course be run from the shell in which the CLI itself is being run:
+    + On macOS and Linux, this is done via `octave {filename}.m`
+    + On Windows, this is done via `C:\octave\Octave-6.4.0\bin\octave-cli {filename}.m` or similar (`Octave-6.4.0` should be replaced with the version of Octave you have installed)
+
+Coding Basics
+=============
+- Octave is 1-indexed: the first element of an array is number 1 (not number 0!)
+- Comments are created with the percent sign: `%`. The hash `#` also works but is non-standard.
+- By default, when running a statement in Octave the output will print to the screen. This behaviour can be suppressed (turned off) by ending the statement with a semi-colon.
+    - Real-world Octave code mostly consists of lines ending in semi-colons;
+    - You can also use the `disp()` function if you want to explicitly display something on the screen
+- Variable names *must* start with an alphabetical letter, may only consist of letters (a-z, A-Z), numbers (0-9) and underscore characters (\_), and they are case sensitive
+- Some special variables are:
+    + `ans` : this will always be equal to whatever the output of the previous statement was
+    + `pwd` : the path of your **p**resent **w**orking **d**irectory, usually the folder where your script is located
+    + `pi` : equal to the circle constant (3.14159265...)
+    + `eps` : the smallest difference between two numbers that Octave can handle (2.2204e-16)
+    + `realmax` : the largest number that Octave can handle (1.7977e+308)
+    + `realmiin` : the smallest number that Octave can handle (2.2251e-308)
+    + `inf` or `Inf` : infinity
+    + `nan` or `NaN` : not-a-number; null
+- Some built-in commands are:
+    - `clear` : clears the memory of all stored variables and resets the special variables to their default values
+    - `clc` : clears the command window (but has no effect on the stored variables)
+    - `close` : closes all open plot windows
+- Include the line `clc clear close` at the start of your scripts to ensure that your working area is clean
+- Folders can be added to Octave's PATH by using the `addpath()` function
+
+<!-- Example from 2016-08-16: -->
+<!-- addpath ('/home/rowan/Dropbox/01 Wiki/Octave') %Ubuntu -->
+<!-- addpath ('C:\Users\some3715\Dropbox\01 Wiki\Octave') %Botnar -->
+
+Scalar Mathematics
+==================
+Zero-dimensional arrays (which most of use would refer to as 'numbers'!) can be used to do maths much as one would expect:
+
+```{octave}
+a = 1;
+b = 2;
+
+% Addition
+a + b
+
+% Subtraction
+a - b
+
+% Multiplication
+a * b
+
+% Right division
+a / b
+
+% Left division
+a \ b
+
+% Exponentiation
+a^b
+```
+
+Basic mathematical functions:
+
+```{octave}
+x = 10;
+
+% Absolute value
+abs(x)
+
+% Exponential function
+exp(x)
+
+% Natural logarithm
+log(x)
+
+% Logarithm, base 10
+log10(x)
+
+% Square root
+sqrt(x)
+
+% Trigonometric functions using radians
+sin(x)
+cos(x)
+tan(x)
+
+% Trigonometric functions using degrees
+sind(x)
+cosd(x)
+tand(x)
+```
+
+User Input
+==========
+<!-- Written after seeing a script last edited on 2016-08-16 -->
+Running the `input()` function will:
+
+- Output a message to the screen
+- Cause the programme to wait for the user to type something in the terminal
+- Take that input and assign it to a variable
+
+```{octave, eval = FALSE}
+current_age = input('How old are you? ');
+
+disp('Your current age:'), disp(current_age)
+age_next_year = current_age + 1;
+disp('Your age next year:'), disp(age_next_year)
+```
+
+```
+How old are you? 31
+Your current age:
+31
+Your age next year:
+32
+```
+
+[⇦ Back](../../octave.html)
+
+</font>

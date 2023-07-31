@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Data Handling in Python:</font><br>Look Up Sunrise and Sunset Times'
+title: '<font size="5">Utilities in Python:</font><br>Look Up Sunrise and Sunset Times'
 output:
     html_document:
         theme: paper
@@ -14,12 +14,17 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 This page uses the **Astral** package from sffjunkie:
 
 - PyPI: https://pypi.org/project/astral/
 - Read the Docs: https://astral.readthedocs.io/en/stable/index.html
 - GitHub: https://github.com/sffjunkie/astral
-- Install: `pip install astral` or `pip3 install astral` or `python3.10 -m pip install astral`
+- Install: `pip install astral` or `pip3 install astral` or `python3.11 -m pip install astral`
 
 Hello World Example
 ===================
