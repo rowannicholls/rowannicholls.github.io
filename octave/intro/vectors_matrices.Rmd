@@ -1,0 +1,409 @@
+---
+title: '<font size="5">Introduction to Octave:</font><br>Arrays: Vectors and Matrices'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../octave.html)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  engine.path = list(
+    octave = "/usr/bin/octave"
+  )
+)
+```
+
+Vectors
+=======
+**Vectors** are 1-dimensional arrays of numbers (as opposed to **scalars** which are 0-dimensional and **matrices** which are 2-dimensional).
+
+Creating
+--------
+Vectors are created by using:
+
+- Square brackets
+- Commas or spaces between numbers (or a mixture of both)
+
+When working with vectors the output can get quite large so we will use `format compact` to reduce the space used:
+
+```{octave}
+format compact
+
+# Commas between numbers
+x = [1, 3, 2]
+
+# Spaces between numbers
+x = [1 3 2]
+
+# A mixture of commas and spaces
+x = [1 3, 2]
+```
+
+Vectors can also be created by specifying ranges of numbers:
+
+```{octave}
+format compact
+
+# Numbers between 1 and 10
+x = 1 : 10
+
+# Odd numbers between 1 and 10
+x = 1 : 2 : 10
+```
+
+The `linspace()` function can be used to create a vector *of a defined length* between a start and an end point with a consistent gap between successive elements:
+
+```{octave}
+format compact
+
+# 8 numbers evenly spaced between 1 and 10
+x = linspace(1, 10, 8)
+```
+
+Indexing
+--------
+Read values in a vector by using *round* brackets:
+
+```{octave}
+format compact
+
+# Create a 5-element vector
+x = [10, 20, 30, 40, 50];
+
+# Get the 3rd element
+x(3)
+```
+
+Describing
+----------
+Use `length()` and `size()` to display details about your vector:
+
+```{octave}
+# Create a 5-element vector
+x = [10, 20, 30, 40, 50];
+
+length(x)
+size(x)
+```
+
+This tells us that our vector is 5 elements in length, with 1 row and 5 columns.
+
+Iterating Over
+--------------
+You can iterate over a vector using a `for` loop:
+
+```{octave}
+# Create a 5-element vector
+x = [10, 20, 30, 40, 50];
+
+for i = 1:length(x)
+    x(i)
+endfor
+```
+
+Concatenating
+-------------
+Add a vector onto the end of another vector using square brackets:
+
+```{octave}
+x1 = [10, 20, 30];
+x2 = [40, 50];
+
+x = [x1, x2]
+```
+
+Matrices
+========
+**Matrices** are much the same as vectors except they have *two* dimensions.
+
+Creating
+--------
+Just like vectors, matrices are created by using square brackets together with either commas or spaces (or both) except, this time, either semi-colons or line breaks are also used as these indicate the line breaks at the end of rows:
+
+```{octave}
+format compact
+
+# Create a matrix using spaces between row elements and line breaks between rows
+matrix = [
+    1 2
+    3 4
+    5 6
+]
+
+# Create a matrix using commas between row elements and semi-colons between rows
+matrix = [
+    1, 2;
+    3, 4;
+    5, 6;
+]
+```
+
+Indexing
+--------
+A matrix is also indexed using round brackets, but this time *two* numbers are needed (corresponding to the row and column of the element you want):
+
+```{octave}
+# Create a 3x2 matrix
+matrix = [
+    1 2
+    3 4
+    5 6
+];
+
+# Index the matrix
+matrix(2, 2)
+```
+
+More advanced indexing is also possible, using vectors to define the rows and columns you want:
+
+```{octave}
+# Create a 4x4 matrix
+matrix = [
+    1 2 3 4
+    5 6 7 8
+    9 10 11 12
+    13 14 15 16
+];
+
+# Index the matrix
+matrix(1 : 2 : 3,  2 : 2 : 4)
+```
+
+This has given us the odd-numbered rows (1 and 3) and the even-numbered (2 and 4) columns.
+
+A colon `:` represents 'all' rows or columns:
+
+```{octave}
+# Create a 4x4 matrix
+matrix = [
+    1 2 3 4
+    5 6 7 8
+    9 10 11 12
+    13 14 15 16
+];
+
+# Index the matrix
+matrix(1 : 2 : 3, :)
+```
+
+This has given us the odd-numbered rows (1 and 3) and *all* columns.
+
+Describing
+----------
+The `length()`, `size()`, `rows()` and `columns()` functions all work for describing a matrix:
+
+```{octave}
+# Create a 3x2 matrix
+matrix = [
+    1 2
+    3 4
+    5 6
+];
+
+length(matrix)
+size(matrix)
+rows(matrix)
+columns(matrix)
+```
+
+Iterating Over
+--------------
+You can iterate over a matrix using *two* `for` loops:
+
+```{octave}
+# Create a 3x2 matrix
+matrix = [
+    1 2
+    3 4
+    5 6
+];
+
+for i = 1:rows(matrix)
+    for j = 1:columns(matrix)
+        matrix(i, j)
+    endfor
+endfor
+```
+
+Finding
+-------
+To find a particular value in a matrix, use `==` to find which elements are equal to what you are looking for:
+
+```{octave}
+matrix = [
+    1 2
+    3 3
+    3 6
+    7 8
+];
+
+matrix == 3
+```
+
+Then, use `find()` to get the indices of these locations (index numbers start at the top-left and increase going down the columns first, then along the rows):
+
+```{octave}
+matrix = [
+    1 2
+    3 3
+    3 6
+    7 8
+];
+
+find(matrix == 3)
+```
+
+So the number 3 is the second, third and sixth element of this matrix, counting from the top-left downwards and then to the right.
+
+If you search for a two-element vector in a two-column matrix, Octave will search each column separately:
+
+```{octave}
+matrix = [
+    1 2
+    3 3
+    3 6
+    7 8
+];
+
+find(matrix == [3, 8])
+```
+
+The first column was searched for the number 3 and it was found at indices 2 and 3. The second column was searched for the number 8 and it was found at index 8.
+
+Alternatively, you can search only a subset of the matrix:
+
+```{octave}
+matrix = [
+    1 2
+    3 3
+    3 6
+    7 8
+];
+
+find(matrix(:, 1) == 3)
+```
+
+All rows and the first column of the matrix was searched for the number 3, and it was found at indices 2 and 3.
+
+Array Operations
+================
+
+Scalar Mathematics
+------------------
+Addition, subtraction, multiplication and division of an array by a scalar simply applies the operation to all the elements in the array:
+
+```{octave}
+format compact
+
+matrix = [
+    1 2
+    3 4
+    5 6
+];
+
+% Scalar addition
+matrix + 3
+
+% Scalar subtraction
+matrix - 3
+
+% Scalar multiplication
+matrix * 3
+
+% Scalar division
+matrix / 3
+```
+
+Element-Wise Multiplication
+---------------------------
+If you want to perform an operation between every element in one array and the corresponding elements in a second array, you can add a full stop before the operation:
+
+```{octave}
+format compact
+
+A = [
+    1 2
+    3 4
+];
+B = [
+    1 2
+    3 4
+];
+
+A .* B
+```
+
+This causes each element in `A` to be multiplied by the corresponding element in `B`. This is *not* the same as matrix multiplication (dot products and/or cross products). This element-wise mode of operation also applies to division (`./`) and exponentiation (`.^`).
+
+Dot Products
+------------
+Given an $r \times n$ matrix **A** and an $n \times c$ matrix **B** the dot product will produce an $r \times c$ matrix:
+
+```{octave}
+format compact
+
+A = [
+    1 6
+    3 2
+    3 4
+];
+B = [
+    2 1 5
+    5 6 2
+];
+
+A * B
+```
+
+A $3 \times 2$ matrix times a $2 \times 3$ matrix produces a $3 \times 3$ matrix.
+
+Inverse
+-------
+The inverse of `A` is `inv(A)` or `A^-1`:
+
+```{octave}
+format compact
+
+A = [
+    0 2 1
+    -1 -2 0
+    -1 1 2
+];
+
+inv(A)
+A^-1
+```
+
+Use this to solve for unknown variables in a system on linear equations: **Ax** = **b**
+
+```{octave}
+format compact
+
+A = [
+    3 2 -1
+    2 -2 4
+    -1 0.5 -1
+];
+b = [
+    1
+    -2
+    0
+];
+
+x = inv(A) * b
+x = A^-1 * b
+x = A \ b
+```
+
+[⇦ Back](../../octave.html)
+
+</font>

@@ -39,10 +39,10 @@ Example Data
 As an example, let's use the *wine recognition dataset* from Scikit-Learn (more info on this dataset [here](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#wine-recognition-dataset) and [here](https://rowannicholls.github.io/python/data/sklearn_datasets/wine.html)). This can be loaded with:
 
 ```{python}
-from sklearn.datasets import load_wine
+from sklearn import datasets
 
 # Load the dataset
-wine = load_wine()
+wine = datasets.load_wine()
 ```
 
 Re-Format the Data
@@ -90,7 +90,7 @@ View the Data
 The best way to understand the raw data is to see all of it. Use a scatter plot to do this, with a boxplot included underneath to show the distribution:
 
 ```{python, eval = FALSE}
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 
 # Plot
 grouped_data = df.groupby('cultivator')['total_phenols'].apply(list)
@@ -102,7 +102,7 @@ plt.ylabel('Total Phenols')
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 
 # Plot
 grouped_data = df.groupby('cultivator')['total_phenols'].apply(list)
@@ -268,10 +268,10 @@ sample_2 = df[df['cultivator'] == 2]['total_phenols']
 Then use the one-way ANOVA *F*-test from SciPy:
 
 ```{python}
-from scipy.stats import f_oneway
+from scipy import stats as st
 
 # One-way ANOVA
-statistic, pvalue = f_oneway(sample_0, sample_1, sample_2)
+statistic, pvalue = st.f_oneway(sample_0, sample_1, sample_2)
 
 print(f'One-way ANOVA: s = {statistic:.2f}, p = {pvalue:.2e}')
 ```
