@@ -138,6 +138,18 @@ DiagrammeR::grViz(
 )
 ```
 
+The code on this page uses the `numpy`, `scipy`, `pandas`, `statsmodels` and `matplotlib` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install matplotlib
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
 Goodness-of-Fit Test
 ====================
 This test answers the question *"does my distribution of numbers come from the distribution I expect?"*.
@@ -159,14 +171,14 @@ You would have *observed* 44 men and 56 women but your *expectation* would have 
 As per the flowchart for choosing a statistical test that is shown above, we could either use a one-sample *Z*-test or a χ² goodness-of-fit test to investigate this question. We will do both, but let's start with the latter: testing the 'goodness-of-fit' of your sample with the expected distribution:
 
 ```{python}
-from scipy import stats
+from scipy import stats as st
 
 # We observed 44 men and 56 women
 observed = [44, 56]
 # We expected 50 men and 50 women
 expected = [50, 50]
 # Perform the chi-squared goodness-of-fit test
-chisq, p = stats.chisquare(observed, expected)
+chisq, p = st.chisquare(observed, expected)
 
 print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
@@ -179,7 +191,7 @@ As it happens, if you omit the second argument the `chisquare()` function assume
 # We observed 44 men and 56 women
 observed = [44, 56]
 # Perform the chi-squared goodness-of-fit test
-chisq, p = stats.chisquare(observed)
+chisq, p = st.chisquare(observed)
 
 print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
@@ -190,7 +202,7 @@ If, in a different sample, we observed 50 men and 50 women, the test would tell 
 # We observed 50 men and 50 women
 observed = [50, 50]
 # Perform the chi-squared goodness-of-fit test
-chisq, p = stats.chisquare(observed)
+chisq, p = st.chisquare(observed)
 
 print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
@@ -199,7 +211,7 @@ Note that the test does __NOT__ work properly if you give it your data as propor
 
 ```{python}
 observed = [0.44, 0.56]
-chisq, p = stats.chisquare(observed)
+chisq, p = st.chisquare(observed)
 
 print(f'χ² = {chisq:.2f}, p = {p:.2f}')
 ```
@@ -268,7 +280,7 @@ So a chi-squared test is appropriate:
 
 ```{python}
 # Perform the chi-squared goodness-of-fit test
-chisq, p = stats.chisquare(observed, expected)
+chisq, p = st.chisquare(observed, expected)
 
 print(f'χ² = {chisq:.3f}, p = {p:.2f}')
 ```
@@ -300,7 +312,7 @@ print(f'χ² = {chisq:.3f}')
 Then, this test statistic can be converted into a *p*-value by using the chi-distribution for 3 degrees of freedom:
 
 ```{python}
-p_value = 1 - stats.chi2.cdf(chisq, dof)
+p_value = 1 - st.chi2.cdf(chisq, dof)
 
 print(f'p = {p_value:.2f}')
 ```
@@ -317,7 +329,7 @@ Again, using an example from [the Crash Course Youtube video](https://www.youtub
 
 > Is someone's Hogwarts house independent of whether or not they like pineapple on pizza?
 
-Here's the raw data:
+Here's the raw data as presented in the video:
 
 **Observed:**
 
@@ -326,15 +338,16 @@ Here's the raw data:
 | No to pineapple on pizza  | 79         | 122        | 204       | 74        |
 | Yes to pineapple on pizza | 82         | 130        | 240       | 69        |
 
-Check the flowchart to confirm that a chi-squared test of independence is appropriate: we have two dependent variables, both are categorical (specifically, nominal) and no independent variable (only one sample was taken). So we're all good.
+The above is known as a *contingency table* or a *cross tabulation.*
 
+Let's check the flowchart to confirm that a chi-squared test of independence is appropriate: we have two dependent variables, both are categorical (specifically, nominal) and no independent variable (only one sample was taken). So we're all good.
+
+### Solution from First Principles
 If the two dependent variables - Hogwarts house and pineapple on pizza preference - are indeed independent we can work out what we would expect the data to look like given the number of people who were surveyed:
 
 ```{python}
-import numpy as np
-
 #
-# Are two categorical variables independent?
+# Are these two categorical variables independent?
 #
 # Collate the observed data
 observed = np.array(
@@ -366,7 +379,7 @@ In Python, if we try to use the `chisquare()` function in the same way as we did
 
 ```{python}
 # Calculate the chi-square test statistic
-chisq, p_value = stats.chisquare(observed, expected)
+chisq, p_value = st.chisquare(observed, expected)
 
 print(chisq, p_value)
 ```
@@ -381,7 +394,7 @@ rows = observed.shape[0]
 cols = observed.shape[1]
 dof = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p_value = 1 - stats.chi2.cdf(chisq, dof)
+p_value = 1 - st.chi2.cdf(chisq, dof)
 
 print(f'χ² = {chisq:.3f}, p = {p_value:.2f}')
 ```
@@ -389,6 +402,61 @@ print(f'χ² = {chisq:.3f}, p = {p_value:.2f}')
 This is the same as what they got in the video (note that Python rounds to the nearest *even* number by default and the rounded *p*-value of 0.6 matches what the video shows).
 
 As the *p*-value is larger than 0.05 we *fail to reject the null hypothesis* that the distribution of Hogwarts houses is the same for both pineapple on pizza lovers and haters.
+
+### Solution Directly from the Contingency Table
+A quicker option would have been to create the contingency table of the raw data as a data frame and use the `chi2_contingency()` function directly on that:
+
+```{python}
+import pandas as pd
+
+# Create a contingency table (also known as a cross tabulation)
+dct = {
+    'Gryffindor': [79, 82],
+    'Hufflepuff': [122, 130],
+    'Ravenclaw': [204, 240],
+    'Slytherin': [74, 69],
+}
+crosstab = pd.DataFrame(dct, index=['No', 'Yes'])
+
+print(crosstab)
+```
+
+```{python}
+chi2, pval, dof, expected = st.chi2_contingency(crosstab)
+
+print(f'χ² = {chi2:.3f}, p = {pval:.2f}, degrees of freedom = {dof}')
+```
+
+This also gives us the expected results under the assumption of independence:
+
+```{python}
+print(expected)
+```
+
+### Solution from Raw Data in Long Format
+Usually in the real world we will get raw data in *long format.* In this example it has been given to us as a contingency table, but for the sake of demonstration here's how to reverse-engineer it into long format:
+
+```{python}
+# Reverse-engineer the raw data
+s = crosstab.stack()
+df = s.index.repeat(s).to_frame(index=False)
+columns = {
+    0: 'Pineapple on pizza?',
+    1: 'Hogwarts house'
+}
+df = df.rename(columns=columns)
+
+print(df)
+```
+
+If this was indeed the format we received the raw data in, we could then convert it into a contingency table and use `chi2_contingency()` as above:
+
+```{python}
+table = pd.crosstab(df['Pineapple on pizza?'], df['Hogwarts house'])
+chi2, pval, dof, expected = st.chi2_contingency(table)
+
+print(f'χ² = {chi2:.3f}, p = {pval:.2f}')
+```
 
 ### Equivalence with the Two-Sample *Z*-Test
 Let's reduce the example so that we only have two houses:
@@ -417,7 +485,7 @@ n = np.sum(observed)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
 # Calculate the chi-square test statistic
-chisq, p_value = stats.chisquare(observed, expected)
+chisq, p_value = st.chisquare(observed, expected)
 # Sum the answers
 chisq = np.sum(chisq)
 # Degrees of freedom
@@ -425,7 +493,7 @@ rows = observed.shape[0]
 cols = observed.shape[1]
 dof = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p_value = 1 - stats.chi2.cdf(chisq, dof)
+p_value = 1 - st.chi2.cdf(chisq, dof)
 
 print(f'χ² = {chisq:.3f}, p = {p_value:.3f}')
 ```
@@ -478,8 +546,9 @@ The results of a fictitious survey are as follows:
 | Men    | 200        | 150      | 50          |
 | Women  | 250        | 300      | 50          |
 
-Quick check of the flowchart: we have two categorical dependent variables (voting preference and gender, both of which are nominal and the latter is binary) and no independent variable (only one survey was taken). So a chi-squared test of independence is the way to go:
+Quick check of the flowchart: we have two categorical dependent variables (voting preference and gender, both of which are nominal and the latter is binary) and no independent variable (only one survey was taken). So a chi-squared test of independence is the way to go.
 
+### Solution from First Principles
 ```{python}
 # Collate the observed data
 observed = np.array(
@@ -495,7 +564,7 @@ n = np.sum(observed)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
 # Calculate the chi-square test statistic
-chisq, p_value = stats.chisquare(observed, expected)
+chisq, p_value = st.chisquare(observed, expected)
 # Sum the answers
 chisq = np.sum(chisq)
 # Degrees of freedom
@@ -503,12 +572,28 @@ rows = observed.shape[0]
 cols = observed.shape[1]
 dof = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p_value = 1 - stats.chi2.cdf(chisq, dof)
+p_value = 1 - st.chi2.cdf(chisq, dof)
 
 print(f'χ² = {chisq:.3f}, p = {p_value:.4f}')
 ```
 
 To quote the source: "since the *p*-value (0.0003) is less than the significance level (0.05), we cannot accept the null hypothesis. Thus, we conclude that there is a relationship between gender and voting preference".
+
+### Solution Directly from the Contingency Table
+```{python}
+# Create a contingency table (also known as a cross tabulation)
+dct = {
+    'Republican': [200, 250],
+    'Democrat': [150, 300],
+    'Independent': [50, 50],
+}
+crosstab = pd.DataFrame(dct, index=['Men', 'Women'])
+
+# Perform the chi-squared test
+chi2, pval, dof, expected = st.chi2_contingency(crosstab)
+
+print(f'χ² = {chi2:.3f}, p = {pval:.4f}')
+```
 
 Homogeneity Test
 ================
@@ -571,7 +656,7 @@ print(np.round(expected, 1))
 
 ```{python}
 # Calculate the chi-square test statistic
-chisq, p_value = stats.chisquare(observed, expected)
+chisq, p_value = st.chisquare(observed, expected)
 # Sum the answers
 chisq = np.sum(chisq)
 # Degrees of freedom
@@ -579,7 +664,7 @@ rows = observed.shape[0]
 cols = observed.shape[1]
 dof = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p_value = 1 - stats.chi2.cdf(chisq, dof)
+p_value = 1 - st.chi2.cdf(chisq, dof)
 
 print(f'χ² = {chisq:.3f}, p = {p_value:.3f}')
 ```
@@ -609,7 +694,7 @@ n = np.sum(observed)
 # Calculate the expected observations
 expected = np.dot(row_totals.T, col_totals) / n
 # Calculate the chi-square test statistic
-chisq, p_value = stats.chisquare(observed, expected)
+chisq, p_value = st.chisquare(observed, expected)
 # Sum the answers
 chisq = np.sum(chisq)
 # Degrees of freedom
@@ -617,7 +702,7 @@ rows = observed.shape[0]
 cols = observed.shape[1]
 dof = (rows - 1) * (cols - 1)
 # Convert chi-square test statistic to p-value
-p_value = 1 - stats.chi2.cdf(chisq, dof)
+p_value = 1 - st.chi2.cdf(chisq, dof)
 
 print(f'χ² = {chisq:.3f}, p = {p_value:.3f}')
 ```
@@ -729,7 +814,7 @@ x.extend(['High'] * 12)
 y.extend(['Uninfected'] * 12)
 ```
 
-We now have two lists which are each 90 elements long, corresponding to the 90 patients in our fictitious example. Now we can create the contingency table - also known as a cross-tabulation - using the `crosstab()` function from Pandas:
+We now have two lists which are each 90 elements long, corresponding to the 90 patients in our fictitious example. Now we can create the contingency table - also known as a cross tabulation - using the `crosstab()` function from Pandas:
 
 ```{python}
 import pandas as pd
@@ -794,7 +879,7 @@ dof = np.prod(np.array(ct.shape) - 1) - 1
 # p-value
 # The probability of obtaining test results at least as extreme as the result
 # actually observed, under the assumption that the null hypothesis is correct
-p_value = 1 - stats.chi2.cdf(chisq, dof)
+p_value = 1 - st.chi2.cdf(chisq, dof)
 
 print(f'p = {p_value:.4f}')
 ```
@@ -854,7 +939,7 @@ V = count_total * fails_total * (nobs_total * T3 - T2**2) / (
     nobs_total**2 * (nobs_total - 1)
 )
 chi2_stat = (T1 - (count_total * T2 / nobs_total))**2 / V
-p_value = 1 - stats.chi2.cdf(chi2_stat, df=1)
+p_value = 1 - st.chi2.cdf(chi2_stat, df=1)
 
 print(f'χ² = {chi2_stat:.3f}, p = {p_value:.3f}')
 ```
@@ -930,7 +1015,7 @@ print(chi_squared)
 # probability of obtaining test results at least as extreme as the result
 # actually observed, under the assumption that the null hypothesis is correct
 dof = np.prod(np.array(ct.shape) - 1)
-p = 1 - stats.chi2.cdf(chi_squared, dof)
+p = 1 - st.chi2.cdf(chi_squared, dof)
 print(p)
 ```
 
@@ -958,7 +1043,7 @@ def perform_chi_squared(obs, exp):
     extreme as the result actually observed, under the assumption that the null
     hypothesis is correct.
     """
-    chisq, p = stats.chisquare(obs, exp)
+    chisq, p = st.chisquare(obs, exp)
     if p <= 0.001:
         significance = '***'
         interpretation = 'H_0 is rejected at a 99.9% confidence level.'

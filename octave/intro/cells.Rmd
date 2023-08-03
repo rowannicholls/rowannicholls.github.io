@@ -1,0 +1,159 @@
+---
+title: '<font size="5">Introduction to Octave:</font><br>Cells'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../octave.html)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  engine.path = list(
+    octave = "/usr/bin/octave"
+  )
+)
+```
+
+A **cell array** is an array of data of *any* type. Take a look at the documentation [here](https://docs.octave.org/latest/Cell-Arrays.html).
+
+Creating
+========
+In general, a cell is created by using *curly brackets:*
+
+```{octave}
+% Create a 3x1 cell
+c = {
+    'A string',
+    1,
+    3.14159265
+}
+```
+
+Alternatively, an empty cell can be declared with the `cell()` function:
+
+```{octave}
+% Create an empty 2x2 cell
+c = cell(2, 2)
+```
+
+You can confirm that it is empty by using `cellfun(@isempty, c)`. This is a function that returns `1` for each element that is empty:
+
+```{octave}
+% Create an empty 2x2 cell
+c = cell(2, 2);
+
+% Is this cell empty?
+cellfun(@isempty, c)
+```
+
+Initialising a cell (creating a *non-empty* cell) using curly brackets will result in this function showing zeros:
+
+```{octave}
+% Create a 1x3 cell
+c = {'A string', 1, 3.14159265};
+
+% Is this cell empty?
+cellfun(@isempty, c)
+```
+
+A cell can contain multi-dimensional objects...you can even have cells-of-cells!
+
+```{octave}
+% Create a 3x1 cell containing a string, a matrix and a cell
+c = {
+    'A string',
+    rand(2, 2),
+    {1, 2, 3}
+}
+```
+
+Indexing vs Subsetting
+======================
+Use **curly brackets** to get the *value* at an index in a cell. Remember that Octave is a 1-indexed language so the first element is number 1:
+
+```{octave}
+% Create a 1x3 cell
+c = {1, '2', 'three'};
+
+% Index the cell
+c{1}
+```
+
+Use **round brackets** to create a *subset* of the cell that includes the elements at the index or indexes you've provided:
+
+```{octave}
+% Create a 1x3 cell
+c = {1, '2', 'three'};
+
+% Subset the cell
+c(1)
+```
+
+Describing
+==========
+Use `size()`, `rows()` and `columns()` to display details about your cell:
+
+```{octave}
+c = {
+    'A string',
+    rand(2, 2)
+};
+
+size(c)
+rows(c)
+columns(c)
+```
+
+This tells us that our cell is 2x1 in size: 2 rows and 1 column.
+
+Iterating Over
+==============
+You can iterate over a cell using a `for` loop:
+
+```{octave}
+# Create a 1x3 cell
+c = {'A', 'B', 'C'};
+
+for i = 1:columns(c)
+    % Index the cell
+    c{:, i}
+    % Subset the cell
+    c(:, i)
+endfor
+```
+
+Concatenating
+=============
+Provided your cells are the right shape, you can append one to the bottom or to the right of another in order to combine them:
+
+```{octave}
+c1 = {
+    1, 2;
+    3, 4, 
+};
+c2 = {
+    10, 20;
+    30, 40
+};
+
+% Append to the bottom
+c3 = [
+    c1;
+    c2
+]
+
+% Append to the right
+c3 = [c1, c2]
+```
+
+[⇦ Back](../../octave.html)
+
+</font>
