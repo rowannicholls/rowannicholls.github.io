@@ -1,0 +1,320 @@
+---
+title: '<font size="5">Introduction to Octave:</font><br>Strings'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../octave.html)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  engine.path = list(
+    octave = "/usr/bin/octave"
+  )
+)
+```
+
+A **string** is the programming equivalent of *text* - it is a string of *text characters.*
+
+Creating
+========
+A string is created by using single or double quotation marks:
+
+```{octave}
+'Hello, World'
+"Hello, World"
+```
+
+A number can also form part or all of a string - just use the quotation marks to create it as above:
+
+```{octave}
+% Create a string that happens to contain a number
+'123'
+```
+
+Make sure you don't get confused between numbers that are strings and numbers that are scalars (actual numerical values)!
+
+```{octave}
+% This number is a string
+st = '123';
+typeinfo(st)
+
+% This number is a scalar
+no = 123;
+typeinfo(no)
+```
+
+Describing
+==========
+The `length()` function will give you the length of your string:
+
+```{octave}
+st = 'Hello, World';
+length = length(st)
+```
+
+Indexing
+========
+Just like vectors, you can get the n-th character from a string by using round brackets:
+
+```{octave}
+st = 'Hello, World';
+first_letter = st(1)
+```
+
+The command `end` will get you the last element:
+
+```{octave}
+st = 'Hello, World';
+last_letter = st(end)
+```
+
+A range will return the characters corresponding to the numbers in the range:
+
+```{octave}
+st = 'Hello, World';
+range = 1 : 2 : length(st);
+odd_letters = st(range)
+```
+
+Finding
+=======
+Find the first occurrence of a sub-string:
+
+```{octave}
+st = 'Hello, World';
+idx_left = index(st, 'l')
+```
+
+Find the last occurrence of a sub-string:
+
+```{octave}
+st = 'Hello, World';
+idx_right = rindex(st, 'l')
+```
+
+Find all occurrences of a sub-string:
+
+```{octave}
+st = 'Hello, World';
+idx = find(st == 'l')
+```
+
+The `strfind()` function does the same thing:
+
+```{octave}
+st = 'Hello, World';
+idx = strfind(st, 'l')
+```
+
+Note that all the above are case sensitive: lowercase `l` is different to uppercase `L`:
+
+```{octave}
+st = 'Hello, WORLD';
+idx = strfind(st, 'l')
+```
+
+Comparing
+=========
+Are two strings the same? The `strcmp()` function will return `1` for 'yes' and `0` for 'no':
+
+```{octave}
+strcmp('Hello', 'World')
+```
+
+This is different to the `==` comparison we used in the 'Finding' section above. This compares *each character* in two strings:
+
+```{octave}
+'Hello' == 'Hxlxo'
+```
+
+Concatenating
+=============
+Strings can be joined together by putting them inside square brackets, separated by spaces:
+
+```{octave}
+greeting = 'Hello';
+name = 'World';
+
+% Join four strings together
+[greeting ', ' name '!']
+```
+
+Converting
+==========
+We saw earlier that there is a difference between numbers that are strings and numbers that are scalars. The function `num2str()` will convert a number into a string and, unsurprisingly, `str2num()` will convert a string into a number:
+
+```{octave}
+% Create a scalar
+sc = 12345;
+
+% Convert the scalar into a string
+st = num2str(sc);
+typeinfo(st)
+
+% Convert back into a scalar
+sc = str2num(st);
+typeinfo(sc)
+```
+
+This comes in use when displaying numbers, which we will get onto next:
+
+Displaying
+==========
+Strings can be displayed by:
+
+- Omitting the semi-colon from the end of a statement
+- Using the `disp()` function
+- Using `printf()` (this prints to screen)
+- Using `sprintf()` (this creates a string variable)
+- Using `fprintf()` (this writes to a file or to the command window)
+
+Omitting the Semi-Colon
+-----------------------
+This displays the values as 'answers' and on separate lines, and it makes no difference whether a value is a string or not:
+
+```{octave}
+'Normal body temp is'
+36.5
+'to '
+37.5
+'°C'
+```
+
+Displaying As-Is (Unformatted)
+------------------------------
+The `disp()` function will display one or more strings together *on the same line.* Remember that numbers have to be converted to strings for this to work:
+
+```{octave}
+body_temp_low = 36.5;  % °C
+body_temp_high = 37.5;  % °C
+
+disp(['Normal body temp is ', num2str(body_temp_low), ' to ', num2str(body_temp_high), ' °C'])
+```
+
+Formatted Print to Screen
+-------------------------
+The `printf()` function and its relatives (`sprintf()` and `fprintf()`) create strings from other strings and from numbers, but they allow you to *format* how they look using *format specifiers* inside strings. There are five main specifiers: `%s`, `%d`, `%e`, `%f` and `%g`.
+
+The `%s` specifier inside a string will insert a different **s**tring into that location. The special character `\n` will create a **n**ewline, so remember to include that at the end of your formatted string to ensure your output doesn't look weird:
+
+```{octave}
+% Insert a string into a string
+printf('Insert a string here: %s\n', "Here's the string to insert")
+```
+
+The `%Ws` specifier will insert a string and, if the string is less than `W` characters wide, it will add whitespace 'padding' to make up the difference. If the string's width is more than `W` characters, it has no effect:
+
+```{octave}
+% Insert a string with padding
+printf('Insert a string here: %10s\n', 'String')
+
+% Insert a string with padding that doesn't get used
+printf('Insert a string here: %5s\n', 'String')
+```
+
+The `%d` specifier will insert a number (`d` is for **d**ecimal) and `%Wd` will add padding if the number is less than `W` characters wide. If you want to insert a percent sign, you need to use "`%%`" where the first is an 'escape character' that tells Octave you want to literally insert a percent sign:
+
+```{octave}
+test_score = 78;
+max_score = 90;
+
+percent = test_score / max_score * 100;
+
+% Insert numbers into a string
+printf('Your test score was: %d/%d (%d%%)\n', test_score, max_score, percent)
+
+% Insert numbers into a string with padding
+printf('\nScore  Max        %%\n%5d%5d%9d\n', test_score, max_score, percent)
+```
+
+The `%e` specifier will insert a number in scientific notation (ie with an **e**xponential), `%f` will insert a **f**ixed point number and `%g` will insert a number in whichever format Octave thinks is **g**ood:
+
+```{octave}
+c = 299792458;  % m/s
+printf('The speed of light is: %e m/s\n', c)
+
+printf('π = %f\n', pi)
+
+width = 0.000075;  % m
+printf('The width of a human hair is about %g m\n', width)
+```
+
+Building on the above, the `%W.De` specifier will insert a number in scientific notation with a minimum width of `W` (including the decimal point, a possible minus sign and five for the exponent) and D digits after the decimal points. `%W.Df` will do the same for a fixed point number and `%W.Dg` will choose the better of `%W.De` and `%W.Df`.
+
+```{octave}
+c = 299792458;  % m/s
+printf('The speed of light is: %.3e m/s\n', c)
+
+printf('π = %.3f\n', pi)
+
+width = 0.000075;  % m
+printf('The width of a human hair is about %.6g m\n', width)
+```
+
+Formatted String Creation
+-------------------------
+The `printf()` function prints formatted strings to the terminal screen. The `sprintf()` function is identical except it *returns* formatted strings which you can then assign to variables and use elsewhere in your code. All the specifiers are exactly the same.
+
+Here's how to use formatted strings to create filepaths:
+
+```{octave}
+folderpath = '/home/rowannicholls/Downloads';
+filename = 'strings.html';
+
+% Join two strings together, return the output and assign it to a variable
+filepath = sprintf('%s/%s', folderpath, filename);
+
+% Display the formatted string
+disp(filepath)
+```
+
+Note that if you don't assign the output of `sprintf()` to anything and omit the semi-colon, then it is identical to `printf()` except it prints `ans = ` at the front:
+
+```{octave}
+folderpath = '/home/rowannicholls/Downloads';
+filename = 'strings.html';
+
+% Join two strings together, return the output and assign it to a variable
+sprintf('%s/%s', folderpath, filename)
+```
+
+Formatted Print to File
+-----------------------
+`fprintf()` is identical to `printf()` and `sprintf()` except the output is written to a *file* as oppose to the terminal or to a variable:
+
+```{octave}
+c = 299792458;  % m/s
+
+% Write to file
+file = fopen('Output/example_string.txt', 'w');
+fprintf(file, 'The speed of light is: %.3e m/s\n', c)
+```
+
+A file `example_string.txt` gets created with the following content:
+
+```
+The speed of light is: 2.998e+08 m/s
+```
+
+Note that if the file is omitted - or incorrectly created - then `fprintf()` is completely identical to `printf()`:
+
+```{octave}
+c = 299792458;  % m/s
+
+% Print to screen
+printf('The speed of light is: %.3e m/s\n', c)
+fprintf('The speed of light is: %.3e m/s\n', c)
+```
+
+[⇦ Back](../../octave.html)
+
+</font>
