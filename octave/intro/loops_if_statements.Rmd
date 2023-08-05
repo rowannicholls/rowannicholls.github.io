@@ -1,0 +1,189 @@
+---
+title: '<font size="5">Introduction to Octave:</font><br>Loops and If Statements'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../octave.html)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  engine.path = list(
+    octave = "/usr/bin/octave"
+  )
+)
+```
+
+For Loops
+=========
+A **for loop** will run a piece of code again and again *for* a certain number of iterations:
+
+```{octave}
+% Add up all the number from 1 to 100
+running_total = 0;
+for k = 1:100
+    running_total = running_total + k;
+end
+
+disp(['The total is ', num2str(running_total)])
+```
+
+While Loops
+===========
+A **while loop** will to continue to run *while* a certain condition is met. In this example, the cosine of an angle is calculated using the Taylor series with additional terms being added until Octave runs out of precision (ie until the new term does not change the value stored in Octave's memory due to it being too small):
+
+```{octave}
+% Calculates cosine of x using the Taylor series
+% cos(x) = 1 - x^2/2! + x^4/4! - x^6/6! + x^8/8! - x^10/10! + ...
+
+% Angle in degrees
+xdeg = 4;
+
+% Convert to radians
+x = pi * xdeg / 180;
+% Initialise counter
+k = 0;
+% Initialise stopping conditions
+oldsum = -1;
+newsum = 0;
+
+while newsum ~= oldsum
+    k2 = 2 * k;
+    oldsum = newsum;
+    newsum = newsum + (-1)^k * x^(k2)/factorial(k2);
+    k = k + 1;
+end
+
+disp(['The cosine of ', num2str(xdeg), '° converges to ', num2str(newsum)])
+disp(['using ', num2str(k - 1), ' terms of the Taylor series.'])
+disp('')
+cosx = cos(x);
+disp(['The exact solution is ', num2str(cosx), '.'])
+```
+
+If you accidentally write a while loop that runs forever, press Ctrl+C to cancel it.
+
+If Statements
+=============
+Code that follows an **if statement** will only run *if* the statement is true:
+
+```{octave}
+if true
+    disp('This code will run')
+end
+
+if false
+    disp('This code will not run')
+end
+```
+
+Relational Operators
+--------------------
+You can use *relational operators* to construct statements:
+
+- `<` : less than
+- `<=` : less than or equal
+- `>` : greater than
+- `>=` : greater than or equal
+- `==` : equal
+- `~=` : not equal
+
+```{octave}
+if 1 == 1
+    disp('This code will run')
+end
+
+if 10 > 20
+    disp('This code will not run')
+end
+```
+
+Logical Operators
+-----------------
+Multiple logical statements can be joined together by using *logical operators:*
+
+- `&` : and
+- `|` : or
+- `~` : not
+
+```{octave}
+if (1 == 1) & (10 < 20)
+    disp('This code will run')
+end
+
+if (1 != 1) | (10 > 20)
+    disp('This code will not run')
+end
+```
+
+Elseif and Else statements
+--------------------------
+An if statement can be followed by one or more **elseif statements** and these can be followed by an **else statement**:
+
+- *If* the original if statement is true, it will run
+- *Else if* the original statement is false and the first elseif statement is true, then only the first elseif statement will run
+- *Else if* the original if statement and the first elseif statement are both false and the second elseif statement is true, then only the second elseif statement will run
+- This logic goes on for each elseif statement
+- If all the if and elseif statements are false, then the *else* statement will run
+
+```{octave}
+% Enter a person's height
+height = 1.75  % m
+
+if height > 1.96
+    disp('You are taller than Stephen Fry')
+elseif height > 1.77
+    disp('You are taller than Charlize Theron')
+elseif height > 1.64
+    disp('You are taller than Daniel Radcliffe')
+elseif height > 1.47
+    disp('You are taller than Danny DeVito')
+else
+    disp('You are very short!')
+end
+```
+
+Breaking out of a Loop
+======================
+The `break` command will break out of a loop (either a for loop or a while loop) if it is run. It can be put inside an if statement to allow the loop to run until the condition is met:
+
+```{octave}
+% Escape from a velociraptor
+
+% Your initial position
+x_you = 2  % m
+% Your speed
+v_you = 5;  % m/s
+% The velociraptor's initial position
+x_raptor = 0  % m
+% Velociraptor's speed
+v_raptor = 3;  % m/s
+
+while true
+    % Check for an outcome
+    if x_you > x_raptor + 20
+        disp('You escaped the velociraptor!')
+        break
+    end
+    if x_you <= x_raptor
+        disp('The velociraptor caught you!')
+        break
+    end
+
+    % Update the situation
+    x_you = x_you + v_you
+    x_raptor = x_raptor + v_raptor
+end
+```
+
+[⇦ Back](../../octave.html)
+
+</font>
