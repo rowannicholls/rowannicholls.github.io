@@ -1,0 +1,476 @@
+---
+title: '<font size="5">Introduction to Octave:</font><br>File IO'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../octave.html)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  engine.path = list(
+    octave = "/usr/bin/octave"
+  )
+)
+```
+
+<!-- Written after seeing a file that was last edited on 2020-04-09 -->
+
+List Files
+==========
+Get the names of all the files in a folder as a cell with `readdir()`:
+
+```{octave}
+filenames = readdir('Input')
+```
+
+As you can see, the first two 'files' are the special `.` and `..` objects which refer to the current and parent directories, respectively.
+
+Iterate Over the Files
+----------------------
+We can loop over all the files in the chosen folder using a `for` loop that runs from 1 until the it hits the number of files that were found:
+
+- Use the `numel()` function to get this value - it returns the **num**ber of **el**ements in a cell
+- Use a **reg**ular **exp**ression via the `regexp()` function to find the special `.` and `..` values and skip them with `continue`
+
+```{octave}
+% List the filenames in a directory
+filenames = readdir('Input');
+% Iterate through the filenames
+for i = 1:numel(filenames)
+    filename = filenames{i, 1};
+    % Skip the '.' and '..' directories
+    if (regexp(filename, "^\\.\\.?$"))
+        continue;
+    endif
+    filename
+endfor
+```
+
+Checking the Extension
+----------------------
+Sometimes we only want to work with one file type, eg if we are analysing images we wouldn't want our script to import `.txt` files. The `fileparts()` function is useful for this because it splits a file name up into its directory, name, and extension:
+
+```{octave, eval = FALSE}
+[dir, name, ext] = fileparts(filename)
+```
+
+Note that Octave does *not* check to see if `filename` actually exists when this function is run, it just treats it as an arbitrary string.
+
+The above can be used in our loop to find and then skip files that do not have the `.png` extension:
+
+```{octave}
+% List the filenames in a directory
+filenames = readdir('Input');
+% Iterate through the filenames
+for i = 1:numel(filenames)
+    filename = filenames{i, 1};
+    % Skip the '.' and '..' directories
+    if (regexp(filename, "^\\.\\.?$"))
+        continue;
+    endif
+    % Skip files that are not images
+    [dir, name, ext] = fileparts(filename);
+    if (~strcmp(ext, '.png'))
+        continue;
+    endif
+    filename
+endfor
+```
+
+Image Files
+===========
+Once we've got each of the filenames we want in turn, we can do something with them. As an example, we can import each of the images, turn them completely black and then export them to a different folder.
+
+- Use `fullfile()` to create the **full** **file**paths to the images
+- Use `imread()` to **read** the **im**ages into Octave
+- Multiple each of the pixel values by 0 to turn them black
+- Use `imwrite()` to **write** the **im**ages back to your computer
+
+```{octave}
+% List the filenames in a directory
+filenames = readdir('Input');
+% Iterate through the filenames
+for i = 1:numel(filenames)
+    filename = filenames{i, 1};
+    % Skip the '.' and '..' directories
+    if (regexp(filename, "^\\.\\.?$"))
+        continue;
+    endif
+    % Skip files that are not images
+    [dir, name, ext] = fileparts(filename);
+    if (~strcmp(ext, '.png'))
+        continue;
+    endif
+    % Load next file
+    filepath = fullfile('Input', filename);
+    image = imread(filepath);
+    % Make it completely black
+    image = image.*0;
+    % Export
+    filepath = fullfile('Output', filename);
+    imwrite(image, filepath)
+endfor
+```
+
+Diary Files
+===========
+<!-- Adapted from code originally created on 2017-02-12 in C:\Users\some3715\Dropbox -->
+A 'diary' stores everything that is shown on the terminal screen. This then gets saved into a plain text file called `diary` in the working directory. If a diary file already exists, this will *append* to that file.
+
+- `diary on` will start this recording
+- `diary off` will stop this recording
+- `diary` will toggle recording
+- `diary {filename}` can be used to change the name of the diary file
+    + `diary([datestr(now, 'yyyy-mm-dd'), ' diary'])` will prepend the current date to the filename
+
+```{octave}
+% This will save everything that is printed on the terminal into a file called
+% "diary" with today's date at the front. If this file already exists it will
+% be appended to, otherwise it will be created.
+diary([datestr(now, 'yyyy-mm-dd'), ' diary'])
+
+for i = 1:5
+    i
+endfor
+```
+
+In the diary file:
+
+```
+i = 1
+i = 2
+i = 3
+i = 4
+i = 5
+```
+
+Text Files
+==========
+
+Strings
+-------
+<!-- Adapted from code created on 2016-07-27 -->
+<!-- Max heart rate of 191 BPM on 2016-07-12 -->
+<!-- Resting heart rate of 50 BPM on 2016-07-27 -->
+The `fopen()`, `fdisp()` and `fclose()` functions can be used to **open** **f**iles, **disp**lay strings in them and then **close** them:
+
+```{octave}
+filepath = 'Output/example_text.txt';
+fid = fopen(filepath, 'w');
+
+max_heart_rate = 191;
+resting_heart_rate = 50;
+reserve_heart_rate = max_heart_rate - resting_heart_rate;
+
+x = [
+    'Maximum heart rate: ', num2str(max_heart_rate), ' BPM';
+    'Resting heart rate: ', num2str(resting_heart_rate), ' BPM';
+    'Reserve heart rate: ', num2str(reserve_heart_rate), ' BPM';
+];
+fdisp(fid, x)
+
+fclose (fid);
+```
+
+In `example_text.txt` we now have:
+
+```
+Maximum heart rate: 191 BPM
+Resting heart rate: 50 BPM 
+Reserve heart rate: 141 BPM
+```
+
+Data Stored as Text Files
+-------------------------
+Given a file called `example_text.txt` inside a folder `Input` that contains the following:
+
+```
+1
+2
+3
+4
+5
+```
+
+We can search for it, find it and import these numbers using the following:
+
+```{octave}
+format compact
+
+% List the filenames in a directory
+filenames = readdir('Input');
+
+% Iterate through the filenames
+for i = 1:numel(filenames)
+    filename = filenames{i, 1};
+
+    % Skip the '.' and '..' directories
+    if (regexp(filename, "^\\.\\.?$"))
+        continue;
+    endif
+
+    % Skip files that don't have the .txt extension
+    [dir, name, ext] = fileparts(filename);
+    if (~strcmp(ext, '.txt'))
+        continue;
+    endif
+
+    % Import as a cell
+    filepath = fullfile('Input', filename);
+    fid = fopen(filepath, 'r');
+    data_cell = textscan(fid, '%s');
+
+    % Import as a matrix
+    filepath = fullfile('Input', filename);
+    data_mat = csvread(filepath);
+
+endfor
+
+data_cell
+data_mat
+```
+
+We can then write this data to MATLAB files using the following:
+
+```{octave, echo = FALSE}
+format compact
+
+% List the filenames in a directory
+filenames = readdir('Input');
+
+% Iterate through the filenames
+for i = 1:numel(filenames)
+    filename = filenames{i, 1};
+
+    % Skip the '.' and '..' directories
+    if (regexp(filename, "^\\.\\.?$"))
+        continue;
+    endif
+
+    % Skip files that don't have the .txt extension
+    [dir, name, ext] = fileparts(filename);
+    if (~strcmp(ext, '.txt'))
+        continue;
+    endif
+
+    % Import as a cell
+    filepath = fullfile('Input', filename);
+    fid = fopen(filepath, 'r');
+    example_cell = textscan(fid, '%s');
+
+    % Import as a matrix
+    filepath = fullfile('Input', filename);
+    example_matrix = csvread(filepath);
+
+endfor
+
+save('Output/example_cell.mat', 'example_cell')
+save('Output/example_matrix.mat', 'example_matrix')
+```
+
+```{octave, eval = FALSE}
+save('Output/example_cell.mat', 'example_cell')
+save('Output/example_matrix.mat', 'example_matrix')
+```
+
+MATLAB Files
+============
+<!-- Adapted from code originally created on 2016-09-07 -->
+Working with data in MATLAB files (with the `.mat` extension) is a lot easier and, in general, recommended. We can load one as follows:
+
+```{octave}
+load('Input/example_matrix.mat')
+```
+
+This particular file contains data called `example_data`, and we can use this inside our script:
+
+```{octave}
+load('Input/example_matrix.mat')
+
+example_data
+```
+
+Once we're done, we can save it as a MATLAB file as follows:
+
+```{octave, echo = FALSE}
+load('Input/example_matrix.mat')
+
+save('Output/example_matrix.mat', 'example_data')
+```
+
+```{octave, eval = FALSE}
+save('Output/example_matrix.mat', 'example_data')
+```
+
+Note that if the filenames do not have spaces in them we can omit the brackets and quotation marks:
+
+```{octave}
+% Create a matrix
+my_matrix = [1 2; 3 4];
+
+% Save matrix to MATLAB file
+save example_matrix.mat my_matrix
+
+% Load matrix from MATLAB file
+load example_matrix.mat
+
+% View
+my_matrix
+```
+
+Scalar Structures (Structs)
+===========================
+<!-- Adapted from code originally created on 2016-08-23 and updated on 2016-09-07 -->
+These can be created, saved and loaded in a similar way to matrices:
+
+```{octave}
+% Create a struct
+my_struct.rank = 1;
+my_struct.player = 'DG Bradman';
+my_struct.batting_average = 99.94;
+
+% Save struct to MATLAB file
+save example_struct.mat my_struct
+
+% Load struct from MATLAB file
+load example_struct.mat
+
+% View
+my_struct
+```
+
+Comma-Separated Values (CSV Files)
+==================================
+<!-- Adapted from code originally created on 2020-04-10 -->
+The 'default' method for importing CSVs - the `csvread()` function - can only read *numerical* data. It puts this into a matrix:
+
+```{octave}
+csv = csvread('Input/example_csv.csv')
+```
+
+To import both numbers and text (as a *cell*):
+
+```{octave}
+csv = fileread('Input/example_csv.csv');
+csv = strsplit(csv, '\n');
+for i = 1:length(csv)
+    csv_formatted(i, :) = strtrim(strsplit(csv{i}, ','));
+endfor
+
+printf('%5s %11s %s\n', csv_formatted'{:})
+```
+
+This works even if the CSV data is stored in text format, eg `example_csv.txt`.
+
+Other Spreadsheets
+==================
+<!-- Using notes from 2016-09-07 -->
+These can't be imported in base Octave, but can be with the `xlsread()` function from the `io` package. Likewise, `xlswrite()` can be used for exporting.
+
+Note that files in the old Excel Binary File Format (`.xls`) can't be imported at all, and on macOS the `xlsread()` and `xlswrite()` functions don't always work. Also note that there used to be functions `odsread()` and `odswrite()` but these have now been deprecated.
+
+Office Open XML (`.xlsx`)
+-------------------------
+```{octave}
+pkg load io
+
+% Import
+[numarr, txtarr, rawarr, limits] = xlsread('Input/example_xlsx.xlsx');
+
+% View
+rawarr
+
+% Export
+xlswrite('Output/example_xlsx.xlsx', rawarr);
+```
+
+OpenDocument Spreadsheet (`.ods`)
+---------------------------------
+```{octave}
+pkg load io
+
+% Import
+[numarr, txtarr, rawarr, limits] = xlsread('Input/example_ods.ods');
+
+% View
+rawarr
+
+% Export
+xlswrite('Output/example_ods.ods', rawarr);
+```
+
+Initialisation Files
+====================
+<!-- Adapted from notes written 2020-04-10 -->
+Configuration/initialisation files (`.ini`) cannot be imported as such in Octave. There are three workarounds:
+
+`fileread()`
+------------
+INI files can be imported as blocks of text (single multi-line strings) using the `fileread()` function. Given the following `example_ini.ini` file:
+
+```
+First line
+Second line
+Third line
+```
+
+...we can import this as follows:
+
+```{octave}
+ini = fileread('example_ini.ini')
+```
+
+Startup Files
+-------------
+When running a script, Octave searches for and runs any file named `startup.m` in the working directory. Given `startup.m` with the following content:
+
+```{octave, eval = FALSE}
+disp('This is the startup file')
+```
+
+...and `script.m` in the same folder with the following:
+
+```{octave, eval = FALSE}
+disp('This is the script file')
+```
+
+...then running `script.m` will produce the following:
+
+```
+This is the startup file
+This is the script file
+```
+
+Pass Command Line Arguments
+---------------------------
+The `argv()` function collects arguments passed to the script from the command line interface (CLI). Given a script `example_script.m` with the following:
+
+```{octave, eval = FALSE}
+args = argv();
+printf('args = %s\n', args{1});
+```
+
+...then running the following in the terminal:
+
+```{bash, eval = FALSE}
+$ octave example_script.m 'Hello, World!'
+```
+
+...will produce:
+
+```
+args = Hello, World!
+```
+
+[⇦ Back](../../octave.html)
+
+</font>
