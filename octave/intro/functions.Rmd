@@ -1,0 +1,118 @@
+---
+title: '<font size="5">Introduction to Octave:</font><br>Functions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../octave.html)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  engine.path = list(
+    octave = "/usr/bin/octave"
+  )
+)
+```
+
+Built-In Functions
+==================
+Functions take in input(s) and produce output(s). There are plenty of built-in functions in Octave which do something based on what they are given, here are some examples:
+
+```{octave}
+format compact
+
+% Return the square root of the given number
+sqrt(2)
+
+% Convert the string to lowercase
+lower('HELLO, WORLD!')
+
+% Return a 1x7 matrix of random numbers sampled from the interval (0, 1)
+rand(1, 7)
+
+% Return the current date
+date
+
+% Convert the current date into ISO 8601 format
+datestr(date, 29)
+
+% Return the data type of a variable
+typeinfo(42)
+```
+
+Custom Functions
+================
+<!-- Written after seeing a script last edited on 2020-04-10 -->
+In Octave, there are **script files** and **function files**, both of which have the `.m` extension. A function file starts with a function declaration (it only has empty lines or comments above this) whereas the first code in a script file (not counting empty lines or comments) is anything other than a function declaration. It's good practice to start script files with some variation of `clc; clear; close;`, not just because those commands are useful but because this will ensure that the file is not mistaken by Octave for a function file.
+
+Here's an example of a function being defined and then being called in a script file:
+
+```{octave}
+% Prevent Octave from thinking that this is a function file
+clc; clear; close;
+
+% Create a custom function
+function [root1, root2] = quadratic_formula(a, b, c)
+    % Quadratic root finder
+    % ax² + bx + c = 0
+    % https://en.wikipedia.org/wiki/Quadratic_formula
+    discriminant = b^2 - 4 * a * c;
+    root1 = (-b + sqrt(discriminant)) / (2 * a);
+    root2 = (-b - sqrt(discriminant)) / (2 * a);
+endfunction
+
+% Call a custom function
+[root1, root2] = quadratic_formula(5, 6, 1);
+
+% Display the results
+root1
+root2
+```
+
+Function Files
+==============
+<!-- Written after seeing a script last edited on 2020-04-10 -->
+If the above function declaration is moved into its own file that will then be a *function file:*
+
+```{octave, eval = FALSE}
+% quadratic_formula.m
+
+% Quadratic root finder
+% ax² + bx + c = 0
+% https://en.wikipedia.org/wiki/Quadratic_formula
+
+function [root1, root2] = quadratic_formula(a, b, c)
+    discriminant = b^2 - 4 * a * c;
+    root1 = (-b + sqrt(discriminant)) / (2 * a);
+    root2 = (-b - sqrt(discriminant)) / (2 * a);
+endfunction
+```
+
+This can now be called from within a script file. Note that it is the name of the *function file* that is called, *not the name of the function itself* that is called. For this reason, it is good practice to make the name of a function file (the part before the `.m` extension) be the same as that of the function that is defined within it. Indeed, Octave will print a warning if this is not the case.
+
+For our example, both the function file and the function are called `quadratic_formula`. This can be called from within a script file as follows:
+
+```{octave}
+% Prevent Octave from thinking that this is a function file
+clc; clear; close;
+
+% Call a custom function from an external function file
+% 5x² + 6x + 1 = 0
+[root1, root2] = quadratic_formula(5, 6, 1);
+
+% Display the results
+root1
+root2
+```
+
+[⇦ Back](../../octave.html)
+
+</font>

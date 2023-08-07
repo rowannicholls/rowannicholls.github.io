@@ -11,7 +11,7 @@
 
 
 
-<title>Octave</title>
+<title>Introduction to Octave: Functions</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -704,24 +704,108 @@ Yh){var S=ei(!0,!0);Mb(S)}}});
 
 
 
-<h1 class="title toc-ignore">Octave</h1>
+<h1 class="title toc-ignore"><font size="5">Introduction to Octave:</font><br>Functions</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#built-in-functions"><span class="toc-section-number">1</span> Built-In Functions</a></li>
+<li><a href="#custom-functions"><span class="toc-section-number">2</span> Custom Functions</a></li>
+<li><a href="#function-files"><span class="toc-section-number">3</span> Function Files</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction" class="section level2">
-<h2>Introduction</h2>
-<ol style="list-style-type: decimal">
-<li><a href="octave/intro/getting_started.html">Getting Started</a></li>
-<li><a href="octave/intro/packages.html">Installing Packages</a></li>
-<li><a href="octave/intro/vectors_matrices.html">Vectors and Matrices</a></li>
-<li><a href="octave/intro/cells.html">Cells</a></li>
-<li><a href="octave/intro/strings.html">Strings</a></li>
-<li><a href="octave/intro/loops_if_statements.html">Loops and If Statements</a></li>
-<li><a href="octave/intro/file_io.html">File IO</a></li>
-<li><a href="octave/intro/functions.html">Functions</a></li>
-</ol>
+<p><a href="../../octave.html">⇦ Back</a></p>
+<div id="built-in-functions" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Built-In Functions</h1>
+<p>Functions take in input(s) and produce output(s). There are plenty of built-in functions in Octave which do something based on what they are given, here are some examples:</p>
+<pre class="octave"><code>format compact
+
+% Return the square root of the given number
+sqrt(2)
+
+% Convert the string to lowercase
+lower(&#39;HELLO, WORLD!&#39;)
+
+% Return a 1x7 matrix of random numbers sampled from the interval (0, 1)
+rand(1, 7)
+
+% Return the current date
+date
+
+% Convert the current date into ISO 8601 format
+datestr(date, 29)
+
+% Return the data type of a variable
+typeinfo(42)</code></pre>
+<pre><code>## ans = 1.4142
+## ans = hello, world!
+## ans =
+##    0.718787   0.806083   0.978761   0.860265   0.231144   0.612126   0.048602
+## 
+## ans = 07-Aug-2023
+## ans = 2023-08-07
+## ans = scalar</code></pre>
+</div>
+<div id="custom-functions" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Custom Functions</h1>
+<!-- Written after seeing a script last edited on 2020-04-10 -->
+<p>In Octave, there are <strong>script files</strong> and <strong>function files</strong>, both of which have the <code>.m</code> extension. A function file starts with a function declaration (it only has empty lines or comments above this) whereas the first code in a script file (not counting empty lines or comments) is anything other than a function declaration. It’s good practice to start script files with some variation of <code>clc; clear; close;</code>, not just because those commands are useful but because this will ensure that the file is not mistaken by Octave for a function file.</p>
+<p>Here’s an example of a function being defined and then being called in a script file:</p>
+<pre class="octave"><code>% Prevent Octave from thinking that this is a function file
+clc; clear; close;
+
+% Create a custom function
+function [root1, root2] = quadratic_formula(a, b, c)
+    % Quadratic root finder
+    % ax² + bx + c = 0
+    % https://en.wikipedia.org/wiki/Quadratic_formula
+    discriminant = b^2 - 4 * a * c;
+    root1 = (-b + sqrt(discriminant)) / (2 * a);
+    root2 = (-b - sqrt(discriminant)) / (2 * a);
+endfunction
+
+% Call a custom function
+[root1, root2] = quadratic_formula(5, 6, 1);
+
+% Display the results
+root1
+root2</code></pre>
+<pre><code>## root1 = -0.2000
+## root2 = -1</code></pre>
+</div>
+<div id="function-files" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Function Files</h1>
+<!-- Written after seeing a script last edited on 2020-04-10 -->
+<p>If the above function declaration is moved into its own file that will then be a <em>function file:</em></p>
+<pre class="octave"><code>% quadratic_formula.m
+
+% Quadratic root finder
+% ax² + bx + c = 0
+% https://en.wikipedia.org/wiki/Quadratic_formula
+
+function [root1, root2] = quadratic_formula(a, b, c)
+    discriminant = b^2 - 4 * a * c;
+    root1 = (-b + sqrt(discriminant)) / (2 * a);
+    root2 = (-b - sqrt(discriminant)) / (2 * a);
+endfunction</code></pre>
+<p>This can now be called from within a script file. Note that it is the name of the <em>function file</em> that is called, <em>not the name of the function itself</em> that is called. For this reason, it is good practice to make the name of a function file (the part before the <code>.m</code> extension) be the same as that of the function that is defined within it. Indeed, Octave will print a warning if this is not the case.</p>
+<p>For our example, both the function file and the function are called <code>quadratic_formula</code>. This can be called from within a script file as follows:</p>
+<pre class="octave"><code>% Prevent Octave from thinking that this is a function file
+clc; clear; close;
+
+% Call a custom function from an external function file
+% 5x² + 6x + 1 = 0
+[root1, root2] = quadratic_formula(5, 6, 1);
+
+% Display the results
+root1
+root2</code></pre>
+<pre><code>## root1 = -0.2000
+## root2 = -1</code></pre>
+<p><a href="../../octave.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
