@@ -7,15 +7,16 @@ output:
         # number_sections: true
         toc: true
         includes:
-            before_body: ../../google_analytics.html
+            before_body: ../../../google_analytics.html
 ---
 
 <font size="3">
 
-[⇦ Back](../../python.html)
+[⇦ Back](../../../python.html)
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(out.width = "90%")
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 Example Data
@@ -320,6 +321,6 @@ plt.ylim(0, ylim[1])
 plt.show()
 ```
 
-[⇦ Back](../../python.html)
+[⇦ Back](../../../python.html)
 
 </font>

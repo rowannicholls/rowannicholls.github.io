@@ -7,15 +7,16 @@ output:
         # number_sections: true
         toc: true
         includes:
-            before_body: ../../google_analytics.html
+            before_body: ../../../google_analytics.html
 ---
 
 <font size="3">
 
-[⇦ Back](../../python.html)
+[⇦ Back](../../../python.html)
 
-```{r, include=FALSE}
-knitr::opts_chunk$set(out.width = "90%")
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 If you have a set of data points that look like they’re increasing **steadily**, it might be useful to fit a **straight line** to them in order to describe the general shape of the data:
@@ -397,6 +398,6 @@ print(f'Values of m: {m1:5.3f}, {m2:5.3f}, {m3:5.3f}. Values of c: {c1:5.3f}, {c
 
 Yep, they all give the same results! For linear curve-fitting, you can use any one of them.
 
-[⇦ Back](../../python.html)
+[⇦ Back](../../../python.html)
 
 </font>

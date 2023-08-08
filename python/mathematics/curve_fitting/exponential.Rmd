@@ -7,16 +7,16 @@ output:
         # number_sections: true
         toc: true
         includes:
-            before_body: ../../google_analytics.html
+            before_body: ../../../google_analytics.html
 ---
 
 <font size="3">
 
-[⇦ Back](../../python.html)
+[⇦ Back](../../../python.html)
 
 ```{r, echo = FALSE}
-options(width = 120)
 knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 If you have a set of data points that look like they're increasing rapidly, it might be useful to fit them with a smooth, exponentially increasing line in order to describe the general shape of the data:
@@ -32,7 +32,8 @@ plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
-# Set a seed for the random number generator so we get the same random numbers each time
+# Set a seed for the random number generator so we get the same random numbers
+# each time we run this code
 np.random.seed(20210706)
 
 # Create fake x-data
@@ -57,7 +58,7 @@ y_fitted_weighted = a * np.exp(b * x_fitted_weighted)
 ax = plt.axes()
 ax.scatter(x, y, label='Raw data')
 ax.plot(x_fitted_weighted, y_fitted_weighted, 'k--', label='Fitted line')
-ax.set_title('An example of data fittted with an exponentially increasing line')
+ax.set_title('Example of data fittted with an exponentially increasing line')
 ax.set_ylabel('y-Values')
 ax.set_ylim(0, 500)
 ax.set_xlabel('x-Values')
@@ -670,6 +671,6 @@ ax.set_xlabel('x-Values')
 ax.legend()
 ```
 
-[⇦ Back](../../python.html)
+[⇦ Back](../../../python.html)
 
 </font>
