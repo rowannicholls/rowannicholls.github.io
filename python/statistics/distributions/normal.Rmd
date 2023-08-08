@@ -1,0 +1,399 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Normal Distributions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Based off of code created 2020-02-06 and updated 2023-07-26 -->
+
+The code on this page uses the `numpy`, `matplotlib` and `scipy` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install scipy
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Generally, NumPy only lets you draw random numbers from a distribution while SciPy let's you work with the PDF, CDF, PPF, etc, as exact mathematical formulas.
+
+What is a Normal Distribution?
+==============================
+A **normal distribution** is a type of *distribution of probabilities.* The probability of a measurement having a certain value depends on what that value is: the probability that it will be close to the average or *expected* value is quite high, whereas the probability that it will be far away from the expected value is quite low. Hence, the probability is *distributed* (different) across the range of values that the measurement could have.
+
+This can be seen in the 'probability density function' (PDF) - the function of the relative likelihoods that a measurement will have a certain value. It is higher in the middle and lower at the ends (tails) because it is more probable that a measurement will have a close-to-average value:
+
+```{python, eval = FALSE}
+import numpy as np
+from matplotlib import pyplot as plt
+from scipy import stats as st
+
+# Create plot
+ax = plt.axes()
+# Probability density function (PDF)
+x = np.linspace(-3, 3, 1000)
+ax.plot(x, st.norm.pdf(x), 'k')
+# Mean
+ax.axvline(0, 0, st.norm.pdf(0) / 0.45, c='k', ls='--', label='Mean')
+# Axes
+ax.set_ylim([0, 0.45])
+ax.set_xlim([-3, 3])
+# Format
+ax.set_title('Probability Density Function (PDF) of\nthe Standard Normal Distribution')
+ax.set_ylabel('Relative Likelihood')
+ax.set_xlabel('Distance of the Value of a Random Variable from the Mean')
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import numpy as np
+from matplotlib import pyplot as plt
+from scipy import stats as st
+
+# Create plot
+ax = plt.axes()
+# Probability density function (PDF)
+x = np.linspace(-3, 3, 1000)
+ax.plot(x, st.norm.pdf(x), 'k')
+# Mean
+ax.axvline(0, 0, st.norm.pdf(0) / 0.45, c='k', ls='--', label='Mean')
+# Axes
+ax.set_ylim([0, 0.45])
+ax.set_xlim([-3, 3])
+# Format
+ax.set_title('Probability Density Function (PDF) of\nthe Standard Normal Distribution')
+ax.set_ylabel('Relative Likelihood')
+ax.set_xlabel('Distance of the Value of a Random Variable from the Mean')
+ax.legend(frameon=False)
+plt.show()
+```
+
+In general, the PDF represents, on the y-axis, the relative likelihood that a random variable will have the corresponding value on the x-axis. However, a more correct interpretation is to realise that, because the values on the x-axis are *continuous*, it means that there are infinitely many of them and thus the chance of having one of a particular value is actually infinitesimally small. It thus makes more sense to talk about the probability of a random variable having a value of $x$ *or less*. This is because you are then actually talking about a continuous range of values, and the chance of a random variable having a value *inside* that range is not infinitesimally small.
+
+The chance of a random variable having a value inside a range corresponds to the area under the PDF for that range (because, essentially, that is the sum of all the probabilities for each of the infinite individual possible values). It might not surprise you to learn that the total area under the PDF is equal to 1: the probability of picking a random variable and having its value be *any* of the possible values is 1! The area under the PDF, moving from left to right along the curve, is given by the 'cumulative distribution function' (CDF) which looks as follows (note that it has a maximum value of 1 - the total area under the PDF):
+
+```{python, eval = FALSE}
+# Create a plot
+ax = plt.axes()
+# Cumulative distribution function (CDF)
+x = np.linspace(-3, 3, 1000)
+ax.plot(x, st.norm.cdf(x), 'k')
+# Percent point function
+label = 'Percent point function'
+ax.axhline(0.4, 0, (st.norm.ppf(0.4) - -3) / 6, c='k', ls='--', label=label)
+ax.axvline(st.norm.ppf(0.4), 0, 0.4, c='k', ls='--')
+# Axes
+ax.set_ylim([0, 1])
+ax.set_xlim([-3, 3])
+# Format
+title = """Cumulative Distribution Function (CDF)
+of the Standard Normal Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Likelihood')
+ax.set_xlabel('Distance of the Value of a Random Variable from the Mean')
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create a plot
+ax = plt.axes()
+# Cumulative distribution function (CDF)
+x = np.linspace(-3, 3, 1000)
+ax.plot(x, st.norm.cdf(x), 'k')
+# Percent point function
+label = 'Percent point function'
+ax.axhline(0.4, 0, (st.norm.ppf(0.4) - -3) / 6, c='k', ls='--', label=label)
+ax.axvline(st.norm.ppf(0.4), 0, 0.4, c='k', ls='--')
+# Axes
+ax.set_ylim([0, 1])
+ax.set_xlim([-3, 3])
+# Format
+title = """Cumulative Distribution Function (CDF)
+of the Standard Normal Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Likelihood')
+ax.set_xlabel('Distance of the Value of a Random Variable from the Mean')
+ax.legend(frameon=False)
+plt.show()
+```
+
+You will notice that the above plot also has a 'percent point function' (PPF) shown on it. This is the *inverse* of the CDF - it takes a cumulative likelihood in as an input and returns a distance from the mean that the value for a random variable might have, below which is the range of values that corresponds to that cumulative likelihood. In the example plot above, the cumulative likelihood of 0.4 (40%) corresponds to a distance of -0.253. In other words, in the standard normal distribution, you have a 40% chance of picking a random number that is 0.253 standard deviations smaller than the expected value or less.
+
+Why is it Useful?
+=================
+According to the central limit theorem, the means of many samples from a uniform distribution (for example) will be normal. This is *useful* because it tells us about how likely it is that the sample we've drawn comes from a uniform distribution. For example, if we roll a six-sided die 10 times and take the mean value, then repeat this 1000 times, if the distribution of the 1000 means is not close to normal we could conclude that the die is not fair. Here's a simulated example (where the die IS fair):
+
+```{python}
+# Set the seed so that we get the same random numbers each time this code runs
+np.random.seed(20230726)
+
+# Simulate rolling a six-sided die 10 times (creating one sample), then do this
+# 1000 times (creating 1000 samples) and record the mean of each sample
+samples = []
+sample_means = []
+for i in range(1000):
+    sample = np.random.randint(1, 7, size=10)
+    samples = samples + list(sample)
+    sample_mean = np.mean(sample)
+    sample_means.append(sample_mean)
+```
+
+Plotting the population distribution reveals that it is a uniform distribution. This is expected: the chance of the die landing on any one of its six sides is equal to the chance of it landing on any other one of its sides:
+
+```{python, eval = FALSE}
+# Plot the population distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(samples, bins=6, rwidth=0.8, color='gray')
+# Move the major x-ticks
+ax.set_xticks(bins)
+# Remove the major x-labels
+ax.set_xticklabels([])
+# Move the minor x-ticks
+bin_centres = np.diff(bins) / 2 + bins[:-1]
+ax.set_xticks(bin_centres, minor=True)
+# Hide the minor x-ticks
+ax.tick_params(length=0, which='minor')
+# Add minor x-tick labels
+ax.set_xticklabels(range(1, 7), minor=True)
+# Set axis limits
+ax.set_xlim(bins[0], bins[-1])
+ax.set_ylim(0, ax.get_ylim()[1] * 1.2)
+# Uniform distribution
+ax.axhline(np.sum(n) / 6, c='k', label='Uniform distribution')
+# Format
+ax.set_title('The Results of 10x1000 Dice Rolls')
+ax.set_ylabel('Number of Times Seen')
+ax.set_xlabel('Value on Die')
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot the population distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(samples, bins=6, rwidth=0.8, color='gray')
+# Move the major x-ticks
+ax.set_xticks(bins)
+# Remove the major x-labels
+ax.set_xticklabels([])
+# Move the minor x-ticks
+bin_centres = np.diff(bins) / 2 + bins[:-1]
+ax.set_xticks(bin_centres, minor=True)
+# Hide the minor x-ticks
+ax.tick_params(length=0, which='minor')
+# Add minor x-tick labels
+ax.set_xticklabels(range(1, 7), minor=True)
+# Set axis limits
+ax.set_xlim(bins[0], bins[-1])
+ax.set_ylim(0, ax.get_ylim()[1] * 1.2)
+# Uniform distribution
+ax.axhline(np.sum(n) / 6, c='k', label='Uniform distribution')
+# Format
+ax.set_title('The Results of 10x1000 Dice Rolls')
+ax.set_ylabel('Number of Times Seen')
+ax.set_xlabel('Value on Die')
+ax.legend(frameon=False)
+plt.show()
+```
+
+The distribution of the sample *means*, however, is a normal distribution. This is predicted by the central limit theorem but it is not at all obvious:
+
+```{python, eval = FALSE}
+# Plot the sampling distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(sample_means, color='gray', bins=35)
+# Normal distribution
+x_lim = ax.get_xlim()
+x = np.linspace(x_lim[0], x_lim[1], 1000)
+loc = np.mean(sample_means)
+scale_x = np.std(sample_means)
+scale_y = 1000 * np.mean(np.diff(bins))
+y = st.norm.pdf(x, loc=loc, scale=scale_x) * scale_y
+ax.plot(x, y, c='k', label='Normal distribution')
+# Set x-axis limits
+ax.set_xlim(x_lim)
+# Format
+ax.set_title('The Means of 1000 Samples of 10 Dice Rolls')
+ax.set_ylabel('Frequency')
+ax.set_xlabel('Mean Value Seen on Dice')
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot the sampling distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(sample_means, color='gray', bins=35)
+# Normal distribution
+x_lim = ax.get_xlim()
+x = np.linspace(x_lim[0], x_lim[1], 1000)
+loc = np.mean(sample_means)
+scale_x = np.std(sample_means)
+scale_y = 1000 * np.mean(np.diff(bins))
+y = st.norm.pdf(x, loc=loc, scale=scale_x) * scale_y
+ax.plot(x, y, c='k', label='Normal distribution')
+# Set x-axis limits
+ax.set_xlim(x_lim)
+# Format
+ax.set_title('The Means of 1000 Samples of 10 Dice Rolls')
+ax.set_ylabel('Frequency')
+ax.set_xlabel('Mean Value Seen on Dice')
+ax.legend(frameon=False)
+plt.show()
+```
+
+Why is it Meaningful?
+=====================
+What we have seen is that a real-world physical event - the rolling of a die - that is controlled only by things that are independent of anything else and, as far as we are concerned, are random (the minute intricacies of how your hand is positioned when you roll the die) produce results that are normally distributed\*. In other words, when you remove all artificial influences and only have natural, background 'noise' affecting your process, the results will be normal (although sometimes you might need to generate a lot of results - typically more than 30 - before you see this pattern).
+
+\*Of course, in this example, we used a computer to simulate the rolling of a die so the 'random' things that produced our results were the combinations of 1s and 0s within our computer as opposed to the positioning of a person's hand.
+
+A great example is the height of adult humans. In a *healthy* population (malnutrition is known to stunt growth) *of sufficient size*\* the only thing that affects someone's height is background biological 'noise' - the inherent randomness that causes peoples' height to differ in the same way that the value on a die will usually differ from roll to roll.
+
+\*Of course, the height of a person is heavily influenced by the height of their parents so, within one family, the height of one person is *not* independent of the height of another person. You need to consider a population large enough to include many families such that one person's height *can* be considered independent of the next person's height. Ensuring you include many nationalities will also help for essentially the same reason.
+
+According to Subramanian, Özaltin and Finlay (2011)[^1], the mean height of 364,538 women was 155.8 cm with a standard deviation of 7.2 cm. Let's visualise the population distribution that those figures describe:
+
+[^1]: Subramanian, S, Özaltin, E, Finlay, J. "Height of Nations: A Socioeconomic Analysis of Cohort Differences and Patterns among Women in 54 Low- to Middle-Income Countries". PLoS ONE 2011; 6(4). DOI: [10.1371/journal.pone.0018962](https://doi.org/10.1371/journal.pone.0018962). Jump to reference:&nbsp;
+
+```{python, eval = FALSE}
+# Generate random numbers
+population = np.random.normal(loc=155.8, scale=7.2, size=364538)
+
+# Plot the population distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(population, bins=35, color='gray')
+# Normal distribution
+x_lim = ax.get_xlim()
+x = np.linspace(x_lim[0], x_lim[1], 1000)
+scale_y = 364538 * np.mean(np.diff(bins))
+y = st.norm.pdf(x, loc=155.8, scale=7.2) * scale_y
+ax.plot(x, y, c='k', label='Normal distribution')
+# Set x-axis limits
+ax.set_xlim(x_lim)
+# Format
+ax.set_title('Height of Adult Women')
+ax.set_ylabel('Frequency')
+ax.set_xlabel('Height (cm)')
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Generate random numbers
+population = np.random.normal(loc=155.8, scale=7.2, size=364538)
+
+# Plot the population distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(population, bins=35, color='gray')
+# Normal distribution
+x_lim = ax.get_xlim()
+x = np.linspace(x_lim[0], x_lim[1], 1000)
+scale_y = 364538 * np.mean(np.diff(bins))
+y = st.norm.pdf(x, loc=155.8, scale=7.2) * scale_y
+ax.plot(x, y, c='k', label='Normal distribution')
+# Set x-axis limits
+ax.set_xlim(x_lim)
+# Format
+ax.set_title('Height of Adult Women')
+ax.set_ylabel('Frequency')
+ax.set_xlabel('Height (cm)')
+ax.legend(frameon=False)
+plt.show()
+```
+
+In other words, the normal distribution is *useful* because it models a lot of real-world data. Additionally, it is *meaningful* because this is not a fluke: real-world data that has been generated under stochastic or 'pure noise' forces tends to become distributed like this.
+
+If we were to take samples from this population and record the mean height of the people in each sample - similar to what we did with the dice rolls - we would again get a normal distribution for the samples' means. This is the same as what we saw with the dice, although that was governed by a uniform distribution while this is governed by a normal distribution.
+
+```{python, eval = FALSE}
+# Simulate taking 1000 sample of 20 women
+samples = []
+sample_means = []
+for i in range(1000):
+    sample = np.random.normal(loc=155.8, scale=7.2, size=20)
+    samples = samples + list(sample)
+    sample_mean = np.mean(sample)
+    sample_means.append(sample_mean)
+
+# Plot the sampling distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(sample_means, color='gray', bins=35)
+# Normal distribution
+x_lim = ax.get_xlim()
+x = np.linspace(x_lim[0], x_lim[1], 1000)
+loc = np.mean(sample_means)
+scale_x = np.std(sample_means)
+scale_y = 1000 * np.mean(np.diff(bins))
+y = st.norm.pdf(x, loc=loc, scale=scale_x) * scale_y
+ax.plot(x, y, c='k', label='Normal distribution')
+# Set x-axis limits
+ax.set_xlim(x_lim)
+# Format
+ax.set_title("The Means of 1000 Samples of 20 Adult Women's Heights")
+ax.set_ylabel('Frequency')
+ax.set_xlabel('Mean Height (cm)')
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Simulate taking 1000 sample of 20 women
+samples = []
+sample_means = []
+for i in range(1000):
+    sample = np.random.normal(loc=155.8, scale=7.2, size=20)
+    samples = samples + list(sample)
+    sample_mean = np.mean(sample)
+    sample_means.append(sample_mean)
+
+# Plot the sampling distribution
+ax = plt.axes()
+# Histogram
+n, bins, patches = ax.hist(sample_means, color='gray', bins=35)
+# Normal distribution
+x_lim = ax.get_xlim()
+x = np.linspace(x_lim[0], x_lim[1], 1000)
+loc = np.mean(sample_means)
+scale_x = np.std(sample_means)
+scale_y = 1000 * np.mean(np.diff(bins))
+y = st.norm.pdf(x, loc=loc, scale=scale_x) * scale_y
+ax.plot(x, y, c='k', label='Normal distribution')
+# Set x-axis limits
+ax.set_xlim(x_lim)
+# Format
+ax.set_title("The Means of 1000 Samples of 20 Adult Women's Heights")
+ax.set_ylabel('Frequency')
+ax.set_xlabel('Mean Height (cm)')
+ax.legend(frameon=False)
+plt.show()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
