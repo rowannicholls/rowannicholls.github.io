@@ -15,8 +15,11 @@ output:
 [⇦ Back](../../python.html)
 
 ```{r, echo = FALSE}
-options(width = 120)
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
+
+<!-- Based off of code first written on 2019-08-28 -->
 
 Example Data
 ============
@@ -77,9 +80,25 @@ kable_styling(
 )
 ```
 
+In the real world, you would probably use data stored in spreadsheets. These can be imported into Python as data frames using the following code:
+
+```{python, eval = FALSE}
+# Import Excel spreadsheets as data frames
+df_1 = pd.read_excel('First Spreadsheet.xlsx')
+df_2 = pd.read_excel('Second Spreadsheet.xlsx')
+```
+
+Or, if you are using CSVs:
+
+```{python, eval = FALSE}
+# Import CSVs as data frames
+df_1 = pd.read_csv('First Spreadsheet.csv')
+df_2 = pd.read_csv('Second Spreadsheet.csv')
+```
+
 Concatenation
 =============
-Concatenating two data frames is actually *not* the same as merging them, it's simply combining them by sticking one next to the other. It's done using the `concat()` function:
+Concatenating two data frames is actually *not* the same as merging them, it's simply combining them by sticking one on top of the other. It's done using the `concat()` function:
 
 ```{python, results = "hold"}
 total = pd.concat([EPL_2018_19, EPL_2019_20])
@@ -91,7 +110,7 @@ Which produces the following:
 print(total)
 ```
 
-Append a data frame to the side of another with the `concat()` function and `axis='columns'`:
+Append a data frame to the *side* of another with the `concat()` function by setting the `axis='columns'` or `axis='1'` keyword argument (these mean the same thing):
 
 ```{python, results = "hold"}
 total = pd.concat([EPL_2018_19, EPL_2019_20], axis='columns')
@@ -114,8 +133,8 @@ There are four types of merging:
 *(1) Keep all rows in both data frames, (2) keep all rows in the left data frame but only those in the right that are also in the left, (3) keep all rows in the right data frame but only those in the left that are also in the right, (4) keep only the rows that appear in both data frames*
 </center>
 
-Outer (Keep all rows in both data frames)
------------------------------------------
+Outer Merge (Keep all rows in both data frames)
+-----------------------------------------------
 Merge the data from both seasons by team name:
 
 ```{python, results = "hold"}
@@ -125,9 +144,9 @@ print(outer)
 
 As you can see, the teams that were in the league for both seasons (eg Arsenal and Bournemouth) have values in the "Points" columns for both seasons, whereas teams such as Aston Villa and Cardiff City which were promoted/relegated after the first season only have values for one season. For the other season there is an "NaN" (not a number). That is why there are 23 rows in the data frame when there are only 20 teams in the Premier League in any one season.
 
-Left (Keep all rows in the left data frame)
--------------------------------------------
-To see the points for all the teams in the 2018-19 season and the season after:
+Left Merge (Keep all rows in the left data frame)
+-------------------------------------------------
+For all teams that were in the Premier League for the 2018-19 season, see their points for that season and the one afterwards:
 
 ```{python, results = "hold"}
 left = pd.merge(EPL_2018_19, EPL_2019_20, on='Team', how='left')
@@ -136,9 +155,9 @@ print(left)
 
 The three teams that got promoted into the Premier League are not shown here as their names do not appear in the left data frame.
 
-Right (Keep all rows in the right data frame)
----------------------------------------------
-To see the points for all the teams in the 2019-20 season and the season before:
+Right Merge (Keep all rows in the right data frame)
+---------------------------------------------------
+For all teams that were in the Premier League for the 2019-20 season, see their points for that season and the previous one:
 
 ```{python, results = "hold"}
 right = pd.merge(EPL_2018_19, EPL_2019_20, on='Team', how='right')
@@ -147,8 +166,8 @@ print(right)
 
 The three teams that got relegated from the Premier League are not shown here as their names do not appear in the right data frame.
 
-Inner (Keep only the rows that appear in both data frames)
-----------------------------------------------------------
+Inner Merge (Keep only the rows that appear in both data frames)
+----------------------------------------------------------------
 To see the points for all the teams that were in the Premier League for both seasons:
 
 ```{python, results = "hold"}
@@ -156,7 +175,30 @@ inner = pd.merge(EPL_2018_19, EPL_2019_20, on='Team')
 print(inner)
 ```
 
-The teams that got promoted and relegated from the Premier League are not shown here as their names do not appear in both data frames. As a results only 17 rows remain. **This is the default behaviour of the `merge()` function**.
+The teams that got promoted and relegated from the Premier League are not shown here as their names do not appear in both data frames. As a result, only 17 rows remain. **This is the default behaviour of the `merge()` function**.
+
+Indicators
+----------
+By performing a merge with the `indicator=True` option set, you can get an extra column (called "`_merge`") that tells you from where that particular piece of data came:
+
+```{python, results = "hold"}
+df = pd.merge(EPL_2018_19, EPL_2019_20, on='Team', how='outer', indicator=True)
+print(df)
+```
+
+The teams that were in *both* data frames, *only the left* data frame or *only the right* data frame are labelled as such in the `_merge` column.
+
+Bonus: the "Exclusive Or" (XOR) Merge
+-------------------------------------
+There is no way to do a 'not inner' merge in one step (ie keep the teams that were in one season only), but it can be done in two steps using this indicator:
+
+```{python, results = "hold"}
+df = pd.merge(EPL_2018_19, EPL_2019_20, on='Team', how='outer', indicator=True)
+df = df[df['_merge'] != 'both']
+print(df)
+```
+
+These are the six teams that played in the Premier League for only one of the two seasons.
 
 Updating a Row
 ==============
