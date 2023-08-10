@@ -1,0 +1,375 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Uniform Distributions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- Created: 2023-08-08 -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+If someone ever wants to generate a 'random number' it usually means that they want a random number from a *uniform distribution:* they want the chance of getting any one number to be the same as the chance of getting any other number. The chances of particular numbers appearing is *uniform* - hence the name. They will often also want that random number to be an integer, which implies that they want it to come from a *discrete* uniform distribution. If they want that random number to be any decimal, it implies they want it to come from a *continuous* uniform distribution.
+
+You might be aware that, in general, computers can't actually produce truly random numbers and can only produce *pseudorandom* numbers. For the purposes of this page this fact makes no difference.
+
+Packages
+========
+The code on this page uses the `numpy`, `matplotlib` and `scipy` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install scipy
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Import these packages into Python with:
+
+```{python}
+import numpy as np
+from scipy import stats as st
+from matplotlib import pyplot as plt
+```
+
+Continuous Uniform Distributions
+================================
+A number sampled from a continuous uniform distribution that runs from $A$ to $B$ can have any value between those two endpoints with no value being more or less likely than any other possible value.
+
+- If the interval is **closed** then the sampled number can have any value between $A$ and $B$ but *not* $A$ or $B$ exactly. This is denoted by square brackets: $[A, B]$.
+- If the interval is **open** then the sampled number can have any value between $A$ and $B$ *including* $A$ or $B$ exactly. This is denoted by round brackets: $(A, B)$.
+- **Half-open** intervals - $(A, B]$ or $[A, B)$ - are a mixture: the random number could be equal to the endpoint on the open side but not the endpoint on the closed side.
+
+In Python, the `uniform()` function from **SciPy** samples from a closed interval by default while the `uniform()` function from **NumPy** samples from a half-open one - $[A, B)$ - by default. SciPy also gives us access to the probability density function (PDF), cumulative distribution function (CDF) and percent point function (PPF) while NumPy simply lets us draw random numbers.
+
+Probability Density Function
+----------------------------
+The PDF from SciPy:
+
+```{python}
+# We want to display the PDF on the plot from -1.5 to 11.5
+x = np.linspace(-1.5, 11.5, 1000)
+# Probability density function
+# (scaled up so as to run from 0 to 10)
+pdf = st.uniform.pdf(x, loc=0, scale=10)
+```
+
+Random numbers from NumPy:
+
+```{python}
+# Set the seed so that we get the same random numbers each time this code runs
+np.random.seed(20230809)
+
+# Pick 300 random numbers between 0 and 10
+n = 300
+random_numbers = np.random.uniform(0, 10, n)
+```
+
+Here's what they look like on a plot:
+
+```{python, eval = FALSE}
+# Create plot
+ax = plt.axes()
+title = """Probability Density Function (PDF) of
+a Continuous Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Relative Likelihood')
+ax.set_xlabel('Potential Value of a Random Variable')
+# Plot the random numbers
+label = '300 Random Numbers'
+ax.hist(random_numbers, density=True, label=label, color='gray', alpha=0.5)
+# Plot the PDF
+ax.plot(x, pdf, c='k', lw=2, label='PDF')
+# Move the left axis
+ax.spines['left'].set_position(('data', 0))
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.ylim([0, 0.14])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create plot
+ax = plt.axes()
+title = """Probability Density Function (PDF) of
+a Continuous Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Relative Likelihood')
+ax.set_xlabel('Potential Value of a Random Variable')
+# Plot the random numbers
+label = '300 Random Numbers'
+ax.hist(random_numbers, density=True, label=label, color='gray', alpha=0.5)
+# Plot the PDF
+ax.plot(x, pdf, c='k', lw=2, label='PDF')
+# Move the left axis
+ax.spines['left'].set_position(('data', 0))
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.ylim([0, 0.14])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+Cumulative Distribution Function
+--------------------------------
+The CDF from SciPy:
+
+```{python}
+# We want to display the CDF on the plot from -1.5 to 11.5
+x = np.linspace(-1.5, 11.5, 1000)
+# Cumulative distribution function
+# (scaled up so as to run from 0 to 10)
+cdf = st.uniform.cdf(x, loc=0, scale=10)
+```
+
+Area under the plot of the random numbers from NumPy:
+
+```{python}
+# Cumulative sum of random numbers
+random_numbers.sort()
+auc = [np.trapz([0.1] * i, random_numbers[:i]) for i in range(300)]
+```
+
+In a plot:
+
+```{python, eval = FALSE}
+# Create plot
+ax = plt.axes()
+title = """Cumulative Distribution Function (CDF) of
+a Continuous Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Relative Likelihood')
+ax.set_xlabel('Potential Value of a Random Variable')
+# Plot the CDF
+ax.plot(x, cdf, c='k', lw=2, label='CDF')
+# Plot the cumulative sum of the random numbers
+label = '300 Random Numbers'
+ax.hist(
+    random_numbers, bins=40, density=True, cumulative=True,
+    histtype='step', label=label
+)
+# Move the left axis
+ax.spines['left'].set_position(('data', 0))
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.ylim([0, 1.2])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create plot
+ax = plt.axes()
+title = """Cumulative Distribution Function (CDF) of
+a Continuous Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Relative Likelihood')
+ax.set_xlabel('Potential Value of a Random Variable')
+# Plot the CDF
+ax.plot(x, cdf, c='k', lw=2, label='CDF')
+# Plot the cumulative sum of the random numbers
+label = '300 Random Numbers'
+ax.hist(
+    random_numbers, bins=40, density=True, cumulative=True,
+    histtype='step', label=label
+)
+# Move the left axis
+ax.spines['left'].set_position(('data', 0))
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.ylim([0, 1.2])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+See also the [Wikipedia page](https://en.wikipedia.org/wiki/Continuous_uniform_distribution), [SciPy documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.uniform.html) and [NumPy documentation](https://numpy.org/doc/stable/reference/random/generated/numpy.random.uniform.html) relevant to the continuous uniform distribution.
+
+Discrete Uniform Distributions
+==============================
+This concept is exactly the same as continuous distributions except now there are only a finite number of possibilities that the values of the random numbers can have. The classic example is a die roll: there are only 6 values that a roll can result in and all 6 are equally likely. The fact that the probability of getting a particular exact value is not zero (as is the case with continuous distributions) means that the probability *density* is not relevant, the probability *mass* is. In other words, we work with exact probabilities, not relative likelihoods.
+
+Probability Mass Function
+-------------------------
+The PMF from SciPy:
+
+```{python}
+# We want to display the PMF on the plot from 0 to 7
+x = np.linspace(0, 7, 701)
+# Probability mass function
+# (running from 1 to 6)
+pmf = st.randint.pmf(x, low=1, high=7)
+```
+
+Random numbers from NumPy:
+
+```{python}
+# Pick 300 random integers between 1 and 6
+n = 300
+random_numbers = np.random.randint(1, 7, n)
+```
+
+Here's what they look like on a plot:
+
+```{python, eval = FALSE}
+# Create plot
+ax = plt.axes()
+title = """Probability Mass Function (PMF) of
+a Discrete Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Probability')
+ax.set_xlabel('Potential Value of a Die Roll')
+# Plot the random numbers
+label = '300 Random Die Rolls'
+ax.hist(
+    random_numbers, [1, 2, 3, 4, 5, 6, 7], align='left', density=True,
+    label=label, color='gray', alpha=0.5, rwidth=0.15
+)
+# Plot the PMF
+ax.scatter(x, pmf, c='k', lw=2, label='PMF')
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.xlim([0, 7])
+plt.ylim([0, 0.25])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create plot
+ax = plt.axes()
+title = """Probability Mass Function (PMF) of
+a Discrete Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Probability')
+ax.set_xlabel('Potential Value of a Die Roll')
+# Plot the random numbers
+label = '300 Random Die Rolls'
+ax.hist(
+    random_numbers, [1, 2, 3, 4, 5, 6, 7], align='left', density=True,
+    label=label, color='gray', alpha=0.5, rwidth=0.15
+)
+# Plot the PMF
+ax.scatter(x, pmf, c='k', lw=2, label='PMF')
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.xlim([0, 7])
+plt.ylim([0, 0.25])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+Cumulative Distribution Function
+--------------------------------
+The CDF from SciPy:
+
+```{python}
+# We want to display the CDF on the plot from 0 to 7
+x = np.linspace(0, 7, 701)
+# Cumulative distribution function
+# (running from 1 to 6)
+cdf = st.randint.cdf(x, low=1, high=7)
+```
+
+Area under the plot of the random numbers from NumPy:
+
+```{python}
+# Cumulative sum of random numbers
+random_numbers.sort()
+auc = [np.trapz([0.1] * i, random_numbers[:i]) for i in range(300)]
+```
+
+In a plot:
+
+```{python, eval = FALSE}
+# Create plot
+ax = plt.axes()
+title = """Cumulative Distribution Function (CDF) of
+a Continuous Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Relative Likelihood')
+ax.set_xlabel('Potential Value of a Random Variable')
+# Plot the CDF
+ax.scatter(x, cdf, c='k', s=2, label='CDF')
+# Plot the cumulative sum of the random numbers
+label = '300 Random Numbers'
+ax.hist(
+    random_numbers, bins=300, density=True, cumulative=True,
+    histtype='step', label=label, align='left'
+)
+# Move the left axis
+ax.spines['left'].set_position(('data', 0))
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.ylim([0, 1.2])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create plot
+ax = plt.axes()
+title = """Cumulative Distribution Function (CDF) of
+a Continuous Uniform Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Relative Likelihood')
+ax.set_xlabel('Potential Value of a Random Variable')
+# Plot the CDF
+ax.scatter(x, cdf, c='k', s=2, label='CDF')
+# Plot the cumulative sum of the random numbers
+label = '300 Random Numbers'
+ax.hist(
+    random_numbers, bins=300, density=True, cumulative=True,
+    histtype='step', label=label, align='left'
+)
+# Move the left axis
+ax.spines['left'].set_position(('data', 0))
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.ylim([0, 1.2])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+```
+
+See also the [Wikipedia page](https://en.wikipedia.org/wiki/Discrete_uniform_distribution), [SciPy documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.randint.html) and [NumPy documentation](https://numpy.org/doc/stable/reference/random/generated/numpy.random.randint.html) relevant to the discrete uniform distribution.
+
+[⇦ Back](../../../python.html)
+
+</font>
