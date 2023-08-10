@@ -1,0 +1,245 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Binomial Distributions'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- Created: 2023-07-18 -->
+<!-- Updated: 2023-08-10 -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+If you flip a fair coin it will either land on heads or tails with a 50% chance of each. If you flip the same coin twice it will result in one of four equally likely permutations: HH, HT, TH, TT. There is thus a 25% chance of getting two heads, a 50% chance of one head and a 25% chance of zero heads. Using the same logic for three flips gives the following permutations as the possible results:
+
+HHH, HHT, HTH, THH, HTT, THT, TTH, TTT
+
+In other words, there is a probability of 1/8 (a 12.5% chance) of seeing three heads, a probability of 3/8 of seeing two heads, 3/8 of seeing one head and 1/8 of seeing zero heads.
+
+These values are given by the *binomial distribution* - the distribution of probabilities amongst the possible outcomes when a 'test' with only two possible results (eg a coin flip) is done repeatedly. This distribution is a *discrete* distribution because the possible outcomes are exact and there are not infinitely many of them: there is an exact numerical value for the number of permutations that contain, for example, two heads when flipping a coin three times, and the probability of getting 4 or 2.5 heads from three flips is zero.
+
+Packages
+========
+The code on this page uses the `numpy`, `matplotlib` and `scipy` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install scipy
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Import these packages into Python with:
+
+```{python}
+import numpy as np
+from scipy import stats as st
+from matplotlib import pyplot as plt
+```
+
+Probability Mass Function
+=========================
+If you flip a coin 10 times, it's more likely that you will get five heads and five tails compared to 10 heads and zero tails. This is represented by the fact that the probability *mass* (ie the exact probability, as opposed to a probability *density* which is a relative likelihood of seeing a value when the exact probability of seeing it is zero) is larger in the middle of the binomial distribution's probability mass function (PMF) compared to at its tails.
+
+In Python, the SciPy package gives us access to the probability mass function (as well as to the cumulative distribution function, percent point function and others) of the binomial distribution while the NumPy package lets us draw random numbers from it.
+
+The PMF from SciPy:
+
+```{python}
+# We want to display the PMF on the plot from 0 to 10
+x = np.linspace(0, 10, 91)
+# Probability mass function
+# (for 10 trials with a probability of 0.5 for both outcomes)
+pmf = st.binom.pmf(x, 10, 0.5)
+```
+
+Simulate flipping a coin 10 times, recording the number of heads and then repeating this 300 times with NumPy:
+
+```{python}
+# Set the seed so that we get the same random numbers each time this code runs
+np.random.seed(20230810)
+# Record the number of heads you get when you flip a fair coin 10 times, and
+# do this 300 times
+number_heads = []
+for _ in range(300):
+    # Flip a fair coin 10 times
+    results = np.random.binomial(n=1, p=0.5, size=10)
+    # Record the number of heads
+    number_heads.append(results.sum())
+```
+
+Plot the results:
+
+```{python, eval = FALSE}
+# Create plot
+ax = plt.axes()
+title = """Probability Mass Function (PMF)
+of a Binomial Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Probability')
+ax.set_xlabel('Potential Number of Heads')
+# Plot the simulated results
+label = '300 Sets of 10 Coin Flips'
+ax.hist(
+    number_heads, np.arange(11), align='left', density=True,
+    label=label, color='gray', alpha=0.5, rwidth=0.15
+)
+# Plot the PMF
+ax.scatter(x, pmf, c='k', lw=0.1, label='PMF')
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.xlim([0, 10])
+plt.ylim([0, 0.3])
+# Finish
+ax.legend()
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create plot
+ax = plt.axes()
+title = """Probability Mass Function (PMF)
+of a Binomial Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Probability')
+ax.set_xlabel('Potential Number of Heads')
+# Plot the simulated results
+label = '300 Sets of 10 Coin Flips'
+ax.hist(
+    number_heads, np.arange(11), align='left', density=True,
+    label=label, color='gray', alpha=0.5, rwidth=0.15
+)
+# Plot the PMF
+ax.scatter(x, pmf, c='k', lw=0.1, label='PMF')
+# Remove the upper and right axes
+ax.spines['right'].set_color('none')
+ax.spines['top'].set_color('none')
+# Adjust axes
+plt.xlim([0, 10])
+plt.ylim([0, 0.3])
+# Finish
+ax.legend()
+plt.show()
+```
+
+The Tails
+---------
+From the plot it looks as if the probabilities of getting 0 heads or 10 heads is zero. This isn't quite correct, the exact probabilities are:
+
+```{python}
+print(
+    f'The probability of getting 0 heads in 10 flips is {pmf[0]:.7f}\n' +
+    f'The probability of getting 10 heads in 10 flips is also {pmf[-1]:.7f}'
+)
+```
+
+The probabilities are the same because the probability of getting 10 heads is the same as for getting 0 tails, and the probability of getting 0 heads is the same as for getting 10 tails. Flipping coins results in a *symmetric* distribution of results because each outcome (heads or tails) is equally likely.
+
+Given this small probability for getting 0 heads (equal to $1/1024$) even in 300 repeats of 10 flips the probability of it not happening is quite high:
+
+```{python}
+pmf = st.binom.pmf(0, 300, 1 / 1024)
+print(f'Probability of never getting 0 heads in 300 repeats of 10 flips: {pmf:.3f} ({pmf:.1%})')
+```
+
+However, that gives us about a 25% chance of seeing it at least once! And there is an equal probability of seeing 10 heads at least once! Let's take a look at the breakdown of how many heads were seen in each of the 300 sets of 10 flips:
+
+```{python}
+unique, counts = np.unique(number_heads, return_counts=True)
+print(np.asarray((unique, counts)).T)
+```
+
+So, in our simulation, a set of 0 heads (10 tails) happened! Although a set of 10 heads didn't happen.
+
+Cumulative Distribution Function
+================================
+The CDF from SciPy:
+
+```{python}
+# We want to display the CDF on the plot from 0 to 10
+x = np.linspace(0, 10, 1001)
+# Cumulative distribution function
+# (for 10 trials with a probability of 0.5 for both outcomes)
+cdf = st.binom.cdf(x, 10, 0.5)
+```
+
+Area under the plot of the simulated results from NumPy:
+
+```{python}
+# Cumulative sum of random numbers
+number_heads.sort()
+auc = [np.trapz([0.1] * i, number_heads[:i]) for i in range(300)]
+```
+
+In a plot:
+
+```{python, eval = FALSE}
+# Create plot
+ax = plt.axes()
+title = """Cumulative Distribution Function (CDF)
+of a Binomial Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Probability')
+ax.set_xlabel('Potential Number of Heads')
+# Plot the CDF
+ax.plot(x, cdf, c='k', lw=2, label='CDF')
+# Plot the cumulative sum of the simulated results
+label = '300 Sets of 10 Coin Flips'
+ax.hist(
+    number_heads, bins=9, density=True, cumulative=True,
+    histtype='step', label=label
+)
+# Adjust axes
+plt.xlim([0, 10])
+plt.ylim([0, 1])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create plot
+ax = plt.axes()
+title = """Cumulative Distribution Function (CDF)
+of a Binomial Distribution"""
+ax.set_title(title)
+ax.set_ylabel('Cumulative Probability')
+ax.set_xlabel('Potential Number of Heads')
+# Plot the CDF
+ax.plot(x, cdf, c='k', lw=2, label='CDF')
+# Plot the cumulative sum of the simulated results
+label = '300 Sets of 10 Coin Flips'
+ax.hist(
+    number_heads, bins=9, density=True, cumulative=True,
+    histtype='step', label=label
+)
+# Adjust axes
+plt.xlim([0, 10])
+plt.ylim([0, 1])
+# Finish
+ax.legend(frameon=False)
+plt.show()
+
+```
+
+For more info, see the [Wikipedia page](https://en.wikipedia.org/wiki/Binomial_distribution), [SciPy documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binom.html) and [NumPy documentation](https://numpy.org/doc/stable/reference/random/generated/numpy.random.binomial.html) relevant to the binomial distribution.
+
+[⇦ Back](../../../python.html)
+
+</font>

@@ -316,9 +316,9 @@ In a plot:
 # Create plot
 ax = plt.axes()
 title = """Cumulative Distribution Function (CDF) of
-a Continuous Uniform Distribution"""
+a Discrete Uniform Distribution"""
 ax.set_title(title)
-ax.set_ylabel('Cumulative Relative Likelihood')
+ax.set_ylabel('Cumulative Probability')
 ax.set_xlabel('Potential Value of a Random Variable')
 # Plot the CDF
 ax.scatter(x, cdf, c='k', s=2, label='CDF')
@@ -344,9 +344,9 @@ plt.show()
 # Create plot
 ax = plt.axes()
 title = """Cumulative Distribution Function (CDF) of
-a Continuous Uniform Distribution"""
+a Discrete Uniform Distribution"""
 ax.set_title(title)
-ax.set_ylabel('Cumulative Relative Likelihood')
+ax.set_ylabel('Cumulative Probability')
 ax.set_xlabel('Potential Value of a Random Variable')
 # Plot the CDF
 ax.scatter(x, cdf, c='k', s=2, label='CDF')
