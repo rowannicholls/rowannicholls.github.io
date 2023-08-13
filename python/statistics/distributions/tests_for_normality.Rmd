@@ -24,11 +24,12 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 <!-- 2018-06-05 Python 3.6.2 through SublimeREPL on Windows 10 -->
 <!-- 2023-08-11 -->
 
-The code on this page uses the `numpy`, `scipy`, `statsmodels` and `matplotlib` packages. These can be installed from the terminal with:
+The code on this page uses the `numpy`, `scipy`, `pandas`, `statsmodels` and `matplotlib` packages. These can be installed from the terminal with:
 
 ```{bash, eval = FALSE}
 $ python3.11 -m pip install numpy
 $ python3.11 -m pip install scipy
+$ python3.11 -m pip install pandas
 $ python3.11 -m pip install statsmodels
 $ python3.11 -m pip install matplotlib
 ```
@@ -40,22 +41,33 @@ Import these packages into Python with:
 ```{python}
 import numpy as np
 from scipy import stats as st
+import pandas as pd
 import statsmodels.api as sm
 from matplotlib import pyplot as plt
 ```
 
-Set a seed for random numbers and a significance level for hypothesis tests for the entire page:
+For the statistical tests of normality, the hypotheses used are:
+
+- $H_0$ : The sample is not significantly different than a normal population
+- $H_1$ : The sample is significantly different than a normal population
+
+We'll use a significance level of 5% for the entire page:
 
 ```{python}
-# Set the seed so that we get the same random numbers each time this code runs
-np.random.seed(20230811)
-
 # Chosen the p-value below which will indicate significance
 alpha = 0.05
 ```
 
 Example Data: The Standard Normal Distribution
 ==============================================
+Set a seed for the random numbers:
+
+```{python}
+# Set the seed so that we get the same random numbers each time this code runs
+np.random.seed(20230811)
+```
+
+Create and plot the example data:
 
 ```{python, eval = FALSE}
 # Draw random numbers from the standard normal distribution
@@ -194,12 +206,15 @@ print(f'Anderson–Darling: {verdict:>15s}')
 print(result.statistic)
 ```
 
-Q–Q Plot
---------
-A **quantile-quantile plot** shows the quantiles of two probability distributions. If the points lie close to or on the 45° line then it can be concluded that they are similar. This is a visual aid in testing for normality and should be checked in addition to the numerical test(s) because those do not tell you about behaviour at the tails. See the Wikipedia page [here](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot).
+Probability Plot
+----------------
+A probability plot shows how closely two data sets agree. Types of probability plots include:
 
-### Using SciPy
-See the documentation [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.probplot.html).
+- P–P plots (probability-probability plots/percent-percent plots)
+- Q–Q plots (quantile-quantile plots)
+    - Normal probability plots (Q–Q plots against the standard normal distribution)
+
+SciPy's `probplot()` function can produce a probability plot, see the SciPy documentation [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.probplot.html) and the Wikipedia disambiguation page [here](https://en.wikipedia.org/wiki/Probability_plot).
 
 ```{python, eval = FALSE}
 st.probplot(data, dist='norm', plot=plt)
@@ -247,8 +262,11 @@ plt.show()
 plt.close()
 ```
 
-### Using Statsmodels
-See the documentation [here](https://www.statsmodels.org/stable/generated/statsmodels.graphics.gofplots.qqplot.html).
+Q–Q Plot
+--------
+A **quantile-quantile plot** shows the quantiles of two probability distributions. If the points lie close to or on the 45° line then it can be concluded that they are similar. This is a visual aid in testing for normality and should be checked in addition to the numerical test(s) because those do not tell you about behaviour at the tails.
+
+Statsmodels has the `qqplot()` function that will create a Q–Q plot, see the documentation [here](https://www.statsmodels.org/stable/generated/statsmodels.graphics.gofplots.qqplot.html) and the Wikipedia page [here](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot).
 
 ```{python, eval = FALSE}
 sm.qqplot(data, line='45')
@@ -262,7 +280,7 @@ plt.show()
 plt.close()
 ```
 
-Controlling the format is a bit more tricky. The easiest way is probably to use the `ProbPlot()` function to create a probability plot that can then be plotted with `qqplot()` and `qqline()`. Use the `ax` keyword argument to attach it to a Matplotlib Axes object:
+Controlling the format here is a bit tricky. The easiest way is probably to use the `ProbPlot()` function to create a probability plot that can then be plotted with `qqplot()` and `qqline()` to get a Q-Q plot. Use the `ax` keyword argument to use a Matplotlib Axes object:
 
 ```{python, eval = FALSE}
 ax = plt.axes()
@@ -293,6 +311,192 @@ axis_lim = max([abs(min(data)), max(data)])
 ax.set_xlim([-axis_lim, axis_lim])
 ax.set_ylim([-axis_lim, axis_lim])
 ax.set_aspect('equal')
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+Real-World Data: Mexican Population Densities
+=============================================
+Taken from [here](http://webspace.ship.edu/pgmarr/Geo441/Lectures/Lec%205%20-%20Normality%20Testing.pdf).
+
+```{python}
+dct = {
+    'Region': [
+        'Ajuno', 'Angahuan', 'Arantepacua', 'Aranza', 'Charapan', 'Cheran',
+        'Cocucho', 'Comachuen', 'Corupo', 'Ihuatzio', 'Janitzio', 'Jaracuaro',
+        'Nahuatzen', 'Nurio', 'Paracho', 'Patzcuaro', 'Pichataro',
+        'Pomacuaran', 'Quinceo', 'Quiroga', 'San Felipe', 'San Lorenzo',
+        'Sevina', 'Tingambato', 'Turicuaro', 'Tzintzuntzan', 'Urapicho'
+    ],
+    'Population Density': [
+        5.11, 5.15, 5.00, 4.13, 5.10, 5.22, 5.04, 5.25, 4.53, 5.74, 6.63, 5.73,
+        4.77, 6.06, 4.82, 4.98, 5.36, 4.96, 5.94, 5.01, 4.10, 4.69, 4.97, 5.01,
+        6.19, 4.67, 6.30
+    ]
+}
+df = pd.DataFrame(dct)
+print(df)
+```
+
+Plot the Raw Data
+-----------------
+
+```{python, eval = FALSE}
+# Plot the data
+data = df['Population Density']
+plt.hist(data, density=True, color='gray', label='Population Densities')
+# Plot a normal distribution
+x_bar = np.mean(data)
+s = np.std(data)
+x = np.linspace(x_bar - 3 * s, x_bar + 3 * s, 100)
+y = st.norm.pdf(x, x_bar, s)
+plt.plot(x, y, 'k--', label='Normal Distribution')
+# Axes
+plt.xlim([x_bar - 3 * s, x_bar + 3 * s])
+# Finish
+plt.title('Population Densities in Mexican Regions')
+plt.ylabel('Probability Density')
+plt.xlabel('Binned Values')
+plt.legend(frameon=False)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot the data
+data = df['Population Density']
+plt.hist(data, density=True, color='gray', label='Population Densities')
+# Plot a normal distribution
+x_bar = np.mean(data)
+s = np.std(data)
+x = np.linspace(x_bar - 3 * s, x_bar + 3 * s, 100)
+y = st.norm.pdf(x, x_bar, s)
+plt.plot(x, y, 'k--', label='Normal Distribution')
+# Axes
+plt.xlim([x_bar - 3 * s, x_bar + 3 * s])
+# Finish
+plt.title('Population Densities in Mexican Regions')
+plt.ylabel('Probability Density')
+plt.xlabel('Binned Values')
+plt.legend(frameon=False)
+plt.show()
+plt.close()
+```
+
+Statistical Tests for Normality
+-------------------------------
+
+```{python, results = 'hold'}
+# D'Agostino's (and Pearson's) K² test
+if st.normaltest(data)[1] > alpha:
+    print("D'Agostino & Pearson:        Normal")
+else:
+    print("D'Agostino & Pearson:    NOT Normal")
+
+# Jarque-Bera goodness-of-fit test
+if st.jarque_bera(data)[1] > alpha:
+    print('Jarque-Bera:                 Normal')
+else:
+    print('Jarque-Bera:             NOT Normal')
+
+# Lilliefors test (based on the Kolmogorov–Smirnov test)
+if sm.stats.diagnostic.lilliefors(data)[1] > alpha:
+    print('Lilliefors:                  Normal')
+else:
+    print('Lilliefors:              NOT Normal')
+
+# Shapiro–Wilk test
+if st.shapiro(data)[1] > alpha:
+    print('Shapiro-Wilk:                Normal')
+else:
+    print('Shapiro-Wilk:            NOT Normal')
+
+# Anderson–Darling test
+result = st.anderson(data)
+if result[0] < result[1][2]:
+    print('Anderson–Darling:            Normal')
+else:
+    print('Anderson–Darling:        NOT Normal')
+```
+
+Compare to the Source
+---------------------
+The [source](http://webspace.ship.edu/pgmarr/Geo441/Lectures/Lec%205%20-%20Normality%20Testing.pdf) performs seven statistical normality tests, two of which are the same (Lilliefors and Kolmogorov-Smirnov) and two of which are not implemented in Python (the W/S test - not to be confused with the Shapiro–Wilk test - and D'Agostino's D test - not to be confused with D'Agostino's *K*² test). The test statistics of the remaining four tests match those given by Python:
+
+```{python, results = 'hold'}
+print(f'Jarque–Bera test:      {st.jarque_bera(data)[0]:.3f}')
+print(f'Lilliefors test:       {sm.stats.diagnostic.lilliefors(data)[0]:.3f}')
+print(f'Shapiro–Wilk test:     {st.shapiro(data)[0]:.3f}')
+print(f'Anderson–Darling test: {result.statistic:.3f}')
+```
+
+So our results match the source.
+
+Graphical Tests for Normality
+-----------------------------
+
+### Probability Plot
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set_title('Probability Plot')
+ax.set_ylabel('Ordered Values')
+ax.set_xlabel('Theoretical Quantiles')
+(osm, osr), (slope, intercept, r) = st.probplot(data, dist='norm')
+ax.plot(osm, osr, c='k', lw=3)
+ax.axline((0, intercept), slope=slope, c='gray', ls='--')
+ax.set_ylim([min(osr), max(osr)])
+ax.set_xlim([min(osm), max(osm)])
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set_title('Probability Plot')
+ax.set_ylabel('Ordered Values')
+ax.set_xlabel('Theoretical Quantiles')
+(osm, osr), (slope, intercept, r) = st.probplot(data, dist='norm')
+ax.plot(osm, osr, c='k', lw=3)
+ax.axline((0, intercept), slope=slope, c='gray', ls='--')
+ax.set_ylim([min(osr), max(osr)])
+ax.set_xlim([min(osm), max(osm)])
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+### Q–Q Plot
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set_title('Q-Q Plot')
+ax.set_ylabel('Sample Quantiles')
+ax.set_xlabel('Theoretical Quantiles')
+pp = sm.ProbPlot(data)
+qq = pp.qqplot(markerfacecolor='gray', markeredgecolor='k', ax=ax)
+x = pp.theoretical_quantiles
+y = pp.sample_quantiles
+sm.qqline(qq.axes[0], x=x, y=y, line='s', color='gray', linestyle='--')
+ax.set_xlim([min(x), max(x)])
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set_title('Q-Q Plot')
+ax.set_ylabel('Sample Quantiles')
+ax.set_xlabel('Theoretical Quantiles')
+pp = sm.ProbPlot(data)
+qq = pp.qqplot(markerfacecolor='gray', markeredgecolor='k', ax=ax)
+x = pp.theoretical_quantiles
+y = pp.sample_quantiles
+sm.qqline(qq.axes[0], x=x, y=y, line='s', color='gray', linestyle='--')
+ax.set_xlim([min(x), max(x)])
 ax.grid(ls='--')
 plt.show()
 plt.close()
