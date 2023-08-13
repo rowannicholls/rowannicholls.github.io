@@ -1,0 +1,303 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Tests for Normality'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Creation and edit dates: -->
+<!-- 2017-12-15 SublimeREPL on Ubuntu 16.04 -->
+<!-- 2018-06-05 Python 3.6.2 through SublimeREPL on Windows 10 -->
+<!-- 2023-08-11 -->
+
+The code on this page uses the `numpy`, `scipy`, `statsmodels` and `matplotlib` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install matplotlib
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Import these packages into Python with:
+
+```{python}
+import numpy as np
+from scipy import stats as st
+import statsmodels.api as sm
+from matplotlib import pyplot as plt
+```
+
+Set a seed for random numbers and a significance level for hypothesis tests for the entire page:
+
+```{python}
+# Set the seed so that we get the same random numbers each time this code runs
+np.random.seed(20230811)
+
+# Chosen the p-value below which will indicate significance
+alpha = 0.05
+```
+
+Example Data: The Standard Normal Distribution
+==============================================
+
+```{python, eval = FALSE}
+# Draw random numbers from the standard normal distribution
+mu, sigma = 0, 1
+data = np.random.normal(mu, sigma, 1000)
+
+# Plot the random numbers
+label = '1000 Random Numbers'
+plt.hist(data, density=True, color='gray', label=label)
+# Plot the exact distribution
+x = np.linspace(-3, 3, 100)
+y = st.norm.pdf(x, mu, sigma)
+plt.plot(x, y, 'k--', label='Standard Normal Distribution')
+# Format
+plt.title('Example Data')
+plt.ylabel('Probability Density')
+plt.xlabel('Random Variables')
+plt.ylim([0, 0.5])
+plt.xlim([-3, 3])
+plt.legend(frameon=False)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Draw random numbers from the standard normal distribution
+mu, sigma = 0, 1
+data = np.random.normal(mu, sigma, 1000)
+
+# Plot the random numbers
+label = '1000 Random Numbers'
+plt.hist(data, density=True, color='gray', label=label)
+# Plot the exact distribution
+x = np.linspace(-3, 3, 100)
+y = st.norm.pdf(x, mu, sigma)
+plt.plot(x, y, 'k--', label='Standard Normal Distribution')
+# Format
+plt.title('Example Data')
+plt.ylabel('Probability Density')
+plt.xlabel('Random Variables')
+plt.ylim([0, 0.5])
+plt.xlim([-3, 3])
+plt.legend(frameon=False)
+plt.show()
+```
+
+D'Agostino's (and Pearson's) *K*-squared Test
+---------------------------------------------
+See the documentation [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.normaltest.html) and the Wikipedia page [here](https://en.wikipedia.org/wiki/D%27Agostino%27s_K-squared_test).
+
+```{python, results = 'hold'}
+statistic, p_value = st.normaltest(data)
+if p_value > alpha:
+    result = 'Normal'
+else:
+    result = 'NOT Normal'
+print(f"D'Agostino & Pearson: {result:>11s}")
+print(statistic)
+```
+
+Jarque-Bera Goodness-of-Fit Test
+--------------------------------
+See the documentation [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.jarque_bera.html) and the Wikipedia page [here](https://en.wikipedia.org/wiki/Jarque%E2%80%93Bera_test).
+
+```{python, results = 'hold'}
+statistic, pvalue = st.jarque_bera(data)
+if pvalue > alpha:
+    result = 'Normal'
+else:
+    result = 'NOT Normal'
+print(f'Jarque-Bera: {result:>20s}')
+print(statistic)
+```
+
+Kolmogorov–Smirnov Test
+-----------------------
+Note that you cannot actually use the Kolmogorov-Smirnov test as a normality test; this function uses the Lilliefors test in the background (which is based on Kolmogorov-Smirnov).
+
+See the documentation [here](https://www.statsmodels.org/stable/generated/statsmodels.stats.diagnostic.kstest_normal.html) (note that this is identical to the documentation for `lilliefors()`) and the Wikipedia page [here](https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Smirnov_test).
+
+```{python, results = 'hold'}
+ksstat, pvalue = sm.stats.diagnostic.kstest_normal(data)
+if pvalue > alpha:
+    result = 'Normal'
+else:
+    result = 'NOT Normal'
+print(f'Kolmogorov-Smirnov: {result:>13s}')
+print(ksstat)
+```
+
+Lilliefors Test
+---------------
+The Lilliefors test is a Kolmogorov-Smirnov test with estimated parameters.
+
+See the documentation [here](https://www.statsmodels.org/dev/generated/statsmodels.stats.diagnostic.lilliefors.html) (note that this is identical to the documentation for `kstest_normal()`) and the Wikipedia page [here](https://en.wikipedia.org/wiki/Lilliefors_test).
+
+```{python, results = 'hold'}
+ksstat, pvalue = sm.stats.diagnostic.lilliefors(data)
+if pvalue > alpha:
+    result = 'Normal'
+else:
+    result = 'NOT Normal'
+print(f'Lilliefors: {result:>21s}')
+print(ksstat)
+```
+
+Note that the test statistic (`ksstat`) is the same as the one for the Kolmogorov–Smirnov test.
+
+Shapiro–Wilk Test
+-----------------
+See the documentation [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.shapiro.html) and the Wikipedia page [here](https://en.wikipedia.org/wiki/Shapiro%E2%80%93Wilk_test).
+
+```{python, results = 'hold'}
+statistic, pvalue = st.shapiro(data)
+if pvalue > alpha:
+    result = 'Normal'
+else:
+    result = 'NOT Normal'
+print(f'Shapiro-Wilk: {result:>19s}')
+print(statistic)
+```
+
+Anderson–Darling Test
+---------------------
+This tests for whether data comes from a particular distribution.
+
+See the documentation [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.anderson.html) and the Wikipedia page [here](https://en.wikipedia.org/wiki/Anderson%E2%80%93Darling_test).
+
+```{python, results = 'hold'}
+result = st.anderson(data)
+idx = np.where(result.significance_level == alpha * 100)
+if result.statistic < result.critical_values[idx]:
+    verdict = 'Normal'
+else:
+    verdict = 'NOT Normal'
+print(f'Anderson–Darling: {verdict:>15s}')
+print(result.statistic)
+```
+
+Q–Q Plot
+--------
+A **quantile-quantile plot** shows the quantiles of two probability distributions. If the points lie close to or on the 45° line then it can be concluded that they are similar. This is a visual aid in testing for normality and should be checked in addition to the numerical test(s) because those do not tell you about behaviour at the tails. See the Wikipedia page [here](https://en.wikipedia.org/wiki/Q%E2%80%93Q_plot).
+
+### Using SciPy
+See the documentation [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.probplot.html).
+
+```{python, eval = FALSE}
+st.probplot(data, dist='norm', plot=plt)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+st.probplot(data, dist='norm', plot=plt)
+plt.show()
+plt.close()
+```
+
+The easiest way to control the format of the plot is to take the objects that the function returns and plot those manually:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set_title('Probability Plot')
+ax.set_ylabel('Ordered Values')
+ax.set_xlabel('Theoretical Quantiles')
+ax.axline((0, 0), slope=1, c='gray', ls='--')
+ax.plot(*st.probplot(data, dist='norm')[0], c='k', lw=3)
+axis_lim = max([abs(min(data)), max(data)])
+ax.set_xlim([-axis_lim, axis_lim])
+ax.set_ylim([-axis_lim, axis_lim])
+ax.set_aspect('equal')
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set_title('Probability Plot')
+ax.set_ylabel('Ordered Values')
+ax.set_xlabel('Theoretical Quantiles')
+ax.axline((0, 0), slope=1, c='gray', ls='--')
+ax.plot(*st.probplot(data, dist='norm')[0], c='k', lw=3)
+axis_lim = max([abs(min(data)), max(data)])
+ax.set_xlim([-axis_lim, axis_lim])
+ax.set_ylim([-axis_lim, axis_lim])
+ax.set_aspect('equal')
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+### Using Statsmodels
+See the documentation [here](https://www.statsmodels.org/stable/generated/statsmodels.graphics.gofplots.qqplot.html).
+
+```{python, eval = FALSE}
+sm.qqplot(data, line='45')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+sm.qqplot(data, line='45')
+plt.show()
+plt.close()
+```
+
+Controlling the format is a bit more tricky. The easiest way is probably to use the `ProbPlot()` function to create a probability plot that can then be plotted with `qqplot()` and `qqline()`. Use the `ax` keyword argument to attach it to a Matplotlib Axes object:
+
+```{python, eval = FALSE}
+ax = plt.axes()
+ax.set_title('Q-Q Plot')
+ax.set_ylabel('Sample Quantiles')
+ax.set_xlabel('Theoretical Quantiles')
+pp = sm.ProbPlot(data)
+qq = pp.qqplot(marker='.', markerfacecolor='gray', markeredgecolor='k', alpha=0.3, ax=ax)
+sm.qqline(qq.axes[0], line='45', color='gray', linestyle='--')
+axis_lim = max([abs(min(data)), max(data)])
+ax.set_xlim([-axis_lim, axis_lim])
+ax.set_ylim([-axis_lim, axis_lim])
+ax.set_aspect('equal')
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+ax = plt.axes()
+ax.set_title('Q-Q Plot')
+ax.set_ylabel('Sample Quantiles')
+ax.set_xlabel('Theoretical Quantiles')
+pp = sm.ProbPlot(data)
+qq = pp.qqplot(marker='.', markerfacecolor='gray', markeredgecolor='k', alpha=0.3, ax=ax)
+sm.qqline(qq.axes[0], line='45', color='gray', linestyle='--')
+axis_lim = max([abs(min(data)), max(data)])
+ax.set_xlim([-axis_lim, axis_lim])
+ax.set_ylim([-axis_lim, axis_lim])
+ax.set_aspect('equal')
+ax.grid(ls='--')
+plt.show()
+plt.close()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
