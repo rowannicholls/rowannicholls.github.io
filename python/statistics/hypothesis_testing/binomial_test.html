@@ -11,7 +11,7 @@
 
 
 
-<title>Statistics in Python: One-Sample Z-Test for a Proportion</title>
+<title>Statistics in Python: The Binomial Test</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1661,7 +1661,7 @@ wa:"user_id",La:"user_properties",sh:"_user_region",th:"us_privacy_string",aa:"v
 1,$d[K.g.jb]=1,$d[K.g.Ic]=1,$d[K.g.W]=1,$d[K.g.Hg]=1,$d[K.g.Nc]=1,$d[K.g.ae]=1,$d[K.g.be]=1,$d[K.g.ce]=1,$d[K.g.Wg]=1,$d[K.g.Ya]=1,$d[K.g.Yg]=1,$d[K.g.he]=1,$d[K.g.rf]=1,$d[K.g.ob]=1,$d[K.g.pb]=1,$d[K.g.za]=1,$d[K.g.uf]=1,$d[K.g.ke]=1,$d[K.g.Hb]=1,$d[K.g.Ka]=1,$d[K.g.Ib]=1,$d[K.g.Sc]=1,$d[K.g.Tc]=1,$d[K.g.wf]=1,$d[K.g.Uc]=1,$d[K.g.Jb]=1,$d[K.g.ic]=1,$d[K.g.pe]=1,$d[K.g.La]=1,$d[K.g.md]=1,$d));Object.freeze([K.g.oa,K.g.Aa,K.g.rb,K.g.Da,K.g.vf,K.g.wa,K.g.nf,K.g.lj]);
 var be={},ce=Object.freeze((be[K.g.Si]=1,be[K.g.Ti]=1,be[K.g.Ui]=1,be[K.g.Vi]=1,be[K.g.Wi]=1,be[K.g.Yi]=1,be[K.g.Zi]=1,be[K.g.aj]=1,be[K.g.cj]=1,be[K.g.Pd]=1,be)),de={},ee=Object.freeze((de[K.g.Bg]=1,de[K.g.Cg]=1,de[K.g.Ub]=1,de[K.g.Vb]=1,de[K.g.Dg]=1,de[K.g.Cb]=1,de[K.g.Wb]=1,de[K.g.Ta]=1,de[K.g.fb]=1,de[K.g.Ua]=1,de[K.g.ka]=1,de[K.g.Xb]=1,de[K.g.xa]=1,de[K.g.Eg]=1,de)),fe=Object.freeze([K.g.Z,K.g.ib,K.g.jb]),ge=Object.freeze([].concat(fe)),ie=Object.freeze([K.g.Ca,K.g.be,K.g.Tc,K.g.wf,K.g.Xd]),
 je=Object.freeze([].concat(ie)),ke={},le=(ke[K.g.F]="1",ke[K.g.N]="2",ke[K.g.M]="3",ke[K.g.Sb]="4",ke),me={},ne=Object.freeze((me[K.g.Z]=1,me[K.g.Qd]=1,me[K.g.Ba]=1,me[K.g.Db]=1,me[K.g.ff]=1,me[K.g.Rd]=1,me[K.g.Sd]=1,me[K.g.Td]=1,me[K.g.T]=1,me[K.g.Ud]=1,me[K.g.Ia]=1,me[K.g.ya]=1,me[K.g.Oa]=1,me[K.g.Ca]=1,me[K.g.Pa]=1,me[K.g.Ja]=1,me[K.g.na]=1,me[K.g.Vd]=1,me[K.g.W]=1,me[K.g.oj]=1,me[K.g.Yd]=1,me[K.g.Zd]=1,me[K.g.nf]=1,me[K.g.ce]=1,me[K.g.ob]=1,me[K.g.pb]=1,me[K.g.Da]=1,me[K.g.Oc]=1,me[K.g.oa]=1,
-me[K.g.Aa]=1,me[K.g.hh]=1,me[K.g.ih]=1,me[K.g.jh]=1,me[K.g.kh]=1,me[K.g.Hb]=1,me[K.g.Ka]=1,me[K.g.Ib]=1,me[K.g.Sc]=1,me[K.g.Uc]=1,me[K.g.qa]=1,me[K.g.Jb]=1,me[K.g.ic]=1,me[K.g.ub]=1,me[K.g.ra]=1,me[K.g.wa]=1,me[K.g.aa]=1,me)),oe={},pe=Object.freeze((oe[K.g.Pi]="s",oe[K.g.Ri]="y",oe[K.g.Mi]="n",oe[K.g.Ni]="c",oe[K.g.Oi]="p",oe[K.g.Qi]="h",oe[K.g.Li]="a",oe));Object.freeze(K.g);var qe={},re=z.google_tag_manager=z.google_tag_manager||{},se=Math.random();qe.Gf="3890";qe.ld=Number("0")||0;qe.da="dataLayer";qe.Ji="ChEI8KHnpgYQ7qW7nPT5ofveARInAJ4A7koyK6fCiS6UPrPs7VI8gejwNTBEw+x4KyGa77Js5VmRVQ/RGgJNgg\x3d\x3d";var te={__cl:1,__ecl:1,__ehl:1,__evl:1,__fal:1,__fil:1,__fsl:1,__hl:1,__jel:1,__lcl:1,__sdl:1,__tl:1,__ytl:1},ue={__paused:1,__tg:1},ve;for(ve in te)te.hasOwnProperty(ve)&&(ue[ve]=1);var we=Ca(""),xe,ye=!1;ye=!0;
+me[K.g.Aa]=1,me[K.g.hh]=1,me[K.g.ih]=1,me[K.g.jh]=1,me[K.g.kh]=1,me[K.g.Hb]=1,me[K.g.Ka]=1,me[K.g.Ib]=1,me[K.g.Sc]=1,me[K.g.Uc]=1,me[K.g.qa]=1,me[K.g.Jb]=1,me[K.g.ic]=1,me[K.g.ub]=1,me[K.g.ra]=1,me[K.g.wa]=1,me[K.g.aa]=1,me)),oe={},pe=Object.freeze((oe[K.g.Pi]="s",oe[K.g.Ri]="y",oe[K.g.Mi]="n",oe[K.g.Ni]="c",oe[K.g.Oi]="p",oe[K.g.Qi]="h",oe[K.g.Li]="a",oe));Object.freeze(K.g);var qe={},re=z.google_tag_manager=z.google_tag_manager||{},se=Math.random();qe.Gf="3890";qe.ld=Number("0")||0;qe.da="dataLayer";qe.Ji="ChEI8KHnpgYQ7qW7nPT5ofveARInAJ4A7kpVgRqe05u2gEC9LMFzk39uoTa2gUliJtZ88aA6mQ5moofOGgLA9g\x3d\x3d";var te={__cl:1,__ecl:1,__ehl:1,__evl:1,__fal:1,__fil:1,__fsl:1,__hl:1,__jel:1,__lcl:1,__sdl:1,__tl:1,__ytl:1},ue={__paused:1,__tg:1},ve;for(ve in te)te.hasOwnProperty(ve)&&(ue[ve]=1);var we=Ca(""),xe,ye=!1;ye=!0;
 xe=ye;var ze,Ae=!1;ze=Ae;var Be,Ce=!1;Be=Ce;var De,Ee=!1;De=Ee;qe.Od="www.googletagmanager.com";
 var Fe=""+qe.Od+(xe?"/gtag/js":"/gtm.js"),Ge=null,He=null,Ie={},Je={},Ke={},Le=function(){var a=re.sequence||1;re.sequence=a+1;return a};qe.Ii="";var Me="";qe.we=Me;var Ne=new xa,Oe={},Pe={},Se={name:qe.da,set:function(a,b){I(Oa(a,b),Oe);Qe()},get:function(a){return Re(a,2)},reset:function(){Ne=new xa;Oe={};Qe()}},Re=function(a,b){return 2!=b?Ne.get(a):Te(a)},Te=function(a){var b,c=a.split(".");b=b||[];for(var d=Oe,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},Ue=function(a,b){Pe.hasOwnProperty(a)||(Ne.set(a,b),I(Oa(a,b),Oe),Qe())},Qe=function(a){k(Pe,function(b,c){Ne.set(b,c);I(Oa(b),Oe);I(Oa(b,
 c),Oe);a&&delete Pe[b]})},Ve=function(a,b){var c,d=1!==(void 0===b?2:b)?Te(a):Ne.get(a);"array"===Zb(d)||"object"===Zb(d)?c=I(d):c=d;return c};var N=[];N[5]=!0;N[6]=!0;N[12]=!0;
@@ -1916,197 +1916,229 @@ Hg){var R=Og(!0,!0);Mb(R)}}});
 
 
 
-<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>One-Sample <em>Z</em>-Test for a Proportion</h1>
+<h1 class="title toc-ignore"><font size="5">Statistics in Python:</font><br>The Binomial Test</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#example-data"><span class="toc-section-number">1</span> Example Data</a></li>
-<li><a href="#hypotheses"><span class="toc-section-number">2</span> Hypotheses</a></li>
-<li><a href="#test-the-hypotheses"><span class="toc-section-number">3</span> Test the Hypotheses</a>
+<li><a href="#packages"><span class="toc-section-number">1</span> Packages</a></li>
+<li><a href="#worked-example"><span class="toc-section-number">2</span> Worked Example</a>
 <ul>
-<li><a href="#using-statsmodels"><span class="toc-section-number">3.1</span> Using <code>statsmodels</code></a></li>
-<li><a href="#using-scipy-and-numpy"><span class="toc-section-number">3.2</span> Using <code>scipy</code> and <code>numpy</code></a></li>
+<li><a href="#one-sided-binomial-test"><span class="toc-section-number">2.1</span> One-Sided Binomial Test</a>
+<ul>
+<li><a href="#simulation"><span class="toc-section-number">2.1.1</span> Simulation</a></li>
+<li><a href="#exact-calculation"><span class="toc-section-number">2.1.2</span> Exact Calculation</a></li>
 </ul></li>
-<li><a href="#comparison-with-pearsons-chi-squared-goodness-of-fit-test"><span class="toc-section-number">4</span> Comparison with Pearson’s Chi-Squared Goodness-of-Fit Test</a></li>
-<li><a href="#confidence-interval"><span class="toc-section-number">5</span> Confidence Interval</a></li>
-<li><a href="#interpretation"><span class="toc-section-number">6</span> Interpretation</a></li>
-<li><a href="#is-the-sample-size-too-small"><span class="toc-section-number">7</span> Is the Sample Size Too Small?</a></li>
+<li><a href="#two-sided-binomial-test"><span class="toc-section-number">2.2</span> Two-Sided Binomial Test</a>
+<ul>
+<li><a href="#simulation-1"><span class="toc-section-number">2.2.1</span> Simulation</a></li>
+<li><a href="#exact-calculation-1"><span class="toc-section-number">2.2.2</span> Exact Calculation</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#non-equivalence-with-the-chi-squared-and-z-tests"><span class="toc-section-number">3</span> Non-Equivalence with the Chi-Squared and <em>Z</em>-Tests</a>
+<ul>
+<li><a href="#which-to-use"><span class="toc-section-number">3.1</span> Which to Use?</a></li>
+</ul></li>
 </ul>
 </div>
 
 <p><font size="3"></p>
 <p><a href="../../../python.html">⇦ Back</a></p>
-<p>If you have:</p>
-<ul>
-<li>a <em>sample</em> of data,</li>
-<li>of which a certain <em>proportion</em> has some characteristic</li>
-<li>and you want to see if this proportion is significantly different from the proportion that you <em>expect</em>,</li>
-</ul>
-<p>…then the <strong>one-sample <em>Z</em>-test for a proportion</strong> might be for you. Consult the following flowchart for a more complete decision-making process:</p>
-<div id="htmlwidget-e67683a79959cf617250" style="width:1000px;height:650px;" class="grViz html-widget "></div>
-<script type="application/json" data-for="htmlwidget-e67683a79959cf617250">{"x":{"diagram":"digraph statistical_tests {\n        rankdir=\"LR\"\n\n        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]\n        start [label=\"Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)\", fillcolor=\"#ea9999\"]\n            dependent [label=\"Data type of\nthe DV?\", fillcolor=\"#c9daf8\"]\n                sc_datatypes [label=\"Data type of\nthe IV?\"]\n                    sc_true [label=\"True independent\nvariable?\"]\n                        yes_number [label=\"Number of\ngroups/samples\nfor the IV?\"]\n                            one_choose [label=\"Choose a fit\"]\n                                \"Simple Linear\nRegression\" [style=rounded]\n                                \"Quadratic\nRegression\" [style=rounded]\n                            \"Multiple Linear\nRegression\" [style=rounded]\n                        no_parametric [label=\"Parametric?\"]\n                            \"Pearson\ncorrelation\ncoefficient\" [style=rounded]\n                            \"Spearmans rank\ncorrelation\ncoefficient\" [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]\n                    none_parametric [label=\"Parametric?\"]\n                        \"One-sample t-test\" [style=rounded, label=<One-sample <I>t<\/I>-test>]\n                    cd_number [label=\"Number of\ngroups/samples\nfor the IV?\"]\n                        two_parametric [label=\"Parametric?\"]\n                            true_independent [label=\"Independent\ngroups/sample?\"]\n                                \"Unpaired\ntwo-sample\nt-test\" [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t<\/I>-test>]\n                                \"Paired\ntwo-sample\nt-test\" [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t<\/I>-test>]\n                            false_independent [label=\"Independent\ngroups/sample?\"]\n                                \"Mann-Whitney\nU test\" [style=rounded, label=<Mann-Whitney<BR/> <I>U <\/I>test>]\n                                \"Wilcoxon\nsigned-rank test\" [style=rounded]\n                        more_parametric [label=\"Parametric?\"]\n                            \"ANOVA\" [style=rounded]\n                            false_independent2 [label=\"Independent\ngroups/sample?\"]\n                                \"Kruskal-Wallis\none-way ANOVA\" [style=rounded]\n                                \"Friedman\ntwo-way ANOVA\" [style=rounded]\n                cd_datatype [label=\"Type of\ncategorical\ndata?\", fillcolor=\"#c9daf8\"]\n                    binary_datatype [label=\"Data type of\nthe IV?\", fillcolor=\"#c9daf8\"]\n                        \"Sample Size?\" [fillcolor=\"#c9daf8\"]\n                            \"Binomial Test\" [style=rounded]\n                            \"One-sample Z-test\" [fillcolor=\"#d9ead3\", label=<One-sample <I>Z<\/I>-test>]\n                        \"Two-sample Z-test\" [style=rounded, label=<Two-sample <I>Z<\/I>-test>]\n                        \"χ² test for trend\" [style=rounded]\n                    ordinal_datatype [label=\"Data type of\nthe IV?\"]\n                        \"χ² test for trend\" [style=rounded]\n                    nominal_datatype [label=\"Data type of\nthe IV?\"]\n                        none_additional [label=\"Additional DV?\"]\n                            \"χ² goodness-of-fit test\" [style=rounded]\n                            \"χ² independence test\" [style=rounded]\n                        \"χ² homogeneity test\" [style=rounded]\n\n        {rank=same; start -> dependent}\n        dependent -> sc_datatypes [label=\"Scale/\nContinuous\"]\n            sc_datatypes -> sc_true [label=\"Scale/\nContinuous\"]\n                sc_true -> yes_number [label=\"Yes\n(regression \nanalysis)\"]\n                    yes_number -> one_choose [label=\"One\"]\n                        one_choose -> \"Simple Linear\nRegression\"\n                        one_choose -> \"Quadratic\nRegression\"\n                    yes_number -> \"Multiple Linear\nRegression\" [label=\"More\"]\n                sc_true -> no_parametric [label=\"No\n(correlation \nanalysis)\"]\n                    no_parametric -> \"Pearson\ncorrelation\ncoefficient\" [label=\"Yes\"]\n                    no_parametric -> \"Spearmans rank\ncorrelation\ncoefficient\" [label=\"No\"]\n            sc_datatypes -> none_parametric [label=\"None\n(no IV)\"]\n                none_parametric -> \"One-sample t-test\" [label=\"Yes\"]\n            sc_datatypes -> cd_number [label=\"Categorical/\nDiscrete\"]\n                cd_number -> two_parametric [label=Two]\n                    two_parametric -> true_independent [label=Yes]\n                        true_independent -> \"Unpaired\ntwo-sample\nt-test\" [label=Yes]\n                        true_independent -> \"Paired\ntwo-sample\nt-test\" [label=No]\n                    two_parametric -> false_independent [label=No]\n                        false_independent -> \"Mann-Whitney\nU test\" [label=Yes]\n                        false_independent -> \"Wilcoxon\nsigned-rank test\" [label=No]\n                cd_number -> more_parametric [label=More]\n                    more_parametric -> \"ANOVA\" [label=Yes]\n                    more_parametric -> false_independent2 [label=No]\n                        false_independent2 -> \"Kruskal-Wallis\none-way ANOVA\" [label=Yes]\n                        false_independent2 -> \"Friedman\ntwo-way ANOVA\" [label=No]\n        dependent -> cd_datatype [label=\"Categorical/\nDiscrete\"]\n            cd_datatype -> binary_datatype [label=\"Binary\n(nominal)\"]\n                binary_datatype -> \"Sample Size?\" [label=\"None\n(no IV)\"]\n                    \"Sample Size?\" -> \"Binomial Test\" [label=\"Small\"]\n                    \"Sample Size?\" -> \"One-sample Z-test\" [label=\"Large\"]\n                binary_datatype -> \"Two-sample Z-test\" [label=\"Binary\n(nominal)\"]\n                binary_datatype -> \"χ² test for trend\" [label=Ordinal]\n            cd_datatype -> ordinal_datatype [label=\"Ordinal\"]\n                ordinal_datatype -> \"χ² test for trend\" [label=\"Binary\n(nominal)\"]\n            cd_datatype -> nominal_datatype [label=\"Nominal\n(incl binary)\"]\n                nominal_datatype -> none_additional [label=\"None\n(no IV)\"]\n                    none_additional -> \"χ² goodness-of-fit test\" [label=No]\n                    none_additional -> \"χ² independence test\" [label=Yes]\n                nominal_datatype -> \"χ² homogeneity test\" [label=Nominal]\n\n    labelloc=\"t\";\n    label=\"Flowchart for Choosing a Statistical Test\";\n    fontsize=30;\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
-<p>This test, like all <em>Z</em>-tests, involves calculating a <em>Z</em>-statistic which, loosely, is the distance between what you have (the proportion actually seen in your sample) and what random chance would give you (the proportion seen in a sample that was perfectly randomly-generated). Alternatively, the <em>Z</em>-statistic can be thought of as a signal-to-noise ratio: a large value would indicate that the difference (between the observed and expected proportions) is large relative to random variation (a difference that could occur by chance).</p>
-<p>Under the assumption that <em>Z</em>-statistics are normally-distributed, we can then calculate how unlikely it is that your sample has produced the <em>Z</em>-statistic that it has. More specifically, the <em>Z</em>-statistic is compared with its reference distribution (the standard normal distribution) to return a <em>p</em>-value.</p>
+<!-- Creation and update dates: -->
+<!-- 2023-07-24 -->
+<!-- 2023-08-14 -->
+<p>Some events have only two possible outcomes: a coin toss can result in either a head or a tail. Others can be simplified into having only two possible outcomes: rolling a die has six possible outcomes but we can simplify the result by saying that it is either a six or not a six. For these types of events - with <em>binary</em> outcomes - we can use the <strong>binomial test</strong> to establish if they are truly random or not to within a certain level of significance.</p>
+<div id="htmlwidget-00c1baee58c9a41bb98c" style="width:1000px;height:650px;" class="grViz html-widget "></div>
+<script type="application/json" data-for="htmlwidget-00c1baee58c9a41bb98c">{"x":{"diagram":"digraph statistical_tests {\n        rankdir=\"LR\"\n\n        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]\n        start [label=\"Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)\", fillcolor=\"#ea9999\"]\n            dependent [label=\"Data type of\nthe DV?\", fillcolor=\"#c9daf8\"]\n                sc_datatypes [label=\"Data type of\nthe IV?\"]\n                    sc_true [label=\"True independent\nvariable?\"]\n                        yes_number [label=\"Number of\ngroups/samples\nfor the IV?\"]\n                            one_choose [label=\"Choose a fit\"]\n                                \"Simple Linear\nRegression\" [style=rounded]\n                                \"Quadratic\nRegression\" [style=rounded]\n                            \"Multiple Linear\nRegression\" [style=rounded]\n                        no_parametric [label=\"Parametric?\"]\n                            \"Pearson\ncorrelation\ncoefficient\" [style=rounded]\n                            \"Spearmans rank\ncorrelation\ncoefficient\" [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]\n                    none_parametric [label=\"Parametric?\"]\n                        \"One-sample t-test\" [style=rounded, label=<One-sample <I>t<\/I>-test>]\n                    cd_number [label=\"Number of\ngroups/samples\nfor the IV?\"]\n                        two_parametric [label=\"Parametric?\"]\n                            true_independent [label=\"Independent\ngroups/sample?\"]\n                                \"Unpaired\ntwo-sample\nt-test\" [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t<\/I>-test>]\n                                \"Paired\ntwo-sample\nt-test\" [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t<\/I>-test>]\n                            false_independent [label=\"Independent\ngroups/sample?\"]\n                                \"Mann-Whitney\nU test\" [style=rounded, label=<Mann-Whitney<BR/> <I>U <\/I>test>]\n                                \"Wilcoxon\nsigned-rank test\" [style=rounded]\n                        more_parametric [label=\"Parametric?\"]\n                            \"ANOVA\" [style=rounded]\n                            false_independent2 [label=\"Independent\ngroups/sample?\"]\n                                \"Kruskal-Wallis\none-way ANOVA\" [style=rounded]\n                                \"Friedman\ntwo-way ANOVA\" [style=rounded]\n                cd_datatype [label=\"Type of\ncategorical\ndata?\", fillcolor=\"#c9daf8\"]\n                    binary_datatype [label=\"Data type of\nthe IV?\", fillcolor=\"#c9daf8\"]\n                        \"Sample Size?\" [fillcolor=\"#c9daf8\"]\n                            \"Binomial Test\" [fillcolor=\"#d9ead3\"]\n                            \"One-sample Z-test\" [style=rounded, label=<One-sample <I>Z<\/I>-test>]\n                        \"Two-sample Z-test\" [style=rounded, label=<Two-sample <I>Z<\/I>-test>]\n                        \"χ² test for trend\" [style=rounded]\n                    ordinal_datatype [label=\"Data type of\nthe IV?\"]\n                        \"χ² test for trend\" [style=rounded]\n                    nominal_datatype [label=\"Data type of\nthe IV?\"]\n                        none_additional [label=\"Additional DV?\"]\n                            \"χ² goodness-of-fit test\" [style=rounded]\n                            \"χ² independence test\" [style=rounded]\n                        \"χ² homogeneity test\" [style=rounded]\n\n        {rank=same; start -> dependent}\n        dependent -> sc_datatypes [label=\"Scale/\nContinuous\"]\n            sc_datatypes -> sc_true [label=\"Scale/\nContinuous\"]\n                sc_true -> yes_number [label=\"Yes\n(regression \nanalysis)\"]\n                    yes_number -> one_choose [label=\"One\"]\n                        one_choose -> \"Simple Linear\nRegression\"\n                        one_choose -> \"Quadratic\nRegression\"\n                    yes_number -> \"Multiple Linear\nRegression\" [label=\"More\"]\n                sc_true -> no_parametric [label=\"No\n(correlation \nanalysis)\"]\n                    no_parametric -> \"Pearson\ncorrelation\ncoefficient\" [label=\"Yes\"]\n                    no_parametric -> \"Spearmans rank\ncorrelation\ncoefficient\" [label=\"No\"]\n            sc_datatypes -> none_parametric [label=\"None\n(no IV)\"]\n                none_parametric -> \"One-sample t-test\" [label=\"Yes\"]\n            sc_datatypes -> cd_number [label=\"Categorical/\nDiscrete\"]\n                cd_number -> two_parametric [label=Two]\n                    two_parametric -> true_independent [label=Yes]\n                        true_independent -> \"Unpaired\ntwo-sample\nt-test\" [label=Yes]\n                        true_independent -> \"Paired\ntwo-sample\nt-test\" [label=No]\n                    two_parametric -> false_independent [label=No]\n                        false_independent -> \"Mann-Whitney\nU test\" [label=Yes]\n                        false_independent -> \"Wilcoxon\nsigned-rank test\" [label=No]\n                cd_number -> more_parametric [label=More]\n                    more_parametric -> \"ANOVA\" [label=Yes]\n                    more_parametric -> false_independent2 [label=No]\n                        false_independent2 -> \"Kruskal-Wallis\none-way ANOVA\" [label=Yes]\n                        false_independent2 -> \"Friedman\ntwo-way ANOVA\" [label=No]\n        dependent -> cd_datatype [label=\"Categorical/\nDiscrete\"]\n            cd_datatype -> binary_datatype [label=\"Binary\n(nominal)\"]\n                binary_datatype -> \"Sample Size?\" [label=\"None\n(no IV)\"]\n                    \"Sample Size?\" -> \"Binomial Test\" [label=\"Small\"]\n                    \"Sample Size?\" -> \"One-sample Z-test\" [label=\"Large\"]\n                binary_datatype -> \"Two-sample Z-test\" [label=\"Binary\n(nominal)\"]\n                binary_datatype -> \"χ² test for trend\" [label=Ordinal]\n            cd_datatype -> ordinal_datatype [label=\"Ordinal\"]\n                ordinal_datatype -> \"χ² test for trend\" [label=\"Binary\n(nominal)\"]\n            cd_datatype -> nominal_datatype [label=\"Nominal\n(incl binary)\"]\n                nominal_datatype -> none_additional [label=\"None\n(no IV)\"]\n                    none_additional -> \"χ² goodness-of-fit test\" [label=No]\n                    none_additional -> \"χ² independence test\" [label=Yes]\n                nominal_datatype -> \"χ² homogeneity test\" [label=Nominal]\n\n    labelloc=\"t\";\n    label=\"Flowchart for Choosing a Statistical Test\";\n    fontsize=30;\n    }","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<div id="packages" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Packages</h1>
 <p>The code on this page uses the <code>numpy</code>, <code>scipy</code> and <code>statsmodels</code> packages. These can be installed from the terminal with:</p>
 <pre class="bash"><code>$ python3.11 -m pip install numpy
 $ python3.11 -m pip install scipy
 $ python3.11 -m pip install statsmodels</code></pre>
 <p>where <code>python3.11</code> corresponds to the version of Python you have installed and are using.</p>
-<div id="example-data" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Example Data</h1>
-<p>As an example we will use the “Spector and Mazzeo (1980) - Program Effectiveness Data” which is included in the <code>statsmodels</code> package as <code>spector</code>, see <a href="https://www.statsmodels.org/dev/datasets/generated/spector.html">here</a> for more. This dataset records the test results of students:</p>
-<pre class="python"><code>import statsmodels.api as sm
-
-# Load the data set as a dataframe-of-dataframes
-data = sm.datasets.spector.load_pandas()
-# Extract the complete dataset
-df = data[&#39;data&#39;]
-# Rename
-df = df.rename(columns={
-    &#39;TUCE&#39;: &#39;test_score&#39;,
-    &#39;PSI&#39;: &#39;participated&#39;,
-    &#39;GRADE&#39;: &#39;grade_improved&#39;
-})
-
-print(df[15:22])</code></pre>
-<pre><code>##      GPA  test_score  participated  grade_improved
-## 15  2.74        19.0           0.0             0.0
-## 16  2.75        25.0           0.0             0.0
-## 17  2.83        19.0           0.0             0.0
-## 18  3.12        23.0           1.0             0.0
-## 19  3.16        25.0           1.0             1.0
-## 20  2.06        22.0           1.0             0.0
-## 21  3.62        28.0           1.0             1.0</code></pre>
+<p>Import these packages into Python with:</p>
+<pre class="python"><code>import numpy as np
+from scipy import stats as st
+from statsmodels.stats import proportion</code></pre>
 </div>
-<div id="hypotheses" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Hypotheses</h1>
-<p>One of the columns in our dataset is <code>grade_improved</code> which records whether or not the student’s test scores improved (<code>1</code> for yes, <code>0</code> for no). Now, if it were the case that 50% of students’ scores improved (and 50% did not) then that would be interesting: it would suggest that it might be completely random as to whether a student improves or not. This might tell us something about the students, or the test, or the teaching method, or maybe not. In any case, it’s worth taking a look.</p>
-<p>When working with categorical data like we have here (specifically, we have binary data) we talk about proportion, <span class="math inline">\(\pi\)</span>, instead of mean, <span class="math inline">\(\mu\)</span>. We are interested in whether or not 50% of students improved their test score - ie if the true proportion of students who improved is 0.5 - hence our <em>null hypothesis</em> is that <span class="math inline">\(\pi = 0.5\)</span>. Conversely, our <em>alternative hypothesis</em> is that the true proportion is not 50%; <span class="math inline">\(\pi \neq 0.5\)</span>:</p>
+<div id="worked-example" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Worked Example</h1>
+<p>This example comes from the <a href="https://en.wikipedia.org/wiki/Binomial_test">Wikipedia page</a>:</p>
+<blockquote>
+<p>If we roll a die 235 times and 6 comes up 51 of those times, is the die fair?</p>
+</blockquote>
+<p>We would expect a 6 to come up 1/6th of the time, ie <span class="math inline">\(235 / 6 = 39.17\)</span> times in 235 rolls. So it certainly seems as if the die <em>might</em> be biased towards rolling a 6 more often than expected.</p>
+<p>In more statistically-rigorous language, the <em>number of successes</em> we have observed is 51 out of a total of 235 <em>trials</em> where the hypothesized <em>probability of success</em> is 1/6. These numbers are usually known as <code>k</code>, <code>n</code> and <code>p</code> respectively:</p>
+<pre class="python"><code>#
+# Set up the example
+#
+# The number of successes
+k = 51
+# The number of trials
+n = 235
+# The hypothesized probability of success
+p = 1 / 6</code></pre>
+<div id="one-sided-binomial-test" class="section level2" number="2.1">
+<h2 number="2.1"><span class="header-section-number">2.1</span> One-Sided Binomial Test</h2>
+<p>Under the null hypothesis that the die is indeed fair and thus follows a binomial distribution with <span class="math inline">\(n=235\)</span> and <span class="math inline">\(p=1/6\)</span> with regards to landing on 6, we can test whether the die in the example produces a <em>greater than expected</em> number of 6s:</p>
 <ul>
-<li><span class="math inline">\(H_0: \pi = 0.5\)</span></li>
-<li><span class="math inline">\(H_1: \pi \neq 0.5\)</span></li>
+<li><span class="math inline">\(H_0 : \pi = \pi_0\)</span></li>
+<li><span class="math inline">\(H_1 : \pi \geq \pi_0\)</span></li>
 </ul>
-</div>
-<div id="test-the-hypotheses" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Test the Hypotheses</h1>
-<p>If the sample size is large (<span class="math inline">\(n &gt; 30\)</span>) or the population variance is known, we can use a <em>Z</em>-test as opposed to a <em>t</em>-test for our hypothesis testing. In our example, we don’t know the population variance (we haven’t investigated the test scores of all humans) but our sample size is above 30 (it’s only 32, but that’s good enough for an example). So we’ll use the one-sample <em>Z</em>-test for a proportion.</p>
-<div id="using-statsmodels" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Using <code>statsmodels</code></h2>
-<p>This test is available in <code>statsmodels</code> as <code>proportions_ztest</code>, see <a href="https://www.statsmodels.org/stable/generated/statsmodels.stats.proportion.proportions_ztest.html">here</a> for the documentation.</p>
-<pre class="python"><code>from statsmodels.stats.proportion import proportions_ztest
+<p>with true proportion <span class="math inline">\(\pi\)</span> and expected proportion <span class="math inline">\(\pi_0 = 1/6\)</span>.</p>
+<div id="simulation" class="section level3" number="2.1.1">
+<h3 number="2.1.1"><span class="header-section-number">2.1.1</span> Simulation</h3>
+<p>Let’s do this first by simulating many (specifically, 10,000) batches of 235 rolls:</p>
+<pre class="python"><code># Set the seed so that we get the same random numbers each time this code runs
+np.random.seed(20230814)
 
-# Number of successes
-count = len(df[df[&#39;grade_improved&#39;] == 1])
-# Number of observations
-nobs = len(df)
-# Proportion under the null hypothesis
-pi_0 = 0.5
-# Perform a one-sample Z-test for a proportion
-z_stat, p_value = proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
-# Proportion successful
-pi = count / nobs
+# Count the number of times we get a more extreme (or equally extreme) number
+# of 6s than the number we actually observed
+more_extreme = 0
+# Iterate through 10,000 simulations
+i = 0
+while i &lt; 10000:
+    # Simulate rolling a die n times with the result either being a 6 (True)
+    # or not (False) with probability p
+    outcomes = np.random.choice([True, False], size=n, p=[p, 1 - p])
+    # Count the number of 6s
+    successes = np.sum(outcomes)
+    # If the number of 6s is more or equally as extreme as observed, count it
+    if successes &gt;= k:
+        more_extreme += 1
+    # Advance the loop counter
+    i += 1
+# Calculate the p-value
+p_value = more_extreme / 10000
 
-print(f&#39;Proportion, π = {pi:.1%}; Z-statistic = {z_stat:.3f}; p = {p_value:.3f}&#39;)</code></pre>
-<pre><code>## Proportion, π = 34.4%; Z-statistic = -1.768; p = 0.077</code></pre>
+print(f&#39;p = {p_value:.4f}&#39;)</code></pre>
+<pre><code>## p = 0.0262</code></pre>
+<p>This is close to the true value result on the Wikipedia page: 0.02654.</p>
 </div>
-<div id="using-scipy-and-numpy" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> Using <code>scipy</code> and <code>numpy</code></h2>
-<p>We don’t have to use the <code>statsmodels</code> function; we can do it ‘manually’ with <code>scipy</code> and <code>numpy</code> as shown below:</p>
-<pre class="python"><code>from scipy import stats
-import numpy as np
+<div id="exact-calculation" class="section level3" number="2.1.2">
+<h3 number="2.1.2"><span class="header-section-number">2.1.2</span> Exact Calculation</h3>
+<p>SciPy has a <code>binomtest()</code> function which will calculate the <em>p</em>-value exactly:</p>
+<pre class="python"><code>result = st.binomtest(k, n, p, alternative=&#39;greater&#39;)
 
-z_stat = (pi - pi_0) / np.sqrt(pi_0 * (1 - pi_0) / nobs)
-p_value = stats.norm.cdf(z_stat) * 2
-
-print(f&#39;Proportion, π = {pi:.1%}; Z-statistic = {z_stat:.3f}; p = {p_value:.3f}&#39;)</code></pre>
-<pre><code>## Proportion, π = 34.4%; Z-statistic = -1.768; p = 0.077</code></pre>
+print(f&#39;p = {result.pvalue:.5f}&#39;)</code></pre>
+<pre><code>## p = 0.02654</code></pre>
+<p>This matches Wikipedia.</p>
+<p>See the documentation for this function <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html">here</a>.</p>
 </div>
 </div>
-<div id="comparison-with-pearsons-chi-squared-goodness-of-fit-test" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Comparison with Pearson’s Chi-Squared Goodness-of-Fit Test</h1>
-<p>An important insight to note is that this <em>p</em>-value is the same as that of Pearson’s chi-squared (pronounced “<em>kai-squared</em>”) goodness-of-fit test:</p>
-<pre class="python"><code># Frequency of successful observations
-f_obs = [count, nobs - count]
-# Frequency of successful observations we expect under the null hypothesis
-f_exp = [nobs * pi_0, nobs * pi_0]
-# Perform a one-way chi-square test
-chisq, p = stats.chisquare(f_obs, f_exp)
-# Proportion of successful observations
-pi = count / nobs
-
-print(f&#39;Proportion, π = {pi:.1%}; chi-squared, χ² = {chisq:.3f}; p = {p:.3f}&#39;)</code></pre>
-<pre><code>## Proportion, π = 34.4%; chi-squared, χ² = 3.125; p = 0.077</code></pre>
-<p>This isn’t a fluke: both tests have the same hypotheses so we would expect the same results!</p>
-</div>
-<div id="confidence-interval" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Confidence Interval</h1>
-<p>Use the <a href="https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval">binomial proportion confidence interval</a>:</p>
-<pre class="python"><code># Standard error of the proportion
-se = np.sqrt((pi * (1 - pi)) / nobs)
-# Significance level
-alpha = 0.05
-# Percent-point function (aka quantile function) of the normal distribution
-z_critical = stats.norm.ppf(1 - (alpha / 2))
-# Margin of error
-d = z_critical * se
-# Confidence interval
-ci_lower = pi - d
-ci_upper = pi + d
-
-print(f&#39;π = {pi:.1%} ± {d:.1%}&#39;)</code></pre>
-<pre><code>## π = 34.4% ± 16.5%</code></pre>
-<p>or</p>
-<pre class="python"><code>print(f&#39;π = {pi:.1%}, 95% CI [{ci_lower:.1%}, {ci_upper:.1%}]&#39;)</code></pre>
-<pre><code>## π = 34.4%, 95% CI [17.9%, 50.8%]</code></pre>
-</div>
-<div id="interpretation" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Interpretation</h1>
+<div id="two-sided-binomial-test" class="section level2" number="2.2">
+<h2 number="2.2"><span class="header-section-number">2.2</span> Two-Sided Binomial Test</h2>
+<p>A more robust test would be to see if the die is more <em>or</em> less likely to roll a 6:</p>
 <ul>
-<li>We fail to reject the null hypothesis in favour of the alternative, because the observed data does not provide evidence against it.</li>
-<li>We conclude that the true proportion of students improving their scores could be 50%.</li>
-<li>When generalising to the target population, we are 95% confident that the interval between 17.9% and 50.8% contains the true underlying proportion of students who improved their mark.</li>
-<li>We are 95% confident that our sample proportion of 34.4% is within 16.5 pp (percentage points) of the true underlying proportion.</li>
+<li><span class="math inline">\(H_0 : \pi = \pi_0\)</span></li>
+<li><span class="math inline">\(H_1 : \pi \neq \pi_0\)</span></li>
 </ul>
+<p>with true proportion <span class="math inline">\(\pi\)</span> and expected proportion <span class="math inline">\(\pi_0 = 1/6\)</span>. Calculating the <em>p</em>-values is not a simple case of doubling the value from the one-sided test because the binomial distribution is not symmetric (unless <span class="math inline">\(p=0.5\)</span>). We have to consider both tails individually:</p>
+<div id="simulation-1" class="section level3" number="2.2.1">
+<h3 number="2.2.1"><span class="header-section-number">2.2.1</span> Simulation</h3>
+<p>Again, let’s simulate 10,000 batches of 235 die rolls:</p>
+<pre class="python"><code># Count the number of times we get a more extreme (or equally extreme) number
+# of 6s than the number we actually observed
+more_extreme = 0
+# k is the upper-tail, so calculate the lower-tail
+expected = n * p
+lower_tail = (expected - (k - expected))
+# Iterate through 10,000 simulations
+i = 0
+while i &lt; 10000:
+    # Simulate rolling a die n times with the result either being a 6 (True)
+    # or not (False) with probability p
+    outcomes = np.random.choice([1, 0], size=n, p=[p, 1 - p])
+    # Count the number of 6s
+    successes = np.sum(outcomes)
+    # If the number of 6s is more or equally as extreme as observed, count it
+    if successes &gt;= k:
+        more_extreme += 1
+    # If the number of 6s is more or equally as extreme as the lower tail
+    if successes &lt;= lower_tail:
+        more_extreme += 1
+    # Advance the loop counter
+    i += 1
+# Calculate the p-value
+p_value = more_extreme / 10000
+
+print(f&#39;p = {p_value:.4f}&#39;)</code></pre>
+<pre><code>## p = 0.0421</code></pre>
+<p>This value is again close to Wikipedia’s answer, which is 0.0437.</p>
 </div>
-<div id="is-the-sample-size-too-small" class="section level1" number="7">
-<h1 number="7"><span class="header-section-number">7</span> Is the Sample Size Too Small?</h1>
-<p>As a rule of thumb, we want both the number of observed events and non-events to be at least 5. Here’s what happens if we only use a subset of our full dataset:</p>
-<pre class="python"><code>too_small = df[15:22]
+<div id="exact-calculation-1" class="section level3" number="2.2.2">
+<h3 number="2.2.2"><span class="header-section-number">2.2.2</span> Exact Calculation</h3>
+<pre class="python"><code>result = st.binomtest(k, n, p)
 
-# Number of successes
-count = len(too_small[too_small[&#39;grade_improved&#39;] == 1])
-# Number of observations
-nobs = len(too_small)
-# Proportion under the null hypothesis
-pi_0 = 0.5
-# Perform a one-sample Z-test for a proportion
-zstat, pvalue = proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
-# Proportion successful
-pi = count / nobs
-# Standard error of the proportion
-se = np.sqrt((pi * (1 - pi)) / nobs)
-# Significance level
-alpha = 0.05
-# Percent-point function (aka quantile function) of the normal distribution
-z_critical = stats.norm.ppf(1 - (alpha / 2))
-# Margin of error
-d = z_critical * se
-# Confidence interval
-ci_lower = pi - d
-ci_upper = pi + d
+print(f&#39;p = {result.pvalue:.4f}&#39;)</code></pre>
+<pre><code>## p = 0.0437</code></pre>
+<p>This matches Wikipedia. Using <span class="math inline">\(p = 0.05\)</span> as our significance threshold (equivalently, our false positive rate: the probability of incorrectly finding a significant difference when there really is none) allows us to reject the null hypothesis and conclude that the die is not fair.</p>
+</div>
+</div>
+</div>
+<div id="non-equivalence-with-the-chi-squared-and-z-tests" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Non-Equivalence with the Chi-Squared and <em>Z</em>-Tests</h1>
+<p>Both the <span class="math inline">\(\chi^2\)</span> goodness-of-fit test and the one-sample <em>Z</em>-test for a proportion can be used to answer this example question:</p>
+<pre class="python"><code># Perform the chi-squared goodness-of-fit test
+observed = [51, 235 - 51]
+expected = [235 / 6, 5 * 235 / 6]
+chisq, p = st.chisquare(observed, expected)
 
-print(
-    f&#39;Z-statistic = {zstat:.3f}; p = {pvalue:.3f}&#39;,
-    f&#39;\nProportion, π = {pi:.1%} ± {d:.1%}&#39;,
-    f&#39;ie 95% CI [{ci_lower:.1%}, {ci_upper:.1%}]&#39;
-)</code></pre>
-<pre><code>## Z-statistic = -1.134; p = 0.257 
-## Proportion, π = 28.6% ± 33.5% ie 95% CI [-4.9%, 62.0%]</code></pre>
-<p>Having -4.9% as the lower bound of a 95% confidence interval for a true proportion is clearly nonsense: a proportion cannot be less than zero! We need more data.</p>
+print(f&#39;χ² = {chisq:.2f}, p = {p:.3f}&#39;)</code></pre>
+<pre><code>## χ² = 4.29, p = 0.038</code></pre>
+<pre class="python"><code># Perform a one-sample Z-test for a proportion
+count = 51
+nobs = 235
+pi_0 = 1 / 6
+z, p = proportion.proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
+
+print(f&#39;Z = {z:.2f}, p = {p:.3f}&#39;)</code></pre>
+<pre><code>## Z = 2.07, p = 0.038</code></pre>
+<p>Note that both tests give the same <em>p</em>-value and that the <span class="math inline">\(\chi^2\)</span> statistic is the square of the <em>Z</em> statistic in binomial examples:</p>
+<pre class="python"><code>print(z**2 == round(chisq, 14))</code></pre>
+<pre><code>## True</code></pre>
+<p>The reason that these tests give the same result is because the <span class="math inline">\(\chi^2\)</span> goodness-of-fit test is derived from the <em>Z</em>-statistic.<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> For more on <span class="math inline">\(\chi^2\)</span> tests see the page <a href="chi_squared.html">here</a> and for more on the one-sample <em>Z</em>-test for a proportion see the page <a href="one_sample_z_test_proportion.html">here</a>.</p>
+<div id="which-to-use" class="section level2" number="3.1">
+<h2 number="3.1"><span class="header-section-number">3.1</span> Which to Use?</h2>
+<p>The binomial test is an <em>exact test</em> and so, in general, it should be used over the <span class="math inline">\(\chi^2\)</span> test or the <em>Z</em>-test which are <em>approximations.</em><a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> However, it’s worth noting that, due to the central limit theorem, as the sample size gets larger the binomial distribution starts getting more similar to the normal distribution and, hence, the results of the three tests converge<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>:</p>
+<pre class="python"><code># Perform a binomial test with a very large sample size
+k = 4000
+n = 23500
+p = 1 / 6
+result = st.binomtest(k, n, p)
+
+print(f&#39;p = {result.pvalue:.3f}&#39;)</code></pre>
+<pre><code>## p = 0.146</code></pre>
+<pre class="python"><code># Perform a one-sample Z-test for a proportion with a very large sample size
+count = 4000
+nobs = 23500
+pi_0 = 1 / 6
+z, p = proportion.proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
+
+print(f&#39;p = {p:.3f}&#39;)</code></pre>
+<pre><code>## p = 0.145</code></pre>
+<p>These values of 0.146 and 0.145 are very close! So, if our choice of test makes almost no difference when <span class="math inline">\(n\)</span> is large, is there ever an instance when we would prefer the <span class="math inline">\(\chi^2\)</span> or <em>Z</em>-test over the binomial? Here are some potential reasons<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a><sup>,</sup> <a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>:</p>
+<ul>
+<li>A <em>Z</em>-test allows us to compute a confidence interval for our sample proportion</li>
+<li>We can easily estimate statistical power for a <em>Z</em>-test but not for a binomial test</li>
+<li>A <em>Z</em>-test is computationally less heavy, especially for larger sample sizes</li>
+</ul>
+<p>So when can we use a <em>Z</em>-test instead of a binomial test? A rule of thumb is that <span class="math inline">\(p \times n\)</span> and <span class="math inline">\((1 - p) \times n\)</span> must both be greater than 5, where <span class="math inline">\(p\)</span> is the hypothesized probability of success and <span class="math inline">\(n\)</span> the sample size.</p>
 <p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Wallis, S. “z-squared: The Origin and Application of χ²”. Journal of Quantitative Linguistics 2013; 20:350-378. DOI: <a href="https://doi.org/10.1080/09296174.2013.830554">10.1080/09296174.2013.830554</a>. Available <a href="https://www.tandfonline.com/doi/epdf/10.1080/09296174.2013.830554">here</a>. Jump to reference: <a href="#fnref1" class="footnote-back">↩︎</a></p></li>
+<li id="fn2"><p>GraphPad Software, LLC. “The binomial test”. Statistics Guide 2023. Available <a href="https://www.graphpad.com/guides/prism/latest/statistics/stat_binomial.htm">here</a>. Jump to reference: <a href="#fnref2" class="footnote-back">↩︎</a></p></li>
+<li id="fn3"><p>Soetewey, A. “One-proportion and chi-square goodness of fit test”. Stats and R 2020. Available <a href="https://statsandr.com/blog/one-proportion-and-goodness-of-fit-test-in-r-and-by-hand/">here</a>. Jump to reference: <a href="#fnref3" class="footnote-back">↩︎</a></p></li>
+<li id="fn4"><p>Van den Berg, RG. “Binomial Test – Simple Tutorial”. SPSS Tutorials 2023. Available <a href="https://www.spss-tutorials.com/binomial-test/">here</a>. Jump to reference: <a href="#fnref4" class="footnote-back">↩︎</a></p></li>
+<li id="fn5"><p>Hessing, T. “One and Two Sample Z Proportion Hypothesis Tests”. 6σ Study Guide. Available <a href="https://sixsigmastudyguide.com/one-and-two-sample-proportion-hypothesis-tests/">here</a>. Jump to reference: <a href="#fnref5" class="footnote-back">↩︎</a></p></li>
+</ol>
 </div>
 
 

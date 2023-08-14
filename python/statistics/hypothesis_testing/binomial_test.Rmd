@@ -1,0 +1,352 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>The Binomial Test'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- Creation and update dates: -->
+<!-- 2023-07-24 -->
+<!-- 2023-08-14 -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+Some events have only two possible outcomes: a coin toss can result in either a head or a tail. Others can be simplified into having only two possible outcomes: rolling a die has six possible outcomes but we can simplify the result by saying that it is either a six or not a six. For these types of events - with *binary* outcomes - we can use the **binomial test** to establish if they are truly random or not to within a certain level of significance.
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
+library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?']
+                    sc_true [label='True independent\nvariable?']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?', fillcolor='#c9daf8']
+                    binary_datatype [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                        'Sample Size?' [fillcolor='#c9daf8']
+                            'Binomial Test' [fillcolor='#d9ead3']
+                            'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
+
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'Sample Size?' [label='None\n(no IV)']
+                    'Sample Size?' -> 'Binomial Test' [label='Small']
+                    'Sample Size?' -> 'One-sample Z-test' [label='Large']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
+
+    labelloc='t';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
+    }",
+    height=650,
+    width=1000
+)
+```
+
+Packages
+========
+The code on this page uses the `numpy`, `scipy` and `statsmodels` packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
+$ python3.11 -m pip install statsmodels
+```
+
+where `python3.11` corresponds to the version of Python you have installed and are using.
+
+Import these packages into Python with:
+
+```{python}
+import numpy as np
+from scipy import stats as st
+from statsmodels.stats import proportion
+```
+
+Worked Example
+==============
+This example comes from the [Wikipedia page](https://en.wikipedia.org/wiki/Binomial_test):
+
+> If we roll a die 235 times and 6 comes up 51 of those times, is the die fair?
+
+We would expect a 6 to come up 1/6th of the time, ie $235 / 6 = 39.17$ times in 235 rolls. So it certainly seems as if the die *might* be biased towards rolling a 6 more often than expected.
+
+In more statistically-rigorous language, the *number of successes* we have observed is 51 out of a total of 235 *trials* where the hypothesized *probability of success* is 1/6. These numbers are usually known as `k`, `n` and `p` respectively:
+
+```{python}
+#
+# Set up the example
+#
+# The number of successes
+k = 51
+# The number of trials
+n = 235
+# The hypothesized probability of success
+p = 1 / 6
+```
+
+One-Sided Binomial Test
+-----------------------
+Under the null hypothesis that the die is indeed fair and thus follows a binomial distribution with $n=235$ and $p=1/6$ with regards to landing on 6, we can test whether the die in the example produces a *greater than expected* number of 6s:
+
+- $H_0 : \pi = \pi_0$
+- $H_1 : \pi \geq \pi_0$
+
+with true proportion $\pi$ and expected proportion $\pi_0 = 1/6$.
+
+### Simulation
+Let's do this first by simulating many (specifically, 10,000) batches of 235 rolls:
+
+```{python}
+# Set the seed so that we get the same random numbers each time this code runs
+np.random.seed(20230814)
+
+# Count the number of times we get a more extreme (or equally extreme) number
+# of 6s than the number we actually observed
+more_extreme = 0
+# Iterate through 10,000 simulations
+i = 0
+while i < 10000:
+    # Simulate rolling a die n times with the result either being a 6 (True)
+    # or not (False) with probability p
+    outcomes = np.random.choice([True, False], size=n, p=[p, 1 - p])
+    # Count the number of 6s
+    successes = np.sum(outcomes)
+    # If the number of 6s is more or equally as extreme as observed, count it
+    if successes >= k:
+        more_extreme += 1
+    # Advance the loop counter
+    i += 1
+# Calculate the p-value
+p_value = more_extreme / 10000
+
+print(f'p = {p_value:.4f}')
+```
+
+This is close to the true value result on the Wikipedia page: 0.02654.
+
+### Exact Calculation
+SciPy has a `binomtest()` function which will calculate the *p*-value exactly:
+
+```{python}
+result = st.binomtest(k, n, p, alternative='greater')
+
+print(f'p = {result.pvalue:.5f}')
+```
+
+This matches Wikipedia.
+
+See the documentation for this function [here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.binomtest.html).
+
+Two-Sided Binomial Test
+-----------------------
+A more robust test would be to see if the die is more *or* less likely to roll a 6:
+
+- $H_0 : \pi = \pi_0$
+- $H_1 : \pi \neq \pi_0$
+
+with true proportion $\pi$ and expected proportion $\pi_0 = 1/6$. Calculating the *p*-values is not a simple case of doubling the value from the one-sided test because the binomial distribution is not symmetric (unless $p=0.5$). We have to consider both tails individually:
+
+### Simulation
+Again, let's simulate 10,000 batches of 235 die rolls:
+
+```{python}
+# Count the number of times we get a more extreme (or equally extreme) number
+# of 6s than the number we actually observed
+more_extreme = 0
+# k is the upper-tail, so calculate the lower-tail
+expected = n * p
+lower_tail = (expected - (k - expected))
+# Iterate through 10,000 simulations
+i = 0
+while i < 10000:
+    # Simulate rolling a die n times with the result either being a 6 (True)
+    # or not (False) with probability p
+    outcomes = np.random.choice([1, 0], size=n, p=[p, 1 - p])
+    # Count the number of 6s
+    successes = np.sum(outcomes)
+    # If the number of 6s is more or equally as extreme as observed, count it
+    if successes >= k:
+        more_extreme += 1
+    # If the number of 6s is more or equally as extreme as the lower tail
+    if successes <= lower_tail:
+        more_extreme += 1
+    # Advance the loop counter
+    i += 1
+# Calculate the p-value
+p_value = more_extreme / 10000
+
+print(f'p = {p_value:.4f}')
+```
+
+This value is again close to Wikipedia's answer, which is 0.0437.
+
+### Exact Calculation
+
+```{python}
+result = st.binomtest(k, n, p)
+
+print(f'p = {result.pvalue:.4f}')
+```
+
+This matches Wikipedia. Using $p = 0.05$ as our significance threshold (equivalently, our false positive rate: the probability of incorrectly finding a significant difference when there really is none) allows us to reject the null hypothesis and conclude that the die is not fair.
+
+Non-Equivalence with the Chi-Squared and *Z*-Tests
+==================================================
+Both the $\chi^2$ goodness-of-fit test and the one-sample *Z*-test for a proportion can be used to answer this example question:
+
+```{python}
+# Perform the chi-squared goodness-of-fit test
+observed = [51, 235 - 51]
+expected = [235 / 6, 5 * 235 / 6]
+chisq, p = st.chisquare(observed, expected)
+
+print(f'χ² = {chisq:.2f}, p = {p:.3f}')
+```
+
+```{python}
+# Perform a one-sample Z-test for a proportion
+count = 51
+nobs = 235
+pi_0 = 1 / 6
+z, p = proportion.proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
+
+print(f'Z = {z:.2f}, p = {p:.3f}')
+```
+
+Note that both tests give the same *p*-value and that the $\chi^2$ statistic is the square of the *Z* statistic in binomial examples:
+
+```{python}
+print(z**2 == round(chisq, 14))
+```
+
+The reason that these tests give the same result is because the $\chi^2$ goodness-of-fit test is derived from the *Z*-statistic.[^1] For more on $\chi^2$ tests see the page [here](chi_squared.html) and for more on the one-sample *Z*-test for a proportion see the page [here](one_sample_z_test_proportion.html).
+
+[^1]: Wallis, S. "z-squared: The Origin and Application of χ²". Journal of Quantitative Linguistics 2013; 20:350-378. DOI: [10.1080/09296174.2013.830554](https://doi.org/10.1080/09296174.2013.830554). Available [here](https://www.tandfonline.com/doi/epdf/10.1080/09296174.2013.830554). Jump to reference:&nbsp;
+
+Which to Use?
+-------------
+The binomial test is an *exact test* and so, in general, it should be used over the $\chi^2$ test or the *Z*-test which are *approximations.*[^5] However, it's worth noting that, due to the central limit theorem, as the sample size gets larger the binomial distribution starts getting more similar to the normal distribution and, hence, the results of the three tests converge[^4]:
+
+[^5]: GraphPad Software, LLC. "The binomial test". Statistics Guide 2023. Available [here](https://www.graphpad.com/guides/prism/latest/statistics/stat_binomial.htm). Jump to reference:&nbsp;
+[^4]: Soetewey, A. "One-proportion and chi-square goodness of fit test". Stats and R 2020. Available [here](https://statsandr.com/blog/one-proportion-and-goodness-of-fit-test-in-r-and-by-hand/). Jump to reference:&nbsp;
+
+```{python}
+# Perform a binomial test with a very large sample size
+k = 4000
+n = 23500
+p = 1 / 6
+result = st.binomtest(k, n, p)
+
+print(f'p = {result.pvalue:.3f}')
+```
+
+```{python}
+# Perform a one-sample Z-test for a proportion with a very large sample size
+count = 4000
+nobs = 23500
+pi_0 = 1 / 6
+z, p = proportion.proportions_ztest(count, nobs, value=pi_0, prop_var=pi_0)
+
+print(f'p = {p:.3f}')
+```
+
+These values of 0.146 and 0.145 are very close! So, if our choice of test makes almost no difference when $n$ is large, is there ever an instance when we would prefer the $\chi^2$ or *Z*-test over the binomial? Here are some potential reasons[^2]<sup>,</sup> [^3]:
+
+[^2]: Van den Berg, RG. "Binomial Test – Simple Tutorial". SPSS Tutorials 2023. Available [here](https://www.spss-tutorials.com/binomial-test/). Jump to reference:&nbsp;
+[^3]: Hessing, T. "One and Two Sample Z Proportion Hypothesis Tests". 6σ Study Guide. Available [here](https://sixsigmastudyguide.com/one-and-two-sample-proportion-hypothesis-tests/). Jump to reference:&nbsp;
+
+- A *Z*-test allows us to compute a confidence interval for our sample proportion
+- We can easily estimate statistical power for a *Z*-test but not for a binomial test
+- A *Z*-test is computationally less heavy, especially for larger sample sizes
+
+So when can we use a *Z*-test instead of a binomial test? A rule of thumb is that $p \times n$ and $(1 - p) \times n$ must both be greater than 5, where $p$ is the hypothesized probability of success and $n$ the sample size.
+
+[⇦ Back](../../../python.html)
+
+</font>
