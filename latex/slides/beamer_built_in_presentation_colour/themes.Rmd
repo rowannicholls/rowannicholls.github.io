@@ -1,0 +1,678 @@
+---
+title: '<font size="5">Slides in LaTeX:</font><br>Built-In Beamer Themes:<br><font size="5">Presentation and Colour Themes</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../latex.html)
+
+Beamer has:
+
+- 29 built-in presentation themes (often just called "themes"):
+    - Themes without a navigation bar: default, boxes, AnnArbor, Bergen, Boadilla, CambridgeUS, EastLansing, Madrid, Pittsburgh and Rochester
+    - Themes with a tree-like navigation bar: Antibes, JuanLesPins and Montpellier
+    - Themes with a table of contents sidebar: Berkeley, Goettingen, Hannover, Marburg and PaloAlto
+    - Themes with a mini frame navigation: Berlin, Darmstadt, Dresden, Frankfurt, Ilmenau, Singapore and Szeged
+    - Themes with section and subsection tables: Copenhagen, Luebeck, Malmoe and Warsaw
+- 19 built-in colour themes
+
+The above are demoed on this page. Other themes which Beamer has but which are demoed [here](../beamer_built_in_inner_outer_font/themes.html) instead of on this page include:
+
+- 5 built-in inner themes: default, circles, inmargin, rectangles and rounded
+- 9 built-in outer themes: default, infolines, miniframes, shadow, sidebar, smoothbars, smoothtree, split and tree
+- 5 built-in font themes: default, professionalfonts, serif, structurebold, structureitalicserif, structuresmallcapsserif
+
+See the package page on CTAN [here](https://ctan.org/pkg/beamer) and the full documentation [here](https://mirror.ox.ac.uk/sites/ctan.org/macros/latex/contrib/beamer/doc/beameruserguide.pdf).
+
+{.tabset}
+=========
+**Presentation Themes:**
+
+## default {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## boxes {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## AnnArbor {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Antibes {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Bergen {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Berkeley {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Berlin {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Boadilla {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## CambridgeUS {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Copenhagen {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Darmstadt {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Dresden {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## EastLansing {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Frankfurt {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Goettingen {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Hannover {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Ilmenau {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## JuanLesPins {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Luebeck {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Madrid {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Malmoe {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Marburg {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Montpellier {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## PaloAlto {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Pittsburgh {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Rochester {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Singapore {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Szeged {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+## Warsaw {.tabset}
+**Colour Themes:**
+
+### default {.tabset}
+### albatross {.tabset}
+### beaver {.tabset}
+### beetle {.tabset}
+### crane {.tabset}
+### dolphin {.tabset}
+### dove {.tabset}
+### fly {.tabset}
+### lily {.tabset}
+### monarca {.tabset}
+### orchid {.tabset}
+### rose {.tabset}
+### seagull {.tabset}
+### seahorse {.tabset}
+### sidebartab {.tabset}
+### spruce {.tabset}
+### structure {.tabset}
+### whale {.tabset}
+### wolverine {.tabset}
+</font>
+
