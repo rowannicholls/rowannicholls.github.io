@@ -1,0 +1,27 @@
+---
+title: LaTeX
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: google_analytics.html
+---
+
+<font size="3">
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+## Slides
+<!-- Beamer -->
+1. Built-In Beamer Themes:
+    - [Presentation and Colour Themes](latex/slides/beamer_built_in_presentation_colour/themes.html)
+    - [Inner, Outer and Font Themes](latex/slides/beamer_built_in_presentation_colour/themes.html)
+<!-- Powerdot -->
+
+</font>
