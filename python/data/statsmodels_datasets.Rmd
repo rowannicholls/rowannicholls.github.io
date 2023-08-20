@@ -1,0 +1,424 @@
+---
+title: '<font size="5">Example Datasets:</font><br>Statsmodels'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Built upon code created on 2020-02-04 -->
+<!-- Updated 2023-08-08 -->
+<!-- Updated 2023-08-20 -->
+
+The Statsmodels package [provides datasets](https://www.statsmodels.org/devel/datasets/) that can be used as example data in MWEs and 'Hello World' scripts that test functionality. These can be imported via the Statsmodels API and come as 'modules' inside the `datasets` object. Here's how to list out all of the 28 datasets that are available:
+
+```{python, results='hold'}
+from statsmodels import api as sm
+
+# List all 28 of the statsmodels datasets
+print('Name               Title')
+print('----               -----')
+for attribute in dir(sm.datasets):
+    # If the attribute is a module
+    if str(type(getattr(sm.datasets, attribute))) == "<class 'module'>":
+        # The utils module is not a dataset
+        if attribute == 'utils':
+            continue
+        title = getattr(sm.datasets, attribute).TITLE
+        print(f'{attribute:18s} {title}')
+```
+
+Some more packages and settings that will be used by this page:
+
+```{python}
+from matplotlib import pyplot as plt
+import pandas as pd
+import numpy as np
+from sklearn import linear_model
+```
+
+The datasets usually have `exog` and `endog` attributes that hold most of the exogenous and endogenous variables, respectively. These are economics terms for what are essentially the dependent and independent variables, or the 'features' and the 'target' in machine learning terminology.
+
+American National Election Survey 1996
+======================================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/anes96.html](https://www.statsmodels.org/devel/datasets/generated/anes96.html)
+
+**Exogenous Variables:**
+
+- `logpopul` : `log(popul + .1)` where `popul` is census place population in 1000s
+- `selfLR` : Respondent's self-reported political leanings from "Left" to "Right"
+- `age` : Age of respondent
+- `educ` : Education level of respondent
+- `income` : Income of household
+
+**Endogenous Variable:**
+
+- `PID` : Party identification of respondent
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.anes96.load_pandas()
+X = dataset.exog
+y = dataset.endog
+
+# Plot
+plt.title('American National Election Survey 1996')
+df = pd.concat([X['age'], y], axis=1)
+boxes = [df.loc[df['PID'] == val, 'age'] for val in df['PID'].unique()]
+plt.boxplot(boxes)
+plt.xlabel('Party identification of respondent')
+plt.ylabel('Age')
+identification = [
+    'Strong Democrat', 'Weak Democrat', 'Independent-Democrat',
+    'Independent-Indpendent', 'Independent-Republican', 'Weak Republican',
+    'Strong Republican'
+]
+plt.xticks(ticks=range(1, 8), labels=identification, rotation=15)
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.anes96.load_pandas()
+X = dataset.exog
+y = dataset.endog
+
+# Plot
+plt.title('American National Election Survey 1996')
+df = pd.concat([X['age'], y], axis=1)
+boxes = [df.loc[df['PID'] == val, 'age'] for val in df['PID'].unique()]
+plt.boxplot(boxes)
+plt.xlabel('Party identification of respondent')
+plt.ylabel('Age')
+identification = [
+    'Strong Democrat', 'Weak Democrat', 'Independent-Democrat',
+    'Independent-Indpendent', 'Independent-Republican', 'Weak Republican',
+    'Strong Republican'
+]
+plt.xticks(ticks=range(1, 8), labels=identification, rotation=15)
+plt.tight_layout()
+plt.show()
+```
+
+Breast Cancer Data
+==================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/cancer.html](https://www.statsmodels.org/devel/datasets/generated/cancer.html)
+
+**Exogenous Variable:**
+
+- `population` : The population of the county
+
+**Endogenous Variable:**
+
+- `cancer` : The number of breast cancer observances
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.cancer.load_pandas()
+X = dataset.exog
+y = dataset.endog
+
+# Create a linear regression model
+model = linear_model.LinearRegression()
+# Train the model
+x = model.fit(X.values, y.values)
+
+# Use the model to make a prediction
+X_fitted = np.array([np.min(X), np.max(X)]).reshape(-1, 1)
+y_fitted = model.predict(X_fitted)
+
+# Plot
+fig = plt.figure()
+plt.title('Breast Cancer Data')
+plt.scatter(X, y, ec='k', fc='gray')
+label = f'y = {model.coef_[0]:.3f}x {model.intercept_:.3f}'
+plt.plot(X_fitted, y_fitted, c='gray', label=label)
+plt.xlabel('The population of the county')
+plt.ylabel('The number of breast cancer observances')
+plt.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.cancer.load_pandas()
+X = dataset.exog
+y = dataset.endog
+
+# Create a linear regression model
+model = linear_model.LinearRegression()
+# Train the model
+x = model.fit(X.values, y.values)
+
+# Use the model to make a prediction
+X_fitted = np.array([np.min(X), np.max(X)]).reshape(-1, 1)
+y_fitted = model.predict(X_fitted)
+
+# Plot
+fig = plt.figure()
+plt.title('Breast Cancer Data')
+plt.scatter(X, y, ec='k', fc='gray')
+label = f'y = {model.coef_[0]:.3f}x {model.intercept_:.3f}'
+plt.plot(X_fitted, y_fitted, c='gray', label=label)
+plt.xlabel('The population of the county')
+plt.ylabel('The number of breast cancer observances')
+plt.legend(frameon=False)
+plt.tight_layout()
+plt.show()
+```
+
+Bill Greene's Credit Scoring Data
+=================================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/ccard.html](https://www.statsmodels.org/devel/datasets/generated/ccard.html)
+
+
+**Exogenous Variables:**
+
+- `AGE` : Age in years+ 12ths of a year
+- `INCOME` : Income, divided by 10,000
+- `INCOMESQ` : `INCOME` squared
+- `OWNRENT` : Individual owns (1) or rents (0) home
+
+**Endogenous Variable:**
+
+- `AVGEXP` : Avg monthly credit card expenditure
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.ccard.load_pandas()
+X = dataset.exog
+y = dataset.endog
+
+# Plot
+fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
+fig.suptitle("Bill Greene's Credit Scoring Data")
+ax1.scatter(X['AGE'], y)
+ax1.set_xlabel('Age in years+ 12ths of a year')
+ax1.set_ylabel('Avg monthly credit card expenditure')
+ax2.scatter(X['INCOME'], y)
+ax2.set_xlabel('Income, divided by 10,000')
+ax2.set_ylabel('Avg monthly credit card expenditure')
+ax3.scatter(X['INCOMESQ'], y)
+ax3.set_xlabel('Income squared')
+ax3.set_ylabel('Avg monthly credit card expenditure')
+ax4.scatter(X['OWNRENT'], y)
+ax4.set_xlabel('Individual owns (1) or rents (0) home')
+ax4.set_ylabel('Avg monthly credit card expenditure')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.ccard.load_pandas()
+X = dataset.exog
+y = dataset.endog
+
+# Plot
+fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
+fig.suptitle("Bill Greene's Credit Scoring Data")
+ax1.scatter(X['AGE'], y)
+ax1.set_xlabel('Age in years+ 12ths of a year')
+ax1.set_ylabel('Avg monthly credit card expenditure')
+ax2.scatter(X['INCOME'], y)
+ax2.set_xlabel('Income, divided by 10,000')
+ax2.set_ylabel('Avg monthly credit card expenditure')
+ax3.scatter(X['INCOMESQ'], y)
+ax3.set_xlabel('Income squared')
+ax3.set_ylabel('Avg monthly credit card expenditure')
+ax4.scatter(X['OWNRENT'], y)
+ax4.set_xlabel('Individual owns (1) or rents (0) home')
+ax4.set_ylabel('Avg monthly credit card expenditure')
+plt.tight_layout()
+plt.show()
+```
+
+Smoking and Lung Cancer in Eight Cities in China
+================================================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/china_smoking.html](https://www.statsmodels.org/devel/datasets/generated/china_smoking.html)
+
+**Variables:**
+
+- `Location` : Name of the city
+- `smoking` : Yes or no, according to a person's smoking behavior
+- `cancer` : Yes or no, according to a person's lung cancer status
+
+**Example Usage:**
+
+```{python}
+# Load the data
+dataset = sm.datasets.china_smoking.load_pandas()
+# Create contingency tables
+contingency_tables = {}
+for i, row in dataset['raw_data'].iterrows():
+    dct = {
+        'Cancer': [row['smoking_yes_cancer_yes'], row['smoking_no_cancer_yes']],
+        'Healthy': [row['smoking_yes_cancer_no'], row['smoking_no_cancer_no']],
+    }
+    df = pd.DataFrame(dct, index=['Smoker', 'Non-Smoker'])
+    contingency_tables[row['Location']] = df
+    print(row['Location'] + ':')
+    print(df)
+    print('')
+```
+
+Mauna Loa Weekly Atmospheric CO2 Data
+=====================================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/co2.html](https://www.statsmodels.org/devel/datasets/generated/co2.html)
+
+**Index:**
+
+- `date` : Sample date in YYYY-MM-DD format. There is only one sample reported every 7 days as each represents a weekly average.
+
+**Column:**
+
+- `co2`  : CO₂ concentration in ppmv (parts per million by volume)
+
+**Example Usage:**
+
+```{python}
+# Load the data
+dataset = sm.datasets.co2.load_pandas()
+# Plot
+plt.plot(dataset['data'])
+plt.show()
+```
+
+First 100 days of the US House of Representatives 1995
+======================================================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/committee.html](https://www.statsmodels.org/devel/datasets/generated/committee.html)
+
+**Exogenous Variables:**
+
+- `SIZE` : Number of members on the committee.
+- `SUBS` : Number of subcommittees.
+- `STAFF` : Number of staff members assigned to the committee.
+- `PRESTIGE` : Dummy variable indicating whether the committee is a high prestige committee (`PRESTIGE == 1` is a high prestige committee).
+- `BILLS103` : The number of bill assignments in the first 100 days of the US's 103rd House of Representatives.
+
+**Endogenous Variable:**
+
+- `BILLS104` : The number of bill assignments in the first 100 days of the US's 104th House of Representatives over 20 Committees.
+
+**Example Usage:**
+
+```{python}
+# Load the data
+dataset = sm.datasets.committee.load_pandas()
+# Plot
+fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
+fig.suptitle('First 100 days of the US House of Representatives 1995')
+ax1.scatter(dataset['exog']['SIZE'], dataset['endog'])
+ax1.set_xlabel('Number of members on the committee')
+ax1.set_ylabel('Bill assignments')
+ax2.scatter(dataset['exog']['SUBS'], dataset['endog'])
+ax2.set_xlabel('Number of subcommittees')
+ax2.set_ylabel('Bill assignments')
+ax3.scatter(dataset['exog']['STAFF'], dataset['endog'])
+ax3.set_xlabel('Number of staff members assigned to the committee')
+ax3.set_ylabel('Bill assignments')
+ax4.scatter(dataset['exog']['BILLS103'], dataset['endog'])
+ax4.set_xlabel('Bill assignments (103rd House of Representatives)')
+ax4.set_ylabel('Bill assignments (104th House of Representatives)')
+plt.tight_layout()
+plt.show()
+```
+
+World Copper Market 1951-1975 Dataset
+=====================================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/copper.html](https://www.statsmodels.org/devel/datasets/generated/copper.html)
+
+**Exogenous Variables:**
+
+- `COPPERPRICE` : Constant dollar adjusted price of copper.
+- `INCOMEINDEX` : An index of real per capita income (base 1970).
+- `ALUMPRICE` : The price of aluminium.
+- `INVENTORYINDEX` : A measure of annual manufacturer inventory trend.
+- `TIME` : A time trend.
+
+**Endogenous Variable:**
+
+- `WORLDCONSUMPTION` : World consumption of copper (in 1000 metric tons).
+
+**Example Usage:**
+
+```{python}
+# Load the data
+dataset = sm.datasets.copper.load_pandas()
+# Plot
+fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
+fig.suptitle('World Copper Market 1951-1975 Dataset')
+ax1.scatter(dataset['exog']['COPPERPRICE'], dataset['endog'])
+ax1.set_xlabel('Constant dollar adjusted price of copper')
+ax1.set_ylabel('World consumption of copper')
+ax2.scatter(dataset['exog']['INCOMEINDEX'], dataset['endog'])
+ax2.set_xlabel('An index of real per capita income (base 1970)')
+ax2.set_ylabel('World consumption of copper')
+ax3.scatter(dataset['exog']['ALUMPRICE'], dataset['endog'])
+ax3.set_xlabel('The price of aluminium')
+ax3.set_ylabel('World consumption of copper')
+ax4.scatter(dataset['exog']['INVENTORYINDEX'], dataset['endog'])
+ax4.set_xlabel('A measure of annual manufacturer inventory trend')
+ax4.set_ylabel('World consumption of copper')
+plt.tight_layout()
+plt.show()
+```
+
+US Capital Punishment Dataset
+=============================
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/cpunish.html](https://www.statsmodels.org/devel/datasets/generated/cpunish.html)
+
+**Exogenous Variables:**
+
+- `INCOME` : Median per capita income in 1996 dollars
+- `PERPOVERTY` : Percent of the population classified as living in poverty
+- `PERBLACK` : Percent of black citizens in the population
+- `VC100k96` : Rate of violent crimes per 100,00 residents for 1996
+- `SOUTH` : `SOUTH == 1` indicates a state in the South
+- `DEGREE` : An estimate of the proportion of the state population with a college degree of some kind
+
+**Endogenous Variable:**
+
+- `EXECUTIONS` : Executions in 1996
+
+**Example Usage:**
+
+```{python}
+# Load the data
+dataset = sm.datasets.cpunish.load_pandas()
+# Plot
+fig, ax = plt.subplots(3, 2, figsize=(12, 12))
+ax = ax.flatten()
+fig.suptitle('US Capital Punishment Dataset')
+for i, exog_name in enumerate(dataset['exog_name']):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Executions in 1996')
+plt.tight_layout()
+plt.show()
+```
+
+[⇦ Back](../../python.html)
+
+</font>
