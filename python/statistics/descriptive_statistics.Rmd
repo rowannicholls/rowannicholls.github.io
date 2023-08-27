@@ -19,16 +19,6 @@ knitr::opts_chunk$set(out.width = "100%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-```{python, echo = FALSE}
-import pandas as pd
-
-# Pandas display options
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
-pd.set_option('display.max_colwidth', 40)
-pd.set_option('display.width', 362)
-```
-
 This page shows some ways of performing **descriptive statistics in Python**. Descriptive statistics are statistics that:
 
 - **Describe** a data set
@@ -47,22 +37,47 @@ tables and charts
 Descriptive statistics are different to **inferential statistics**, which are
 discussed at the end of this page.
 
-Example Data
-============
-This page will use fake data for its examples. Creating this will use three modules: `random`, which comes pre-installed with Python, and then `pandas` and `mimesis` which can be downloaded and installed from the terminal with the following commands (replace `3.11` with the version of Python you have installed):
+Packages
+========
+The code on this page uses the Pandas, Mimesis, Matplotlib, NumPy and SciPy packages. These can be installed from the terminal with:
 
 ```{bash, eval = FALSE}
 $ python3.11 -m pip install pandas
 $ python3.11 -m pip install mimesis
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install scipy
 ```
 
-Once installed, the fake data can be created in Python as follows:
+Replace `python3.11` with the version of Python you are using. Once installed, these packages can be imported into your Python script via the following:
+
+```{python}
+import pandas as pd
+import mimesis
+from matplotlib import pyplot as plt
+import numpy as np
+from scipy import stats as st
+```
+
+Additionally, the Standard Library module "random" is used. This does not need to be installed but does need to be imported:
 
 ```{python}
 import random
-import pandas as pd
-import mimesis
+```
 
+```{python, echo = FALSE}
+# Pandas display options
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
+pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.width', 362)
+```
+
+Example Data
+============
+This page will use fake data for its examples. This can be created in Python as follows:
+
+```{python}
 # Set the 'seed' to ensure that the random data is the same each time we run the code
 random.seed(20221229)
 # Create fake data generators
@@ -184,8 +199,6 @@ print(frequency_table)
 The best way to show this data on a graph would be to make a **single-group bar plot**. More information on creating these can be found on [this page](../graphs/pandas/bar_plots.html) and [this page](../graphs/ax_based/barplots_single_group.html).
 
 ```{python, eval = FALSE}
-import matplotlib.pyplot as plt
-
 # Counts
 counts = df['blood_type'].value_counts(sort=False)
 # Create bar plot
@@ -199,8 +212,6 @@ plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
-import matplotlib.pyplot as plt
-
 # Counts
 counts = df['blood_type'].value_counts(sort=False)
 # Create bar plot
@@ -241,8 +252,6 @@ print(ct)
 The best way to show two categorical variables on a graph at once is to make a **multi-group bar plot**. More information on creating these can be found on [this page](../graphs/pandas/bar_plots.html) and [this page](../graphs/ax_based/barplots_multiple_groups.html).
 
 ```{python, eval = FALSE}
-import matplotlib.pyplot as plt
-
 # Create a cross-tabulation of two variables
 ct = pd.crosstab(df['previous_donor'], df['view'])
 # Re-order the columns
@@ -266,8 +275,6 @@ plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
-import matplotlib.pyplot as plt
-
 # Create a cross-tabulation of two variables
 ct = pd.crosstab(df['previous_donor'], df['view'])
 # Re-order the columns
@@ -332,8 +339,6 @@ Frequency Distribution and Histogram
 The counts and percentages of the **continuous** data can be shown in a **frequency distribution** whereby the values are grouped into *bins*. The `histogram` function from the Numpy package is useful for this (download and install the Numpy package from the terminal with `python3.11 -m pip install numpy`):
 
 ```{python}
-import numpy as np
-
 # Create data
 counts, bins = np.histogram(df['age'])
 
@@ -490,7 +495,17 @@ Measures of the Average (Central Tendency)
 The mean is based on the *values* of the data points and is usually more representative when the data is **not** skewed. Use "$\mu$" (the lowercase Greek letter 'mu') for the **population** mean (eg if you are doing inferential statistics) and "$\bar{x}$" (pronounced 'x bar') for the **sample** mean (eg if you are doing descriptive statistics):
 
 ```{python}
+# Mean of a Pandas series
 x_bar = df['age'].mean()
+
+print(f'The mean age is {x_bar:4.1f} years')
+```
+
+This can also be done with NumPy's `mean()` function:
+
+```{python}
+# Mean of an array-like object
+x_bar = np.mean(df['age'])
 
 print(f'The mean age is {x_bar:4.1f} years')
 ```
@@ -499,7 +514,17 @@ print(f'The mean age is {x_bar:4.1f} years')
 The median is based on the *ranks* of the data points and is usually more representative when the data **is** skewed:
 
 ```{python}
+# Median of a Pandas series
 median = df['times_donated'].median()
+
+print(f'The median number of previous donations is {int(median)}')
+```
+
+This can also be done with NumPy's `median()` function:
+
+```{python}
+# Median of an array-like object
+median = np.median(df['times_donated'])
 
 print(f'The median number of previous donations is {int(median)}')
 ```
@@ -508,12 +533,25 @@ print(f'The median number of previous donations is {int(median)}')
 The mode is based on the *frequency* at which data points appear and is usually more representative when the data is **nominal**:
 
 ```{python}
-mode = df['blood_type'].mode()[0]
+# Mode of a Pandas series
+mode = df['blood_type'].mode()
+# If there are multiple modes they will all be returned. If this is the case,
+# let's just take the first
+mode = mode[0]
 
 print(f'The most common blood type in this sample is {mode}')
 ```
 
 For the record, in real life, AB− is the LEAST COMMON blood type!
+
+The mode can also be found with SciPy's `mode()` function, although this only works with *numeric* data:
+
+```{python}
+# Mode of an array-like object of numerics
+mode, count = st.mode(df['age'])
+
+print(f'The most common age in this sample is {mode}')
+```
 
 Measures of Dispersion (Variability)
 ------------------------------------
@@ -562,12 +600,10 @@ This idea of subtracting 1 from the sample size when calculating sample variance
 A useful rule-of-thumb is that about 95% of normally-distributed data is found within two standard deviations either side of the sample mean (see the Wikipedia page on this "[68–95–99.7 rule](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule)"). For the sake of interest, here's how to calculate this:
 
 ```{python}
-from scipy import stats
-
 # Number of standard deviations
 z_critical = 2
 # Cumulative distribution function of the normal distribution
-phi = stats.norm.cdf(z_critical)
+phi = st.norm.cdf(z_critical)
 # Number of tails
 tails = 2
 # Significance level
@@ -581,8 +617,6 @@ print(f'{c}% of normally-distributed data is found within two standard deviation
 The reverse of the above statement is possibly also interesting: "95% of normally-distributed data is found within **about 1.96** standard deviations either side of the sample mean". Again, here's how to calculate this:
 
 ```{python}
-from scipy import stats
-
 # Confidence level
 c = 95  # %
 # Significance level
@@ -590,7 +624,7 @@ alpha = 1 - (c / 100)
 # Number of tails
 tails = 2
 # Number of standard deviations
-z_critical = stats.norm.ppf(1 - alpha / tails)
+z_critical = st.norm.ppf(1 - alpha / tails)
 
 print(f'95% of normally-distributed data is found within {z_critical} standard deviations of the mean')
 ```
@@ -663,6 +697,15 @@ In one line of code:
 ```{python}
 # One-liner
 iqr = df['age'].quantile([0.25, 0.75]).diff().iloc[-1]
+
+print(f'The median age is {second_quartile} years with an interquartile range of {iqr} years')
+```
+
+...or, using SciPy:
+
+```{python}
+# One-liner
+iqr = st.iqr(df['age'])
 
 print(f'The median age is {second_quartile} years with an interquartile range of {iqr} years')
 ```

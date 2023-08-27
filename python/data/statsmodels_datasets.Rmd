@@ -5,7 +5,7 @@ output:
         theme: paper
         highlight: textmate
         # number_sections: true
-        toc: true
+        # toc: true
         includes:
             before_body: ../../google_analytics.html
 ---
@@ -50,10 +50,16 @@ import numpy as np
 from sklearn import linear_model
 ```
 
-The datasets usually have `exog` and `endog` attributes that hold most of the exogenous and endogenous variables, respectively. These are economics terms for what are essentially the dependent and independent variables, or the 'features' and the 'target' in machine learning terminology.
+The datasets usually have `exog` and `endog` attributes that hold the **exogenous** and **endogenous** variables, respectively. These are economics terms for what are essentially the dependent and independent variables, or the 'features' and the 'target' in machine learning terminology.
 
-American National Election Survey 1996
-======================================
+{.tabset}
+=========
+
+anes96
+------
+
+### American National Election Survey 1996
+
 Documentation: [https://www.statsmodels.org/devel/datasets/generated/anes96.html](https://www.statsmodels.org/devel/datasets/generated/anes96.html)
 
 **Exogenous Variables:**
@@ -116,8 +122,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-Breast Cancer Data
-==================
+cancer
+------
+
+### Breast Cancer Data
 Documentation: [https://www.statsmodels.org/devel/datasets/generated/cancer.html](https://www.statsmodels.org/devel/datasets/generated/cancer.html)
 
 **Exogenous Variable:**
@@ -186,14 +194,15 @@ plt.tight_layout()
 plt.show()
 ```
 
-Bill Greene's Credit Scoring Data
-=================================
-Documentation: [https://www.statsmodels.org/devel/datasets/generated/ccard.html](https://www.statsmodels.org/devel/datasets/generated/ccard.html)
+ccard
+-----
 
+### Bill Greene's Credit Scoring Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/ccard.html](https://www.statsmodels.org/devel/datasets/generated/ccard.html)
 
 **Exogenous Variables:**
 
-- `AGE` : Age in years+ 12ths of a year
+- `AGE` : Age in years + 12ths of a year
 - `INCOME` : Income, divided by 10,000
 - `INCOMESQ` : `INCOME` squared
 - `OWNRENT` : Individual owns (1) or rents (0) home
@@ -214,7 +223,7 @@ y = dataset.endog
 fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(12, 8))
 fig.suptitle("Bill Greene's Credit Scoring Data")
 ax1.scatter(X['AGE'], y)
-ax1.set_xlabel('Age in years+ 12ths of a year')
+ax1.set_xlabel('Age in years + 12ths of a year')
 ax1.set_ylabel('Avg monthly credit card expenditure')
 ax2.scatter(X['INCOME'], y)
 ax2.set_xlabel('Income, divided by 10,000')
@@ -254,8 +263,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-Smoking and Lung Cancer in Eight Cities in China
-================================================
+china_smoking
+-------------
+
+### Smoking and Lung Cancer in Eight Cities in China
 Documentation: [https://www.statsmodels.org/devel/datasets/generated/china_smoking.html](https://www.statsmodels.org/devel/datasets/generated/china_smoking.html)
 
 **Variables:**
@@ -283,8 +294,10 @@ for i, row in dataset['raw_data'].iterrows():
     print('')
 ```
 
-Mauna Loa Weekly Atmospheric CO2 Data
-=====================================
+co2
+---
+
+### Mauna Loa Weekly Atmospheric CO2 Data
 Documentation: [https://www.statsmodels.org/devel/datasets/generated/co2.html](https://www.statsmodels.org/devel/datasets/generated/co2.html)
 
 **Index:**
@@ -301,25 +314,28 @@ Documentation: [https://www.statsmodels.org/devel/datasets/generated/co2.html](h
 # Load the data
 dataset = sm.datasets.co2.load_pandas()
 # Plot
+plt.figure()
 plt.plot(dataset['data'])
 plt.show()
 ```
 
-First 100 days of the US House of Representatives 1995
-======================================================
+committee
+---------
+
+### First 100 days of the US House of Representatives 1995
 Documentation: [https://www.statsmodels.org/devel/datasets/generated/committee.html](https://www.statsmodels.org/devel/datasets/generated/committee.html)
 
 **Exogenous Variables:**
 
-- `SIZE` : Number of members on the committee.
-- `SUBS` : Number of subcommittees.
-- `STAFF` : Number of staff members assigned to the committee.
-- `PRESTIGE` : Dummy variable indicating whether the committee is a high prestige committee (`PRESTIGE == 1` is a high prestige committee).
-- `BILLS103` : The number of bill assignments in the first 100 days of the US's 103rd House of Representatives.
+- `SIZE` : Number of members on the committee
+- `SUBS` : Number of subcommittees
+- `STAFF` : Number of staff members assigned to the committee
+- `PRESTIGE` : Dummy variable indicating whether the committee is a high prestige committee (`PRESTIGE == 1` is a high prestige committee)
+- `BILLS103` : The number of bill assignments in the first 100 days of the US's 103rd House of Representatives
 
 **Endogenous Variable:**
 
-- `BILLS104` : The number of bill assignments in the first 100 days of the US's 104th House of Representatives over 20 Committees.
+- `BILLS104` : The number of bill assignments in the first 100 days of the US's 104th House of Representatives over 20 Committees
 
 **Example Usage:**
 
@@ -345,21 +361,23 @@ plt.tight_layout()
 plt.show()
 ```
 
-World Copper Market 1951-1975 Dataset
-=====================================
+copper
+------
+
+### World Copper Market 1951-1975 Dataset
 Documentation: [https://www.statsmodels.org/devel/datasets/generated/copper.html](https://www.statsmodels.org/devel/datasets/generated/copper.html)
 
 **Exogenous Variables:**
 
-- `COPPERPRICE` : Constant dollar adjusted price of copper.
-- `INCOMEINDEX` : An index of real per capita income (base 1970).
-- `ALUMPRICE` : The price of aluminium.
-- `INVENTORYINDEX` : A measure of annual manufacturer inventory trend.
-- `TIME` : A time trend.
+- `COPPERPRICE` : Constant dollar adjusted price of copper
+- `INCOMEINDEX` : An index of real per capita income (base 1970)
+- `ALUMPRICE` : The price of aluminium
+- `INVENTORYINDEX` : A measure of annual manufacturer inventory trend
+- `TIME` : A time trend
 
 **Endogenous Variable:**
 
-- `WORLDCONSUMPTION` : World consumption of copper (in 1000 metric tons).
+- `WORLDCONSUMPTION` : World consumption of copper (in 1000 metric tons)
 
 **Example Usage:**
 
@@ -385,8 +403,10 @@ plt.tight_layout()
 plt.show()
 ```
 
-US Capital Punishment Dataset
-=============================
+cpunish
+-------
+
+### US Capital Punishment Dataset
 Documentation: [https://www.statsmodels.org/devel/datasets/generated/cpunish.html](https://www.statsmodels.org/devel/datasets/generated/cpunish.html)
 
 **Exogenous Variables:**
@@ -408,13 +428,1105 @@ Documentation: [https://www.statsmodels.org/devel/datasets/generated/cpunish.htm
 # Load the data
 dataset = sm.datasets.cpunish.load_pandas()
 # Plot
-fig, ax = plt.subplots(3, 2, figsize=(12, 12))
+fig, ax = plt.subplots(3, 2, figsize=(10, 10))
 ax = ax.flatten()
 fig.suptitle('US Capital Punishment Dataset')
 for i, exog_name in enumerate(dataset['exog_name']):
     ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
     ax[i].set_xlabel(dataset['exog_name'][i])
     ax[i].set_ylabel('Executions in 1996')
+plt.tight_layout()
+plt.show()
+```
+
+danish_data
+-----------
+
+### Danish Money Demand Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/danish_data.html](https://www.statsmodels.org/devel/datasets/generated/danish_data.html)
+
+**Sample Size:** 55
+
+**Variables:**
+
+- `lrm` : Log real money
+- `lry` : Log real income
+- `lpy` : Log prices
+- `ibo` : Bond rate
+- `ide` : Deposit rate
+
+**Example Usage:**
+
+```{python}
+# Load the data
+dataset = sm.datasets.danish_data.load_pandas()
+data = dataset['data']
+# Plot
+fig = plt.figure(figsize=(10, 10))
+shape = (3, 4)
+ax1 = plt.subplot2grid(shape, (0, 0), colspan=2, fig=fig)
+ax2 = plt.subplot2grid(shape, (0, 2), colspan=2, fig=fig)
+ax3 = plt.subplot2grid(shape, (1, 0), colspan=2, fig=fig)
+ax4 = plt.subplot2grid(shape, (1, 2), colspan=2, fig=fig)
+ax5 = plt.subplot2grid(shape, (2, 1), colspan=2, fig=fig)
+fig.suptitle('Danish Money Demand Data')
+ax1.scatter(data.index, data['lrm'])
+ax1.set_xlabel('Period')
+ax1.set_ylabel('Log real money')
+ax2.scatter(data.index, data['lry'])
+ax2.set_xlabel('Period')
+ax2.set_ylabel('Log real income')
+ax3.scatter(data.index, data['lpy'])
+ax3.set_xlabel('Period')
+ax3.set_ylabel('Log prices')
+ax4.scatter(data.index, data['ibo'])
+ax4.set_xlabel('Period')
+ax4.set_ylabel('Bond rate')
+ax5.scatter(data.index, data['ide'])
+ax5.set_xlabel('Period')
+ax5.set_ylabel('Deposit rate')
+plt.tight_layout()
+plt.show()
+```
+
+elnino
+------
+
+### El Nino - Sea Surface Temperatures
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/elnino.html](https://www.statsmodels.org/devel/datasets/generated/elnino.html)
+
+**Sample Size:** 61 years x 12 months
+
+**Variable:**
+
+- `TEMPERATURE` : Average sea surface temperature in degrees Celcius
+
+**Example Usage:**
+
+```{python}
+# Load the data
+dataset = sm.datasets.elnino.load_pandas()
+data = dataset['data']
+# Convert wide to long
+months = [
+    'JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN',
+    'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'
+]
+df = data.melt(id_vars=['YEAR'], value_vars=months, var_name='MONTH')
+# Combine year and month into a single 'DATE' column
+df['YEAR'] = df['YEAR'].astype(int)
+df['MONTH'] = df['MONTH'].apply(lambda x: months.index(x) + 1)
+df['DATE'] = df['YEAR'].astype(str) + '-' + df['MONTH'].astype(str)
+df['DATE'] = pd.to_datetime(df['DATE'], format='%Y-%m')
+# Sort the data
+df = df.sort_values('DATE')
+# Plot
+fig, ax = plt.subplots()
+ax.plot(df['DATE'], df['value'])
+ax.set_title('El Nino - Sea Surface Temperatures')
+ax.set_ylabel('Average sea surface temperature (°C)')
+_ = ax.set_xlim([df['DATE'].min(), df['DATE'].max()])
+plt.tight_layout()
+plt.show()
+```
+
+engel
+-----
+
+### Engel (1857) Food Expenditure Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/engel.html](https://www.statsmodels.org/devel/datasets/generated/engel.html)
+
+**Sample Size:** 235
+
+**Variables:**
+
+- `income` : Annual household income (Belgian francs)
+- `foodexp` : Annual household food expenditure (Belgian francs)
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.engel.load_pandas()
+data = dataset['data']
+# Plot
+plt.scatter(data['income'], data['foodexp'])
+plt.title('Engel (1857) Food Expenditure Data')
+plt.ylabel('Annual household food expenditure (Belgian francs)')
+plt.xlabel('Annual household income (Belgian francs)')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.engel.load_pandas()
+data = dataset['data']
+# Plot
+plt.scatter(data['income'], data['foodexp'])
+plt.title('Engel (1857) Food Expenditure Data')
+plt.ylabel('Annual household food expenditure (Belgian francs)')
+plt.xlabel('Annual household income (Belgian francs)')
+plt.tight_layout()
+plt.show()
+```
+
+fair
+----
+
+### Affairs Dataset
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/fair.html](https://www.statsmodels.org/devel/datasets/generated/fair.html)
+
+**Sample Size:** 6366
+
+**Exogenous Variables:**
+
+- `rate_marriage` : Rating of marriage
+- `age` : Age
+- `yrs_married` : Number of years married - interval approximations
+- `children` : Number of children
+- `religious` : How religious
+- `educ` : Level of education
+- `occupation` : Occupation
+- `occupation_husb` : Husband's occupation
+
+**Endogenous Variable:**
+
+- `affairs` : Measure of time spent in extramarital affairs
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.fair.load_pandas()
+# Plot
+fig, ax = plt.subplots(4, 2, figsize=(8, 12))
+ax = ax.flatten()
+fig.suptitle('Affairs Dataset')
+for i, exog_name in enumerate(dataset['exog_name']):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Time in extramarital affairs')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.fair.load_pandas()
+# Plot
+fig, ax = plt.subplots(4, 2, figsize=(8, 12))
+ax = ax.flatten()
+fig.suptitle('Affairs Dataset')
+for i, exog_name in enumerate(dataset['exog_name']):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Time in extramarital affairs')
+plt.tight_layout()
+plt.show()
+```
+
+fertility
+---------
+
+### World Bank Fertility Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/fertility.html](https://www.statsmodels.org/devel/datasets/generated/fertility.html)
+
+**Sample Size:** 219 countries/regions
+
+**Variable:** The fertility rate for the given year
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.fertility.load_pandas()
+# Convert from wide to long
+years = list(range(1960, 2014))
+years = [str(year) for year in years]
+df = pd.melt(dataset['data'], id_vars=['Country Name'], value_vars=years)
+# Sort
+df = df.sort_values('variable')
+# Plot
+fig, ax = plt.subplots()
+countries = [
+    'Yemen, Rep.', 'Barbados', 'Tonga', 'Macao SAR, China', 'Niger', 'Mongolia'
+]
+for country in countries:
+    subset = df[df['Country Name'] == country]
+    plt.scatter(subset['variable'].astype(int), subset['value'], label=country)
+plt.title('World Bank Fertility Data')
+plt.ylabel('Fertility Rate')
+plt.xlabel('Year')
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.fertility.load_pandas()
+# Convert from wide to long
+years = list(range(1960, 2014))
+years = [str(year) for year in years]
+df = pd.melt(dataset['data'], id_vars=['Country Name'], value_vars=years)
+# Sort
+df = df.sort_values('variable')
+# Plot
+fig, ax = plt.subplots()
+countries = [
+    'Yemen, Rep.', 'Barbados', 'Tonga', 'Macao SAR, China', 'Niger', 'Mongolia'
+]
+for country in countries:
+    subset = df[df['Country Name'] == country]
+    plt.scatter(subset['variable'].astype(int), subset['value'], label=country)
+plt.title('World Bank Fertility Data')
+plt.ylabel('Fertility Rate')
+plt.xlabel('Year')
+plt.legend()
+plt.tight_layout()
+plt.show()
+```
+
+grunfeld
+--------
+
+### Grunfeld (1950) Investment Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/grunfeld.html](https://www.statsmodels.org/devel/datasets/generated/grunfeld.html)
+
+**Sample Size:** 220 (20 years for 11 firms)
+
+**Exogenous Variables:**
+
+- `value` : Market value as of December 31 in 1947 dollars
+- `capital` : Stock of plant and equipment in 1947 dollars
+- `firm` : General Motors, US Steel, General Electric, Chrysler, Atlantic Refining, IBM, Union Oil, Westinghouse, Goodyear, Diamond Match, American Steel
+- `year` : 1935 - 1954
+
+**Endogenous Variable:**
+
+- `invest` : Gross investment in 1947 dollars
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.grunfeld.load_pandas()
+# Plot
+fig, ax = plt.subplots(2, 2, figsize=(8, 6))
+ax = ax.flatten()
+fig.suptitle('Grunfeld (1950) Investment Data')
+for i, exog_name in enumerate(dataset['exog_name']):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    if exog_name == 'firm':
+        ax[i].set_xticks(range(11))
+        ax[i].set_xticklabels(range(11))
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Gross Investment (1947 dollars)')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.grunfeld.load_pandas()
+# Plot
+fig, ax = plt.subplots(2, 2, figsize=(8, 6))
+ax = ax.flatten()
+fig.suptitle('Grunfeld (1950) Investment Data')
+for i, exog_name in enumerate(dataset['exog_name']):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    if exog_name == 'firm':
+        ax[i].set_xticks(range(11))
+        ax[i].set_xticklabels(range(11))
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Gross Investment (1947 dollars)')
+plt.tight_layout()
+plt.show()
+```
+
+heart
+-----
+
+### Transplant Survival Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/heart.html](https://www.statsmodels.org/devel/datasets/generated/heart.html)
+
+**Sample Size:** 69
+
+**Exogenous Variables:**
+
+- `censors` : Indicates if an observation is censored; 1 is uncensored
+- `age` : Age at the time of surgery
+
+**Endogenous Variable:**
+
+- `survival` : Days after surgery until death
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.heart.load_pandas()
+df = dataset['data']
+# Plot
+fig, ax = plt.subplots()
+plt.scatter(dataset['exog'], dataset['endog'])
+plt.title('Transplant Survival Data')
+plt.ylabel('Days after surgery until death')
+plt.xlabel('Age at the time of surgery')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.heart.load_pandas()
+df = dataset['data']
+# Plot
+fig, ax = plt.subplots()
+plt.scatter(dataset['exog'], dataset['endog'])
+plt.title('Transplant Survival Data')
+plt.ylabel('Days after surgery until death')
+plt.xlabel('Age at the time of surgery')
+plt.tight_layout()
+plt.show()
+```
+
+interest_inflation
+------------------
+
+### (West) German interest and inflation rate 1972-1998
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/interest_inflation.html](https://www.statsmodels.org/devel/datasets/generated/interest_inflation.html)
+
+**Sample Size:** 107
+
+**Variables:**
+
+- `year` : Q2 1972 - Q4 1998
+- `quarter` : 1-4
+- `Dp` : Delta log GDP deflator
+- `R` : Nominal long term interest rate
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.interest_inflation.load_pandas()
+df = dataset['data']
+# Re-format the date information
+df['year'] = df['year'].astype(int)
+df['quarter'] = df['quarter'].astype(int)
+df['date'] = df['year'].astype(str) + '-' + df['quarter'].astype(str)
+df['date'] = pd.to_datetime(df['date'], format='%Y-%m')
+df = df.sort_values('date')
+# Plot
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+fig.suptitle('(West) German interest and inflation rate 1972-1998')
+ax[0].scatter(df['date'], df['Dp'])
+ax[0].set_ylabel('Delta Log GDP Deflator')
+ax[0].set_xlabel('Quarter')
+ax[1].scatter(df['date'], df['R'])
+ax[1].set_ylabel('Nominal Long Term Interest Rate')
+ax[1].set_xlabel('Quarter')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.interest_inflation.load_pandas()
+df = dataset['data']
+# Re-format the date information
+df['year'] = df['year'].astype(int)
+df['quarter'] = df['quarter'].astype(int)
+df['date'] = df['year'].astype(str) + '-' + df['quarter'].astype(str)
+df['date'] = pd.to_datetime(df['date'], format='%Y-%m')
+df = df.sort_values('date')
+# Plot
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+fig.suptitle('(West) German interest and inflation rate 1972-1998')
+ax[0].scatter(df['date'], df['Dp'])
+ax[0].set_ylabel('Delta Log GDP Deflator')
+ax[0].set_xlabel('Quarter')
+ax[1].scatter(df['date'], df['R'])
+ax[1].set_ylabel('Nominal Long Term Interest Rate')
+ax[1].set_xlabel('Quarter')
+plt.tight_layout()
+plt.show()
+```
+
+longley
+-------
+
+### Longley Dataset
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/longley.html](https://www.statsmodels.org/devel/datasets/generated/longley.html)
+
+**Sample Size:** 16
+
+**Exogenous Variables:**
+
+- `GNPDEFL` : GNP deflator
+- `GNP` : GNP
+- `UNEMP` : Number of unemployed
+- `ARMED` : Size of armed forces
+- `POP` : Population
+- `YEAR` : Year (1947 - 1962)
+
+**Endogenous Variable:**
+
+- `TOTEMP` : Total employment
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.longley.load_pandas()
+# Plot
+fig, ax = plt.subplots(3, 2, figsize=(10, 10))
+ax = ax.flatten()
+fig.suptitle('Longley Dataset')
+for i, exog_name in enumerate(dataset['exog_name']):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Total Employment')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.longley.load_pandas()
+# Plot
+fig, ax = plt.subplots(3, 2, figsize=(10, 10))
+ax = ax.flatten()
+fig.suptitle('Longley Dataset')
+for i, exog_name in enumerate(dataset['exog_name']):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Total Employment')
+plt.tight_layout()
+plt.show()
+```
+
+macrodata
+---------
+
+### United States Macroeconomic Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/macrodata.html](https://www.statsmodels.org/devel/datasets/generated/macrodata.html)
+
+**Sample Size:** 203
+
+**Variables:**
+
+- `year` : 1959q1 - 2009q3
+- `quarter` : 1-4
+- `realgdp` : Real gross domestic product
+- `realcons` : Real personal consumption expenditures
+- `realinv` : Real gross private domestic investment
+- `realgovt` : Real federal consumption expenditures & gross investment
+- `realdpi` : Real private disposable income
+- `cpi` : End of the quarter consumer price index for all urban consumers: all items
+- `m1` : End of the quarter M1 nominal money stock (Seasonally adjusted)
+- `tbilrate` : Quarterly monthly average of the monthly 3-month treasury bill
+- `unemp` : Seasonally adjusted unemployment rate (%)
+- `pop` : End of the quarter total population: all ages incl. armed forces over seas
+- `infl` : Inflation rate (ln(cpi_{t}/cpi_{t-1}) * 400)
+- `realint` : Real interest rate (tbilrate - infl)
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.macrodata.load_pandas()
+# Clean
+df = dataset['data']
+df = df.drop('year', axis=1)
+df = df.drop('quarter', axis=1)
+# Plot
+plt.title('United States Macroeconomic Data')
+plt.matshow(df.corr())
+plt.yticks(range(len(list(df))), list(df))
+plt.xticks(range(len(list(df))), list(df), rotation=36)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.macrodata.load_pandas()
+# Clean
+df = dataset['data']
+df = df.drop('year', axis=1)
+df = df.drop('quarter', axis=1)
+# Plot
+plt.title('United States Macroeconomic Data')
+plt.matshow(df.corr())
+plt.yticks(range(len(list(df))), list(df))
+plt.xticks(range(len(list(df))), list(df), rotation=36)
+plt.show()
+```
+
+modechoice
+----------
+
+### Travel Mode Choice
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/modechoice.html](https://www.statsmodels.org/devel/datasets/generated/modechoice.html)
+
+**Sample Size:** 210
+
+**Exogenous Variables:**
+
+- `ttme` : Terminal waiting time for plane, train and bus (minutes); 0 for car
+- `invc` : In vehicle cost for all stages (dollars)
+- `invt` : Travel time (in-vehicle time) for all stages (minutes)
+- `gc` :  Generalized cost measure: invc + (invt × value of travel time savings) (dollars)
+- `hinc` : Household income ($1000s)
+- `psize` : Traveling group size in mode chosen
+
+**Endogenous Variable:**
+
+- `choice` : Yes (`1`) or no (`0`)
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.modechoice.load_pandas()
+# Clean the data
+df = dataset['data']
+df['mode'] = df['mode'].replace({1: 'air', 2: 'train', 3: 'bus', 4: 'car'})
+# Plot
+fig, ax = plt.subplots(3, 2, figsize=(10, 10))
+ax = ax.flatten()
+fig.suptitle('Travel Mode Choice')
+for i, exog_name in enumerate(dataset['exog_name']):
+    for mode in df['mode'].unique():
+        subset = df[df['mode'] == mode]
+        ax[i].scatter(subset[exog_name], subset['choice'], label=mode)
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Choice')
+    ax[i].set_yticks([0, 1])
+    ax[i].set_yticklabels(['No', 'Yes'])
+    ax[i].legend()
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.modechoice.load_pandas()
+# Clean the data
+df = dataset['data']
+df['mode'] = df['mode'].replace({1: 'air', 2: 'train', 3: 'bus', 4: 'car'})
+# Plot
+fig, ax = plt.subplots(3, 2, figsize=(10, 10))
+ax = ax.flatten()
+fig.suptitle('Travel Mode Choice')
+for i, exog_name in enumerate(dataset['exog_name']):
+    for mode in df['mode'].unique():
+        subset = df[df['mode'] == mode]
+        ax[i].scatter(subset[exog_name], subset['choice'], label=mode)
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Choice')
+    ax[i].set_yticks([0, 1])
+    ax[i].set_yticklabels(['No', 'Yes'])
+    ax[i].legend()
+plt.tight_layout()
+plt.show()
+```
+
+nile
+----
+
+### Nile River flows at Ashwan 1871-1970
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/nile.html](https://www.statsmodels.org/devel/datasets/generated/nile.html)
+
+**Sample Size:** 100
+
+**Variables:**
+
+- `year` : The year of the observations
+- `volume` : The discharge at Aswan in m³ × 10⁸
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.nile.load_pandas()
+df = dataset['data']
+# Plot
+fig = plt.figure()
+plt.title('Nile River Flows at Ashwan 1871-1970')
+plt.scatter(df['year'], df['volume'], ec='k', fc='gray')
+plt.ylabel('Volume [m³]')
+plt.xlabel('Year')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.nile.load_pandas()
+df = dataset['data']
+# Plot
+fig = plt.figure()
+plt.title('Nile River Flows at Ashwan 1871-1970')
+plt.scatter(df['year'], df['volume'], ec='k', fc='gray')
+plt.ylabel('Volume [m³]')
+plt.xlabel('Year')
+plt.tight_layout()
+plt.show()
+```
+
+randhie
+-------
+
+### RAND Health Insurance Experiment Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/randhie.html](https://www.statsmodels.org/devel/datasets/generated/randhie.html)
+
+**Sample Size:** 20,190
+
+**Variables:**
+
+- `mdvis` : Number of outpatient visits to an MD
+- `lncoins` : ln(coinsurance + 1), 0 <= coninsurance <= 100
+- `idp` : 1 if individual deductible plan, 0 otherwise
+- `lpi` : ln(max(1, annual participation incentive payment))
+- `fmde` : 0 if idp = 1; ln(max(1, MDE/(0.01 coinsurance))) otherwise
+- `physlm` : 1 if the person has a physical limitation
+- `disea` : Number of chronic diseases
+- `hlthg` : 1 if self-rated health is good
+- `hlthf` : 1 if self-rated health is fair
+- `hlthp` : 1 if self-rated health is poor
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.randhie.load_pandas()
+df = dataset['data']
+# Plot
+plt.title('RAND Health Insurance Experiment Data')
+plt.matshow(df.corr())
+plt.yticks(range(len(list(df))), list(df))
+plt.xticks(range(len(list(df))), list(df), rotation=36)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.randhie.load_pandas()
+df = dataset['data']
+# Plot
+plt.title('RAND Health Insurance Experiment Data')
+plt.matshow(df.corr())
+plt.yticks(range(len(list(df))), list(df))
+plt.xticks(range(len(list(df))), list(df), rotation=36)
+plt.show()
+```
+
+scotland
+--------
+
+### Taxation Powers Vote for the Scottish Parliament 1997
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/scotland.html](https://www.statsmodels.org/devel/datasets/generated/scotland.html)
+
+**Sample Size:** 32
+
+**Exogenous Variables:**
+
+- `COUTAX` : Amount of council tax collected in pounds sterling as of April 1997
+- `UNEMPF` : Female percentage of total unemployment benefits claims as of January 1998
+- `MOR` : The standardized mortality rate (UK is 100)
+- `ACT` : Labor force participation (Short for active)
+- `GDP` : GDP per county
+- `AGE` : Percentage of children aged 5 to 15 in the county
+- `COUTAX_FEMALEUNEMP` : Interaction between COUTAX and UNEMPF
+
+**Endogenous Variable:**
+
+- `YES` : Proportion voting yes to granting taxation powers to the Scottish parliament
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.scotland.load_pandas()
+# Plot
+fig, ax = plt.subplots(4, 2, figsize=(8, 12))
+ax = ax.flatten()
+fig.suptitle('Taxation Powers Vote for the Scottish Parliament 1997')
+for i, exog_name in enumerate(dataset['exog_name'][:-1]):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Proportion Voting Yes')
+ax1 = plt.subplot2grid((4, 4), (3, 1), colspan=2, fig=fig)
+ax1.scatter(dataset['exog']['COUTAX_FEMALEUNEMP'], dataset['endog'])
+ax1.set_xlabel('COUTAX_FEMALEUNEMP')
+ax1.set_ylabel('Proportion Voting Yes')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.scotland.load_pandas()
+# Plot
+fig, ax = plt.subplots(4, 2, figsize=(8, 12))
+ax = ax.flatten()
+fig.suptitle('Taxation Powers Vote for the Scottish Parliament 1997')
+for i, exog_name in enumerate(dataset['exog_name'][:-1]):
+    ax[i].scatter(dataset['exog'][exog_name], dataset['endog'])
+    ax[i].set_xlabel(dataset['exog_name'][i])
+    ax[i].set_ylabel('Proportion Voting Yes')
+ax1 = plt.subplot2grid((4, 4), (3, 1), colspan=2, fig=fig)
+ax1.scatter(dataset['exog']['COUTAX_FEMALEUNEMP'], dataset['endog'])
+ax1.set_xlabel('COUTAX_FEMALEUNEMP')
+ax1.set_ylabel('Proportion Voting Yes')
+plt.tight_layout()
+plt.show()
+```
+
+spector
+-------
+
+### Spector and Mazzeo (1980) - Program Effectiveness Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/spector.html](https://www.statsmodels.org/devel/datasets/generated/spector.html)
+
+**Sample Size:** 32
+
+**Exogenous Variables:**
+
+- `TUCE` : Test score on economics test
+- `PSI` : Participation in program
+- `GPA` : Student's grade point average
+
+**Endogenous Variable:**
+
+- `GRADE` : Binary variable indicating whether or not a student's grade improved; 1 indicates an improvement
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.spector.load_pandas()
+data = dataset['data']
+data['GRADE'] = data['GRADE'].replace({0: 'No', 1: 'Yes'})
+data['PSI'] = data['PSI'].replace({0: "Didn't participate", 1: 'Participated'})
+# Plot
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+fig.suptitle('Spector and Mazzeo (1980) - Program Effectiveness Data')
+for participation in data['PSI'].unique():
+    subset = data[data['PSI'] == participation]
+    ax[0].scatter(subset['GPA'], subset['GRADE'], label=participation)
+    ax[0].set_xlabel("Student's grade point average")
+    ax[0].set_ylabel('Improvement')
+    ax[1].scatter(subset['TUCE'], subset['GRADE'], label=participation)
+    ax[1].set_xlabel('Test Score on Economics Test')
+    ax[1].set_ylabel('Improvement')
+ax[0].legend(loc='center right')
+ax[1].legend(loc='center right')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.spector.load_pandas()
+data = dataset['data']
+data['GRADE'] = data['GRADE'].replace({0: 'No', 1: 'Yes'})
+data['PSI'] = data['PSI'].replace({0: "Didn't participate", 1: 'Participated'})
+# Plot
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+fig.suptitle('Spector and Mazzeo (1980) - Program Effectiveness Data')
+for participation in data['PSI'].unique():
+    subset = data[data['PSI'] == participation]
+    ax[0].scatter(subset['GPA'], subset['GRADE'], label=participation)
+    ax[0].set_xlabel("Student's grade point average")
+    ax[0].set_ylabel('Improvement')
+    ax[1].scatter(subset['TUCE'], subset['GRADE'], label=participation)
+    ax[1].set_xlabel('Test Score on Economics Test')
+    ax[1].set_ylabel('Improvement')
+ax[0].legend(loc='center right')
+ax[1].legend(loc='center right')
+plt.tight_layout()
+plt.show()
+```
+
+stackloss
+---------
+
+### Stack Loss Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/stackloss.html](https://www.statsmodels.org/devel/datasets/generated/stackloss.html)
+
+**Sample Size:** 21
+
+**Exogenous Variables:**
+
+- `AIRFLOW` : Rate of operation of the plant
+- `WATERTEMP` : Cooling water temperature in the absorption tower
+- `ACIDCONC` : SAcid concentration of circulating acid minus 50 times 10
+
+**Endogenous Variable:**
+
+- `STACKLOSS` : 10 times the percentage of ammonia going into the plant that escapes from the absoroption column
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.stackloss.load_pandas()
+# Plot
+fig = plt.figure(figsize=(8, 6))
+shape = (2, 4)
+ax1 = plt.subplot2grid(shape, (0, 0), colspan=2, fig=fig)
+ax2 = plt.subplot2grid(shape, (0, 2), colspan=2, fig=fig)
+ax3 = plt.subplot2grid(shape, (1, 1), colspan=2, fig=fig)
+fig.suptitle('Stack Loss Data')
+ax1.scatter(dataset['exog']['AIRFLOW'], dataset['endog'])
+ax1.set_xlabel('Rate of operation of the plant')
+ax1.set_ylabel('Stack Loss')
+ax2.scatter(dataset['exog']['WATERTEMP'], dataset['endog'])
+ax2.set_xlabel('Cooling water temperature')
+ax2.set_ylabel('Stack Loss')
+ax3.scatter(dataset['exog']['ACIDCONC'], dataset['endog'])
+ax3.set_xlabel('Acid concentration')
+ax3.set_ylabel('Stack Loss')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.stackloss.load_pandas()
+# Plot
+fig = plt.figure(figsize=(8, 6))
+shape = (2, 4)
+ax1 = plt.subplot2grid(shape, (0, 0), colspan=2, fig=fig)
+ax2 = plt.subplot2grid(shape, (0, 2), colspan=2, fig=fig)
+ax3 = plt.subplot2grid(shape, (1, 1), colspan=2, fig=fig)
+fig.suptitle('Stack Loss Data')
+ax1.scatter(dataset['exog']['AIRFLOW'], dataset['endog'])
+ax1.set_xlabel('Rate of operation of the plant')
+ax1.set_ylabel('Stack Loss')
+ax2.scatter(dataset['exog']['WATERTEMP'], dataset['endog'])
+ax2.set_xlabel('Cooling water temperature')
+ax2.set_ylabel('Stack Loss')
+ax3.scatter(dataset['exog']['ACIDCONC'], dataset['endog'])
+ax3.set_xlabel('Acid concentration')
+ax3.set_ylabel('Stack Loss')
+plt.tight_layout()
+plt.show()
+```
+
+star98
+------
+
+### Star98 Educational Dataset
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/star98.html](https://www.statsmodels.org/devel/datasets/generated/star98.html)
+
+**Sample Size:** 303
+
+**Exogenous Variables:**
+
+- `LOWINC` : Percentage of low income students
+- `PERASIAN` : Percentage of Asian student
+- `PERBLACK` : Percentage of black students
+- `PERHISP` : Percentage of Hispanic students
+- `PERMINTE` : Percentage of minority teachers
+- `AVYRSEXP` : Sum of teachers' years in educational service divided by the number of teachers
+- `AVSALK` : Total salary budget including benefits divided by the number of full-time teachers
+- `PERSPENK` : Per-pupil spending
+- `PTRATIO` : Pupil-teacher ratio
+- `PCTAF` : Percentage of students taking UC/CSU prep courses
+- `PCTCHRT` : Percentage of charter schools
+- `PCTYRRND` : Percentage of year-round schools
+
+**Interaction Terms:**
+
+- `PERMINTE_AVYRSEXP`
+- `PERMINTE_AVSAL`
+- `AVYRSEXP_AVSAL`
+- `PERSPEN_PTRATIO`
+- `PERSPEN_PCTAF`
+- `PTRATIO_PCTAF`
+- `PERMINTE_AVYRSEXP_AVSAL`
+- `PERSPEN_PTRATIO_PCTAF`
+
+**Endogenous Variables:**
+
+- `NABOVE` : Total number of students above the national median for the math section
+- `NBELOW` : Total number of students below the national median for the math section
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.star98.load_pandas()
+df = dataset['data']
+# Plot
+fig = plt.figure(figsize=(8, 8))
+ax = plt.subplot()
+ax.matshow(df.corr())
+ax.set_yticks(range(len(list(df))), list(df))
+ax.set_xticks(range(len(list(df))), list(df), rotation=90)
+plt.subplots_adjust(left=0.3, top=0.7)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.star98.load_pandas()
+df = dataset['data']
+# Plot
+fig = plt.figure(figsize=(8, 8))
+ax = plt.subplot()
+ax.matshow(df.corr())
+ax.set_yticks(range(len(list(df))), list(df))
+ax.set_xticks(range(len(list(df))), list(df), rotation=90)
+plt.subplots_adjust(left=0.3, top=0.7)
+plt.show()
+```
+
+statecrime
+----------
+
+### Statewide Crime Data 2009
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/statecrime.html](https://www.statsmodels.org/devel/datasets/generated/statecrime.html)
+
+**Sample Size:** 51
+
+**Exogenous Variables:**
+
+- `urban` : % of population in Urbanized Areas
+- `poverty` : % of individuals below the poverty line
+- `hs_grad` : Percent of population having graduated from high school or higher
+- `single` : A variable related to household type
+
+**Endogenous Variable:**
+
+- `murder` : Murders per 100,000 population
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.statecrime.load_pandas()
+# Plot
+fig, ax = plt.subplots(2, 2, figsize=(9, 7))
+ax = ax.flatten()
+fig.suptitle('Statewide Crime Data 2009')
+for i, exog_name in enumerate(dataset['exog_name']):
+    for state in dataset['exog'].index:
+        x = dataset['exog'][exog_name][state]
+        y = dataset['endog'][state]
+        ax[i].scatter(x, y, label=state)
+        ax[i].set_xlabel(dataset['exog_name'][i])
+        ax[i].set_ylabel('Murders per 100,000 people')
+ax[1].legend(bbox_to_anchor=(1.05, 1.3), fontsize=6)
+plt.subplots_adjust(left=0.06, right=0.84)
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.statecrime.load_pandas()
+# Plot
+fig, ax = plt.subplots(2, 2, figsize=(9, 7))
+ax = ax.flatten()
+fig.suptitle('Statewide Crime Data 2009')
+for i, exog_name in enumerate(dataset['exog_name']):
+    for state in dataset['exog'].index:
+        x = dataset['exog'][exog_name][state]
+        y = dataset['endog'][state]
+        ax[i].scatter(x, y, label=state)
+        ax[i].set_xlabel(dataset['exog_name'][i])
+        ax[i].set_ylabel('Murders per 100,000 people')
+ax[1].legend(bbox_to_anchor=(1.05, 1.3), fontsize=6)
+plt.subplots_adjust(left=0.06, right=0.84)
+plt.show()
+```
+
+strikes
+-------
+
+### U.S. Strike Duration Data
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/strikes.html](https://www.statsmodels.org/devel/datasets/generated/strikes.html)
+
+**Sample Size:** 62
+
+**Exogenous Variables:**
+
+- `iprod` : Unanticipated industrial production
+
+**Endogenous Variable:**
+
+- `duration` : Duration of the strike in days
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.strikes.load_pandas()
+# Plot
+fig, ax = plt.subplots()
+ax.scatter(dataset['exog'], dataset['endog'])
+ax.set_title('U.S. Strike Duration Data')
+ax.set_ylabel('Duration of the strike in days')
+ax.set_xlabel('Unanticipated industrial production')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.strikes.load_pandas()
+# Plot
+fig, ax = plt.subplots()
+ax.scatter(dataset['exog'], dataset['endog'])
+ax.set_title('U.S. Strike Duration Data')
+ax.set_ylabel('Duration of the strike in days')
+ax.set_xlabel('Unanticipated industrial production')
+plt.tight_layout()
+plt.show()
+```
+
+sunspots
+--------
+
+### Yearly sunspots data 1700-2008
+Documentation: [https://www.statsmodels.org/devel/datasets/generated/sunspots.html](https://www.statsmodels.org/devel/datasets/generated/sunspots.html)
+
+**Sample Size:** 309 (from 1700 to 2008 inclusive)
+
+**Variables:**
+
+- `YEAR` : Year
+- `SUNACTIVITY` : Number of sunspots for each year
+
+**Example Usage:**
+
+```{python, eval=FALSE}
+# Load the data
+dataset = sm.datasets.sunspots.load_pandas()
+# Plot
+fig, ax = plt.subplots()
+ax.scatter(dataset['data']['YEAR'], dataset['data']['SUNACTIVITY'])
+ax.set_title('Yearly Sunspots Data 1700-2008')
+ax.set_ylabel('Number of Sunspots')
+ax.set_xlabel('Year')
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo=FALSE, results='hide'}
+# Load the data
+dataset = sm.datasets.sunspots.load_pandas()
+# Plot
+fig, ax = plt.subplots()
+ax.scatter(dataset['data']['YEAR'], dataset['data']['SUNACTIVITY'])
+ax.set_title('Yearly Sunspots Data 1700-2008')
+ax.set_ylabel('Number of Sunspots')
+ax.set_xlabel('Year')
 plt.tight_layout()
 plt.show()
 ```
