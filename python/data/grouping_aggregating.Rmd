@@ -1,0 +1,319 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Grouping and Aggregating'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Created 2023-07-18 -->
+
+Grouping and aggregating data is also known as a "split-apply-combine" process: **splitting** the data into groups is followed by **applying** a function to each and **combining** them back into a single data frame. See the Pandas User Guide [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/groupby.html).
+
+Packages
+========
+The code on this page uses the Statsmodels, NumPy and Pandas packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install pandas
+```
+
+Replace `python3.11` with the version of Python you are using. Once installed, these packages can be imported into your Python script via the following:
+
+```{python}
+from statsmodels import api as sm
+import numpy as np
+import pandas as pd
+```
+
+Example Data
+============
+For this page we will use the "American National Election Survey 1996" dataset from Statsmodels (see the documentation [here](https://www.statsmodels.org/devel/datasets/generated/anes96.html)):
+
+```{python}
+# Load the data
+dataset = sm.datasets.anes96.load_pandas()
+```
+
+The data within this data set has 11 columns although we will only use two: `age` and `PID`. The `PID` column represents which political party each survey respondent identified with but is encoded as a number. We can decode it using the following dictionary:
+
+```{python}
+pid = {
+    0: 'Strong Democrat',
+    1: 'Weak Democrat',
+    2: 'Independent-Democrat',
+    3: 'Independent-Independent',
+    4: 'Independent-Republican',
+    5: 'Weak Republican',
+    6: 'Strong Republican',
+}
+```
+
+So let's go ahead with the pre-processing of our raw data:
+
+```{python}
+cols = ['PID', 'age']
+df = dataset['data'].loc[:, cols]
+df['PID'] = df['PID'].replace(pid)
+
+print(df.head(10))
+```
+
+Overall Statistics
+==================
+The numerical column(s) in the data set can be **described** using the `.describe()` method:
+
+```{python}
+print(df.describe())
+```
+
+Using `include='all'` will include the categorical column(s):
+
+```{python}
+print(df.describe(include='all'))
+```
+
+These summary statistics can be performed individually using Pandas's methods, for example `.mean()` will calculate the mean:
+
+```{python}
+mean = df['age'].mean()
+
+print(mean)
+```
+
+This can also be accomplished with NumPy's `mean()` function:
+
+```{python}
+mean = np.mean(df['age'])
+
+print(mean)
+```
+
+While this is fine for *entire columns* we often want to calculate the summary statistics for individual *groups* within the data, eg the mean age for each `PID` value. In order to do that we first need to group the data:
+
+Grouping
+========
+We can **group by** a column of categorical data via the `.groupby()` method, but this returns a `DataFrameGroupBy object` which is of no use to us:
+
+```{python}
+grouped = df.groupby('PID')
+
+print(grouped)
+```
+
+If we index one of the columns, we just get a different object type which is of no use:
+
+```{python}
+grouped = df.groupby('PID')['age']
+
+print(grouped)
+```
+
+So the grouping has been made, but we need to **aggregate** it before we can use it:
+
+Aggregating
+===========
+Pandas has 21 main built-in aggregation methods. All of them are listed [here](https://pandas.pydata.org/pandas-docs/stable/user_guide/groupby.html#aggregation) but the main ones are:
+
+- `.mean()` and `.median()` for central tendency
+- `.std()` for the standard deviation
+- `.min()` and `.max()` for the range
+- `.nunique()` for the **n**umber of **unique** values
+- `.count()` for the number of *non-null* values
+- `.sum()` for the sum
+
+```{python}
+means = df.groupby('PID')['age'].mean()
+
+print(means.head())
+```
+
+...or, because we only have one un-grouped column in this particular data frame, we can leave the column name out:
+
+```{python}
+means = df.groupby('PID').mean()
+
+print(means.head())
+```
+
+These values can also be sorted:
+
+```{python}
+means = df.groupby('PID')['age'].mean().sort_values()
+
+print(means.head())
+```
+
+This sorting is *ascending* by default. Sort descending by setting this behaviour to `False` via the keyword argument:
+
+```{python}
+means = df.groupby('PID')['age'].mean().sort_values(ascending=False)
+
+print(means.head())
+```
+
+Resetting the index is often more useful for downstream analysis:
+
+```{python}
+means = df.groupby('PID')['age'].mean().sort_values(ascending=False)
+means = means.reset_index()
+
+print(means.head())
+```
+
+If you want to rename the one column you have aggregated, it's easier to do this before resetting the index while it's still the only column in the data frame:
+
+```{python}
+means = df.groupby('PID')['age'].mean().sort_values(ascending=False)
+means.columns = ['mean_age']
+means = means.reset_index()
+
+print(means.head())
+```
+
+Using multiple methods one after another on an object is known as **chaining**.
+
+Multiple Columns
+================
+Let's look at two columns at once:
+
+```{python}
+cols = ['PID', 'age', 'TVnews']
+df = dataset['data'].loc[:, cols]
+df['PID'] = df['PID'].replace(pid)
+
+print(df.head(10))
+```
+
+Now, if we just want to perform one type of aggregation we can simply do the same thing as before:
+
+```{python}
+stats = df.groupby('PID').mean()
+
+print(stats)
+```
+
+However, if we want to have more control and perform different aggregation methods to different columns we need to be more specific. This can be done using the `.agg()` method:
+
+```{python}
+stats = df.groupby('PID').agg({'age': 'mean', 'TVnews': 'std'})
+
+print(stats)
+```
+
+Here we are calculating the *mean* for one column and the *standard deviation* for the other. Again, this step can be followed by resetting the index:
+
+```{python}
+stats = df.groupby('PID').agg({'age': 'mean', 'TVnews': 'std'}).reset_index()
+
+print(stats)
+```
+
+Custom Functions
+================
+We aren't limited to the built-in aggregation methods provided by Pandas, we can write our own functions and apply them to groups using the `.apply()` method:
+
+```{python}
+def binning(column):
+    """Separate ages into bins."""
+    mean_age = column.mean()
+    if mean_age < 45:
+        return '<45'
+    elif mean_age < 50:
+        return '45 to 50'
+    else:
+        return '50+'
+
+
+# Separate out the average ages of the groups into bins
+binned = df.groupby('PID')['age'].apply(binning)
+
+print(binned)
+```
+
+These custom functions can also take *arguments* as per normal:
+
+```{python}
+def over_45(column, normalise=False):
+    """Count the number of people over 45."""
+    mask = column < 45
+    if normalise:
+        return sum(mask) / len(mask)
+    else:
+        return sum(mask)
+
+
+# Get the proportion of people over 45
+binned = df.groupby('PID')['age'].apply(over_45, normalise=True)
+
+print(binned)
+```
+
+This example is an optional argument, so we don't actually need to use it:
+
+```{python}
+# Get the number of people over 45
+binned = df.groupby('PID')['age'].apply(over_45)
+
+print(binned)
+```
+
+Note that the built-in Pandas methods will always be fast compared to custom functions. This is because they take advantage of something known as **vectorisation** which is a particularly efficient for computation. Custom functions, on the other hand, effectively loop over all the elements in a column which is much slower.
+
+Lambda Functions
+================
+Another use of the `.apply()` method to apply custom functions is to define **lambda** functions. These functions use a dummy variable (usually "x") to represent the values in the column, and whatever you use "x" for then gets used on every value in the column. For example, here's how to use NumPy's `percentile()` function to get the 95th percentile of peoples' age for each group:
+
+```{python}
+# Group the data by PID
+grouped = df.groupby('PID')['age']
+# Get the 95th percentile of age for each group
+grouped = grouped.apply(lambda x: np.percentile(x, 95)).reset_index()
+# Sort the values
+grouped = grouped.sort_values('age')
+
+print(grouped)
+```
+
+Categorical Columns
+===================
+Finding things like the mean and median of a numeric column makes sense because those can be calculated, but what would it mean to do it for a categorical column? Categorical values - such as peoples political leanings - usually do not have an order. However, in certain situations it makes sense to give them one, eg to define a political spectrum from left-wing to right-wing. This can be done in Python with the `Categorical` function from Pandas:
+
+```{python}
+order = [
+    'Strong Democrat', 'Weak Democrat', 'Independent-Democrat',
+    'Independent-Independent', 'Independent-Republican', 'Weak Republican',
+    'Strong Republican',
+]
+df['PID'] = pd.Categorical(df['PID'], order, ordered=True)
+```
+
+Now that the `PID` column has *ordinal* values (ordered categorical values) the concept of finding, for example, a median makes sense:
+
+```{python}
+idx = np.median(df['PID'].cat.codes)
+median_category = order[int(idx)]
+
+print(median_category)
+```
+
+This is the 'middle' political leaning of the people that were surveyed.
+
+[⇦ Back](../../python.html)
+
+</font>

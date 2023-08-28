@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Data Handling in Python: Grouping and Aggregating</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -451,12 +451,12 @@ ue[K.g.Aa]=1,ue[K.g.gh]=1,ue[K.g.hh]=1,ue[K.g.ih]=1,ue[K.g.jh]=1,ue[K.g.Jb]=1,ue
 Fe=Ge;var He,Ie=!1;He=Ie;var Je,Ke=!1;Je=Ke;var Le,Me=!1;Le=Me;ye.Pd="www.googletagmanager.com";
 var Ne=""+ye.Pd+(Fe?"/gtag/js":"/gtm.js"),Oe=null,Pe=null,Qe={},Re={},Se={},Te=function(){var a=ze.sequence||1;ze.sequence=a+1;return a};ye.Gi="";var Ue="";ye.we=Ue;var Ve=new Aa,We={},Xe={},$e={name:ye.da,set:function(a,b){H(Qa(a,b),We);Ye()},get:function(a){return Ze(a,2)},reset:function(){Ve=new Aa;We={};Ye()}},Ze=function(a,b){return 2!=b?Ve.get(a):af(a)},af=function(a){var b,c=a.split(".");b=b||[];for(var d=We,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},bf=function(a,b){Xe.hasOwnProperty(a)||(Ve.set(a,b),H(Qa(a,b),We),Ye())},Ye=function(a){k(Xe,function(b,c){Ve.set(b,c);H(Qa(b),We);H(Qa(b,
 c),We);a&&delete Xe[b]})},cf=function(a,b){var c,d=1!==(void 0===b?2:b)?af(a):Ve.get(a);"array"===fc(d)||"object"===fc(d)?c=H(d):c=d;return c};var M=[];M[5]=!0;M[6]=!0;M[11]=!0;
-M[12]=!0;M[7]=!0;M[8]=!0;M[21]=!0;M[9]=!0;
+M[7]=!0;M[8]=!0;M[21]=!0;M[9]=!0;
 M[10]=!0;M[13]=!0;M[14]=!0;M[15]=!0;
 M[17]=!0;
 M[23]=!0;M[24]=!0;M[25]=!0;
 M[27]=!0;M[19]=!0;M[28]=!0;M[31]=!0;M[32]=!0;
-M[33]=!0;M[34]=!0;M[36]=!0;M[37]=!0;
+M[33]=!0;M[34]=!0;M[35]=!0;M[36]=!0;M[37]=!0;
 M[39]=!0;M[41]=!0;
 M[42]=!0;M[43]=!0;M[44]=!0;
 
@@ -712,252 +712,365 @@ Jg){var S=Qg(!0,!0);Tb(S)}}});
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Data Handling in Python:</font><br>Grouping and Aggregating</h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#packages"><span class="toc-section-number">1</span> Packages</a></li>
+<li><a href="#example-data"><span class="toc-section-number">2</span> Example Data</a></li>
+<li><a href="#overall-statistics"><span class="toc-section-number">3</span> Overall Statistics</a></li>
+<li><a href="#grouping"><span class="toc-section-number">4</span> Grouping</a></li>
+<li><a href="#aggregating"><span class="toc-section-number">5</span> Aggregating</a></li>
+<li><a href="#multiple-columns"><span class="toc-section-number">6</span> Multiple Columns</a></li>
+<li><a href="#custom-functions"><span class="toc-section-number">7</span> Custom Functions</a></li>
+<li><a href="#lambda-functions"><span class="toc-section-number">8</span> Lambda Functions</a></li>
+<li><a href="#categorical-columns"><span class="toc-section-number">9</span> Categorical Columns</a></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Data Types</a></li>
-<li><a href="python/intro/errors.html">Errors</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">f-Strings</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
+<p><a href="../../python.html">⇦ Back</a></p>
+<!-- Created 2023-07-18 -->
+<p>Grouping and aggregating data is also known as a “split-apply-combine” process: <strong>splitting</strong> the data into groups is followed by <strong>applying</strong> a function to each and <strong>combining</strong> them back into a single data frame. See the Pandas User Guide <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/groupby.html">here</a>.</p>
+<div id="packages" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Packages</h1>
+<p>The code on this page uses the Statsmodels, NumPy and Pandas packages. These can be installed from the terminal with:</p>
+<pre class="bash"><code>$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install pandas</code></pre>
+<p>Replace <code>python3.11</code> with the version of Python you are using. Once installed, these packages can be imported into your Python script via the following:</p>
+<pre class="python"><code>from statsmodels import api as sm
+import numpy as np
+import pandas as pd</code></pre>
 </div>
-<div id="advanced-python" class="section level2">
-<h2>Advanced Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/advanced/lists.html">Lists-of-Lists and List Comprehensions</a></li>
-<li><a href="python/advanced/dictionaries.html">Dictionaries-of-Dictionaries and Dictionary Comprehensions</a></li>
-<li>Data Frames:
-<ul>
-<li><a href="python/advanced/data_frames_intro.html">Introduction</a></li>
-<li><a href="python/advanced/data_frames_searching.html">Searching, Finding, Filtering</a></li>
-<li><a href="python/advanced/data_frames_calculations.html">Calculations</a></li>
-<li><a href="python/advanced/data_frames_multi_level.html">Multiple Levels</a></li>
-</ul></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/advanced/time.html">The <code>time</code> module</a></li>
-<li><a href="python/advanced/datetime.html">The <code>datetime</code> module</a> <!-- - [Timezones] --> <!-- - [Time a Script] --></li>
-</ul></li>
-<li><a href="python/advanced/args_kwargs.html">Args and Kwargs</a> <!-- 6. Python and the Terminal --> <!--     - Parsing Command-Line Arguments --> <!--     - Run Terminal Commands in Python --> <!--     - Prompt for User Input --></li>
-<li><a href="python/advanced/argument_parsing.html">Parsing Command-Line Arguments</a> <!-- 7. [Webscraping] --> <!-- 8. [Bitwise Operators] --></li>
-<li><a href="python/advanced/error_handling.html">Error Handling</a> <!-- 10. [Linting] --> <!-- 11. [Variable Scope] --></li>
-</ol>
+<div id="example-data" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Example Data</h1>
+<p>For this page we will use the “American National Election Survey 1996” dataset from Statsmodels (see the documentation <a href="https://www.statsmodels.org/devel/datasets/generated/anes96.html">here</a>):</p>
+<pre class="python"><code># Load the data
+dataset = sm.datasets.anes96.load_pandas()</code></pre>
+<p>The data within this data set has 11 columns although we will only use two: <code>age</code> and <code>PID</code>. The <code>PID</code> column represents which political party each survey respondent identified with but is encoded as a number. We can decode it using the following dictionary:</p>
+<pre class="python"><code>pid = {
+    0: &#39;Strong Democrat&#39;,
+    1: &#39;Weak Democrat&#39;,
+    2: &#39;Independent-Democrat&#39;,
+    3: &#39;Independent-Independent&#39;,
+    4: &#39;Independent-Republican&#39;,
+    5: &#39;Weak Republican&#39;,
+    6: &#39;Strong Republican&#39;,
+}</code></pre>
+<p>So let’s go ahead with the pre-processing of our raw data:</p>
+<pre class="python"><code>cols = [&#39;PID&#39;, &#39;age&#39;]
+df = dataset[&#39;data&#39;].loc[:, cols]
+df[&#39;PID&#39;] = df[&#39;PID&#39;].replace(pid)
+
+print(df.head(10))</code></pre>
+<pre><code>##                        PID   age
+## 0        Strong Republican  36.0
+## 1            Weak Democrat  20.0
+## 2            Weak Democrat  24.0
+## 3            Weak Democrat  28.0
+## 4          Strong Democrat  68.0
+## 5            Weak Democrat  21.0
+## 6            Weak Democrat  77.0
+## 7   Independent-Republican  21.0
+## 8  Independent-Independent  31.0
+## 9          Strong Democrat  39.0</code></pre>
 </div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
-<ol style="list-style-type: decimal">
-<li>Example Datasets
-<ul>
-<li><a href="python/data/sklearn_datasets.html">From Scikit-Learn</a></li>
-<li><a href="python/data/statsmodels_datasets.html">From Statsmodels</a></li>
-</ul></li>
-<li><a href="python/data/create_export_import_convert.html">File IO: Create, Export, Import and Convert Data</a>
-<ul>
-<li><a href="python/data/export_to_word.html">Export Tables to Word</a></li>
-</ul></li>
-<li>Data Frames: <!--     - [Cleaning] -->
-<ul>
-<li><a href="python/data/merging.html">Merging</a></li>
-<li><a href="python/data/grouping_aggregating.html">Grouping and Aggregating</a> <!--     - [Pivoting] --></li>
-</ul></li>
-<li><a href="python/data/drop_columns_false.html">Drop Empty Columns from Pandas Data Frames</a></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-<li><a href="python/data/vlookup_unblinding.html">Using VLOOKUP for Unblinding</a></li>
-<li><a href="python/data/clinical_study_design.html">Clinical Study Design</a></li>
-</ol>
+<div id="overall-statistics" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Overall Statistics</h1>
+<p>The numerical column(s) in the data set can be <strong>described</strong> using the <code>.describe()</code> method:</p>
+<pre class="python"><code>print(df.describe())</code></pre>
+<pre><code>##               age
+## count  944.000000
+## mean    47.043432
+## std     16.423130
+## min     19.000000
+## 25%     34.000000
+## 50%     44.000000
+## 75%     58.000000
+## max     91.000000</code></pre>
+<p>Using <code>include=&#39;all&#39;</code> will include the categorical column(s):</p>
+<pre class="python"><code>print(df.describe(include=&#39;all&#39;))</code></pre>
+<pre><code>##                     PID         age
+## count               944  944.000000
+## unique                7         NaN
+## top     Strong Democrat         NaN
+## freq                200         NaN
+## mean                NaN   47.043432
+## std                 NaN   16.423130
+## min                 NaN   19.000000
+## 25%                 NaN   34.000000
+## 50%                 NaN   44.000000
+## 75%                 NaN   58.000000
+## max                 NaN   91.000000</code></pre>
+<p>These summary statistics can be performed individually using Pandas’s methods, for example <code>.mean()</code> will calculate the mean:</p>
+<pre class="python"><code>mean = df[&#39;age&#39;].mean()
+
+print(mean)</code></pre>
+<pre><code>## 47.043432203389834</code></pre>
+<p>This can also be accomplished with NumPy’s <code>mean()</code> function:</p>
+<pre class="python"><code>mean = np.mean(df[&#39;age&#39;])
+
+print(mean)</code></pre>
+<pre><code>## 47.043432203389834</code></pre>
+<p>While this is fine for <em>entire columns</em> we often want to calculate the summary statistics for individual <em>groups</em> within the data, eg the mean age for each <code>PID</code> value. In order to do that we first need to group the data:</p>
 </div>
-<div id="graphs-using-matplotlib" class="section level2">
-<h2>Graphs (using Matplotlib)</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols, Line Styles and Colours</a>
-<ul>
-<li><a href="python/graphs/colours_good_figures.html">Colours that Look Good in Figures</a></li>
-</ul></li>
-<li><a href="python/graphs/time_data.html">Working with Time-Based Data</a></li>
-<li>Graphing using the ‘state machine interface’ (aka the pyplot style) <em>- This is quicker than the object-orientated style for simple plots but it gives you less control:</em>
-<ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing using axes objects (aka the object-orientated style) <em>- This is more complicated than the pyplot style but it gives you more control:</em>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a></li>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman Plots</a></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One Group of Data</a>
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_significance.html">Significance Bars</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li>Graphing directly from Pandas data frames <em>- This is essentially the same as the above methods because Pandas uses Matplotlib in the background:</em>
-<ul>
-<li><a href="python/graphs/pandas/line_scatter_box_histograms_pie_subplots.html">Line, Scatter &amp; Box Plots, Histograms, Pie Charts and Sub-Plots</a></li>
-<li><a href="python/graphs/pandas/bar_plots.html">Bar Plots</a></li>
-</ul></li>
-<li>Axes and Labels:
-<ul>
-<li><a href="python/graphs/axes_and_labels/latex_in_labels.html">LaTeX in Labels</a></li>
-<li><a href="python/graphs/axes_and_labels/changing_the_font.html">Changing the Font</a></li>
-</ul></li>
-</ol>
+<div id="grouping" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Grouping</h1>
+<p>We can <strong>group by</strong> a column of categorical data via the <code>.groupby()</code> method, but this returns a <code>DataFrameGroupBy object</code> which is of no use to us:</p>
+<pre class="python"><code>grouped = df.groupby(&#39;PID&#39;)
+
+print(grouped)</code></pre>
+<pre><code>## &lt;pandas.core.groupby.generic.DataFrameGroupBy object at 0x7fdce8b0ef90&gt;</code></pre>
+<p>If we index one of the columns, we just get a different object type which is of no use:</p>
+<pre class="python"><code>grouped = df.groupby(&#39;PID&#39;)[&#39;age&#39;]
+
+print(grouped)</code></pre>
+<pre><code>## &lt;pandas.core.groupby.generic.SeriesGroupBy object at 0x7fdce989a390&gt;</code></pre>
+<p>So the grouping has been made, but we need to <strong>aggregate</strong> it before we can use it:</p>
 </div>
-<div id="mathematics" class="section level2">
-<h2>Mathematics</h2>
-<ol style="list-style-type: decimal">
-<li>Curve Fitting:
+<div id="aggregating" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Aggregating</h1>
+<p>Pandas has 21 main built-in aggregation methods. All of them are listed <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/groupby.html#aggregation">here</a> but the main ones are:</p>
 <ul>
-<li>Linear Functions:
-<ul>
-<li><a href="python/mathematics/curve_fitting/linear_comparison.html">Comparison of Methods</a></li>
-<li><a href="python/mathematics/curve_fitting/linear_regression.html">Linear Regression</a></li>
-</ul></li>
-<li><a href="python/mathematics/curve_fitting/exponential.html">Exponential Functions</a></li>
-<li><a href="python/mathematics/curve_fitting/logarithmic.html">Logarithmic Functions</a></li>
-</ul></li>
-<li><a href="python/mathematics/combinations_permutations.html">Combinations and Permutations</a></li>
-</ol>
+<li><code>.mean()</code> and <code>.median()</code> for central tendency</li>
+<li><code>.std()</code> for the standard deviation</li>
+<li><code>.min()</code> and <code>.max()</code> for the range</li>
+<li><code>.nunique()</code> for the <strong>n</strong>umber of <strong>unique</strong> values</li>
+<li><code>.count()</code> for the number of <em>non-null</em> values</li>
+<li><code>.sum()</code> for the sum</li>
+</ul>
+<pre class="python"><code>means = df.groupby(&#39;PID&#39;)[&#39;age&#39;].mean()
+
+print(means.head())</code></pre>
+<pre><code>## PID
+## Independent-Democrat       44.083333
+## Independent-Independent    47.324324
+## Independent-Republican     48.968085
+## Strong Democrat            50.165000
+## Strong Republican          48.091429
+## Name: age, dtype: float64</code></pre>
+<p>…or, because we only have one un-grouped column in this particular data frame, we can leave the column name out:</p>
+<pre class="python"><code>means = df.groupby(&#39;PID&#39;).mean()
+
+print(means.head())</code></pre>
+<pre><code>##                                age
+## PID                               
+## Independent-Democrat     44.083333
+## Independent-Independent  47.324324
+## Independent-Republican   48.968085
+## Strong Democrat          50.165000
+## Strong Republican        48.091429</code></pre>
+<p>These values can also be sorted:</p>
+<pre class="python"><code>means = df.groupby(&#39;PID&#39;)[&#39;age&#39;].mean().sort_values()
+
+print(means.head())</code></pre>
+<pre><code>## PID
+## Weak Democrat              43.622222
+## Independent-Democrat       44.083333
+## Weak Republican            46.620000
+## Independent-Independent    47.324324
+## Strong Republican          48.091429
+## Name: age, dtype: float64</code></pre>
+<p>This sorting is <em>ascending</em> by default. Sort descending by setting this behaviour to <code>False</code> via the keyword argument:</p>
+<pre class="python"><code>means = df.groupby(&#39;PID&#39;)[&#39;age&#39;].mean().sort_values(ascending=False)
+
+print(means.head())</code></pre>
+<pre><code>## PID
+## Strong Democrat            50.165000
+## Independent-Republican     48.968085
+## Strong Republican          48.091429
+## Independent-Independent    47.324324
+## Weak Republican            46.620000
+## Name: age, dtype: float64</code></pre>
+<p>Resetting the index is often more useful for downstream analysis:</p>
+<pre class="python"><code>means = df.groupby(&#39;PID&#39;)[&#39;age&#39;].mean().sort_values(ascending=False)
+means = means.reset_index()
+
+print(means.head())</code></pre>
+<pre><code>##                        PID        age
+## 0          Strong Democrat  50.165000
+## 1   Independent-Republican  48.968085
+## 2        Strong Republican  48.091429
+## 3  Independent-Independent  47.324324
+## 4          Weak Republican  46.620000</code></pre>
+<p>If you want to rename the one column you have aggregated, it’s easier to do this before resetting the index while it’s still the only column in the data frame:</p>
+<pre class="python"><code>means = df.groupby(&#39;PID&#39;)[&#39;age&#39;].mean().sort_values(ascending=False)
+means.columns = [&#39;mean_age&#39;]
+means = means.reset_index()
+
+print(means.head())</code></pre>
+<pre><code>##                        PID        age
+## 0          Strong Democrat  50.165000
+## 1   Independent-Republican  48.968085
+## 2        Strong Republican  48.091429
+## 3  Independent-Independent  47.324324
+## 4          Weak Republican  46.620000</code></pre>
+<p>Using multiple methods one after another on an object is known as <strong>chaining</strong>.</p>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/statistics/descriptive_statistics.html">Descriptive Statistics</a></li>
-<li><a href="python/statistics/confidence_intervals.html">Confidence Intervals</a></li>
-<li><a href="python/statistics/effect_size.html">Effect Size</a></li>
-<li>Distributions:
-<ul>
-<li><a href="python/statistics/distributions/uniform.html">Uniform Distributions</a></li>
-<li><a href="python/statistics/distributions/binomial.html">Binomial Distributions</a></li>
-<li><a href="python/statistics/distributions/normal.html">Normal Distributions</a>
-<ul>
-<li><a href="python/statistics/distributions/tests_for_normality.html">Tests for Normality</a></li>
-</ul></li>
-<li><a href="python/statistics/distributions/students_t.html">Student’s <em>t</em>-Distributions</a></li>
-</ul></li>
-<li>Hypothesis Testing:
-<ul>
-<li>Regression:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/constant_regression.html">Constant Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/simple_linear_regression.html">Simple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/multiple_linear_regression.html">Multiple Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/quadratic_regression.html">Quadratic Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/passing_bablok.html">Passing–Bablok Regression</a></li>
-</ul></li>
-<li><em>t</em>-Tests:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample <em>t</em>-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired Two-Sample <em>t</em>-Test</a></li>
-<li>Two One-Sided <em>t</em>-Tests (TOST):
-<ul>
-<li><a href="python/statistics/hypothesis_testing/tost_unpaired.html">Unpaired</a></li>
-<li><a href="python/statistics/hypothesis_testing/tost_paired.html">Paired</a></li>
-</ul></li>
-</ul></li>
-<li><em>Z</em>-Tests:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_z_test_proportion.html">One-Sample <em>Z</em>-Test for a Proportion</a></li>
-<li><a href="python/statistics/hypothesis_testing/two_sample_z_test_proportion.html">Two-Sample <em>Z</em>-Test for a Proportion</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney <em>U</em> Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a></li>
-<li><a href="python/statistics/hypothesis_testing/binomial_test.html">Binomial Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared Tests</a></li>
-</ul></li>
-<li>Agreement <em>- Including accuracy, precision (repeatability and reproducibility), variability and equivalence:</em>
-<ul>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s Kappa</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability Coefficient</a></li>
-<li><a href="python/statistics/agreement/coefficient_of_variation.html">Coefficient of Variation</a></li>
-<li>Correlation Coefficients:
-<ul>
-<li><a href="python/statistics/agreement/pearson_correlation_coefficient.html">Pearson Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/spearmans_rank_correlation_coefficient.html">Spearman’s Rank Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/concordance_correlation_coefficient.html">Concordance Correlation Coefficient (CCC)</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass Correlation Coefficient (ICC)</a></li>
-</ul></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional Bland-Altman Analysis</a> (native space)
-<ul>
-<li><a href="python/statistics/agreement/bland_altman_sample_size.html">Sample Size Calculations</a></li>
-</ul></li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a> (log 10 space)</li>
-</ul></li>
-</ul></li>
-<li>Risk:
-<ul>
-<li><a href="python/statistics/risk/odds_ratio.html">Odds Ratio</a></li>
-<li><a href="python/statistics/risk/hazard_ratio.html">Hazard Ratio</a></li>
-</ul></li>
-</ol>
+<div id="multiple-columns" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Multiple Columns</h1>
+<p>Let’s look at two columns at once:</p>
+<pre class="python"><code>cols = [&#39;PID&#39;, &#39;age&#39;, &#39;TVnews&#39;]
+df = dataset[&#39;data&#39;].loc[:, cols]
+df[&#39;PID&#39;] = df[&#39;PID&#39;].replace(pid)
+
+print(df.head(10))</code></pre>
+<pre><code>##                        PID   age  TVnews
+## 0        Strong Republican  36.0     7.0
+## 1            Weak Democrat  20.0     1.0
+## 2            Weak Democrat  24.0     7.0
+## 3            Weak Democrat  28.0     4.0
+## 4          Strong Democrat  68.0     7.0
+## 5            Weak Democrat  21.0     3.0
+## 6            Weak Democrat  77.0     7.0
+## 7   Independent-Republican  21.0     1.0
+## 8  Independent-Independent  31.0     7.0
+## 9          Strong Democrat  39.0     0.0</code></pre>
+<p>Now, if we just want to perform one type of aggregation we can simply do the same thing as before:</p>
+<pre class="python"><code>stats = df.groupby(&#39;PID&#39;).mean()
+
+print(stats)</code></pre>
+<pre><code>##                                age    TVnews
+## PID                                         
+## Independent-Democrat     44.083333  3.675926
+## Independent-Independent  47.324324  3.540541
+## Independent-Republican   48.968085  3.776596
+## Strong Democrat          50.165000  4.350000
+## Strong Republican        48.091429  3.702857
+## Weak Democrat            43.622222  3.311111
+## Weak Republican          46.620000  3.480000</code></pre>
+<p>However, if we want to have more control and perform different aggregation methods to different columns we need to be more specific. This can be done using the <code>.agg()</code> method:</p>
+<pre class="python"><code>stats = df.groupby(&#39;PID&#39;).agg({&#39;age&#39;: &#39;mean&#39;, &#39;TVnews&#39;: &#39;std&#39;})
+
+print(stats)</code></pre>
+<pre><code>##                                age    TVnews
+## PID                                         
+## Independent-Democrat     44.083333  2.681988
+## Independent-Independent  47.324324  3.078551
+## Independent-Republican   48.968085  2.692699
+## Strong Democrat          50.165000  2.651917
+## Strong Republican        48.091429  2.794235
+## Weak Democrat            43.622222  2.533108
+## Weak Republican          46.620000  2.521638</code></pre>
+<p>Here we are calculating the <em>mean</em> for one column and the <em>standard deviation</em> for the other. Again, this step can be followed by resetting the index:</p>
+<pre class="python"><code>stats = df.groupby(&#39;PID&#39;).agg({&#39;age&#39;: &#39;mean&#39;, &#39;TVnews&#39;: &#39;std&#39;}).reset_index()
+
+print(stats)</code></pre>
+<pre><code>##                        PID        age    TVnews
+## 0     Independent-Democrat  44.083333  2.681988
+## 1  Independent-Independent  47.324324  3.078551
+## 2   Independent-Republican  48.968085  2.692699
+## 3          Strong Democrat  50.165000  2.651917
+## 4        Strong Republican  48.091429  2.794235
+## 5            Weak Democrat  43.622222  2.533108
+## 6          Weak Republican  46.620000  2.521638</code></pre>
 </div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to Images</a></li>
-<li><a href="python/utilities/extract_text_from_pdfs.html">Extract Text From PDFs</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset Times</a></li>
-<li><a href="python/utilities/passwords.html">Password Management</a></li>
-<li><a href="python/utilities/the_os_module.html">The <code>os</code> Module</a>
-<ul>
-<li><a href="python/utilities/move_and_rename.html">Move and Rename Files</a></li>
-<li><a href="python/utilities/cut_copy_files.html">Cut and Copy Files</a></li>
-</ul></li>
-<li><a href="python/utilities/time_a_script.html">Time a Script</a></li>
-<li><a href="python/utilities/creating_a_package.html">Creating a Package</a></li>
-<li><a href="python/utilities/testing_your_code.html">Testing Your Code</a></li>
-</ol>
+<div id="custom-functions" class="section level1" number="7">
+<h1 number="7"><span class="header-section-number">7</span> Custom Functions</h1>
+<p>We aren’t limited to the built-in aggregation methods provided by Pandas, we can write our own functions and apply them to groups using the <code>.apply()</code> method:</p>
+<pre class="python"><code>def binning(column):
+    &quot;&quot;&quot;Separate ages into bins.&quot;&quot;&quot;
+    mean_age = column.mean()
+    if mean_age &lt; 45:
+        return &#39;&lt;45&#39;
+    elif mean_age &lt; 50:
+        return &#39;45 to 50&#39;
+    else:
+        return &#39;50+&#39;
+
+
+# Separate out the average ages of the groups into bins
+binned = df.groupby(&#39;PID&#39;)[&#39;age&#39;].apply(binning)
+
+print(binned)</code></pre>
+<pre><code>## PID
+## Independent-Democrat            &lt;45
+## Independent-Independent    45 to 50
+## Independent-Republican     45 to 50
+## Strong Democrat                 50+
+## Strong Republican          45 to 50
+## Weak Democrat                   &lt;45
+## Weak Republican            45 to 50
+## Name: age, dtype: object</code></pre>
+<p>These custom functions can also take <em>arguments</em> as per normal:</p>
+<pre class="python"><code>def over_45(column, normalise=False):
+    &quot;&quot;&quot;Count the number of people over 45.&quot;&quot;&quot;
+    mask = column &lt; 45
+    if normalise:
+        return sum(mask) / len(mask)
+    else:
+        return sum(mask)
+
+
+# Get the proportion of people over 45
+binned = df.groupby(&#39;PID&#39;)[&#39;age&#39;].apply(over_45, normalise=True)
+
+print(binned)</code></pre>
+<pre><code>## PID
+## Independent-Democrat       0.620370
+## Independent-Independent    0.459459
+## Independent-Republican     0.425532
+## Strong Democrat            0.445000
+## Strong Republican          0.480000
+## Weak Democrat              0.555556
+## Weak Republican            0.566667
+## Name: age, dtype: float64</code></pre>
+<p>This example is an optional argument, so we don’t actually need to use it:</p>
+<pre class="python"><code># Get the number of people over 45
+binned = df.groupby(&#39;PID&#39;)[&#39;age&#39;].apply(over_45)
+
+print(binned)</code></pre>
+<pre><code>## PID
+## Independent-Democrat        67
+## Independent-Independent     17
+## Independent-Republican      40
+## Strong Democrat             89
+## Strong Republican           84
+## Weak Democrat              100
+## Weak Republican             85
+## Name: age, dtype: int64</code></pre>
+<p>Note that the built-in Pandas methods will always be fast compared to custom functions. This is because they take advantage of something known as <strong>vectorisation</strong> which is a particularly efficient for computation. Custom functions, on the other hand, effectively loop over all the elements in a column which is much slower.</p>
+</div>
+<div id="lambda-functions" class="section level1" number="8">
+<h1 number="8"><span class="header-section-number">8</span> Lambda Functions</h1>
+<p>Another use of the <code>.apply()</code> method to apply custom functions is to define <strong>lambda</strong> functions. These functions use a dummy variable (usually “x”) to represent the values in the column, and whatever you use “x” for then gets used on every value in the column. For example, here’s how to use NumPy’s <code>percentile()</code> function to get the 95th percentile of peoples’ age for each group:</p>
+<pre class="python"><code># Group the data by PID
+grouped = df.groupby(&#39;PID&#39;)[&#39;age&#39;]
+# Get the 95th percentile of age for each group
+grouped = grouped.apply(lambda x: np.percentile(x, 95)).reset_index()
+# Sort the values
+grouped = grouped.sort_values(&#39;age&#39;)
+
+print(grouped)</code></pre>
+<pre><code>##                        PID    age
+## 5            Weak Democrat  69.05
+## 1  Independent-Independent  74.00
+## 6          Weak Republican  75.00
+## 0     Independent-Democrat  76.00
+## 2   Independent-Republican  76.00
+## 3          Strong Democrat  78.00
+## 4        Strong Republican  81.00</code></pre>
+</div>
+<div id="categorical-columns" class="section level1" number="9">
+<h1 number="9"><span class="header-section-number">9</span> Categorical Columns</h1>
+<p>Finding things like the mean and median of a numeric column makes sense because those can be calculated, but what would it mean to do it for a categorical column? Categorical values - such as peoples political leanings - usually do not have an order. However, in certain situations it makes sense to give them one, eg to define a political spectrum from left-wing to right-wing. This can be done in Python with the <code>Categorical</code> function from Pandas:</p>
+<pre class="python"><code>order = [
+    &#39;Strong Democrat&#39;, &#39;Weak Democrat&#39;, &#39;Independent-Democrat&#39;,
+    &#39;Independent-Independent&#39;, &#39;Independent-Republican&#39;, &#39;Weak Republican&#39;,
+    &#39;Strong Republican&#39;,
+]
+df[&#39;PID&#39;] = pd.Categorical(df[&#39;PID&#39;], order, ordered=True)</code></pre>
+<p>Now that the <code>PID</code> column has <em>ordinal</em> values (ordered categorical values) the concept of finding, for example, a median makes sense:</p>
+<pre class="python"><code>idx = np.median(df[&#39;PID&#39;].cat.codes)
+median_category = order[int(idx)]
+
+print(median_category)</code></pre>
+<pre><code>## Independent-Democrat</code></pre>
+<p>This is the ‘middle’ political leaning of the people that were surveyed.</p>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>
 
