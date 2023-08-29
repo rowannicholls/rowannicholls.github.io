@@ -1,0 +1,234 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Pivot Tables'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Created 2020-09-24 -->
+<!-- Updated 2023-08-25 -->
+<!-- Updated 2023-08-28 -->
+
+Packages
+========
+The code on this page uses the Statsmodels, Pandas, Seaborn and Matplotlib packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install pandas
+$ python3.11 -m pip install seaborn
+$ python3.11 -m pip install matplotlib
+```
+
+Replace `python3.11` with the version of Python you are using. Once installed, these packages can be imported into your Python script via the following:
+
+```{python}
+from statsmodels import api as sm
+import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
+```
+
+```{python, echo = FALSE}
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.max_colwidth', 40)
+pd.set_option('display.width', 200)
+```
+
+Example Data
+============
+For this page we will use the "American National Election Survey 1996" dataset from Statsmodels (see the documentation [here](https://www.statsmodels.org/devel/datasets/generated/anes96.html)):
+
+```{python}
+# Load the data
+dataset = sm.datasets.anes96.load_pandas()
+```
+
+The data within this data set has 11 columns but we will only use three of them:
+
+- `PID` : The political party with which the survey respondent identified
+- `educ` : Education level
+- `selfLR` : Self-reported political leanings from "Left" to "Right" on a scale of 1 to 7
+
+All three of these columns are numerically encoded: they contain numbers which represent their categorical meaning. We will decode the `PID` and `educ` columns as follows:
+
+```{python}
+pid = {
+    0: 'Strong Democrat',
+    1: 'Weak Democrat',
+    2: 'Indep-Democrat',
+    3: 'Indep-Indep',
+    4: 'Indep-Republican',
+    5: 'Weak Republican',
+    6: 'Strong Republican',
+}
+educ = {
+    1: '1-8 grades',
+    2: 'Some high school',
+    3: 'High school',
+    4: 'Some college',
+    5: 'College degree',
+    6: "Master's",
+    7: 'PhD',
+}
+cols = ['PID', 'educ', 'selfLR']
+df = dataset['data'].loc[:, cols]
+df['PID'] = df['PID'].replace(pid)
+df['educ'] = df['educ'].replace(educ)
+
+print(df.head(10))
+```
+
+Pivot Tables
+============
+A pivot table takes the groups from within a data frame and re-organises the data according to those groups. Pandas has two methods that will do this: `.pivot()` and `.pivot_table()`. The difference is that the first needs the data frame to already be grouped while the second can do the grouping, aggregating and pivoting in one step.
+
+`.pivot()`
+----------
+The fact that this method requires a data frame that is already grouped is not a problem because we can use the `.groupby()` method for this (see [this](grouping_aggregating.html) page for more):
+
+- `.groupby()` outputs data in **long** format
+- `.pivot()` outputs data in **wide** format
+
+Let's have a go with getting the *mean* value for respondents' political leanings, grouped by political party identification and education level:
+
+```{python}
+grouped = df.groupby(['PID', 'educ'])['selfLR'].mean()
+grouped = grouped.reset_index()
+
+print(grouped.head())
+```
+
+And, now that the data is grouped, we can pivot it:
+
+```{python}
+pivot_table = grouped.pivot(index='PID', columns='educ', values='selfLR')
+
+print(pivot_table)
+```
+
+Heat Map
+--------
+This data is perfect for plotting in a heat map, although before we do that it would be clever to re-order the columns into their logical order. The easiest way to do that in this example is just to start again, so here we go:
+
+```{python, eval = FALSE}
+# Load the data
+dataset = sm.datasets.anes96.load_pandas()
+# Select the columns
+cols = ['PID', 'educ', 'selfLR']
+df = dataset['data'].loc[:, cols]
+# Group the data
+grouped = df.groupby(['PID', 'educ'])['selfLR'].mean()
+grouped = grouped.reset_index()
+# Pivot
+pivot_table = grouped.pivot(index='PID', columns='educ', values='selfLR')
+pivot_table = pivot_table.rename(index=pid)
+pivot_table = pivot_table.rename(columns=educ)
+# Plot
+label = 'Self-Reported Political Leanings'
+sns.heatmap(pivot_table, annot=True, cbar_kws={'label': label})
+plt.ylabel('Political Party Identified With')
+plt.xlabel('Education Level')
+plt.xticks(rotation=60)
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Load the data
+dataset = sm.datasets.anes96.load_pandas()
+# Select the columns
+cols = ['PID', 'educ', 'selfLR']
+df = dataset['data'].loc[:, cols]
+# Group the data
+grouped = df.groupby(['PID', 'educ'])['selfLR'].mean()
+grouped = grouped.reset_index()
+# Pivot
+pivot_table = grouped.pivot(index='PID', columns='educ', values='selfLR')
+pivot_table = pivot_table.rename(index=pid)
+pivot_table = pivot_table.rename(columns=educ)
+# Plot
+label = 'Self-Reported Political Leanings'
+sns.heatmap(pivot_table, annot=True, cbar_kws={'label': label})
+plt.ylabel('Political Party Identified With')
+plt.xlabel('Education Level')
+plt.xticks(rotation=60)
+plt.tight_layout()
+plt.show()
+```
+
+`.pivot_table()`
+----------------
+Instead of chaining `.groupby()`, `.mean()`, `.reset_index()` and `.pivot()` we can do it all with `.pivot_table()` as follows:
+
+```{python}
+# Load the data
+dataset = sm.datasets.anes96.load_pandas()
+# Select the columns
+cols = ['PID', 'educ', 'selfLR']
+df = dataset['data'].loc[:, cols]
+# Decode the values
+pid = {
+    0: 'Strong Democrat',
+    1: 'Weak Democrat',
+    2: 'Indep-Democrat',
+    3: 'Indep-Indep',
+    4: 'Indep-Republican',
+    5: 'Weak Republican',
+    6: 'Strong Republican',
+}
+educ = {
+    1: '1-8 grades',
+    2: 'Some high school',
+    3: 'High school',
+    4: 'Some college',
+    5: 'College degree',
+    6: "Master's",
+    7: 'PhD',
+}
+df['PID'] = df['PID'].replace(pid)
+df['educ'] = df['educ'].replace(educ)
+
+# Create a pivot table in one step
+pivot_table = df.pivot_table(
+    index='PID', columns='educ', values='selfLR', aggfunc='mean'
+)
+
+print(pivot_table)
+```
+
+Note that `df.pivot_table()` is the same as `pd.pivot_table(df)`:
+
+```{python}
+pivot_table = pd.pivot_table(
+    df, index='PID', columns='educ', values='selfLR', aggfunc='mean'
+)
+
+print(pivot_table)
+```
+
+Using `.reset_index()` is an optional extra step that will return the data frame to the more recognisable format with numbers as the indices:
+
+```{python}
+pivot_table = pivot_table.reset_index()
+
+print(pivot_table)
+```
+
+[⇦ Back](../../python.html)
+
+</font>
