@@ -1,0 +1,339 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Sample Size Estimation'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+<!-- Created 2020-04-06 -->
+<!-- Updated 2023-08-29 -->
+<!-- Updated 2023-08-30 -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "70%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+Packages
+========
+The code on this page uses the NumPy, Matplotlib and SciPy packages. These can be installed from the terminal with:
+
+```{bash, eval = FALSE}
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install scipy
+```
+
+Replace `python3.11` with the version of Python being used. Once installed, these packages can be imported into a Python script via the following:
+
+```{python}
+import numpy as np
+from matplotlib import pyplot as plt
+from scipy import stats as st
+```
+
+Settings specific to this tutorial:
+
+```{python}
+# Set the seed so that the random numbers are the same each time
+np.random.seed(20230830)
+
+# Settings
+A = 6  # Want figures to be A6
+plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
+plt.rc('text', usetex=True)
+plt.rc('font', family='serif')
+```
+
+Two Groups/Two Samples
+======================
+If designing an experiment with **two** groups (usually one will be an *experimental* group and the other a *control* group) that will produce **numeric** data then the sample sizes that will be needed for each group depend on whether the *means* or the *proportions* of the two groups will be compared:
+
+Comparing Two Means
+-------------------
+Two groups of numeric data can be represented on a box-and-whisker plot (aka a box plot), although this shows the median - not the mean - by default. If we are interested in comparing the means then it makes sense to draw these in:
+
+```{python, eval = FALSE}
+fake_data = (10 - 1) * np.random.random_sample((10, 2)) + 1
+plt.boxplot(
+    fake_data,
+    labels=['Group 1', 'Group 2'],
+    showmeans=True, meanline=True,
+    medianprops={'c': 'k'},
+    meanprops={'c': 'grey', 'lw': 2, 'ls': (0, (1, 1))}
+)
+means = np.mean(fake_data, axis=0)
+plt.text(0.85, means[0], r'$\mu_1$')
+plt.text(1.85, means[1], r'$\mu_2$')
+title = r'\begin{center}' + \
+    r'Representative Example of Two Groups of Numeric Data\\' + \
+    r'\normalsize (with means $\mu_1$ and $\mu_2$)' + \
+    r'\end{center}'
+plt.title(title)
+plt.ylabel('Measurements')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+fake_data = (10 - 1) * np.random.random_sample((10, 2)) + 1
+plt.boxplot(
+    fake_data,
+    labels=['Group 1', 'Group 2'],
+    showmeans=True, meanline=True,
+    medianprops={'c': 'k'},
+    meanprops={'c': 'grey', 'lw': 2, 'ls': (0, (1, 1))}
+)
+means = np.mean(fake_data, axis=0)
+plt.text(0.85, means[0], r'$\mu_1$')
+plt.text(1.85, means[1], r'$\mu_2$')
+title = r'\begin{center}' + \
+    r'Representative Example of Two Groups of Numeric Data\\' + \
+    r'\normalsize (with means $\mu_1$ and $\mu_2$)' + \
+    r'\end{center}'
+plt.title(title)
+plt.ylabel('Measurements')
+plt.show()
+```
+
+### Two-Sided Equality
+If the experiment is looking to establish whether or not the two groups' means are *different* then the hypotheses are:
+
+- $H_0 : \mu_1 - \mu_2 = 0$
+- $H_1 : \mu_1 - \mu_2 \neq 0$
+
+where $\mu_1$ is the mean of Group 1 and $\mu_2$ is the mean of group 2. When designing an experiment these values will need to be estimated. This can be done by performing a *pilot test* or by reviewing similar experiments in the literature.
+
+Next, the standard deviation of the measurements needs to be considered: during the experiment the two samples will be drawn from a *population* and the dispersion of these measurements in the entire population, $\sigma$, might be known.
+
+#### Known $\sigma$
+If the true population standard deviation, $\sigma$, is known then the minimum sample sizes, $n_1$ and $n_2$, that will be required for the experiments two groups are given by<sup>[</sup>[^1]<sup> pg 58]</sup>:
+
+$$n_1 = \kappa n_2$$
+$$n_2 = \left( 1 + \dfrac{1}{\kappa} \right) \left( \sigma \dfrac{z_{1 - \alpha/2} + z_{1 - \beta}}{\mu_1 - \mu_2} \right)^2$$
+
+where:
+
+- $\kappa = n_1 / n_2$ is the sampling ratio
+- $z$ is the z-score (a number of standard deviations away from the mean under the standard normal distribution) that corresponds to the given cumulative probability
+- $\alpha$ is the Type I error rate
+- $\beta$ is the Type II error rate; $1 - \beta$ is the power
+
+Here's a worked example<sup>[</sup>[^2]<sup>]</sup>:
+
+```{python}
+# Mean of group 1, μ_1
+mu_1 = 5
+# Mean of group 2, μ_2
+mu_2 = 10
+# Sampling ratio, κ = n_1 / n_2
+kappa = 1
+# Population standard deviation, σ
+sigma = 10
+# Type I error rate, α
+alpha = 0.05
+# Type II error rate, β
+beta = 0.20
+
+# Sample size estimation
+n_2 = (1 + 1 / kappa) * (
+    sigma * (
+        st.norm.ppf(1 - alpha / 2) + st.norm.ppf(1 - beta)
+    ) / (mu_1 - mu_2)
+)**2
+n_2 = np.ceil(n_2)
+
+print(f'Sample size = {n_2:n} for both groups')
+```
+
+To repeat: `mu_1` and `mu_2` are estimated from a pilot test or from the literature, `sigma` is known and `kappa`, `alpha` and `beta` are set by the experimenter.
+
+#### Unknown $\sigma$
+If the population standard deviation, $\sigma$, is *not* known then it can be estimated by the pooled sample standard deviation, $s$, which is calculated as per equation 3.2.1 in the source.<sup>[1 pg 57]</sup> This, again, should come from pilot data or from the literature. The sample sizes for the experiment's groups ($n_1$ and $n_2$, not to be confused with the sample sizes for the pilot study's groups) can then be calculated by solving the following<sup>[1 pg 59]</sup>:
+
+$$n_1 = \kappa n_2$$
+$$\mathcal{T}_{(1 + \kappa) n_2 - 2} \left( t_{\alpha / 2, (1 + \kappa) n_2 - 2} \Biggr\rvert \dfrac{|\epsilon|}{s} \sqrt{\dfrac{n_2}{1 + 1 / \kappa}} \right) = \beta$$
+
+where:
+
+- $\kappa = n_1 / n_2$ is the sampling ratio
+- $\mathcal{T}$ is the cumulative distribution function of a non-central *t*-distribution
+- $t$ is the *t*-statistic (a number of standard deviations away from the mean under a *t*-distribution) that corresponds to the given cumulative probability
+- $\alpha$ is the Type I error rate
+- $\beta$ is the Type II error rate; $1 - \beta$ is the power
+- $\epsilon$ is the difference between the sample means, $\mu_2 - \mu_1$
+- $s$ is the pooled sample standard deviation
+
+An intermediate value $\theta = \dfrac{|\epsilon|}{s}$ is also defined.
+
+Here's a worked example:
+
+```{python}
+#
+# Results from a pilot test
+# (these have been manufactured so as to have a difference of means of 5 and a
+# pooled standard deviation of 10)
+#
+# Sample 1
+sample_1 = np.random.normal(25, 10, 1000)
+# Sample 2
+sample_2 = np.random.normal(30, 10, 1000)
+
+#
+# Values set by experimenter
+#
+# Sampling ratio, κ = n_1 / n_2
+kappa = 1
+# Type I error rate, α
+alpha = 0.05
+# Type II error rate, β
+beta = 0.20
+
+#
+# Calculate theta
+#
+# Sample size of group 1
+n_1 = len(sample_1)
+# Sample size of group 2
+n_2 = len(sample_2)
+# Mean of group 1, μ_1
+mu_1 = np.mean(sample_1)
+# Mean of group 2, μ_2
+mu_2 = np.mean(sample_2)
+# Difference of means, ϵ
+epsilon = mu_2 - mu_1
+# Pooled sample standard deviation
+s = np.sqrt(
+    (
+        np.sum((np.array(sample_1) - mu_1)**2) +
+        np.sum((np.array(sample_2) - mu_2)**2)
+    ) / (n_1 + n_2 - 2)
+)
+theta = abs(epsilon) / s
+
+#
+# Solve for n_2
+#
+# Iterate over potential sample sizes for the smaller group
+for n in range(1000):
+    # Degrees of freedom
+    dof = n + n - 2
+    # t-statistic
+    t = st.t.ppf(1 - (alpha / 2), dof)
+    # Non-centrality parameter
+    nc = (np.sqrt(n) * theta) / np.sqrt(1 + 1 / kappa)
+    # Cumulative distribution
+    p = st.nct.cdf(t, dof, nc)
+    # Test if the probability is less than or equal to the Type II error rate
+    if p <= beta:
+        break
+n_2 = n
+n_1 = kappa * n
+
+print(f'The sample sizes must be {n_1} and {n_2}')
+```
+
+We can check that we are correct by looking at Table 3.2.1 in the source.<sup>[1 pg 60]</sup> Our worked example had $\theta = \dfrac{|\epsilon|}{s} = 0.5$, $\kappa = 1$ and $1 - \beta = 80\%$. Our worked example also had $\alpha=5\%$ but the equation on page 59 of the source has $\alpha / 2$ in it whereas the equation that Table 3.2.1 uses has $\alpha$ in it so we actually need to look at the $\alpha=2.5\%$ column to account for this discrepancy. With all of that in mind we get an answer of 64 from the table, which matches the answer we calculated here.
+
+#### Approximation
+After all that work, we can see that the answer we got when $\sigma$ was not known (64) is almost the same as the one we got when $\sigma$ *was* known (63)! So, for large sample sizes ($n_1, n_2 > 30$ or so) it doesn't really make a difference which method is used.
+
+#### Power from Sample Size
+The 'reverse' calculation - getting the power from given sample sizes - can also be performed<sup>[2]</sup>:
+
+```{python}
+# Mean of group 1, μ_1
+mu_1 = 5
+# Mean of group 2, μ_2
+mu_2 = 10
+# Sampling ratio, κ = n_1 / n_2
+kappa = 1
+# Population standard deviation, σ
+sigma = 10
+# Type I error rate, α
+alpha = 0.05
+# Smaller of the two groups
+n_2 = 63
+
+# Derive the other group's size
+n_1 = kappa * n_2
+# Power calculation
+z = (mu_1 - mu_2) / (sigma * np.sqrt((1 + 1 / kappa) / n_2))
+power = st.norm.cdf(z - st.norm.ppf(1 - alpha / 2)) + \
+    st.norm.cdf(-z - st.norm.ppf(1 - alpha / 2))
+
+print(f'Power = {power:.2f}, beta = {1 - power:.2f} (the type II error rate)')
+```
+
+### Two $\times$ One-Sided Equality
+A variant of the comparison of two samples' means is to perform **t**wo **o**ne-**s**ided **t**ests (TOST). This is more usually used to establish *equivalence* (or the lack thereof) rather than the traditional test for equality. For a TOST procedure there are two sets of hypotheses:
+
+- $H_0 : \mu_1 = \mu_2$
+- $H_1 : \mu_1 < \mu_2$
+
+and
+
+- $H_0 : \mu_1 = \mu_2$
+- $H_1 : \mu_1 > \mu_2$
+
+where $\mu_1$ and $\mu_2$ are the means of the two samples. The formulas for the required sample sizes are<sup>[</sup>[^3]<sup>]</sup>:
+
+$$n_1 = \left( s_1^2 + s_2^2 / \kappa \right) \left( \dfrac{z_{1 - \alpha} + z_{1 - \beta}}{\mu_1 - \mu_2} \right)^2$$
+$$n_2 = \kappa n_1$$
+
+where
+
+- $n_1$ and $n_2$ are the sample sizes
+- $s_1$ and $s_2$ are the sample standard deviations
+- $\kappa = n_1 / n_2$ is the sampling ratio
+- $z$ is the z-score (a number of standard deviations away from the mean under the standard normal distribution) that corresponds to the given cumulative probability
+- $\alpha$ is the Type I error rate
+- $\beta$ is the Type II error rate; $1 - \beta$ is the power
+
+As per the previous example, for large values of $n_1$ and $n_2$ the difference between using sample standard deviations and population standard deviations is inconsequential. As such, sample standard deviations have been used in the formula above (strictly, these should be population standard deviations).
+
+A worked example:
+
+```{python}
+# Mean of group 1, μ_1
+mu_1 = 132.86
+# Mean of group 2, μ_2
+mu_2 = 127.44
+# Sample standard deviation of group 1
+s_1 = 15.34
+# Sample standard deviation of group 2
+s_2 = 18.23
+# Sampling ratio, κ = n_1 / n_2
+kappa = 2
+# Type I error rate, α
+alpha = 0.05
+# Type II error rate, β
+beta = 0.2
+
+n_1 = (s_1**2 + s_2**2 / kappa) * \
+    (
+        (st.norm.ppf(1 - alpha) + st.norm.ppf(1 - beta)) /
+        (mu_1 - mu_2)
+    )**2
+n_1 = np.ceil(n_1)
+n_2 = kappa * n_1
+
+print(f'The sample sizes must be {n_1} and {n_2}')
+```
+
+[^1]: Chow, SC, Shao, J, Wang, H. Sample Size Calculations in Clinical Research. 2nd Ed. Chapman & Hall/CRC; 2008. DOI: [10.1201/9781584889830](https://doi.org/10.1201/9781584889830). Available [here](http://ndl.ethernet.edu.et/bitstream/123456789/15304/1/9103.pdf). Jump to reference:&nbsp;
+[^2]: HyLown Consulting LLC. Calculate Sample Size Needed to Compare 2 Means: 2-Sample, 2-Sided Equality. Available [here](http://powerandsamplesize.com/Calculators/Compare-2-Means/2-Sample-Equality). Jump to reference:&nbsp;
+[^3]: HyLown Consulting LLC. Calculate Sample Size Needed to Compare 2 Means: 2-Sample, 1-Sided. Available [here](http://powerandsamplesize.com/Calculators/Compare-2-Means/2-Sample-1-Sided). Jump to reference:&nbsp;
+[^4]: Rosner, B. Fundamentals of Biostatistics. 7th Ed. Brooks/Cole; 2010.
+
+[⇦ Back](../../python.html)
+
+</font>

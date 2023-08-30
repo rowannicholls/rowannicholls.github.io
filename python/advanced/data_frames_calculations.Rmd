@@ -463,6 +463,11 @@ The `expand=True` argument will cause the results to be returned as multiple ser
 print(df['Athlete'].str.split(' ', expand=True))
 ```
 
+```{python}
+# Get the athletes' first names
+print(df['Athlete'].str.split(' ', expand=True)[0])
+```
+
 Sanitise data using RegEx
 -------------------------
 If you're replacing values with special characters you may need to use regular expressions (RegEx):

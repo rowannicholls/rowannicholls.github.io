@@ -14,6 +14,9 @@ output:
 
 [⇦ Back](../../python.html)
 
+<!-- Updated 2023-07-26 -->
+<!-- Updated 2023-08-29 -->
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
@@ -171,41 +174,97 @@ For more info about the display options, see here: https://pandas.pydata.org/pan
 
 Getting Information about a Data Frame
 ======================================
-Get the number of rows and columns:
-
-```{python}
-nrows = df.shape[0]
-ncols = df.shape[1]
-```
-
 Get the names of the columns:
 
 ```{python}
+# Get the column names as an 'Index object'
+colnames = df.columns
+
+# Get the column names as a list
+colnames = df.columns.to_list()
+# or
+colnames = list(df.columns)
+# or
 colnames = list(df)
+
+print(colnames)
 ```
 
-Notice from the above that when you convert a data frame into a list, you are *only left with the column names*.
+Notice from the above that when you convert a data frame into a list you are *only left with the column names*.
 
 The 'row names' are more properly called the 'indices' (or 'indexes' if you're American):
 
 ```{python}
+# Get the row names as an 'Index object'
+rownames = df.index
+
+# Get the row names as a list
+rownames = df.index.to_list()
+# or
 rownames = list(df.index)
+
 print(rownames)
 ```
 
-Check if a data frame is empty or not:
+Get the number of columns:
 
 ```{python}
-# Create an empty data frame
-df_empty = pd.DataFrame({'A': []})
-print(df_empty.empty)
+ncols = df.shape[1]
+# or
+ncols = len(list(df))
+
+print(ncols)
+```
+
+Get the number of rows:
+
+```{python}
+nrows = df.shape[0]
+# or
+nrows = len(df)
+
+print(nrows)
+```
+
+Display the data types of the values in each column:
+
+```{python}
+print(df.dtypes)
+```
+
+Display a summary of the information in a data frame:
+
+```{python}
+print(df.info())
+```
+
+Display summary statistics for each column (use `include='all'` to see stats for categorical columns in addition to numeric ones):
+
+```{python}
+print(df.describe(include='all'))
+```
+
+Get the count of values in a column:
+
+```{python}
+print(df['Country'].value_counts())
 ```
 
 Get a list of the **unique** values in a column (ie show the countries that were represented in the 100m final, without repeats):
 
 ```{python}
 unique = pd.unique(df['Country'])
+
 print(unique)
+```
+
+Check if a data frame is empty or not:
+
+```{python}
+# Create an empty data frame
+df_is_empty = pd.DataFrame({'A': []}).empty
+
+print(df_is_empty)
 ```
 
 Rows in a Data Frame
