@@ -4,94 +4,78 @@ output:
     html_document:
         theme: paper
         highlight: textmate
-        number_sections: true
-        toc: true
+        # number_sections: true
+        # toc: true
         includes:
             before_body: ../../../google_analytics.html
 ---
 
 <font size="3">
 
-For more info, see here:  
-[https://scikit-learn.org/stable/datasets/toy_dataset.html#wine-recognition-dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#wine-recognition-dataset){target="_blank"}
+<!-- Updated 2023-09-15 -->
 
-The **wine recognition dataset** is loaded using `load_wine()`. This
-returns a 'Bunch' object with the following keys:
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
 
-| Key | Description |
-|-----|-------------------------------------------------------------|
-| `DESCR` | Description of the dataset |
-| `feature_names` | Names of the 13 groups of data |
-| `data` | The 178 data points in each of the 13 groups of data, formatted as a 150x13 array |
-| `target_names` | Names of the target data (ie the 3 wine cultivators) |
-| `target` | Which group each data point is in (0, 1 or 2) |
+- For this dataset's **description**, see [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#wine-recognition-dataset){target="_blank"}
+- For this dataset's **documentation**, see [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html){target="_blank"}
+
+The wine recognition dataset is loaded using `load_wine()`. This returns a 'Bunch' object which contains both the data itself as well as metadata. By default the data is formatted as NumPy arrays but, by setting the `as_frame` parameter to `True` when loading the dataset, this can be changed so as to use Pandas data frames:
 
 ```{python}
-from sklearn.datasets import load_wine
+from sklearn import datasets
 
 # Load the dataset
-wine = load_wine()
-
-# Show the dataset's keys
-print(list(wine))
+wine = datasets.load_wine(as_frame=True)
 ```
 
-```{python}
-# Description of the dataset
-print(wine['DESCR'])
-```
+The data contains results from the chemical analyses of 178 different wines, ie there are 178 *samples* or instances in the dataset. The wines came from 3 different cultivators in the same region of Italy, and this is the *target* or class information. There were 13 measurements taken during each analysis, so there are 13 *features* or attributes. So, when formatted as a data frame, the data consists of 178 rows and 13 + 1 columns (13 features and 1 target). The feature and target data can be extracted separately as two data frames or together in one data frame:
 
 ```{python}
-# Names of the 13 groups of data
+# Extract the feature data only
+features = wine['data']
+
+# Extract the target data only
+target = wine['target']
+
+# Extract the feature and target data together
+df = wine['frame']
+
+print(df.head())
+```
+
+The column names of the first 13 columns are the features names, and these are also available in in a separate `feature_names` array: 
+
+```{python}
 print(wine['feature_names'])
 ```
 
+The column name of the 14th column is `target` which indicates that this is the target information, ie which cultivator the wine in question came from. These are simply the values `0`, `1` and `2`:
+
 ```{python}
-# The 178 data points in each of the 13 groups of data, formatted as a 150x13 array
-print(wine['data'][:2])
+print(df['target'].unique())
 ```
 
-```{python}
-# Names of the target data (ie the 3 wine cultivators)
-print(wine['target_names'])
-```
+Example Usage
+=============
 
 ```{python}
-# Which group each data point is in (0, 1 or 2)
-print(wine['target'])
-```
+from matplotlib import pyplot as plt
+import seaborn as sns
 
-The groups of data can be plotted against each other or against the target
-group as follows:
-
-```{python}
-import matplotlib.pyplot as plt
-
-# Plot
-plt.scatter(wine['data'][:, 0], wine['data'][:, 9], c=wine['target'])
-plt.title('Wine recognition dataset')
-plt.xlabel(wine['feature_names'][0])
-plt.ylabel(wine['feature_names'][9])
-plt.show()
-```
-
-The data is much easier to work with if it is converted into a data frame:
-
-```{python}
-import pandas as pd
-
-# Extract the data
-data = pd.DataFrame(wine['data'], columns=wine['feature_names'])
-# Extract the target
-target = pd.DataFrame(wine['target'], columns=['cultivator'])
-# Combine into one dataset
-df = pd.concat([target, data], axis='columns')
-
-# Plot
-plt.scatter(df['hue'], df['malic_acid'], c=df['cultivator'])
-plt.title('Wine recognition dataset')
-plt.xlabel('hue')
-plt.ylabel('malic_acid')
+fig, axs = plt.subplots(5, 3, figsize=(8, 10))
+for i, ax in enumerate(fig.get_axes()):
+    if i < 13:
+        feature = wine['feature_names'][i]
+        sns.boxplot(df, x='target', y=feature, whis=[0, 100], ax=ax)
+        ax.set_title(feature)
+        ax.set_ylabel('')
+        ax.set_xlabel('')
+fig.delaxes(axs[(4, 2)])
+fig.delaxes(axs[(4, 1)])
+plt.tight_layout()
 plt.show()
 ```
 
