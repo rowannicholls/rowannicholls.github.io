@@ -15,61 +15,64 @@ output:
 [⇦ Back](../../../python.html)
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(out.width = "85%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 <!-- https://blog.minitab.com/en/adventures-in-statistics-2/understanding-analysis-of-variance-anova-and-the-f-test -->
 
+<!-- https://en.wikipedia.org/wiki/Analysis_of_variance -->
+
 **Analysis of variance (ANOVA)** is a category of hypothesis test that can be considered when comparing more than two groups of numerical data.
 
-The code on this page uses the `sklearn`, `pandas`, `matplotlib` and `scipy` packages. These can be installed from the terminal with:
+Python Packages
+===============
+The code on this page uses the scikit-learn, Matplotlib, Seaborn and SciPy packages. These can be installed from the terminal with the following commands:
 
 ```{bash, eval = FALSE}
-$ python3.11 -m pip install sklearn
-$ python3.11 -m pip install pandas
+# `python3.11` corresponds to the version of Python you have installed and are using
+$ python3.11 -m pip install scikit-learn
 $ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install seaborn
 $ python3.11 -m pip install scipy
 ```
 
-where `python3.11` corresponds to the version of Python you have installed and are using.
-
-Example Data
-============
-As an example, let's use the *wine recognition dataset* from Scikit-Learn (more info on this dataset [here](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#wine-recognition-dataset) and [here](https://rowannicholls.github.io/python/data/sklearn_datasets/wine.html)). This can be loaded with:
+Once finished, import these packages into your Python script as follows:
 
 ```{python}
 from sklearn import datasets
-
-# Load the dataset
-wine = datasets.load_wine()
+from matplotlib import pyplot as plt
+from matplotlib import lines
+import seaborn as sns
+from scipy import stats as st
 ```
 
-Re-Format the Data
-------------------
-This dataset comes as a 'bunch' object and in multiple parts. Let's convert the stuff we need into data frames and combine them via the following:
+Example Data
+============
+As an example, let's use the *wine recognition dataset*, a toy dataset from scikit-learn.
+
+- For this dataset's **description**, see [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#wine-recognition-dataset)
+- For this dataset's **documentation**, see [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_wine.html)
+- For an **example**, see [here](../../data/sklearn_datasets/wine.html)
+
+This dataset can be loaded with:
 
 ```{python}
-import pandas as pd
-
-#
-# Convert into a data frame
-#
-# Extract the data
-data = pd.DataFrame(wine['data'], columns=wine['feature_names'])
-# Extract the target
-target = pd.DataFrame(wine['target'], columns=['cultivator'])
-# Combine into one dataset
-df = pd.concat([target, data], axis='columns')
+# Load the dataset
+wine = datasets.load_wine(as_frame=True)
+# Extract the feature and target data together
+df = wine['frame']
 ```
 
-This dataset contains the results of a chemical analysis of 178 different wines grown in the same region in Italy by three different cultivators. For this example, let's just look at the **total phenols** that were measured in each cultivator's wines ([phenolic content in wine](https://en.wikipedia.org/wiki/Phenolic_content_in_wine) is an important factor in it's quality):
+This contains the results of chemical analyses of 178 different wines grown in the same region in Italy by three different cultivators. For this example, let's just look at the **total phenols** that were measured in each cultivator's wines ([phenolic content in wine](https://en.wikipedia.org/wiki/Phenolic_content_in_wine) is an important factor in it's quality):
 
 ```{python}
 # Trim the data
-df = df[['cultivator', 'total_phenols']]
+cols = ['total_phenols', 'target']
+df = df[cols]
+# Rename the target
+df = df.rename(columns={'target': 'cultivator'})
 
-# Display the first 5 columns
 print(df.head())
 ```
 
@@ -85,71 +88,117 @@ print(df.shape[0])
 print(df['cultivator'].unique())
 ```
 
-View the Data
--------------
 The best way to understand the raw data is to see all of it. Use a scatter plot to do this, with a boxplot included underneath to show the distribution:
 
 ```{python, eval = FALSE}
-from matplotlib import pyplot as plt
-
 # Plot
-grouped_data = df.groupby('cultivator')['total_phenols'].apply(list)
-plt.boxplot(grouped_data, positions=range(0, len(df['cultivator'].unique())), showmeans=True, meanline=True)
-plt.scatter(df['cultivator'], df['total_phenols'])
-plt.title('The Phenolic Content in 178 Wines from 3 Different Italian Cultivators')
-plt.xlabel('Cultivator')
-plt.ylabel('Total Phenols')
+ax = plt.axes()
+sns.boxplot(
+   df, x='cultivator', y='total_phenols', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='cultivator', y='total_phenols',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+title = """The Phenolic Content in 178 Wines
+from 3 Different Italian Cultivators"""
+ax.set_title(title)
+ax.set_ylabel('Total Phenols')
+# ax.set_ylim([0, 0.17])
+ax.set_xlabel('')
+ax.set_xticklabels(['Cultivator 0', 'Cultivator 1', 'Cultivator 2'])
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'], loc='upper right')
+plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
-from matplotlib import pyplot as plt
-
 # Plot
-grouped_data = df.groupby('cultivator')['total_phenols'].apply(list)
-plt.boxplot(grouped_data, positions=range(0, len(df['cultivator'].unique())), showmeans=True, meanline=True)
-plt.scatter(df['cultivator'], df['total_phenols'])
-plt.title('The Phenolic Content in 178 Wines from 3 Different Italian Cultivators')
-plt.xlabel('Cultivator')
-plt.ylabel('Total Phenols')
+ax = plt.axes()
+sns.boxplot(
+   df, x='cultivator', y='total_phenols', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='cultivator', y='total_phenols',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+title = """The Phenolic Content in 178 Wines
+from 3 Different Italian Cultivators"""
+ax.set_title(title)
+ax.set_ylabel('Total Phenols')
+# ax.set_ylim([0, 0.17])
+ax.set_xlabel('')
+ax.set_xticklabels(['Cultivator 0', 'Cultivator 1', 'Cultivator 2'])
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'], loc='upper right')
+plt.show()
 ```
 
 Choose a Statistical Test
 =========================
-Looking at the plotted data above raises a question: **is the average phenolic content different** between the three cultivators? If it is, it would imply that the quality of the three winemakers is different (assuming, of course, that quality of wine is objective)!
+
+Set a Research Question
+-----------------------
+Looking at the plotted data above raises a question: **is the mean phenolic content different between the three cultivators**? If it is, it would imply that the quality of the three winemakers is different (assuming, of course, that quality of wine is objective)!
 
 Parametric vs Non-Parametric
 ----------------------------
-First, we need to decide if we should use **parametric** or **non-parametric** statistics. Parametric statistics are based on assumptions about the data’s distribution (whereas non-parametric statistics are not) and reasons to choose them include:
+First, we need to decide if we should use **parametric** or **non-parametric** statistics to address this research question. Parametric statistics are based on assumptions about the data's distribution while non-parametric statistics are not. You should choose parametric statistics if:
 
-- Your data is normally distributed
-- Your data is not normally distributed but the sample size is large:
+- Your data is normally distributed, or
+- Your data is not normally distributed but the sample size is large. Some rules-of-thumb as to what can be considered 'large' are:
     + $n > 20$ if you only have one group
     + $n > 15$ in each group if you have 2 to 9 groups
     + $n > 20$ in each group if you have 10 to 12 groups
-- The spread of data in each group is different
-- The data is skewed (in other words, the *median* is more representative of the central tendency than the *mean*)
-- There is a need to increase the statistical power (parametric tests usually have more power and so are more likely to detect a significant difference when one truly exists)
+- The data should not be skewed. In other words, the *mean* should be representative of the central tendency and not be much different from the *median*.
+    + When doing parametric statistics use the mean and when doing non-parametric statistics use the median
+- There should not be an influential number of outliers. While this is similar to the previous point about the data not being skewed bear in mind that it's possible to have outliers both above and below the mean of the data, essentially cancelling out the skewness. Hence why a 'lack of skewness' and a 'lack of outliers' both need to be checked for.
+- Parametric tests usually have more statistical power than non-parametric tests and so are more likely to detect a significant difference when one truly exists. If there is a need to increase the power of a test then they can be considered over non-parametric tests.
 
-Looking at the plot, the spread in each group is fairly consistent and nothing is particularly skewed, although the sample size is large and it could very well be the case that the data in each group approximates a normal distribution. As a result, **we should choose to do parametric statistics** and tweak our research question so that it becomes "is the *mean* phenolic content different?"\*. In other words, are the dashed blue lines in the plot (the means) at different heights?
+Let's check if we have sufficiently large groups:
 
-\*when doing parametric statistics you should use the *mean*. If doing non-parametric statistics, use the *median*.
+```{python}
+# Sample sizes
+n = df['cultivator'].value_counts()
 
-Set a Hypothesis
-----------------
-In order to answer the research question ("is the mean phenolic content different?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+print(n)
+```
 
-- $H_0:$ true mean phenolic content levels are the same for all three cultivators
-- $H_1:$ true mean phenolic content levels are not the same for all three cultivators
+We have three groups and $n > 15$ in each. Taking a look at the box plot we can see that the groups aren't considerably skewed (the means are close to the medians) and that there are not really any influential outliers. Hence, a **parametric** test is appropriate for assessing this research question.
 
-Choose a Test
--------------
-Now that we have hypotheses, we can follow a statistical test selection process:
+Homogeneity of Variance
+-----------------------
+The *spread* of the data should be roughly equal for all groups. Despite being called homogeneity of *variance* you can actually look at either variance *or* standard deviation to assess this. This is because the ratio of variances is - by definition - the square of the ratio of standard deviations and the square is a *monotonic function*, so order is preserved (for positive numbers).
 
-- Our phenolic content data is **continuous** because it is made up of measurements that are numbers (not discrete categories or ranks)
-- We are interested in the **differences** between the phenolic content of the groups of wine (not the *relationship* between the phenolic content and something else)
-- Specifically, we are interested in the differences of the **average** (mean) phenolic content (not the *variance* in the content)
-- We have **more than two groups** because there are three cultivators
-- As discussed above, we are doing **parametric statistics**
+With that said, here are some rules-of-thumb as to what standard deviations can be considered 'roughly equal':
+
+- $0.5 < \frac{s_0}{s_1} < 2$ (source: [Wikipedia](https://en.wikipedia.org/wiki/Student%27s_t-test#Equal_or_unequal_sample_sizes,_similar_variances_(1/2_%3C_sX1/sX2_%3C_2)))
+- $0.9 < \frac{s_0}{s_1} < 1.1$ (source: Codecademy)
+
+where $s_0$, $s_1$ are the sample standard deviations for the two groups. Let's check our data:
+
+```{python}
+# Homogeneity of variance (using sample standard deviations)
+s = df.groupby('cultivator')['total_phenols'].std(ddof=1)
+for i in range(3):
+    for j in range(i + 1, 3):
+        ratio = s[i] / s[j]
+        print(f'Ratio of standard deviations: {ratio:.2f}')
+```
+
+All ratios are between 0.5 and 2 so the standard deviations are 'equal enough'.
+
+Use the Flowchart
+-----------------
+We have enough insight into our research question (our 'draft hypothesis') and our data to be able to now follow a statistical test selection process:
+
+- Our dependent variable - total phenols - is **continuous** because it is made up of measurements that are numbers as opposed to discrete categories or ranks
+- Our independent variables - which cultivator produced the wine - is **categorical** (specifically, it is *nominal*)
+- We have **three groups** for the independent variable because there are three cultivators
+- As discussed above, we want to do a **parametric** test
+<!-- - Our measurements are **independent** of each other: the phenolic content of one wine does not affect the phenolic content of another wine -->
 
 Looking at the flowchart below tells us that we should thus be using ANOVA to test our hypothesis:
 
@@ -181,13 +230,14 @@ DiagrammeR::grViz(
                     cd_number [label='Number of\ngroups/samples\nfor the IV?', fillcolor='#c9daf8']
                         two_parametric [label='Parametric?']
                             true_independent [label='Independent\ngroups/sample?']
-                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test or<BR/>Welch&apos;s <I>t</I>-test>]
                                 'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
                             false_independent [label='Independent\ngroups/sample?']
                                 'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
                                 'Wilcoxon\nsigned-rank test' [style=rounded]
                         more_parametric [label='Parametric?', fillcolor='#c9daf8']
                             'ANOVA' [fillcolor='#d9ead3']
+                                'Tukeys Range Test' [style=rounded, label=<Tukey&rsquo;s range<BR/>test>]
                             false_independent2 [label='Independent\ngroups/sample?']
                                 'Kruskal-Wallis\none-way ANOVA' [style=rounded]
                                 'Friedman\ntwo-way ANOVA' [style=rounded]
@@ -227,6 +277,7 @@ DiagrammeR::grViz(
                         false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
                 cd_number -> more_parametric [label=More]
                     more_parametric -> 'ANOVA' [label=Yes]
+                        'ANOVA' -> 'Tukeys Range Test' [label='If signif.']
                     more_parametric -> false_independent2 [label=No]
                         false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
                         false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
@@ -252,11 +303,23 @@ DiagrammeR::grViz(
 )
 ```
 
-It's a bit confusing that we've chosen analysis of *variance* as the method to look at the differences of *means*, but it's correct.
+Formalise the Hypothesis
+------------------------
+In order to answer the research question ("is the mean phenolic content different between the three cultivators?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+
+- $H_0:$ the true mean phenolic content levels are the same for all three cultivators
+- $H_1:$ the true mean phenolic content levels are **not** the same for all three cultivators
+
+More mathematically:
+
+- $H_0: \mu_0 = \mu_1 = \mu_2$
+- $H_1: \mu_0 \neq \mu_1 \lor \mu_0 \neq \mu_2 \lor \mu_1 \neq \mu_2$
+
+where $\mu_0$, $\mu_1$, $\mu_2$ are the true means (of *all* wines in the population, not just those in the samples) for the three groups and $\lor$ is the logical "or". Notice that this is a **two-tailed** test: we're interested in finding *any* difference between means if one exists, not just a specific difference ($\mu_0 > \mu_1$ or $\mu_0 < \mu_1$, or similar for the other combinations of groups).
 
 One-Way ANOVA Using an *F*-Test
 ===============================
-After all that hard work getting the data into the correct format and choosing a hypothesis test, actually performing it is incredibly simple. Firstly, split the data up into one series of data per group:
+Now that we've chosen a hypothesis test the act of actually performing it is incredibly simple. Firstly, split the data up into one series of data per group:
 
 ```{python}
 # Samples
@@ -268,19 +331,17 @@ sample_2 = df[df['cultivator'] == 2]['total_phenols']
 Then use the one-way ANOVA *F*-test from SciPy:
 
 ```{python}
-from scipy import stats as st
-
 # One-way ANOVA
-statistic, pvalue = st.f_oneway(sample_0, sample_1, sample_2)
+f_statistic, p_value = st.f_oneway(sample_0, sample_1, sample_2)
 
-print(f'One-way ANOVA: s = {statistic:.2f}, p = {pvalue:.2e}')
+print(f'One-way ANOVA: F = {f_statistic:.2f}, p = {p_value:.2e}')
 ```
 
 The "*F*-test" is the actual test being performed in the background during the ANOVA.
 
 Interpreting the Result
 -----------------------
-This *p*-value is incredibly small, which means we can reject $H_0$ and conclude that the true mean phenolic content levels are not the same for all three cultivators. Often, you will see this reported using asterisks to indicate the significance level (α) associated with the result. Additionally, if the *p*-value is very small (like it is here) it's usually just reported as "<0.001" rather than an exact value. Here are functions to add in this formatting:
+This *p*-value is incredibly small, which means we can reject $H_0$ and conclude that the true mean phenolic content levels are not the same for all three cultivators. Often, you will see this reported using asterisks to indicate the significance level (α) associated with the result. Additionally, if the *p*-value is very small (like it is here) it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting:
 
 ```{python}
 def get_significance(p):
@@ -305,16 +366,17 @@ def round_p_value(p):
         return f'{p:5.3}'
 
 
-p_rounded = round_p_value(pvalue)
-significance = get_significance(pvalue)
+p_rounded = round_p_value(p_value)
+significance = get_significance(p_value)
+
 print(f'The p-value is {p_rounded} ({significance})')
 ```
 
 ANOVA vs the Two-Sample *t*-Test
 ================================
-Another way to address the research question would have been to look at the differences between each pair of groups in turn. In other words, we could have performed three two-sample *t*-tests to compare cultivator 0 against cultivator 1, cultivator 0 against cultivator 2 and cultivator 1 against cultivator 2. That is not an incorrect approach, but it is definitely less efficient than performing one ANOVA, especially if we had had more than three groups (with 4 groups, 6 *t*-tests are required; with 5 groups, 10 tests; with 6 groups, 15 tests and so on).
+Another way to address the research question would have been to look at the differences between each pair of groups in turn. In other words, we could have performed three two-sample *t*-tests to compare cultivator 0 against cultivator 1, cultivator 0 against cultivator 2 and cultivator 1 against cultivator 2. That is not fundamentally an incorrect approach but it can inadvertently lead to [*p*-hacking](https://en.wikipedia.org/wiki/Data_dredging) or [false findings](https://xkcd.com/882/) and should be avoided. It would be less efficient than performing one ANOVA anyway, especially if we had had more than three groups (with 4 groups, 6 *t*-tests are required; with 5 groups, 10 tests; with 6 groups, 15 tests and so on).
 
-However, the ANOVA test only answers the question of whether the means of the groups are the *same*. It won't tell us which of the groups is different (or how many groups are different if there are lots) or if it/they are higher or lower than the others. In practice, you would need to analyse the data further - visualising it through graphs and performing other tests - in order to get a complete picture.
+However, the ANOVA test only answers the question of whether the means of the groups are the *same*. It won't tell us which of the groups is different (or how many groups are different if there are lots) or if it/they are higher or lower than the others. You need to analyse the data further - eg by performing a Tukey's range test - if you get a significant result from an ANOVA.
 
 [⇦ Back](../../../python.html)
 
