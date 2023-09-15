@@ -12,6 +12,8 @@ output:
 
 <font size="3">
 
+<!-- Updated 2023-09-15 -->
+
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "75%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
@@ -20,9 +22,9 @@ knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```{python, echo = FALSE}
 import pandas as pd
 
-pd.set_option('display.max_columns', 18)
+pd.set_option('display.max_columns', 12)
 pd.set_option('display.max_colwidth', 15)
-pd.set_option('display.width', 120)
+pd.set_option('display.width', 80)
 ```
 
 - For this dataset's **description**, see [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-wisconsin-diagnostic-dataset)
