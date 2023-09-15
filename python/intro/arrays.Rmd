@@ -14,7 +14,12 @@ output:
 
 [⇦ Back](../../python.html)
 
-An **array** (aka a *matrix*) is an efficient way to handle multiple numbers. Importantly, it is *more efficient than using a list*. It is available from the `Numpy` package.
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+An **array** (aka a *matrix*) is an efficient way to handle multiple numbers. Importantly, it is more efficient than using a list. It is available from the NumPy package.
 
 Create an Array
 ===============
@@ -83,6 +88,36 @@ Sort an array into numerical order and find the index where, if you were to inse
 # Index where a number can be inserted while maintaining order
 idx = np.searchsorted(ar, 35)
 print(idx)
+```
+
+Filter an Array
+---------------
+When indexing an array with a *Boolean mask* (a list of trues and falses) it has the effect of filtering the array:
+
+```{python}
+ar = np.array([10, 20, 30, 40, 50, 60, 70])
+
+# Create a Boolean mask
+mask = [False, False, False, False, True, True, True]
+# Filter the array
+filtered = ar[mask]
+print(filtered)
+```
+
+This is more usually used when searching for values that meet certain criteria, eg here's how to get the values that are greater than 40:
+
+```{python}
+# Filter the array
+filtered = ar[ar > 40]
+print(filtered)
+```
+
+Logical operators can be used to combine Boolean masks and create more complicated filters, eg getting the values above 50 and below 30:
+
+```{python}
+# Filter the array
+filtered = ar[(ar > 50) | (ar < 30)]
+print(filtered)
 ```
 
 Augment an Array

@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 One Independent Variable, One Dependent Variable
 ================================================
 
@@ -68,6 +73,34 @@ ax.axhline(4)
 ax.axvline(7)
 ```
 
+Error Bars
+----------
+Uncertainty can be communicated using the `errorbar()` function to plot error bars:
+
+```{python, eval = FALSE}
+x = [1, 5, 9, 13]
+y = [1, 25, 81, 169]
+yerr = [1.5, 7.5, 15, 19]
+
+ax = plt.axes()
+ax.plot(x, y)
+ax.errorbar(x, y, yerr=yerr, fmt='o', color='purple')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+x = [1, 5, 9, 13]
+y = [1, 25, 81, 169]
+yerr = [1.5, 7.5, 15, 19]
+
+ax = plt.axes()
+ax.plot(x, y)
+ax.errorbar(x, y, yerr=yerr, fmt='o', color='purple')
+
+plt.show()
+```
+
 Formatting Options
 ------------------
 Change the look of the plot with the following options:
@@ -98,6 +131,8 @@ ax.set_ylabel('Log Points')
 ax.set_ylim(0, 100)
 ax.set_xlabel('Week')
 ax.set_xlim(1, 38)
+
+plt.show()
 ```
 
 ```{python, echo = FALSE, results = 'hide'}
@@ -119,6 +154,8 @@ ax.set_ylabel('Log Points')
 ax.set_ylim(0, 100)
 ax.set_xlabel('Week')
 ax.set_xlim(1, 38)
+
+plt.show()
 ```
 
 Notice that the formatting options in the above example are all being changed by accessing the axes object, which is what the `ax` at the start of each line is indicating. It would also have been possible to produce this plot using functions directly from Matplotlib (and these would have started with `plt` instead of `ax`) although this page is specifically demonstrating how to produce plots using axes objects.
@@ -1463,7 +1500,7 @@ plt.show()
 --------
 Perhaps the most logical way to represent three variables is by using three axes. This requires two new features:
 
-- The `.gca()` method to **g**et the **c**urrent **a**xes. This allows you to edit settings related to the axes.
+- The `.add_subplot()` method to add a subplot (we don't *actually* want to add an additional plot, this just creates a new plot which we can edit the projection of)
 - The `ax.set_zlabel()` function which creates a label for the third axis
 
 ```{python, eval = FALSE}
@@ -1476,7 +1513,7 @@ y = np.linspace(-1, 2, 100)
 z = np.sin(x + y)
 
 # Plot
-ax = plt.figure().gca(projection='3d')
+ax = plt.figure().add_subplot(projection='3d')
 ax.plot(x, y, z)
 ax.set_title('Results for a Fictional Experiment')
 ax.set_xlabel(r'Time, $t$ [s]')
@@ -1496,7 +1533,7 @@ y = np.linspace(-1, 2, 100)
 z = np.sin(x + y)
 
 # Plot
-ax = plt.figure().gca(projection='3d')
+ax = plt.figure().add_subplot(projection='3d')
 ax.plot(x, y, z)
 ax.set_title('Results for a Fictional Experiment')
 ax.set_xlabel(r'Time, $t$ [s]')
@@ -1521,7 +1558,7 @@ x = r * np.sin(theta)
 y = r * np.cos(theta)
 
 # Plot
-ax = plt.figure().gca(projection='3d')
+ax = plt.figure().add_subplot(projection='3d')
 ax.plot(x, y, z, label='Parametric curve')
 ax.legend()
 
@@ -1541,7 +1578,7 @@ x = r * np.sin(theta)
 y = r * np.cos(theta)
 
 # Plot
-ax = plt.figure().gca(projection='3d')
+ax = plt.figure().add_subplot(projection='3d')
 ax.plot(x, y, z, label='Parametric curve')
 ax.legend()
 
@@ -1565,7 +1602,7 @@ y_2 = np.linspace(-1, 2, 100)
 z_2 = np.sin(x_2 + y_2)
 
 # Plot
-ax = plt.figure().gca(projection='3d')
+ax = plt.figure().add_subplot(projection='3d')
 ax.plot(x_1, y_1, z_1, c='r', label='Experimental Group')
 ax.plot(x_2, y_2, z_2, c='b', label='Control Group')
 ax.set_xlabel(r'Time, $t$ [s]')
@@ -1590,7 +1627,7 @@ y_2 = np.linspace(-1, 2, 100)
 z_2 = np.sin(x_2 + y_2)
 
 # Plot
-ax = plt.figure().gca(projection='3d')
+ax = plt.figure().add_subplot(projection='3d')
 ax.plot(x_1, y_1, z_1, c='r', label='Experimental Group')
 ax.plot(x_2, y_2, z_2, c='b', label='Control Group')
 ax.set_xlabel(r'Time, $t$ [s]')

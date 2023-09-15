@@ -15,218 +15,215 @@ output:
 [⇦ Back](../../../python.html)
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(out.width = "75%")
 knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-The **unpaired two-sample *t*-test** is one of [Student's *t*-tests](https://en.wikipedia.org/wiki/Student%27s_t-test) that can be used to compare the means of two groups of numerical data which are *independent* of each other (ie a sample in one group is not *paired* with any sample in the other group; it does not affect the value of any of the samples in the other group in any way)
+The **unpaired two-sample *t*-test** is one of [Student's *t*-tests](https://en.wikipedia.org/wiki/Student%27s_t-test) that can be used to compare the means of two groups of numerical data. These groups need to be *independent* of each other - a sample in one group must not be *paired* with or affect the value of any sample in the other group.
 
-The code on this page uses the `sklearn`, `pandas`, `numpy`, `matplotlib` and `scipy` packages. These can be installed from the terminal with:
+```{python, echo = FALSE, results = "hide"}
+from sklearn import datasets
+from matplotlib import pyplot as plt
+from matplotlib import lines
+import seaborn as sns
+
+# Load the dataset
+breast_cancer = datasets.load_breast_cancer(as_frame=True)
+# Extract the feature and target data together
+df = breast_cancer['frame']
+# Clean the raw data
+df['target'] = df['target'].apply(lambda x: breast_cancer['target_names'][x])
+
+# Plot
+ax = plt.axes()
+sns.boxplot(
+   df, x='target', y='mean smoothness', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='target', y='mean smoothness',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+title = """Are these two groups' means significantly
+different from one another?"""
+ax.set_title(title)
+ax.set_ylabel('')
+_ = ax.set_ylim([0, 0.17])
+ax.set_xlabel('')
+ax.set_xticklabels(['Group 0', 'Group 1'])
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'], loc='lower left')
+plt.show()
+```
+
+In the above plot the black dashed lines represent the mean values of two groups of independent data. Is the mean of Group 0 significantly different from that of Group 1?
+
+Python Packages
+===============
+The code on this page uses the NumPy, SciPy, scikit-learn, Matplotlib and Seaborn packages. These can be installed from the terminal:
 
 ```{bash, eval = FALSE}
-$ python3.11 -m pip install sklearn
-$ python3.11 -m pip install pandas
+# `python3.11` corresponds to the version of Python you have installed and are using
 $ python3.11 -m pip install numpy
-$ python3.11 -m pip install matplotlib
 $ python3.11 -m pip install scipy
+$ python3.11 -m pip install sklearn
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install seaborn
 ```
 
-where `python3.11` corresponds to the version of Python you have installed and are using.
-
-Example Data
-============
-As an example, let's use the *Boston house prices dataset* from Scikit-Learn (more info on this dataset [here](https://scikit-learn.org/stable/datasets/toy_dataset.html?highlight=boston#boston-house-prices-dataset) and [here](https://rowannicholls.github.io/python/data/sklearn_datasets/boston.html)). This can be loaded with:
-
-```{python, echo = FALSE, results = 'hide'}
-from sklearn.datasets import load_boston
-
-# Load the dataset
-boston = load_boston()
-```
-
-```{python, eval = FALSE}
-from sklearn.datasets import load_boston
-
-# Load the dataset
-boston = load_boston()
-```
-
-Re-Format the Data
-------------------
-This dataset comes as a 'bunch' object and in multiple parts. Let's convert the stuff we need into data frames and combine them via the following:
-
-```{python}
-import pandas as pd
-
-# Extract the data
-data = pd.DataFrame(boston['data'], columns=boston['feature_names'])
-# Extract the target
-target = pd.DataFrame(boston['target'], columns=['MEDV'])
-# Combine into one dataset
-df = pd.concat([target, data], axis='columns')
-```
-
-This dataset contains information related to house prices - and various factors that potentially influenced them - in the city of Boston during the 1970s. For this example, let's just look at one of these factors, `CHAS`, which indicates whether or not the area in question touches the Charles river (1 = the area is bounded by the river, 0 = it does not). We will look at whether or not this impacts the value in the `MEDV` column: the median value of owner-occupied homes in that area in multiples of $1000.
-
-```{python}
-# Keep only the CHAS and MEDV columns
-df = df[['CHAS', 'MEDV']]
-
-# Display the first 5 columns
-print(df.head())
-```
-
-Only 5 rows are shown above (all from areas that are not bounded by the river; `CHAS = 0.0`) but there are 506 in total:
-
-```{python}
-# Number of rows
-print(df.shape[0])
-```
-
-Remove Outliers
----------------
-It's not clear from what we've seen so far, but the data contains outliers. For this example, we will remove them:
+Once finished, import these packages into your Python script as follows:
 
 ```{python}
 import numpy as np
-
-# Remove suspect values
-df = df[df['MEDV'] != 50]
-
-#
-# Remove values more than 1.5 times the IQR away from the quartiles (known as 'fliers')
-#
-
-# Remove fliers above Q3 in the subset where CHAS == 0
-while True:
-    # Extract the sub-sample where CHAS == 0
-    sample_0 = df[df['CHAS'] == 0]
-    # Get the 1st and 3rd quartiles, and the IQR
-    q1 = np.percentile(sample_0['MEDV'], 25)
-    q3 = np.percentile(sample_0['MEDV'], 75)
-    iqr = q3 - q1
-    # Find and remove values more than or equal to 1.5 times the IQR above the 3rd quartile
-    idx = sample_0[sample_0['MEDV'] >= 1.5 * iqr + q3].index
-    df = df.drop(idx)
-    # The values of the quartiles and the IQR have now changed, so there might be new fliers and
-    # so we may need to repeat this process. However, if we have indeed finished removing all
-    # fliers, break out of the loop
-    if len(idx) == 0:
-        break
-
-# Remove fliers above Q3 in the subset where CHAS == 1
-while True:
-    # Extract the sub-sample where CHAS == 1
-    sample_1 = df[df['CHAS'] == 1]
-    # Get the 1st and 3rd quartiles, and the IQR
-    q1 = np.percentile(sample_1['MEDV'], 25)
-    q3 = np.percentile(sample_1['MEDV'], 75)
-    iqr = q3 - q1
-    # Find and remove values more than or equal to 1.5 times the IQR above the 3rd quartile
-    idx = sample_1[sample_1['MEDV'] >= 1.5 * iqr + q3].index
-    df = df.drop(idx)
-    # The values of the quartiles and the IQR have now changed, so there might be new fliers and
-    # so we may need to repeat this process. However, if we have indeed finished removing all
-    # fliers, break out of the loop
-    if len(idx) == 0:
-        break
-
-# Number of rows
-print(df.shape[0])
+from scipy import stats as st
+from sklearn import datasets
+from matplotlib import pyplot as plt
+from matplotlib import lines
+import seaborn as sns
 ```
 
-This has removed 46 rows.
+Example Data
+============
+This page will use the Breast Cancer Wisconsin dataset, a toy dataset from scikit-learn.
 
-View the Data
--------------
-The best way to understand the raw data is to see all of it. Use a scatter plot to do this, with a boxplot included underneath to show the distribution:
+- For this dataset's **description**, see [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-wisconsin-diagnostic-dataset)
+- For this dataset's **documentation**, see [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html#)
+- For an **example**, see [here](../../data/sklearn_datasets/breast_cancer.html)
+
+```{python}
+# Load the dataset
+breast_cancer = datasets.load_breast_cancer(as_frame=True)
+# Extract the feature and target data together
+df = breast_cancer['frame']
+# Clean the raw data
+df['target'] = df['target'].apply(lambda x: breast_cancer['target_names'][x])
+```
+
+This dataset contains numerical results obtained from 569 samples of breast cancer tumours that were either benign or malignant. For this example we are only going to use the `mean smoothness` values of the tumours (the mean local variations in radius, which we will simply call `smoothness`) and the `target` variable (the disease classification):
+
+```{python}
+# Extract the data
+cols = ['mean smoothness', 'target']
+df = df[cols]
+# Rename
+df = df.rename(columns={'mean smoothness': 'smoothness'})
+
+print(df.tail())
+```
+
+Re-plotting the graph from above with the proper labels added in:
 
 ```{python, eval = FALSE}
-import matplotlib.pyplot as plt
-
-# Add jitter to the data
-np.random.seed(20211217)
-x = df['CHAS']
-x_jittered = x + np.random.randn(len(x)) * 0.1 * (max(x) - min(x))
-
 # Plot
-grouped_data = df.groupby('CHAS')['MEDV'].apply(list)
-positions = range(0, len(df['CHAS'].unique()))
-meanprops = {'color': 'r'}
-bp = plt.boxplot(grouped_data, positions=positions, showmeans=True, meanline=True, meanprops=meanprops)
-plt.scatter(x_jittered, df['MEDV'])
-plt.title('House Prices in Boston')
-plt.xlabel('Bounded by the Charles River')
-plt.ylabel('Median value of owner-occupied homes in $1000’s')
-plt.legend([bp['medians'][0], bp['means'][0]], ['Medians', 'Means'])
+ax = plt.axes()
+sns.boxplot(
+   df, x='target', y='smoothness', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='target', y='smoothness',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+ax.set_title('Breast Cancer Wisconsin Dataset')
+ax.set_ylabel('Tumour Smoothness')
+ax.set_ylim([0, 0.17])
+ax.set_xlabel('')
+ax.set_xticklabels(['Malignant', 'Benign'])
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'], loc='lower left')
+plt.show()
 ```
 
-```{python, echo = FALSE, results = 'hide'}
-import matplotlib.pyplot as plt
-
-# Add jitter to the data
-np.random.seed(20211217)
-x = df['CHAS']
-x_jittered = x + np.random.randn(len(x)) * 0.1 * (max(x) - min(x))
-
+```{python, echo = FALSE, results = "hide"}
 # Plot
-grouped_data = df.groupby('CHAS')['MEDV'].apply(list)
-positions = range(0, len(df['CHAS'].unique()))
-meanprops = {'color': 'r'}
-bp = plt.boxplot(grouped_data, positions=positions, showmeans=True, meanline=True, meanprops=meanprops)
-plt.scatter(x_jittered, df['MEDV'])
-plt.title('House Prices in Boston')
-plt.xlabel('Bounded by the Charles River')
-plt.ylabel('Median value of owner-occupied homes in $1000’s')
-plt.legend([bp['medians'][0], bp['means'][0]], ['Medians', 'Means'])
+ax = plt.axes()
+sns.boxplot(
+   df, x='target', y='smoothness', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='target', y='smoothness',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+ax.set_title('Breast Cancer Wisconsin Dataset')
+ax.set_ylabel('Tumour Smoothness')
+ax.set_ylim([0, 0.17])
+ax.set_xlabel('')
+ax.set_xticklabels(['Malignant', 'Benign'])
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'], loc='lower left')
+plt.show()
 ```
+
+Set a Research Question
+=======================
+Looking at the plotted data above leads to a question: is the average smoothness of a tumour different if it is malignant as opposed to if it is benign? If this were to be true it might be medically useful, and it may even help in the early detection of cancer. Wording this as a **research question** gives us:
+
+> Are the smoothness values of malignant tumours the same as those of benign tumours?
+
+There are a number of things that this question does not specify: are we interested in comparing the means, medians or distributions of the two groups? Are we interested in *any* difference between them or specifically if one group is larger than the other? Or are we interested in if they are *equivalent* (which is different to them being the *same*)? We need to take a closer look at the data before we can fully formulate our research question as a *hypothesis*, but this can be considered a first draft of that hypothesis.
 
 Choose a Statistical Test
 =========================
-Looking at the plotted data above raises a question: is the average house price different between the two location types? If it is, it would suggest that proximity to the river affects house prices. Wording this as a **research question** (which, strictly speaking, should be formulated like a *null hypothesis*) gives us:
-
-> Are the average house prices in areas bounded by the Charles River the same as in areas not bounded by the river?
+A number of questions need to be addressed before we can choose a test:
 
 Parametric vs Non-Parametric
 ----------------------------
-First, we need to decide if we should use **parametric** or **non-parametric** statistics to address this research question. Parametric statistics are based on assumptions about the data's distribution (whereas non-parametric statistics are not) and reasons to choose them include:
+First, we need to decide if we should use **parametric** or **non-parametric** statistics to address this research question. Parametric statistics are based on assumptions about the data's distribution while non-parametric statistics are not. You should choose parametric statistics if:
 
-- Your data is normally distributed
-- Your data is not normally distributed but the sample size is large:
+- Your data is normally distributed, or
+- Your data is not normally distributed but the sample size is large. Some rules-of-thumb as to what can be considered 'large' are:
     + $n > 20$ if you only have one group
     + $n > 15$ in each group if you have 2 to 9 groups
     + $n > 20$ in each group if you have 10 to 12 groups
-- The spread of data in each group is different
-- The data is skewed (in other words, the *median* is more representative of the central tendency than the *mean*)
-- There is a need to increase the statistical power (parametric tests usually have more power and so are more likely to detect a significant difference when one truly exists)
+- The data should not be skewed. In other words, the *mean* should be representative of the central tendency and not be much different from the *median*.
+    + When doing parametric statistics use the mean and when doing non-parametric statistics use the median
+- There should not be an influential number of outliers. While this is similar to the previous point about the data not being skewed bear in mind that it's possible to have outliers both above and below the mean of the data, essentially cancelling out the skewness. Hence why a 'lack of skewness' and a 'lack of outliers' both need to be checked for.
+- Parametric tests usually have more statistical power than non-parametric tests and so are more likely to detect a significant difference when one truly exists. If there is a need to increase the power of a test then they can be considered over non-parametric tests.
 
-Looking at the plot, the spread in each group is fairly consistent and nothing is particularly skewed, although the sample size is large and it could very well be the case that the data in each group approximates a normal distribution. As a result, **we should choose to do parametric statistics** and tweak our research question so that it becomes "are the *mean* house prices the same?"<sup>1, 2</sup>. In other words, are the dashed red lines in the plot (the means) at different heights?
+Let's check if we have sufficiently large groups:
 
-<sup>1</sup>when doing parametric statistics you should use the *mean*, when doing non-parametric statistics, use the *median*.  
-<sup>2</sup>this question is complicated by the fact that our data is the *median* house price for various areas within Boston, so our research question is actually something like, "are the mean median house prices the same between the two location types?"
+```{python}
+# Sample sizes
+n = df['target'].value_counts()
 
-Set a Hypothesis
-----------------
-In order to answer the research question ("are the mean house prices the same?") we now need to formulate it properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+print(n)
+```
 
-- $H_0:$ true mean house price is the same for both location types
-- $H_1:$ true mean house price is **not** the same for both location types
+For the malignant group we have $n = 212$ and for the benign group it is $n = 357$, so in both cases we have $n > 15$. Eye-balling the boxplots shows that the groups are not particularly skewed (the mean and median lines are close together) and that there are not too many outliers. We could, if we wanted to be more rigorous, actually test for normality (see [here](../distributions/tests_for_normality.html)), skewness and outliers but for the purpose of this example we already have enough information to conclude that a **parametric** test is appropriate.
 
-The null hypothesis is that there is equality and the alternate hypothesis is that there is a difference (of any size). Note that if our research question was instead "are the mean house prices *equivalent*?" or "are the mean house prices the same to within a certain *tolerance*?" then the hypotheses above would not be formulated correct. Examples that have research questions like these are over [here](tost_unpaired.html).
+Homogeneity of Variance
+-----------------------
+The *spread* of the data should be roughly equal for both groups. Despite being called homogeneity of *variance* you can actually look at either variance *or* standard deviation to assess this. This is because the ratio of variances is - by definition - the square of the ratio of standard deviations and the square is a *monotonic function*, so order is preserved (for positive numbers).
 
-Choose a Test
--------------
-Now that we have hypotheses, we can follow a statistical test selection process:
+With that said, here are some rules-of-thumb as to what standard deviations can be considered 'roughly equal':
 
-- Our house price data is **continuous** because it is made up of measurements that are numbers (not discrete categories or ranks)
-- We are interested in the **difference** between the house prices in the different groups (not in the *relationship* between the house prices and something else)
-- Specifically, we are interested in the difference of the **average** (mean) house price (not the *variance* in the prices)
-- We have **two groups** because there are two location types (bounded by the river and not)
-- As discussed above, we are doing **parametric statistics**
-- Our measurements are **independent** of each other: the amount that one group of houses cost does not affect how much another group of houses cost
-- Our hypotheses are formulated in a way that tests for a **difference** (not for *equivalence*)
+- $0.5 < \frac{s_0}{s_1} < 2$ (source: [Wikipedia](https://en.wikipedia.org/wiki/Student%27s_t-test#Equal_or_unequal_sample_sizes,_similar_variances_(1/2_%3C_sX1/sX2_%3C_2)))
+- $0.9 < \frac{s_0}{s_1} < 1.1$ (source: Codecademy)
 
-Looking at the flowchart below tells us that we should thus be using the unpaired two-sample *t*-test to test our hypothesis:
+where $s_0$, $s_1$ are the sample standard deviations for the two groups. Let's check our data:
+
+```{python}
+# Homogeneity of variance (using sample standard deviations)
+s = df.groupby('target')['smoothness'].std(ddof=1)
+ratio = s[0] / s[1]
+
+print(f'Ratio of standard deviations: {ratio:.2f}')
+```
+
+This is between 0.9 and 1.1, so we can conclude that the variances are 'equal enough'.
+
+Use the Flowchart
+-----------------
+We have enough insight into our research question (our 'draft hypothesis') and our data to be able to now follow a statistical test selection process:
+
+- Our dependent variable - tumour smoothness - is **continuous** because it is made up of measurements that are numbers as opposed to discrete categories or ranks
+- Our independent variables - tumour classification - is **categorical** (specifically, it is *nominal* and, more specifically, it is *binary*)
+- We have **two groups** for the independent variable: malignant and benign
+- As discussed above, we want to do a **parametric** test
+- Our measurements are **independent** of each other: the smoothness of one tumour does not affect the smoothness of another tumour
+
+Looking at the flowchart below tells us that we should thus be using the unpaired two-sample *t*-test (or [Welch's *t*-test](https://en.wikipedia.org/wiki/Welch%27s_t-test), but that is used when the variances are unequal and we have established that they are close enough to be considered equal):
 
 ```{r, echo=FALSE}
 # install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
@@ -256,13 +253,14 @@ DiagrammeR::grViz(
                     cd_number [label='Number of\ngroups/samples\nfor the IV?', fillcolor='#c9daf8']
                         two_parametric [label='Parametric?', fillcolor='#c9daf8']
                             true_independent [label='Independent\ngroups/sample?', fillcolor='#c9daf8']
-                                'Unpaired\ntwo-sample\nt-test' [fillcolor='#d9ead3', label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Unpaired\ntwo-sample\nt-test' [fillcolor='#d9ead3', label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test or<BR/>Welch&apos;s <I>t</I>-test>]
                                 'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
                             false_independent [label='Independent\ngroups/sample?']
                                 'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
                                 'Wilcoxon\nsigned-rank test' [style=rounded]
                         more_parametric [label='Parametric?']
                             'ANOVA' [style=rounded]
+                                'Tukeys Range Test' [style=rounded, label=<Tukey&rsquo;s range<BR/>test>]
                             false_independent2 [label='Independent\ngroups/sample?']
                                 'Kruskal-Wallis\none-way ANOVA' [style=rounded]
                                 'Friedman\ntwo-way ANOVA' [style=rounded]
@@ -302,6 +300,7 @@ DiagrammeR::grViz(
                         false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
                 cd_number -> more_parametric [label=More]
                     more_parametric -> 'ANOVA' [label=Yes]
+                        'ANOVA' -> 'Tukeys Range Test' [label='If signif.']
                     more_parametric -> false_independent2 [label=No]
                         false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
                         false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
@@ -327,98 +326,136 @@ DiagrammeR::grViz(
 )
 ```
 
+Formalise the Hypothesis
+========================
+We can now formulate the research question properly as a *null hypothesis* with a corresponding *alternate hypothesis*:
+
+- $H_0:$ the true mean smoothness value is the same for both malignant and benign tumours
+- $H_1:$ the true mean smoothness value is **not** the same for both malignant and benign tumours
+
+More mathematically:
+
+- $H_0: \mu_0 = \mu_1$
+- $H_1: \mu_0 \neq \mu_1$
+
+where $\mu_0$, $\mu_1$ are the true means - of *all* tumours in the population, not just in the sample - for the two groups. Notice that this is a **two-tailed** test: we're interested in finding *any* difference if one exists, not just a specific difference ($\mu_0 > \mu_1$ or $\mu_0 < \mu_1$). Note also that if our research question had instead been "are the true mean smoothness values *equivalent*?" or "are the true mean smoothness values the same to within a certain *tolerance*?" then the hypotheses above would not be the correct formulations. Examples that have research questions like these are over [here](tost_unpaired.html).
+
 Descriptive Statistics
 ======================
-Start by separating out the two samples:
+We've already looked at the sample sizes, the standard deviations and the homogeneity of variance but we can also look at the following to get a better understanding of our data:
+
+Sample means ($\bar{x}_0$, $\bar{x}_1$):
 
 ```{python}
-# Samples
-sample_0 = df[df['CHAS'] == 0]['MEDV']
-sample_1 = df[df['CHAS'] == 1]['MEDV']
+# Sample means
+x_bar = df.groupby('target')['smoothness'].mean()
+
+print(x_bar)
 ```
 
-Means of the two samples:
+Difference between the sample means ($\bar{x}_0 - \bar{x}_1$):
 
 ```{python}
-# Means
-mean_0 = sample_0.mean()
-mean_1 = sample_1.mean()
-difference = mean_0 - mean_1
+# Difference between the sample means
+diff_btwn_means = x_bar.diff()
+diff_btwn_means = diff_btwn_means.dropna()[0]
 
-print(f'Difference of means = {difference:5.3f}')
+print(f'Difference between the means: {diff_btwn_means:.4f}')
 ```
 
-Sample sizes:
+Pooled estimate of the common standard deviation of the two samples ($s_p$) for equal or unequal sample sizes and similar variances:
 
 ```{python}
-# Sample sizes
-n_0 = sample_0.shape[0]
-n_1 = sample_1.shape[0]
+# Degrees of freedom
+dof = n[0] + n[1] - 2
+# Pooled standard deviation
+s_p = np.sqrt(((n[0] - 1) * s[0]**2 + (n[1] - 1) * s[1]**2) / dof)
 
-print(f'n = {n_0}, n = {n_1}')
+print(f'Pooled standard deviation: {s_p:.4f}')
 ```
 
-Sample standard deviations:
+Standard error (SE) of the difference between the sample means ($SE \left( \bar{x}_0 - \bar{x}_1 \right)$):
 
 ```{python}
-# Sample standard deviations
-std_0 = sample_0.std(ddof=1)
-std_1 = sample_1.std(ddof=1)
+# Standard error (SE) of the difference between sample means
+se = s_p * np.sqrt((1 / n[0]) + (1 / n[1]))
 
-print(f'Standard deviations: {std_0:5.3f} and {std_1:5.3f}')
+print(f'Standard error (SE) of the difference between sample means: {se:.5f}')
 ```
 
-Standard errors of the means:
+Confidence interval (CI) for the difference between the sample means:
 
 ```{python}
-# Standard errors of the means
-sem_0 = std_0 / np.sqrt(n_0)
-sem_1 = std_1 / np.sqrt(n_1)
+# Confidence interval
+upper = diff_btwn_means + 1.96 * se
+lower = diff_btwn_means - 1.96 * se
 
-print(f'Standard errors of the means: {sem_0:5.3f} and {sem_1:5.3f}')
+print(f'Difference between means: {diff_btwn_means:.3f} ({lower:.3f} to {upper:.3f})')
 ```
 
-Standard error of the difference:
+These equations can be found on [Wikipedia](https://en.wikipedia.org/wiki/Student%27s_t-test#Equal_or_unequal_sample_sizes,_similar_variances_(1/2_%3C_sX1/sX2_%3C_2)), Boston University's [site](https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_confidence_intervals/bs704_confidence_intervals5.html) and [Statology](https://www.statology.org/confidence-interval-difference-between-means/).
+
+For the record, the values of 1.96 used in the final equations to get the confidence interval come from the fact that 95% of values lie within about this number of standard deviations of the mean (see [here](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule)). The exact number can be calculated as follows:
 
 ```{python}
-# Standard error of the difference
-sed = np.sqrt(std_0**2 / n_0 + std_1**2 / n_1)
+# Confidence level
+C = 0.95  # 95%
+# Significance level, α
+alpha = 1 - C
+# Number of tails
+tails = 2
+# Quantile (the cumulative probability)
+q = 1 - (alpha / tails)
+# Critical z-score, calculated using the percent-point function (aka the
+# quantile function) of the normal distribution
+z_star = st.norm.ppf(q)
 
-print(f'Standard error of the difference: {sed:5.3f}')
-```
-
-Confidence interval for the difference of the means:
-
-```{python}
-# Confidence intervals
-upper_ci = difference + 2 * sed
-lower_ci = difference - 2 * sed
-
-print(f'Difference of the means = {difference:5.3f} ({lower_ci:5.3f} to {upper_ci:5.3f})')
+print(f'95% of values lie within {z_star:.5f} standard deviations of the mean')
 ```
 
 Unpaired Two-Sample *t*-Test
 ============================
-After all that hard work getting the data into the correct format, choosing a hypothesis test and looking at the descriptive statistics, actually performing the hypothesis test is incredibly simple:
+After all that hard work above we are only one step away from calculating the *t*-statistic:
 
 ```{python}
-from scipy import stats
+# t-statistic
+t_statistic = diff_btwn_means / se
 
-# Two-sample t-test
-statistic, pvalue = stats.ttest_ind(sample_0, sample_1)
+print(f't = {t_statistic:.3f}')
+```
 
-print(f'Two-sample t-test: s = {statistic:5.3f}, p = {pvalue:5.3f}')
+...and the corresponding *p*-value:
+
+```{python}
+# p-value
+p_value = (1 - st.t.cdf(t_statistic, dof)) * 2
+
+print(f'p = {p_value:.3f}')
+```
+
+Note that this *p*-value is so small that it is being shown as 0, but this is just a data representation error.
+
+A better (and much simpler) option is to use SciPy's `ttest_ind()` function:
+
+```{python}
+# Separate out the samples
+malignant = df.groupby('target').get_group('malignant')
+benign = df.groupby('target').get_group('benign')
+# Unpaired two-sample Student's t-test
+t_statistic, p_value = st.ttest_ind(malignant['smoothness'], benign['smoothness'])
+
+print(f'Two-sample t-test: s = {t_statistic:5.3f}, p = {p_value:.2e}')
 ```
 
 Interpreting the Result
 -----------------------
-This *p*-value is small (<0.05), which means that we can reject $H_0$ and conclude that there is a statistically significant difference between the two location types (*p* < 0.05) with the median house price being $2,990 higher on average in areas bounded by the Charles river than in areas away from the river.
+This *p*-value is (very!) small - much less than 0.05 - which means that we can reject $H_0$ and conclude that there is a statistically significant difference between the smoothness of the two tumour types (*p* < 0.05) with the mean smoothness value being 0.0104 units, 95% CI [0.0082, 0.0127], greater on average in malignant tumours than in benign tumours.
 
 Often, you will see this type of result reported using asterisks to indicate the significance level (α) associated with it. Additionally, if the *p*-value is very small it's usually just reported as "<0.001" rather than as an exact value. Here are functions to add in this formatting:
 
 ```{python}
 def get_significance(p):
-    """Returns the significance of a p-values as a string of stars."""
+    """Get the significance of a p-values as a string of stars."""
     if p <= 0.001:
         return '***'
     elif p <= 0.01:
@@ -439,14 +476,21 @@ def round_p_value(p):
         return f'{p:5.3}'
 
 
-p_rounded = round_p_value(pvalue)
-significance = get_significance(pvalue)
+p_rounded = round_p_value(p_value)
+significance = get_significance(p_value)
+
 print(f'The p-value is {p_rounded} ({significance})')
 ```
 
 Adding Significance Bars to Boxplots
 ------------------------------------
 If you're interested in adding significance bars to boxplots after having used the unpaired two-sample *t*-test to find a significant difference, look over [here](../../graphs/ax_based/boxplots_significance.html).
+
+Welch's *t*-test
+================
+As already mentioned, the standard unpaired two-sample Student's *t*-test makes the assumption that the variances of your two groups are equal. This is why we checked that the two standard deviations are 'equal enough'. If they are **not** sufficiently similar in value we can perform [Welch's *t*-test](https://en.wikipedia.org/wiki/Welch%27s_t-test) which is like Student's *t*-test except it does not make this equal variance assumption.
+
+The `ttest_ind()` function has a parameter `equal_var` which allows you to choose if this assumption is made or not, and hence which test is performed. It is set to `True` by default and hence a Student's *t*-test is run, but the ability to set `equal_var=False` means you have the option to perform Welch's *t*-test if it is more suitable.
 
 Two One-Sided *t*-Tests
 =======================

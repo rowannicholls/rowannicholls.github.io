@@ -1,101 +1,107 @@
 ---
-title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Breast cancer wisconsin (diagnostic) dataset'
+title: '<font size="5">`scikit-learn` Toy Datasets in Python:</font><br>Breast Cancer Wisconsin Dataset'
 output:
     html_document:
         theme: paper
         highlight: textmate
-        number_sections: true
-        toc: true
+        # number_sections: true
+        # toc: true
         includes:
             before_body: ../../../google_analytics.html
 ---
 
 <font size="3">
 
-For more info, see here:  
-[https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-wisconsin-diagnostic-dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-wisconsin-diagnostic-dataset){target="_blank"}
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
 
-The **breast cancer wisconsin (diagnostic) dataset** is loaded using `load_breast_cancer()`. This returns a 'Bunch' object with the following keys:
+```{python, echo = FALSE}
+import pandas as pd
 
-| Key | Description |
-|-----|-------------------------------------------------------------|
-| `DESCR` | Description of the dataset |
-| `filename` | Location of the CSV file containing the data being imported |
-| `feature_names` | Names of the 30 groups of data |
-| `data` | The 569 data points in each of the 30 groups of data, formatted as a 569x30 array |
-| `target_names` | Names of the 2 categorisations (malignant and benign) |
-| `target` | Which categorisation each data point is in (0, 1) |
+pd.set_option('display.max_columns', 18)
+pd.set_option('display.max_colwidth', 15)
+pd.set_option('display.width', 120)
+```
+
+- For this dataset's **description**, see [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#breast-cancer-wisconsin-diagnostic-dataset)
+- For this dataset's **documentation**, see [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html#)
+
+The Breast Cancer Wisconsin (Diagnostic) dataset is available as a 'Bunch' object. This contains both the data itself and metadata that provides additional information. It can be loaded using the `load_breast_cancer()` function from scikit-learn's `datasets` sub-module, and it is recommended to set the `as_frame` parameter to `True` when doing so as this will cause the actual data (as opposed to the metadata) to be loaded as Pandas data frames (as opposed to NumPy arrays).
 
 ```{python}
-from sklearn.datasets import load_breast_cancer
+from sklearn import datasets
 
 # Load the dataset
-breast_cancer = load_breast_cancer()
-
-# Show the dataset's keys
-print(list(breast_cancer))
+breast_cancer = datasets.load_breast_cancer(as_frame=True)
 ```
 
-```{python}
-# Description of the dataset
-print(breast_cancer['DESCR'])
-```
+The dataset contains 569 *samples* (instances) with 30 *features* (independent variables) and one *target* (dependent variable) for each:
+
+- Each *sample* is the set of numerical results obtained from an analysis of an image of a breast cancer tumour
+- Each *feature* is a measurement derived from the cell nuclei present in the image
+- The *target* is the classification or label for that tumour: malignant or benign
+
+So, when formatted as a data frame, the data consists of 569 rows and 30 + 1 columns (30 features and 1 target). The feature and target data can be extracted separately as two data frames or together in one data frame:
 
 ```{python}
-# Location of the CSV file containing the data being imported
-print(breast_cancer['filename'])
+# Extract the feature data only
+features = breast_cancer['data']
+
+# Extract the target data only
+target = breast_cancer['target']
+
+# Extract the feature and target data together
+df = breast_cancer['frame']
 ```
 
+The columns names of the feature data are the same as the features' names, which are also available in a separate `feature_names` array:
+
 ```{python}
-# Names of the 30 groups of data
 print(breast_cancer['feature_names'])
 ```
 
+The target names are `malignant` and `benign`, corresponding to the two disease states of the tumours. These are encoded as 0 and 1 respectively:
+
 ```{python}
-# The 569 data points in each of the 30 groups of data, formatted as a 569x30 array
-print(breast_cancer['data'][:2])
+print(target.unique(), breast_cancer['target_names'])
 ```
 
+The target data can be decoded using a lambda function:
+
 ```{python}
-# Names of the 2 categorisations (malignant and benign)
-print(breast_cancer['target_names'])
+# Clean the raw data
+df['target'] = df['target'].apply(lambda x: breast_cancer['target_names'][x])
 ```
 
+Here's a preview of the data:
+
 ```{python}
-# Which categorisation each data point is in (1 = malignant, 0 = benign)
-print(breast_cancer['target'])
+print(df.tail())
 ```
 
-The groups of data can be plotted against each other or against the target
-group as follows:
+Example Usage
+=============
 
 ```{python}
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
+from matplotlib import lines
+import seaborn as sns
 
 # Plot
-plt.scatter(breast_cancer['data'][:, 0], breast_cancer['data'][:, 8], c=breast_cancer['target'])
-plt.title('Breast cancer wisconsin (diagnostic) dataset')
-plt.xlabel(breast_cancer['feature_names'][0])
-plt.ylabel(breast_cancer['feature_names'][8])
-```
-
-The data is much easier to work with if it is converted into a data frame:
-
-```{python}
-import pandas as pd
-
-# Extract the data
-data = pd.DataFrame(breast_cancer['data'], columns=breast_cancer['feature_names'])
-# Extract the target
-target = pd.DataFrame(breast_cancer['target'], columns=['Categorisation'])
-# Combine into one dataset
-df = pd.concat([target, data], axis='columns')
-
-# Plot
-plt.scatter(df['mean area'], df['mean smoothness'], c=df['Categorisation'])
-plt.title('Breast cancer wisconsin (diagnostic) dataset')
-plt.xlabel('mean area')
-plt.ylabel('mean smoothness')
+ax = plt.axes()
+sns.boxplot(
+   df, x='target', y='mean smoothness', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='target', y='mean smoothness',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+plt.title('Breast Cancer Wisconsin Dataset')
+plt.ylabel('Mean Smoothness')
+plt.xlabel('')
 ```
 
 </font>

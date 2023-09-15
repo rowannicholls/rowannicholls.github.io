@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
 One Independent Variable, One Dependent Variable
 ================================================
 
@@ -62,6 +67,32 @@ plt.plot([0, 9], [0, 8])
 plt.axhline(4)
 # Plot a vertical line
 plt.axvline(7)
+```
+
+Error Bars
+----------
+Uncertainty can be communicated using the `errorbar()` function to plot error bars:
+
+```{python, eval = FALSE}
+x = [1, 5, 9, 13]
+y = [1, 25, 81, 169]
+yerr = [1.5, 7.5, 15, 19]
+
+plt.plot(x, y)
+plt.errorbar(x, y, yerr=yerr, fmt='o', color='purple')
+
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+x = [1, 5, 9, 13]
+y = [1, 25, 81, 169]
+yerr = [1.5, 7.5, 15, 19]
+
+plt.plot(x, y)
+plt.errorbar(x, y, yerr=yerr, fmt='o', color='purple')
+
+plt.show()
 ```
 
 Formatting Options

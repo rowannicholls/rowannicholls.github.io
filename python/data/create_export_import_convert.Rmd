@@ -36,7 +36,7 @@ for folder in ['csv', 'html', 'json', 'mat', 'npy', 'ods', 'tab', 'tsv', 'txt', 
     os.makedirs(folder, exist_ok=True)
 ```
 
-and install the packages that will be needed from the terminal:
+Next, open the terminal and install the packages that will be needed (replace `python3.11` with the version of Python you have installed and are using):
 
 ```{bash, eval = FALSE}
 $ python3.11 -m pip install numpy
@@ -46,9 +46,8 @@ $ python3.11 -m pip install scipy
 $ python3.11 -m pip install pyexcel_ods
 $ python3.11 -m pip install xlwt
 $ python3.11 -m pip install xlsxwriter
+$ python3.11 -m pip install openpyxl
 ```
-
-where `python3.11` corresponds to the version of Python you have installed and are using.
 
 Create Data
 ===========
@@ -91,9 +90,9 @@ tupl_of_tupl = (
 )
 ```
 
-Create Numpy Arrays
+Create NumPy Arrays
 -------------------
-Import Numpy:
+Import NumPy:
 ```{python}
 import numpy as np
 ```
@@ -296,7 +295,7 @@ filepath = 'mat/dictionary.mat'
 scipy.io.savemat(filepath, dct, oned_as='row')
 ```
 
-Export a dictionary as a Numpy object (.npy):
+Export a dictionary as a NumPy object (.npy):
 ```{python}
 import numpy as np
 
@@ -697,14 +696,24 @@ Import
 
 Import Comma-Separated Values (CSVs)
 ------------------------------------
-Import comma-separated values (.csv) as a data frame. The first row will be used as the column names and the numbers 0, 1, 2, etc, will be used as the indexes (row names):
+
+**CSV file to Pandas data frame**
+
+Use `read_csv` to import comma-separated values in a CSV file (with the .csv extension) into Python as a Pandas data frame:
 ```{python}
 import pandas as pd
 
 df = pd.read_csv('csv/data frame.csv')
 ```
 
-If you instead want to use the values in the first column as the indexes (row names), use `index_col=0`:
+To import all CSV files in a folder at once:
+```{python}
+for file in os.listdir('csv'):
+    filepath = os.path.join('csv', file)
+    df = pd.read_csv(filepath)
+```
+
+The default behaviour of `read_csv` will be to use the first row as the column names and the numbers 0, 1, 2, etc, as the indexes (row names). If you instead want to use the values in the first column as the indexes (row names), use `index_col=0`:
 ```{python}
 df = pd.read_csv('csv/data frame.csv', index_col=0)
 ```
@@ -719,43 +728,23 @@ If there are no column names but you want to provide your own, use `header=None`
 df = pd.read_csv('csv/data frame.csv', header=None, names=['col1', 'col2', 'col3'])
 ```
 
-Import comma-separated values (.csv) as a data frame, interpreting certain values as missing data:
+To customise which values get interpreted as missing data, use the `na_values` keyword argument:
 ```{python, eval = FALSE}
-import pandas as pd
-
 df = pd.read_csv('csv/data frame.csv', na_values=['Missing', 'None'])
 ```
-In addition to whatever you manually define using `na_values` as demonstrated above, the following will all be considered 'missing data': ‘’, ‘#N/A’, ‘#N/A N/A’, ‘#NA’, ‘-1.#IND’, ‘-1.#QNAN’, ‘-NaN’, ‘-nan’, ‘1.#IND’, ‘1.#QNAN’, ‘<NA>’, ‘N/A’, ‘NA’, ‘NULL’, ‘NaN’, ‘n/a’, ‘nan’ and ‘null’
+In addition to whatever you manually define using `na_values` as demonstrated above, the following will all be considered missing data: ‘#N/A’, ‘#N/A N/A’, ‘#NA’, ‘-1.#IND’, ‘-1.#QNAN’, ‘-NaN’, ‘-nan’, ‘1.#IND’, ‘1.#QNAN’, ‘<NA>’, ‘N/A’, ‘NA’, ‘NULL’, ‘NaN’, ‘n/a’, ‘nan’, ‘null’ and empty strings.
 
-Import comma-separated values (.csv) as a data frame using a custom date parser:
+To use a custom format for interpreting dates you need both `parse_dates` and `date_format` as shown below:
 ```{python}
-import datetime
-
-
-def dateparser(x):
-    """
-    Parse dates.
-
-    Example formats:
-    '%Y-%m-%d %H:%M:%S'   2000-01-02 17:01:02
-    '%Y-%m-%d'            2000-01-02
-    '%d/%m/%Y'            02/01/2000
-    '%d %b %Y %H:%M:%S'   2 Jan 2000
-    """
-    return datetime.datetime.strptime(x, '%Y-%m-%d')
-
-
-df = pd.read_csv('csv/data frame.csv', parse_dates=['DOB'], date_parser=dateparser)
-date = df.loc[0, 'DOB']
+# Example date formats:
+# '%Y-%m-%d %H:%M:%S'   2000-01-02 17:01:02
+# '%Y-%m-%d'            2000-01-02
+# '%d/%m/%Y'            02/01/2000
+# '%d %b %Y %H:%M:%S'   2 Jan 2000
+df = pd.read_csv('csv/data frame.csv', parse_dates=['DOB'], date_format='%Y-%m-%d')
 ```
 
-Import all CSVs in a folder as data frames:
-```{python}
-for file in os.listdir('csv'):
-    df = pd.read_csv(os.path.join('csv', file), parse_dates=True, index_col=0)
-```
-
-Import comma-separated values (.csv) as a dictionary:
+**CSV file to dictionary**
 ```{python}
 dct = {}
 with open('csv/dictionary - multiple columns, single cell in each.csv', newline='') as file:
@@ -764,7 +753,7 @@ with open('csv/dictionary - multiple columns, single cell in each.csv', newline=
         dct = dict(row)
 ```
 
-Import comma-separated values (.csv) as a list-of-lists:
+**CSV file to list-of-lists**
 ```{python}
 ls_of_ls = []
 with open('csv/list-of-lists.csv', newline='') as file:
@@ -772,7 +761,12 @@ with open('csv/list-of-lists.csv', newline='') as file:
         ls_of_ls.append(row)
 ```
 
-Import comma-separated values (.csv) in a text file as a tuple of lists of strings:
+**CSV file to NumPy array**
+```{python}
+ar = np.genfromtxt('csv/array.csv', delimiter=',')
+```
+
+**Comma-separated values in a text file to a tuple of lists of strings**
 ```{python}
 tupl_of_lists = ()
 with open('txt/list-of-lists - comma-separated values.txt', newline='') as file:
@@ -783,12 +777,12 @@ with open('txt/list-of-lists - comma-separated values.txt', newline='') as file:
 
 Import Tab-Separated Values (TSVs)
 ----------------------------------
-Import tab-separated values (.tsv) as a data frame:
+Import tab-separated values in a TSV file (with the .tsv extension) as a Pandas data frame using `read_csv` with the `sep='\t'` option:
 ```{python}
 df = pd.read_csv('tsv/data frame.tsv', sep='\t')
 ```
 
-Import tab-separated values (.tsv) as a list:
+To import as a list:
 ```{python}
 ls = []
 with open('tsv/list.tsv') as file:
@@ -796,7 +790,7 @@ with open('tsv/list.tsv') as file:
         ls.append(line[:-1])
 ```
 
-Import tab-separated values in a text file as a data frame:
+Import tab-separated values in a text file as a Pandas data frame:
 ```{python}
 df = pd.read_csv('txt/data frame - tab-separated values.txt', sep='\t')
 ```
@@ -811,7 +805,7 @@ with open('txt/list-of-lists - tab-separated values.txt', newline='') as file:
 
 Import Tab-Separated Values (TABs)
 ----------------------------------
-Import tab-separated values (.tab) as a data frame:
+Import tab-separated values in a TAB file (with the .tab extension) as a Pandas data frame using `read_csv` with the `sep='\t'` option:
 ```{python}
 df = pd.read_csv('tab/data frame.tab', sep='\t')
 ```
@@ -878,9 +872,9 @@ dct = json.load(open('txt/dictionary.txt'))
 
 These last two examples are identical except for the fact that the contents of 'list-of-lists.txt' forms a list-of-lists when interpreted as Python code whereas the contents of 'dictionary.txt' forms a dictionary.
 
-Import Numpy Objects 
+Import NumPy Objects 
 --------------------
-Import Numpy object (.npy) as a dictionary:
+Import NumPy object (.npy) as a dictionary:
 ```{python}
 import numpy as np
 
