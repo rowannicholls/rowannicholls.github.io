@@ -1,0 +1,365 @@
+---
+title: "<font size='5'>Statistics in Python:</font><br>Tukey's Range Test"
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Created: 2023-08-01 -->
+<!-- Updated: 2023-09-11 -->
+<!-- Updated: 2023-09-16 -->
+
+When working with multiple groups of qualitative data the **Tukey's range test** can be used to determine which of the groups' means are significantly different from another group's mean:
+
+```{python, echo = FALSE, results = 'hide'}
+from statsmodels import api as sm
+from matplotlib import pyplot as plt
+from matplotlib import lines
+import seaborn as sns
+
+# Load the dataset
+dataset = sm.datasets.modechoice.load_pandas()
+# Extract the raw data
+df = dataset['data']
+# Clean the data
+# df['mode'] = df['mode'].replace({1: 'Air', 2: 'Train', 3: 'Bus', 4: 'Car'})
+df['mode'] = df['mode'].replace({1: 'Air', 2: 'Group 1', 3: 'Group 2', 4: 'Group 3'})
+df = df[df['mode'] != 'Air']
+cols = ['invt', 'mode']
+df = df[cols]
+
+# Plot
+ax = plt.axes()
+sns.boxplot(
+   df, x='mode', y='invt', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='mode', y='invt',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+title = """Which pair(s) of group means are
+significantly different from each other?"""
+ax.set_title(title)
+ax.set_ylabel('')
+ax.set_ylim([0, 1500])
+ax.set_xlabel('')
+ax.set_xticklabels(['Group 0', 'Group 1', 'Group 2'])
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'])
+plt.show()
+```
+
+In the above plot the black dashed lines represent the mean values of the groups. Is the mean of Group 1 significantly different from that of Group 2? And from that of Group 3? How about the mean values of Group 2 and Group 3?
+
+Now, one option for how to address these questions could be to use multiple *two-sample *t*-tests* (one test for each pair of groups) - see [here](unpaired_two_sample_t_test.html) for how to do that. However, the problem with this is that every time you do a *t*-test there is a chance that the result will be a false positive. This is also known as a Type I error and the probability of this occurring is usually set by the researcher at 5%. This means that, if we were to do three *t*-tests, the chance of this happening would be $1 - (1 - 0.05)^3 = 14.3\%$ which is very high! There's an [xkcd comic](https://xkcd.com/882/) that highlights this problem.
+
+For this reason, whenever there are more than two groups it is expected that an *ANOVA* (analysis of variance) test is used instead of multiple *t*-tests as this will keep the Type I error rate at 5% overall. See [here](anova.html) for the page on that topic. While this will answer the question of whether or not all groups' means are the same it will not, unfortunately, tell us *which* means are different.
+
+This is where [Tukey's range test](https://en.wikipedia.org/wiki/Tukey%27s_range_test) becomes useful. It should be done after an ANOVA test has returned a significant result in order to tell us *which* groups are different.
+
+Python Packages
+===============
+The code on this page uses the Statsmodels, Matplotlib, Seaborn and SciPy packages. These can be installed from the terminal with the following commands:
+
+```{bash, eval = FALSE}
+# `python3.11` corresponds to the version of Python you have installed and are using
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install seaborn
+$ python3.11 -m pip install scipy
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+from statsmodels import api as sm
+from statsmodels.stats.multicomp import pairwise_tukeyhsd
+from matplotlib import pyplot as plt
+from matplotlib import lines
+import seaborn as sns
+from scipy import stats as st
+```
+
+Example Data
+============
+For this tutorial we will use the **Travel Mode Choice** dataset from Statsmodels.
+
+- For documentation on how to work with Statsmodels datasets, see [here](https://www.statsmodels.org/devel/datasets/)
+- For documentation on this dataset in particular, see [here](https://www.statsmodels.org/devel/datasets/generated/modechoice.html)
+- For an example, see [this page](https://rowannicholls.github.io/python/data/statsmodels_datasets.html)
+
+This can be loaded into Python as a 'Dataset' object. This will contain the data itself as well as metadata about the dataset, but for this example we are only interested in the data. Furthermore, we want it to be in the Pandas data frame format, hence we will use the `.load_pandas()` method:
+
+```{python}
+# Load the dataset
+dataset = sm.datasets.modechoice.load_pandas()
+# Extract the data
+df = dataset['data']
+
+print(df.head())
+```
+
+The `mode` column contains the mode of transport used in various trips between Sydney, Canberra and Melbourne in Australia. Currently these are encoded as the numbers 1, 2, 3 and 4, representing 'air', 'train', 'bus' and 'car' respectively. We are only going to use the latter three of these groups for this tutorial, so we will decode and filter the data accordingly:
+
+```{python}
+# Decode the mode of transport used
+df['mode'] = df['mode'].replace({1: 'Air', 2: 'Train', 3: 'Bus', 4: 'Car'})
+# Filter
+df = df[df['mode'] != 'Air']
+```
+
+Finally, we are going to look only at the travel time variable in this example - held in the `invt` (in-vehicle time) column - so let's extract that:
+
+```{python}
+# Extract the columns we want
+cols = ['invt', 'mode']
+df = df[cols]
+
+print(df.head())
+```
+
+Here is all the data relevant to this example presented in a box plot plus a strip plot:
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+sns.boxplot(
+   df, x='mode', y='invt', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='mode', y='invt',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+ax.set_title('Travel Mode Choice')
+ax.set_ylabel('Travel time (in-vehicle time) for all stages (minutes)')
+ax.set_ylim([0, 1500])
+ax.set_xlabel('')
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'])
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+sns.boxplot(
+   df, x='mode', y='invt', color='lightgrey', whis=[0, 100],
+   showmeans=True, meanline=True, meanprops={'color': 'black'}
+)
+sns.stripplot(
+   df, x='mode', y='invt',
+   color='lightgrey', edgecolor='black', linewidth=1
+)
+ax.set_title('Travel Mode Choice')
+ax.set_ylabel('Travel time (in-vehicle time) for all stages (minutes)')
+ax.set_ylim([0, 1500])
+ax.set_xlabel('')
+handles = [lines.Line2D([0], [0], color='k', linewidth=1, linestyle='--')]
+ax.legend(handles, ['Group Means'])
+```
+
+Assumptions
+===========
+Tukey's range test (along with most *t*-tests and ANOVA tests) makes the following assumptions:
+
+- The observations are independent of each other both within a group and between groups. For our example:
+    + We can assume that the time taken to complete a journey does not influence the time taken to complete a different journey using the same mode of transport
+    + We can assume that the time taken to complete a train journey does not affect the time taken to complete a bus journey or a car journey, and vice versa
+- The data in each group is normally distributed, although if the sample size is large enough then non-normal data can be approximated as normal (given that there are not influential outliers and that the data is not considerably skewed). Rules-of-thumb for what is 'large enough' are:
+    + $n > 20$ if you only have one group
+    + $n > 15$ in each group if you have 2 to 9 groups
+    + $n > 20$ in each group if you have 10 to 12 groups
+- The spread of the data should be roughly equal for all groups. This is known as *homogeneity of variance* although you can actually look at either variance *or* standard deviation to assess this. Rules-of-thumb as to what standard deviations $s_0$, $s_1$ can be considered to be 'roughly equal' are:
+    - $0.5 < \frac{s_0}{s_1} < 2$ (source: [Wikipedia](https://en.wikipedia.org/wiki/Student%27s_t-test#Equal_or_unequal_sample_sizes,_similar_variances_(1/2_%3C_sX1/sX2_%3C_2)))
+    - $0.9 < \frac{s_0}{s_1} < 1.1$ (source: Codecademy)
+
+Let's check our sample size:
+
+```{python}
+# Sample sizes
+n = df['mode'].value_counts()
+
+print(n)
+```
+
+With 210 samples in each group, only a few outliers and not much skewness (the means and medians of the groups are close to each other) we can assume normality with limited error.
+
+Now let's check the ratios of the standard deviations:
+
+```{python}
+# Homogeneity of variance (using sample standard deviations)
+s = df.groupby('mode')['invt'].std(ddof=1)
+for i in range(3):
+    for j in range(i + 1, 3):
+        ratio = s[i] / s[j]
+        print(f'Ratio of standard deviations: {ratio:.2f}')
+```
+
+These are all between 0.5 and 2 (and are almost all between 0.9 and 1.1).
+
+Choosing a Statistical Test
+===========================
+We can follow a statistical test selection process:
+
+- Our dependent variable - travel time - is **continuous** because it is made up of measurements that are numbers as opposed to discrete categories or ranks
+- Our independent variables - which mode of transport was used - is **categorical** (specifically, it is *nominal*)
+- We have **three groups** for the independent variable because there are three modes of transport under consideration
+- Given that the assumptions discussed in the previous section hold we are fine to use **parametric** statistics
+<!-- - Our measurements are **independent** of each other: the phenolic content of one wine does not affect the phenolic content of another wine -->
+
+Looking at the flowchart below tells us that we should use ANOVA and, if this produces a significant result, Tukey's range test as well:
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
+library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                    sc_true [label='True independent\nvariable?']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?', fillcolor='#c9daf8']
+                        two_parametric [label='Parametric?']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test or<BR/>Welch&apos;s <I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [style=rounded]
+                        more_parametric [label='Parametric?', fillcolor='#c9daf8']
+                            'ANOVA' [fillcolor='#d9ead3']
+                                'Tukeys Range Test' [fillcolor='#d9ead3', label=<Tukey&rsquo;s range<BR/>test>]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?']
+                    binary_datatype [label='Data type of\nthe IV?']
+                        'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
+
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                        'ANOVA' -> 'Tukeys Range Test' [label='If signif.']
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'One-sample Z-test' [label='None\n(no IV)']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
+
+    labelloc='t';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
+    }",
+    height=650,
+    width=1000
+)
+```
+
+One-Way ANOVA Using an *F*-Test
+===============================
+Now that we've chosen a hypothesis test we can go ahead and perform it. Firstly, split the data up into one series of data per group:
+
+```{python}
+# Samples
+sample_0 = df[df['mode'] == 'Train']['invt']
+sample_1 = df[df['mode'] == 'Bus']['invt']
+sample_2 = df[df['mode'] == 'Car']['invt']
+```
+
+Then use the one-way ANOVA *F*-test from SciPy (the "*F*-test" is the actual test being performed in the background):
+
+```{python}
+# One-way ANOVA
+f_statistic, p_value = st.f_oneway(sample_0, sample_1, sample_2)
+
+print(f'One-way ANOVA: F = {f_statistic:.2f}, p = {p_value:.2e}')
+```
+
+We have a significant result (*p* < 0.05) so we should do a Tukey's range test as well:
+
+Tukey's Range Test
+==================
+We will use an alpha value of 10% (there's no particular reason for this and 5% is more common):
+
+```{python}
+# Tukey's range test
+tukey_results = pairwise_tukeyhsd(df['invt'], df['mode'], 0.10)
+
+print(tukey_results)
+```
+
+This output shows us that we can reject the null hypothesis that bus and car journeys take the same time, but that we cannot reject this hypothesis for bus and train journeys or for car and train journeys.
+
+[⇦ Back](../../../python.html)
+
+</font>

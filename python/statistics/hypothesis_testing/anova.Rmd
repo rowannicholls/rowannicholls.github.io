@@ -376,7 +376,7 @@ ANOVA vs the Two-Sample *t*-Test
 ================================
 Another way to address the research question would have been to look at the differences between each pair of groups in turn. In other words, we could have performed three two-sample *t*-tests to compare cultivator 0 against cultivator 1, cultivator 0 against cultivator 2 and cultivator 1 against cultivator 2. That is not fundamentally an incorrect approach but it can inadvertently lead to [*p*-hacking](https://en.wikipedia.org/wiki/Data_dredging) or [false findings](https://xkcd.com/882/) and should be avoided. It would be less efficient than performing one ANOVA anyway, especially if we had had more than three groups (with 4 groups, 6 *t*-tests are required; with 5 groups, 10 tests; with 6 groups, 15 tests and so on).
 
-However, the ANOVA test only answers the question of whether the means of the groups are the *same*. It won't tell us which of the groups is different (or how many groups are different if there are lots) or if it/they are higher or lower than the others. You need to analyse the data further - eg by performing a Tukey's range test - if you get a significant result from an ANOVA.
+However, the ANOVA test only answers the question of whether the means of the groups are the *same*. It won't tell us which of the groups are different (or how many groups are different if there are lots) or if it/they are higher or lower than the others. You need to analyse the data further - eg by performing a Tukey's range test which is demonstrated over [here](tukeys_range_test.html) - if you get a significant result from an ANOVA.
 
 [⇦ Back](../../../python.html)
 
