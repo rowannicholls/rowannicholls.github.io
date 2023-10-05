@@ -19,7 +19,7 @@ Packages to Install
 Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or Shift+Cmd+P on macOS) > search for "Package Control: Install Package" > search for each package in turn. Close and re-open Sublime Text after each one finishes installing.
 
 - **MarkdownEditing**
-    - A general Markdown plugin
+    - A general Markdown plugin. The main thing it doesn't include is a build system (the MarkdownPreview package has this, though).
     + *Note:* this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) (see below) to fix it.
     - To change the colour scheme of Markdown text windows:
         - Have the window with the undesirable colour scheme active

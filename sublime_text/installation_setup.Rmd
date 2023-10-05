@@ -50,22 +50,41 @@ macOS
 -----
 
 ### Installation
-On **macOS**, download Sublime Text 4 from its [download page](https://www.sublimetext.com/download). All versions of OS X/macOS from 10.9 onwards are supported. After installing it, check that it's worked by opening the terminal (Cmd+Space to open Spotlight Search then search for "terminal") and running:
-
-```bash
-sublime --version
-```
-
-This should return a build number.
+On **macOS**, download Sublime Text 4 from its [download page](https://www.sublimetext.com/download). All versions of OS X/macOS from Mavericks 10.9 onwards are supported.
 
 ### Updating
 By default, Sublime Text will search for updates each time you open it (or you can force a search via the menu: Sublime Text > Check for Updates...). If one is available, you should get a prompt inviting you to download it. Click "Download", then click "Install". The programme should restart and show you a changelog on its own.
 
+### Using From the Terminal
+You can open files in Sublime Text from a Finder window, but it's often useful to be able to do this from within a terminal as well:
+
+- Open a new terminal window (press Cmd+Space to open Spotlight Search then search for "terminal" and hit enter)
+- Check to see if it works already by running the following\*:
+```bash
+subl --version
+```
+- This might work immediately and return a build number (eg `Sublime Text Build 4152`) or it might not and return an error message (`zsh: command not found: subl`). If it's the former then you're done, but if it's the latter then it means you need to add the Sublime Text path to your `PATH` variable:
+    - Open `/etc/paths` in an editor with sudo permissions, eg:
+    ```bash
+sudo nano /etc/paths
+    ```
+    - Add the following to the list:
+    ```
+/Applications/Sublime Text.app/Contents/SharedSupport/bin
+    ```
+    - Save and exit (if you're using nano, this is Ctrl+O, Enter, then Ctrl+X, Enter)
+    - Close the terminal and open a new one, then try again:
+    ```bash
+subl --version
+    ```
+
+\*In older versions of macOS (and older versions of Sublime Text) the command is `sublime`, not `subl`
+
 ### Usage and Configuration
-You can open a file in Sublime Text from the terminal with:
+You can now open a file in Sublime Text from the terminal with:
 
 ```bash
-sublime <filename>
+subl <filename>
 ```
 
 In order to be able to open a file in Sublime Text by double-clicking it you need to make Sublime Text the default editor for its file type. To do this, right-click a file in Finder > Get Info > under "Open with:" find "Sublime Text" in the dropdown menu > click "Change All..." > Continue.

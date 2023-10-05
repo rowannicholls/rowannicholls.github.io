@@ -16,7 +16,7 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+# knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 This script will demonstrate how to:
@@ -45,6 +45,7 @@ $ python3.11 -m pip install sqlite3
 $ python3.11 -m pip install scipy
 $ python3.11 -m pip install pyexcel_ods
 $ python3.11 -m pip install xlwt
+$ python3.11 -m pip install xlrd
 $ python3.11 -m pip install xlsxwriter
 $ python3.11 -m pip install openpyxl
 ```
@@ -937,7 +938,7 @@ def import_xls(filename):
 ls_of_ls = import_xls('xls/list-of-lists.xls')
 ```
 
-Import Excel 97-2004 workbook (.xls) as a data frame:
+Import Excel 97-2004 workbook (.xls) as a data frame (this is done with Pandas but the xlrd package is also required as it's a dependency):
 ```{python}
 import pandas as pd
 
