@@ -1,0 +1,165 @@
+---
+title: '<font size="5">Machine Learning in Python:</font><br>Simple Linear Regression'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "80%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Created: 2023-08-07 -->
+<!-- Updated: 2023-09-22 -->
+
+This page demonstrates how to perform simple linear regression using Ordinary Least Squares with scikit-learn, see [here](https://scikit-learn.org/stable/modules/linear_model.html#ordinary-least-squares) for the documentation and [here](https://scikit-learn.org/stable/auto_examples/linear_model/plot_ols.html#sphx-glr-auto-examples-linear-model-plot-ols-py) for an example.
+
+Python Packages
+===============
+The code on this page uses the Statsmodels, Matplotlib, Seaborn, NumPy and scikit-learn packages. These can be installed from the terminal with the following commands:
+
+```{bash, eval = FALSE}
+# "python3.11" corresponds to the version of Python you have installed and are using
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install seaborn
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install sklearn
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+from statsmodels import api as sm
+from matplotlib import pyplot as plt
+import seaborn as sns
+import numpy as np
+from sklearn import linear_model
+from sklearn import model_selection
+```
+
+Example Data
+============
+This page will use the World Copper Market 1951-1975 Dataset from Statsmodels, see [here](https://www.statsmodels.org/devel/datasets/generated/copper.html) for the documentation and the "copper" tab on [this](../../data/statsmodels_datasets.html) page for an example.
+
+```{python}
+# Load the data
+dataset = sm.datasets.copper.load_pandas()
+```
+
+We will use the `INCOMEINDEX` column - an index of real per capita income - as the independent variable and the `WORLDCONSUMPTION` column - the world consumption of copper in millions of kilograms - as the dependent variable:
+
+```{python}
+# Plot
+sns.set_style('darkgrid')
+sns.set_palette('deep')
+ax = plt.axes()
+sns.scatterplot(dataset['data'], x='INCOMEINDEX', y='WORLDCONSUMPTION')
+plt.title('World Copper Market 1951-1975 Dataset')
+plt.ylabel('World Consumption of Copper (×10⁶ kg)')
+plt.xlabel('Index of Real per Capita Income (Base 1970)')
+plt.show()
+```
+
+Example 1: Using All the Data
+=============================
+Separate out the feature (aka the *independent* or *exogenous* variable) and the target (aka the *dependent* or *endogenous* variable):
+
+```{python}
+# Separate out the feature (exogenous variable)
+X = dataset['exog']['INCOMEINDEX']
+# Reshape from a 1D array into a 2D array
+X = np.array(X).reshape(-1, 1)
+# Separate out the target (endogenous variable)
+y = dataset['endog']
+```
+
+Create and train the model:
+
+```{python}
+# Create the model
+regr = linear_model.LinearRegression()
+# Train the model
+regr.fit(X, y)
+```
+
+Use the model to make a prediction using all the data:
+
+```{python}
+# Use the model to make a prediction
+X_fitted = np.array([np.min(X), np.max(X)]).reshape(-1, 1)
+y_fitted = regr.predict(X_fitted)
+```
+
+Now let's visualise it:
+
+```{python}
+# Plot
+plt.scatter(X, y, ec='w')
+label = f'y = {np.round(regr.coef_[0], 2)}x + {np.round(regr.intercept_, 2)}'
+plt.plot(X_fitted, y_fitted, c='gray', label=label)
+plt.title('World Copper Market 1951-1975 Dataset')
+plt.ylabel('World Consumption of Copper (×10⁶ kg)')
+plt.xlabel('Index of Real per Capita Income (Base 1970)')
+plt.legend(frameon=False)
+plt.show()
+```
+
+Example 2: Using Training and Testing Sets
+==========================================
+Split the dataset up so that 70% is used for training and 30% is used for testing:
+
+```{python}
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=20230922, test_size=0.3
+)
+```
+
+Create and fit a new model:
+
+```{python}
+# Create the model
+regr = linear_model.LinearRegression()
+# Train the model
+regr.fit(X_train, y_train)
+```
+
+Use it to make predictions:
+
+```{python}
+# Use the model to make a prediction
+y_pred = regr.predict(X_test)
+```
+
+Visualise:
+
+```{python}
+# Plot
+label = f'y = {np.round(regr.coef_[0], 2)}x + {np.round(regr.intercept_, 2)}'
+plt.plot(X_test, y_pred, c='gray', label=label)
+plt.scatter(X_train, y_train, ec='w', label='Training set')
+plt.scatter(X_test, y_test, ec='w', label='Testing set')
+plt.scatter(X_test, y_pred, ec='w', label='Predicted values')
+plt.title('World Copper Market 1951-1975 Dataset')
+plt.ylabel('World Consumption of Copper (×10⁶ kg)')
+plt.xlabel('Index of Real per Capita Income (Base 1970)')
+plt.legend(frameon=False)
+plt.show()
+```
+
+Notice that each green dot lies on the grey line and exactly above or below an orange dot.
+
+[⇦ Back](../../../python.html)
+
+</font>
