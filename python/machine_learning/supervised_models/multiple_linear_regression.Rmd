@@ -1,0 +1,241 @@
+---
+title: '<font size="5">Machine Learning in Python:</font><br>Multiple Linear Regression'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "75%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Created: 2023-08-07 -->
+<!-- Updated: 2023-09-22 -->
+
+Python Packages
+===============
+The code on this page uses the Statsmodels, Matplotlib, Seaborn, scikit-learn and NumPy packages. These can be installed from the terminal with the following commands:
+
+```{bash, eval = FALSE}
+# "python3.11" corresponds to the version of Python you have installed and are using
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install seaborn
+$ python3.11 -m pip install sklearn
+$ python3.11 -m pip install numpy
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+from statsmodels import api as sm
+from matplotlib import pyplot as plt
+import seaborn as sns
+from sklearn import model_selection
+from sklearn import linear_model
+import numpy as np
+```
+
+Example Data
+============
+This page will use the Longley Dataset from Statsmodels (see [here](https://www.statsmodels.org/devel/datasets/generated/longley.html) for the documentation and the "longley" tab on [this](../../data/statsmodels_datasets.html) page for an example). Import it with the following:
+
+```{python}
+# Load the data
+dataset = sm.datasets.longley.load_pandas()
+```
+
+We will use the `GNP` and `POP` columns as the independent variables. These contain 16 countries' gross national product and population values, respectively, from 1967. The `endog` variable (endogenous variable, aka the dependent variable) contains the total employment values from those countries:
+
+```{python}
+# Separate out the features (exogenous variables)
+cols = ['GNP', 'POP']
+X = dataset['exog'][cols]
+# Separate out the target (endogenous variable)
+y = dataset['endog']
+```
+
+Divide everything by 1000 just to re-scale it all:
+
+```{python}
+# Scale
+X.loc[:, 'GNP'] = X['GNP'] / 1000
+X.loc[:, 'POP'] = X['POP'] / 1000
+y = y / 1000
+```
+
+Now visualise the raw data:
+
+```{python}
+#
+# Plot
+#
+sns.set_style('darkgrid')
+sns.set_palette('deep')
+plt.figure(figsize=(6.4, 9))
+plt.suptitle('Longley Dataset')
+# First sub-plot
+ax1 = plt.subplot(211)
+ax1.scatter(X['GNP'], y)
+ax1.set_ylabel("Total Employment ('000s)")
+ax1.set_xlabel("Gross National Product ('000s)")
+# Second sub-plot
+ax2 = plt.subplot(212)
+ax2.scatter(X['POP'], y)
+ax2.set_ylabel("Total Employment ('000s)")
+ax2.set_xlabel("Population ('000s)")
+# Finish
+plt.tight_layout()
+plt.show()
+```
+
+Multiple Linear Regression
+==========================
+Start by splitting the dataset up into a training set and a testing set. Use a 70/30 split:
+
+```{python}
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=20230922, test_size=0.3
+)
+```
+
+Create and fit the model using the training set:
+
+```{python}
+# Create the model
+regr = linear_model.LinearRegression()
+# Train the model
+regr.fit(X_train.values, y_train.values)
+```
+
+Get the equation of the model:
+
+$y = m_0 x_0 + m_1 x_1 + ... + m_n x_n + c$
+
+```{python}
+# Get the equation
+print(f'y = {regr.coef_[0]:.2f} x₀ {regr.coef_[1]:+.2f} x₁ {regr.intercept_:+.2f}')
+```
+
+Use the model to make a prediction: what would the employment be in a country with a GNP of 300 and a population of 110?
+
+```{python}
+# Use the model to make a prediction
+country = [[300, 110]]
+predict = regr.predict(country)
+
+print(f'Predicted employment: {predict[0]:.2f}')
+```
+
+Create a 3D plot to try visual the model:
+
+```{python, eval = FALSE}
+# Plot
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+ax.scatter(X['GNP'], X['POP'], y)
+x_fitted = np.array([[250, 250], [550, 550]])
+y_fitted = np.array([[100, 130], [100, 130]])
+z_fitted = np.array([[250, 250, 550, 550], [100, 130, 100, 130]]).T
+z_fitted = regr.predict(z_fitted).reshape((2, 2))
+ax.plot_surface(x_fitted, y_fitted, z_fitted, alpha=0.6)
+ax.set_title('Multiple Linear Regression')
+ax.set_xlabel('Gross National Product')
+ax.set_ylabel('Population')
+ax.set_zlabel('Total Employment')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+ax.scatter(X['GNP'], X['POP'], y)
+x_fitted = np.array([[250, 250], [550, 550]])
+y_fitted = np.array([[100, 130], [100, 130]])
+z_fitted = np.array([[250, 250, 550, 550], [100, 130, 100, 130]]).T
+z_fitted = regr.predict(z_fitted).reshape((2, 2))
+ax.plot_surface(x_fitted, y_fitted, z_fitted, alpha=0.6)
+ax.set_title('Multiple Linear Regression')
+ax.set_xlabel('Gross National Product')
+ax.set_ylabel('Population')
+ax.set_zlabel('Total Employment')
+plt.show()
+```
+
+Evaluate the Model
+==================
+Visualise the difference between the predicted and actual values of the testing set:
+
+```{python, eval = FALSE}
+# Test the model's predictions
+y_pred = regr.predict(X_test.values)
+
+# Plot
+plt.figure(figsize=(6.4, 4.8))
+ax = plt.axes()
+ax.scatter(y_test, y_pred)
+ax.plot([63, 73], [63, 73], c='lightgray')
+ax.set_title('Actual vs Predicted Employment')
+ax.set_ylabel('Predicted Employment')
+ax.set_xlabel('Actual Employment')
+ax.set_ylim(63, 70)
+ax.set_xlim(63, 70)
+ax.set_aspect('equal', 'box')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Test the model's predictions
+y_pred = regr.predict(X_test.values)
+
+# Plot
+plt.figure(figsize=(6.4, 4.8))
+ax = plt.axes()
+ax.scatter(y_test, y_pred)
+ax.plot([63, 73], [63, 73], c='lightgray')
+ax.set_title('Actual vs Predicted Employment')
+ax.set_ylabel('Predicted Employment')
+ax.set_xlabel('Actual Employment')
+ax.set_ylim(63, 70)
+ax.set_xlim(63, 70)
+ax.set_aspect('equal', 'box')
+plt.show()
+```
+
+The coefficient of determination, $R^2$, is the proportion of the variation in $y$ that is explained by all the $x$ variables together:
+
+```{python}
+# Coefficient of determination, R²
+u = ((y_test - y_pred) ** 2).sum()  # Residual sum of squares
+v = ((y_test - y_test.mean()) ** 2).sum()  # Total sum of squares (TSS)
+r_squared = 1 - (u / v)
+
+print(f'R² = {r_squared:.3f}')
+```
+
+Instead of calculating it manually, we can use the `.score()` method:
+
+```{python}
+# Coefficient of determination, R²
+r_squared = regr.score(X_test.values, y_test.values)
+
+print(f'R² = {r_squared:.3f}')
+```
+
+In other words, 82.3% of the variation in total employment is explained by the variation in GNP and population together.
+
+[⇦ Back](../../../python.html)
+
+</font>
