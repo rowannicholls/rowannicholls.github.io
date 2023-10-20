@@ -1,0 +1,408 @@
+---
+title: '<font size="5">Machine Learning in Python:</font><br>Logistic Regression'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "80%")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+```
+
+<!-- Created: 2023-09-26 -->
+<!-- Created: 2023-09-28 -->
+<!-- Created: 2023-09-29 -->
+
+**Logistic regression** can be used with a single feature of *continuous numeric* data with a *binary* target. It predicts the probability (between 0 and 1) that a data point belongs to a particular class or category. This probability can then be used to *classify* that observation: assigning it to its probable group.
+
+Python Packages
+===============
+The code on this page uses the Statsmodels, scikit-learn, NumPy, Matplotlib and Pandas packages. These can be installed from the terminal with the following commands:
+
+```{bash, eval = FALSE}
+# "python3.11" corresponds to the version of Python you have installed and are using
+$ python3.11 -m pip install statsmodels
+$ python3.11 -m pip install sklearn
+$ python3.11 -m pip install numpy
+$ python3.11 -m pip install matplotlib
+$ python3.11 -m pip install pandas
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+from statsmodels import api as sm
+from sklearn import model_selection
+from sklearn import linear_model
+from sklearn import metrics
+import numpy as np
+from matplotlib import pyplot as plt
+import pandas as pd
+```
+
+Example Data
+============
+This page will use the **Travel Mode Choice** dataset from Statsmodels, see [here](https://www.statsmodels.org/devel/datasets/generated/modechoice.html) for the documentation and the "modechoice" tab on [this](../../data/statsmodels_datasets.html) page for an example. It can be loaded as follows (using the `.load_pandas()` method means that the actual data will be formatted as a Pandas data frame):
+
+```{python}
+# Load the data
+dataset = sm.datasets.modechoice.load_pandas()
+```
+
+This gets loaded as a 'Dataset' object with the actual data being accessible via the `'data'` key:
+
+```{python}
+# Extract the data
+df = dataset['data']
+```
+
+This data frame contains information related to inter-city journeys recorded as part of a 1987 Australian study in which travellers chose a mode of transport from four alternatives: plane, car, bus or train. For this example we will only look at the plane trips:
+
+```{python}
+# Decode the data
+df['mode'] = df['mode'].replace({1: 'air', 2: 'train', 3: 'bus', 4: 'car'})
+# Separate out the data we want
+df = df[df['mode'] == 'air'].copy()
+```
+
+Also, we only want to use one feature and the one target:
+
+- `'invc'` will be the feature: the 'in-vehicle cost' for all stages of the journeys. The cost is listed in dollars, which I assume is Australian dollars.
+- `'choice'` will be the target: binary values - either 'yes' or 'no' - reflecting whether that particular mode of transport was chosen by that participant.
+
+```{python}
+# Decode the data
+df['choice'] = df['choice'].replace({0: 'no', 1: 'yes'})
+# Separate out the data we want
+cols = ['invc', 'choice']
+df = df[cols]
+
+print(df.head())
+```
+
+Our goal is to create a model that will predict whether a traveller will chose 'yes' when given the option of a plane journey at a particular price.
+
+Logistic Regression
+===================
+First, let's explicitly use the `X` and `y` notation usually seen in machine learning models:
+
+```{python}
+X = df[['invc']]
+y = df['choice']
+
+print(type(X), X.shape)
+print(type(y), y.shape)
+```
+
+Notice that `X` is a *data frame* with 210 rows and 1 column while `y` is a *series* with 210 values. Other combinations of data types and shapes might not necessarily work.
+
+Test if the sample size is large enough
+---------------------------------------
+Our 210 rows reflects the fact that 210 participants were given the option of undertaking a journey via a plane, and so this is our *sample size.* As it happens, 58 of these participants chose 'yes' and 152 chose 'no', and these are our two *classes.* To calculate the maximum number of features that a dataset of this size can reasonably justify having we can take the smallest of the classes and divide it by 10:
+
+```{python}
+# Take the smallest of the classes
+min_class = y.value_counts().min()
+# Divide it by 10. This is the max number of features we can have in order for
+# this sample size to be considered sufficiently large
+max_features = min_class / 10
+
+print(max_features)
+```
+
+The answer is 5.8, which is more than 1. So we have enough data given that we have one feature.
+
+Let's also confirm that our values are independent (ie that we don't have repeat participants):
+
+```{python}
+# Check that the independent variables are independent (ie there are no repeat
+# participants in our data)
+assert df.index.nunique() == len(df.index)
+```
+
+Create the model
+----------------
+Split the data into training and testing sub-sets (70% for the training set and 30% for the testing set). Set the `random_state` parameter to some value (it doesn't really matter what) to ensure that you get the same random split each time you run your code:
+
+```{python}
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=20230926, test_size=0.3
+)
+```
+
+Now we can create and fit the model:
+
+```{python}
+# Create the model
+log_regr = linear_model.LogisticRegression()
+# Fit the model
+log_regr.fit(X_train.values, y_train.values)
+```
+
+Use the model
+-------------
+Using the model to make predictions on the training set (ie calculating the probability that a participant would have chosen 'yes' given the option of a plane trip at the price in question) returns the probabilities as *log-odds*. Use NumPy to convert these back into probabilities:
+
+```{python}
+# Use the model to make predictions on the training data
+log_odds = log_regr.intercept_ + log_regr.coef_ * X_train
+# Convert the log-odds into probabilities
+probability = np.exp(log_odds) / (1 + np.exp(log_odds))
+
+print(probability.head())
+```
+
+In other words, we predict that participant number 740 had a 19.6% chance of choosing 'yes' when presented with the option of taking a plane trip at the price he or she was quoted (which, for the record, was A$71.00).
+
+### More info
+The above code block is using a [logit](https://en.wikipedia.org/wiki/Logit) link function:
+
+$$logit(p) = ln \left( \dfrac{p}{1 - p} \right) = b_0 + b_1 x_1 + b_2 x_2 + ... b_n x_n$$
+
+Where $p$ is 'probability' and so $\dfrac{p}{1 - p}$ is 'odds'. Because the *logit* is equal to the *logarithm of odds* it is also known as the 'log-odds' which is what it was called above.
+
+The inverse of the logit function is a [sigmoid function](https://en.wikipedia.org/wiki/Sigmoid_function) (an S-shaped function) called the [logistic function](https://en.wikipedia.org/wiki/Logistic_function). This logistic function is shown as the 'smooth predictions' in the plot below:
+
+Visualise the model
+-------------------
+We are again going to use the model to make predictions, but this time it's purely to create data for a plot:
+
+```{python}
+# Use the model to make binary predictions
+X_binary = np.linspace(X.min() * 0.9, X.max() * 1.1, 700).reshape(-1, 1)
+y_binary = log_regr.predict(X_binary)
+# Use the model to make predictions without the thresholding
+X_smooth = np.linspace(X.min() * 0.9, X.max() * 1.1, 100).reshape(-1, 1)
+y_smooth = log_regr.predict_proba(X_smooth)[:, 1]
+```
+
+Now we can plot this 'binary' and 'smooth' data that we have constructed, along with the *actual* data from the dataset (the training and testing sets):
+
+```{python, eval = FALSE}
+# Plot
+plt.plot(X_binary, y_binary, c='k', label='Binary predictions')
+plt.plot(X_smooth, y_smooth, c='gray', label='Smooth predictions')
+plt.scatter(X_train, y_train, c='gray', ec='k', label='Training data')
+plt.scatter(X_test, y_test, c='C0', label='Testing data')
+plt.title('Travel Mode Choice Dataset: Plane Trips')
+plt.ylabel('Choice')
+plt.yticks([0, 1], ['No', 'Yes'])
+plt.xlabel('In-Vehicle Cost for All Stages of Trip (A$)')
+plt.xlim(X_smooth.min(), X_smooth.max())
+plt.legend(loc='lower right', fontsize='small')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+plt.plot(X_binary, y_binary, c='k', label='Binary predictions')
+plt.plot(X_smooth, y_smooth, c='gray', label='Smooth predictions')
+plt.scatter(X_train, y_train, c='gray', ec='k', label='Training data')
+plt.scatter(X_test, y_test, c='C0', label='Testing data')
+plt.title('Travel Mode Choice Dataset: Plane Trips')
+plt.ylabel('Choice')
+plt.yticks([0, 1], ['No', 'Yes'])
+plt.xlabel('In-Vehicle Cost for All Stages of Trip (A$)')
+plt.xlim(X_smooth.min(), X_smooth.max())
+plt.legend(loc='lower right', fontsize='small')
+plt.show()
+```
+
+This plot might seem counter-intuitive: why is an increase in cost associated with an increase in predicted probability of choosing 'yes'? Surely as the cost of a trip gets larger people will be less likely to choose it? The explanation lies in remembering that the data represents inter-city journeys that travellers could either complete via plane, car, train or bus (with only the data regarding plane trips being used in our model); longer journeys will tend to be more expensive regardless of the mode of transport and if a journey is very long some people will be more likely to choose a plane despite it being expensive. So the data points in the top right of the plot - which represent people choosing to travel via plane at a high cost - probably represent very long (or very urgent) journeys.
+
+Evaluation
+==========
+Let's use the testing set to test the model's prediction-making abilities:
+
+```{python}
+# Use the model to make predictions on the test data
+y_pred = log_regr.predict(X_test.values)
+```
+
+Represent the results in a confusion matrix:
+
+```{python}
+# Confusion matrix
+cm = pd.DataFrame(
+    metrics.confusion_matrix(y_test, y_pred, labels=['yes', 'no']),
+    index=['Actual Yes', 'Actual No'],
+    columns=['Predicted Yes', 'Predicted No']
+)
+
+print(cm)
+```
+
+Hmm, this doesn't look so good: we have more false negatives (trips that were incorrectly predicted to not be chosen) than true positives (trips that were correctly predicted to be chosen). This is a sign that this model - a logistic regression using only one feature - might not be right for this data. Anyway, let's continue evaluating it by calculating its accuracy, precision, recall and F1 score using the number of true positives (TP), true negatives (TN), false positives (FP) and false negatives (FN):
+
+$$Accuracy = \dfrac{TP + TN}{TP + FP + TN + FN}$$
+
+```{python}
+acc = metrics.accuracy_score(y_test, y_pred)
+
+print(acc)
+```
+
+$$Precision = \dfrac{TP}{TP + FP}$$
+
+```{python}
+prec = metrics.precision_score(y_test, y_pred, pos_label='yes')
+
+print(prec)
+```
+
+The "recall" is also known as the "true positive rate":
+
+$$Recall = \dfrac{TP}{TP + FN}$$
+
+```{python}
+rec = metrics.recall_score(y_test, y_pred, pos_label='yes')
+
+print(rec)
+```
+
+The "F1 score" is the weighted average of the precision and the recall:
+
+$$F1 = 2 * \dfrac{Precision * Recall}{Precision + Recall}$$
+
+```{python}
+f1 = metrics.f1_score(y_test, y_pred, pos_label='yes')
+
+print(f1)
+```
+
+Receiver Operating Characteristic Curve
+=======================================
+A ROC curve shows the diagnostic accuracy of a binary classifier:
+
+```{python, eval = FALSE}
+# ROC curve
+ax = plt.axes()
+y_pred_prob = log_regr.predict_proba(X_test.values)
+y_score = y_pred_prob[:, 1]
+fpr, tpr, thresholds = metrics.roc_curve(y_test, y_score, pos_label='yes')
+roc_auc = metrics.roc_auc_score(y_test, y_pred_prob[:, 1])
+ax.plot(
+    fpr, tpr, color='grey',
+    label=f'ROC curve (AUC = {roc_auc:.2f})'
+)
+ax.plot([0, 1], [0, 1], 'k--')
+ax.set_xlabel('False Positive Rate')
+ax.set_ylabel('True Positive Rate')
+ax.set_title('ROC Curve')
+ax.set_aspect('equal', 'box')
+ax.set_xlim(-0.003, 1.003)
+ax.set_ylim(-0.003, 1.003)
+plt.grid()
+plt.legend(loc='lower right')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# ROC curve
+ax = plt.axes()
+y_pred_prob = log_regr.predict_proba(X_test.values)
+y_score = y_pred_prob[:, 1]
+fpr, tpr, thresholds = metrics.roc_curve(y_test, y_score, pos_label='yes')
+roc_auc = metrics.roc_auc_score(y_test, y_pred_prob[:, 1])
+ax.plot(
+    fpr, tpr, color='grey',
+    label=f'ROC curve (AUC = {roc_auc:.2f})'
+)
+ax.plot([0, 1], [0, 1], 'k--')
+ax.set_xlabel('False Positive Rate')
+ax.set_ylabel('True Positive Rate')
+ax.set_title('ROC Curve')
+ax.set_aspect('equal', 'box')
+ax.set_xlim(-0.003, 1.003)
+ax.set_ylim(-0.003, 1.003)
+plt.grid()
+plt.legend(loc='lower right')
+plt.show()
+```
+
+The closer the grey line is to the top-left corner the better the classifier is, and the closer it is to the dashed black line the more it is indistinguishable from randomness (the dashed black line represents pure randomness - flipping a coin to classify your data).
+
+Youden's index
+--------------
+[Youden's index](https://en.wikipedia.org/wiki/Youden%27s_J_statistic) or "J statistic" represents the optimal performance of a diagnostic test:
+
+```{python}
+# Youden's index/Youden's J statistic
+j_scores = tpr - fpr
+j_ordered = sorted(zip(j_scores, thresholds, tpr, fpr))
+j_statistic = j_ordered[-1][0]
+j_threshold = j_ordered[-1][1]
+j_tpr = j_ordered[-1][2]
+j_fpr = j_ordered[-1][3]
+
+print(j_statistic)
+```
+
+```{python, eval = FALSE}
+# ROC curve
+ax = plt.axes()
+y_pred_prob = log_regr.predict_proba(X_test.values)
+y_score = y_pred_prob[:, 1]
+fpr, tpr, thresholds = metrics.roc_curve(y_test, y_score, pos_label='yes')
+roc_auc = metrics.roc_auc_score(y_test, y_pred_prob[:, 1])
+ax.plot(
+    fpr, tpr, color='grey',
+    label=f'ROC curve (AUC = {roc_auc:.2f})'
+)
+ax.plot([0, 1], [0, 1], 'k--')
+ax.plot([j_fpr, j_fpr], [j_fpr, j_tpr], 'g', label='Magnitude of J statistic')
+ax.plot([j_fpr, j_tpr], [j_tpr, j_tpr], 'b', label='Magnitude of J statistic')
+ax.scatter([j_fpr], [j_tpr], marker='x', color='k', label='Optimal threshold')
+ax.set_xlabel('False Positive Rate')
+ax.set_ylabel('True Positive Rate')
+ax.set_title('ROC Curve')
+ax.set_aspect('equal', 'box')
+ax.set_xlim(-0.003, 1.003)
+ax.set_ylim(-0.003, 1.003)
+plt.grid()
+plt.legend(loc='lower right')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# ROC curve
+ax = plt.axes()
+y_pred_prob = log_regr.predict_proba(X_test.values)
+y_score = y_pred_prob[:, 1]
+fpr, tpr, thresholds = metrics.roc_curve(y_test, y_score, pos_label='yes')
+roc_auc = metrics.roc_auc_score(y_test, y_pred_prob[:, 1])
+ax.plot(
+    fpr, tpr, color='grey',
+    label=f'ROC curve (AUC = {roc_auc:.2f})'
+)
+ax.plot([0, 1], [0, 1], 'k--')
+ax.plot([j_fpr, j_fpr], [j_fpr, j_tpr], 'g', label='Magnitude of J statistic')
+ax.plot([j_fpr, j_tpr], [j_tpr, j_tpr], 'b', label='Magnitude of J statistic')
+ax.scatter([j_fpr], [j_tpr], marker='x', color='k', label='Optimal threshold')
+ax.set_xlabel('False Positive Rate')
+ax.set_ylabel('True Positive Rate')
+ax.set_title('ROC Curve')
+ax.set_aspect('equal', 'box')
+ax.set_xlim(-0.003, 1.003)
+ax.set_ylim(-0.003, 1.003)
+plt.grid()
+plt.legend(loc='lower right')
+plt.show()
+```
+
+The green and blue lines are necessarily the same length and both represent the magnitude of the J statistic. The black cross - the point on the grey line that maximises the J statistic - represents the threshold that optimises the diagnostic accuracy of the model.
+
+[⇦ Back](../../../python.html)
+
+</font>
