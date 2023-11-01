@@ -1,0 +1,99 @@
+---
+title: '<font size="5">Bash and Z Shell:</font><br>Startup Files'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../bash.html)
+
+When you open up a terminal there are a number of commands that get run in the background before you even do anything. These commands are contained in 'startup files' and can often be edited in order to change the default behaviour of your terminal.
+
+Bash
+====
+Bash is the default shell and language for most Linux terminals. It is also installed on macOS but is no longer the default.
+
+When you open a Bash shell the following startup files might get run (depending on which mode(s) the terminal is opened in and also on if the files exist - not all of them have to) in the following order:
+
+1. Profile files (for **login** shells, regardless of whether they are interactive or not):
+    i. `/etc/profile` (this calls `path_helper` which initialises the PATH variable)
+    ii. `~/.bash_profile`, `~/.bash_login` or `~/.profile` (only the first one that exists)
+2. Run command files (only for **interactive, non-login** shells - which is the default for Ubuntu - or **remote** shells):
+    i. `/etc/bash.bashrc` (only for some Linux distros, and not on macOS)
+    ii. `~/.bashrc`
+3. For **non-interactive** shells, whether login or not:
+    i. The BASH_ENV variable gets sourced
+
+Additionally, two files are run at the *end* of a **login** shell's session:
+
+4. Logout files:
+    i. `~/.bash_logout`
+    ii. `/etc/bash_logout`
+
+Opening Terminal on Ubuntu will create a Bash shell in **interactive** but not in **login** mode. This means that `/etc/bash.bashrc` and `~/.bashrc` get sourced (the code they contain gets run).
+
+Here's how to check which modes you are in:
+
+- Check if you are in an interactive shell:
+
+    ```bash
+    [[ $- == *i* ]] && echo 'Interactive' || echo 'Not interactive'
+    ```
+
+- Check if you are in a login shell:
+
+    ```bash
+    shopt -q login_shell && echo 'Login shell' || echo 'Not login shell'
+    ```
+
+Z Shell
+=======
+Z Shell (zsh) is the default shell and language for macOS terminals. By default, opening Terminal on macOS will create a shell in both **interactive** *and* **login** modes although sub-shells (created by, for example, running `zsh` in a terminal) will only be interactive, not login.
+
+When you open a shell the following startup files might get run (depending on which mode(s) the terminal is opened in and also on if the files exist - not all of them have to) in the following order:
+
+1. Environment files (for **all** shells):
+    i. `/etc/zshenv`
+    ii. `~/.zshenv`
+2. Profile files (only for **login** shells):
+    i. `/etc/zprofile`. This calls `path_helper` which reads the paths contained in the following files in order, concatenates them and prepends them to PATH (note that if the PATH variable is already set it will not add duplicate paths to it but it could have the effect of [re-ordering it](https://gist.github.com/Linerre/f11ad4a6a934dcf01ee8415c9457e7b2)):
+        a. `/etc/paths`
+        b. Files in `/etc/paths.d`
+    ii. `~/.zprofile`
+3. Run command files (only for **interactive** shells):
+    i. `/etc/zshrc`
+    ii. `~/.zshrc`
+4. Login files (again, only for **login** shells):
+    i. `/etc/zlogin`
+    ii. `~/.zlogin`
+
+Additionally, two files are run at the *end* of a **login** shell's session:
+
+5. Logout files:
+    i. `~/.zlogout`
+    ii. `/etc/zlogout`
+
+Remember that a shell can be both interactive and login, or it could be interactive but non-login or it could be neither. It's rare (but not impossible) to get a non-interactive login shell. Here's how to check:
+
+- Check if you are in an interactive shell:
+
+    ```bash
+    [[ -o interactive ]] && echo "Interactive" || echo "Non-Interactive"
+    ```
+
+- Check if you are in a login shell:
+
+    ```bash
+    [[ -o login ]] && echo "Login" || echo "Non-Login"
+    ```
+
+[⇦ Back](../../bash.html)
+
+</font>
