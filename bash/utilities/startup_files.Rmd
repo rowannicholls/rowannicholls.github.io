@@ -39,6 +39,7 @@ Additionally, two files are run at the *end* of a **login** shell's session:
 
 Opening Terminal on Ubuntu will create a Bash shell in **interactive** but not in **login** mode. This means that `/etc/bash.bashrc` and `~/.bashrc` get sourced (the code they contain gets run).
 
+#### **Check the Mode**
 Here's how to check which modes you are in:
 
 - Check if you are in an interactive shell:
@@ -63,7 +64,7 @@ When you open a shell the following startup files might get run (depending on wh
     i. `/etc/zshenv`
     ii. `~/.zshenv`
 2. Profile files (only for **login** shells):
-    i. `/etc/zprofile`. This calls `path_helper` which reads the paths contained in the following files in order, concatenates them and prepends them to PATH (note that if the PATH variable is already set it will not add duplicate paths to it but it could have the effect of [re-ordering it](https://gist.github.com/Linerre/f11ad4a6a934dcf01ee8415c9457e7b2)):
+    i. `/etc/zprofile`. This calls `path_helper` which reads the paths contained in the following files in order, concatenates them and prepends them to PATH (note that if the PATH variable is already set it will not add duplicate paths to it but it could have the effect of re-ordering it):
         a. `/etc/paths`
         b. Files in `/etc/paths.d`
     ii. `~/.zprofile`
@@ -80,6 +81,7 @@ Additionally, two files are run at the *end* of a **login** shell's session:
     i. `~/.zlogout`
     ii. `/etc/zlogout`
 
+#### **Check the Mode**
 Remember that a shell can be both interactive and login, or it could be interactive but non-login or it could be neither. It's rare (but not impossible) to get a non-interactive login shell. Here's how to check:
 
 - Check if you are in an interactive shell:
@@ -93,6 +95,11 @@ Remember that a shell can be both interactive and login, or it could be interact
     ```bash
     [[ -o login ]] && echo "Login" || echo "Non-Login"
     ```
+
+#### **Background Information**
+- [Setting $PATH for zsh on macOS](https://gist.github.com/Linerre/f11ad4a6a934dcf01ee8415c9457e7b2)
+- [ZSH: .zprofile, .zshrc, .zlogin - What goes where?](https://apple.stackexchange.com/questions/388622/zsh-zprofile-zshrc-zlogin-what-goes-where)
+- [What to put in your startup files](https://zsh.sourceforge.io/Guide/zshguide02.html)
 
 [⇦ Back](../../bash.html)
 

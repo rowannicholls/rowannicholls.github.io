@@ -25,118 +25,201 @@ Ubuntu  {.tabset}
 ### Ubuntu 22.04
 
 #### **Running Python**
-Ubuntu 22.04.1 LTS (Jammy Jellyfish) comes with Python 3.10.6 pre-installed. Run it from the terminal using the `python3` command:
+Ubuntu 22.04 LTS (Jammy Jellyfish) comes with Python 3.10.6 pre-installed. To get started, open a terminal and check that this is indeed true by running the following:
 
-- `python3 --version` will confirm what version you have
-- `python3` on its own will open Python in the terminal in **interactive mode**:
-    + In interactive mode, you can enter individual Python commands directly at the `>>>` prompt and run them immediately by pressing Enter
-    + This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's useful for quickly checking something small
-    + Exit Python interactive mode and return to the normal terminal by running `exit()`
-- `python3 filename.py` will **run a Python script**:
-    + `python3 python_file.py` will run Python on a script called `python_file.py` that is in the same folder as the one your terminal is pointing to. Obviously, if no `python_file.py` file exists in that folder then it won't work (you'll get a `No such file or directory` message). Less obviously, your terminal might not be in the same folder as the one your script is in, in which case...
-    + ...use `python3 path/to/python_file.py` to run a script in a different folder. Two dots (`..`) means 'one folder up', for example: `python3 ../path/to/python_file.py`. Alternatively, you can change into the directory where the file is located using the `cd` command (**c**hange **d**irectory) in your terminal: `cd path/to/` then `python3 python_file.py`.
-    + If there is a space in a file or folder name, you can either use quotation marks or back slashes:
-        * `python3 "Python File.py"`
-        * `python3 Python\ File.py`
-        * `python3 "../Path To/Python File.py"`
-        * `python3 ../Path\ To/Python\ File.py`
-    + Note that the `.py` extension (which tells you that it's a Python file) must be included in the command you use - running `python3 python_file` will give you an error
+```bash
+$ python3 --version
+```
 
-Note that `python2` and `python` do not work in a fresh install of Ubuntu 22.04. Previously, both of these commands referred to Python 2 but this version is no longer supported and it doesn't come pre-installed. You can, if you want, install Python 2 yourself and/or make the `python` command refer to Python 3 (or Python 2), but that's up to you.
+This should return `Python 3.10.6` or similar. It's worth noting that it's possible to have multiple copies and versions of Python installed at the same time on your machine so to check *which* instance of Python you are using you can run the following:
+
+```bash
+$ which python3
+```
+
+This should return `/usr/bin/python3` or similar. Note that it's possible to specify exactly which copy and/or version (up to the second version number) of Python you want to use. This means that, on a fresh install of Ubuntu 22.04, the following are all equivalent because there is only one copy of Python installed and it happens to be Python 3.10:
+
+```
+python3
+python3.10
+/usr/bin/python3
+/usr/bin/python3.10
+```
+
+For the rest of this section we will just use `python3`, but any of the above could be substituted in.
+
+Now that you've got that admin out of the way you can start using Python in the terminal in one of a number of ways:
+
+- Open Python in the terminal in **interactive mode**:
+
+    ```bash
+    $ python3
+    ```
+
+    In interactive mode you can write individual Python commands directly in at the `>>>` prompt and then run them immediately by pressing Enter. This is clearly not a user-friendly way to programme because it doesn't save the commands you are using to a **script file** that you can then edit, but it's useful for quickly checking something small.
+
+    Exit Python interactive mode and return to the normal terminal by running `exit()`.
+
+- Run a Python **script file**:
+
+    ```bash
+    $ python3 filename.py
+    ```
+
+    This command will run Python on a script called `filename.py` that is in the same folder as the one your terminal is currently pointing at. Obviously, if no `filename.py` file exists in that folder then it won't work (you'll get a `No such file or directory` message). Less obviously, your terminal might not be pointing at the same folder as the one your script is in, in which case you can...
+
+- ...run a Python script **in a different folder**:
+
+    ```bash
+    $ python3 path/to/folder/filename.py
+    ```
+
+    Two dots (`..`) means 'one folder up', for example:
+
+    ```bash
+    $ python3 ../path/to/folder/filename.py
+    ```
+
+    Alternatively, you can change into the directory where the file is located using the `cd` command (**c**hange **d**irectory) in your terminal:
+
+    ```bash
+    $ cd path/to/folder/
+    $ python3 filename.py
+    ```
+
+If there is a space in a file or folder name you can either use quotation marks or back slashes to **escape** the space characters:
+
+```bash
+$ python3 "Python File.py"
+$ python3 Python\ File.py
+$ python3 "../Path To/Python File.py"
+$ python3 ../Path\ To/Python\ File.py
+```
+
+Note that the `.py` extension (which tells you that it's a Python file) *must* be included in the command you use - running the following will give you an error:
+
+```bash
+# Oops...
+$ python3 filename
+```
+
+Note also that running `python2` or `python` will not work on a fresh install of Ubuntu 22.04. Previously, both of these commands referred to Python 2 but this version is no longer supported and it doesn't come pre-installed anymore. You can, if you want, install Python 2 yourself and/or make the `python` command refer to Python 3 (or Python 2), but that's up to you.
 
 #### **Updating Python**
-To update the pre-installed version of Python (3.10) to the latest version (3.11), run the following from the terminal:
+To update the pre-installed version of Python (3.10) to the latest version (3.12) two common options are:
 
-```{bash, eval=FALSE}
-sudo apt-get install python3.11
-```
+- **Option 1:** Installing from the terminal:
+    - Run the following:
+        ```{bash, eval=FALSE}
+        $ sudo apt-get install python3.12
+        ```
+    - *Note that the terminal command `python3` will still run Python 3.10 even after you've installed 3.12.* However, the command `python3.12` will now be available and will run 3.12, so you can use that from now on.
 
-**Note that the terminal command `python3` will still run Python 3.10**, even after you've installed 3.11. However, the command `python3.11` will now be available and will run 3.11, so use that from now on.
+- **Option 2:** Downloading from the Python website and building from source:
+    - Go to https://www.python.org/
+    - Hover your cursor over "Downloads" then click the big grey "Python 3.12.0" button under "Python Source". A `.tar.xz` file will be downloaded to your Downloads folder.
+    - Open a terminal and change directory into your Downloads folder:
+        ```{bash, eval=FALSE}
+        $ cd Downloads/
+        ```
+    - Extract the folder containing the programme:
+        ```{bash, eval=FALSE}
+        $ tar -xf Python-3.12.0.tar.xz
+        ```
+    - Change directory into this new folder:
+        ```{bash, eval=FALSE}
+        $ cd Python-3.12.0/
+        ```
+    - Run the following to complete the installation:
+        ```{bash, eval=FALSE}
+        $ ./configure
+        $ make
+        $ sudo make install
+        ```
+    - Check that it's worked:
+        ```{bash, eval=FALSE}
+        $ python3.12 --version
+        ```
+    - The following should also return a 3.12.x version number:
+        ```{bash, eval=FALSE}
+        $ python3 --version
+        ```
+    - You can now delete the `.tar.xz` file and the corresponding folder it unzipped to from your Downloads folder
+
+Note that Option 1 will download Python to `/usr/bin/python3.12` whereas Option 2 will download it to `/usr/local/bin/python3.12`.
 
 #### **Configuring Python**
-If you were to download and install Python 'manually' (eg from the Python website) you would have the option to configure the installation by running `./configure <options>` as one of the installation steps. Using `apt-get` bypasses this opportunity. For many users this won't matter, however there are a couple of use cases where Python needs to be configured so as to have a **shared library**. One example is if you want to use Python in R Markdown using R's "reticulate" package. In general, if you come across the recommendation to build Python using `./configure --enable-shared` this is the sign you want a shared library (because this is what that step creates). Fortunately we can create one manually, using one line of code:
+If you followed Option 2 above and downloaded and installed Python 'manually' (ie from the Python website) you had the option to configure the installation when you ran `configure`:
 
-```{bash, eval=FALSE}
-sudo apt-get install libpython3.11
+```bash
+$ ./configure <options>
 ```
 
-This will download the `libpython3.11` Ubuntu package, which is the shared Python runtime library for Python 3.11 (for the record, this package's homepage is over [here](https://packages.ubuntu.com/jammy-updates/libpython3.11)).
+If you used Option 1 (ie if you used `apt-get`) then you bypassed this opportunity. For many users this won't matter. However, there are a couple of use cases where Python needs to be configured so as to have a **shared library** - one example is if you want to use Python in R Markdown using R's "reticulate" package. In general, if you come across the recommendation to build Python using `./configure --enable-shared` then this is the sign you want a shared library (because this is what that step creates). Fortunately we can create one manually, using one line of code:
+
+```bash
+$ sudo apt-get install libpython3.12
+```
+
+This will download the `libpython3.12` Ubuntu package which is the shared Python runtime library for Python 3.12 (for the record, this package's homepage is over [here](https://packages.ubuntu.com/mantic/libpython3.12)).
 
 #### **Installing Python Packages**
-The best option is to use the standard Python package manager, "pip" (aka "pip3" for Python 3), for installing packages.
+The best option is to use the standard Python package manager "pip" (aka "pip3" for Python 3) for installing packages. The name "pip" is a recursive acronym for "Pip Installs Packages".
 
-> The name "pip" is a recursive acronym for "Pip Installs Packages"
+- Install pip from the terminal with:
 
-Install pip from the terminal with:
+    ```bash
+    $ sudo apt-get install python3-pip
+    ```
 
-```{bash, eval=FALSE}
-sudo apt-get install python3-pip
-```
+- Check that it's worked from the terminal by running:
 
-Check that it's worked from the terminal by running:
+    ```bash
+    $ python3.12 -m pip --version
+    ```
 
-```{bash, eval=FALSE}
-python3.11 -m pip --version
-```
+This should return the version number and install location. Note that running `pip --version` will probably return the details of the version of pip that was installed for Python 3.10 (if one was installed) and running `pip3 --version` might do this as well if you followed Option 1 above when updating Python. In general, it's better to use the `python3.12 -m pip ...` format when using pip because this guarantees that you are using the version associated with Python 3.12.
 
-This should return the version number and install location. Note that running `pip --version` or `pip3 --version` will probably return the details of the version of pip that was installed for Python 3.10 (if one was installed). In general, it's better to use `python3.11 -m pip ...` when using pip, because this guarantees that you are using the version associated with Python 3.11.
-
-> The `-m` flag stands for "module" and causes a specific module of a specific installation of Python to be run, hence why it's useful for ensuring that you are using the correct versions of everything
+> The `-m` flag stands for "module" and causes a specific module of a specific installation of Python to be run, hence why it's useful for ensuring that you are using the correct versions of everything.
 
 Once pip is installed and working you can install most packages from the terminal as follows:
 
-```{bash, eval=FALSE}
-python3.11 -m pip install <package_name>
+```bash
+$ python3.12 -m pip install <package_name>
 ```
 
 Note that you install Python packages from **the terminal**, not from within Python itself (unlike some other languages, eg R).
 
-To install a bunch of the most common packages in one go, run the following in the terminal to download all these packages one after the other:
+To install a bunch of the most useful packages in one go, run the following in the terminal to download all these packages one after the other:
 
-```{bash, eval=FALSE}
-# Mathematics & arrays
-python3.11 -m pip install numpy
-# Scientific & technical computing
-python3.11 -m pip install scipy
-# Plotting
-python3.11 -m pip install matplotlib
-# Data manipulation and analysis
-python3.11 -m pip install pandas
-# Symbolic computation
-python3.11 -m pip install sympy
-# Testing
-python3.11 -m pip install nose
-# Spreadsheet integration
-python3.11 -m pip install xlwt
-python3.11 -m pip install xlrd
-python3.11 -m pip install openpyxl
-# Using serial ports for microprocessors
-python3.11 -m pip install pyserial
-# Pass arguments from the terminal
-python3.11 -m pip install argparse
-# Linux distribution information
-python3.10 -m pip install distro
-# Print to terminal in colour
-# print(colored('hello', 'red'), colored('world', 'green'))
-python3.11 -m pip install termcolor
+```bash
+# NumPy is the fundamental package for scientific computing with Python
+python3.12 -m pip install numpy
+# SciPy ("Sigh Pie") is software for mathematics, science and engineering
+python3.12 -m pip install scipy
+# Statsmodels provides a complement to SciPy for statistical computations
+python3.12 -m pip install statsmodels
+# scikit-learn is a module for machine learning built on top of SciPy
+python3.12 -m pip install scikit-learn
+# Pandas is a powerful data analysis toolkit
+python3.12 -m pip install pandas
+# Matplotlib is for creating static, animated and interactive visualizations
+python3.12 -m pip install matplotlib
+# Seaborn allows for statistical data visualization based on Matplotlib
+python3.12 -m pip install seaborn
 # end
 ```
 
-Check that it has worked by opening Python in the terminal with `python3.11` then running:
+Check that this has worked by opening Python in the terminal with `python3.12` then running:
 
-```{python, eval=FALSE}
+```python
 import numpy
 import scipy
-import matplotlib
+import statsmodels
+import sklearn
 import pandas
-import sympy
-import nose
-import xlwt
-import xlrd
-import openpyxl
-import serial
-import argparse
-import termcolor
+import matplotlib
+import seaborn
 ```
 
 There should be no errors.
@@ -144,47 +227,47 @@ There should be no errors.
 #### **Upgrading Packages**
 To upgrade (update) a package called "\<package_name\>" simply run:
 
-```{bash, eval=FALSE}
-python3.11 -m pip install <package_name> --upgrade
+```bash
+$ python3.12 -m pip install <package_name> --upgrade
 ```
 
 To upgrade pip itself:
 
-```{bash, eval=FALSE}
-python3.11 -m pip install --upgrade pip
+```bash
+$ python3.12 -m pip install pip --upgrade
 ```
+
+Remember that using `pip install` will probably install packages to the *pre-installed* version of Python and/or upgrade that version's copy of pip. Using `python3.12 -m pip install` will explicitly install packages for Python 3.12 and/or upgrade Python 3.12's copy of pip.
 
 #### **See What Version of Each Package You Have**
-To check what version of each package you have, you can run:
+Run the following:
 
-```{bash, eval=FALSE}
-pip freeze
+```bash
+$ python3.12 -m pip freeze
 ```
 
-...and to check what version of a specific package you have, you can search the results of `pip freeze` like so:
+The below variation will check what version of a specific package you have (it searches through the results of the `python3.12 -m pip freeze` command):
 
-```{bash, eval=FALSE}
-pip freeze | grep <package_name>
+```bash
+$ python3.12 -m pip freeze | grep <package_name>
 ```
 
-To store the package version numbers we can 'pipe' the output of `pip freeze` into a text file. By convention, this kind of file gets called "requirements.txt" because it contains the packages and versions that are *required* to run your project:
+If we want to save the package version numbers to a file then we can 'pipe' the output of `python3.12 -m pip freeze` into a text document. By convention, this kind of file gets called `requirements.txt` because it contains the packages and versions that are *required* to run your project:
 
-```{bash, eval=FALSE}
-pip freeze >> requirements.txt
+```bash
+$ python3.12 -m pip freeze >> requirements.txt
 ```
 
-An even better option, however, is to install and use the **pipreqs** package (see [here](https://pypi.org/project/pipreqs/) for more info on pipreqs):
+A better option is to install and use the **pipreqs** package (see [here](https://pypi.org/project/pipreqs/) for more info):
 
-```{bash, eval=FALSE}
-# Install pipreqs. The "python3.11" command should be changed to match the version of Python you have installed.
-python3.11 -m pip install pipreqs
-# Use pipreqs to create requirements.txt
-pipreqs '.' --force
+```bash
+$ python3.12 -m pip install pipreqs
+$ pipreqs '.' --force
 ```
 
-This creates the requirements.txt file using *only the packages that are actually used* by whatever Python files are in the folder your terminal is pointing at.
+This creates the `requirements.txt` file using *only the packages that are actually used* by whatever Python files are in the folder your terminal is pointing at.
 
-**Fixing pipreqs if it doesn't work**
+**Fixing pipreqs if it doesn't work:**
 
 If pipreqs doesn't work immediately, ie if you get the following message when you run `pipreqs '.' --force` in the terminal:
 
@@ -192,7 +275,7 @@ If pipreqs doesn't work immediately, ie if you get the following message when yo
 bash: pipreqs: command not found
 ```
 
-then locate the pipreqs.py file on your computer (try looking in `/usr/local/lib/python3.11/dist-packages/pipreqs`). Try to run that with Python. If it gives you the following error:
+Locate the `pipreqs.py` file on your computer (try looking in `/usr/local/lib/python3.12/dist-packages/pipreqs`). Try to run that with Python. If it gives you the following error:
 
 ```
 ImportError: cannot import name '__version__' from partially initialized module 'pipreqs' (most likely due to a circular import)
@@ -201,21 +284,21 @@ ImportError: cannot import name '__version__' from partially initialized module 
 It means it is trying to import a package with the same name as the file itself (ie 'pipreqs'). Get around this by re-naming the file to `python_pipreqs.py` after which it should work from the terminal with:
 
 ```{bash, eval=FALSE}
-/usr/local/lib/python3.11/dist-packages/pipreqs/python_pipreqs.py '.' --force
+/usr/local/lib/python3.12/dist-packages/pipreqs/python_pipreqs.py '.' --force
 ```
 
 [⇦ Back](../../python.html)
 
 ### Ubuntu 20.04
 
-**Installing and Setting Up**
+#### **Installing and Setting Up**
 
 There is no need to install Python on Ubuntu 20.04 because it comes with Python 3.8.2 automatically (and 2.7.18 as well, although that version - and, indeed, any version of Python 2 as opposed to Python 3 - is outdated and shouldn't be used). Note, however, that:
 
 - The *default* version of Python on Ubuntu is still Python 2 (version 2.7.18, as mentioned) so if you open the terminal and run `python` then this is the version that will open. To avoid this, you specifically need to use `python3` to use the most recent version of Python 3 you have installed.
 - There are more recent versions of Python 3 available than 3.8.2. See the "Updating Python" section below to read how to get those.
 
-**Using Python from the Terminal**
+#### **Using Python from the Terminal**
 
 If you open a terminal and run `python3` you will open Python in that terminal.
 
@@ -232,124 +315,124 @@ If you have a script file (one with the ".py" extension) you can run it from the
 
 In fact, you don't actually need to change directory into the one where the script is located, you can just run `python3 <path_to_folder>/<filename>` (with the ".py" extension included in the filename) and it will work.
 
-**Updating Python**
+#### **Updating Python**
 
-Although it's possible to update Python entirely from within the terminal my personal preference is to do it manually. Every time there's a new version I go to [the Python website](https://www.python.org/) and download it directly as a `tar.xz` file (you can use [this shortcut](https://www.python.org/ftp/python/3.11.0/Python-3.11.0.tar.xz) to download Python 3.11.0 immediately). It can then be installed alongside any existing versions via the following steps:
+Although it's possible to update Python entirely from within the terminal my personal preference is to do it manually. Every time there's a new version I go to [the Python website](https://www.python.org/) and download it directly as a `tar.xz` file (you can use [this shortcut](https://www.python.org/ftp/python/3.12.0/Python-3.12.0.tar.xz) to download Python 3.12.0 immediately). It can then be installed alongside any existing versions via the following steps:
 
-- Unzip the `tar.xz` file that gets downloaded. If, for example, you have downloaded Python 3.11.0 then this file will be called `Python-3.11.0.tar.xz`.
-- Open your terminal and cd into the folder that was created during the unzipping process: `cd Downloads/Python-3.11.0/`
+- Unzip the `tar.xz` file that gets downloaded. If, for example, you have downloaded Python 3.12.0 then this file will be called `Python-3.12.0.tar.xz`.
+- Open your terminal and cd into the folder that was created during the unzipping process: `cd Downloads/Python-3.12.0/`
 
 You now have two options:
 
-- Follow the Build Instructions found in the `README.rst` file within this `Python-3.11.0` folder exactly. This involves running the following commands (the last of which prompts you to enter your computer password):
+- Follow the Build Instructions found in the `README.rst` file within this `Python-3.12.0` folder exactly. This involves running the following commands (the last of which prompts you to enter your computer password):
 
     ```{bash, eval=FALSE}
-./configure
-make
-make test
-sudo make install
+    $ ./configure
+    $ make
+    $ make test
+    $ sudo make install
     ```
 
 + Personally, I use the `--enable-shared` option instead:
 
     ```{bash, eval=FALSE}
-./configure --enable-shared
-make
-make test
-sudo make install
+    $ ./configure --enable-shared
+    $ make
+    $ make test
+    $ sudo make install
     ```
 
-    - This `--enable-shared` option creates a shared library. This is needed by the Reticulate package and R Markdown. Specifically, Reticulate and R Markdown require that the `/usr/local/lib/libpython3.10.so.1.0` file exists (or whatever `.so` file corresponds to the version of Python you have).
+    - This `--enable-shared` option creates a shared library. This is needed by the Reticulate package and R Markdown. Specifically, Reticulate and R Markdown require that the `/usr/local/lib/libpython3.12.a` file exists (or whatever `libpython` file corresponds to the version of Python you have).
     - If you use this option, you now need to tell Python where this shared library file is by opening `~/.basrc` and adding the following:
 
         ```{bash, eval=FALSE}
-# Manually set where a Python module looks when it uses shared object files or
-# static libraries
-export LD_LIBRARY_PATH=/usr/local/lib
+        # Manually set where a Python module looks when it uses shared object files or
+        # static libraries
+        $ export LD_LIBRARY_PATH=/usr/local/lib
         ```
 
-Running `python3.11 --version` in the terminal should now return "`Python 3.11.0`" and running `python3.11` should open Python 3.11.0 in the terminal (in 'interactive mode').
+Running `python3.12 --version` in the terminal should now return `Python 3.12.0` and running `python3.12` should open Python 3.12.0 in the terminal (in 'interactive mode'). The same should also be true for `python3`, although `python` will still correspond to Python 2.7.18 (unless you've manually changed this at some point).
 
 <!-- From the terminal:
 
 ```{bash, eval=FALSE}
-sudo apt-get install python3.8
+$ sudo apt-get install python3.8
 ```
 
 This will download Python 3.8. Replace the 3.8 with whatever version number you want, but you do have to do it manually (there's no command that automatically downloads the latest version). If you use `sudo apt-get install python` it will update your Python 2 (because, remember, that is the default version in Ubuntu) and, similarly, `sudo apt-get install python3` will try to update your Python 3.6. Next, you should make your `python` command point to version 3.8 and this can be done with a command similar to the one used above:
 
 ```{bash, eval=FALSE}
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 38
+$ sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 38
 ```
 
 Check what your order of priorities for your Python versions are with:
 
 ```{bash, eval=FALSE}
-sudo update-alternatives --config python
-sudo update-alternatives --config python3
+$ sudo update-alternatives --config python
+$ sudo update-alternatives --config python3
 ```
 -->
 
-**Installing Packages**
+#### **Installing Packages**
 
 The best option is to use the standard Python package manager, "pip" (aka pip3 for Python 3):
 
 ```{bash, eval=FALSE}
 # Install pip
-sudo apt-get install python3-pip
+$ sudo apt-get install python3-pip
 ```
 
 Once this is done you can install most packages as follows:
 
 ```{bash, eval=FALSE}
 # Install a package
-sudo pip3 install <package_name>
+$ sudo pip3 install <package_name>
 ```
 
 However, I recommend that you use the following instead:
 
 ```{bash, eval=FALSE}
 # Run pip as a module (which is what is meant by "-m") of a specific Python
-# version (in this case 3.11) in order to install a package
-python3.11 -m pip install <package_name>
+# version (in this case 3.12) in order to install a package
+$ python3.12 -m pip install <package_name>
 ```
 
 This will guarantee that you are installing the package to the correct version of Python. If you have multiple versions of Python and pip installed on your computer at the same time (and seeing as Ubuntu comes with two versions of Python already pre-installed this will almost always be true!) it can get confusing as to what packages are being installed where.
 
-To install a bunch of the most common packages in one go, switch into 'permanent' sudo mode with `sudo su` and run the following in the terminal to download all these packages one after the other (this assumes you are using Python 3.11, change the version number in the `python3.11` commands if not):
+To install a bunch of the most common packages in one go, switch into 'permanent' sudo mode with `sudo su` and run the following in the terminal to download all these packages one after the other (this assumes you are using Python 3.12; change the version number in the `python3.12` commands if not):
 
 ```{bash, eval=FALSE}
 # Mathematics & arrays
-python3.11 -m pip install numpy
+python3.12 -m pip install numpy
 # Scientific & technical computing
-python3.11 -m pip install scipy
+python3.12 -m pip install scipy
 # Plotting
-python3.11 -m pip install matplotlib
+python3.12 -m pip install matplotlib
 # Data manipulation and analysis
-python3.11 -m pip install pandas
+python3.12 -m pip install pandas
 # Symbolic computation
-python3.11 -m pip install sympy
+python3.12 -m pip install sympy
 # Testing
-python3.11 -m pip install nose
+python3.12 -m pip install nose
 # Spreadsheet integration
-python3.11 -m pip install xlwt
-python3.11 -m pip install xlrd
-python3.11 -m pip install openpyxl
+python3.12 -m pip install xlwt
+python3.12 -m pip install xlrd
+python3.12 -m pip install openpyxl
 # Using serial ports for microprocessors
-python3.11 -m pip install pyserial
+python3.12 -m pip install pyserial
 # Image processing
-python3.11 -m pip install scikit-image
+python3.12 -m pip install scikit-image
 # Pass arguments from the terminal
-python3.11 -m pip install argparse
+python3.12 -m pip install argparse
 # Linux distribution information
-python3.10 -m pip install distro
+python3.12 -m pip install distro
 # Print to terminal in colour
 # print(colored('hello', 'red'), colored('world', 'green'))
-python3.11 -m pip install termcolor
+python3.12 -m pip install termcolor
 # end
 ```
 
-Check that it has worked by opening Python in the terminal with `python3.11` then running:
+Check that it has worked by opening Python in the terminal with `python3.12` then running:
 
 ```{python, eval=FALSE}
 import numpy
@@ -364,52 +447,53 @@ import openpyxl
 import serial
 import skimage
 import argparse
+import distro
 import termcolor
 ```
 
 There should be no errors.
 
-**Upgrading Packages**
+#### **Upgrading Packages**
 
 To upgrade (update) a package called "\<package_name\>" simply run:
 
 ```{bash, eval=FALSE}
-python3.11 -m pip install <package_name> --upgrade
+$ python3.12 -m pip install <package_name> --upgrade
 ```
 
 To upgrade pip itself:
 
 ```{bash, eval=FALSE}
-python3.11 -m pip install --upgrade pip
+$ python3.12 -m pip install --upgrade pip
 ```
 
-**See What Version of Each Package You Have**
+#### **See What Version of Each Package You Have**
 
 To check what version of each package you have, you can run:
 
 ```{bash, eval=FALSE}
-pip freeze
+$ pip freeze
 ```
 
 ...and to check what version of a specific package you have, you can search the results of `pip freeze` like so:
 
 ```{bash, eval=FALSE}
-pip freeze | grep <package_name>
+$ pip freeze | grep <package_name>
 ```
 
 To store the package version numbers we can 'pipe' the output of `pip freeze` into a text file. By convention, this kind of file gets called 'requirements.txt' because it contains the packages and versions that are *required* to run your project:
 
 ```{bash, eval=FALSE}
-pip freeze >> requirements.txt
+$ pip freeze >> requirements.txt
 ```
 
 An even better option, however, is to install and use the **pipreqs** package (see [here](https://pypi.org/project/pipreqs/) for more info on pipreqs):
 
 ```{bash, eval=FALSE}
-# Install pipreqs. The "python3.11" command should be changed to match the version of Python you have installed.
-python3.11 -m pip install pipreqs
+# Install pipreqs. The "python3.12" command should be changed to match the version of Python you have installed.
+$ python3.12 -m pip install pipreqs
 # Use pipreqs to create requirements.txt
-pipreqs '.' --force
+$ pipreqs '.' --force
 ```
 
 This creates the requirements.txt file using *only the packages that are actually used* by whatever Python files are in the folder your terminal is pointing at.
@@ -422,7 +506,7 @@ If pipreqs doesn't work immediately, ie if you get the following message when yo
 bash: pipreqs: command not found
 ```
 
-then locate the pipreqs.py file on your computer (try looking in `/usr/local/lib/python3.11/dist-packages/pipreqs`). Try to run that with Python. If it gives you the following error:
+then locate the pipreqs.py file on your computer (try looking in `/usr/local/lib/python3.12/dist-packages/pipreqs`). Try to run that with Python. If it gives you the following error:
 
 ```
 ImportError: cannot import name '__version__' from partially initialized module 'pipreqs' (most likely due to a circular import)
@@ -431,7 +515,7 @@ ImportError: cannot import name '__version__' from partially initialized module 
 It means it is trying to import a package with the same name as the file itself (ie 'pipreqs'). Get around this by re-naming the file to `python_pipreqs.py` after which it should work from the terminal with:
 
 ```{bash, eval=FALSE}
-/usr/local/lib/python3.11/dist-packages/pipreqs/python_pipreqs.py '.' --force
+$ /usr/local/lib/python3.12/dist-packages/pipreqs/python_pipreqs.py '.' --force
 ```
 
 [⇦ Back](../../python.html)
@@ -516,39 +600,39 @@ sudo make install
 
 + Personally, I use the `--enable-shared` option instead:
 
-    ```{bash, eval=FALSE}
-./configure --enable-shared
-make
-make test
-sudo make install
+    ```bash
+    ./configure --enable-shared
+    make
+    make test
+    sudo make install
     ```
 
     - This `--enable-shared` option creates a shared library. This is needed by the Reticulate package and R Markdown. Specifically, Reticulate and R Markdown require that the `/usr/local/lib/libpython3.10.so.1.0` file exists (or whatever `.so` file corresponds to the version of Python you have).
     - If you use this option, you now need to tell Python where this shared library file is by opening `~/.basrc` and adding the following:
 
-        ```{bash, eval=FALSE}
-# Manually set where a Python module looks when it uses shared object files or
-# static libraries
-export LD_LIBRARY_PATH=/usr/local/lib
+        ```bash
+        # Manually set where a Python module looks when it uses shared object files or
+        # static libraries
+        export LD_LIBRARY_PATH=/usr/local/lib
         ```
 
-Running `python3.11 --version` in the terminal should now return "`Python 3.11.0`" and running `python3.11` should open Python 3.11.0 in the terminal (in 'interactive mode').
+Running `python3.11 --version` in the terminal should now return `Python 3.11.0` and running `python3.11` should open Python 3.11.0 in the terminal (in 'interactive mode').
 
 <!-- From the terminal:
 
-```{bash, eval=FALSE}
+```bash
 sudo apt-get install python3.8
 ```
 
 This will download Python 3.8. Replace the 3.8 with whatever version number you want, but you do have to do it manually (there's no command that automatically downloads the latest version). If you use `sudo apt-get install python` it will update your Python 2 (because, remember, that is the default version in Ubuntu) and, similarly, `sudo apt-get install python3` will try to update your Python 3.6. Next, you should make your `python` command point to version 3.8 and this can be done with a command similar to the one used above:
 
-```{bash, eval=FALSE}
+```bash
 sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 38
 ```
 
 Check what your order of priorities for your Python versions are with:
 
-```{bash, eval=FALSE}
+```bash
 sudo update-alternatives --config python
 sudo update-alternatives --config python3
 ```
@@ -606,7 +690,7 @@ python3.11 -m pip install scikit-image
 # Pass arguments from the terminal
 python3.11 -m pip install argparse
 # Linux distribution information
-python3.10 -m pip install distro
+python3.11 -m pip install distro
 # Print to terminal in colour
 # print(colored('hello', 'red'), colored('world', 'green'))
 python3.11 -m pip install termcolor
@@ -699,11 +783,260 @@ It means it is trying to import a package with the same name as the file itself 
 
 [⇦ Back](../../python.html)
 
-macOS
+macOS  {.tabset}
 -----
-*The following has been tested on macOS 10.12 (Sierra) to macOS 12 (Monterey).*
 
-### Installing and Setting up
+### macOS 14 (Sonoma)
+
+#### **What *Not* To Do**
+While it is true that macOS comes with Python pre-installed on it (located in `/usr/bin/`) it is *not recommended* to use this pre-installed version. This is because it is out-of-date and, because some background macOS programmes rely on this out-of-date version in order to work, it is not recommended to update it.
+
+A common solution to the above problem is to use **aliases** inserted into your terminal's settings files (eg `~/.bash_profile`, `~/.zshrc` or `~/.zprofile`). This is no longer recommended either: these run commands are specific to a terminal instance and do not apply in situations where these setting folders are bypassed (eg when running Python from R Markdown which invokes `bash -c python`, not `python`)
+
+Using **pyenv** (a Python version manager from Homebrew) is another option. However, you still need to download Python and add configuration steps to your terminal's settings files, meaning you run into the same problem mentioned above.
+
+#### **Downloading and Installing Python**
+The best option is to **download and install Python manually** from the Python website:
+
+- Go to https://www.python.org/
+
+- Hover your cursor over "Downloads" then click the big grey button under "Python Source" to download the latest version of Python. At the time of writing this is version 3.12.0 but the following instructions should work for any version if you swap in the relevant numbers.
+
+- Double-click the file that gets downloaded and follow the installation process
+
+    - If you downloaded version 3.12.0 the file will be `python-3.12.0-macos11.pkg`
+
+    - macOS finishes the installation by opening the folder where Python was installed for you: `/Applications/Python 3.12`. You can just ignore that and close it.
+
+- Check that it has worked by opening a terminal (press Cmd+Space to open Spotlight Search then search for "Terminal") and running:
+
+    ```bash
+    $ python3.12 --version
+    ```
+
+    If this returns `Python 3.12.0` or similar then you're all good.
+
+- You can check where this version of Python is installed by running:
+
+    ```bash
+    $ which python3.12
+    ```
+
+    Usually it will be `/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12`
+
+    - This is a useful thing to remember if and when you have multiple instances of Python installed - while it's ok to have multiple *versions* of Python installed (eg versions 3.10, 3.11, 3.12, etc) you generally want to avoid have multiple *copies* installed (eg one in `/Library/Frameworks` and another in `/usr/local/bin`). Using the `which` command can help you keep track of *which* one you are using.
+
+**Aside: Python vs Python 3 vs Python 3.12**
+
+Note that using `python3` instead of `python3.12` should give identical results because this command's intended behaviour is to default to using the latest installed version of Python 3:
+
+```bash
+$ python3 --version
+$ which python3
+```
+
+If the above two commands give unexpected results then it is a sign that your computer is getting confused between multiple copies of Python; see the "Troubleshooting" section at the bottom of this page.
+
+On the other hand, using just `python` with no numbers at the end will give errors on a fresh install of macOS Sonoma:
+
+```bash
+$ python --version
+$ which python
+```
+
+The above will return `zsh: command not found: python` and `python not found` respectively. *This marks a change from previous versions of macOS where these commands would have worked.* Note that it's possible to "alias" the `python` command to something else and thus to make it work, it's just that it will fail by default on a fresh install of Sonoma.
+
+#### **Using Python with a Command-Line Interface (CLI)**
+Run the following in a terminal to open Python in **interactive mode** in that terminal:
+
+```bash
+$ python3.12
+```
+
+You can enter individual Python commands directly in at the `>>>` prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a **script file** that you can then edit, but it's useful for quickly checking something small. Exit by running `exit()`.
+
+If you do have a script file (one with the ".py" extension) you can **run Python directly** on it from the terminal:
+
+- Change into the directory where the file is located (using the "cd" command to **c**hange **d**irectory) and run the following (with the ".py" extension included):
+
+    ```bash
+    $ python3.12 <filename>.py
+    ```
+
+- As a matter of fact, you don't actually need to change directory into the one where the script is located, you can just include the path to the file and it will work:
+
+    ```bash
+    $ python3.12 <path_to_folder>/<filename>.py
+    ```
+
+If there is a space in the path or filename, you can surround them with quotation marks: `"path to folder/file name.py"`.
+
+#### **Updating Python**
+When a new version of Python is released you can repeat the process of downloading it from the Python website and installing it. There will now be multiple copies of Python on your computer, which is fine. Make sure you always use a command like `python3.12` as opposed to `python3` or `python` to ensure you're always using the version you intend to.
+
+Note that, although it's possible to update Python from the terminal, it doesn't always work.
+
+#### **Installing Packages**
+The best option is to use the standard Python package manager: "pip". The name "pip" is short for "Pip Installs Packages" - it's an example of a *recursive acronym*. It means that we will never actually know what the first "p" in pip stands for.
+
+Pip enables you to install packages with:
+
+```bash
+$ pip install <package_name>
+```
+
+...but it is recommended that you use the following format instead:
+
+```bash
+$ python3.12 -m pip install <package_name>
+```
+
+The `-m` flag stands for "module" and it means that Python 3.12 is running its pip module. This is useful because, as mentioned above, almost all macOS users will have multiple copies of Python - and multiple versions thereof - installed on their computers. This means that it's important to explicitly say which version you are using. You want to guarantee that you are using the right instance of pip to install packages to the right instance of Python.
+
+To install a bunch of the most useful packages in one go, run the following in the terminal to download all of these packages one after the other:
+
+```bash
+# NumPy is the fundamental package for scientific computing with Python
+python3.12 -m pip install numpy
+# SciPy ("Sigh Pie") is software for mathematics, science and engineering
+python3.12 -m pip install scipy
+# Statsmodels provides a complement to SciPy for statistical computations
+python3.12 -m pip install statsmodels
+# scikit-learn is a module for machine learning built on top of SciPy
+python3.12 -m pip install scikit-learn
+# Pandas is a powerful data analysis toolkit
+python3.12 -m pip install pandas
+# Matplotlib is for creating static, animated and interactive visualizations
+python3.12 -m pip install matplotlib
+# Seaborn allows for statistical data visualization based on Matplotlib
+python3.12 -m pip install seaborn
+# end
+```
+
+Check that this has worked by opening Python in the terminal with `python3.12` and running:
+
+```python
+import numpy
+import scipy
+import statsmodels
+import sklearn
+import pandas
+import matplotlib
+import seaborn
+```
+
+There should be no errors.
+
+#### **Upgrading Packages**
+To upgrade (update) a package called "\<package_name\>" simply run:
+
+```bash
+$ python3.12 -m pip install --upgrade <package_name>
+```
+
+To upgrade pip itself, run:
+
+```bash
+$ python3.12 -m pip install --upgrade pip
+```
+
+Remember that using `pip install` will probably install packages to the *pre-installed* version of Python and/or upgrade that version's copy of pip. Using `python3.12 -m pip install` will explicitly install packages for Python 3.12 and/or upgrade Python 3.12's copy of pip.
+
+#### **See What Version of Each Package You Have**
+To check what version of each package you have you can run:
+
+```bash
+$ pip freeze
+```
+
+...and to check what version of a specific package you have you can search the results of `pip freeze` like so:
+
+```bash
+$ pip freeze | grep <package_name>
+```
+
+To save the package version numbers to a file we can 'pipe' the output of `pip freeze` into a text file. By convention, this kind of file gets called `requirements.txt` because it contains the packages and versions that are *required* to run your project:
+
+```bash
+$ pip freeze >> requirements.txt
+```
+
+An even better option, however, is to install and use the **pipreqs** package (see [here](https://pypi.org/project/pipreqs/) for more info):
+
+```bash
+$ python3.12 -m pip install pipreqs
+$ pipreqs '.' --force
+```
+
+This creates the `requirements.txt` file using *only the packages that are actually used* by whatever Python files are in the folder your terminal is pointing at.
+
+#### **Troubleshooting: I'm suddenly getting a `ModuleNotFoundError` when it previously worked**
+If you previously installed packages and imported them into scripts with no problems but now suddenly find yourself getting `ModuleNotFoundError` messages it's implying that it can no longer find those packages. It's probably because you have multiple copies of Python installed on your computer - possibly not all with the same version number - and you installed those packages using one copy but are now running another copy. Check which you are using from the terminal by running:
+
+```bash
+$ which python3.12
+```
+
+If you are using Python via an IDE there should be some way to check which copy it is using. Make sure it is using the one you want. Alternatively, you could just re-download all the packages you need using the new copy of Python, or try to fix it:
+
+**Check your PATH:**
+
+Possibly the mix-up was caused by your PATH environment variable changing - maybe you installed a programme that prepended a new path at which a different instance of Python was found and this instance is now being given priority? Check your PATH variable via:
+
+```bash
+$ echo $PATH
+```
+
+If the location of your preferred instance of Python is not there - or does not appear at the start and hence does not have top priority - you can change this by editing your terminal's environment variables. The best place to do this is in one of two hidden files in your home directory - either `.zprofile` or `.zshrc`. The terminal on macOS Sonoma uses "Z shell" and `.zprofile` and `.zshrc` are *startup files* that can be used to set the **Z** shell **profile** and the **Z** **sh**ell **r**un **c**ommands, respectively. Generally, it is considered better practice to edit your PATH variable in `.zprofile` so as to reserve `.zshrc` for setting run commands in, but bear in mind that `.zshrc` is sourced *after* `.zprofile` and hence it has the potential to overwrite (or out-prioritise) anything that was set before it.
+
+<!-- Both `.zprofile` and `.zshrc` get run because a macOS terminal is both interactive and login -->
+
+While it is true that there is potentially a third startup file - `.zshenv` - this is not a good place for editing the PATH variable because the order of the paths in PATH might change from what this file sets. The reason for this is that there is a utility called `path_helper` which gets run after `.zshenv` is sourced which might have the effect of re-ordering your PATH.
+
+Let's assume you've chosen to edit your PATH in `.zprofile`:
+
+- Open `.zprofile` in an editor (the below command will open it in the `nano` editor):
+
+    ```bash
+    $ nano ~/.zprofile
+    ```
+
+    Even if the file doesn't exist (not all of the Z Shell startup files have to exist) the above will work because `nano` can create and open files in one step.
+
+- Add the following to the bottom of the file (this assumes you've downloaded Python 3.12 from the Python website and built it from source):
+
+    ```bash
+    # Prepend a location for Python 3.12 to PATH
+    export PATH=/Library/Frameworks/Python.framework/Versions/3.12/bin:$PATH
+    ```
+
+- You can also add the following (it removes duplicates from PATH):
+
+    ```bash
+    # Remove duplicates from PATH (-U makes it *U*nique)
+    typeset -U PATH
+    ```
+
+- Save and exit (in nano, this is done via Ctrl+O then Enter to save, then Ctrl+X to exit)
+
+- Close and re-open the terminal (or run `source ~/.zprofile`). Check the Python version via `which python3.12` again and it should correspond to the one in the location you just added to `.zprofile`.
+
+**Create an alias:**
+
+Alternatively, it could be that the Python command you are running has been aliased to the wrong copy. Another option would be to add the following to `.zshrc` (as this is a run command):
+
+```bash
+# Create an alias for Python 3.12
+alias python3.12=/Library/Frameworks/Python.framework/Versions/3.12/bin/python3.12
+```
+
+This will explicitly make `python3.12` refer to the version of Python at this location. Again, save and exit `.zshrc`, close and re-open the terminal (or run `source ~/.zshrc`) and re-check `which python3.12`.
+
+[⇦ Back](../../python.html)
+
+### macOS 10.12 (Sierra) to 13 (Ventura)
+
+#### **Installing and Setting up**
 - While it is true that macOS comes with Python pre-installed on it (located in `/usr/bin/`) *it is not recommended to use this pre-installed version*. This is because it is out-of-date and, because some background macOS programmes rely on this out-of-date version in order to work, it is not recommended to update it.
 - A common solution to the above problem is to use "aliases" inserted into your terminal's 'settings' files (eg `~/.bash_profile`, `~/.zshrc` or `~/.zprofile`). This is no longer recommended either: these run commands are specific to a terminal instance and do not apply in situations where these setting folders are bypassed (eg when running Python from R Markdown which invokes `bash -c python`, not `python`)
 - The best option is to just **download and install Python from scratch** (so it will be installed multiple times on your computer, which is fine)
@@ -773,16 +1106,16 @@ macOS
     ```
 - Note that you will have to follow a similar process for each Python version you want to install, but once you have you will be able to choose which one to use relatively easily and they will not interfere with one another. When you want to update your Python, you will have to do it 'manually' with the above process (ie there is no single command you can use to just update to and start using the latest version). -->
 
-### Using Python with a Command-Line Interface (CLI)
+#### **Using Python with a Command-Line Interface (CLI)**
 - If you run `python3.11` in a terminal you will open Python in **interactive mode** in that terminal. You can enter individual Python commands directly in at the `>>>` prompt and run them immediately by pressing enter. This is obviously not a user-friendly way to programme because it doesn't save the commands you are using to a script file that you can edit, but it's useful for quickly checking something small. Exit by running `exit()`.
 - If you have a script file (one with the ".py" extension) you can **run Python directly** on it from the terminal:
     + Change into the directory where the file is located (using the "cd" command to **c**hange **d**irectory) and run `python <filename>.py` (with the ".py" extension included)
     + As a matter of fact, you don't actually need to change directory into the one where the script is located, you can just run `python <path_to_file>/<filename>.py` and it will work
 
-### Updating Python
+#### **Updating Python**
 Although it's possible to update Python from the terminal it doesn't always work. Instead, every time there's a new version available just download it from the Python website as described above and install it alongside your existing versions.
 
-### Installing Packages
+#### **Installing Packages**
 The best option is to use the standard Python package manager, "pip".
 
 > The name "pip" is short for "Pip Installs Packages". It's an example of a *recursive acronym* and it means that we will never actually know what the first "p" in pip stands for.
@@ -850,7 +1183,7 @@ import termcolor
 
 There should be no errors.
 
-### Upgrading Packages
+#### **Upgrading Packages**
 To upgrade (update) a package called "\<package_name\>" simply run:
 
 ```{bash, eval=FALSE}
@@ -863,7 +1196,7 @@ To upgrade pip itself, run:
 python3.11 -m pip install --upgrade pip
 ```
 
-### See What Version of Each Package You Have
+#### **See What Version of Each Package You Have**
 To check what version of each package you have, you can run:
 
 ```{bash, eval=FALSE}
@@ -1041,7 +1374,7 @@ sudo dnf reinstall python3-pip
 <!-- Tips for Python Code
 ---------------------
 - Dictionaries must be in form value['iterator']
-- List the inputs (iterators), then initilaise the results dictionaries
+- List the inputs (iterators), then initialise the results dictionaries
  -->
 
 [⇦ Back](../../python.html)
