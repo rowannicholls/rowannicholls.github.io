@@ -34,177 +34,294 @@ To uninstall packages, go to Command Palette > search for "Remove Package" > Ent
 
 Packages I Recommend
 ====================
-*Note:* a lot of these packages have functionality that can be added to key bindings to improve their usability. See [the Key Bindings page](key_bindings.html) for more.
+**_Note:_** a lot of these packages have functionality that can be added to key bindings to improve their usability. See [the Key Bindings page](key_bindings.html) for more.
 
-- **Terminus**
-    - Allows you to create a terminal (a command-line interface) in the Sublime Text editor
-    - To open a terminal in its own panel:
-        - Open the Command Palette:
-            - *macOS:* Shift+Cmd+P
-            - *Windows & Ubuntu:* Shift+Ctrl+P
-        - Search for "Terminus: Open Default Shell in Panel" > Enter
-    - To open a terminal as a tab:
-        - Open the Command Palette
-        - Search for "Terminus: Open Default Shell in Tab (View)" > Enter
-    - To create a key binding that opens a terminal pointing to the same folder that the active file is in:
-        - Open Key Bindings:
-            - *macOS:* Sublime Text > Preferences > Key Bindings
-            - *Windows & Ubuntu:* Preferences > Key Bindings
-        - This opens two files: the default key bindings on the left-hand side and the user's key bindings on the right-hand side. Confusingly, both of these files will be called "Default" - even the User key bindings file.
-            - Specifically, both files will be called `Default (Linux).sublime-keymap` on Linux, `Default (OSX).sublime-keymap` on macOS and `Default (Windows).sublime-keymap` on Windows
-        - Add the following in the User key bindings file (on the right-hand side) anywhere between the starting and ending square brackets:
-        ```json
-        /* Terminus */
-        { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} },
-        ```
-        - The above line should end with a comma if and only if other custom key bindings follow it in the file. If it is the last (or only) custom key binding, omit the comma.
-        - Save and close. The keyboard shortcut Shift+Alt+T should now work.
-    - *Note:* instead of reading `.bashrc` upon start up, the Terminus terminal reads `.bash_profile`. This means that any customisation you have done to your terminal will not be applied to these Terminus terminals unless you copy this customisation in `.bashrc` into `.bash_profile` too.
-        - The most common such customisation is when people re-define their default version of Python from 2 to 3 by adding `alias python=python3` to `.bashrc`
-        - If this is you (and it should be - you should not be using Python 2 anymore!) make sure you do this in `.bash_profile` too, eg:
-            - Run `sublime ~/.bash_profile` or `subl ~/.bash_profile` in terminal (depending what OS you are on)
-            - Appending the following:
-            ```text
-            # the terminal command "python" in sublime text terminals should open python3, not python2
-            alias python=python3
-            ```
-- **LaTeXTools**
-    - Allows you to build Latex files in the Sublime Text Build System
-    - Latex must be installed on your computer for this to work
-    - To use, open a Latex file and invoke the Build command (Ctrl+B, or Cmd+B on macOS)
-    - For more info (eg adding a dedicated key binding and/or creating a build command to help troubleshoot if the default build system doesn't work) see [the Latex page](latex.html)
-- **LaTeX Word Count**
-    + See the word count in a Latex file
-    - With a Latex file open, use as follows:
-        - *macOS:* Shift+Cmd+C
-        - *Windows & Ubuntu:* Shift+Ctrl+C
-    - The one drawback is that this does not display the live word count in the status bar. However, the WordCount package does (so install both).
-- **WordCount**
-    - See the live word count in the status bar
-- **Pretty JSON**
-    - Make JSON files more readable
-    - To use, open a JSON file and go to the Command Palette (Ctrl+Shift+P) > search for and run "Pretty JSON: Format JSON"
-    - This command used to have a keybinding assigned to it automatically, but this is no longer the case. It can be added manually, however, as follows:
-        - Go to "Key Bindings"
-            - *Ubuntu:* Preferences > Key Bindings
-            - *macOS:* Sublime Text > Preferences > Key Bindings
-        - This opens two files: the default key bindings on the left-hand side and the user's key bindings on the right-hand side. Confusingly, both of these files will be called "Default" - even the User key bindings file.
-            - Specifically, both files will be called `Default (Linux).sublime-keymap` on Linux, `Default (OSX).sublime-keymap` on macOS and `Default (Windows).sublime-keymap` on Windows
-        - Add the following in the User key bindings file (on the right-hand side) anywhere between the starting and ending square brackets:
-        ```json
-        /* Pretty JSON */
-        { "keys": ["ctrl+alt+j"], "command": "pretty_json" },
-        ```
-        - The above line should end with a comma if and only if other custom key bindings follow it in the file. If it is the last (or only) custom key binding, omit the comma.
-        - Save and close. The keyboard shortcut Ctrl+Alt+T should now work.
-- **MarkdownEditing**
-    - A general Markdown plugin. See more about using Markdown in Sublime Text [here](markdown.html).
-    + *Note:* this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) to fix it.
-    - To change the colour scheme of Markdown text windows:
-        - Have the window with the undesirable colour scheme active
-        - Preferences > Settings - Syntax Specific > add the following into the Markdown file (right-hand side):
-        ```json
-        {
-            "extensions":
-            [
-                "md"
-            ],
-            "color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
-            "save_on_focus_lost": true,
-            "line_numbers": true,
-            "translate_tabs_to_spaces": false
-        }
-        ```
-    - If it starts to think that .txt files are Markdown file, open a .txt file (ie have that window active) and go: View > Syntax > Open all with current extension as... > your syntax choice
-- **MarkdownPreview**
-    - View rendered Markdown in your browser
-    - You can create a [user key binding](key_bindings.html) to immediately open the current Markdown file as a rendered HTML page in your web browser
-- **LiveReload**
-    - Automatically refresh a webpage. This is useful to use in conjunction with MarkdownPreview as you can configure it to update your rendered text every time you save. This allows you to work in Markdown in one window and see your rendered output in another.
-    - Use with: Command Palette... > LiveReload: Enable/disable plug-ins > Enable - Simple reload
-    - Make this the default behaviour so you don't need to turn it on every time you re-open Sublime Text:
-        - Open the package settings
-            - *macOS:* Menu bar > Sublime Text > Preferences > Package Settings > LiveReload > Settings - User
-            - *Ubuntu:* Menu bar > Preferences > Package Settings > LiveReload > Settings - User
-        - Add "simple_reload" as in the below:
-        ```json
-        {
-            "enabled_plugins": ["SimpleRefresh"]
-        }
-        ```
-- **Markdown Table Formatter**
-    - Easily align columns in Markdown tables
-    - Default key binding: Shift+Ctrl+Alt+T
-- **R-IDE**
-    - Render code with (and get syntax highlighting for) R Markdown
-    - For more info, see the [R](R.html) and [R Markdown](r_markdown.html) pages
-    - You also need to have R Markdown installed on your computer. Run the following in R (either in the RStudio console or in R in the terminal) to do this:
-    ```{r, eval = FALSE}
+### Terminus
+Allows you to create a terminal (a command-line interface) in the Sublime Text editor.
+
+To open a terminal in its **own panel**:
+
+- Open the Command Palette (*macOS:* Shift+Cmd+P; *Windows & Ubuntu:* Shift+Ctrl+P)
+- Search for "Terminus: Open Default Shell in Panel"
+- Press Enter
+
+To open a terminal as a **tab**:
+
+- Open the Command Palette
+- Search for "Terminus: Open Default Shell in Tab (View)"
+- Press Enter
+
+To create a **key binding** that opens a terminal pointing to the same folder that the active file is in:
+
+- Open "Key Bindings"  
+    • *macOS:* Sublime Text > Preferences > Key Bindings  
+    • *Windows & Ubuntu:* Preferences > Key Bindings
+- Two files will open up: the default key bindings on the left-hand side and the user's key bindings on the right-hand side. Confusingly, both of these files will be called "Default" ( even the User key bindings file):  
+    • *Linux:* `Default (Linux).sublime-keymap`   
+    • *macOS:* `Default (OSX).sublime-keymap`  
+    • *Windows:* `Default (Windows).sublime-keymap`
+- Add the following in the User key bindings file (on the right-hand side) anywhere between the starting and ending square brackets:
+
+    ```json
+    /* Terminus */
+    { "keys": ["shift+alt+t"], "command": "terminus_open", "args": {"cwd": "${file_path:${folder}}"} },
+    ```
+
+    The above line should end with a comma if and only if other custom key bindings follow it in the file. If it is the last (or only) custom key binding, omit the comma.
+
+- Save and close. The keyboard shortcut Shift+Alt+T should now work.
+
+**_Note:_** by default, Terminus will create terminals that run **Z Shell** (zsh) on macOS and **Bash** on Ubuntu. These are the default shells for terminals on those OSs anyway so this shouldn't be unexpected. However, these shells will be created in both *interactive* and *login* modes\* which, while normal for macOS terminals, is not typical for Ubuntu terminals (these are usually created in interactive mode but not in login mode). This changes which *startup files* are read:
+
+- *Ubuntu:* the usual startup file is `~/.bashrc` but Terminus terminals use `~/.bash_profile` (only if these files exist - they don't have to). One workaround is to just make the contents of both of these files identical (and to create one or both of them if they don't exist). Another solution is to change the `shell_configs` for Bash in Terminus's settings (Preferences > Package Settings > Terminus > Settings) to `bash -i` so terminals get created in interactive mode only (not in login mode).
+- *macOS:* it seems as if Terminus runs the `path_helper` utility twice (instead of once) when creating a terminal. When this is run it adds the paths in the `/etc/paths` file and in the `/etc/paths.d` folder's files to the PATH variable. If these paths and/or other paths already exist in the PATH variable it won't add duplicate paths but it will *reorder* them so that its paths appear first. Then, when the other start up files are run (`~/.zprofile`, `/etc/zshrc` and `~/.zshrc`) they might prepend other paths to the PATH variable again, resulting in them appearing at both the start and the end of PATH. The easiest fix is to add the following to the end of `~/.zshrc` (the last startup file to be run) which removes duplicate paths from PATH:
+
+    ```zsh
+    # Remove duplicates from PATH (the -U flag makes it *U*nique)
+    typeset -U PATH
+    ```
+
+\*The exact commands that Terminus runs in the background are `zsh -i -l` on macOS and `bash -i -l` on Ubuntu, although you can change this in Preferences > Package Settings > Terminus > Settings.
+
+### LaTeXTools
+Allows you to build LaTeX files in the Sublime Text Build System (LaTeX must be installed on your computer for this to work):
+
+- Open a LaTeX file in Sublime Text
+- Invoke the Build command (*macOS:* Cmd+B; *Windows & Ubuntu:* Ctrl+B)
+
+For more info (eg about adding a dedicated key binding and/or creating a build command to help troubleshoot if the default build system doesn't work) see [the LaTeX page](latex.html).
+
+### LaTeX Word Count
+See the word count in a LaTeX file.
+
+- Open a LaTeX file in Sublime Text
+- Run LaTeX Word Count (*macOS:* Shift+Cmd+C; *Windows & Ubuntu:* Shift+Ctrl+C)
+
+The one drawback is that this package does not display the live word count in the status bar. However, the **WordCount** package does, so install both.
+
+### WordCount
+See the live word count in the status bar.
+
+### Pretty JSON
+Make JSON files more readable.
+
+- Open a JSON file in Sublime Text
+- Open the Command Palette (*macOS:* Cmd+Shift+P; *Windows & Ubuntu:* Ctrl+Shift+P)
+- Search for and run "Pretty JSON: Format JSON"
+
+This command used to have a **key binding** assigned to it automatically but this is no longer the case. It can be added manually, however, as follows:
+
+- Open "Key Bindings"  
+    • *macOS:* Sublime Text > Preferences > Key Bindings  
+    • *Windows & Ubuntu:* Preferences > Key Bindings
+- Two files will open up: the default key bindings on the left-hand side and the user's key bindings on the right-hand side. Confusingly, both of these files will be called "Default" ( even the User key bindings file):  
+    • *Linux:* `Default (Linux).sublime-keymap`   
+    • *macOS:* `Default (OSX).sublime-keymap`  
+    • *Windows:* `Default (Windows).sublime-keymap`
+- Add the following in the User key bindings file (on the right-hand side) anywhere between the starting and ending square brackets:
+
+    ```json
+    /* Pretty JSON */
+    { "keys": ["ctrl+alt+j"], "command": "pretty_json" },
+    ```
+
+    The above line should end with a comma if and only if other custom key bindings follow it in the file. If it is the last (or only) custom key binding, omit the comma.
+
+- Save and close. The keyboard shortcut Ctrl+Alt+T should now work.
+
+### MarkdownEditing
+A general Markdown plugin. See more about using Markdown in Sublime Text [here](markdown.html).
+
+**_Note:_** this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings but if you do then create a [user key binding](key_bindings.html) to fix it.
+
+To change the **colour scheme** of Markdown text windows, have the window with the undesirable colour scheme active and go to Preferences then "Settings - Syntax Specific". Add the following in the Markdown file (on the right-hand side):
+
+```json
+{
+    "extensions":
+    [
+        "md"
+    ],
+    "color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
+    "save_on_focus_lost": true,
+    "line_numbers": true,
+    "translate_tabs_to_spaces": false
+}
+```
+
+If it starts to think that .txt files are Markdown files, open a .txt file (ie have that window active) and go: View > Syntax > Open all with current extension as... > select your syntax choice.
+
+### MarkdownPreview
+View rendered Markdown in your browser. You can create a [user key binding](key_bindings.html) to immediately open the current Markdown file as a rendered HTML page in your web browser.
+
+### LiveReload
+Automatically refresh a webpage. This is useful to use in conjunction with MarkdownPreview as you can configure it to update your rendered text every time you save. This allows you to work in Markdown in one window and see your rendered output in another.
+
+- Open the package settings  
+    • *macOS:* Menu bar > Sublime Text > Preferences > Package Settings > LiveReload > Settings - Default  
+    • *Ubuntu:* Menu bar > Preferences > Package Settings > LiveReload > Settings - Default
+- Paste in the following:
+
+    ```json
+    {
+        "enabled_plugins": [ 
+            "SimpleReloadPlugin", 
+            "SimpleRefresh" 
+        ]
+    }
+    ```
+
+- In your browser, install the "LiveReload" extension and enable it  
+    • In Chrome, you also need to go to `chrome://extensions/` then the "Details" page for LiveReload and enable "Allow access to file URLs"
+
+### Markdown Table Formatter
+Easily align columns in Markdown tables. The default key binding is:
+
+- *macOS:* Shift+Cmd+Alt+T
+- *Windows & Ubuntu:* Shift+Ctrl+Alt+T
+
+### R-IDE
+Render code with (and get syntax highlighting for) R Markdown. For more info, see the [R](R.html) and [R Markdown](r_markdown.html) pages.
+
+You need to have **R Markdown** installed on your computer for this package to work:
+
+- Run the following in R (either in the RStudio console or in R in the terminal):
+
+    ```r
     install.packages('rmarkdown', repos='http://cran.us.r-project.org')
     ```
-    - If you want to render Python scripts with R Markdown you also need to have the "reticulate" package installed. Run the following in R to do this:
-    ```{r, eval = FALSE}
+
+- If you want to render Python scripts with R Markdown you also need to have the "reticulate" package installed:
+
+    ```r
     install.packages('reticulate', repos='http://cran.us.r-project.org')
     ```
-    - If you are on **macOS** you also need to install Xcode, htmltools and Pandoc (if you are on **Ubuntu** you also need to have the latter two but they might already be installed):
-        + Xcode: you can download this from the App Store or from [the Apple Developer site](https://developer.apple.com/download/all/?q=Xcode)
-        + htmltools: install this as with any other R package:
-        ```{r, eval = FALSE}
+
+- If you are on **macOS** you also need to install Xcode, htmltools and Pandoc (if you are on **Ubuntu** you also need to have the latter two but they might already be installed):
+    + **Xcode:** you can download this from the App Store or from [the Apple Developer site](https://developer.apple.com/download/all/?q=Xcode)
+    + **htmltools:** install this as with any other R package:
+
+        ```r
         install.packages('htmltools', repos='http://cran.us.r-project.org')
         ```
-        - Pandoc: download from [its website](https://pandoc.org/installing.html)
-- **LSP**
-    + This package (the Language Server Protocol) needs to be installed for rendering of R Markdown to work
-- **Non Text Files**
-    - Open PDFs (and other binary files) in external applications, not in Sublime Text
-+ **SublimeLinter**
-    - Lint your code (ie check it for stylistic and formatting errors)
-    + SublimeLinter is a linter *framework* - the linters themselves are not included and must be installed separately, both in Sublime Text on your computer
-    + To see the results of the linting every time you save:
-        - Open Preferences > Package Settings > SublimeLinter > Settings
-        - Add to the user settings (on the right-hand-side): `"show_panel_on_save": "view"`
-    + Install the following linters (there's no harm in installing more rather than fewer):
-        - Python:
-            - Install these linters through pip (replace `3.11` with your version of Python):
-                - `python3.11 -m pip install flake8`
-                - `python3.11 -m pip install pycodestyle`
-                - `python3.11 -m pip install pydocstyle`
-                - `python3.11 -m pip install bandit`
-                - `python3.11 -m pip install pyflakes`
-            - Install these corresponding Sublime Text linter packages through Package Control:
-                * SublimeLinter-flake8
-                * SublimeLinter-pycodestyle
-                * SublimeLinter-pydocstyle
-                * SublimeLinter-bandit
-                * SublimeLinter-pyflakes
-            - Make sure you have the Python 3 versions, not Python 2 ones!
-        - R:
-            + Install the `lintr` package in R: `install.packages("lintr", repos = "http://cran.us.r-project.org")`
-            + Install the `SublimeLinter-contrib-lintr` package in Sublime Text (see below)
-- **Python Flake8 Lint**
-    - Additional linting for Python
-- **Python PEP8 Autoformat**
-    + Interactively reformat Python code according to PEP8
-- **Python Open Module (New)**
-    + Opens the Python module file based on the Python import path
-- **SublimeLinter-contrib-lintr**
-    + This is needed to get the R linter (`lintr`) working
-    + This is not always available in Package Control, so you can download it manually from [here](https://github.com/jimhester/SublimeLinter-contrib-lintr). Unzip it and move the folder into your packages folder (find where this is by opening Preferences > Browse Packages...).
-- **INI**
-    - Syntax highlighting for .ini files (initialisation/configuration files)
-- **FindKeyConflicts**
-    + Check to see if you have conflicting key bindings
-- **PlainTasks**
-    - TODO lists
-    - Comes with a short tutorial: Preferences > Package Settings > PlainTasks > Tutorial
-- **OmniMarkupPreviewer**
-    + Preview reStructuredText (RST) in a web browser:
-        - *macOS:* Option+Cmd+O
-        - *Windows & Ubuntu:* Ctrl+Alt+O
+
+    - **Pandoc:** download from [its website](https://pandoc.org/installing.html)
+
+### LSP
+This package - the **L**anguage **S**erver **P**rotocol - needs to be installed for the rendering of R Markdown to work.
+
+### SublimeLinter
+Lint your code (check it for stylistic and formatting errors).
+
+SublimeLinter is a linter *framework* - the linters themselves are not included and must be installed separately (both on your computer *and* in Sublime Text). As far as I can tell there's no harm in installing more linters rather than fewer.
+
+For **Python**:
+
+- Install the linters on your computer through pip:
+
+    ```bash
+    # Replace "python3.12" with your version of Python
+    $ python3.12 -m pip install flake8
+    $ python3.12 -m pip install pycodestyle
+    $ python3.12 -m pip install pydocstyle
+    $ python3.12 -m pip install bandit
+    $ python3.12 -m pip install pyflakes
+    ```
+
+- Install the linters in Sublime Text through Package Control:
+
+    - SublimeLinter-flake8
+    - SublimeLinter-pycodestyle
+    - SublimeLinter-pydocstyle
+    - SublimeLinter-bandit
+    - SublimeLinter-pyflakes
+
+For **R**:
+
+- Install the `lintr` package in R:
+
+    ```r
+    install.packages("lintr", repos = "http://cran.us.r-project.org")
+    ```
+
+- Install the SublimeLinter-contrib-lintr package in Sublime Text via the instructions in the next section
+
+To see the results of the linting every time you save:
+
+- Open Preferences > Package Settings > SublimeLinter > Settings
+- Add `"show_panel_on_save": "view"` to the user settings (on the right-hand-side)
+
+### SublimeLinter-contrib-lintr
+This is needed to get the R linter (`lintr`) working.
+
+This package is not always available in Package Control so you can download it manually from [here](https://github.com/jimhester/SublimeLinter-contrib-lintr). Unzip it and move the folder into your packages folder (find where this is by opening Preferences > Browse Packages...).
+
+### INI
+Syntax highlighting for .ini files (initialisation/configuration files).
+
+### PlainTasks
+Create TODO lists. Comes with a short tutorial: Preferences > Package Settings > PlainTasks > Tutorial.
+
+### OmniMarkupPreviewer
+Preview reStructuredText (RST) in a web browser.
+
+- *macOS:* Option+Cmd+O
+- *Windows & Ubuntu:* Ctrl+Alt+O
 
 Other Packages
 ==============
-- **SublimeREPL**
+
+**SublimeREPL**  
+Enables code to be run in a separate tab in the editor (as opposed to in a panel at the bottom, which is what the default Sublime Text Build System does). It also enables you to create a Bash/Zsh terminal as a tab in the editor (via Tools > SublimeREPL > Shell) but this opens a 'Sublime Text version' of the terminal, not the actual terminal. This means, for example, that the PATH variable is different.
+
+This package is neat but it doesn't add to what Sublime Text can already do. Rather use the Terminus package to create terminals in the editor.
+
+**ElasticTabstops**  
+Allows spacing that is created by using Tab to be more intuitive.
+
+**Chain of Command**  
+Execute two commands at once.
+
+**sublimehighlight**  
+Enables the ability to copy text whilst retaining the syntax highlighting.
+
+**MarkdownLivePreview**  
+Use the MarkdownPreview + LiveReload functionality instead.
+
+**AutomaticFullscreen**  
+It got annoying.
+
+**SummitLinter**  
+A different attempt at integrating linting.
+
+**SublimeLinter Inline Errors**  
+This linter does not work well, rather use SublimeLinter.
+
+**Behave Toolkit**  
+Integration with Behave.
+
+**Jira**  
+Integration with Jira.
+
+**PackageResourceViewer**  
+View package resources.
+
+**Non Text Files**  
+Open PDFs (and other binary files) in external applications, not in Sublime Text.
+
+**Python Flake8 Lint**  
+Additional linting for Python.
+
+**Python PEP8 Autoformat**  
+Interactively reformat Python code according to PEP8.
+
+**Python Open Module (New)**  
+Opens the Python module file based on the Python import path.
+
+**FindKeyConflicts**  
+Check to see if you have conflicting key bindings.
+
+<!-- - **SublimeREPL**
     - Enables code to be run in a separate tab in the editor (as opposed to in a panel at the bottom, which is what the default Sublime Text Build System does)
     - This is neat but it doesn't add to what Sublime Text can already do
     - It also enables you to create a bash terminal as a tab in the editor (via Tools > SublimeREPL > Shell), but...
@@ -229,7 +346,7 @@ Other Packages
 - **Jira**
     + Integration with Jira
 - **PackageResourceViewer**
-    - View package resources
+    - View package resources -->
 
 [⇦ Back](../sublime_text.html)
 
