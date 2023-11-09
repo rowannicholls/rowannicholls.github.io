@@ -12,80 +12,51 @@ output:
 
 <font size="3">
 
-For more info, see here:  
-[https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset){target="_blank"}
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+```
 
-The **diabetes dataset** is loaded using `load_diabetes()` function:
+For more information on this dataset:
+
+- See [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset) for the user guide
+- See [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html) for the documentation of the `load_diabetes()` function which imports this dataset
+- See [here](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.html) for the 'homepage' of this dataset
+- See [here](https://hastie.su.domains/Papers/LARS/LeastAngle_2002.pdf) for the original publication
+
+The **diabetes dataset** contains measurements taken from 442 diabetic patients:
+
+- 10 baseline variables (features):
+    - `age` - age in years
+    - `sex` - male or female
+    - `bmi` - body mass index
+    - `bp` - average blood pressure
+    - `s1` - TC: total serum cholesterol
+    - `s2` - LDL: low-density lipoproteins
+    - `s3` - HDL: high-density lipoproteins
+    - `s4` - TCH: total cholesterol / HDL
+    - `s5` - LTG: possibly log of serum triglycerides level
+    - `s6` - GLU: blood sugar level
+- One target variable: a quantitative measure of disease progression one year after baseline
+
+Each of the 10 feature variables have been mean centered and scaled by the standard deviation times the square root of the number of sample (ie the sum of squares of each column totals 1).
+
+The dataset can be loaded using `load_diabetes()` or `load_diabetes(as_frame=True)`. Both return a 'Bunch' object which can be indexed as if it were a dictionary with the following being the most important keys:
+
+| Key | Value |
+|-----|-------------------------------------------------------------|
+| `DESCR` | Description of the dataset |
+| `feature_names` | Names of the 10 features (the baseline measurements taken) |
+| `data` | The 442 baseline data points, formatted as a 442x10 NumPy array by default or as a 442x10 pandas data frame if `as_frame=True` was used |
+| `target` | The 442 one-year follow-up data points - namely the values for disease progression - formatted as a NumPy array by default or as a pandas series if `as_frame=True` was used |
+
+Example usage:
 
 ```{python}
 from sklearn import datasets
+from matplotlib import pyplot as plt
 
-# Load the dataset
-diabetes = datasets.load_diabetes()
-```
-
-This returns a 'Bunch' object. Usually, it's more user-friendly to use the `as_frame` parameter which causes the 'data' and 'target' values to be loaded as data frames inside the Bunch object:
-
-```{python}
 # Load the dataset
 diabetes = datasets.load_diabetes(as_frame=True)
-
-print(type(diabetes['data']))
-```
-
-Either way, the Bunch object has the following keys:
-
-```{python}
-# Show the dataset's keys
-print(list(diabetes))
-```
-
-More info on each of the keys:
-
-| Key | Description |
-|-----|-------------------------------------------------------------|
-| `DESCR` | Description of the dataset |
-| `data_filename` | Location of the CSV file containing the data being imported |
-| `target_filename` | Location of the CSV file containing the target data being imported |
-| `feature_names` | Names of the 10 groups of data |
-| `data` | The 442 data points in each of the 10 groups of data, formatted as a 442x10 array |
-| `target` | The target data, namely a quantitative measure of disease progression one year after baseline |
-
-```{python}
-# Description of the dataset
-print(diabetes['DESCR'])
-```
-
-```{python}
-# Location of the CSV file containing the data being imported
-print(diabetes['data_filename'])
-```
-
-```{python}
-# Location of the CSV file containing the target data being imported
-print(diabetes['target_filename'])
-```
-
-```{python}
-# Names of the 10 groups of data
-print(diabetes['feature_names'])
-```
-
-```{python}
-# The 442 data points in each of the 10 groups of data, formatted as a 442x10 array
-print(diabetes['data'])
-```
-
-```{python}
-# The target data, namely a quantitative measure of disease progression one
-# year after baseline
-print(diabetes['target'][:20])
-```
-
-The groups of feature data can be plotted against the target data as follows:
-
-```{python}
-import matplotlib.pyplot as plt
 
 # Don't plot the sex data
 features = diabetes['feature_names']

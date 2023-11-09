@@ -14,7 +14,6 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
 For more info, see here:  
@@ -34,9 +33,9 @@ The dataset can be loaded using `load_iris()` or `load_iris(as_frame=True)`. Bot
 | `DESCR` | Description of the dataset |
 | `filename` | Location of the CSV file containing the data being imported |
 | `feature_names` | Names of the 4 attributes (the measurements taken) |
-| `data` | The 150 data points, formatted as a 150x4 array by default or a 150x4 Pandas data frame if `as_frame=True` was used |
+| `data` | The 150 data points, formatted as a 150x4 array by default or a 150x4 pandas data frame if `as_frame=True` was used |
 | `target_names` | Names of the classes (ie the names of the 3 species of Iris) |
-| `target` | Which class each data point is in (ie which species of Iris each flower was): 0, 1 or 2. These correspond to the indexes of the names in `target_names`. This is an array of length 150 by default, or a Pandas series if `as_frame=True` was used. |
+| `target` | Which class each data point is in (ie which species of Iris each flower was): 0, 1 or 2. These correspond to the indexes of the names in `target_names`. This is an array of length 150 by default, or a pandas series if `as_frame=True` was used. |
 
 Example usage:
 
