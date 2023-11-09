@@ -1,0 +1,501 @@
+---
+title: '<font size="5">Machine Learning in Python:</font><br>Decision Trees'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "80%")
+```
+
+<!-- Created: 2023-09-21 -->
+<!-- Updated: 2023-11-09 -->
+
+Python Packages
+===============
+The code on this page uses the pyDataset, pandas, NumPy, scikit-learn and Matplotlib packages. These can be installed from the terminal with the following commands:
+
+```{bash, eval = FALSE}
+# `python3.12` corresponds to the version of Python you have installed and are using
+$ python3.12 -m pip install pydataset
+$ python3.12 -m pip install pandas
+$ python3.12 -m pip install numpy
+$ python3.12 -m pip install sklearn
+$ python3.12 -m pip install matplotlib
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+from pydataset import data
+import pandas as pd
+import numpy as np
+from sklearn import tree
+from sklearn import model_selection
+from sklearn import metrics
+from matplotlib import pyplot as plt
+```
+
+```{python, echo = FALSE}
+# Settings
+pd.set_option('display.max_columns', 20)
+pd.set_option('display.width', 120)
+```
+
+Example Data
+============
+This tutorial will use the "titanic" dataset from pyDataset. This contains data about all* 1,316 non-crew passengers aboard the ill-fated Titanic on 14 April 1912, including what class of ticket they held, whether they were an adult or child, male or female and if they survived or not:
+
+```{python}
+# Import raw data
+df = data('titanic')
+
+print(df.head())
+```
+
+\**There is uncertainty about the exact passenger list and hence the exact number of people onboard, but this dataset is consistent with a British Board of Trade report on the disaster from the time*
+
+Note that pyDataset actually contains *three* datasets with the Titanic's passenger survival data:
+
+- "titanic" (with a small first letter) has the data in long format and only for the passengers, not the crew members
+- "Titanic" (with a capital first letter) contains the same data as "titanic" but formatted as the value counts (frequency table) and it includes the crew members
+- "titanicgrp" contains the value counts of only the passenger data with the survived and not survived values combined
+
+There is also a "Lifeboats" dataset which contains info about the lifeboats
+on the Titanic.
+
+Initial Data Analysis
+=====================
+Let's double-check that we indeed have 1,316 data points:
+
+```{python}
+# Sample size
+total = df.shape[0]
+
+print(total)
+```
+
+For reasons that will become clear later, we will first analyse the overall survival of passengers, then the survival of passengers by sex and then the survival of passengers by sex and class. For now, the important thing to notice is the increase in complexity of the analysis with each additional variable.
+
+Overall Survival
+----------------
+
+### Method 1: Filtering
+
+```{python}
+died = len([v for v in df['survived'] if v == 'no'])
+survived = len([v for v in df['survived'] if v == 'yes'])
+
+print(f'Died: {died}, survived: {survived}')
+```
+
+As a percentage:
+
+```{python}
+survived_100 = survived / total * 100
+
+print(f'Percentage survived: {survived_100:.1f}%')
+```
+
+### Method 2: Using a Method
+The `.value_counts()` method can achieve the same as filtering:
+
+```{python}
+survived = df['survived'].value_counts()
+
+print(survived)
+```
+
+As percentages:
+
+```{python}
+survived_100 = survived / total * 100
+
+print(survived_100)
+```
+
+So, when only dealing with one variable - `survived` - it doesn't really make a difference which method you use and the code is relatively short either way.
+
+Men's and Women's Survival
+--------------------------
+Now let's break the dataset down by sex. First, let's see how many men and women there were:
+
+```{python}
+counts = df['sex'].value_counts()
+
+print(counts)
+```
+
+As percentages:
+
+```{python}
+counts_100 = counts / total * 100
+
+print(counts_100)
+```
+
+How many of these men and women survived?
+
+### Method 1: Filtering
+Using 'manual' filtering is one option for breaking the dataset up by the `survived` and `sex` variables:
+
+```{python}
+mask = (df['survived'] == 'no') & (df['sex'] == 'women')
+women_died = df[mask].shape[0]
+mask = (df['survived'] == 'yes') & (df['sex'] == 'women')
+women_survived = df[mask].shape[0]
+women_survived_100 = women_survived / (women_survived + women_died)
+women_died_100 = women_died / (women_survived + women_died)
+
+print(f'Women survived: {women_survived} ({women_survived_100:.1%}), died: {women_died} ({women_died_100:.1%})')
+```
+
+```{python}
+mask = (df['survived'] == 'no') & (df['sex'] == 'man')
+men_died = df[mask].shape[0]
+mask = (df['survived'] == 'yes') & (df['sex'] == 'man')
+men_survived = df[mask].shape[0]
+men_died_100 = men_died / (men_survived + men_died)
+men_survived_100 = men_survived / (men_survived + men_died)
+
+print(f'Men survived: {men_survived} ({men_survived_100:.1%}), died: {men_died} ({men_died_100:.1%})')
+```
+
+All of a sudden we're needing to write a lot of lines of code just to separate the data by one dependent and one independent variable! Let's have a look at other methods:
+
+### Method 2: Using GroupBy
+Using the `.groupby()` method means we only need to write two lines of code to do the equivalent of the above, but the problem is that we get percentage survival rates relative to the *total* number of passengers, not just men and women:
+
+```{python}
+grouped = df.groupby(['sex', 'survived']).count().iloc[:, 0]
+
+print(grouped)
+```
+
+```{python}
+percentages = grouped / total * 100
+
+print(percentages)
+```
+
+Another two lines can fix that:
+
+```{python}
+women_survived_100 = grouped['women'] / df['sex'].value_counts()['women'] * 100
+
+print(women_survived_100)
+```
+
+```{python}
+men_survived_100 = grouped['man'] / df['sex'].value_counts()['man'] * 100
+
+print(men_survived_100)
+```
+
+### Method 3: Using a Pivot Table
+Creating a pivot table works but is clumsy because you end up with two columns per additional variable ('age' and 'class' in this case):
+
+```{python}
+pt = pd.pivot_table(df, index='sex', columns='survived', aggfunc='count')
+
+print(pt)
+```
+
+### Method 4: Using a Cross Tabulation
+Creating a cross tabulation (a contingency table) will get you the raw numbers (as opposed to the percentages) in one line:
+
+```{python}
+ct = pd.crosstab(df['sex'], df['survived'])
+
+print(ct)
+```
+
+Now to get the percentages. One option is to normalise the cross tabulation (using the `normalize` parameter) but this, again, gives you the percentages of the *total* number of passengers:
+
+```{python}
+ct_norm = pd.crosstab(df['sex'], df['survived'], normalize=True) * 100
+
+print(ct_norm)
+```
+
+You can use NumPy vectors to get the values that you want, but this is tricky because you need to remember to transpose:
+
+```{python}
+percentages = ct.values / np.array([ct.sum(axis=1).values]).T * 100
+
+print(percentages)
+```
+
+The easiest is probably just to keep using pandas:
+
+```{python}
+percentages = ct.divide(ct.sum(axis=1), axis=0) * 100
+
+print(percentages)
+```
+
+Men's and Women's Survival by Passenger Class
+---------------------------------------------
+Now if we were to add in an extra variable - `class` - using manual filtering to analyse the data would take forever! Using what we learnt above we can still break it all down in just two lines:
+
+```{python}
+ct = pd.crosstab([df['sex'], df['class']], df['survived'])
+
+print(ct)
+```
+
+```{python}
+percentages = ct.divide(ct.sum(axis=1), axis=0) * 100
+
+print(percentages)
+```
+
+Decision Tree - Overfit
+=======================
+Using a **decision tree** will essentially take the above information one step further: given details about a passenger and the survival rates calculated above we can *classify* that passenger as either a probable survivor or a probable non-survivor.
+
+Firstly, we will re-format the data by separating out the *target* (dependent) variable from the *predictor* (independent) variables and converting the latter into binary values using the `.get_dummies()` method:
+
+```{python}
+# Set the target and predictor variables
+X = pd.get_dummies(df.iloc[:, :-1])
+y = df['survived']
+
+print(X.head())
+print(y.head())
+```
+
+For the moment, we will use all of this data to train the decision tree:
+
+```{python}
+X_train = X
+y_train = y
+```
+
+Use `DecisionTreeClassifier()` from scikit-learn's `tree` sub-module to create the decision tree:
+
+```{python}
+# Create the model
+model = tree.DecisionTreeClassifier(
+    max_depth=3, ccp_alpha=0.01, random_state=20230808
+)
+model.fit(X_train, y_train)
+```
+
+- `max_depth` sets the maximum number of splits a path through the decision tree will encounter
+- `ccp_alpha` is used for cost-complexity pruning. The default is to not do any pruning.
+- `random_state` sets the seed for the random number generator used in the background. Setting this ensures we get the same result each time we run this code.
+
+Let's visualise the tree by using the `plot_tree()` function:
+
+```{python}
+# Plot
+tree.plot_tree(
+    model, feature_names=list(X_train),
+    class_names=['Died', 'Survived'], filled=True
+)
+plt.tight_layout()
+plt.show()
+```
+
+It's not immediately obvious what a lot of the information in this diagram means, so let's start at the root node (the topmost box):
+
+- `samples = 1316` reflects the fact that there were 1,316 non-crew passengers on the Titanic, ie that's the number of rows in our data frame/the number of data points we have
+- `value = [817, 499]` reflects the fact that 817 passengers died while 499 survived. We calculated these numbers earlier in this tutorial.
+- `class = Died` means that more people died than survived - at this point our decision tree is classifying *everyone* as having died
+- `sex_women <= 0.5` is saying that, if we want to predict the fate of a particular passenger and the `sex_women` value for that passenger is less than or equal to 0.5 (remember that we used the `.get_dummies()` method to convert all variables into binary values, so `sex_women = True = 1` means that the passenger was a women while `sex_women = False = 0` means that they were a man) then we should follow the left-hand path. In other words, if the passenger is a man we should go left and if they are a women we should go right.
+- `gini = 0.471` is the value of *Gini impurity* ($I_G$) for the data at this node: we currently have a 'mixture' of passengers who survived and died whereas our goal is to separate out those who survived and those who died. Doing so would reduce the Gini impurity: we would have less of a mixture and more of a pure substance (to use a chemistry analogy). More specifically, this value is calculated from the following formula:
+
+$$
+\begin{aligned}
+    I_G &= 1 - (p_1^2 + p_2^2) \\
+    &= 1 - (p_1^2 + (1 - p_1)^2)
+\end{aligned}
+$$
+
+where $p_1$, $p_2$ are the proportions of passengers who survived and died. This can be calculated in Python as follows:
+
+```{python}
+# Confirm Gini impurity for the root node
+value = [817, 499]
+gini = 1 - sum([(x / sum(value))**2 for x in value])
+
+print(f'Gini impurity, IG = {gini:.3f}')
+```
+
+or:
+
+```{python}
+# Confirm Gini impurity for the root node
+gini = 1 - sum(y_train.value_counts(normalize=True)**2)
+
+print(f'Gini impurity, IG = {gini:.3f}')
+```
+
+A lot of the other values we calculated earlier in the tutorial can be read off from the decision tree: looking at the left-hand side box we see that there were 869 men, 694 of whom died and 175 of whom survived. Likewise, we can look at the box in the middle on the right-hand side and see that there were 447 women, 123 of whom died and 324 of whom survived. The second split on the right-hand side branch classifies women passengers on whether or not they had 3rd class tickets: 196 did and 106 of them died whereas 90 of them survived. These numbers were calculated at various stages of the Initial Data Analysis section.
+
+So, in summary, the decision tree is splitting the data up into groups and classifying the passengers in each group as either having survived or died depending on the proportion of actual outcomes for that group. Unfortunately, this particular tree is not very good: it suggests that *all* men and third class women died and that the remainder (1st and 2nd class women) all survived. Let's see if we can improve this a bit:
+
+Decision Tree - With Testing Set
+================================
+Let's create a brand new tree, but this time separate the data out into a training and a testing set (70% for training and 30% for testing) instead of using 100% for training:
+
+```{python}
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=20230808, test_size=0.3
+)
+```
+
+Now we can create it as we did previously:
+
+```{python}
+# Create the model
+model = tree.DecisionTreeClassifier(
+    max_depth=3, ccp_alpha=0.01, random_state=20230808
+)
+model.fit(X_train, y_train)
+```
+
+Does the tree look different?
+
+```{python, eval = FALSE}
+# Plot
+tree.plot_tree(
+    model, feature_names=list(X_train),
+    class_names=['Died', 'Survived'], filled=True
+)
+plt.tight_layout()
+plt.show()
+```
+
+```{python, echo = FALSE, results='hide'}
+# Plot
+tree.plot_tree(
+    model, feature_names=list(X_train),
+    class_names=['Died', 'Survived'], filled=True
+)
+plt.tight_layout()
+plt.show()
+```
+
+The first split is still on `sex`, but the left-hand branch now splits on `age` and then the right-hand side of that splits on `class`. The right-hand branch is unchanged (the exact numbers are different because we are only using 70% of the data, but the split is still on `class`).
+
+Text Representation
+-------------------
+The scikit-learn module also has an `export_text()` function that will show the tree as text:
+
+```{python}
+# Visualise
+text_tree = tree.export_text(
+    model, feature_names=X_train.columns, class_names=['Died', 'Survived']
+)
+
+print(text_tree)
+```
+
+Gini Impurity
+-------------
+As has been done above, we can calculate the Gini impurity for a node (eg the root node):
+
+```{python}
+# Confirm Gini impurity for the root node
+value = [571, 350]
+gini = 1 - sum([(x / sum(value))**2 for x in value])
+
+print(f'Gini impurity, IG = {gini:.3f}')
+```
+
+or:
+
+```{python}
+# Confirm Gini impurity for the root node
+gini = 1 - sum(y_train.value_counts(normalize=True)**2)
+
+print(f'Gini impurity, IG = {gini:.3f}')
+```
+
+Information Gain
+----------------
+The whole point of having splits in the decision tree is to help classify data points, and the degree to which a split works in this regard can be quantified by calculating the amount of 'information' we gain by performing it. This is equivalent to the reduction in (weighted) impurity achieved by a split.
+
+```{python}
+#
+# Calculate information gain of first split
+#
+
+left = y_train[X_train['sex_women'] <= 0.5]
+right = y_train[X_train['sex_women'] > 0.5]
+
+# Weighted Gini impurity = sum([samples / n * gini for each node])
+# Weight for Gini impurity of the left branch
+w = float(len(left)) / (len(left) + len(right))
+
+# Gini impurity of the left branch
+gini_left = 1 - sum(left.value_counts(normalize=True)**2)
+
+# Gini impurity of the right branch
+gini_right = 1 - sum(right.value_counts(normalize=True)**2)
+
+# Information gain =
+# Reduction in impurity after a split =
+# old weighted Gini impurity - new weighted Gini impurity =
+# current_impurity - w * gini(left) - (1 - w) * gini(right)
+info_gain = gini - w * gini_left - (1 - w) * gini_right
+
+print(f'Information gain = {info_gain:.3f}')
+```
+
+Performance Metrics
+-------------------
+So, is this tree any good? Let's see how good it is at classifying the data in the testing set:
+
+```{python}
+# Make predictions
+y_pred = model.predict(X_test)
+# Accuracy of the predictions
+acc = metrics.accuracy_score(y_test, y_pred)
+
+print(f'Accuracy = {acc:.2f}')
+```
+
+or:
+
+```{python}
+# Accuracy of the predictions
+acc = model.score(X_test, y_test)
+
+print(f'Accuracy = {acc:.2f}')
+```
+
+Precision score (the ability of the classifier not to label as positive a sample that is negative):
+
+```{python}
+# Precision score
+precision_dtree = metrics.precision_score(y_test, y_pred, pos_label='yes')
+
+print(f'Precision = {precision_dtree:.2f}')
+```
+
+F1 score (a harmonic mean of the precision and recall):
+
+```{python}
+# F1 score
+f1_dtree = metrics.f1_score(y_test, y_pred, pos_label='yes')
+
+print(f'F1 = {f1_dtree:.2f}')
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
