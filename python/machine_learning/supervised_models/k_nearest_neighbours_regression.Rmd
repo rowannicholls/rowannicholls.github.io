@@ -1,0 +1,264 @@
+---
+title: '<font size="5">Machine Learning in Python:</font><br>*k*-Nearest Neighbours Regression'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "80%")
+```
+
+<!-- Created: 2023-11-08 -->
+<!-- Created: 2023-11-09 -->
+
+Python Packages
+===============
+The code on this page uses the scikit-learn, Matplotlib, pandas and NumPy packages. These can be installed from the terminal with the following commands:
+
+```{bash, eval = FALSE}
+# "python3.12" corresponds to the version of Python you have installed and are using
+$ python3.12 -m pip install scikit-learn
+$ python3.12 -m pip install matplotlib
+$ python3.12 -m pip install pandas
+$ python3.12 -m pip install numpy
+```
+
+Once installed, import these packages into your Python script as follows:
+
+```{python}
+from sklearn import datasets
+from sklearn import model_selection
+from sklearn import neighbors
+from matplotlib import pyplot as plt
+from matplotlib import cm
+from matplotlib import colors
+import pandas as pd
+import numpy as np
+```
+
+Example Data
+============
+For this example we will use the *diabetes* toy dataset from scikit-learn:
+
+- See [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset) for the user guide
+- See [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_diabetes.html) for the documentation of the `load_diabetes()` function which imports this dataset
+- See [here](../../data/sklearn_datasets.html) for an example that uses this dataset
+- See [here](https://www4.stat.ncsu.edu/~boos/var.select/diabetes.html) for the 'homepage' of this dataset
+- See [here](https://hastie.su.domains/Papers/LARS/LeastAngle_2002.pdf) for the original publication
+
+This dataset can be loaded using the `load_diabetes()` function from scikit-learn's `datasets` sub-module. Using the `as_frame=True` option means that the data will be formatted as a pandas data frame:
+
+```{python}
+# Load the dataset
+dataset = datasets.load_diabetes(as_frame=True)
+```
+
+For this example we will only use two features: BMI and 'LTG' (the log of serum triglyceride level, stored in the `s6` column). Note that the features do not need to be reshaped as they are already formatted as a 2D array.
+
+```{python}
+# Separate out the features
+cols = ['bmi', 's6']
+X = dataset['data'][cols]
+
+# View the first five rows
+print(X[:5])
+```
+
+The target is a quantitative measure of disease progression one year after baseline:
+
+```{python}
+# Separate out the target
+y = dataset['target']
+
+# View the first five values
+print(y.head())
+```
+
+The example data will get split into a training and a testing set:
+
+```{python}
+# Split into training and testing sets
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=20231003, test_size=0.3
+)
+```
+
+Visualise the Training Set
+==========================
+Now let's have a look at the raw data:
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+ax.scatter(X_train['bmi'], X_train['s6'], c=y_train, cmap='viridis')
+ax.set_title('Diabetes Disease Progression')
+ax.set_ylabel('Blood Sugar Level')
+ax.set_xlabel('Body Mass Index')
+label = 'Disease progression one year after baseline'
+norm = colors.Normalize(vmin=0, vmax=y_train.max())
+plt.colorbar(cm.ScalarMappable(cmap='viridis', norm=norm), ax=ax, label=label)
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+ax.scatter(X_train['bmi'], X_train['s6'], c=y_train, cmap='viridis')
+ax.set_title('Diabetes Disease Progression')
+ax.set_ylabel('Blood Sugar Level')
+ax.set_xlabel('Body Mass Index')
+label = 'Disease progression one year after baseline'
+norm = colors.Normalize(vmin=0, vmax=y_train.max())
+plt.colorbar(cm.ScalarMappable(cmap='viridis', norm=norm), ax=ax, label=label)
+plt.show()
+plt.close()
+```
+
+As you can see, as BMI and blood sugar increases the more 'yellow' the points become, ie the more disease progression increases.
+
+Overview of the Algorithm
+=========================
+What we want to do now is build a model that will predict the severity of a new patient's disease progression given their BMI and blood sugar level, and we will use a ***k*-nearest neighbors** (*k*-NN) algorithm to do so. In general, this algorithm will:
+
+1. Plot a new point on the above graph
+2. Find the *k* nearest existing points
+3. Calculate the average disease progression value of these *k* points
+4. Set the disease progression value of the new point equal to this average value
+
+For example, in a three-nearest neighbours algorithm, if a new point (consisting of a BMI value and a blood sugar value) is plotted on the above graph and the three existing points which are nearest to it have an average disease progression value of 200 (ie they are mostly green) then the new point will be given a value of 200 (and will be shown in green too).
+
+See the [Wikipedia page](https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm) for the *k*-nearest neighbors algorithm for more info.
+
+Create the Model
+================
+We will use the `KNeighborsRegressor()` function from scikit-learn to implement the algorithm.
+
+- See the documentation for this function [here](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsRegressor.html)
+- See its user guide [here](https://scikit-learn.org/stable/modules/neighbors.html#regression)
+- See an example [here](https://scikit-learn.org/stable/auto_examples/neighbors/plot_regression.html#sphx-glr-auto-examples-neighbors-plot-regression-py)
+
+The value of *k* (ie the number of neighbours) that we will use is 30:
+
+```{python}
+# Create a model and fit it to the data
+model = neighbors.KNeighborsRegressor(n_neighbors=30)
+model.fit(X_train, y_train)
+```
+
+Use the Testing Set to Assess the Model
+=======================================
+Plug the testing set into the model to create predicted output values for disease progression. The coefficient of determination between these predicted target values and the actual target values for the testing set gives us a measurement of accuracy:
+
+```{python}
+# Get the coefficient of determination of the prediction
+score = model.score(X_test, y_test)
+
+print(f'Coefficient of determination: {score:.3f}')
+```
+
+Make Predictions
+================
+If three new patients come along with relative BMI values of 5, 4.7 and 6 and relative blood sugar levels of 6, 6.5 and 7, respectively, what will their disease progression scores be?
+
+```{python}
+# Construct new data
+X_test_example = [
+    ['bmi', 's6'],
+    [5, 6],
+    [4.7, 6.5],
+    [6, 7],
+]
+headers = X_test_example.pop(0)
+X_test_example = pd.DataFrame(X_test_example, columns=headers)
+# Make predictions
+y_pred = model.predict(X_test_example)
+
+[print(x.round(1)) for x in y_pred]
+```
+
+Make Predictions Using the Testing Set
+======================================
+Let's do the above but with the entire testing set:
+
+```{python}
+# Make predictions
+y_pred = model.predict(X_test)
+```
+
+The better the model is the closer the predicted values will match the actual values. In other words, ideally, all the points will lie on the diagonal line of equality below:
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+ax.set_title('Agreement Between Predicted and Actual Targets')
+ax.scatter(y_pred, y_test.values)
+lims = [
+    np.min([ax.get_xlim(), ax.get_ylim()]),
+    np.max([ax.get_xlim(), ax.get_ylim()])
+]
+ax.plot(lims, lims, 'k-', alpha=0.75, zorder=0)
+ax.set_aspect('equal')
+ax.set_xlim(lims)
+ax.set_ylim(lims)
+ax.set_xlabel('y Predicted')
+ax.set_ylabel('y Actual')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+ax.set_title('Agreement Between Predicted and Actual Targets')
+ax.scatter(y_pred, y_test.values)
+lims = [
+    np.min([ax.get_xlim(), ax.get_ylim()]),
+    np.max([ax.get_xlim(), ax.get_ylim()])
+]
+ax.plot(lims, lims, 'k-', alpha=0.75, zorder=0)
+ax.set_aspect('equal')
+ax.set_xlim(lims)
+ax.set_ylim(lims)
+ax.set_xlabel('y Predicted')
+ax.set_ylabel('y Actual')
+plt.show()
+plt.close()
+```
+
+Optimisation
+============
+The above agreement didn't look very good; maybe we built the model badly by choosing a poor value for *k*? Let's loop through a whole bunch of potential values for *k*, build a model for each, test it and record the best result:
+
+```{python}
+# Iterate over various values for k
+scores = []
+for k in range(1, 40):
+    # Create a model and fit it to the data
+    model = neighbors.KNeighborsRegressor(n_neighbors=k)
+    model.fit(X_train, y_train)
+    # Get the coefficient of determination of the prediction
+    score = model.score(X_test, y_test)
+    scores.append((score, k))
+# Sort the results
+scores_ordered = sorted(scores)
+
+# Get the best result
+print(scores_ordered[-1])
+```
+
+Hmm, it seems that *k*=30 was indeed the optimal hyperparameter. This is the best we can do for this particular model for this particular dataset.
+
+[⇦ Back](../../../python.html)
+
+</font>

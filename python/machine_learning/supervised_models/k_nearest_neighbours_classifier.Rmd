@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Machine Learning in Python:</font><br>K-Nearest Neighbours Classifier'
+title: '<font size="5">Machine Learning in Python:</font><br>*k*-Nearest Neighbours Classifier'
 output:
     html_document:
         theme: paper
@@ -16,7 +16,7 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "80%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+# knitr::opts_chunk$set(engine.path = "/usr/bin/python3.12")
 ```
 
 <!-- Created: 2023-09-30 -->
@@ -27,10 +27,10 @@ Python Packages
 The code on this page uses the scikit-learn, NumPy and Matplotlib packages. These can be installed from the terminal with the following commands:
 
 ```{bash, eval = FALSE}
-# "python3.11" corresponds to the version of Python you have installed and are using
-$ python3.11 -m pip install sklearn
-$ python3.11 -m pip install numpy
-$ python3.11 -m pip install matplotlib
+# "python3.12" corresponds to the version of Python you have installed and are using
+$ python3.12 -m pip install scikit-learn
+$ python3.12 -m pip install numpy
+$ python3.12 -m pip install matplotlib
 ```
 
 Once finished, import these packages into your Python script as follows:
@@ -47,7 +47,7 @@ Example Data
 For this example we will use the *Iris* toy dataset from scikit-learn.
 
 - See [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset) for the user guide
-- See [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html) for the documentation of the `load_iris()` function
+- See [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html) for the documentation of the `load_iris()` function which imports this dataset
 - See [here](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html) for an example on the scikit-learn site
 - See [here](../../data/sklearn_datasets.html) for an example on my site
 - See [here](https://en.wikipedia.org/wiki/Iris_flower_data_set) for the Wikipedia page about this dataset

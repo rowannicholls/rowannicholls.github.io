@@ -149,19 +149,27 @@ To update the pre-installed version of Python (3.10) to the latest version (3.12
 Note that Option 1 will download Python to `/usr/bin/python3.12` whereas Option 2 will download it to `/usr/local/bin/python3.12`.
 
 #### **Configuring Python**
-If you followed Option 2 above and downloaded and installed Python 'manually' (ie from the Python website) you had the option to configure the installation when you ran `configure`:
+Most users will not need to configure Python but, for the record, if you followed Option 2 above and downloaded and installed Python 'manually' (ie from the Python website) then you had the option to configure the installation when you ran `configure`:
 
 ```bash
 $ ./configure <options>
 ```
 
-If you used Option 1 (ie if you used `apt-get`) then you bypassed this opportunity. For many users this won't matter. However, there are a couple of use cases where Python needs to be configured so as to have a **shared library** - one example is if you want to use Python in R Markdown using R's "reticulate" package. In general, if you come across the recommendation to build Python using `./configure --enable-shared` then this is the sign you want a shared library (because this is what that step creates). Fortunately we can create one manually, using one line of code:
+If you used Option 1 (ie if you used `apt-get`) then you bypassed this opportunity. As mentioned, for many users this won't matter. However, there are a couple of use cases where Python needs to be configured so as to have a **shared library** - one example is if you want to use Python in R Markdown using R's "reticulate" package. A shared library can be enabled via the following while installing Python:
 
 ```bash
-$ sudo apt-get install libpython3.12
+$ ./configure --enable-shared
 ```
 
-This will download the `libpython3.12` Ubuntu package which is the shared Python runtime library for Python 3.12 (for the record, this package's homepage is over [here](https://packages.ubuntu.com/mantic/libpython3.12)).
+If you have already finished installing Python/have installed it via `apt-get` and are using version 3.10 (the default version on Ubuntu 22.04) then you can run the following:
+
+```bash
+$ sudo apt-get install libpython3.10
+```
+
+This will download the `libpython3.10` Ubuntu package which is the shared Python runtime library for Python 3.10 (for the record, this package's homepage is over [here](https://packages.ubuntu.com/jammy/libs/libpython3.10)).
+
+Unfortunately, there is no `libpython3.12` for Ubuntu 22.04, only for 23.10+ (see the homepage for this over [here](https://packages.ubuntu.com/mantic/libpython3.12)).
 
 #### **Installing Python Packages**
 The best option is to use the standard Python package manager "pip" (aka "pip3" for Python 3) for installing packages. The name "pip" is a recursive acronym for "Pip Installs Packages".
