@@ -1,0 +1,149 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Outlier Rejection'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+Python Packages
+===============
+The code on this page uses the NumPy and SciPy packages. These can be installed from the terminal with the following commands:
+
+```bash
+# `python3.12` corresponds to the version of Python you have installed and are using
+$ python3.12 -m pip install numpy
+$ python3.12 -m pip install scipy
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+import numpy as np
+from scipy import stats as st
+```
+
+Chauvenet's Criterion
+=====================
+One of a number of methods of identifying outliers in a dataset is [Chauvenet's criterion](https://en.wikipedia.org/wiki/Chauvenet%27s_criterion). The example provided on the Wikipedia page gives the following values:
+
+```{python}
+# Wikipedia example
+# https://en.wikipedia.org/wiki/Chauvenet%27s_criterion#Example
+observations = [9, 10, 10, 10, 11, 50]
+```
+
+The calculation can be implemented in Python as follows:
+
+```{python}
+# Sample size
+n = len(observations)
+# Probability represented by one tail of the normal distribution
+P_z = 1 - (1 / (4 * n))
+
+# Maximum allowable deviation
+D_max = st.norm.ppf(P_z)
+
+# Mean
+x_bar = np.mean(observations)
+# Sample standard deviation
+s = np.std(observations, ddof=1)
+# z-score of 50
+z = (50 - x_bar) / s
+
+print(f'P_z = {P_z:.4f}, D_max = {D_max:.4f}, z = {z:.2f}')
+```
+
+...and, for the entire dataset:
+
+```{python}
+# z-scores
+z_scores = (observations - x_bar) / s
+
+# Test z-scores against the maximum allowable deviation
+reject = abs(z_scores) > D_max
+obs = np.array(observations)
+kept = obs[~reject]
+rejected = obs[reject]
+
+print(kept, rejected)
+```
+
+Here's the above wrapped up into a function:
+
+```{python}
+def chauvenets_criterion(obs):
+    """
+    Identify and remove outliers using Chauvenet's criterion.
+
+    From Wikipedia (https://en.wikipedia.org/wiki/Chauvenet%27s_criterion):
+    "In statistical theory, Chauvenet's criterion (named for William Chauvenet)
+    is a means of assessing whether one piece of experimental data — an outlier
+    — from a set of observations, is likely to be spurious."   
+
+    Parameters
+    ----------
+    obs : array-like
+        Set of observations.
+
+    Returns
+    -------
+    kept : numpy.ndarray
+        The observations that have not been rejected.
+    rejected : numpy.ndarray
+        The observations that have been rejected.
+
+    Examples
+    --------
+    This example comes from Wikipedia:
+    https://en.wikipedia.org/wiki/Chauvenet%27s_criterion#Example
+
+    >>> kept, rejected = chauvenets_criterion([9, 10, 10, 10, 11, 50])
+    >>> print(kept)
+    [ 9 10 10 10 11]
+    >>> print(rejected)
+    [50]
+    """
+    # Sample size
+    n = len(obs)
+    # Probability represented by one tail of the normal distribution
+    P_z = 1 - (1 / (4 * n))
+
+    # Maximum allowable deviation
+    D_max = st.norm.ppf(P_z)
+
+    # Mean
+    x_bar = np.mean(obs)
+    # Sample standard deviation
+    s = np.std(obs, ddof=1)
+    # z-scores
+    z_scores = (obs - x_bar) / s
+
+    # Test z-scores against the maximum allowable deviation
+    reject = abs(z_scores) > D_max
+    obs = np.array(obs)
+    kept = obs[~reject]
+    rejected = obs[reject]
+
+    return kept, rejected
+
+
+# Wikipedia example
+# https://en.wikipedia.org/wiki/Chauvenet%27s_criterion#Example
+observations = [9, 10, 10, 10, 11, 50]
+kept, rejected = chauvenets_criterion(observations)
+
+print(kept, rejected)
+```
+
+[⇦ Back](../../python.html)
+
+</font>
