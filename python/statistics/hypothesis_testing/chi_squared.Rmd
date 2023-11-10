@@ -15,8 +15,6 @@ output:
 [⇦ Back](../../../python.html)
 
 ```{r, echo = FALSE}
-library(knitr)
-opts_chunk$set(engine.path="/usr/bin/python3.11")
 ```
 
 A chi-squared (χ², pronounced "*kai-squared*") test will often be used with **discrete, categorical data**. For example:
@@ -25,7 +23,7 @@ A chi-squared (χ², pronounced "*kai-squared*") test will often be used with **
 - Demographic data comparing people who are male and female
 - Assessment data where people either passed or failed an assignment
 
-Chi-squared tests are not relevant for continuous data, ie where each measurement/observation in the data set is a 'value' (eg a percentage, a height in cm, a weight in kg, etc). Also note that for a chi-squared test to be valid there must be more than 5 samples of each type.
+Chi-squared tests are not relevant for continuous data, ie where each measurement/observation in the data set is a 'value' (eg a percentage, a height in cm, a weight in kg, etc). Also note that for a chi-squared test to be valid there must be more than 5 samples of each type. See the Wikipedia page [here](https://en.wikipedia.org/wiki/Chi-squared_test) for more info.
 
 There are three main chi-squared tests (known as [Pearson's chi-squared tests](https://en.wikipedia.org/wiki/Pearson%27s_chi-squared_test)):
 
@@ -138,17 +136,26 @@ DiagrammeR::grViz(
 )
 ```
 
-The code on this page uses the `numpy`, `scipy`, `pandas`, `statsmodels` and `matplotlib` packages. These can be installed from the terminal with:
+**Assumptions of a Chi-Square Test**
 
-```{bash, eval = FALSE}
-$ python3.11 -m pip install numpy
-$ python3.11 -m pip install scipy
-$ python3.11 -m pip install pandas
-$ python3.11 -m pip install statsmodels
-$ python3.11 -m pip install matplotlib
+In addition to the data types and samples sizes needing to be as specified above, there are three other assumptions that need to be met in order for a chi-squared test to be valid:
+
+1. The observations should be independently, randomly sampled from the population. This minimizes bias and helps to ensure that the data is representative of the population.
+2. The categories of both variables must be mutually exclusive. It should not be possible for a data point to fall into more than one category.
+3. The groups should be independent. The number of samples that fall into one category should not influence the number that fall into another category.
+
+**Python Packages**
+
+The code on this page uses the NumPy, SciPy, pandas, Statsmodels and Matplotlib packages. These can be installed from the terminal with:
+
+```bash
+# "python3.12" corresponds to the version of Python you have installed and are using
+$ python3.12 -m pip install numpy
+$ python3.12 -m pip install scipy
+$ python3.12 -m pip install pandas
+$ python3.12 -m pip install statsmodels
+$ python3.12 -m pip install matplotlib
 ```
-
-where `python3.11` corresponds to the version of Python you have installed and are using.
 
 Goodness-of-Fit Test
 ====================
@@ -156,19 +163,20 @@ This test answers the question *"does my distribution of numbers come from the d
 
 Wikipedia Example
 -----------------
-The following example comes from [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit#Pearson's_chi-squared_test):
+The following example comes from [Wikipedia](https://en.wikipedia.org/wiki/Goodness_of_fit#Pearson's_chi-square_test):
 
 > If you randomly picked 100 people out of a population and 44 of that sample were men, is that population made up of 50% men or is it skewed?
 
 You would have *observed* 44 men and 56 women but your *expectation* would have been 50 men and 50 women. Let's check to see if we can use a chi-squared test to test our question:
 
-- The **dependent variable** is whether a person in your sample is a man or a women. This is a *categorical/discrete* type of data (specifically, it is *nominal*)
-- There are **two** categories/levels (ie two possible values) to this dependent variable (it is *binary*)
+- The **dependent variable** is whether a person in your sample is a man or a women, so this is a *categorical/discrete* type of data (specifically, it is *nominal*)
+    - There are two **categories/levels** (ie two possible values) for this dependent variable: it is *binary*
 - There is no **independent variable**: you are choosing a single sample of people without controlling for any factors
-- There is no additional dependent variable because you are not measuring or recording anything else about these people
+- There is no **additional dependent variable** because you are not measuring or recording anything else about these people
 - There are more than 5 samples in each group
+- The data has been **randomly** sampled from the population and the groups are **mutually exclusive** and **independent** of each other
 
-As per the flowchart for choosing a statistical test that is shown above, we could either use a one-sample *Z*-test or a χ² goodness-of-fit test to investigate this question. We will do both, but let's start with the latter: testing the 'goodness-of-fit' of your sample with the expected distribution:
+Thus, the assumptions required for a chi-squared test are met and - as per the flowchart shown above - we could either use a one-sample *Z*-test or a χ² goodness-of-fit test to investigate this question. We will do both, but let's start with the latter: testing the 'goodness-of-fit' of the sample with the expected distribution:
 
 ```{python}
 from scipy import stats as st
@@ -864,7 +872,7 @@ These are all the elements we need to plug into their formula for χ²:
 ```{python}
 # χ²
 v = np.prod(col_sums) * (n * t_3 - t_2**2) / (n**2 * (n - 1))
-chisq = (t_1 - (col_sums[0] * t_2 / n))**2 / v
+chisq = (t_1 - (col_sums.iloc[0] * t_2 / n))**2 / v
 
 print(f'χ² = {chisq:.2f}')
 ```
@@ -926,9 +934,7 @@ plt.xlabel('Relative Class Size')
 Now let's look for a trend:
 
 ```{python}
-#
 # Chi-squared test for trend
-#
 count_total = np.sum(count)
 nobs_total = np.sum(nobs)
 fails_total = nobs_total - count_total
