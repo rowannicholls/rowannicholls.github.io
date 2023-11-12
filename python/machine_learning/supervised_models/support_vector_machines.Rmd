@@ -1,0 +1,378 @@
+---
+title: '<font size="5">Machine Learning in Python:</font><br>Support Vector Machines'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- Created: 2023-07-27 -->
+<!-- Updated: 2023-08-03 to 08 -->
+<!-- Updated: 2023-08-21 -->
+<!-- Updated: 2023-11-12 -->
+
+Support vector machines (SVMs) are *supervised* learning models that can be used either for *classification* or *regression*. This tutorial will create one for classification: it will be used to predict a discrete label from inputs that are continuous.
+
+<!-- Regression is used to predict outputs that are continuous -->
+<!-- Classification is used to predict a discrete label -->
+<!-- - Binary classification: two possible outcomes -->
+<!-- - Multi-class classification: three or more possible outcomes -->
+<!-- - Multi-label classification: multiple possible labels for each outcome -->
+
+SVMs are fast because they only use the *support vectors* in their algorithm. This keeps the computation lightweight.
+
+See the Wikipedia pages for [support vector machines](https://en.wikipedia.org/wiki/Support_vector_machine) and [supervised learning models](https://en.wikipedia.org/wiki/Supervised_learning) for more info.
+
+Python Packages
+===============
+The code on this page uses the scikit-learn, Matplotlib, NumPy and pandas packages. These can be installed from the terminal with the following commands:
+
+```bash
+# "python3.12" corresponds to the version of Python you have installed and are using
+$ python3.12 -m pip install scikit-learn
+$ python3.12 -m pip install matplotlib
+$ python3.12 -m pip install numpy
+$ python3.12 -m pip install pandas
+```
+
+Once finished installing, import these packages into your Python script as follows:
+
+```{python}
+from sklearn import datasets
+from sklearn import svm
+from matplotlib import pyplot as plt
+from matplotlib import colors as mcolors
+import numpy as np
+import pandas as pd
+```
+
+Example Data
+============
+For this example we will use the *Iris* toy dataset from scikit-learn.
+
+- See [here](https://scikit-learn.org/stable/datasets/toy_dataset.html#iris-dataset) for the user guide
+- See [here](https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_iris.html) for the documentation of the `load_iris()` function which imports this dataset
+- See [here](https://scikit-learn.org/stable/auto_examples/datasets/plot_iris_dataset.html) for an example on the scikit-learn site
+- See [here](../../data/sklearn_datasets.html) for an example on my site
+- See [here](https://en.wikipedia.org/wiki/Iris_flower_data_set) for the Wikipedia page about this dataset
+
+This dataset can be loaded using the `load_iris()` function from scikit-learn's `datasets` sub-module. Using the `as_frame=True` option means that the data will be formatted as a pandas data frame:
+
+```{python}
+# Load the dataset
+dataset = datasets.load_iris(as_frame=True)
+```
+
+For this example we will only use two of the four **features**: sepal length and sepal width:
+
+```{python}
+# Separate out the features
+X = dataset['data']
+cols = ['sepal length (cm)', 'sepal width (cm)']
+X = X[cols]
+
+# View the first five rows
+print(X.head())
+```
+
+Note that these features are contained in a *two-column data frame*. Some of the functions we will use later on will require the data to be in a *2D array*, but this is not a problem because the functions will convert to this format automatically. In other words, there is no need to *reshape* our data - if we were only using one feature we would not be able to skip this step.
+
+The **target** will be the species of *Iris* flower that corresponds to each specimen:
+
+```{python}
+# Separate out the target
+y = dataset['target']
+```
+
+By default the target values are the numbers 0, 1 and 2, but these can be 'translated' into their actual values (the species names 'setosa', 'virginica' and 'versicolor') which are stored in the `'target_names'` key:
+
+```{python}
+# Translate the target
+y = y.apply(lambda x: dataset['target_names'][x])
+
+# View the first five values
+print(y.head())
+```
+
+For this example were are only going to use the data from the 'setosa' and 'versicolor' plants, so let's remove the 'virginica' plants:
+
+```{python}
+# Only use two species
+X = X[y != 'virginica']
+y = y[y != 'virginica']
+```
+
+Visualise the Data
+==================
+Let's have a look at the raw data:
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+for i, group in enumerate(y.unique()):
+    x = X[y == group]
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        c=list(mcolors.TABLEAU_COLORS)[i], label=group.capitalize(), alpha=0.5
+    )
+ax.set_title('Sepal Dimensions of Iris Plants')
+ax.set_ylabel('Sepal Width (cm)')
+ax.set_xlabel('Sepal Length (cm)')
+ax.legend()
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+for i, group in enumerate(y.unique()):
+    x = X[y == group]
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        c=list(mcolors.TABLEAU_COLORS)[i], label=group.capitalize(), alpha=0.5
+    )
+ax.set_title('Sepal Dimensions of Iris Plants')
+ax.set_ylabel('Sepal Width (cm)')
+ax.set_xlabel('Sepal Length (cm)')
+ax.legend()
+plt.show()
+plt.close()
+```
+
+Create the Model
+================
+This will use the `svm.SVC()` function from scikit-learn.
+
+- See [here](https://scikit-learn.org/stable/modules/svm.html) for the user guide
+- See [here](https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html) for the documentation
+- See [here](https://scikit-learn.org/stable/auto_examples/svm/plot_custom_kernel.html) for an example (which also uses the *Iris* dataset)
+
+The hyperparameter *C* - the *regularization parameter* - determines how much error the SVM will allow for. A large value for *C* will result in a model that has little error and a small margin (a small distance between the support vectors and the decision boundary). This 'hard margin' won't allow for many misclassifications but it will come at the risk of *overfitting* the data and being influenced too much by outliers. Decreasing *C* will increase the error and the margin and so will risk *underfitting* and not being representative of the training data, but then the model will be more resistant to outliers.
+
+Here, we create the model with a regularization parameter (*C*-value) of 20:
+
+```{python}
+# Create a support vector machine
+model = svm.SVC(kernel='linear', C=20)
+# Fit the model
+model.fit(X, y)
+```
+
+We have used the `'linear'` kernel above as opposed to the default which is `'rbf'` or 'radial basis function'. RBF uses `gamma` as its hyperparameter instead of `C` but the concept is the same: a higher gamma will put more importance on the training data and
+could result in overfitting while a lower gamma makes the points in the training data less relevant and can result in underfitting.
+
+Visualise the Model
+===================
+We can re-plot the data with the decision boundary and support vectors added in:
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+for i, species in enumerate(y.unique()):
+    x = X[y == species]
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        c=list(mcolors.TABLEAU_COLORS)[i], label=species.capitalize(),
+        alpha=0.5
+    )
+ax.set_title('Support Vector Machine')
+ax.set_ylabel('Sepal Width (cm)')
+ax.set_xlabel('Sepal Length (cm)')
+# Decision boundary
+left, right = ax.get_xlim()
+w = model.coef_[0]
+b = model.intercept_[0]
+x_points = np.linspace(left, right)
+y_points = -(w[0] / w[1]) * x_points - b / w[1]
+ax.plot(x_points, y_points, c='k', label='Decision Boundary')
+ax.set_xlim(left, right)
+# Support vectors
+top, bottom = ax.get_ylim()
+first_vector = True
+for sv_x, sv_y in model.support_vectors_:
+    if first_vector:
+        ax.plot(
+            [0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0,
+            label='Support Vectors'
+        )
+        first_vector = False
+    else:
+        ax.plot([0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0)
+    ax.scatter(sv_x, sv_y, c='grey', s=10)
+ax.set_ylim(top, bottom)
+# Finished
+plt.legend(fontsize='small')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+for i, species in enumerate(y.unique()):
+    x = X[y == species]
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        c=list(mcolors.TABLEAU_COLORS)[i], label=species.capitalize(),
+        alpha=0.5
+    )
+ax.set_title('Support Vector Machine')
+ax.set_ylabel('Sepal Width (cm)')
+ax.set_xlabel('Sepal Length (cm)')
+# Decision boundary
+left, right = ax.get_xlim()
+w = model.coef_[0]
+b = model.intercept_[0]
+x_points = np.linspace(left, right)
+y_points = -(w[0] / w[1]) * x_points - b / w[1]
+ax.plot(x_points, y_points, c='k', label='Decision Boundary')
+ax.set_xlim(left, right)
+# Support vectors
+top, bottom = ax.get_ylim()
+first_vector = True
+for sv_x, sv_y in model.support_vectors_:
+    if first_vector:
+        ax.plot(
+            [0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0,
+            label='Support Vectors'
+        )
+        first_vector = False
+    else:
+        ax.plot([0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0)
+    ax.scatter(sv_x, sv_y, c='grey', s=10)
+ax.set_ylim(top, bottom)
+# Finished
+plt.legend(fontsize='small')
+plt.show()
+```
+
+Essentially, this model is saying that the species of any *Iris* flower that lies above/left of the **decision boundary** (the black line) should be classified as 'setosa', and that of any flower below/right of the decision boundary should be 'versicolor'. The model is using four **support vectors** (in grey) to define this decision boundary and the distance from the boundary to the nearest data points is the **margin**. SVMs attempt to create the largest margin possible while staying within an acceptable amount of error.
+
+Make Predictions
+================
+If we are given four new *Iris* flowers with sepal lengths of 6.5, 6.5, 6.3 and 6.3 centimeters and sepal widths of 4.5, 4.8, 4.7 and 4.2 cm what species do we think they are?
+
+```{python}
+# Make predictions
+X_test = pd.DataFrame({
+    'sepal length (cm)': [6.5, 6.5, 6.3, 6.3],
+    'sepal width (cm)': [4.5, 4.8, 4.7, 4.2]
+})
+y_pred = model.predict(X_test)
+
+print(y_pred)
+```
+
+Visualise the Predictions
+=========================
+We can re-plot the data with the predictions added in:
+
+```{python, eval = FALSE}
+# Plot
+ax = plt.axes()
+for i, species in enumerate(y.unique()):
+    x = X[y == species]
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        c=list(mcolors.TABLEAU_COLORS)[i], label=species.capitalize(),
+        alpha=0.5
+    )
+ax.set_title('Support Vector Machine')
+ax.set_ylabel('Sepal Width (cm)')
+ax.set_xlabel('Sepal Length (cm)')
+# Predictions
+for species in y.unique():
+    x = X_test[y_pred == species]
+    label = f'Predicted {species.capitalize()}'
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        marker='x', label=label, alpha=0.8
+    )
+# Decision boundary
+left, right = ax.get_xlim()
+w = model.coef_[0]
+b = model.intercept_[0]
+x_points = np.linspace(left, right)
+y_points = -(w[0] / w[1]) * x_points - b / w[1]
+ax.plot(x_points, y_points, c='k', label='Decision Boundary')
+ax.set_xlim(left, right)
+# Support vectors
+top, bottom = ax.get_ylim()
+first_vector = True
+for sv_x, sv_y in model.support_vectors_:
+    if first_vector:
+        ax.plot(
+            [0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0,
+            label='Support Vectors'
+        )
+        first_vector = False
+    else:
+        ax.plot([0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0)
+    ax.scatter(sv_x, sv_y, c='grey', s=10)
+ax.set_ylim(top, bottom)
+# Finished
+plt.legend(fontsize='small')
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+ax = plt.axes()
+for i, species in enumerate(y.unique()):
+    x = X[y == species]
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        c=list(mcolors.TABLEAU_COLORS)[i], label=species.capitalize(),
+        alpha=0.5
+    )
+ax.set_title('Support Vector Machine')
+ax.set_ylabel('Sepal Width (cm)')
+ax.set_xlabel('Sepal Length (cm)')
+# Predictions
+for species in y.unique():
+    x = X_test[y_pred == species]
+    label = f'Predicted {species.capitalize()}'
+    ax.scatter(
+        x['sepal length (cm)'], x['sepal width (cm)'],
+        marker='x', label=label, alpha=0.8
+    )
+# Decision boundary
+left, right = ax.get_xlim()
+w = model.coef_[0]
+b = model.intercept_[0]
+x_points = np.linspace(left, right)
+y_points = -(w[0] / w[1]) * x_points - b / w[1]
+ax.plot(x_points, y_points, c='k', label='Decision Boundary')
+ax.set_xlim(left, right)
+# Support vectors
+top, bottom = ax.get_ylim()
+first_vector = True
+for sv_x, sv_y in model.support_vectors_:
+    if first_vector:
+        ax.plot(
+            [0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0,
+            label='Support Vectors'
+        )
+        first_vector = False
+    else:
+        ax.plot([0, sv_x], [0, sv_y], c='gray', alpha=0.2, zorder=0)
+    ax.scatter(sv_x, sv_y, c='grey', s=10)
+ax.set_ylim(top, bottom)
+# Finished
+plt.legend(fontsize='small')
+plt.show()
+```
+
+As can be seen, the 'test' data points that lie above/left of the decision boundary have been classified as 'setosa', while the points below/right of the boundary have been classified as 'versicolor'.
+
+[⇦ Back](../../../python.html)
+
+</font>
