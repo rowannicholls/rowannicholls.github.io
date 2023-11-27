@@ -1,0 +1,285 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>Pretty-Printing Folder Structures'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- Created: 2023-11-27 -->
+
+Set Up
+======
+Import the Python packages you will need:
+
+```{python}
+import os
+from pathlib import Path
+```
+
+Both of these come pre-packaged with Python so you won't need to install anything.
+
+Next, create a whole bunch of toy folders and files that we can use for this tutorial:
+
+```{python, results = 'hide'}
+# Create directories
+Path('Folder 1', 'Folder 1.1').mkdir(parents=True, exist_ok=True)
+Path('Folder 1', 'Folder 1.2').mkdir(parents=True, exist_ok=True)
+Path('Folder 2', 'Folder 2.1').mkdir(parents=True, exist_ok=True)
+Path('Folder 2', 'Folder 2.2').mkdir(parents=True, exist_ok=True)
+Path('Folder 3', 'Folder 3.1').mkdir(parents=True, exist_ok=True)
+Path('Folder 3', 'Folder 3.2').mkdir(parents=True, exist_ok=True)
+
+# Create files
+paths = [
+    Path('Example File 1.txt'),
+    Path('Folder 1', 'Example File 1.1.txt'),
+    Path('Folder 1', 'Folder 1.1', 'Example File 1.1.1.txt'),
+    Path('Folder 1', 'Folder 1.1', 'Example File 1.1.2.txt'),
+    Path('Folder 2', 'Example File 2.1.txt'),
+    Path('Folder 2', 'Folder 2.2', 'Example File 2.2.1.txt'),
+    Path('Folder 2', 'Folder 2.2', 'Example File 2.2.2.txt'),
+    Path('Folder 3', 'Example File 3.1.txt'),
+]
+for path in paths:
+    # Open file in 'write' mode, erasing content if the file exists
+    f = open(path, 'w')
+    # Write to a file
+    f.write('Hi, mom')
+    # Close the file
+    f.close()
+```
+
+Print Folders in a Markdown List Style
+======================================
+This is pretty straightforward: use `os.walk()` to 'walk' through the folder tree:
+
+```{python}
+# Print folders in a Markdown list style
+for dirpath, dirnames, filenames in os.walk('.'):
+    dirnames.sort()
+    idx = dirpath.rfind('/') + 1
+    if dirpath != '.':
+        print((dirpath.count('/') - 1) * '    ', '- ', dirpath[idx:], sep='')
+```
+
+Print Top-Level Folders as a Tree
+=================================
+This also uses `os.walk()` but needs to determine what Unicode box-drawing character(s) each item in the tree needs to have next to it:
+
+```{python}
+# Print the top 2 levels of folders in a filesystem as a tree
+positions_from_end = []
+for dirpath, dirnames, filenames in os.walk('.'):
+    dirnames.sort()
+    filenames.sort()
+    level = dirpath.count('/')
+    if level <= 2:
+        parent_dir = dirpath[:dirpath.rfind('/')]
+        folder = dirpath.split('/')[-1]
+
+        # Find position of the folder in its folder
+        if dirpath != '.':
+            dirs_parent = [
+                f.name for f in os.scandir(parent_dir) if f.is_dir()
+            ]
+            dirs_parent.sort()
+            pos_in_dir = dirs_parent.index(dirpath.split('/')[-1])
+            pos_from_end = len(dirs_parent) - pos_in_dir - 1
+        else:
+            pos_from_end = -1
+
+        # Augment the list of the parent folders' positions in their
+        # directories
+        try:
+            positions_from_end[level] = pos_from_end
+            positions_from_end = positions_from_end[:level + 1]
+        except IndexError:
+            positions_from_end.append(pos_from_end)
+
+        pipes = positions_from_end[1:]
+        for i, v in enumerate(pipes):
+            print('  ', end='')
+            # If parent folder is not last in dir, set the pipe symbol to │
+            if v != 0 and i != len(pipes) - 1:
+                print('│', end=' ')
+            # If parent folder is last in dir, set the pipe symbol to a space
+            elif v == 0 and i != len(pipes) - 1:
+                print(' ', end=' ')
+            # If folder is not last in dir, set the pipe symbol to ├
+            elif v != 0 and i == len(pipes) - 1:
+                print('├', end=' ')
+            # If folder is last in dir, set the pipe symbol to └
+            else:
+                print('└', end=' ')
+        # Finally, print the folder's name
+        if dirpath == '.':
+            directory = os.getcwd().split('/')[-1]
+            print(directory)
+        else:
+            print(folder)
+```
+
+Print Files and Folders as a Tree
+=================================
+Instead of using `os.walk()` this defines a new `walk()` function and calls it recursively:
+
+```{python}
+def walk(dirpath):
+    ele = os.listdir(dirpath)
+    level = dirpath.count('/')
+    # Sort the elements in the dir
+    dirnames = [d for d in ele if os.path.isdir(os.path.join(dirpath, d))]
+    dirnames = sorted(dirnames)
+    filenames = [f for f in ele if os.path.isfile(os.path.join(dirpath, f))]
+    filenames = sorted(filenames)
+    ele = dirnames + filenames
+
+    for dirname in dirnames:
+        try:
+            terminal[level] = (dirname == ele[-1])
+        except IndexError:
+            terminal.append(dirname == ele[-1])
+        for i in terminal[:level]:
+            if i:
+                print('  ', end=' ')
+            else:
+                print('│ ', end=' ')
+        if terminal[level]:
+            print('└ ', end='')
+        else:
+            print('├ ', end='')
+        print(dirname)
+        new_dirpath = os.path.join(dirpath, dirname)
+        walk(new_dirpath)
+
+    for filename in filenames:
+        try:
+            terminal[level] = (filename == ele[-1])
+        except IndexError:
+            terminal.append(filename == ele[-1])
+        for i in terminal[:level]:
+            if i:
+                print('  ', end=' ')
+            else:
+                print('│ ', end=' ')
+        if terminal[level]:
+            print('└ ', end='')
+        else:
+            print('├ ', end='')
+        print(filename)
+
+
+# Print the files and folders in a filesystem as a tree
+terminal = [False]
+root = '.'
+print(Path(root).resolve().name)
+walk(root)
+```
+
+Print Top-Level Files and Folders as a Tree
+===========================================
+Finally, we can add the option to set how many levels we want the tree to go:
+
+```{python}
+def walk_levels(dirpath):
+    ele = os.listdir(dirpath)
+    level = dirpath.count('/')
+    # Sort the elements in the dir
+    dirnames = [d for d in ele if os.path.isdir(os.path.join(dirpath, d))]
+    dirnames = sorted(dirnames)
+    filenames = [f for f in ele if os.path.isfile(os.path.join(dirpath, f))]
+    filenames = sorted(filenames)
+    ele = dirnames + filenames
+
+    for dirname in dirnames:
+        try:
+            terminal[level] = (dirname == ele[-1])
+        except IndexError:
+            terminal.append(dirname == ele[-1])
+        if level < levels_to_print:
+            for i in terminal[:level]:
+                if i:
+                    print('  ', end=' ')
+                else:
+                    print('│ ', end=' ')
+            if terminal[level]:
+                print('└ ', end='')
+            else:
+                print('├ ', end='')
+            print(dirname)
+        new_dirpath = os.path.join(dirpath, dirname)
+        walk_levels(new_dirpath)
+
+    for filename in filenames:
+        try:
+            terminal[level] = (filename == ele[-1])
+        except IndexError:
+            terminal.append(filename == ele[-1])
+        if level < levels_to_print:
+            for i in terminal[:level]:
+                if i:
+                    print('  ', end=' ')
+                else:
+                    print('│ ', end=' ')
+            if terminal[level]:
+                print('└ ', end='')
+            else:
+                print('├ ', end='')
+            print(filename)
+
+
+# Print the files and folders in the top 2 levels of a filesystem as a tree
+terminal = [False]
+levels_to_print = 2
+root = '.'
+print(Path(root).resolve().name)
+walk_levels(root)
+```
+
+Tear Down
+=========
+Let's clean up after ourselves: delete the toy files that we created for this example script:
+
+```{python}
+# Delete files
+paths = [
+    Path('Example File 1.txt'),
+    Path('Folder 1', 'Example File 1.1.txt'),
+    Path('Folder 1', 'Folder 1.1', 'Example File 1.1.1.txt'),
+    Path('Folder 1', 'Folder 1.1', 'Example File 1.1.2.txt'),
+    Path('Folder 2', 'Example File 2.1.txt'),
+    Path('Folder 2', 'Folder 2.2', 'Example File 2.2.1.txt'),
+    Path('Folder 2', 'Folder 2.2', 'Example File 2.2.2.txt'),
+    Path('Folder 3', 'Example File 3.1.txt'),
+]
+for path in paths:
+    path.unlink()
+```
+
+Once all the folders are empty we can delete them as well:
+
+```{python}
+# Delete directories
+Path('Folder 1', 'Folder 1.1').rmdir()
+Path('Folder 1', 'Folder 1.2').rmdir()
+Path('Folder 2', 'Folder 2.1').rmdir()
+Path('Folder 2', 'Folder 2.2').rmdir()
+Path('Folder 3', 'Folder 3.1').rmdir()
+Path('Folder 3', 'Folder 3.2').rmdir()
+Path('Folder 1').rmdir()
+Path('Folder 2').rmdir()
+Path('Folder 3').rmdir()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>

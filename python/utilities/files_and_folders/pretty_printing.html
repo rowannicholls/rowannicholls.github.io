@@ -11,7 +11,7 @@
 
 
 
-<title>Utilities in Python: The os and pathlib Modules</title>
+<title>Utilities in Python: Pretty-Printing Folder Structures</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -447,11 +447,11 @@ uh:"_user_region",vh:"us_privacy_string",da:"value",uc:"wbraid",wh:"wbraid_multi
 1,ge[L.g.Kg]=1,ge[L.g.Tc]=1,ge[L.g.fe]=1,ge[L.g.he]=1,ge[L.g.ie]=1,ge[L.g.Zg]=1,ge[L.g.Lb]=1,ge[L.g.eh]=1,ge[L.g.ne]=1,ge[L.g.zf]=1,ge[L.g.rb]=1,ge[L.g.sb]=1,ge[L.g.Ha]=1,ge[L.g.Cf]=1,ge[L.g.Nb]=1,ge[L.g.Oa]=1,ge[L.g.Ob]=1,ge[L.g.Zc]=1,ge[L.g.ad]=1,ge[L.g.Ef]=1,ge[L.g.bd]=1,ge[L.g.Pb]=1,ge[L.g.Qb]=1,ge[L.g.we]=1,ge[L.g.Ta]=1,ge[L.g.rd]=1,ge));Object.freeze([L.g.za,L.g.Ia,L.g.tb,L.g.Ga,L.g.Df,L.g.Pa,L.g.xf,L.g.uj]);
 var ie={},je=Object.freeze((ie[L.g.bj]=1,ie[L.g.cj]=1,ie[L.g.dj]=1,ie[L.g.ej]=1,ie[L.g.fj]=1,ie[L.g.ij]=1,ie[L.g.jj]=1,ie[L.g.kj]=1,ie[L.g.mj]=1,ie[L.g.Td]=1,ie)),ke={},le=Object.freeze((ke[L.g.Eg]=1,ke[L.g.Fg]=1,ke[L.g.fc]=1,ke[L.g.hc]=1,ke[L.g.Gg]=1,ke[L.g.Gb]=1,ke[L.g.ic]=1,ke[L.g.Xa]=1,ke[L.g.jb]=1,ke[L.g.Ya]=1,ke[L.g.oa]=1,ke[L.g.jc]=1,ke[L.g.Ba]=1,ke[L.g.Hg]=1,ke)),me=Object.freeze([L.g.ka,L.g.Za,L.g.nb,L.g.Uc,L.g.Qb]),ne=Object.freeze([].concat(me)),oe=Object.freeze([L.g.Fa,L.g.he,L.g.ad,L.g.Ef,
 L.g.be]),pe=Object.freeze([].concat(oe)),qe={},re=(qe[L.g.H]="1",qe[L.g.P]="2",qe[L.g.N]="3",qe[L.g.ya]="4",qe),se={},te=Object.freeze((se[L.g.ka]=1,se[L.g.Ud]=1,se[L.g.Ca]=1,se[L.g.Ib]=1,se[L.g.rf]=1,se[L.g.Vd]=1,se[L.g.Wd]=1,se[L.g.Xd]=1,se[L.g.X]=1,se[L.g.Yd]=1,se[L.g.Ma]=1,se[L.g.Da]=1,se[L.g.Ra]=1,se[L.g.Fa]=1,se[L.g.Sa]=1,se[L.g.Na]=1,se[L.g.sa]=1,se[L.g.Zd]=1,se[L.g.Z]=1,se[L.g.xj]=1,se[L.g.de]=1,se[L.g.ee]=1,se[L.g.xf]=1,se[L.g.ie]=1,se[L.g.rb]=1,se[L.g.sb]=1,se[L.g.Ga]=1,se[L.g.Wc]=1,se[L.g.za]=
-1,se[L.g.Ia]=1,se[L.g.kh]=1,se[L.g.lh]=1,se[L.g.mh]=1,se[L.g.nh]=1,se[L.g.Nb]=1,se[L.g.Oa]=1,se[L.g.Ob]=1,se[L.g.Zc]=1,se[L.g.bd]=1,se[L.g.wa]=1,se[L.g.Pb]=1,se[L.g.Qb]=1,se[L.g.wb]=1,se[L.g.Aa]=1,se[L.g.Pa]=1,se[L.g.da]=1,se)),ve={},we=Object.freeze((ve[L.g.Xi]="s",ve[L.g.Zi]="y",ve[L.g.Wi]="p",ve[L.g.Yi]="h",ve[L.g.Ui]="a",ve[L.g.Vi]="m",ve));Object.freeze(L.g);var xe={},ye=C.google_tag_manager=C.google_tag_manager||{},ze=Math.random();xe.Lf="3b81";xe.qd=Number("0")||0;xe.ba="dataLayer";xe.Si="ChEIgJmRqwYQ4tGO7ovOx+7HARInABU7UdXa+47yZOJ4My4HtICDAJoFUuJLC5amKaQ3zSgOxaNRc+7WGgLsoQ\x3d\x3d";var Ae={__cl:1,__ecl:1,__ehl:1,__evl:1,__fal:1,__fil:1,__fsl:1,__hl:1,__jel:1,__lcl:1,__sdl:1,__tl:1,__ytl:1},Be={__paused:1,__tg:1},Ce;for(Ce in Ae)Ae.hasOwnProperty(Ce)&&(Be[Ce]=1);var De=Fa(""),Ee,Fe=!1;Fe=!0;
+1,se[L.g.Ia]=1,se[L.g.kh]=1,se[L.g.lh]=1,se[L.g.mh]=1,se[L.g.nh]=1,se[L.g.Nb]=1,se[L.g.Oa]=1,se[L.g.Ob]=1,se[L.g.Zc]=1,se[L.g.bd]=1,se[L.g.wa]=1,se[L.g.Pb]=1,se[L.g.Qb]=1,se[L.g.wb]=1,se[L.g.Aa]=1,se[L.g.Pa]=1,se[L.g.da]=1,se)),ve={},we=Object.freeze((ve[L.g.Xi]="s",ve[L.g.Zi]="y",ve[L.g.Wi]="p",ve[L.g.Yi]="h",ve[L.g.Ui]="a",ve[L.g.Vi]="m",ve));Object.freeze(L.g);var xe={},ye=C.google_tag_manager=C.google_tag_manager||{},ze=Math.random();xe.Lf="3b81";xe.qd=Number("0")||0;xe.ba="dataLayer";xe.Si="ChEIgJmRqwYQ4tGO7ovOx+7HARInABU7UdV5I4BNX1+AEagY7Yu2WGy6Oc67R6iijnSFXIAkqMnWIISNGgKgxA\x3d\x3d";var Ae={__cl:1,__ecl:1,__ehl:1,__evl:1,__fal:1,__fil:1,__fsl:1,__hl:1,__jel:1,__lcl:1,__sdl:1,__tl:1,__ytl:1},Be={__paused:1,__tg:1},Ce;for(Ce in Ae)Ae.hasOwnProperty(Ce)&&(Be[Ce]=1);var De=Fa(""),Ee,Fe=!1;Fe=!0;
 Ee=Fe;var Ge,He=!1;Ge=He;var Ie,Je=!1;Ie=Je;var Ke,Le=!1;Ke=Le;xe.Gc="www.googletagmanager.com";
 var Me=""+xe.Gc+(Ee?"/gtag/js":"/gtm.js"),Ne=null,Oe=null,Pe={},Qe={},Re={},Se=function(){var a=ye.sequence||1;ye.sequence=a+1;return a};xe.Ri="";var Te="";xe.De=Te;var Ue=new Ba,Ve={},We={},Ze={name:xe.ba,set:function(a,b){z(Qa(a,b),Ve);Xe()},get:function(a){return Ye(a,2)},reset:function(){Ue=new Ba;Ve={};Xe()}},Ye=function(a,b){return 2!=b?Ue.get(a):$e(a)},$e=function(a){var b,c=a.split(".");b=b||[];for(var d=Ve,e=0;e<c.length;e++){if(null===d)return!1;if(void 0===d)break;d=d[c[e]];if(-1!==b.indexOf(d))return}return d},af=function(a,b){We.hasOwnProperty(a)||(Ue.set(a,b),z(Qa(a,b),Ve),Xe())},Xe=function(a){k(We,function(b,c){Ue.set(b,c);z(Qa(b),Ve);z(Qa(b,
 c),Ve);a&&delete We[b]})},bf=function(a,b){var c,d=1!==(void 0===b?2:b)?$e(a):Ue.get(a);"array"===Va(d)||"object"===Va(d)?c=z(d):c=d;return c};var jf=function(a){var b=1,c,d,e;if(a)for(b=0,d=a.length-1;0<=d;d--)e=a.charCodeAt(d),b=(b<<6&268435455)+e+(e<<14),c=b&266338304,b=0!==c?b^c>>21:b;return b};var kf=[];function lf(a){switch(a){case 35:return 3;case 61:return 14;case 62:return 8;case 74:return 11;case 75:return 12;case 78:return 10;case 80:return 13;case 76:return 15}}function N(a){kf[a]=!0;var b=lf(a);b&&(gd[b]=!0)}
-N(5);N(6);N(11);N(7);N(8);
+N(5);N(6);N(11);N(12);N(7);N(8);
 N(19);N(9);N(10);N(13);
 N(14);N(15);N(22);N(17);
 N(23);N(26);
@@ -732,103 +732,49 @@ Ng){var M=Ug(!0,!0);$b(M)}}});
 
 
 
-<h1 class="title toc-ignore"><font size="5">Utilities in Python:</font><br>The <code>os</code> and <code>pathlib</code> Modules</h1>
+<h1 class="title toc-ignore"><font size="5">Utilities in Python:</font><br>Pretty-Printing Folder Structures</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#working-with-paths"><span class="toc-section-number">1</span> Working with Paths</a>
-<ul>
-<li><a href="#splitting-up-a-path"><span class="toc-section-number">1.1</span> Splitting Up a Path</a></li>
-<li><a href="#replacing-elements-in-a-path"><span class="toc-section-number">1.2</span> Replacing Elements in a Path</a></li>
-</ul></li>
-<li><a href="#creating-files-and-folders"><span class="toc-section-number">2</span> Creating Files and Folders</a></li>
-<li><a href="#listing-elements-in-a-folder"><span class="toc-section-number">3</span> Listing Elements in a Folder</a>
-<ul>
-<li><a href="#sorting"><span class="toc-section-number">3.1</span> Sorting</a></li>
-<li><a href="#another-option"><span class="toc-section-number">3.2</span> Another Option</a></li>
-</ul></li>
-<li><a href="#walking-through-a-filesystem"><span class="toc-section-number">4</span> Walking Through a Filesystem</a></li>
-<li><a href="#checking-existence"><span class="toc-section-number">5</span> Checking Existence</a></li>
-<li><a href="#checking-type"><span class="toc-section-number">6</span> Checking Type</a></li>
-<li><a href="#renaming-files"><span class="toc-section-number">7</span> Renaming Files</a></li>
-<li><a href="#deleting-files-and-folders"><span class="toc-section-number">8</span> Deleting Files and Folders</a></li>
+<li><a href="#set-up"><span class="toc-section-number">1</span> Set Up</a></li>
+<li><a href="#print-folders-in-a-markdown-list-style"><span class="toc-section-number">2</span> Print Folders in a Markdown List Style</a></li>
+<li><a href="#print-top-level-folders-as-a-tree"><span class="toc-section-number">3</span> Print Top-Level Folders as a Tree</a></li>
+<li><a href="#print-files-and-folders-as-a-tree"><span class="toc-section-number">4</span> Print Files and Folders as a Tree</a></li>
+<li><a href="#print-top-level-files-and-folders-as-a-tree"><span class="toc-section-number">5</span> Print Top-Level Files and Folders as a Tree</a></li>
+<li><a href="#tear-down"><span class="toc-section-number">6</span> Tear Down</a></li>
 </ul>
 </div>
 
 <p><font size="3"></p>
 <p><a href="../../../python.html">⇦ Back</a></p>
-<!-- Updated: 2023-11-27 -->
-<p>Python’s <code>os</code> and <code>pathlib</code> modules can be confusing. According to the documentation for <code>os</code> (see <a href="https://docs.python.org/3/library/os.html">here</a>) it provides “miscellaneous operating system interfaces” while its <code>os.path</code> sub-module (see <a href="https://docs.python.org/3/library/os.path.html">here</a>) provides “common pathname manipulations”. The <code>pathlib</code> module, on the other hands, provides “object-oriented filesystem paths” (see <a href="https://docs.python.org/3/library/pathlib.html">here</a>).</p>
-<p>What’s not clear at all is that there is actually a huge amount of overlap between these three modules! This page will take a look at some of these similarities and demonstrate functions and methods that have the same or similar behaviour.</p>
-<p>To start with, import the two main modules into your script:</p>
+<!-- Created: 2023-11-27 -->
+<div id="set-up" class="section level1" number="1">
+<h1 number="1"><span class="header-section-number">1</span> Set Up</h1>
+<p>Import the Python packages you will need:</p>
 <pre class="python"><code>import os
 from pathlib import Path</code></pre>
-<div id="working-with-paths" class="section level1" number="1">
-<h1 number="1"><span class="header-section-number">1</span> Working with Paths</h1>
-<p>A path - either to a file or to a folder - can be created in Python as a string:</p>
-<pre class="python"><code># Create a path
-print(&#39;Example Directory/Sub-Directory&#39;)</code></pre>
-<pre><code>## Example Directory/Sub-Directory</code></pre>
-<p>However, different OSs have different standards for their paths: Windows uses <em>back slashes</em> while macOS and Linux use <em>forward slashes,</em> for example. So, a safer way to create paths is to either use <code>os.path.join()</code> from the <code>path</code> sub-module of the <code>os</code> module or <code>Path()</code> from the <code>pathlib</code> module:</p>
-<pre class="python"><code># Create a path
-print(os.path.join(&#39;Example Directory - os&#39;, &#39;Sub-Directory&#39;))</code></pre>
-<pre><code>## Example Directory - os/Sub-Directory</code></pre>
-<pre class="python"><code># Create a path
-print(Path(&#39;Example Directory - pathlib&#39;, &#39;Sub-Directory&#39;))</code></pre>
-<pre><code>## Example Directory - pathlib/Sub-Directory</code></pre>
-<p>These options both concatenate strings in such a way as to make them valid paths on the OS they are run. On a Windows machine they would appear as follows:</p>
-<pre><code>## Example Directory - os\Sub-Directory
-## Example Directory - pathlib\Sub-Directory</code></pre>
-<p>The difference between <code>os.path.join()</code> and <code>pathlib.Path()</code> is that the first produces a <em>string</em> whereas the second produces a <em>path object</em>. Path objects have slightly more functionality that is useful when creating and handling file paths and, in general, should be used when working with paths.</p>
-<blockquote>
-<p>If you want something to be a <em>string</em>, make it a <em>string</em>. If you want something to be a <em>path</em> make it a <em>path</em>. Using good-practice conventions such as this will help ensure that your code does what you expect it to do and will help anyone who reads your code in figuring out what you meant it to do.</p>
-</blockquote>
-<div id="splitting-up-a-path" class="section level2" number="1.1">
-<h2 number="1.1"><span class="header-section-number">1.1</span> Splitting Up a Path</h2>
-<p>The opposite of what we did above - creating a path from individual strings - would be to break a full path up into its constituent parts. This can’t be done directly with the <code>os</code> module - it has an <code>os.path.split()</code> function but this only splits off the last part - but we can treat the path as a string (which it is) and use the <code>.split()</code> method instead. Bear in mind, however, that this isn’t OS agnostic because the slashes won’t be the right way round on Windows machines. The <code>pathlib</code> module has a better option: the <code>.parts</code> attribute:</p>
-<pre class="python"><code># Split a path up into parts
-path = os.path.join(&#39;Example Directory&#39;, &#39;Sub-Directory&#39;, &#39;Example File.txt&#39;)
-print(path.split(&#39;/&#39;))</code></pre>
-<pre><code>## [&#39;Example Directory&#39;, &#39;Sub-Directory&#39;, &#39;Example File.txt&#39;]</code></pre>
-<pre class="python"><code># Split a path up into parts
-path = Path(&#39;Example Directory&#39;, &#39;Sub-Directory&#39;, &#39;Example File.txt&#39;)
-print(path.parts)</code></pre>
-<pre><code>## (&#39;Example Directory&#39;, &#39;Sub-Directory&#39;, &#39;Example File.txt&#39;)</code></pre>
-</div>
-<div id="replacing-elements-in-a-path" class="section level2" number="1.2">
-<h2 number="1.2"><span class="header-section-number">1.2</span> Replacing Elements in a Path</h2>
-<p>A path object has methods that will replace the file name (including the extension), the file stem (the file name <em>not</em> including the extension) and/or the extension:</p>
-<pre class="python"><code># Replace the file name
-print(path.with_name(&#39;Example Script.py&#39;))</code></pre>
-<pre><code>## Example Directory/Sub-Directory/Example Script.py</code></pre>
-<pre class="python"><code># Replace the file stem
-print(path.with_stem(&#39;Example Script&#39;))</code></pre>
-<pre><code>## Example Directory/Sub-Directory/Example Script.txt</code></pre>
-<pre class="python"><code># Replace the file extension
-print(path.with_suffix(&#39;.py&#39;))</code></pre>
-<pre><code>## Example Directory/Sub-Directory/Example File.py</code></pre>
-</div>
-</div>
-<div id="creating-files-and-folders" class="section level1" number="2">
-<h1 number="2"><span class="header-section-number">2</span> Creating Files and Folders</h1>
-<p>Directories (folders) can be created as follows:</p>
+<p>Both of these come pre-packaged with Python so you won’t need to install anything.</p>
+<p>Next, create a whole bunch of toy folders and files that we can use for this tutorial:</p>
 <pre class="python"><code># Create directories
-path_os = os.path.join(&#39;Example Directory - os&#39;, &#39;Sub-Directory&#39;)
-os.makedirs(path_os, exist_ok=True)
+Path(&#39;Folder 1&#39;, &#39;Folder 1.1&#39;).mkdir(parents=True, exist_ok=True)
+Path(&#39;Folder 1&#39;, &#39;Folder 1.2&#39;).mkdir(parents=True, exist_ok=True)
+Path(&#39;Folder 2&#39;, &#39;Folder 2.1&#39;).mkdir(parents=True, exist_ok=True)
+Path(&#39;Folder 2&#39;, &#39;Folder 2.2&#39;).mkdir(parents=True, exist_ok=True)
+Path(&#39;Folder 3&#39;, &#39;Folder 3.1&#39;).mkdir(parents=True, exist_ok=True)
+Path(&#39;Folder 3&#39;, &#39;Folder 3.2&#39;).mkdir(parents=True, exist_ok=True)
 
-# Create directories
-path_pathlib = Path(&#39;Example Directory - pathlib&#39;, &#39;Sub-Directory&#39;)
-Path(path_pathlib).mkdir(parents=True, exist_ok=True)</code></pre>
-<p>The <code>exist_ok</code> and <code>parents</code> options will ensure that you don’t get errors if the directories already exist or if the intermediate directories don’t exist, respectively.</p>
-<p>Files can’t be created with <code>os</code> or <code>pathlib</code> but they can be created in base Python:</p>
-<pre class="python"><code># Create files
+# Create files
 paths = [
-    os.path.join(&#39;Example Directory - os&#39;, &#39;Example File 1.txt&#39;),
-    os.path.join(path_os, &#39;Example File 2.txt&#39;),
-    Path(&#39;Example Directory - pathlib&#39;, &#39;Example File 1.txt&#39;),
-    Path(path_pathlib, &#39;Example File 2.txt&#39;),
+    Path(&#39;Example File 1.txt&#39;),
+    Path(&#39;Folder 1&#39;, &#39;Example File 1.1.txt&#39;),
+    Path(&#39;Folder 1&#39;, &#39;Folder 1.1&#39;, &#39;Example File 1.1.1.txt&#39;),
+    Path(&#39;Folder 1&#39;, &#39;Folder 1.1&#39;, &#39;Example File 1.1.2.txt&#39;),
+    Path(&#39;Folder 2&#39;, &#39;Example File 2.1.txt&#39;),
+    Path(&#39;Folder 2&#39;, &#39;Folder 2.2&#39;, &#39;Example File 2.2.1.txt&#39;),
+    Path(&#39;Folder 2&#39;, &#39;Folder 2.2&#39;, &#39;Example File 2.2.2.txt&#39;),
+    Path(&#39;Folder 3&#39;, &#39;Example File 3.1.txt&#39;),
 ]
 for path in paths:
     # Open file in &#39;write&#39; mode, erasing content if the file exists
@@ -838,170 +784,259 @@ for path in paths:
     # Close the file
     f.close()</code></pre>
 </div>
-<div id="listing-elements-in-a-folder" class="section level1" number="3">
-<h1 number="3"><span class="header-section-number">3</span> Listing Elements in a Folder</h1>
-<p>The <code>os</code> module has two ways to list all the files and folders in a directory: <code>listdir()</code> will return the elements as a list of strings while <code>scandir()</code> will return them as a list of “DirEntry” objects which contain additional metadata about the objects. The <code>pathlib</code> module has the <code>.iterdir()</code> method which returns path objects:</p>
-<pre class="python"><code># List all files and folders in a directory
-print(os.listdir(&#39;Example Directory - os&#39;))</code></pre>
-<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Sub-Directory&#39;]</code></pre>
-<pre class="python"><code># List all files and folders in a directory
-print([x for x in os.scandir(&#39;Example Directory - os&#39;)])</code></pre>
-<pre><code>## [&lt;DirEntry &#39;Example File 1.txt&#39;&gt;, &lt;DirEntry &#39;Sub-Directory&#39;&gt;]</code></pre>
-<pre class="python"><code># List all files and folders in a directory
-print([x for x in Path(&#39;Example Directory - pathlib&#39;).iterdir()])</code></pre>
-<pre><code>## [PosixPath(&#39;Example Directory - pathlib/Example File 1.txt&#39;), PosixPath(&#39;Example Directory - pathlib/Sub-Directory&#39;)]</code></pre>
-<p>No distinction is made between folders and files in the output besides the fact that files have extensions.</p>
-<div id="sorting" class="section level2" number="3.1">
-<h2 number="3.1"><span class="header-section-number">3.1</span> Sorting</h2>
-<p>Note that these results will not necessarily be in alphabetical order. To sort them, either use the <code>sorted()</code> function or the <code>.sort()</code> method:</p>
-<pre class="python"><code>print(sorted(os.listdir(&#39;Example Directory - os&#39;)))</code></pre>
-<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Sub-Directory&#39;]</code></pre>
-<pre class="python"><code>ls = os.listdir(&#39;Example Directory - os&#39;)
-ls.sort()
+<div id="print-folders-in-a-markdown-list-style" class="section level1" number="2">
+<h1 number="2"><span class="header-section-number">2</span> Print Folders in a Markdown List Style</h1>
+<p>This is pretty straightforward: use <code>os.walk()</code> to ‘walk’ through the folder tree:</p>
+<pre class="python"><code># Print folders in a Markdown list style
+for dirpath, dirnames, filenames in os.walk(&#39;.&#39;):
+    dirnames.sort()
+    idx = dirpath.rfind(&#39;/&#39;) + 1
+    if dirpath != &#39;.&#39;:
+        print((dirpath.count(&#39;/&#39;) - 1) * &#39;    &#39;, &#39;- &#39;, dirpath[idx:], sep=&#39;&#39;)</code></pre>
+<pre><code>## - Folder 1
+##     - Folder 1.1
+##     - Folder 1.2
+## - Folder 2
+##     - Folder 2.1
+##     - Folder 2.2
+## - Folder 3
+##     - Folder 3.1
+##     - Folder 3.2</code></pre>
+</div>
+<div id="print-top-level-folders-as-a-tree" class="section level1" number="3">
+<h1 number="3"><span class="header-section-number">3</span> Print Top-Level Folders as a Tree</h1>
+<p>This also uses <code>os.walk()</code> but needs to determine what Unicode box-drawing character(s) each item in the tree needs to have next to it:</p>
+<pre class="python"><code># Print the top 2 levels of folders in a filesystem as a tree
+positions_from_end = []
+for dirpath, dirnames, filenames in os.walk(&#39;.&#39;):
+    dirnames.sort()
+    filenames.sort()
+    level = dirpath.count(&#39;/&#39;)
+    if level &lt;= 2:
+        parent_dir = dirpath[:dirpath.rfind(&#39;/&#39;)]
+        folder = dirpath.split(&#39;/&#39;)[-1]
 
-print(ls)</code></pre>
-<pre><code>## [&#39;Example File 1.txt&#39;, &#39;Sub-Directory&#39;]</code></pre>
+        # Find position of the folder in its folder
+        if dirpath != &#39;.&#39;:
+            dirs_parent = [
+                f.name for f in os.scandir(parent_dir) if f.is_dir()
+            ]
+            dirs_parent.sort()
+            pos_in_dir = dirs_parent.index(dirpath.split(&#39;/&#39;)[-1])
+            pos_from_end = len(dirs_parent) - pos_in_dir - 1
+        else:
+            pos_from_end = -1
+
+        # Augment the list of the parent folders&#39; positions in their
+        # directories
+        try:
+            positions_from_end[level] = pos_from_end
+            positions_from_end = positions_from_end[:level + 1]
+        except IndexError:
+            positions_from_end.append(pos_from_end)
+
+        pipes = positions_from_end[1:]
+        for i, v in enumerate(pipes):
+            print(&#39;  &#39;, end=&#39;&#39;)
+            # If parent folder is not last in dir, set the pipe symbol to │
+            if v != 0 and i != len(pipes) - 1:
+                print(&#39;│&#39;, end=&#39; &#39;)
+            # If parent folder is last in dir, set the pipe symbol to a space
+            elif v == 0 and i != len(pipes) - 1:
+                print(&#39; &#39;, end=&#39; &#39;)
+            # If folder is not last in dir, set the pipe symbol to ├
+            elif v != 0 and i == len(pipes) - 1:
+                print(&#39;├&#39;, end=&#39; &#39;)
+            # If folder is last in dir, set the pipe symbol to └
+            else:
+                print(&#39;└&#39;, end=&#39; &#39;)
+        # Finally, print the folder&#39;s name
+        if dirpath == &#39;.&#39;:
+            directory = os.getcwd().split(&#39;/&#39;)[-1]
+            print(directory)
+        else:
+            print(folder)</code></pre>
+<pre><code>## files_and_folders
+##   ├ Folder 1
+##   │   ├ Folder 1.1
+##   │   └ Folder 1.2
+##   ├ Folder 2
+##   │   ├ Folder 2.1
+##   │   └ Folder 2.2
+##   └ Folder 3
+##       ├ Folder 3.1
+##       └ Folder 3.2</code></pre>
 </div>
-<div id="another-option" class="section level2" number="3.2">
-<h2 number="3.2"><span class="header-section-number">3.2</span> Another Option</h2>
-<p>The <code>os.system()</code> function runs a piece of terminal/command line code. For example, the <code>ls</code> command <strong>l</strong>i<strong>s</strong>ts the files and folders within a folder:</p>
-<pre class="python"><code>print(os.system(&#39;ls &quot;Example Directory - os&quot;&#39;))</code></pre>
-<pre><code>## Example File 1.txt
-## Sub-Directory
-## 0</code></pre>
-<p>So, essentially, a Python script can do anything a shell script can do because you can execute shell code in the terminal inside Python.</p>
-</div>
-</div>
-<div id="walking-through-a-filesystem" class="section level1" number="4">
-<h1 number="4"><span class="header-section-number">4</span> Walking Through a Filesystem</h1>
-<p>Instead of listing all the files and folders in one directory only, you can ‘walk’ through an entire filesystem and list all the files and folders in each sub-directory:</p>
-<pre class="python"><code># Walk through all files and folders in a folder
-for dirpath, dirnames, filenames in os.walk(&#39;Example Directory - os&#39;):
-    # Sort the dirnames and filenames to ensure you search them in order
-    dirnames.sort()  # or `dirnames[:] = sorted(dirnames)`
-    filenames.sort()  # or `filenames[:] = sorted(filenames)`
-    # Print all files
+<div id="print-files-and-folders-as-a-tree" class="section level1" number="4">
+<h1 number="4"><span class="header-section-number">4</span> Print Files and Folders as a Tree</h1>
+<p>Instead of using <code>os.walk()</code> this defines a new <code>walk()</code> function and calls it recursively:</p>
+<pre class="python"><code>def walk(dirpath):
+    ele = os.listdir(dirpath)
+    level = dirpath.count(&#39;/&#39;)
+    # Sort the elements in the dir
+    dirnames = [d for d in ele if os.path.isdir(os.path.join(dirpath, d))]
+    dirnames = sorted(dirnames)
+    filenames = [f for f in ele if os.path.isfile(os.path.join(dirpath, f))]
+    filenames = sorted(filenames)
+    ele = dirnames + filenames
+
+    for dirname in dirnames:
+        try:
+            terminal[level] = (dirname == ele[-1])
+        except IndexError:
+            terminal.append(dirname == ele[-1])
+        for i in terminal[:level]:
+            if i:
+                print(&#39;  &#39;, end=&#39; &#39;)
+            else:
+                print(&#39;│ &#39;, end=&#39; &#39;)
+        if terminal[level]:
+            print(&#39;└ &#39;, end=&#39;&#39;)
+        else:
+            print(&#39;├ &#39;, end=&#39;&#39;)
+        print(dirname)
+        new_dirpath = os.path.join(dirpath, dirname)
+        walk(new_dirpath)
+
     for filename in filenames:
-        # Skip hidden files
-        if filename.startswith(&#39;.&#39;):
-            continue
-        # Skip this file
-        if filename == os.path.basename(__file__):
-            continue
-        print(os.path.join(dirpath, filename))</code></pre>
-<pre><code>## Example Directory - os/Example File 1.txt
-## Example Directory - os/Sub-Directory/Example File 2.txt</code></pre>
-<pre class="python"><code># Walk through all files and folders in a folder
-for dirpath, dirnames, filenames in Path(&#39;Example Directory - pathlib&#39;).walk():
-    # Sort the dirnames and filenames to ensure you search them in order
-    dirnames.sort()  # or `dirnames[:] = sorted(dirnames)`
-    filenames.sort()  # or `filenames[:] = sorted(filenames)`
-    # Print all files
+        try:
+            terminal[level] = (filename == ele[-1])
+        except IndexError:
+            terminal.append(filename == ele[-1])
+        for i in terminal[:level]:
+            if i:
+                print(&#39;  &#39;, end=&#39; &#39;)
+            else:
+                print(&#39;│ &#39;, end=&#39; &#39;)
+        if terminal[level]:
+            print(&#39;└ &#39;, end=&#39;&#39;)
+        else:
+            print(&#39;├ &#39;, end=&#39;&#39;)
+        print(filename)
+
+
+# Print the files and folders in a filesystem as a tree
+terminal = [False]
+root = &#39;.&#39;
+print(Path(root).resolve().name)
+walk(root)</code></pre>
+<pre><code>## files_and_folders
+## ├ Folder 1
+## │  ├ Folder 1.1
+## │  │  ├ Example File 1.1.1.txt
+## │  │  └ Example File 1.1.2.txt
+## │  ├ Folder 1.2
+## │  └ Example File 1.1.txt
+## ├ Folder 2
+## │  ├ Folder 2.1
+## │  ├ Folder 2.2
+## │  │  ├ Example File 2.2.1.txt
+## │  │  └ Example File 2.2.2.txt
+## │  └ Example File 2.1.txt
+## ├ Folder 3
+## │  ├ Folder 3.1
+## │  ├ Folder 3.2
+## │  └ Example File 3.1.txt
+## └ Example File 1.txt</code></pre>
+</div>
+<div id="print-top-level-files-and-folders-as-a-tree" class="section level1" number="5">
+<h1 number="5"><span class="header-section-number">5</span> Print Top-Level Files and Folders as a Tree</h1>
+<p>Finally, we can add the option to set how many levels we want the tree to go:</p>
+<pre class="python"><code>def walk_levels(dirpath):
+    ele = os.listdir(dirpath)
+    level = dirpath.count(&#39;/&#39;)
+    # Sort the elements in the dir
+    dirnames = [d for d in ele if os.path.isdir(os.path.join(dirpath, d))]
+    dirnames = sorted(dirnames)
+    filenames = [f for f in ele if os.path.isfile(os.path.join(dirpath, f))]
+    filenames = sorted(filenames)
+    ele = dirnames + filenames
+
+    for dirname in dirnames:
+        try:
+            terminal[level] = (dirname == ele[-1])
+        except IndexError:
+            terminal.append(dirname == ele[-1])
+        if level &lt; levels_to_print:
+            for i in terminal[:level]:
+                if i:
+                    print(&#39;  &#39;, end=&#39; &#39;)
+                else:
+                    print(&#39;│ &#39;, end=&#39; &#39;)
+            if terminal[level]:
+                print(&#39;└ &#39;, end=&#39;&#39;)
+            else:
+                print(&#39;├ &#39;, end=&#39;&#39;)
+            print(dirname)
+        new_dirpath = os.path.join(dirpath, dirname)
+        walk_levels(new_dirpath)
+
     for filename in filenames:
-        # Skip hidden files
-        if filename.startswith(&#39;.&#39;):
-            continue
-        # Skip this file
-        if filename == Path(__file__).name:
-            continue
-        print(Path(dirpath, filename))</code></pre>
-<pre><code>## Example Directory - pathlib/Example File 1.txt
-## Example Directory - pathlib/Sub-Directory/Example File 2.txt</code></pre>
-</div>
-<div id="checking-existence" class="section level1" number="5">
-<h1 number="5"><span class="header-section-number">5</span> Checking Existence</h1>
-<p>For both modules, the <code>exists()</code> function/method can be used to check if a directory or file exists.</p>
-<p>For directories:</p>
-<pre class="python"><code># Check if a directory exists
-path = os.path.join(&#39;Example Directory - os&#39;, &#39;Sub-Directory&#39;)
-print(os.path.exists(path))</code></pre>
-<pre><code>## True</code></pre>
-<pre class="python"><code># Check if a directory exists
-path = Path(&#39;Example Directory - pathlib&#39;, &#39;Sub-Directory&#39;)
-print(path.exists())</code></pre>
-<pre><code>## True</code></pre>
-<p>For files:</p>
-<pre class="python"><code># Check if a file exists
-path = os.path.join(&#39;Example Directory - os&#39;, &#39;Example File 1.txt&#39;)
-print(os.path.exists(path))</code></pre>
-<pre><code>## True</code></pre>
-<pre class="python"><code># Check if a file exists
-path = Path(&#39;Example Directory - pathlib&#39;, &#39;Example File 1.txt&#39;)
-print(path.exists())</code></pre>
-<pre><code>## True</code></pre>
-</div>
-<div id="checking-type" class="section level1" number="6">
-<h1 number="6"><span class="header-section-number">6</span> Checking Type</h1>
-<p>As for checking whether something is a file or a folder, string objects (such as are returned by <code>os.listdir()</code>) can be used with the <code>os.path.isdir()</code> and <code>os.path.isfile()</code> functions. Path objects (such as are returned by <code>Path.iterdir()</code>) and “DirEntry” objects (which are returned by <code>os.scandir()</code>) have the <code>.is_dir()</code> and <code>.is_file()</code> methods but can also be used with the <code>os.path.isdir()</code> and <code>os.path.isfile()</code> functions:</p>
-<p>For directories:</p>
-<pre class="python"><code># For each item in a directory, is it a folder?
-path = &#39;Example Directory - os&#39;
-_ = [print(x, os.path.isdir(os.path.join(path, x))) for x in os.listdir(path)]</code></pre>
-<pre><code>## Example File 1.txt False
-## Sub-Directory True</code></pre>
-<pre class="python"><code># For each item in a directory, is it a folder?
-_ = [print(x, x.is_dir()) for x in os.scandir(path)]</code></pre>
-<pre><code>## &lt;DirEntry &#39;Example File 1.txt&#39;&gt; False
-## &lt;DirEntry &#39;Sub-Directory&#39;&gt; True</code></pre>
-<pre class="python"><code># For each item in a directory, is it a folder?
-_ = [print(x, x.is_dir()) for x in Path(&#39;Example Directory - pathlib&#39;).iterdir()]</code></pre>
-<pre><code>## Example Directory - pathlib/Example File 1.txt False
-## Example Directory - pathlib/Sub-Directory True</code></pre>
-<p>For files:</p>
-<pre class="python"><code># For each item in a directory, is it a file?
-path = &#39;Example Directory - os&#39;
-_ = [print(x, os.path.isfile(os.path.join(path, x))) for x in os.listdir(path)]</code></pre>
-<pre><code>## Example File 1.txt True
-## Sub-Directory False</code></pre>
-<pre class="python"><code># For each item in a directory, is it a file?
-_ = [print(x, os.path.isfile(x)) for x in os.scandir(path)]</code></pre>
-<pre><code>## &lt;DirEntry &#39;Example File 1.txt&#39;&gt; True
-## &lt;DirEntry &#39;Sub-Directory&#39;&gt; False</code></pre>
-<pre class="python"><code># For each item in a directory, is it a file?
-_ = [print(x, x.is_file()) for x in Path(&#39;Example Directory - pathlib&#39;).iterdir()]</code></pre>
-<pre><code>## Example Directory - pathlib/Example File 1.txt True
-## Example Directory - pathlib/Sub-Directory False</code></pre>
-</div>
-<div id="renaming-files" class="section level1" number="7">
-<h1 number="7"><span class="header-section-number">7</span> Renaming Files</h1>
-<p>The <code>os.rename()</code> function and the <code>Path.rename()</code> method can be used for this:</p>
-<pre class="python"><code># Change the name of a file
-old_name = &#39;Example Directory - os/Example File 1.txt&#39;
-new_name = &#39;Example Directory - os/Example File 1 - Renamed.txt&#39;
-os.rename(old_name, new_name)
+        try:
+            terminal[level] = (filename == ele[-1])
+        except IndexError:
+            terminal.append(filename == ele[-1])
+        if level &lt; levels_to_print:
+            for i in terminal[:level]:
+                if i:
+                    print(&#39;  &#39;, end=&#39; &#39;)
+                else:
+                    print(&#39;│ &#39;, end=&#39; &#39;)
+            if terminal[level]:
+                print(&#39;└ &#39;, end=&#39;&#39;)
+            else:
+                print(&#39;├ &#39;, end=&#39;&#39;)
+            print(filename)
 
-# Change the name back
-os.rename(new_name, old_name)</code></pre>
-<pre class="python"><code># Change the name of a file
-old_name = &#39;Example Directory - pathlib/Example File 1.txt&#39;
-new_name = &#39;Example Directory - pathlib/Example File 1 - Renamed.txt&#39;
-Path(old_name).rename(new_name)
 
-# Change the name back
-Path(new_name).rename(old_name)</code></pre>
+# Print the files and folders in the top 2 levels of a filesystem as a tree
+terminal = [False]
+levels_to_print = 2
+root = &#39;.&#39;
+print(Path(root).resolve().name)
+walk_levels(root)</code></pre>
+<pre><code>## files_and_folders
+## ├ Folder 1
+## │  ├ Folder 1.1
+## │  ├ Folder 1.2
+## │  └ Example File 1.1.txt
+## ├ Folder 2
+## │  ├ Folder 2.1
+## │  ├ Folder 2.2
+## │  └ Example File 2.1.txt
+## ├ Folder 3
+## │  ├ Folder 3.1
+## │  ├ Folder 3.2
+## │  └ Example File 3.1.txt
+## └ Example File 1.txt</code></pre>
 </div>
-<div id="deleting-files-and-folders" class="section level1" number="8">
-<h1 number="8"><span class="header-section-number">8</span> Deleting Files and Folders</h1>
-<p>There is the <code>os.remove()</code> function and the <code>Path.unlink()</code> method for deleting files:</p>
+<div id="tear-down" class="section level1" number="6">
+<h1 number="6"><span class="header-section-number">6</span> Tear Down</h1>
+<p>Let’s clean up after ourselves: delete the toy files that we created for this example script:</p>
 <pre class="python"><code># Delete files
-os.remove(&#39;Example Directory - os/Example File 1.txt&#39;)
-os.remove(&#39;Example Directory - os/Sub-Directory/Example File 2.txt&#39;)</code></pre>
-<pre class="python"><code># Delete files
-Path(&#39;Example Directory - pathlib/Example File 1.txt&#39;).unlink()
-Path(&#39;Example Directory - pathlib/Sub-Directory/Example File 2.txt&#39;).unlink()</code></pre>
-<p>Don’t confuse this <code>os.remove()</code> function with the <code>.remove()</code> method which removes an item from a list:</p>
-<pre class="python"><code>ls = [&#39;A&#39;, &#39;B&#39;, &#39;C&#39;]
-ls.remove(&#39;A&#39;)
-
-print(ls)</code></pre>
-<pre><code>## [&#39;B&#39;, &#39;C&#39;]</code></pre>
-<p>For directories, both modules use <code>rmdir()</code> and both will return errors if the directories do not exist or are not empty:</p>
+paths = [
+    Path(&#39;Example File 1.txt&#39;),
+    Path(&#39;Folder 1&#39;, &#39;Example File 1.1.txt&#39;),
+    Path(&#39;Folder 1&#39;, &#39;Folder 1.1&#39;, &#39;Example File 1.1.1.txt&#39;),
+    Path(&#39;Folder 1&#39;, &#39;Folder 1.1&#39;, &#39;Example File 1.1.2.txt&#39;),
+    Path(&#39;Folder 2&#39;, &#39;Example File 2.1.txt&#39;),
+    Path(&#39;Folder 2&#39;, &#39;Folder 2.2&#39;, &#39;Example File 2.2.1.txt&#39;),
+    Path(&#39;Folder 2&#39;, &#39;Folder 2.2&#39;, &#39;Example File 2.2.2.txt&#39;),
+    Path(&#39;Folder 3&#39;, &#39;Example File 3.1.txt&#39;),
+]
+for path in paths:
+    path.unlink()</code></pre>
+<p>Once all the folders are empty we can delete them as well:</p>
 <pre class="python"><code># Delete directories
-os.rmdir(&#39;Example Directory - os/Sub-Directory&#39;)
-os.rmdir(&#39;Example Directory - os&#39;)</code></pre>
-<pre class="python"><code># Delete directories
-Path(&#39;Example Directory - pathlib/Sub-Directory&#39;).rmdir()
-Path(&#39;Example Directory - pathlib&#39;).rmdir()</code></pre>
+Path(&#39;Folder 1&#39;, &#39;Folder 1.1&#39;).rmdir()
+Path(&#39;Folder 1&#39;, &#39;Folder 1.2&#39;).rmdir()
+Path(&#39;Folder 2&#39;, &#39;Folder 2.1&#39;).rmdir()
+Path(&#39;Folder 2&#39;, &#39;Folder 2.2&#39;).rmdir()
+Path(&#39;Folder 3&#39;, &#39;Folder 3.1&#39;).rmdir()
+Path(&#39;Folder 3&#39;, &#39;Folder 3.2&#39;).rmdir()
+Path(&#39;Folder 1&#39;).rmdir()
+Path(&#39;Folder 2&#39;).rmdir()
+Path(&#39;Folder 3&#39;).rmdir()</code></pre>
 <p><a href="../../../python.html">⇦ Back</a></p>
 <p></font></p>
 </div>

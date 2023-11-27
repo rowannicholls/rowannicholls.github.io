@@ -168,23 +168,41 @@ Walking Through a Filesystem
 ============================
 Instead of listing all the files and folders in one directory only, you can 'walk' through an entire filesystem and list all the files and folders in each sub-directory:
 
+```{python, echo = FALSE}
+__file__ = 'os_pathlib_modules.Rmd'
+```
+
 ```{python}
 # Walk through all files and folders in a folder
 for dirpath, dirnames, filenames in os.walk('Example Directory - os'):
-    # Sort the dirnames to ensure you search them in order
+    # Sort the dirnames and filenames to ensure you search them in order
     dirnames.sort()  # or `dirnames[:] = sorted(dirnames)`
+    filenames.sort()  # or `filenames[:] = sorted(filenames)`
     # Print all files
     for filename in filenames:
+        # Skip hidden files
+        if filename.startswith('.'):
+            continue
+        # Skip this file
+        if filename == os.path.basename(__file__):
+            continue
         print(os.path.join(dirpath, filename))
 ```
 
 ```{python}
 # Walk through all files and folders in a folder
 for dirpath, dirnames, filenames in Path('Example Directory - pathlib').walk():
-    # Sort the dirnames to ensure you search them in order
+    # Sort the dirnames and filenames to ensure you search them in order
     dirnames.sort()  # or `dirnames[:] = sorted(dirnames)`
+    filenames.sort()  # or `filenames[:] = sorted(filenames)`
     # Print all files
     for filename in filenames:
+        # Skip hidden files
+        if filename.startswith('.'):
+            continue
+        # Skip this file
+        if filename == Path(__file__).name:
+            continue
         print(Path(dirpath, filename))
 ```
 
