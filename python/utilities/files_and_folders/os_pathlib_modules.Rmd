@@ -1,0 +1,312 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>The `os` and `pathlib` Modules'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- Updated: 2023-11-27 -->
+
+Python's `os` and `pathlib` modules can be confusing. According to the documentation for `os` (see [here](https://docs.python.org/3/library/os.html)) it provides "miscellaneous operating system interfaces" while its `os.path` sub-module (see [here](https://docs.python.org/3/library/os.path.html)) provides "common pathname manipulations". The `pathlib` module, on the other hands, provides "object-oriented filesystem paths" (see [here](https://docs.python.org/3/library/pathlib.html)).
+
+What's not clear at all is that there is actually a huge amount of overlap between these three modules! This page will take a look at some of these similarities and demonstrate functions and methods that have the same or similar behaviour.
+
+To start with, import the two main modules into your script:
+
+```{python}
+import os
+from pathlib import Path
+```
+
+Working with Paths
+==================
+A path - either to a file or to a folder - can be created in Python as a string:
+
+```{python}
+# Create a path
+print('Example Directory/Sub-Directory')
+```
+
+However, different OSs have different standards for their paths: Windows uses *back slashes* while macOS and Linux use *forward slashes,* for example. So, a safer way to create paths is to either use `os.path.join()` from the `path` sub-module of the `os` module or `Path()` from the `pathlib` module:
+
+```{python}
+# Create a path
+print(os.path.join('Example Directory - os', 'Sub-Directory'))
+# Create a path
+print(Path('Example Directory - pathlib', 'Sub-Directory'))
+```
+
+These options both concatenate strings in such a way as to make them valid paths on the OS they are run. On a Windows machine they would appear as follows:
+
+```
+## Example Directory - os\Sub-Directory
+## Example Directory - pathlib\Sub-Directory
+```
+
+The difference between `os.path.join()` and `pathlib.Path()` is that the first produces a *string* whereas the second produces a *path object*. Path objects have slightly more functionality that is useful when creating and handling file paths and, in general, should be used when working with paths.
+
+> If you want something to be a *string*, make it a *string*. If you want something to be a *path* make it a *path*. Using good-practice conventions such as this will help ensure that your code does what you expect it to do and will help anyone who reads your code in figuring out what you meant it to do.
+
+Splitting Up a Path
+-------------------
+The opposite of what we did above - creating a path from individual strings - would be to break a full path up into its constituent parts. This can't be done directly with the `os` module - it has an `os.path.split()` function but this only splits off the last part - but we can treat the path as a string (which it is) and use the `.split()` method instead. Bear in mind, however, that this isn't OS agnostic because the slashes won't be the right way round on Windows machines. The `pathlib` module has a better option: the `.parts` attribute:
+
+```{python}
+# Split a path up into parts
+path = os.path.join('Example Directory', 'Sub-Directory', 'Example File.txt')
+print(path.split('/'))
+
+# Split a path up into parts
+path = Path('Example Directory', 'Sub-Directory', 'Example File.txt')
+print(path.parts)
+```
+
+Replacing Elements in a Path
+----------------------------
+A path object has methods that will replace the file name (including the extension), the file stem (the file name *not* including the extension) and/or the extension:
+
+```{python}
+# Replace the file name
+print(path.with_name('Example Script.py'))
+# Replace the file stem
+print(path.with_stem('Example Script'))
+# Replace the file extension
+print(path.with_suffix('.py'))
+```
+
+Creating Files and Folders
+==========================
+Directories (folders) can be created as follows:
+
+```{python}
+# Create directories
+path_os = os.path.join('Example Directory - os', 'Sub-Directory')
+os.makedirs(path_os, exist_ok=True)
+
+# Create directories
+path_pathlib = Path('Example Directory - pathlib', 'Sub-Directory')
+Path(path_pathlib).mkdir(parents=True, exist_ok=True)
+```
+
+The `exist_ok` and `parents` options will ensure that you don't get errors if the directories already exist or if the intermediate directories don't exist, respectively.
+
+Files can't be created with `os` or `pathlib` but they can be created in base Python:
+
+```{python, results = 'hide'}
+# Create files
+paths = [
+    os.path.join('Example Directory - os', 'Example File 1.txt'),
+    os.path.join(path_os, 'Example File 2.txt'),
+    Path('Example Directory - pathlib', 'Example File 1.txt'),
+    Path(path_pathlib, 'Example File 2.txt'),
+]
+for path in paths:
+    # Open file in 'write' mode, erasing content if the file exists
+    f = open(path, 'w')
+    # Write to a file
+    f.write('Hi, mom')
+    # Close the file
+    f.close()
+```
+
+Listing Elements in a Folder
+============================
+The `os` module has two ways to list all the files and folders in a directory: `listdir()` will return the elements as a list of strings while `scandir()` will return them as a list of "DirEntry" objects which contain additional metadata about the objects. The `pathlib` module has the `.iterdir()` method which returns path objects:
+
+```{python}
+# List all files and folders in a directory
+print(os.listdir('Example Directory - os'))
+# List all files and folders in a directory
+print([x for x in os.scandir('Example Directory - os')])
+# List all files and folders in a directory
+print([x for x in Path('Example Directory - pathlib').iterdir()])
+```
+
+No distinction is made between folders and files in the output besides the fact that files have extensions.
+
+Sorting
+-------
+Note that these results will not necessarily be in alphabetical order. To sort them, either use the `sorted()` function or the `.sort()` method:
+
+```{python}
+print(sorted(os.listdir('Example Directory - os')))
+```
+
+```{python}
+ls = os.listdir('Example Directory - os')
+ls.sort()
+
+print(ls)
+```
+
+Another Option
+--------------
+The `os.system()` function runs a piece of terminal/command line code. For example, the `ls` command **l**i**s**ts the files and folders within a folder:
+
+```{python, eval = FALSE}
+print(os.system('ls "Example Directory - os"'))
+```
+
+```
+## Example File 1.txt
+## Sub-Directory
+## 0
+```
+
+So, essentially, a Python script can do anything a shell script can do because you can execute shell code in the terminal inside Python.
+
+Walking Through a Filesystem
+============================
+Instead of listing all the files and folders in one directory only, you can 'walk' through an entire filesystem and list all the files and folders in each sub-directory:
+
+```{python}
+# Walk through all files and folders in a folder
+for dirpath, dirnames, filenames in os.walk('Example Directory - os'):
+    # Sort the dirnames to ensure you search them in order
+    dirnames.sort()  # or `dirnames[:] = sorted(dirnames)`
+    # Print all files
+    for filename in filenames:
+        print(os.path.join(dirpath, filename))
+```
+
+```{python}
+# Walk through all files and folders in a folder
+for dirpath, dirnames, filenames in Path('Example Directory - pathlib').walk():
+    # Sort the dirnames to ensure you search them in order
+    dirnames.sort()  # or `dirnames[:] = sorted(dirnames)`
+    # Print all files
+    for filename in filenames:
+        print(Path(dirpath, filename))
+```
+
+Checking Existence
+==================
+For both modules, the `exists()` function/method can be used to check if a directory or file exists.
+
+For directories:
+
+```{python}
+# Check if a directory exists
+path = os.path.join('Example Directory - os', 'Sub-Directory')
+print(os.path.exists(path))
+
+# Check if a directory exists
+path = Path('Example Directory - pathlib', 'Sub-Directory')
+print(path.exists())
+```
+
+For files:
+
+```{python}
+# Check if a file exists
+path = os.path.join('Example Directory - os', 'Example File 1.txt')
+print(os.path.exists(path))
+
+# Check if a file exists
+path = Path('Example Directory - pathlib', 'Example File 1.txt')
+print(path.exists())
+```
+
+Checking Type
+=============
+As for checking whether something is a file or a folder, string objects (such as are returned by `os.listdir()`) can be used with the `os.path.isdir()` and `os.path.isfile()` functions. Path objects (such as are returned by `Path.iterdir()`) and "DirEntry" objects (which are returned by `os.scandir()`) have the `.is_dir()` and `.is_file()` methods but can also be used with the `os.path.isdir()` and `os.path.isfile()` functions:
+
+For directories:
+
+```{python}
+# For each item in a directory, is it a folder?
+path = 'Example Directory - os'
+_ = [print(x, os.path.isdir(os.path.join(path, x))) for x in os.listdir(path)]
+# For each item in a directory, is it a folder?
+_ = [print(x, x.is_dir()) for x in os.scandir(path)]
+# For each item in a directory, is it a folder?
+_ = [print(x, x.is_dir()) for x in Path('Example Directory - pathlib').iterdir()]
+```
+
+For files:
+
+```{python}
+# For each item in a directory, is it a file?
+path = 'Example Directory - os'
+_ = [print(x, os.path.isfile(os.path.join(path, x))) for x in os.listdir(path)]
+# For each item in a directory, is it a file?
+_ = [print(x, os.path.isfile(x)) for x in os.scandir(path)]
+# For each item in a directory, is it a file?
+_ = [print(x, x.is_file()) for x in Path('Example Directory - pathlib').iterdir()]
+```
+
+Renaming Files
+==============
+The `os.rename()` function and the `Path.rename()` method can be used for this:
+
+```{python}
+# Change the name of a file
+old_name = 'Example Directory - os/Example File 1.txt'
+new_name = 'Example Directory - os/Example File 1 - Renamed.txt'
+os.rename(old_name, new_name)
+
+# Change the name back
+os.rename(new_name, old_name)
+```
+
+```{python, eval = FALSE}
+# Change the name of a file
+old_name = 'Example Directory - pathlib/Example File 1.txt'
+new_name = 'Example Directory - pathlib/Example File 1 - Renamed.txt'
+Path(old_name).rename(new_name)
+
+# Change the name back
+Path(new_name).rename(old_name)
+```
+
+Deleting Files and Folders
+==========================
+There is the `os.remove()` function and the `Path.unlink()` method for deleting files:
+
+```{python}
+# Delete files
+os.remove('Example Directory - os/Example File 1.txt')
+os.remove('Example Directory - os/Sub-Directory/Example File 2.txt')
+```
+
+```{python}
+# Delete files
+Path('Example Directory - pathlib/Example File 1.txt').unlink()
+Path('Example Directory - pathlib/Sub-Directory/Example File 2.txt').unlink()
+```
+
+Don't confuse this `os.remove()` function with the `.remove()` method which removes an item from a list:
+
+```{python}
+ls = ['A', 'B', 'C']
+ls.remove('A')
+
+print(ls)
+```
+
+For directories, both modules use `rmdir()` and both will return errors if the directories do not exist or are not empty:
+
+```{python}
+# Delete directories
+os.rmdir('Example Directory - os/Sub-Directory')
+os.rmdir('Example Directory - os')
+```
+
+```{python}
+# Delete directories
+Path('Example Directory - pathlib/Sub-Directory').rmdir()
+Path('Example Directory - pathlib').rmdir()
+```
+
+[⇦ Back](../../../python.html)
+
+</font>

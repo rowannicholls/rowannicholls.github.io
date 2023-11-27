@@ -1,0 +1,642 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>Path Nomenclature'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+<!-- Created: 2023-11-21 -->
+<!-- Updated: 2023-11-27 -->
+
+Summary {.tabset}
+=======
+A file or folder's location on a computer is known as its **path** and this can be broken down into the following components:
+
+macOS Example {-}
+-------------
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width: 60%;">
+    <col style="width: 40%;">
+  </colgroup>
+  <tr>
+    <td><b>/Users/rowannicholls/Project Folder/Subfolder/Python Script.py</b></td>
+    <td><b>Absolute path/Full path</b></td>
+  </tr>
+  <tr>
+    <td><b>/Users/rowannicholls/Project Folder/Subfolder</b>/Python Script.py</td>
+    <td><b>Directory name/Parent directory</b></td>
+  </tr>
+  <tr>
+    <td>/Users/rowannicholls/Project Folder/Subfolder/<b>Python Script.py</b></td>
+    <td><b>File name/Base name</b></td>
+  </tr>
+  <tr>
+    <td>/Users/rowannicholls/Project Folder/Subfolder/<b>Python Script</b>.py</td>
+    <td><b>File root/File stem</b></td>
+  </tr>
+  <tr>
+    <td>/Users/rowannicholls/Project Folder/Subfolder/Python Script<b>.py</b></td>
+    <td><b>File extension (dot included)</b></td>
+  </tr>
+  <tr>
+    <td><b>/Users/rowannicholls/Project Folder</b>/Subfolder/Python Script.py</td>
+    <td><b>Base directory</b></td>
+  </tr>
+  <tr>
+    <td>/Users/rowannicholls/Project Folder/<b>Subfolder/Python Script.py</b></td>
+    <td><b>Relative path</b></td>
+  </tr>
+  <tr>
+    <td><b>/Users/rowannicholls</b>/Project Folder/Subfolder/Python Script.py</td>
+    <td><b>Home directory</b></td>
+  </tr>
+  <tr>
+    <td><b>/</b>Users/rowannicholls/Project Folder/Subfolder/Python Script.py</td>
+    <td><b>Root directory (the first slash)</b></td>
+  </tr>
+  <tr>
+    <td>/Users/<b>rowannicholls</b>/Project Folder/Subfolder/Python Script.py</td>
+    <td><b>Username</b></td>
+  </tr>
+</table>
+
+<br>
+Note that there's no universal standard for this so language usage can vary.
+<br>
+<br>
+This page will use a **macOS path** for its examples but the code will work the same on other OSs. This is because the functions used here will automatically detect what OS they are running on and adjust to fit the path name conventions they need to.
+
+Ubuntu Example {-}
+--------------
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width: 60%;">
+    <col style="width: 40%;">
+  </colgroup>
+  <tr>
+    <td><b>/home/rowannicholls/Project Folder/Subfolder/Python Script.py</b></td>
+    <td><b>Absolute path/Full path</b></td>
+  </tr>
+  <tr>
+    <td><b>/home/rowannicholls/Project Folder/Subfolder</b>/Python Script.py</td>
+    <td><b>Directory name/Parent directory</b></td>
+  </tr>
+  <tr>
+    <td>/home/rowannicholls/Project Folder/Subfolder/<b>Python Script.py</b></td>
+    <td><b>File name/Base name</b></td>
+  </tr>
+  <tr>
+    <td>/home/rowannicholls/Project Folder/Subfolder/<b>Python Script</b>.py</td>
+    <td><b>File root/File stem</b></td>
+  </tr>
+  <tr>
+    <td>/home/rowannicholls/Project Folder/Subfolder/Python Script<b>.py</b></td>
+    <td><b>File extension (dot included)</b></td>
+  </tr>
+  <tr>
+    <td><b>/home/rowannicholls/Project Folder</b>/Subfolder/Python Script.py</td>
+    <td><b>Base directory</b></td>
+  </tr>
+  <tr>
+    <td>/home/rowannicholls/Project Folder/<b>Subfolder/Python Script.py</b></td>
+    <td><b>Relative path</b></td>
+  </tr>
+  <tr>
+    <td><b>/home/rowannicholls</b>/Project Folder/Subfolder/Python Script.py</td>
+    <td><b>Home directory</b></td>
+  </tr>
+  <tr>
+    <td><b>/</b>home/rowannicholls/Project Folder/Subfolder/Python Script.py</td>
+    <td><b>Root directory (the first slash)</b></td>
+  </tr>
+  <tr>
+    <td>/home/<b>rowannicholls</b>/Project Folder/Subfolder/Python Script.py</td>
+    <td><b>Username</b></td>
+  </tr>
+</table>
+
+<br>
+Note that there's no universal standard for this so language usage can vary.
+<br>
+<br>
+This page will use a **macOS path** for its examples but the code will work the same on other OSs. This is because the functions used here will automatically detect what OS they are running on and adjust to fit the path name conventions they need to.
+
+Windows Example {-}
+---------------
+
+<table style="width: 100%;">
+  <colgroup>
+    <col style="width: 60%;">
+    <col style="width: 40%;">
+  </colgroup>
+  <tr>
+    <td><b>C:\\Users\\rowannicholls\\Project Folder\\Subfolder\\Python Script.py</b></td>
+    <td><b>Absolute path/Full path</b></td>
+  </tr>
+  <tr>
+    <td><b>C:\\Users\\rowannicholls\\Project Folder\\Subfolder</b>\\Python Script.py</td>
+    <td><b>Directory name/Parent directory</b></td>
+  </tr>
+  <tr>
+    <td>C:\\Users\\rowannicholls\\Project Folder\\Subfolder\\<b>Python Script.py</b></td>
+    <td><b>File name/Base name</b></td>
+  </tr>
+  <tr>
+    <td>C:\\Users\\rowannicholls\\Project Folder\\Subfolder\\<b>Python Script</b>.py</td>
+    <td><b>File root/File stem</b></td>
+  </tr>
+  <tr>
+    <td>C:\\Users\\rowannicholls\\Project Folder\\Subfolder\\Python Script<b>.py</b></td>
+    <td><b>File extension (dot included)</b></td>
+  </tr>
+  <tr>
+    <td><b>C:\\Users\\rowannicholls\\Project Folder</b>\\Subfolder\\Python Script.py</td>
+    <td><b>Base directory</b></td>
+  </tr>
+  <tr>
+    <td>C:\\Users\\rowannicholls\\Project Folder\\<b>Subfolder\\Python Script.py</b></td>
+    <td><b>Relative path</b></td>
+  </tr>
+  <tr>
+    <td><b>C:\\Users\\rowannicholls</b>\\Project Folder\\Subfolder\\Python Script.py</td>
+    <td><b>Home directory</b></td>
+  </tr>
+  <tr>
+    <td><b>C:\\</b>Users\\rowannicholls\\Project Folder\\Subfolder\\Python Script.py</td>
+    <td><b>Root directory</b></td>
+  </tr>
+  <tr>
+    <td>C:\\Users\\<b>rowannicholls</b>\\Project Folder\\Subfolder\\Python Script.py</td>
+    <td><b>Username</b></td>
+  </tr>
+</table>
+
+<br>
+Note that there's no universal standard for this so language usage can vary.
+<br>
+<br>
+This page will use a **macOS path** for its examples but the code will work the same on other OSs. This is because the functions used here will automatically detect what OS they are running on and adjust to fit the path name conventions they need to.
+
+Python Packages
+===============
+The code on this page uses the `os`, `pathlib`, `sys` and `inspect` modules which come pre-installed with Python. Import them into your script as follows:
+
+```{python}
+import os
+from pathlib import Path
+import sys
+import inspect
+```
+
+```{python, echo = FALSE}
+__file__ = '/Users/rowannicholls/Project Folder/Subfolder/Python Script.py'
+```
+
+The `os` Module vs the `pathlib` Module
+---------------------------------------
+There is a lot of overlap in what these two modules can do so this page will use both in order to highlight the options that are available. See [here](os_pathlib_modules.html) for a tutorial that looks at the functionality provided by these modules in greater detail.
+
+Absolute Path/Full Path
+=======================
+In Python, the special variable `__file__` (said "dunder file" - short for "double-underscore file") contains the absolute path/full path of the script that is being run. You don't need to create this variable, Python will do it automatically in the background whenever you run a file.\*
+
+```{python}
+# Get the absolute path to the current file
+print(__file__)
+```
+
+\*_The main exception is if you are running Python in an interpreter/REPL/interactive mode. In this case you aren't actually running a Python file so the _`__file__`_variable has no meaning._
+
+Scope
+-----
+Note that this special variable contains the name of the file *it is in*, not necessarily the name of the file you are running. In other words, if you have a file called `submodule.py` that contains the line `print(__file__)` and you call that file from a main script - `Python Script.py` in this case - it will return the name of the *submodule file*, not of the main script:
+
+```{python, eval = FALSE}
+# Call an external script
+import submodule
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder/submodule.py
+```
+
+Running from the Terminal
+-------------------------
+If a file `Python Script.py` contains `print(__file__)` and you run it from the terminal it will behave as expected:
+
+```bash
+$ python3.12 "Python Script.py"
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder/Python Script.py
+```
+
+...but if you run it using a *relative path* it will not resolve that path:
+
+```bash
+$ python3.12 "../Subfolder/Python Script.py"
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder/../Subfolder/Python Script.py
+```
+
+This could lead to confusing behaviour down the line if you, for example, try to use `__file__` expecting it to be a certain length or containing a certain number of folders. This can be avoided by using `os.path.abspath(__file__)` or `Path(__file__).resolve()` as demonstrated in the "Other Files" section below.
+
+Other Options
+-------------
+The `sys.argv` variable contains the values passed to your script. If you run a script from an IDE then the first of these values will usually be the absolute path of the file in question:
+
+```{python, eval = FALSE}
+# Get the first argument passed to the script
+print(sys.argv[0])
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder/Python Script.py
+```
+
+However, if you run it from the terminal this first value will be *literally* what you are running (either the script name - as in this example - or the path to the script):
+
+```bash
+$ python3.12 "Python Script.py"
+```
+
+```
+## Python Script.py
+```
+
+A more consistent option for getting your script's absolute path is to use the built-in `inspect` module:
+
+```{python, eval = FALSE}
+# Get the absolute path to the current file
+print(inspect.getfile(inspect.currentframe()))
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder/Python Script.py
+```
+
+Other Files
+-----------
+If, instead of the script you are running, you want the absolute path of another file (or folder) you can use the `os.path.abspath()` or `os.path.realpath()` functions from the `os` module\* or the `Path.resolve()` method from the `pathlib` module:
+
+```{python, eval = FALSE}
+# Get the absolute path/full path to a file
+print(os.path.abspath('Fake File.py'))
+print(os.path.realpath('Fake File.py'))
+print(Path('Fake File.py').resolve())
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder/Fake File.py
+## /Users/rowannicholls/Project Folder/Subfolder/Fake File.py
+## /Users/rowannicholls/Project Folder/Subfolder/Fake File.py
+```
+
+\*_the_ `os.path.realpath()` _function calls the_ `os.path.abspath()` _function and resolves any symbolic links that are present in its output. So, if there are no symbolic links, these two functions will be identical._
+
+Note that this will work regardless of whether the file or folder exists or not.
+
+Additionally, note that relative paths will be resolved:
+
+```{python, eval = FALSE}
+# Get the absolute path from a relative path
+print(os.path.abspath('../Fake Folder/Fake File.py'))
+print(Path('../Fake Folder/Fake File.py').resolve())
+```
+
+```
+## /Users/rowannicholls/Project Folder/Fake Folder/Fake File.py
+## /Users/rowannicholls/Project Folder/Fake Folder/Fake File.py
+```
+
+In the above example the file `Fake File.py` is purported to reside in `Fake Folder` which has been inferred from the relative path `../Fake Folder/Fake File.py`. In general, all paths given to the `os.path.abspath()` function or to the `.resolve()` method are interpreted as relative paths *unless* they start with a slash in which case they are interpreted as absolute paths:
+
+```{python, eval = FALSE}
+# Paths starting with a slash will be interpreted as absolute paths
+print(os.path.abspath('/path/to/file.txt'))
+print(Path('/path/to/file.txt').resolve())
+
+```
+
+```
+## /path/to/file.txt
+## /path/to/file.txt
+```
+
+Directory Name/Parent Directory
+===============================
+Note that "directory" refers to the entire path to the directory, not just the folder name.
+
+Note also that the *parent directory* is referred to by two dots (`..`). In Python this is hard-coded into the `os.pardir` variable.
+
+With this in mind, the directory name/parent directory can be obtained by using the `os.path.dirname()` function on the current script, the `os.path.abspath()` function on the relative path to the parent directory or the `.parent` attribute:
+
+```{python, eval=FALSE}
+# Get the directory name/parent directory
+print(os.path.dirname(__file__))
+print(os.path.abspath(os.path.join(__file__, os.pardir)))
+print(Path(__file__).parent)
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder
+## /Users/rowannicholls/Project Folder/Subfolder
+## /Users/rowannicholls/Project Folder/Subfolder
+```
+
+Current Working Directory
+-------------------------
+The current working directory (CWD) is, as the name suggests, the directory that your programme is currently working in. This will usually be the same as the directory where your script is located but bear in mind that it's possible to change the CWD inside a script or to run a script from a different location. In other words, the `os.getcwd()` and `Path.cwd()` functions will usually - but not necessarily - return the same results as `os.path.dirname(__file__)` and `Path(__file__).parent`.
+
+```{python, eval=FALSE}
+# Get the current working directory
+print(os.getcwd())
+print(Path.cwd())
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder
+## /Users/rowannicholls/Project Folder/Subfolder
+```
+
+Base Name
+=========
+A base name is the last element in a path. In a path to a folder the base name would be the folder's name, and in a path to a file the base name would be the file's name with the extension included.
+
+File Name
+---------
+A file name is a special case of a base name: it is the base name of a path to a file:
+
+```{python, eval=FALSE}
+# Get the file name of the current file (the base name of its path)
+print(os.path.basename(__file__))
+print(Path(__file__).name)
+```
+
+```
+## Python Script.py
+## Python Script.py
+```
+
+Parent Folder
+-------------
+While there is no standard word or phrase that refers to just the name of the parent folder of a script (remember that "directory name" refers to the *whole path*) we can get it by taking the base name of the directory name:
+
+```{python, eval=FALSE}
+# Get the name of the parent folder
+print(os.path.basename(os.path.dirname(__file__)))
+print(Path(__file__).parent.name)
+```
+
+```
+## Subfolder
+## Subfolder
+```
+
+Note
+----
+The `os` and `pathlib` modules treat the base name of a path that ends in a slash differently:
+
+```{python, eval=FALSE}
+# Not the same!
+print(os.path.basename('/path/to/folder/'))
+print(Path('/path/to/folder/').name)
+```
+
+```
+## 
+## folder
+```
+
+Splitting a Path into Parts
+---------------------------
+The `os` module has the `os.path.split()` function which splits a path up into a head (the directory name) and a tail (the file name):
+
+```{python, eval=FALSE}
+# Split the path
+print(os.path.split(__file__))
+```
+
+```
+## ('/Users/rowannicholls/Project Folder/Subfolder', 'Python Script.py')
+```
+
+...but note that this is identical to `os.path.dirname()` plus ` os.path.basename()` in a tuple:
+
+```{python, eval=FALSE}
+# Split the path
+print((os.path.dirname(__file__), os.path.basename(__file__)))
+```
+
+```
+## ('/Users/rowannicholls/Project Folder/Subfolder', 'Python Script.py')
+```
+
+Alternatively, path objects have the `.parts` attribute which contains all the individual parts of a path:
+
+```{python, eval=FALSE}
+# Split the path into parts
+print(Path(__file__).parts)
+```
+
+```
+## ('/', 'Users', 'rowannicholls', 'Project Folder', 'Subfolder', 'Python Script.py')
+```
+
+File Root/File Stem
+===================
+A file root or stem is its name without the extension. With the `os` module the recommended function to use is `path.splitext()` as this will **split** off the **ext**ension. It's not recommended to use string indexing (eg `os.path.basename(__file__).split('.')[0]`) as this may have unexpected behaviour if the file name is non-standard (eg if it doesn't have an extension).
+
+```{python, eval=FALSE}
+# Get the file root/file stem of the current file
+print(os.path.splitext(os.path.basename(__file__))[0])
+print(Path(__file__).stem)
+```
+
+```
+## Python Script
+## Python Script
+```
+
+File Extension
+==============
+When referring to a file's extension the dot should be included. For example, if a file is called "file.txt" we can say:
+
+- It is a "TXT file" (capital letters), which is a reference to the file *type*
+- It is a "plain text file", which is also a reference to the file type
+- It has the ".txt" extension (say "dot tee ex tee" and use lowercase letters)
+- Saying it is a "txt file" (lowercase letters) or that it has the "txt" extension (no dot) should be avoided
+
+```{python, eval=FALSE}
+# Get the file extension of the current file
+print(os.path.splitext(__file__)[1])
+print(Path(__file__).suffix)
+```
+
+```
+## .py
+## .py
+```
+
+Don't use `os.path.basename(__file__).split('.')[1]` as this will return `py` without the dot.
+
+Base Directory
+==============
+If you are working on a self-contained project the top-level directory for the project is called the *base directory*. There's no way to get this automatically (Python doesn't know which folder is the top-level directory for your project!) but you can define it manually:
+
+```{python, eval=FALSE}
+# Define the base directory
+print(os.path.abspath(os.path.join(__file__, '..', '..')))
+print(Path(__file__).parent.parent)
+```
+
+```
+## /Users/rowannicholls/Project Folder
+## /Users/rowannicholls/Project Folder
+```
+
+However, if you are using Git then the base directory will be the top level of your Git repo. Here's a function that will search for the `.git` folder that is present in the base directory of all Git repos:
+
+```{python, eval=FALSE}
+def get_base_directory(path=os.path.abspath('.')):
+    while True:
+        if '.git' in os.listdir(path):
+            return path
+        if path == os.path.dirname(path):
+            return None  # If the current directory is the root, break the loop
+        path = os.path.dirname(path)
+
+
+# Get the base directory for a Git project
+print(get_base_directory())
+```
+
+```
+## /Users/rowannicholls/Project Folder
+```
+
+Relative Path
+=============
+In general, a path is either an absolute path or a relative path: the first is the full location of the file or folder on the computer while the latter is the location *relative* to another file or folder. Take the following file structure as an example:
+
+```
+Project Folder
+ ├ Subfolder 1
+ │  └ Python Script.py
+ └ Subfolder 2
+    └ Data File.csv
+```
+
+If you wanted to import the data in `Data File.csv` into `Python Script.py` you could use its *absolute* path:
+
+```{python, eval=FALSE}
+# Define the absolute path of a file
+print('/Users/rowannicholls/Project Folder/Subfolder 2/Data File.csv')
+```
+
+```
+## /Users/rowannicholls/Project Folder/Subfolder 2/Data File.csv
+```
+
+or, you could use its *relative* path:
+
+```{python, eval=FALSE}
+# Define the relative path to a file
+print('../Subfolder 2/Data File.csv')
+```
+
+```
+## ../Subfolder 2/Data File.csv
+```
+
+This is telling Python to look one folder up (the `..` means "parent directory"), then in `Subfolder 2` for `Data File.csv`.
+
+If your project has a base directory then it is good practice to use paths that are relative to that. This way the base directory can serve as a constant anchor point. The `os.path.relpath()` function (not to be confused with the `os.path.realpath()` function) and the `Path().relative_to()` methods are useful here:
+
+```{python, eval=FALSE}
+# Get the base directory for a Git project
+base_dir = get_base_directory()
+# Relative path
+print(os.path.relpath(__file__, base_dir))
+print(Path(__file__).relative_to(base_dir))
+```
+
+```
+## Subfolder/Python Script.py
+## Subfolder/Python Script.py
+```
+
+Home Directory
+==============
+The home directory is the top-level directory for a user. With `pathlib` you can get this directly from a path (using the `.home()` method) but with `os` you can't. You have to get it generically, using the `os.path.expanduser()` function on the special character `~` (tilde) which represents the home directory on an operating system:
+
+```{python, eval=FALSE}
+# Get the home directory
+print(os.path.expanduser('~'))
+print(Path(__file__).home())
+```
+
+```
+## /Users/rowannicholls
+## /Users/rowannicholls
+```
+
+Notice that `Path(__file__).home()` gets the home directory *for that file* while `os.path.expanduser('~')` gets the home directory *for the system*. The results should always be the same though, so it shouldn't matter which method you use.
+
+Resolving the Home Directory
+----------------------------
+The `os` module has the `expanduser()` function - used above - and the `pathlib` module has the `.expanduser()` method. Both of these replace the tilde character with the full home directory:
+
+```{python, eval=FALSE}
+# Resolve the home directory
+print(os.path.expanduser('~/Example'))
+print(Path('~/Example').expanduser())
+```
+
+```
+## /Users/rowannicholls/Example
+## /Users/rowannicholls/Example
+```
+
+Root Directory
+==============
+The home directory is often incorrectly called the "root" directory. The root is actually the *most* top-level directory of a filesystem. It is contained in the `.root` attribute of a path object:
+
+```{python}
+# Get the root directory
+print(Path(__file__).root)
+```
+
+The `os` module doesn't have an equivalent that is consistent across OSs.
+
+Username
+========
+Another part of the home directory, besides the root, is the username. This can be retrieved using the `os.getlogin()` function:
+
+```{python, eval = FALSE}
+# Get the username
+print(os.getlogin())
+```
+
+```
+## rowannicholls
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
