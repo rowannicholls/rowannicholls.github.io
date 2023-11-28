@@ -15,6 +15,7 @@ output:
 [⇦ Back](../../../python.html)
 
 <!-- Updated: 2023-11-27 -->
+<!-- Updated: 2023-11-28 -->
 
 Python's `os` and `pathlib` modules can be confusing. According to the documentation for `os` (see [here](https://docs.python.org/3/library/os.html)) it provides "miscellaneous operating system interfaces" while its `os.path` sub-module (see [here](https://docs.python.org/3/library/os.path.html)) provides "common pathname manipulations". The `pathlib` module, on the other hands, provides "object-oriented filesystem paths" (see [here](https://docs.python.org/3/library/pathlib.html)).
 
@@ -85,7 +86,7 @@ print(path.with_suffix('.py'))
 
 Creating Files and Folders
 ==========================
-Directories (folders) can be created as follows:
+**Directories** (folders) can be created as follows:
 
 ```{python}
 # Create directories
@@ -99,14 +100,63 @@ Path(path_pathlib).mkdir(parents=True, exist_ok=True)
 
 The `exist_ok` and `parents` options will ensure that you don't get errors if the directories already exist or if the intermediate directories don't exist, respectively.
 
-Files can't be created with `os` or `pathlib` but they can be created in base Python:
+**Files** can be created with either the `os` or `pathlib` module but in general it's better practice to use base Python instead:
+
+Using `os`
+----------
+The `os.mknod()` function will **m**a**k**e a **nod**e (a file), `os.open()` will **open** it in a particular mode (eg read and write mode), `os.write()` will **write** a bytestring (note - not just a string!) to it and `os.close()` will **close** it:
+
+<!-- Created: 2019-01-03 -->
+<!-- Updated: 2023-11-28 -->
+
+```{python, echo = FALSE, results = 'hide'}
+path = os.path.join('Example Directory - os', 'Example File 1.txt')
+# Create file if it does not exist
+os.mknod(path)
+# Open file in read and write mode
+fd = os.open(path, os.O_RDWR)
+# Write to file
+os.write(fd, b'Hi, mom!')
+# Close file
+os.close(fd)
+```
+
+```{python, eval = FALSE}
+path = os.path.join('Example Directory - os', 'Example File 1.txt')
+# Create file if it does not exist
+os.mknod(path)
+# Open file in read and write mode
+fd = os.open(path, os.O_RDWR)
+# Write to file
+os.write(fd, b'Hi, mom!')
+# Close file
+os.close(fd)
+```
+
+Note that `os.mknod()` will only work if the file does not already exist.
+
+Using `pathlib`
+---------------
+The `pathlib` module is simpler: you just need to use the `.touch()` and `.write_text()` methods:
 
 ```{python, results = 'hide'}
-# Create files
+path = Path('Example Directory - pathlib', 'Example File 1.txt')
+# Create file
+path.touch()
+# Write to file
+path.write_text('Hi, mom!')
+```
+
+Be default, the `.touch()` method will work even if the file already exists. This behaviour can be changed by using the `exist_ok=False` option.
+
+Using Base Python
+-----------------
+As it happens, you can create and write to files in base Python (without using any modules) using `open()`, `.write()` and `.close()`:
+
+```{python, results = 'hide'}
+# Create and write to files
 paths = [
-    os.path.join('Example Directory - os', 'Example File 1.txt'),
     os.path.join(path_os, 'Example File 2.txt'),
-    Path('Example Directory - pathlib', 'Example File 1.txt'),
     Path(path_pathlib, 'Example File 2.txt'),
 ]
 for path in paths:
@@ -117,6 +167,8 @@ for path in paths:
     # Close the file
     f.close()
 ```
+
+The above code will work even if the files already exist. If we instead opened a file in `x`-mode (exclusive creation) instead of `w`-mode (write) then it would fail if an existing file was detected.
 
 Listing Elements in a Folder
 ============================
@@ -147,22 +199,6 @@ ls.sort()
 
 print(ls)
 ```
-
-Another Option
---------------
-The `os.system()` function runs a piece of terminal/command line code. For example, the `ls` command **l**i**s**ts the files and folders within a folder:
-
-```{python, eval = FALSE}
-print(os.system('ls "Example Directory - os"'))
-```
-
-```
-## Example File 1.txt
-## Sub-Directory
-## 0
-```
-
-So, essentially, a Python script can do anything a shell script can do because you can execute shell code in the terminal inside Python.
 
 Walking Through a Filesystem
 ============================
@@ -210,7 +246,7 @@ Checking Existence
 ==================
 For both modules, the `exists()` function/method can be used to check if a directory or file exists.
 
-For directories:
+For **directories**:
 
 ```{python}
 # Check if a directory exists
@@ -222,7 +258,7 @@ path = Path('Example Directory - pathlib', 'Sub-Directory')
 print(path.exists())
 ```
 
-For files:
+For **files**:
 
 ```{python}
 # Check if a file exists
@@ -238,7 +274,7 @@ Checking Type
 =============
 As for checking whether something is a file or a folder, string objects (such as are returned by `os.listdir()`) can be used with the `os.path.isdir()` and `os.path.isfile()` functions. Path objects (such as are returned by `Path.iterdir()`) and "DirEntry" objects (which are returned by `os.scandir()`) have the `.is_dir()` and `.is_file()` methods but can also be used with the `os.path.isdir()` and `os.path.isfile()` functions:
 
-For directories:
+For **directories**:
 
 ```{python}
 # For each item in a directory, is it a folder?
@@ -250,7 +286,7 @@ _ = [print(x, x.is_dir()) for x in os.scandir(path)]
 _ = [print(x, x.is_dir()) for x in Path('Example Directory - pathlib').iterdir()]
 ```
 
-For files:
+For **files**:
 
 ```{python}
 # For each item in a directory, is it a file?
@@ -262,12 +298,40 @@ _ = [print(x, os.path.isfile(x)) for x in os.scandir(path)]
 _ = [print(x, x.is_file()) for x in Path('Example Directory - pathlib').iterdir()]
 ```
 
+Sanitising Lists of Files and Folders
+-------------------------------------
+Using a function such as `os.listdir(path)` will return everything that is in the directory specified by `path` (by default this will be the directory that the script is in). This will include hidden files and the script itself, and often you will only want to know the *files* in a folder, not the *directories.* Here's some code that will sanitise the list of a directory's contents by:
+
+- Removing the name of the script itself
+- Removing hidden files
+- Removing directories
+- Only including files of a certain type
+- Sorting alphabetically
+
+<!-- Created: 2020-07-15 -->
+<!-- Updated: 2023-11-28 -->
+
+```{python}
+# Create a list with the names of the files and folders in this folder
+contents = os.listdir()
+# Remove this file
+contents.remove(os.path.basename(__file__))
+# Remove hidden files
+contents = [x for x in contents if not x.startswith('.')]
+# Remove directories
+contents = [x for x in contents if not os.path.isdir(x)]
+# Only include CSV files
+contents = [x for x in contents if os.path.splitext(x)[1] == '.csv']
+# Sort
+files = sorted(contents)
+```
+
 Renaming Files
 ==============
 The `os.rename()` function and the `Path.rename()` method can be used for this:
 
 ```{python}
-# Change the name of a file
+# Change the name of one of the files
 old_name = 'Example Directory - os/Example File 1.txt'
 new_name = 'Example Directory - os/Example File 1 - Renamed.txt'
 os.rename(old_name, new_name)
@@ -277,13 +341,62 @@ os.rename(new_name, old_name)
 ```
 
 ```{python, eval = FALSE}
-# Change the name of a file
+# Change the name of one of the files
 old_name = 'Example Directory - pathlib/Example File 1.txt'
 new_name = 'Example Directory - pathlib/Example File 1 - Renamed.txt'
 Path(old_name).rename(new_name)
 
 # Change the name back
 Path(new_name).rename(old_name)
+```
+
+Another Option: `os.system()`
+=============================
+The `os.system()` function runs a piece of terminal/command line code. This is very powerful; it means that, essentially, a Python script can do anything a shell script can do because it can execute code that can be run on a terminal!
+
+Listing Elements in a Folder
+----------------------------
+The `ls` shell command will **l**i**s**t the files and folders within a folder, so it can be used like `os.listdir()` or `Path.iterdir()`:
+
+```{python, eval = FALSE}
+# List all files and folders in a directory
+os.system('ls "Example Directory - os"')
+```
+
+```
+## Example File 1.txt
+## Sub-Directory
+```
+
+Renaming and Moving Files
+-------------------------
+Renaming and moving files (these operations are the same to your computer - moving a file is just renaming part of its path!) can be done with `mv` as opposed to `os.rename()` or `Path.rename()`:
+
+```{python, eval = FALSE}
+# Change the name of a file
+old_name = 'Example Directory - os/Example File 1.txt'
+new_name = 'Example Directory - os/Example File 1 - Renamed.txt'
+os.system(f'mv "{old_name}" "{new_name}"')
+
+# Change the name back
+os.system(f'mv "{new_name}" "{old_name}"')
+```
+
+Comparing Contents
+------------------
+A useful command that will compare the contents of two different directories is `diff`:
+
+<!-- Adapted from script created on 2019-07-31 -->
+
+```{python, eval = FALSE}
+# Compare the contents of two directories
+dir1 = 'Example Directory - os'
+dir2 = 'Example Directory - pathlib'
+os.system(f'diff "{dir1}" "{dir2}"')
+```
+
+```
+## Common subdirectories: Example Directory - os/Sub-Directory and Example Directory - pathlib/Sub-Directory
 ```
 
 Deleting Files and Folders
