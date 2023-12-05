@@ -2,22 +2,23 @@ u"""
 Produce meta information about the computer and Python.
 
 Works on:
-┌────────────┬────────────────┬───────────────┬─────────────────────────────┐
-│ DATE       │ OS             │ VERSION       │ LOCATION                    │
-├────────────┼────────────────┼───────────────┼─────────────────────────────┤
-│ 2019-04-28 │ Ubuntu 18.04   │ Python 2.7.15 │ /usr/bin/python             │
-│ 2019-05-14 │ macOS Sierra   │ Python 3.6.6  │ .../miniconda3/bin/python   │
-│ 2019-04-28 │ Ubuntu 18.04   │ Python 3.6.7  │ /usr/bin/python3            │
-│ 2019-07-23 │ macOS Sierra   │ Python 3.6.8  │ .../miniconda3/bin/python3  │
-│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.6.9  │ /usr/bin/python3.6          │
-│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.8.0  │ /usr/bin/python3            │
-│ 2020-06-07 │ macOS Catalina │ Python 3.8.2  │ ...rsions/3.8.2/bin/python  │
-│ 2020-09-06 │ Ubuntu 20.04   │ Python 3.8.2  │ /usr/bin/python3            │
-│ 2021-08-31 │ macOS Big Sur  │ Python 3.9.6  │ ...rsions/3.9/bin/python3.9 │
-│ 2022-01-08 │ Ubuntu 20.04   │ Python 3.9.5  │ /usr/bin/python3            │
-│ 2022-01-08 │ Ubuntu 20.04   │ Python 3.10.1 │ /usr/local/bin/python3      │
-│ 2023-12-05 │ Ubuntu 22.04   │ Python 3.12.0 │ /usr/local/bin/python3      │
-└────────────┴────────────────┴───────────────┴─────────────────────────────┘
+┌────────────┬────────────────┬───────────────┬───────────────────────────────┐
+│ DATE       │ OS             │ VERSION       │ LOCATION                      │
+├────────────┼────────────────┼───────────────┼───────────────────────────────┤
+│ 2019-04-28 │ Ubuntu 18.04   │ Python 2.7.15 │ /usr/bin/python               │
+│ 2019-05-14 │ macOS Sierra   │ Python 3.6.6  │ ...owan/miniconda3/bin/python │
+│ 2019-04-28 │ Ubuntu 18.04   │ Python 3.6.7  │ /usr/bin/python3              │
+│ 2019-07-23 │ macOS Sierra   │ Python 3.6.8  │ ...wan/miniconda3/bin/python3 │
+│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.6.9  │ /usr/bin/python3.6            │
+│ 2020-06-06 │ Ubuntu 18.04   │ Python 3.8.0  │ /usr/bin/python3              │
+│ 2020-06-07 │ macOS Catalina │ Python 3.8.2  │ .../Versions/3.8.2/bin/python │
+│ 2020-09-06 │ Ubuntu 20.04   │ Python 3.8.2  │ /usr/bin/python3              │
+│ 2021-08-31 │ macOS Big Sur  │ Python 3.9.6  │ ...Versions/3.9/bin/python3.9 │
+│ 2022-01-08 │ Ubuntu 20.04   │ Python 3.9.5  │ /usr/bin/python3              │
+│ 2022-01-08 │ Ubuntu 20.04   │ Python 3.10.1 │ /usr/local/bin/python3        │
+│ 2023-12-05 │ Ubuntu 22.04   │ Python 3.12.0 │ /usr/local/bin/python3        │
+│ 2023-12-05 │ macOS Sonoma   │ Python 3.12.0 │ ...rsions/3.12/bin/python3.12 │
+└────────────┴────────────────┴───────────────┴───────────────────────────────┘
 """
 import distro
 import os
@@ -38,22 +39,23 @@ if core_os == 'Linux':
     # Check which version of Python you are running
     major = platform.python_version().split('.')[0]
     minor = platform.python_version().split('.')[1]
-    # Check which version of the distro package you have installed
-    distro_major = distro.__version__.split('.')[0]
-    distro_minor = distro.__version__.split('.')[1]
     # Check which operating system you have
     if (int(major) == 3) & (int(minor) <= 4):
         # Python 3.4 or lower
         OS = platform.linux_distribution()[0]
         version = platform.linux_distribution()[1]
-    elif (int(distro_major) <= 1) & (int(distro_minor) <=4):
-        # distro 1.4 or lower
-        OS = distro.linux_distribution()[0]
-        version = distro.linux_distribution()[1]
     else:
-        # distro 1.5.0 or higher
-        OS = distro.name()
-        version = distro.version()
+        # Check which version of the distro package you have installed
+        major = distro.__version__.split('.')[0]
+        minor = distro.__version__.split('.')[1]
+        if (int(major) <= 1) & (int(minor) <= 4):
+            # distro 1.4 or lower
+            OS = distro.linux_distribution()[0]
+            version = distro.linux_distribution()[1]
+        else:
+            # distro 1.5.0 or higher
+            OS = distro.name()
+            version = distro.version()
     print(f'Its OS is {OS}')
     print(f'Its OS version is {version}')
 elif core_os == 'Windows':
@@ -61,18 +63,27 @@ elif core_os == 'Windows':
     version = platform.release()
     print(f'Its OS version is {version}')
 elif core_os == 'Darwin':
-    macOS_vers = {
-        '10.11': 'El Capitan',
-        '10.12': 'Sierra',
-        '10.13': 'High Sierra',
-        '10.14': 'Mojave',
-        '10.15': 'Catalina',
-        '11': 'Big Sur',
-        '12': 'Monterey',
-        '13': 'Ventura',
-        '14': 'Sonoma',
-    }
-    OS = macOS_vers[platform.mac_ver()[0][:5]]
+    # Check which version of macOS you have
+    version = platform.mac_ver()[0]
+    major = version.split('.')[0]
+    minor = version.split('.')[1]
+    if int(major) == 10:
+        macOS_vers = {
+            '10.11': 'El Capitan',
+            '10.12': 'Sierra',
+            '10.13': 'High Sierra',
+            '10.14': 'Mojave',
+            '10.15': 'Catalina',
+        }
+        OS = macOS_vers[f'{major}.{minor}']
+    else:
+        macOS_vers = {
+            '11': 'Big Sur',
+            '12': 'Monterey',
+            '13': 'Ventura',
+            '14': 'Sonoma',
+        }
+        OS = macOS_vers[major]
     print(f'Its OS is macOS {OS}')
     print(f'Its OS version is {platform.mac_ver()[0]}')
 name = platform.node()
@@ -110,9 +121,9 @@ elif platform.system() == 'Darwin':
           f'by user {user}')
     print('\nWorks on:')
     if len(sys.executable) > 28:
-        path = '...' + sys.executable[-24:]
+        path = '...' + sys.executable[-26:]
     else:
         path = sys.executable
-    print('┌────────────┬────────────────┬───────────────┬' + '─' * 29 + '┐')
-    print(f'│ {today} │ macOS {OS:8} │ Python {py}  │ {path:24} │')
-    print('└────────────┴────────────────┴───────────────┴' + '─' * 29 + '┘')
+    print('┌────────────┬────────────────┬───────────────┬──' + '─' * 29 + '┐')
+    print(f'│ {today} │ macOS {OS:8} │ Python {py} │ {path:29} │')
+    print('└────────────┴────────────────┴───────────────┴──' + '─' * 29 + '┘')
