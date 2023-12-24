@@ -1,0 +1,172 @@
+---
+title: '<font size="5">Utilities in Python:</font><br>Cleaning Names and Paths'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+Following on from [this page](os_pathlib_modules.html) about the `os` and `pathlib` modules, here's how to check that your paths, file- and foldernames are clean and that they conform to your OS's standards.
+
+Python Packages
+===============
+The code on this page uses the `os` and `pathlib` modules which come pre-installed with Python. Import them into your script as follows:
+
+```{python}
+import os
+from pathlib import Path
+```
+
+Check That Paths Are Less Than 260 Characters
+=============================================
+With things like Google Drive and file-sharing between team members, it's important to ensure that path lengths are compatible across systems. On Linux and macOS machines the files and folders can have very long path names whereas on Windows machines they can't, so it can cause a problem if you are sharing stuff between people with different OSs:
+
+<!-- Created: 2019-11-20 -->
+<!-- Updated: 2023-11-27 -->
+<!-- Updated: 2023-12-07 -->
+<!-- Updated: 2023-12-22 -->
+
+| | macOS | Linux | Windows |
+|-|:------|:------|:--------|
+| Max **filename** length | 255 characters | 255 characters | 255 characters |
+| Max **path** length     | 1024 characters | 4096 characters | 260 characters |
+
+Note that the above information can change depending on the exact file system being used - Linux machines especially might have different limits (the above is based off of Ubuntu but is true for some other distros as well). The information for Windows assumes NTFS (New Technology File System) - the most common file system for that OS. Remember that *path* refers to the entire location from the root directory to the filename, inclusive.
+
+The bottom line is this: if you're working on a macOS or Linux computer and also on a Windows computer it's important to not create a path longer than 260 characters on the first machine. These will not be able to be synced to the second machine. Here's some code to check for this:
+
+```{python, results = 'hold'}
+# Create an empty file with 255 characters in the filename
+Path('0123456789' * 25 + '12345').touch()
+
+# Search for a path longer than 260 characters
+for dirpath, dirnames, filenames in os.walk('.'):
+    # Create the full path of each folder
+    for dirname in dirnames:
+        path = Path(dirpath, dirname).resolve()
+        if len(str(path)) >= 260:
+            print('Folder path length ≥ 260 found!')
+    # Create the full path of each file
+    for filename in filenames:
+        path = Path(dirpath, filename).resolve()
+        if len(str(path)) >= 260:
+            print('File path length ≥ 260 found!')
+
+# Delete the file
+os.remove('0123456789' * 25 + '12345')
+```
+
+Ensure that Extensions are Lowercase
+====================================
+Sometimes programmes will create extensions that are capitals. This doesn't really matter, but here's some code that will convert the extensions in a list of filenames into lowercase letters. Once this is done (or at the same time) these files can be renamed.
+
+```{python}
+# Create a list of filenames with capitalised extensions
+filenames = [
+    'DSC03001.JPG',
+    'DSC03002.JPG',
+    'DSC03003.JPG',
+]
+
+# Convert extensions to lowercase letters
+for i, filename in enumerate(filenames):
+    # Get extension
+    extension = filename.split('.')[-1]
+    # Replace the extension if it is capitalised
+    if extension == extension.upper():
+        basename = filename.removesuffix(extension)
+        new_filename = basename + extension.lower()
+        filenames[i] = new_filename
+
+print(filenames)
+```
+
+Change Colons to Full Stops
+===========================
+The colon (":") is a restricted character in most file systems - you can't have one in a filename or path. However, on some file system you *can* have them, so if you're working on one of these and want to sync with a different machine it's worthwhile checking that you aren't using them:
+
+<!-- Created: 2017-09-01 -->
+<!-- Updated: 2023-12-06 -->
+
+```{python, results = 'hold'}
+# Create an empty file
+Path('File with a colon: in its name.txt').touch()
+
+# Change colons to full stops
+filenames = os.listdir('.')
+for filename in filenames:
+    # You don't want to overwrite EVERY file's name
+    if ':' in filename:
+        print(f'Renaming "{filename}"')
+        os.rename(filename, filename.replace(':', '.'))
+
+# Delete the file
+os.remove('File with a colon. in its name.txt')
+```
+
+Remove Full Stops from the Ends of Paths
+========================================
+On Linux and macOS machines the file- and foldernames can end in full stops; on Windows machines they can't. So, similar to the above, this can cause problems if you are sharing stuff between machines with different OSs.
+
+<!-- Created: 2019-11-20 -->
+<!-- Updated: 2023-11-27 -->
+
+```{python, results = 'hold'}
+# Create an empty folder
+Path('New Folder.').mkdir(exist_ok=True)
+# Create an empty file
+Path('New File.').touch()
+
+# Search for and remove terminal full stops
+for dirpath, dirnames, filenames in os.walk('.'):
+    for dirname in dirnames:
+        if dirname.endswith('.'):
+            path = os.path.join(dirpath, dirname)
+            print(f'Terminal full stop detected: "{path}"')
+            Path(path).rename(path.removesuffix('.'))
+    for filename in filenames:
+        if filename.endswith('.'):
+            path = os.path.join(dirpath, filename)
+            print(f'Terminal full stop detected: "{path}"')
+            Path(path).rename(path.removesuffix('.'))
+
+# Delete folder
+Path('New Folder').rmdir()
+# Delete file
+Path('New File').unlink()
+```
+
+Remove "(copy)" from Foldernames
+================================
+If you copy a file or folder and paste it into the same directory as the original it will be created with the same name as the original plus the addition of "(copy)" on Linux, "- Copy" on Windows or "copy" on macOS at the end, before the extension. If you subsequently move a lot of these copies into their own directory and want to get rid of the appended part you can use the following code on Linux or with small adaptions on other OSs:
+
+<!-- Created: 2018-01-27 -->
+<!-- Updated: 2023-12-06 -->
+
+```{python, results = 'hold'}
+# Create an empty folder
+Path('New Folder (copy)').mkdir()
+
+items = os.listdir('.')
+for item in items:
+    # We're only interested in folders
+    if Path(item).is_dir():
+        if ' (copy)' in item:
+            print(f'Renaming "{item}"')
+            os.rename(item, item.replace(' (copy)', ''))
+
+# Delete the folder
+os.rmdir('New Folder')
+```
+
+[⇦ Back](../../../python.html)
+
+</font>

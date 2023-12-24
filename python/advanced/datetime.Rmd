@@ -406,7 +406,7 @@ dt2 = datetime.fromisoformat('2012-09-09 10:11:12')
 # Convert to a time stamp aka Unix time aka seconds since the epoch
 timestamp1 = dt1.timestamp()
 timestamp2 = dt2.timestamp()
-# Perfprm arithmetic
+# Perform arithmetic
 timestamp = timestamp2 - timestamp1
 # Convert back into a datetime
 dt = datetime.fromtimestamp(timestamp)

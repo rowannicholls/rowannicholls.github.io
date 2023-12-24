@@ -200,6 +200,31 @@ ls.sort()
 print(ls)
 ```
 
+Skipping Elements
+-----------------
+Often when you list the elements in a directory you won't be interest in *everything* that is inside it. You'll usually want to skip over hidden files and the Python script itself. Possibly, you will only be interested in files instead of folders or vice versa. Here's a snippet that will only return non-hidden files in a folder:
+
+```{python, echo = FALSE}
+__file__ = 'os_pathlib_modules.Rmd'
+```
+
+```{python}
+directory = 'Example Directory - os'
+# List all files and folders in a directory
+files = os.listdir(directory)
+# Remove this file from the list
+if (file := os.path.basename(__file__)) in files:
+    files.remove(file)
+# Remove hidden files from the list
+files = [f for f in files if not f.startswith('.')]
+# Remove directories from the list
+files = [f for f in files if not os.path.isdir(Path(directory, f))]
+# Sort the files
+files = sorted(files)
+
+print(files)
+```
+
 Walking Through a Filesystem
 ============================
 Instead of listing all the files and folders in one directory only, you can 'walk' through an entire filesystem and list all the files and folders in each sub-directory:
@@ -324,6 +349,15 @@ contents = [x for x in contents if not os.path.isdir(x)]
 contents = [x for x in contents if os.path.splitext(x)[1] == '.csv']
 # Sort
 files = sorted(contents)
+```
+
+The above code could be tweaked as needed. For example, the following edit will return *directories* instead of *files:*
+
+<!-- Created 2019-11-12 -->
+
+```{python, eval = FALSE}
+# Only include directories
+contents = [x for x in contents if os.path.isdir(x)]
 ```
 
 Renaming Files

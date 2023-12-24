@@ -124,14 +124,12 @@ The file name can then be extracted using `os.path.basename()`:
 print(os.path.basename(__file__))
 ```
 
-This can be used in conjunction with `.remove()`. However, if you then use your script with the input folder not being the current directory it will throw an error (because the `.remove()` function will try to remove your script's name from the list created by `os.listdir()` but won't find it). To get around this and make your script completely robust, make it able to catch this error should it arise:
+This can be used in conjunction with `.remove()`. However, if you then use your script with the input folder not being the current directory it will throw an error: the `.remove()` function will try to remove your script's name from the list created by `os.listdir()` but it won't be found. To get around this and make your script completely robust, first check that your script's name is in the list of filenames you are working with:
 
 ```{python}
 # Remove the script's name from the list of files if it is in there
-try:
-    filenames.remove(os.path.basename(__file__))
-except ValueError:
-    pass
+if (filename := os.path.basename(__file__)) in filenames:
+    filenames.remove(filename)
 ```
 
 Move Files
@@ -145,10 +143,8 @@ move_to = Path('Output Folder')
 # List the files in a directory
 filenames = os.listdir(move_from)
 # Remove the script's name from the list of files, if it is in there
-try:
-    filenames.remove(os.path.basename(__file__))
-except ValueError:
-    pass
+if (filename := os.path.basename(__file__)) in filenames:
+    filenames.remove(filename)
 # Move files from the input folder to the output folder
 for filename in filenames:
     path_in = Path(move_from, filename)
@@ -170,7 +166,7 @@ print(os.listdir(move_to))
 
 Rename Files
 =============
-This is done with the `os.rename()` function. Of course, you can change a file's name to whatever you want (provided you don't use any of your filesystem's [reserved characters](https://en.wikipedia.org/wiki/Filename)) but in this example I will change the files' names by appending the timestamps from when they were last modified. This timestamp is provided by the `os.path.getmtime()` function (**get** the **m**odified **time**) and is a number that represents the time in 'seconds since the Epoch'. We can convert that to a human-readable timestamp using the `datetime` module:
+This is done with the `os.rename()` function. Of course, you can change a file's name to whatever you want (provided you don't use any of your filesystem's [reserved characters](https://en.wikipedia.org/wiki/Filename)) but in this example I will change the files' names by appending the timestamps from when they were last modified. This timestamp is provided by the `os.path.getmtime()` function (**get** the **m**odification **time**) and is a number that represents the time in 'seconds since the Epoch'. We can convert that to a human-readable timestamp using the `datetime` module:
 
 ```{python}
 # List the files in a directory
@@ -179,21 +175,106 @@ filenames = os.listdir(move_to)
 # Iterate over all the files I want to rename
 for filename in filenames:
     # Get the paths to the files
-    path_old = Path(move_to, filename)
+    old_path = Path(move_to, filename)
+
     # Get the modification timestamps
-    last_modified = os.path.getmtime(path_old)
+    last_modified = os.path.getmtime(old_path)
     # Convert to datetime format
     last_modified = datetime.fromtimestamp(int(last_modified))
+
     # Create new filename
-    stem = path_old.stem
+    stem = old_path.stem
     last_modified = str(last_modified).replace(':', '.')
-    extension = path_old.suffix
+    extension = old_path.suffix
     filename_new = stem + f' ({last_modified})' + extension
     print(filename_new)
     # Create new full path
-    path_new = Path(move_to, filename_new)
+    new_path = Path(move_to, filename_new)
+
     # Rename it
-    os.rename(path_old, path_new)
+    os.rename(old_path, new_path)
+```
+
+More Flexibility with the Modification Time
+-------------------------------------------
+If you aren't familiar with datetime objects it's useful to point out that you can specify any date and time format using the `.strftime()` (**str**ing **f**rom **time**) method:
+
+```{python, echo = FALSE}
+__file__ = 'move_and_rename.Rmd'
+```
+
+```{python}
+# Get the time of last modification for this file
+last_modified = os.path.getmtime(__file__)
+# Convert to ISO format from seconds-since-epoch
+last_modified = datetime.fromtimestamp(last_modified)
+# Append the modification datetime to a filename
+filename = 'Script.py'
+new_name = str(last_modified).replace(':', '.') + ' ' + Path(filename).name
+
+print(new_name)
+```
+
+```{python}
+new_name = last_modified.strftime('%Y-%m-%d %H.%M.%S ') + Path(filename).name
+
+print(new_name)
+```
+
+```{python}
+new_name = last_modified.strftime('%Y-%m-%d ') + Path(filename).name
+
+print(new_name)
+```
+
+**ctime vs mtime vs atime**
+
+The 'ctime' for a file is, on Unix machines (eg Linux and macOS), the time of the last metadata change while on Windows it is the time of the file's creation. The 'mtime' is the time of the last modification of a file. The 'atime' is the last time it was accessed:
+
+```{python}
+# Get the ctime for this file
+ctime = os.path.getctime(__file__)
+# Get the mtime for this file
+mtime = os.path.getmtime(__file__)
+# Get the atime for this file
+atime = os.path.getatime(__file__)
+
+print(ctime, 'vs', mtime, 'vs', atime, sep='\n')
+```
+
+I have used the mtime in these examples.
+
+Make Bespoke Changes to Filenames
+---------------------------------
+The `.replace()` method will find a sub-string within a string and replace it with a different sub-string. If it does not find the given sub-string it's not a problem - the code won't fail. We can use this to our advantage by iterating over a list of filenames and making replacements that affect some but not others:
+
+<!-- Created: 2021-06-22 -->
+<!-- Updated: 2023-12-06 -->
+```{python}
+# Check what the filenames are to begin with
+for filename in sorted(os.listdir('Output Folder')):
+    print(filename)
+```
+
+```{python}
+# Update the file names
+for filename in os.listdir('Output Folder'):
+    new_filename = filename.replace('Example File 1', '1st File')
+    new_filename = new_filename.replace('Example File 2', '2nd File')
+    new_filename = new_filename.replace('Example File 3', '3rd File')
+    new_filename = new_filename.replace('Example File 4', '4th File')
+    # Rename
+    old_path = Path('Output Folder', filename)
+    new_path = Path('Output Folder', new_filename)
+    os.rename(old_path, new_path)
+```
+
+Let's confirm that this has worked:
+
+```{python}
+# Check what the filenames are now
+for filename in sorted(os.listdir('Output Folder')):
+    print(filename)
 ```
 
 Change the ISO 8601 Datetime String into a Different ISO 8601 Format
@@ -228,34 +309,31 @@ filename_new = file_root_new + extension
 print(filename_new)
 ```
 
-```{python, eval = FALSE}
-# Rename
-os.rename(filename, filename_new)
-```
+You can now use `os.rename(filename, filename_new)` to rename the file.
 
-Ensure the Extensions are Lowercase
------------------------------------
-Sometimes programmes will create extensions that are capitals. This doesn't really matter, but here's some code that will convert the extensions in a list of filenames into lowercase letters. Once this is done (or at the same time) these files can be renamed.
+Using Photos' Metadata
+----------------------
+The Exif (**Ex**changeable **i**mage **f**ile format) data from photos can be read using the `Image` sub-module from `PIL` (the **P**ython **I**maging **L**ibrary). This is often more useful than the modification date when working with photos. Here's how to access it:
+
+<!-- Created: 2017-05-24 -->
+<!-- Updated: 2023-12-22 -->
 
 ```{python}
-# Create a list of filenames with capitalised extensions
-filenames = [
-    'DSC03001.JPG',
-    'DSC03002.JPG',
-    'DSC03003.JPG',
-]
+from PIL import Image
 
-# Convert extensions to lowercase letters
-for i, filename in enumerate(filenames):
-    # Get extension
-    extension = filename.split('.')[-1]
-    # Replace the extension if it is capitalised
-    if extension == extension.upper():
-        basename = filename.removesuffix(extension)
-        new_filename = basename + extension.lower()
-        filenames[i] = new_filename
+# Provide the name of a photo
+file = 'DSC02825.jpg'
+# Get the date taken
+date_taken = Image.open(file)._getexif()[306]
+# or
+date_taken = Image.open(file)._getexif()[36867]
 
-print(filenames)
+print(date_taken)
+
+# Get the camera model
+model = Image.open(file)._getexif()[272]
+
+print(model)
 ```
 
 Delete Folders and Files
