@@ -85,43 +85,47 @@ reticulate can only bind to copies of Python built with '--enable-shared'.
 
 As mentioned in the error message, your Python does not have a shared library. If you install Python from source (eg if you are on Ubuntu and you download it from the Python website) you should do so with the following step as part of the process in order to create a shared library:
 
-```{bash, eval = FALSE}
+```bash
 ./configure --enable-shared
 ```
 
 On Ubuntu, if you install Python a different way (eg by using `apt-get`) then you can download the shared library `libpython` as an [Ubuntu package](https://packages.ubuntu.com/jammy-updates/libpython3.11), eg `libpython3.11` for Python 3.11:
 
-```{bash, eval = FALSE}
+```bash
 sudo apt-get install libpython3.11
 ```
 
 Usage
 =====
 - To start with - just to check that it works - use R-IDE to render an R Markdown file:
-    - Open an .Rmd file in Sublime Text
-    - From the menu bar: R-IDE > Render R Markdown
-    - This should cause a file to be created. The file type of this output will depend on what option was set with the `output` parameter in the .Rmd file's YAML configuration, eg `output: html_document` will give you an HTMl file.
+    - Open an R Markdown file (one with `.Rmd` as the extension) in Sublime Text
+    - From the menu bar, click R-IDE > Render R Markdown
+    - This should cause a file to be created. The file type of this output will depend on what option was set with the `output` parameter in the R Markdown file's YAML configuration (eg `output: html_document` will give you an HTMl file)
 - Now check to see if you can do this rendering by invoking a Sublime Text "Build System":
-    + From the menu bar: Tools > Build. The keyboard shortcut for this is Ctrl+B (*Ubuntu/Windows*) or Cmd+B (*macOS*).
+    + From the menu bar, click Tools > Build. The keyboard shortcut for this is Ctrl+B (*Ubuntu/Windows*) or Cmd+B (*macOS*).
     + If this doesn't work, you will need to create a Build System manually:
 
 **Creating an R Markdown Build System Manually**
 
-- From the menu bar: Tools > Build System > New Build System...
-- In the "untitled.sublime-build" file that appears, replace everything with:
-```{json}
+From the menu bar, go to Tools > Build System > New Build System. In the `untitled.sublime-build` file that appears, replace everything with:
+
+```json
 {
     "cmd"       : ["Rscript", "-e", "rmarkdown::render('$file')"],
     "selector"  : "source.shell, source.Rmd",
 }
 ```
-- Save as "Rmarkdown.sublime-build" in the default location. For the record, these default locations are:
-    - *Ubuntu:* `/home/<username>/.config/sublime-text/Packages/User`
-    - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 4/Packages/User`
-- Render with the Build System:
-    - Open an .Rmd file
-    - From the menu bar: Tools > Build With...
-    - From then on you can just build with Ctrl+B/Cmd+B as the default build system will have been set when you used "Build With..."
+
+Save as `Rmarkdown.sublime-build` in the default location. For the record, these default locations are:
+
+- *Ubuntu:* `/home/<username>/.config/sublime-text/Packages/User`
+- *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 4/Packages/User`
+
+To render with the Build System:
+
+- Open an R Markdown file with the `.Rmd` extension
+- From the menu bar, go to Tools > Build With...
+- From then on you can just build with Ctrl+B/Cmd+B as the default build system will have been set when you used "Build With..."
 
 [⇦ Back](../sublime_text.html)
 
