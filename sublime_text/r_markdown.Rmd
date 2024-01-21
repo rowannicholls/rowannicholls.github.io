@@ -14,18 +14,54 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
-To render R Markdown documents that are open in Sublime Text:
+To render R Markdown documents that are open in Sublime Text.
 
 Pre-Requisites
 ==============
 - You need to have **R** installed on your computer
-    + *Ubuntu:* you can do this from the terminal with `sudo apt install r-base-core`
-    + *macOS:* download RStudio from [its website](https://posit.co/downloads/)
-    + Check that it's worked from the terminal with `R --version`
-- You also need to have the R package **rmarkdown** installed. This can be done by opening R (eg by running `R` in the terminal) and running `install.packages("rmarkdown")`
-- If you will be running Python chunks in your R Markdown files you will need to have the **reticulate** package as well (`install.packages("reticulate")`) plus it will be useful to have `libpython` (see the "Additional Setup" note below)
-- **Pandoc** must also be installed. Get this from [its website](https://pandoc.org/installing.html) or via the terminal (`sudo apt-get install pandoc`).
-    + Check that you have it from the terminal with `pandoc --version`
+    - On *Ubuntu* you can do this from the terminal with:
+
+        ```bash
+        sudo apt install r-base-core
+        ```
+
+    - On *macOS*, download RStudio from [its website](https://posit.co/downloads/).
+
+    Check that it's worked from the terminal with:
+
+    ```bash
+    R --version
+    ```
+
+- You also need to have the R package **rmarkdown** installed. This can be done by opening R (eg by running `R` in the terminal) and executing:
+
+    ```R
+    install.packages("rmarkdown")
+    ```
+
+- If you will be running Python chunks in your R Markdown files you will need to have the **reticulate** package as well:
+
+    ```R
+    install.packages("reticulate")
+    ```
+
+    It will be useful to have `libpython`, see the "Additional Setup" note below.
+
+- **Pandoc** must also be installed
+    - On *Ubuntu* you can get this from the terminal:
+
+        ```bash
+        sudo apt-get install pandoc
+        ```
+
+    - On *macOS* it can be downloaded from [its website](https://pandoc.org/installing.html).
+
+    Check that you have it from the terminal with:
+
+    ```bash
+    pandoc --version
+    ```
+
 - The **R-IDE** and **LSP** packages need to be installed in Sublime Text:
     - Command Palette > Package Control: Install Package > R-IDE
     - Command Palette > Package Control: Install Package > LSP
