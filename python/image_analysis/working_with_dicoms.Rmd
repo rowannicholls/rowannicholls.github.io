@@ -1,0 +1,122 @@
+---
+title: '<font size="5">Image Analysis in Python:</font><br>Working With DICOMs'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+DICOM (Digital Imaging and Communications in Medicine) is a standard format for medical images that is widely used for storing and transferring medical image data.
+
+Python Packages
+===============
+The code on this page uses the Matplotlib and Pydicom packages, especially the latter which is a specialist package for working with DICOM images in Python. See its [documentation](https://pydicom.github.io/pydicom/stable/index.html) and its [homepage](https://pydicom.github.io/) for more. Install the packages by running the following in the terminal:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install matplotlib
+python3.12 -m pip install pydicom
+```
+
+Once finished, import these packages along with the `datetime` module into your Python script as follows:
+
+```{python}
+# Matplotlib is for creating static, animated and interactive visualizations
+from matplotlib import pyplot as plt
+# pydicom is a pure Python package for working with DICOM files
+import pydicom
+# The datetime module supplies classes for manipulating dates and times
+from datetime import datetime
+```
+
+If you're on an Ubuntu machine or similar it's possible that you will need to change some environment variables to be compatible with the Wayland system:
+
+```{python}
+# os provides a portable way of using operating system dependent functionality
+import os
+
+# Set the QT_QPA_PLATFORM environment variable to wayland
+os.environ['QT_QPA_PLATFORM'] = 'wayland'
+# Set the Matplotlib backend to one that is compatible with Wayland
+plt.switch_backend('Agg')
+```
+
+Load a DICOM Image
+==================
+This can be done with the `dcmread()` function from Pydicom:
+
+```{python}
+# Path to the DICOM file
+path = 'I0000001.dcm'
+# Load the DICOM file
+ds = pydicom.dcmread(path)
+
+print(type(ds))
+```
+
+Explore the Metadata
+====================
+The `FileDataset` object will have a number of attributes that can be viewed (the below code is based on the [Read a Dataset and plot Pixel Data](https://pydicom.github.io/pydicom/stable/auto_examples/input_output/plot_read_dicom.html) tutorial that is provided in the documentation):
+
+```{python, results = "hold"}
+print(f'SOP Class........: {ds.SOPClassUID} ({ds.SOPClassUID.name})')
+patient_name = ds.PatientName
+display_name = patient_name.family_name + ', ' + patient_name.given_name
+print(f"Patient's Name...: {display_name}")
+print(f'Patient ID.......: {ds.PatientID}')
+print(f'Modality.........: {ds.Modality}')
+dt = datetime.strptime(ds.StudyDate, '%Y%m%d')
+print(f'Study Date.......: {dt.date()}')
+print(f'Image size.......: {ds.Rows} x {ds.Columns}')
+print(f'Pixel Spacing....: {ds.PixelSpacing}')
+```
+
+Use `.get()` if you are not sure if the attribute exists or not and you want to get a default value if it is missing:
+
+```{python}
+print(f'Slice location...: {ds.get('SliceLocation', '(missing)')}')
+```
+
+You can see a list of all the attributes that the object has by running `dir()` (you can also view all of them by using the `to_json` attribute - `print(ds.to_json)`):
+
+```{python}
+print(dir(ds))
+```
+
+View the Image
+==============
+Use Matplotlib to create a figure containing the image:
+
+```{python, eval = FALSE}
+# Create the image without axes or whitespace
+figsize = (ds.pixel_array.shape[1] / 400, ds.pixel_array.shape[0] / 400)
+plt.figure(figsize=figsize)
+plt.imshow(ds.pixel_array, cmap='gray')
+plt.axis('off')
+plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+plt.show()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Create the image without axes or whitespace
+figsize = (ds.pixel_array.shape[1] / 400, ds.pixel_array.shape[0] / 400)
+plt.figure(figsize=figsize)
+plt.imshow(ds.pixel_array, cmap='gray')
+plt.axis('off')
+plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+plt.show()
+```
+
+This particular image is of my mouth prior to some dental work a few years back.
+
+[⇦ Back](../../python.html)
+
+</font>
