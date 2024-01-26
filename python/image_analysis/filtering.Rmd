@@ -1,0 +1,308 @@
+---
+title: '<font size="5">Image Analysis in Python:</font><br>Filtering'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+This tutorial will look at how to apply median and smoothing filters to images.
+
+Python Packages
+===============
+The code on this page uses the NumPy and Matplotlib packages which can be installed from the terminal via the following:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install numpy
+python3.12 -m pip install matplotlib
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+# NumPy is the fundamental package for scientific computing with Python
+import numpy as np
+# Matplotlib is for creating static, animated and interactive visualizations
+from matplotlib import pyplot as plt
+```
+
+If you're on an Ubuntu machine or similar it's possible that you will need to change some environment variables to be compatible with the Wayland system:
+
+```{python}
+# os provides a portable way of using operating system dependent functionality
+import os
+
+# Set the QT_QPA_PLATFORM environment variable to wayland
+os.environ['QT_QPA_PLATFORM'] = 'wayland'
+# Set the Matplotlib backend to one that is compatible with Wayland
+plt.switch_backend('Agg')
+```
+
+Import an Image
+===============
+Assuming that there is an image file called `malaria.jpg` in the same folder as your script, import it via the following:
+
+```{python, eval = FALSE}
+filename = 'malaria.jpg'
+img = plt.imread(filename)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(img)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+filename = 'malaria.jpg'
+img = plt.imread(filename)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(img)
+```
+
+Images will usually be imported as three-dimensional arrays of numbers: a 2D image with a third dimension containing the red, green and blue (RGB) colour values for each pixel:
+
+```{python}
+print(np.shape(img))
+```
+
+In this example the image is 683 pixels in height, 862 in width and has three colour values (red, green and blue) for each pixel. But, because it is a greyscale image, the three colour values are actually the same for each pixel. This means that we can simplify our image by flattening it into a 2D array:
+
+```{python}
+# Select the image's x-axis, y-axis and one layer of its z-axis
+# (this works because it's a greyscale image)
+img = img[:, :, 0]
+print(np.shape(img))
+```
+
+Now we just have a 683x862 array of numbers.
+
+Median Filter
+=============
+A median filter looks at a 'window' (a subset) within the image, calculates the median value of the pixels in that window and replaces the colour value of the pixel in the centre of the window with this median value. In practice, the pixel is not replaced but a new image is created.
+
+```{python}
+def median_filter(img, window_size):
+    """
+    Apply a median filter to an image represented as an array of numbers.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        2D array of values representing (greyscale) pixel colour values.
+    window_size : int
+        The size of the window of which the median will be calculate.
+
+    Returns
+    -------
+    filtered : numpy.ndarray
+        The filtered image.
+    """
+    # Add a border around the original image
+    height, width = np.shape(img)
+    size = [height + window_size - 1, width + window_size - 1]
+    # Initialise a matrix of zeroes (a black image) large enough to contain the
+    # original image plus a border
+    img_w_border = np.zeros(size)
+    # Add the original image into the middle of the initialised black image,
+    # leaving a border around it
+    x0 = int((window_size - 1) / 2)
+    x1 = int(size[0] - (window_size - 1) / 2)
+    # For each row in the middle of the initialised matrix
+    for row in range(x0, x1):
+        y0 = int((window_size - 1) / 2)
+        y1 = int(size[1] - (window_size - 1) / 2)
+        # For each column in the middle of the initialised matrix
+        for column in range(y0, y1):
+            # Place the corresponding pixel from the image there
+            offset = int((window_size - 1) / 2)
+            img_w_border[row][column] = img[row - offset][column - offset]
+
+    # Filter the image with the border
+    filtered = np.zeros(np.shape(img))
+    # For each row in the initialised matrix
+    for row in range(height):
+        # For each column in the initialised matrix
+        for col in range(width):
+            # Look at a window of the image with a border
+            window = img_w_border[row:row + window_size, col:col + window_size]
+            # Sort the window (axis=None means the array is flattened before
+            # sorting)
+            window = np.sort(window, axis=None)
+            # Add the median of that to the correct pixel in the filtered image
+            middle_index = int(window_size * window_size / 2 + 1)
+            filtered[row][col] = window[middle_index]
+
+    return filtered
+```
+
+Let's test the function out by applying a median filter with a 9x9 window to our image:
+
+```{python, eval = FALSE}
+filtered = median_filter(img, 5)
+
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+filtered = median_filter(img, 5)
+
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+Smooth Filter
+=============
+A smooth filter is similar to a median filter except the pixels are replaced by the *mean* value of the pixels in their window:
+
+```{python}
+def smooth_filter(img, window_size):
+    """
+    Apply a smoothing filter to an image represented as an array of numbers.
+
+    Parameters
+    ----------
+    img : numpy.ndarray
+        2D array of values representing the (greyscale) pixels' colour values.
+    window_size : int
+        The size of the window of which the median will be calculate.
+
+    Returns
+    -------
+    filtered : numpy.ndarray
+        The filtered image.
+    """
+    # Add a border around the original image
+    height, width = np.shape(img)
+    size = [height + window_size - 1, width + window_size - 1]
+    # Initialise a matrix of zeroes (a black image) large enough to contain the
+    # original image plus a border
+    img_w_border = np.zeros(size)
+    # Add the original image into the middle of the initialised black image,
+    # leaving a border around it
+    x0 = int((window_size - 1) / 2)
+    x1 = int(size[0] - (window_size - 1) / 2)
+    # For each row in the middle of the initialised matrix
+    for row in range(x0, x1):
+        y0 = int((window_size - 1) / 2)
+        y1 = int(size[1] - (window_size - 1) / 2)
+        # For each column in the middle of the initialised matrix
+        for column in range(y0, y1):
+            # Place the corresponding pixel from the image there
+            offset = int((window_size - 1) / 2)
+            img_w_border[row][column] = img[row - offset][column - offset]
+
+    # Filter the image with the border
+    filtered = np.zeros(np.shape(img))
+    # For each row in the initialised matrix
+    for row in range(height):
+        # For each column in the initialised matrix
+        for col in range(width):
+            # Look at a window of the image with a border
+            window = img_w_border[row:row + window_size, col:col + window_size]
+            # Take the mean value of the window (axis=None means the array is
+            # flattened before sorting)
+            mean = np.mean(window, axis=None)
+            # Add the mean to the correct pixel in the filtered image
+            filtered[row, col] = mean
+
+    return filtered
+```
+
+Let's apply a smooth filter to our image, again with a 9x9 window:
+
+```{python, eval = FALSE}
+filtered = smooth_filter(img, 5)
+
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+filtered = smooth_filter(img, 5)
+
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+Effect of Window Size
+=====================
+A larger window essentially means more filtering. The image loses detail as the pixels become more 'average' (more similar to each other):
+
+```{python, eval = FALSE}
+filtered = median_filter(img, 15)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+filtered = median_filter(img, 15)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, eval = FALSE}
+filtered = smooth_filter(img, 15)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+filtered = smooth_filter(img, 15)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+Effect of Filter Type
+=====================
+Smooth/average/mean filters result in images that are more blurred than median filters. Think of how smooth filters work: they cause pixels to change colour so as to be more similar to the typical (average) pixel that surrounds it. Thus, the difference between each pixel and its neighbours reduces, and so regions of pixels start to blend into each other.
+
+Smooth filtering also results in a greater loss of contrast that median filtering. This is because the more extreme tones (the very dark and the very light pixels) become more 'average' in their intensity.
+
+```{python, eval = FALSE}
+filtered = median_filter(img, 9)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+filtered = median_filter(img, 9)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, eval = FALSE}
+filtered = smooth_filter(img, 9)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+```{python, echo = FALSE, results = 'hide'}
+filtered = smooth_filter(img, 9)
+plt.xticks([])
+plt.yticks([])
+plt.imshow(filtered, cmap='gray')
+```
+
+[⇦ Back](../../python.html)
+
+</font>
