@@ -1,0 +1,134 @@
+---
+title: '<font size="5">Image Analysis in Python:</font><br>Segmentation via Selecting by Colour'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+This tutorial looks at how to extract only the pixels in an image that fall within a certain part of the RGB colour model.
+
+Python Packages
+===============
+The code on this page uses the Numpy, Matplotlib and Pillow packages which can be installed from the terminal via the following:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install numpy
+python3.12 -m pip install matplotlib
+python3.12 -m pip install pillow
+```
+
+Once finished, import these packages into your Python script as follows:
+
+```{python}
+# NumPy is the fundamental package for scientific computing with Python
+import numpy as np
+# Matplotlib is for creating static, animated and interactive visualizations
+from matplotlib import pyplot as plt
+# Pillow is a fork of the Python Imaging Library (PIL) for image processing
+from PIL import Image
+```
+
+Note that the Pillow package gets referred to as `PIL` in scripts. This is to preserve backwards compatibility with an older package called PIL (the Python Imaging Library).
+
+If you're on an Ubuntu machine or similar it's possible that you will need to change some environment variables to be compatible with the Wayland system:
+
+```{python}
+# Access to underlying platform's identifying data
+import platform
+# os provides a portable way of using operating system dependent functionality
+import os
+
+# Check if you are on a Linux machine
+if platform.system() == 'Linux':
+    # Set the QT_QPA_PLATFORM environment variable to wayland
+    os.environ['QT_QPA_PLATFORM'] = 'wayland'
+    # Set the Matplotlib backend to one that is compatible with Wayland
+    plt.switch_backend('Agg')
+```
+
+Import an Image
+===============
+We'll use an MRI image of the cross-section of an arm with the radial bone already highlighted in green:
+
+```{python, eval = FALSE}
+# Import image
+im = Image.open('original.bmp')
+# Display image
+plt.xticks([])
+plt.yticks([])
+plt.imshow(im)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Import image
+im = Image.open('original.bmp')
+# Display image
+plt.xticks([])
+plt.yticks([])
+plt.imshow(im)
+```
+
+What we want to do now is select only the green pixels in the image, but not all of these are the same shade of green. So what we actually need to do is select all green*-ish* pixels.
+
+Search for Colours Within the RGB Colour Spectrum
+=================================================
+The RGB spectrum can be through of as a cube - a three-dimensional space with 'red' on one axis, 'green' on another and 'blue' on the third (see [here](https://en.wikipedia.org/wiki/RGB_color_model#Geometric_representation)). This implies that we can search for pixels whose colours exist in a sub-space within the full RGB cube. In this example we are searching for pixels with:
+
+- A red value between 42 and 167
+- A green value between 11 and 236
+- A blue value between 42 and 167
+- A green value more than 35 units larger than the red value
+
+```{python}
+# Load the image (necessary in order to be able to change the pixel colours)
+pix = im.load()
+# Convert to RGB colours
+rgb_im = im.convert('RGB')
+# Get the size of the image
+size_image = np.shape(im)
+# Iterate over the rows in the image
+for row in range(0, size_image[0]):
+    # Iterate over the columns in the image
+    for column in range(0, size_image[1]):
+        # Get the RGB value of the pixel
+        r, g, b = rgb_im.getpixel((column, row))
+        # Is the pixel a certain shade?
+        if 42 < r < 167 and 111 < g < 236 and 42 < b < 167 and g > r + 35:
+            # Change the colour of the pixel
+            pix[column, row] = (0, 0, 0)
+        else:
+            # Change the colour of the pixel
+            pix[column, row] = (255, 255, 255)
+```
+
+Display the Result
+==================
+Now that we have turned all the green pixels to black and all the other pixels to white, let's confirm that only the radial bone is depicted:
+
+```{python, eval = FALSE}
+plt.xticks([])
+plt.yticks([])
+plt.imshow(im)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+plt.xticks([])
+plt.yticks([])
+plt.imshow(im)
+```
+
+Indeed, *only* the cross-section of the radial bone has been selected.
+
+[⇦ Back](../../python.html)
+
+</font>
