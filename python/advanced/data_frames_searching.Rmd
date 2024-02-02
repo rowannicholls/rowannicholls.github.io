@@ -104,7 +104,7 @@ print(list(result))
 
 Search for Substrings
 ---------------------
-Instead of just searching for athletes with certain names, we can search `within` the names for athletes who have the letter "e" in their name, for example:
+Instead of just searching for athletes with certain names, we can search *within* the names for athletes who have the letter "e" in their name, for example:
 
 ```{python}
 # Search for a substring
@@ -204,6 +204,29 @@ For example, has a column been created that contains the time the athletes ran i
 # Search for a column name
 result = 'Final' in list(df)
 print(result)
+```
+
+Search Through a Subset of the Data Frame
+-----------------------------------------
+Let's create a subset of the original data frame by asking:
+
+- Which **rows** contain athletes from Jamaica or the United States?
+- Which **columns** contain data from a final (a semi-final or the final)?
+
+then using the `.loc[]` method to create a subset:
+
+```{python}
+rows = (df['Country'] == 'Jamaica') | (df['Country'] == 'United States')
+cols = [col.endswith('Final') for col in list(df)]
+subset = df.loc[rows, cols]
+print(subset)
+```
+
+Now we can search this subset for rows that contain any sub-10 performance and return the result as a series:
+
+```{python}
+ser = subset[subset < 10].any(axis='columns')
+print(ser)
 ```
 
 Finding
