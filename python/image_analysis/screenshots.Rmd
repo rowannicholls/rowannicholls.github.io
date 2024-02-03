@@ -1,0 +1,198 @@
+---
+title: '<font size="5">Image Analysis in Python:</font><br>Taking Screenshots'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+This tutorial will look at five different ways of taking screenshots in Python. These will be saved to your computer as PNG files with the date on which they were taken at the front of the filename, so start by importing the built-in `datetime` module in order to get that value:
+
+```{python}
+from datetime import date
+
+today = date.today()
+```
+
+Using the Operating System
+==========================
+The first method technically doesn't use Python but rather uses external programmes installed on the computer's operating system. These are then invoked from inside Python. The main advantage to this method is that no Python packages are needed apart from ones that already come pre-installed, but a disadvantage is that the external programme that takes the screenshot needs to exist and work. For example, if you are on Linux you will need to install GNOME Screenshot which can be done from the terminal as follows:
+
+```bash
+sudo apt install gnome-screenshot
+```
+
+Here's the Python code that invokes the external programmes via the operating system's command line:
+
+```{python, eval = FALSE}
+import os
+import platform
+
+# Linux
+if platform.system() == 'Linux':
+    os.system(f'gnome-screenshot -f "{str(today)} os - Whole Screen.png"')
+    # The following will prompt the user to drag over an area of the screen
+    os.system(f'gnome-screenshot -af "{str(today)} os - Region.png"')
+# macOS
+elif platform.system() == 'Darwin':
+    os.system(f'screencapture "{str(today)} os - Whole Screen.png"')
+    # The following will prompt the user to drag over an area of the screen
+    os.system(f'screencapture -i "{str(today)} os - Whole Screen.png"')
+```
+
+Pillow
+======
+This next method uses Pillow, an image processing library. It can be installed from the terminal like so:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install pillow
+```
+
+...and it can be used in Python like so:
+
+```{python, eval = FALSE}
+from PIL import ImageGrab
+
+img = ImageGrab.grab()
+img.save(str(today) + ' Pillow - Whole Screen.png')
+
+img = ImageGrab.grab(bbox=(100, 100, 300, 300))
+img.save(str(today) + ' Pillow - Region.png')
+```
+
+Note that Pillow is imported under the name `PIL` - something that is done to preserve backwards-compatibility with the older Python Imaging Library (PIL) package.
+
+PyScreeze
+=========
+Option 3 uses the PyScreeze package.
+
+In the terminal:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install pyscreeze
+```
+
+In Python:
+
+```{python, eval = FALSE}
+import pyscreeze
+
+img = pyscreeze.screenshot(str(today) + ' PyScreeze - Whole Screen.png')
+
+img = pyscreeze.screenshot(region=(100, 100, 200, 200))
+img.save(str(today) + ' PyScreeze - Region.png')
+```
+
+PyAutoGUI
+=========
+
+macOS
+-----
+On macOS, install PyAutoGUI from the terminal via the following:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install pyautogui
+```
+
+The above installs PyScreeze and Pillow in the background.
+
+Ubuntu
+------
+On Ubuntu, PyAutoGUI does not yet, at the time of writing (2024-01-26), work in Python 3.12. If you try to use it you will produce the following error:
+
+```
+NOTE: You must install tkinter on Linux to use MouseInfo. Run the following:
+sudo apt-get install python3-tk python3-dev
+```
+
+Frustratingly, running the suggested command to install the Tkinter programme on your machine will not solve the issue, nor will installing (or upgrading) the Tkinter Python package or the GNOME Screenshot programme:
+
+```bash
+# These will work but not solve the problem
+python3.12 -m pip install tk
+sudo apt install gnome-screenshot
+```
+
+Even if you import the Tkinter package into your Python script without error it will not guarantee success:
+
+```python
+import tkinter
+```
+
+My suspicion is that Tkinter has not yet been released for Python 3.12; trying to install it specifically for this version does not work:
+
+```bash
+# Does not work
+sudo apt-get install python3.12-tk
+```
+
+So just use Python 3.11 (or don't use PyAutoGUI) for the time being:
+
+```bash
+python3.11 -m pip install pyautogui
+```
+
+The Code
+--------
+
+```{python, eval = FALSE}
+import platform
+
+# Check the version of Python you are using
+python_version = platform.python_version_tuple()
+minor_version = python_version[1]
+
+if (platform.system() == 'Linux') and (minor_version == '12'):
+    pass
+else:
+    # As of 2024-01-26 on Ubuntu this works in Python 3.11 but not in Python 3.12
+    import pyautogui
+    
+    img = pyautogui.screenshot()
+    img.save(str(today) + ' PyAutoGUI - Whole Screen.png')
+
+    img = pyautogui.screenshot(region=(100, 100, 200, 200))
+    img.save(str(today) + ' PyAutoGUI - Region.png')
+```
+
+pyscreenshot
+============
+This library is mostly obsolete and does not work on macOS, but there are a few edge cases where it can still be useful (eg Wayland support on Linux machines). So it is included here.
+
+In the terminal:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install pyscreenshot
+```
+
+In Python:
+
+```{python, eval = FALSE}
+import pyscreenshot
+import platform
+
+if platform.system() == 'Linux':
+    # As of 2024-01-26 this works on Ubuntu but not on macOS
+    img = pyscreenshot.grab()
+    img.save(str(today) + ' pyscreenshot - Whole Screen.png')
+
+    # As of 2024-01-26 this works on Ubuntu but not on macOS
+    img = pyscreenshot.grab(bbox=(100, 100, 300, 300))
+    img.save(str(today) + ' pyscreenshot - Region.png')
+```
+
+[⇦ Back](../../python.html)
+
+</font>
