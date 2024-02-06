@@ -10,23 +10,268 @@ output:
             before_body: ../../google_analytics.html
 ---
 
-```{css, echo = FALSE}
-.shell {
-    background-color: #cfcfcf;
-}
-```
-
 <font size="3">
 
 [⇦ Back](../../python.html)
 
+If you've been using Python for a while, it's possible that you have different
+versions stored in different locations on your computer with each one having
+its own list of installed packages. Good package management and using virtual
+environments can sort this confusion out.
 
-```{bash, eval = FALSE, class.source = "shell"}
+Installing Packages
+===================
+A Python package - such as "pandas" - can be installed from the terminal using
+the `pip` or `pip3` command:
+
+```bash
 pip install pandas
 ```
 
+The name "Pip" is a recursive acronym for "Pip Installs Packages" and `pip3`
+explicitly runs the version that works with Python 3, although often the `pip`
+command (without the `3`) will default to doing this anyway. It is recommended,
+however, to instead use the following format when using Pip:
+
+```bash
+# Replace "3.12" with the version of Python you are using
+python3.12 -m pip install pandas
+```
+
+This will explicitly run a specific version of Python (3.12 in this example)
+which in turn will run Pip as a module (that's what the `-m` flag does). The
+advantage of this format is that you can guarantee the instance of Python to
+which the packages will be installed. Often, computers will have multiple
+versions of Python installed so it's important to be clear about which instance
+is being used.
+
+Check Which *Version* of Python You Are Using
+---------------------------------------------
+You can do this from the terminal with:
+
+```bash
+python3 --version
+```
+
+```
+Python 3.12.0
+```
+
+...and you can do it from within Python with:
+
+```{python}
+import platform
+
+print(f'Your Python version is {platform.python_version()}')
+```
+
+Check Which *Instance* of Python You Are Using
+----------------------------------------------
+Run the following in the terminal to see where the instance of Python you are
+using is installed:
+
+```bash
+which python3
+```
+
+```
+/usr/local/bin/python3
+```
+
+Check Which Packages You Have Installed
+=======================================
+This can be done with `pip freeze` from the terminal:
+
+```bash
+pip freeze
+# or, where "3.12" is the version of Python you are using:
+python3.12 -m pip freeze
+```
+
+```
+numpy==1.26.3
+pandas==2.2.0
+python-dateutil==2.8.2
+pytz==2024.1
+six==1.16.0
+tzdata==2023.4
+```
+
+The above six packages are the ones that get installed when you install pandas
+(this means that pandas has five *dependencies*).
+
+Here's how to do it from within Python:
+
 ```python
-# Your R code here
+from pip._internal.operations.freeze import freeze
+
+for requirement in freeze(local_only=True):
+    print(requirement)
+```
+
+```
+numpy==1.26.3
+pandas==2.2.0
+pip==23.2.1
+python-dateutil==2.8.2
+pytz==2024.1
+six==1.16.0
+tzdata==2023.4
+```
+
+This method returns *seven* packages because it includes `pip` itself.
+
+Virtual Environments
+====================
+Often, instead of using the instance of Python you have installed computer-wide
+(known as the "system" or "base" instance) you will want to use a clean, fresh
+version. Usually this will be because you want to work with a specific set of
+packages or versions of packages, or it might be because you want to work with
+an older version of Python for testing purposes. Either way, it's often useful
+to create a *virtual environment* which contains its own, fresh, instance of
+Python that has no packages yet installed. This can be done from the terminal
+with:
+
+```bash
+# Replace "3.12" with the version of Python you are using
+python3.12 -m venv venv
+```
+
+This will run the built-in Python module called `venv` (for **v**irtual
+**env**ironments) and create a folder called "venv" (or whatever word you put
+at the end of the command - in the above example we used `venv`) in which will
+be a new instance of Python. The version of this Python will be the same as the
+one used to create it (in this example it will be 3.12). We can then activate
+this Python instance from the terminal via:
+
+```bash
+# Replace "venv" with the name you chose for your virtual environment in the
+# previous step
+source venv/bin/activate
+```
+
+You should now see `(venv)` at the start of your terminal prompt, indicating
+that this virtual environment is now active. If you run `python` (to open
+Python in the terminal) or `python script_name.py` (to run Python on a script)
+from this terminal you will be using this 'virtual' version of Python. You can
+double check this from the terminal by running `which python` - this will
+return a path that ends in `/venv/bin/python`. This instance of Python will
+not have any packages installed, and you can check this by running
+`pip freeze` and seeing that it returns nothing. It's as if you've uninstalled
+and reinstalled Python completely and are working with a brand-new instance!
+
+Of course, you will soon want to install packages to this new instance of
+Python in order to access their functionality. This can be done either the
+normal way via:
+
+```bash
+python -m pip install package_name
+```
+
+...or you can use a 'requirements file' to make your life a lot easier:
+
+Using a Requirements File
+=========================
+A requirements file is a text file, conventionally called `requirements.txt`,
+that contains the packages and the versions thereof that are required in order
+to run the scripts in a Python project. An example - for a project that uses
+the NumPy, SciPy and pandas packages - would be:
+
+```
+numpy==1.26.4
+pandas==2.2.0
+scipy==1.12.0
+```
+
+In truth, the version numbers are not strictly needed:
+
+```
+numpy
+pandas
+scipy
+```
+
+...but they **are** recommended so as to be specific about what a user needs to
+install in order to be able to run your scripts.
+
+In practice, however, a user wouldn't actually go through and manually download
+all the packages listed in a requirements file; they would do it automatically
+by running the following from the terminal:
+
+```bash
+# Replace "3.12" with the version of Python you are using
+python3.12 -m pip install -r requirements.txt
+```
+
+In other words, they would use the same `pip install` command but with the `-r`
+flag to point to a requirements file. This will result in all the listed
+packages being installed.
+
+Creating a Requirements File
+============================
+While this can be done 'manually' (by running `pip freeze` and copying the
+output to a requirements file) a better solution is to use the "pipreqs"
+package. This can be installed from the terminal with:
+
+```bash
+# Replace "3.12" with the version of Python you are using
+python3.12 -m pip install pipreqs
+```
+
+Then it can be run from the terminal:
+
+```bash
+pipreqs --force
+```
+
+This will create a `requirements.txt` file that includes **only the packages
+that are actually imported** by scripts in your folder. In other words, it
+creates exactly what you would want from a requirements file! The `--force`
+flag will cause any existing `requirements.txt` file in the directory to be
+overwritten.
+
+Summary
+=======
+In order to follow best package management practices when creating a Python
+project:
+
+1. Create a virtual environment:
+
+    ```bash
+    python3.12 -m venv venv
+    ```
+
+2. Activate it to start using it:
+
+    ```bash
+    source venv/bin/activate
+    ```
+
+3. Install the packages you need:
+
+    ```bash
+    python3.12 -m pip install package_name
+    ```
+
+4. Once you're done with the project and want to pass it on to someone else to
+use, export the requirements:
+
+    ```bash
+    pipreqs --force
+    ```
+
+5. The person who uses your project (or you if you are using someone else's
+project) should create their own virtual environment, activate it and run the
+following to install the site-packages:
+
+    ```bash
+    python3.12 -m pip install -r requirements.txt
+    ```
+
+To deactivate a virtual environment, simply run the following:
+
+```bash
+deactivate
 ```
 
 [⇦ Back](../../python.html)
