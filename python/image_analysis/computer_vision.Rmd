@@ -1,0 +1,182 @@
+---
+title: '<font size="5">Image Analysis in Python:</font><br>Computer Vision'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+This page is an MWE (minimum working example) to demonstrate aspects of
+OpenCV - an **open** source library of **c**omputer **v**ision functions. It is
+based on [this page](https://pyimagesearch.com/2015/06/22/install-opencv-3-0-and-python-2-7-on-ubuntu/) from PyImageSearch.
+
+Python Packages
+===============
+The code on this page uses the OpenCV, NumPy and Matplotlib packages which can
+be installed from the terminal via the following commands:
+
+```bash
+# "python3.12" should correspond to the version of Python you are using
+python3.12 -m pip install opencv-python
+python3.12 -m pip install numpy
+python3.12 -m pip install matplotlib
+```
+
+Once finished, import these into your Python script along with the
+built-in `os` and `platform` modules:
+
+```{python}
+# Computer vision
+import cv2
+# NumPy is the fundamental package for scientific computing with Python
+import numpy as np
+# Matplotlib is for creating static, animated and interactive visualizations
+from matplotlib import pyplot as plt
+
+# os provides a portable way of using operating system dependent functionality
+import os
+# Access to underlying platform's identifying data
+import platform
+```
+
+If you're on an Ubuntu machine or similar it's possible that you will need to
+change some environment variables to be compatible with the Wayland system:
+
+```{python}
+if platform.system() == 'Linux':
+    # Set the Matplotlib backend to one that is compatible with Wayland
+    plt.switch_backend('Agg')
+```
+
+Import an Image
+===============
+We'll use the image of three Game Boy cartridges that was used in the original tutorial. If this is in the same folder as your Python script with the name `games.jpg` it can be imported as follows:
+
+```{python, eval = FALSE}
+# Load the games image
+img = cv2.imread('games.jpg')
+
+# Display the image
+plt.axis('off')
+plt.imshow(img)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Load the games image
+img = cv2.imread('games.jpg')
+
+# Display the image
+plt.axis('off')
+plt.imshow(img)
+```
+
+Detect an Object
+================
+First, find the blue pixels in the image within a given range of blue and create a 'mask' from those pixels:
+
+```{python}
+# Find the blue color game in the image
+upper = np.array([65, 65, 255])
+lower = np.array([0, 0, 200])
+mask = cv2.inRange(img, lower, upper)
+```
+
+Find the contours in the masked images to get the edges of the blue region(s):
+
+```{python}
+# Find contours in the masked image and keep the largest one
+(cnts, _) = cv2.findContours(
+    mask.copy(),
+    cv2.RETR_EXTERNAL,
+    cv2.CHAIN_APPROX_SIMPLE
+)
+c = max(cnts, key=cv2.contourArea)
+
+# Approximate the contour
+peri = cv2.arcLength(c, True)
+approx = cv2.approxPolyDP(c, 0.05 * peri, True)
+```
+
+Now draw a box around the edges of the blue region:
+
+```{python, results = 'hide'}
+# Draw a green bounding box surrounding the blue game
+cv2.drawContours(img, [approx], -1, (0, 255, 0), 4)
+```
+
+Finally, display the result:
+
+```{python, eval = FALSE}
+# Display image with bounding box
+plt.axis('off')
+plt.imshow(img)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Display image with bounding box
+plt.axis('off')
+plt.imshow(img)
+```
+
+Find Edges
+==========
+Finding general edges (as opposed to the contours of regions of similar colour) is done slightly differently. Let's start by re-loading a fresh version of the image:
+
+```{python}
+# Load the games image
+img = cv2.imread('games.jpg')
+```
+
+Use the `cv2.Canny()` function to find the edges. Depending on the number of dimensions of your image (ie if it has been converted into a 2D- or 3D-array of numbers by Python) you might need to convert the data into unsigned 8-bit integers first:
+
+```{python}
+# Find the edges
+if len(img.shape) == 2:
+    edges = cv2.Canny(img, 100, 200)
+elif len(img.shape) == 3:
+    # If you have created an image as an array of shape (rows, columns, 3) you
+    # need to convert it to uint8
+    edges = cv2.Canny(np.uint8(img), 100, 200)
+```
+
+Now you can display the original and final images side-by-side:
+
+```{python, eval = FALSE}
+# Plot
+plt.subplot(121)
+plt.imshow(img, cmap='gray')
+plt.title('Original Image')
+plt.xticks([])
+plt.yticks([])
+plt.subplot(122)
+plt.imshow(edges, cmap='gray')
+plt.title('Edge Image')
+plt.xticks([])
+plt.yticks([])
+```
+
+```{python, echo = FALSE, results = 'hide'}
+# Plot
+plt.subplot(121)
+plt.imshow(img, cmap='gray')
+plt.title('Original Image')
+plt.xticks([])
+plt.yticks([])
+plt.subplot(122)
+plt.imshow(edges, cmap='gray')
+plt.title('Edge Image')
+plt.xticks([])
+plt.yticks([])
+```
+
+[⇦ Back](../../python.html)
+
+</font>
