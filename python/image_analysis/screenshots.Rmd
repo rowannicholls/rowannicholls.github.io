@@ -45,7 +45,7 @@ if platform.system() == 'Linux':
 elif platform.system() == 'Darwin':
     os.system(f'screencapture "{str(today)} os - Whole Screen.png"')
     # The following will prompt the user to drag over an area of the screen
-    os.system(f'screencapture -i "{str(today)} os - Whole Screen.png"')
+    os.system(f'screencapture -i "{str(today)} os - Region.png"')
 ```
 
 Pillow
@@ -87,7 +87,8 @@ In Python:
 ```{python, eval = FALSE}
 import pyscreeze
 
-img = pyscreeze.screenshot(str(today) + ' PyScreeze - Whole Screen.png')
+img = pyscreeze.screenshot()
+img.save(str(today) + ' PyScreeze - Whole Screen.png')
 
 img = pyscreeze.screenshot(region=(100, 100, 200, 200))
 img.save(str(today) + ' PyScreeze - Region.png')
@@ -154,11 +155,12 @@ python_version = platform.python_version_tuple()
 minor_version = python_version[1]
 
 if (platform.system() == 'Linux') and (minor_version == '12'):
+    # As of 2024-01-26 this does not work in Python 3.12 on Ubuntu
+    # (it does, however, work with Python 3.11 on Ubuntu)
     pass
 else:
-    # As of 2024-01-26 on Ubuntu this works in Python 3.11 but not in Python 3.12
     import pyautogui
-    
+
     img = pyautogui.screenshot()
     img.save(str(today) + ' PyAutoGUI - Whole Screen.png')
 
@@ -168,7 +170,7 @@ else:
 
 pyscreenshot
 ============
-This library is mostly obsolete and does not work on macOS, but there are a few edge cases where it can still be useful (eg Wayland support on Linux machines). So it is included here.
+This library is supposedly obsolete but it still works and there are a few edge cases where it might even still be useful (eg Wayland support on Linux machines). So it is included here.
 
 In the terminal:
 
@@ -183,14 +185,11 @@ In Python:
 import pyscreenshot
 import platform
 
-if platform.system() == 'Linux':
-    # As of 2024-01-26 this works on Ubuntu but not on macOS
-    img = pyscreenshot.grab()
-    img.save(str(today) + ' pyscreenshot - Whole Screen.png')
+img = pyscreenshot.grab()
+img.save(str(today) + ' pyscreenshot - Whole Screen.png')
 
-    # As of 2024-01-26 this works on Ubuntu but not on macOS
-    img = pyscreenshot.grab(bbox=(100, 100, 300, 300))
-    img.save(str(today) + ' pyscreenshot - Region.png')
+img = pyscreenshot.grab(bbox=(100, 100, 300, 300))
+img.save(str(today) + ' pyscreenshot - Region.png')
 ```
 
 [⇦ Back](../../python.html)
