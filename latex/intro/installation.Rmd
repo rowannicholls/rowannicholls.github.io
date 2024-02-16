@@ -1,0 +1,146 @@
+---
+title: '<font size="5">Introduction to LaTeX:</font><br>Installation'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../latex.html)
+
+{.tabset}
+=========
+
+macOS {.tabset}
+-----
+
+### Sonoma
+
+On macOS you want to download and install **MacTeX**.
+
+- You can go to [The LaTeX Project](https://www.latex-project.org/) website's [Getting LaTeX](https://www.latex-project.org/get/) page which will link you to the [TeX Users Group](https://www.tug.org/)'s page for [MacTeX](https://www.tug.org/mactex/) from where you can go to the [Download](https://www.tug.org/mactex/mactex-download.html) page, but it's easier to just go to this last link.
+- Click **MacTeX.pkg** to download it (FYI it's quite large)
+- In your Downloads folder, double-click the downloaded package file and click through the installation wizard
+- In your Applications folder a `TeX` sub-folder will be created with **TeXShop** inside it. This programme can be used for creating LaTeX documents.
+- Alternatively, the following commands will also now be available from the terminal (although if your terminal was already open you will need to close and re-open it):
+    - `pdflatex`
+    - `pdftex`
+    - `latex`
+    - `lualatex`
+    - `bibtex`
+
+Another option is to use LaTeX through an IDE such as Sublime Text. It should work automatically but see [this](../../sublime_text/latex.html) page for more info.
+
+[⇦ Back](../../latex.html)
+
+Ubuntu {.tabset}
+------
+
+### 20.04 and 22.04
+
+**Install LaTeX**
+
+- Option 1: install **TexStudio** (which will install LaTeX as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
+- Option 2: install it from the **terminal** with:
+
+    ```bash
+    sudo apt install texlive-latex-base
+    ```
+
+**Check the Installation**
+
+You can check that it has worked by running the following in the terminal:
+
+```bash
+latex --version
+pdflatex --version
+lualatex --version
+bibtex --version
+```
+
+Each of the above should return a block of text with version, author and license information.
+
+Another way to check that it has worked is to actually create and compile a document:
+
+```bash
+echo '\documentclass{article}\begin{document}Hello, World!\end{document}' > test.tex
+pdflatex test.tex
+```
+
+**Additional Steps**
+
+Next, install some extra things that are missing from the base LaTeX installation:
+
+```bash
+sudo apt install dvipng
+sudo apt install texlive-latex-extra
+sudo apt install texlive-fonts-recommended
+sudo apt install texlive-pictures
+sudo apt install texlive-extra-utils
+sudo apt install magick
+sudo apt install texlive-font-utils  # Needed for eps figures to work
+sudo apt install latexmk  # Needed for running LaTeX in Sublime Text
+sudo apt install texlive-lang-greek  # Needed for the textgreek package
+sudo apt install cm-super  # Needed for using LaTeX in Matplotlib plot labels
+```
+
+[⇦ Back](../../latex.html)
+
+### 16.04 and 18.04
+
+**Install LaTeX**
+
+- Download TeXLive from [here](https://www.tug.org/texlive/acquire-netinstall.html) (don't install it via the terminal!)
+- Unpack the `.tar.gz` file
+- Open the terminal, cd into the unpacked `install-tl-*` folder and run the following:
+
+```bash
+sudo su
+./install-tl
+i
+PATH=/usr/local/texlive/2017/bin/x86_64-linux:$PATH
+apt-get install latexmk
+```
+
+For help, see [here](https://www.tug.org/texlive/quickinstall.html).
+
+**Additional Steps**
+
+Install extra things that aren't in TexLive:
+
+```bash
+sudo apt-get -y install texlive-latex-recommended texlive-pictures texlive-latex-extra
+```
+
+Also install ImageMagick:
+
+```bash
+cd ~/Downloads
+wget https://www.imagemagick.org/download/ImageMagick.tar.gz
+tar xvzf ImageMagick.tar.gz
+cd ImageMagick-7.0.x-xx/  # Replace the "x"s with the right version numbers
+./configure
+make
+sudo make install
+sudo ldconfig /usr/local/lib
+```
+
+[⇦ Back](../../latex.html)
+
+Windows
+-------
+On Windows 7, 8 and 10:
+
+- Install the **TexStudio** programme as this will install LaTeX as well. It can be downloaded from [here](https://www.texstudio.org/).
+- Make sure it is working by running a LaTeX file and ensure you know how to install packages (hint: TexStudio does it automatically).
+- You may need to install [Sumatra PDF](https://www.sumatrapdfreader.org/free-pdf-reader.html) before you can re-build a PDF that you have open
+
+[⇦ Back](../../latex.html)
+
+</font>

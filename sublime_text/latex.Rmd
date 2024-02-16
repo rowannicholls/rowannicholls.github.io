@@ -17,6 +17,27 @@ output:
 {.tabset}
 =========
 
+macOS {.tabset}
+-----
+
+### Sonoma
+
+On macOS you want to download and install **MacTeX**.
+
+- You can go to [The LaTeX Project](https://www.latex-project.org/) website's [Getting LaTeX](https://www.latex-project.org/get/) page which will link you to the [TeX Users Group](https://www.tug.org/)'s page for [MacTeX](https://www.tug.org/mactex/) from where you can go to the [Download](https://www.tug.org/mactex/mactex-download.html) page, but it's easier to just go to this last link.
+- Click **MacTeX.pkg** to download it (FYI it's quite large)
+- In your Downloads folder, double-click the downloaded package file and click through the installation wizard
+- In your Applications folder a `TeX` sub-folder will be created with **TeXShop** inside it. This programme can be used for creating LaTeX documents.
+- Alternatively, the following commands will also now be available from the terminal (although if your terminal was already open you will need to close and re-open it):
+    - `pdflatex`
+    - `pdftex`
+    - `latex`
+    - `lualatex`
+
+Once done, LaTeX should also work from inside Sublime Text: open or create a TEX file (with the `.tex` extension) and press Ctrl+B to build a PDF.
+
+[⇦ Back](../../latex.html)
+
 Ubuntu {.tabset}
 ------
 
