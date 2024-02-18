@@ -26,8 +26,8 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install texlive-latex-recommended
-        sudo apt-get texlive-fonts-recommended
-        sudo apt-get texlive-latex-extra
+        sudo apt-get install texlive-fonts-recommended
+        sudo apt-get install texlive-latex-extra
         sudo apt install cm-super  # Needed for using LaTeX in Matplotlib plot labels
 
     - name: Set up Python
