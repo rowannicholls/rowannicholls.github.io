@@ -35,7 +35,7 @@ jobs:
     - name: Run Python Scripts
       run: |
         python rowing/isis_flag_history/get_flag_status.py
-        python rowing/isis_flag_history/analyse_flag_status.py -l
+        python rowing/isis_flag_history/analyse_flag_status.py -l -p "rowing/isis_flag_history/master.csv"
         
     - name: Run R Markdown Script
       run: |
