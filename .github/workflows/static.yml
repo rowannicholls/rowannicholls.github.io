@@ -61,7 +61,7 @@ jobs:
         
     - name: Run R Markdown Script
       run: |
-        Rscript -e "rmarkdown::render('rowing/isis_flag_history/isis_flag_history.Rmd')"
+        Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd')"
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
