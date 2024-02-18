@@ -25,7 +25,7 @@ jobs:
         # Install R
         sudo apt-get install r-base
         # Install R Markdown package
-        R -e "install.packages('rmarkdown')"
+        R -e "install.packages('rmarkdown', lib = '~/R/libs')"
         
     - name: Run Python Scripts
       run: |
