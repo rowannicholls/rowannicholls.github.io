@@ -28,6 +28,7 @@ jobs:
         sudo apt-get install texlive-latex-recommended
         sudo apt-get install texlive-fonts-recommended
         sudo apt-get install texlive-latex-extra
+        sudo apt install texlive-lang-greek  # Needed for the textgreek package
         sudo apt install cm-super  # Needed for using LaTeX in Matplotlib plot labels
 
     - name: Set up Python
