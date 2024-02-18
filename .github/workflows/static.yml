@@ -34,12 +34,12 @@ jobs:
 
     - name: Run Python Scripts
       run: |
-        python get_flag_status.py
-        python analyse_flag_status.py -l
+        python rowing/isis_flag_history/get_flag_status.py
+        python rowing/isis_flag_history/analyse_flag_status.py -l
         
     - name: Run R Markdown Script
       run: |
-        Rscript -e "rmarkdown::render('isis_flag_history.Rmd')"
+        Rscript -e "rmarkdown::render('rowing/isis_flag_history/isis_flag_history.Rmd')"
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
