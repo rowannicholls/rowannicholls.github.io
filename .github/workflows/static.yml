@@ -21,7 +21,21 @@ jobs:
 
     - uses: r-lib/actions/setup-pandoc@v2
     - uses: r-lib/actions/setup-r@v2
-      
+
+    - name: Install LaTeX
+      run: |
+        sudo apt-get update
+        sudo apt-get install texlive-latex-recommended
+        sudo apt-get install texlive-fonts-recommended
+        sudo apt-get install texlive-latex-extra
+        sudo apt install dvipng
+        sudo apt install texlive-pictures
+        sudo apt install texlive-extra-utils
+        sudo apt install texlive-font-utils  # Needed for eps figures to work
+        sudo apt install latexmk  # Needed for running LaTeX in Sublime Text
+        sudo apt install texlive-lang-greek  # Needed for the textgreek package
+        sudo apt install cm-super  # Needed for using LaTeX in Matplotlib plot labels
+
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
