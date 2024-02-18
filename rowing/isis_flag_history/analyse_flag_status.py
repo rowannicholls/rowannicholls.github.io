@@ -31,13 +31,14 @@ def cardinal_to_ordinal(cardinal):
 
 # Create command-line argument parser
 parser = argparse.ArgumentParser()
-# Add positional argument
+# Add optional arguments
 parser.add_argument('--latest_only', '-l', action='store_true')
+parser.add_argument('--path', '-p', default='master.csv')
 # Parse arguments from terminal
 args = parser.parse_args()
 
 # Import data
-df = pd.read_csv('master.csv')
+df = pd.read_csv(args.path)
 # Trim
 cols = ['status_text', 'set_date']
 df = df[cols]

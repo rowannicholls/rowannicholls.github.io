@@ -74,7 +74,7 @@ Links
 <br>
 
 ```{python, echo = FALSE, results = 'asis'}
-from datetime import date
+from datetime import datetime
 
-print(f'*Last updated: {date.today()}*')
+print(f'*Last updated: {datetime.today().strftime('%Y-%m-%d %H:%M')}*')
 ```
