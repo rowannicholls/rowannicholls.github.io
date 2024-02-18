@@ -5,13 +5,22 @@ on:
     branches:
       - master
 
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+
+    - uses: r-lib/actions/setup-pandoc@v2
+    - uses: r-lib/actions/setup-r@v2
       
     - name: Set up Python
       uses: actions/setup-python@v2
@@ -22,19 +31,15 @@ jobs:
       run: |
         # Install Python dependencies
         pip install -r requirements.txt
-        # Install R
-        sudo apt-get install r-base
-        # Install R Markdown package
-        R -e "install.packages('rmarkdown')"
-        
+
     - name: Run Python Scripts
       run: |
-        python get_flag_status.py
-        python analyse_flag_status.py -l
+        python rowing/isis_flag_history/get_flag_status.py
+        python rowing/isis_flag_history/analyse_flag_status.py -l -p "rowing/isis_flag_history/master.csv"
         
     - name: Run R Markdown Script
       run: |
-        Rscript -e "rmarkdown::render('isis_flag_history.Rmd')"
+        Rscript -e "rmarkdown::render('rowing/isis_flag_history/isis_flag_history.Rmd')"
         
     - name: Setup Pages
       uses: actions/configure-pages@v4
