@@ -1,48 +1,55 @@
-# Simple workflow for deploying static content to GitHub Pages
-name: Deploy static content to Pages
+name: Update Website
 
 on:
-  # Runs on pushes targeting the default branch
   push:
-    branches: ["master"]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
+    branches:
+      - master
 
 jobs:
-  # Single deploy job since we're just deploying
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Update Isis Flag History
-        run: |
-          python3.12 get_flag_status.py
-          python3.12 analyse_flag_status.py -l
-          Rscript -e "rmarkdown::render('isis_flag_history.Rmd')"
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          # Upload entire repository
-          path: '.'
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+        
+    - name: Install dependencies
+      run: |
+        # Install Python dependencies
+        pip install -r requirements.txt
+        # Install R
+        sudo apt-get install r-base
+        # Install R Markdown package
+        R -e "install.packages('rmarkdown')"
+        
+    - name: Run Python Scripts
+      run: |
+        python get_flag_status.py
+        python analyse_flag_status.py -l
+        
+    - name: Run R Markdown Script
+      run: |
+        Rscript -e "rmarkdown::render('isis_flag_history.Rmd')"
+        
+    - name: Setup Pages
+      uses: actions/configure-pages@v4
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        # Upload entire repository
+        path: '.'
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v4
+        
+    - name: Commit and Push Changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Update website" || true
