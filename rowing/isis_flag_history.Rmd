@@ -1,0 +1,80 @@
+---
+title: Isis Flag History
+output:
+  html_document:
+    css: ../style.css
+---
+
+{.tabset}
+---------
+
+### 2024 {.tabset}
+
+#### Hilary {.tabset}
+
+![](isis_flag_history/2024_hilary_term.png)
+
+```{python, echo = FALSE, results = 'asis'}
+f = open('isis_flag_history/2024_hilary_term.txt', 'r')
+content = f.read()
+print(content)
+f.close()
+```
+
+<br>
+
+### 2023 {.tabset}
+
+#### Hilary {.tabset}
+
+![](isis_flag_history/2023_hilary_term.png)
+
+```{python, echo = FALSE, results = 'asis'}
+f = open('isis_flag_history/2023_hilary_term.txt', 'r')
+content = f.read()
+print(content)
+f.close()
+```
+
+<br>
+
+#### Trinity {.tabset}
+
+![](isis_flag_history/2023_trinity_term.png)
+
+```{python, echo = FALSE, results = 'asis'}
+f = open('isis_flag_history/2023_trinity_term.txt', 'r')
+content = f.read()
+print(content)
+f.close()
+```
+
+<br>
+
+#### Michaelmas {.tabset}
+
+![](isis_flag_history/2023_michaelmas_term.png)
+
+```{python, echo = FALSE, results = 'asis'}
+f = open('isis_flag_history/2023_michaelmas_term.txt', 'r')
+content = f.read()
+print(content)
+f.close()
+```
+
+<br>
+
+Links
+-----
+- OURCs's [Isis Flag Page](https://ourcs.co.uk/information/flags/isis/)
+- Anu Dudhia's [Isis Level](https://eodg.atm.ox.ac.uk/user/dudhia/rowing/river.html)
+- Jameson Lee and Joe Hitchen's [Isis Flag Differential](https://flags.jamesonlee.com/)
+- Arthur Bullard's guide to [Reading the lock](https://www.photonhunter.co.uk/~art/rowing/bucks.html) at Iffley
+
+<br>
+
+```{python, echo = FALSE, results = 'asis'}
+from datetime import date
+
+print(f'*Last updated: {date.today()}*')
+```
