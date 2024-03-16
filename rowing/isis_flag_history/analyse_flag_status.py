@@ -136,7 +136,7 @@ for term in terms_to_analyse:
     ]
     # Export to external file
     with open(f'{year}_{term_name.lower()}_term.txt', 'w') as file:
-        if now > ninth_end:
+        if now > peak_term_end:
             file.write('Percentage of Peak Term* under each flag:\n')
         else:
             file.write('Percentage of Peak Term* - so far - under each flag:')
