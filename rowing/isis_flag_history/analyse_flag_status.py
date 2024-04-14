@@ -77,7 +77,7 @@ now = datetime.now(timezone.utc)
 # later
 if now > ninth_end:
     # If it is currently vacation time (ie after the end of the latest term)
-    new_row_1 = {'set_date': ninth_end, 'colour': 'white'}
+    new_row_1 = {'set_date': ninth_end + timedelta(hours=1), 'colour': 'white'}
     new_row_2 = {'set_date': now, 'colour': 'white'}
 else:
     # If it is currently term time (ie before the end of the latest term)
