@@ -10,6 +10,19 @@ output:
 
 ### 2024 {.tabset}
 
+#### Trinity {.tabset}
+
+![](isis_flag_history/2024_trinity_term.png)
+
+```{python, echo = FALSE, results = 'asis'}
+f = open('isis_flag_history/2024_trinity_term.txt', 'r')
+content = f.read()
+print(content)
+f.close()
+```
+
+<br>
+
 #### Hilary {.tabset}
 
 ![](isis_flag_history/2024_hilary_term.png)
@@ -25,12 +38,12 @@ f.close()
 
 ### 2023 {.tabset}
 
-#### Hilary {.tabset}
+#### Michaelmas {.tabset}
 
-![](isis_flag_history/2023_hilary_term.png)
+![](isis_flag_history/2023_michaelmas_term.png)
 
 ```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2023_hilary_term.txt', 'r')
+f = open('isis_flag_history/2023_michaelmas_term.txt', 'r')
 content = f.read()
 print(content)
 f.close()
@@ -51,12 +64,12 @@ f.close()
 
 <br>
 
-#### Michaelmas {.tabset}
+#### Hilary {.tabset}
 
-![](isis_flag_history/2023_michaelmas_term.png)
+![](isis_flag_history/2023_hilary_term.png)
 
 ```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2023_michaelmas_term.txt', 'r')
+f = open('isis_flag_history/2023_hilary_term.txt', 'r')
 content = f.read()
 print(content)
 f.close()
