@@ -12,6 +12,8 @@ else:
 
 # Make the API call
 response = requests.get('https://ourcs.co.uk/api/flags/status/isis/')
+# Isis Flag Page
+# https://ourcs.co.uk/information/flags/isis/
 
 # Check the status code
 # https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
