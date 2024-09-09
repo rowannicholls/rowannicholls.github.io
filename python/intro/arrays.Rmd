@@ -16,14 +16,39 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+# knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
 ```
 
-An **array** (aka a *matrix*) is an efficient way to handle multiple numbers. Importantly, it is more efficient than using a list. It is available from the NumPy package.
+Using an **array** is an efficient way to handle multiple elements. It is a better choice than a list (or a list-of-lists) if you are doing calculations with a set of numbers, but not as good if you are working with strings or doing general data handling and cleaning as opposed to mathematics.
+
+Note that a *vector* is the name for a one-dimensional array and a *matrix* is a two-dimensional array. These do not exist as separate data types in Python - there are only arrays - but you can still call an array a vector or a matrix if it fits the definition.
 
 Create an Array
 ===============
-An array is created manually by first creating a list (or a list-of-list) of numbers and then using the `array()` function to convert it:
+You have two options for creating arrays:
+
+Using the Standard Library
+--------------------------
+Python has a built-in module called `array` that can be used as follows:
+
+```{python}
+import array
+
+ar = array.array('i', [1, 2, 3, 4, 5, 6, 7])
+print(ar)
+```
+
+```{python}
+print(type(ar))
+```
+
+This object `ar` is more memory-efficient than a list would have been. The `i` that has been used is the *type code* which specifies what data type will apply for all elements in the array. In this case they will be *signed integers*. For all the available type codes, see [the documentation](https://docs.python.org/3/library/array.html).
+
+**However**, this module has a drawback: it only allows you to create *one-dimensional* arrays. It also does not have a particularly large set of mathematical operations that are compatible with this data type. For greater functionality we need to use the **NumPy** package.
+
+Using NumPy
+-----------
+If we have NumPy installed, we can create an array manually by first creating a list (or a list-of-list) of numbers and then using the `array()` function to convert it:
 
 ```{python}
 import numpy as np
@@ -32,6 +57,12 @@ ls = [1, 2, 3, 4, 5, 6, 7]
 ar = np.array(ls)
 print(ar)
 ```
+
+```{python}
+print(type(ar))
+```
+
+Note the data type of this object: it is an `ndarray`. It is a 1D array (a vector); here's a 2D array (a matrix):
 
 ```{python}
 ls_of_ls = [
@@ -50,12 +81,14 @@ ar = np.ones(5)
 print(ar)
 ```
 
-...and all zeroes for a given size:
+...and of all zeroes for a given size:
 
 ```{python}
 ar = np.zeros(9)
 print(ar)
 ```
+
+For the rest of this page we will use NumPy arrays.
 
 Index an Array
 ==============
