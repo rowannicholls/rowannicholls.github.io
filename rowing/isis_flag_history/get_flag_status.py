@@ -38,6 +38,8 @@ else:
 
 # Add the received data as a row in the data frame if it is new
 row = pd.DataFrame([response.json()])
+# Remove the notices
+row = row.drop('notices', axis=1)
 df = pd.concat([df, row], ignore_index=True)
 print(df)
 df.to_csv('master.csv', index=False)

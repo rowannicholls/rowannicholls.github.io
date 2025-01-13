@@ -1,6 +1,7 @@
 """Plot the Isis flag status."""
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib.patheffects as pe
 import matplotlib.dates as mdates
 from datetime import datetime, timezone, timedelta
 import platform
@@ -55,7 +56,7 @@ df['colour'] = df['colour'].replace('Amber', '#F0B23E')
 df['colour'] = df['colour'].replace('Dark Blue', '#1C71A6')
 df['colour'] = df['colour'].replace('Light Blue', 'lightblue')
 df['colour'] = df['colour'].replace('Green', '#70A35E')
-df['colour'] = df['colour'].replace('Grey', 'lightgrey')
+df['colour'] = df['colour'].replace('Grey', 'grey')
 
 terms = [
     # (year, term, start of 0th Week, end of Peak Term)
@@ -64,6 +65,8 @@ terms = [
     ('2023', 'Michaelmas', '2023-10-01T00:00:00Z', '2023-11-25T23:00:00Z'),
     ('2024', 'Hilary', '2024-01-07T00:00:00Z', '2024-03-02T23:00:00Z'),
     ('2024', 'Trinity', '2024-04-14T00:00:00Z', '2024-05-25T23:00:00Z'),
+    ('2024', 'Michaelmas', '2024-10-06T00:00:00Z', '2024-11-30T23:00:00Z'),
+    ('2025', 'Hilary', '2025-01-12T00:00:00Z', '2025-03-01T23:00:00Z'),
 ]
 
 # Forward fill to either today or the next 9th week
@@ -164,11 +167,13 @@ for term in terms_to_analyse:
 
     # Define the figure and axis
     fig, ax = plt.subplots(figsize=(6, 4), dpi=141)
+    # Create a flag to indicate if we need to add the month in the first block
+    month_in_first_block = True
     # Loop through each week
     for week_number, week_data in full_term.groupby('oxford_week_number'):
         # Plot rectangles for each hour
         for index, row in week_data.iterrows():
-            # Convert datetime to day-since-epoch
+            # Convert datetime to days-since-epoch
             x = mdates.date2num(row['datetime'])
             # 1970-01-01 was a Thursday, so subtract 3 days to pretend it was a
             # Monday (which we will label as "Sunday")
@@ -188,6 +193,48 @@ for term in terms_to_analyse:
             rect = plt.Rectangle((x, y), width, height, color=row['colour'])
             ax.add_patch(rect)
 
+            # Add the date as text in every 24th rectangle
+            if index % 24 == 8:
+                date_text = row['datetime'].strftime('%d').lstrip('0')
+                ax.text(
+                    # Align text horizontally in the rectangle
+                    x + width / 2,
+                    # Align text vertically in the rectangle
+                    y + height / 1.3,
+                    # The date as text
+                    date_text,
+                    # Horizontal alignment
+                    ha='center',
+                    # Vertical alignment
+                    va='center',
+                    # Font size
+                    fontsize=6,
+                    # Text color
+                    color='w'
+                )
+
+            # Add the month name as text in the relevant rectangles
+            if (row['datetime'].day == 1 or month_in_first_block):
+                if row['datetime'].hour == 1:
+                    # first_day = (index == week_data.index[0] + 12) and (week_number == 0)
+                    # print(row['datetime'], row['datetime'].strftime('%H'))
+                    month_text = row['datetime'].strftime('%B')
+                    ax.text(
+                        # Align text horizontally in the rectangle
+                        x + width / 2,
+                        # Align text vertically in the rectangle
+                        y + height / 3.5,
+                        # The date as text
+                        month_text,
+                        # Vertical alignment
+                        va='center',
+                        # Font size
+                        fontsize=6,
+                        # Text color
+                        color='w',
+                    )
+                    month_in_first_block = False
+
     # Construct the x-axis so as to represent days of the week
     ax.set_xticks(range(7))
     labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
@@ -198,7 +245,7 @@ for term in terms_to_analyse:
     # Add minor ticks on the x-axis without labels
     ax.set_xticks([i + 0.5 for i in range(7)], minor=True)
     # Add grid lines
-    ax.grid(axis='x', which='minor', linestyle='--')
+    ax.grid(axis='x', which='minor', linestyle='-')
 
     # Construct the y-axis so as to represent weeks
     start_week = int(full_term['oxford_week_number'].min())
@@ -214,10 +261,10 @@ for term in terms_to_analyse:
     # Add minor ticks on y-axis without labels
     ax.set_yticks([i + 0.5 for i in range(num_weeks)], minor=True)
     # Add grid lines
-    ax.grid(axis='y', which='minor', linestyle='--')
+    ax.grid(axis='y', which='minor', linestyle='-')
 
     # Set title and labels
-    st = f"""OURCs's Isis Flag
+    st = f"""OURCs Isis Flag
     {term_name} Term {year}"""
     plt.title(st, fontsize=12)
     plt.savefig(f'{year}_{term_name.lower()}_term.png')
