@@ -1,7 +1,6 @@
 """Plot the Isis flag status."""
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.patheffects as pe
 import matplotlib.dates as mdates
 from datetime import datetime, timezone, timedelta
 import platform
@@ -20,6 +19,7 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 
 def cardinal_to_ordinal(cardinal):
+    """Convert a cordinal number to an ordinal number."""
     if cardinal % 10 == 1:
         return f'{cardinal}st'
     elif cardinal % 10 == 2:
@@ -125,7 +125,8 @@ for term in terms_to_analyse:
     full_term = df[bl].copy()
 
     # Extract Peak Term
-    bl = (df['datetime'] >= peak_term_start) & (df['datetime'] <= peak_term_end)
+    bl = (df['datetime'] >= peak_term_start) & \
+        (df['datetime'] <= peak_term_end)
     peak_term = df[bl]
     # Remove the placeholder flag (the "white" flag")
     peak_term = peak_term[peak_term['colour'] != 'white']
@@ -216,7 +217,8 @@ for term in terms_to_analyse:
             # Add the month name as text in the relevant rectangles
             if (row['datetime'].day == 1 or month_in_first_block):
                 if row['datetime'].hour == 1:
-                    # first_day = (index == week_data.index[0] + 12) and (week_number == 0)
+                    # first_day = (index == week_data.index[0] + 12) and \
+                    #     (week_number == 0)
                     # print(row['datetime'], row['datetime'].strftime('%H'))
                     month_text = row['datetime'].strftime('%B')
                     ax.text(
