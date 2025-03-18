@@ -253,6 +253,8 @@ def details(*args):
 details(-10, -5, 5, 10)
 ```
 
+A single asterisk used like this is known as the *unpacking operator*.
+
 Optional, Keyword Arguments
 ---------------------------
 The third main type of arguments are **optional, keyword arguments** (kwargs). These have a *default value* which means that you can omit them when you call the function and it won't matter because the code will just use the default value. Here is the same example that was used previously except `num_sig_figs` is now an optional keyword argument with a default value of 4:
