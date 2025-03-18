@@ -67,7 +67,12 @@ jobs:
       run: |
         Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd')"
 
-deploy:
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: '.'  # Uploads entire repository
+
+  deploy:
     runs-on: ubuntu-latest
     needs: build
     environment:
@@ -78,11 +83,6 @@ deploy:
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v4
-
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: github-pages
 
       - name: Deploy to GitHub Pages
         id: deployment
