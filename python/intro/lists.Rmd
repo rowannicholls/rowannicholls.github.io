@@ -502,7 +502,7 @@ print(result)
 
 Tuples
 ======
-Tuples are similar to lists and sets but, again, they are different to both:
+Tuples are similar to lists and sets in that they contain mul**tuple** objects but, again, they are different to both:
 
 - A tuple is **immutable** (like a set, unlike a list) which means that it *cannot be changed once created*
 - A tuple can have **duplicates** (like a list, unlike a set)
@@ -646,6 +646,8 @@ Summary
 | List           | `list()`          | `[]`            | True    | False  | True    | True          |
 | Tuple          | `tuple()`         | `()` or nothing | False   | False  | True    | True          |
 | Set            | `set()`           | `{}`            | False   | True   | False   | False         |
+
+Tuples are slightly more memory- and time-efficient to use than lists but are less flexible due to being immutable.
 
 All of these structures can contain any type of element (numbers, strings, dictionaries, etc; even other lists, sets or tuples) and/or a mixture of types. They all use commas to separate their elements.
 
