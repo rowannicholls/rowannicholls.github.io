@@ -291,6 +291,17 @@ print(ls)
 
 Notice that this has **preserved the order** of the items in the list, which would not neccessarily have been the case if we had used [set subtraction](../intro/lists.html#removing-multiple-values-from-lists) to do this.
 
+Set Comprehension
+=================
+In the same way that you can create lists via list comprehensions, you can create sets using set comprehensions:
+
+```{python}
+ls = [1, 2, 3, 4, 5, 6]
+# Find all numbers larger than 2
+s = {value for value in ls if value > 2}
+print(s)
+```
+
 [⇦ Back](../../python.html)
 
 </font>

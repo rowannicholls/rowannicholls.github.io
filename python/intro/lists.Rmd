@@ -330,7 +330,6 @@ Sets
 ====
 Sets are *NOT* lists, but they are similar! The main differences are that:
 
-- A set is **immutable** which means that it *cannot be changed once created*
 - A set cannot have duplicates; all of its elements are **unique**
 - A set is **unordered**: the order of the elements is not remembered by Python
 - A set is **not subscriptable** and so cannot be indexed with square brackets: if `a` was a set then running `a[0]` would result in an error. How can an object where the elements are unordered have a 0th, 1st, 2nd, etc, element?
@@ -500,11 +499,44 @@ result = set(sub).issubset(set(ls))
 print(result)
 ```
 
+Adding To and Removing From a Set
+---------------------------------
+Sets have the `.add()` method which allows you to **add** elements:
+
+```{python}
+s = {'A', 'B', 'C'}
+s.add('D')
+print(s)
+```
+
+They also have the `.update()` method which allows you to add multiple elements at a time:
+
+```{python}
+ls = ['E', 'F']
+s.update(ls)
+print(s)
+```
+
+They also have two methods which allow you to remove elements:
+
+- `.remove()` will remove an element from the set if the element is indeed in the set - it will raise an error if the element is not there
+- `.discard()` will remove an element from the set if the element is indeed in the set and will do nothing (not raise an error) if the element is not there
+
+```{python}
+s.remove('F')
+print(s)
+```
+
+```{python}
+s.discard('E')
+print(s)
+```
+
 Tuples
 ======
 Tuples are similar to lists and sets in that they contain mul**tuple** objects but, again, they are different to both:
 
-- A tuple is **immutable** (like a set, unlike a list) which means that it *cannot be changed once created*
+- A tuple is **immutable** (unlike sets and lists which are *mutable*) which means that it *cannot be changed once created*
 - A tuple can have **duplicates** (like a list, unlike a set)
 - A tuple is **ordered**: the order of the elements is remembered by Python (like a list, unlike a set)
 - A tuple is **subscriptable** (like a list, unlike a set) and so can be indexed with square brackets
@@ -645,7 +677,7 @@ Summary
 |----------------|-------------------|-----------------|---------|--------|---------|---------------|
 | List           | `list()`          | `[]`            | True    | False  | True    | True          |
 | Tuple          | `tuple()`         | `()` or nothing | False   | False  | True    | True          |
-| Set            | `set()`           | `{}`            | False   | True   | False   | False         |
+| Set            | `set()`           | `{}`            | True    | True   | False   | False         |
 
 Tuples are slightly more memory- and time-efficient to use than lists but are less flexible due to being immutable.
 
