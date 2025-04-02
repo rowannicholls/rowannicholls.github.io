@@ -1,0 +1,154 @@
+---
+title: '<font size="5">Graphs in Python:</font><br>Q-Q Plots<br><font size="5">_using explicitly defined axes in Matplotlib_</font>'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+**Quantile–quantile plots** compare two probability distributions - one theoretical and one real-world - by comparing their quantiles.
+
+Paired Data Example
+===================
+If you have a dataset with two data points from each data source (eg if you are repeating measurements, taking one before and one after an intervention) then you might consider testing for a difference in the values within each pair that might then be attributed to the intervention. For example (taken from [Wikipedia's page](https://en.wikipedia.org/wiki/Paired_difference_test) on paired difference tests):
+
+> Suppose we are assessing the performance of a drug for treating high cholesterol. Under the design of our study, we enroll 100 subjects, and measure each subject's cholesterol level. Then all the subjects are treated with the drug for six months, after which their cholesterol levels are measured again. Our interest is in whether the drug has any effect on mean cholesterol levels, which can be inferred through a comparison of the post-treatment to pre-treatment measurements.
+
+Our options for testing a hypothesis within this study design include using a paired two-sample *t*-test, a paired two-sample *Z*-test or the Wilcoxon signed-rank test. One of the considerations when making the decision as to which of these tests is best is whether or not the data supports the *parametric assumptions* that are associated with the test (or the lack thereof). With paired data specifically, one consideration is whether or not the *differences* between the values within each pair follow a normal distribution, and a Q-Q plot can be helpful when making a qualitative assessment in this regard.
+
+```{python, eval = FALSE}
+import random
+
+from matplotlib import pyplot as plt
+from scipy import stats as stats
+import numpy as np
+
+# Fake data
+random.seed(20250401)
+x = [x + random.gauss(mu=0, sigma=1.0) for x in np.linspace(230, 250, 100)]
+y = [y + random.gauss(mu=0, sigma=2.0) for y in np.linspace(190, 210, 100)]
+
+# Visualise raw data
+ax = plt.axes()
+ax.scatter(x, y, marker='o', facecolors='none', edgecolors='k')
+ax.set_aspect((max(x) - min(x)) / (max(y) - min(y)))
+ax.set_title('Raw Data')
+ax.set_xlabel('Pre-Treatment Total Cholesterol Levels (mg/dL)')
+ax.set_ylabel('Post-Treatment Total Cholesterol Levels (mg/dL)')
+plt.show()
+plt.close()
+```
+
+```{python, echo = FALSE, results = 'hide'}
+import random
+
+from matplotlib import pyplot as plt
+from scipy import stats as stats
+import numpy as np
+
+# Fake data
+random.seed(20250401)
+x = [x + random.gauss(mu=0, sigma=1.0) for x in np.linspace(230, 250, 100)]
+y = [y + random.gauss(mu=0, sigma=2.0) for y in np.linspace(190, 210, 100)]
+
+# Visualise raw data
+plt.scatter(x, y, marker='o', facecolors='none', edgecolors='k')
+plt.gca().set_aspect((max(x) - min(x)) / (max(y) - min(y)))
+plt.title('Raw Data')
+plt.xlabel('Pre-Treatment Total Cholesterol Levels (mg/dL)')
+plt.ylabel('Post-Treatment Total Cholesterol Levels (mg/dL)')
+plt.show()
+plt.close()
+```
+
+Now plot the Q-Q plot:
+
+```{python, eval = FALSE}
+def qq_plot(data):
+    # Sort as increasing
+    y = np.sort(data)
+    # Sample mean
+    mean = np.mean(y)
+    # Sample standard deviation
+    std = np.std(y, ddof=1)
+    # Quantiles of a Normal distribution
+    ppf = stats.norm(loc=mean, scale=std).ppf
+    n = len(y)
+    x = [ppf(i / (n + 2)) for i in range(1, n + 1)]
+
+    # Plot
+    ax = plt.axes()
+    midpoint = (x[len(x) // 2], x[len(x) // 2])
+    ax.axline(midpoint, slope=1, ls='--', c='gray')
+    ax.scatter(x, y, c='k', marker='o', s=12)
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    axis_min = min([xmin, ymin])
+    axis_max = min([xmax, ymax])
+    ax.set_xlim(axis_min, axis_max)
+    ax.set_ylim(axis_min, axis_max)
+    ax.set_aspect('equal')
+    ax.set_title('Q-Q Plot')
+    ax.set_xlabel('Normal Quantiles')
+    ax.set_ylabel('Sample Quantiles')
+    plt.show()
+    plt.close()
+
+
+# For a paired t-test, the key assumption is that the *differences* between
+# paired measurements - not the individual measurements themselves - should be
+# approximately normally distributed
+differences = np.array(x) - np.array(y)
+qq_plot(differences)
+```
+
+```{python, echo = FALSE, results = 'hide'}
+def qq_plot(data):
+    # Sort as increasing
+    y = np.sort(data)
+    # Sample mean
+    mean = np.mean(y)
+    # Sample standard deviation
+    std = np.std(y, ddof=1)
+    # Quantiles of a Normal distribution
+    ppf = stats.norm(loc=mean, scale=std).ppf
+    n = len(y)
+    x = [ppf(i / (n + 2)) for i in range(1, n + 1)]
+
+    # Plot
+    ax = plt.axes()
+    midpoint = (x[len(x) // 2], x[len(x) // 2])
+    ax.axline(midpoint, slope=1, ls='--', c='gray')
+    ax.scatter(x, y, c='k', marker='o', s=12)
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
+    axis_min = min([xmin, ymin])
+    axis_max = min([xmax, ymax])
+    ax.set_xlim(axis_min, axis_max)
+    ax.set_ylim(axis_min, axis_max)
+    ax.set_aspect('equal')
+    ax.set_title('Q-Q Plot')
+    ax.set_xlabel('Normal Quantiles')
+    ax.set_ylabel('Sample Quantiles')
+    plt.show()
+    plt.close()
+
+
+# For a paired t-test, the key assumption is that the *differences* between
+# paired measurements - not the individual measurements themselves - should be
+# approximately normally distributed
+differences = np.array(x) - np.array(y)
+qq_plot(differences)
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
