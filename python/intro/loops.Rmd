@@ -667,6 +667,37 @@ print(water_in_jug > capacity)
 
 Note that the fact that the `break` statement has been put at the end of the loop means that the 'pour a glass' code will run even on the last iteration. If you instead put the break statement at the start, on the last iteration it will *not* run.
 
+While What?
+-----------
+On what will a while-loop run (what a confusing sentence!)? By this I mean "what can be used to make a while-loop work"? Well, we know it will run on a conditional statement that evaluates to `True`, such as a statement using 'greater than' (`>`), 'less than' (`<`) or 'equal to' (`==`), and stop when it becomes `False`:
+
+```{python}
+i = 0
+while i < 3:
+    i += 1
+    print(f'This has looped {i} time(s)')
+```
+
+It will also run on `True` itself and only stop when you `break` out of it:
+
+```{python}
+i = 0
+while True:
+    i += 1
+    print(f'This has looped {i} time(s)')
+    if i >= 3:
+        break
+```
+
+It will also run on a non-empty list and stop when it becomes empty:
+
+```{python}
+todo_list = ['wash', 'dry', 'iron']
+while todo_list:
+    print('To do:', todo_list)
+    _ = todo_list.pop()
+```
+
 While-Else Loops
 ----------------
 A 'while-else' loop is a combination of a while-loop, an if-statement and an else-statement. The while-loop will run, then the else-statement will run *unless you break out of the while-loop:*
