@@ -1,0 +1,258 @@
+---
+title: '<font size="5">Statistics in Python:</font><br>Wilcoxon Signed-Rank Test'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: false
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+The **Wilcoxon signed-rank test** is a non-parametric test of the hypothesis
+that the differences between the values of pairs of data points from two
+samples is symmetric about zero. In Python, it can be performed with the
+`wilcoxon()` function from SciPy.
+
+```{r, echo=FALSE}
+# install.packages("DiagrammeR", repos = "http://cran.us.r-project.org")
+library(DiagrammeR)
+# fillcolor='#c9daf8'
+# fillcolor='#d9ead3'
+
+DiagrammeR::grViz(
+    "digraph statistical_tests {
+        rankdir='LR'
+
+        node [fontname=Helvetica, shape=box, style=filled, fillcolor=white]
+        start [label='Identify the\ndependent/outcome\nvariable(s) (DVs) and\nindependent/explanatory\nvariable(s) (IVs)', fillcolor='#ea9999']
+            dependent [label='Data type of\nthe DV?', fillcolor='#c9daf8']
+                sc_datatypes [label='Data type of\nthe IV?', fillcolor='#c9daf8']
+                    sc_true [label='True independent\nvariable?']
+                        yes_number [label='Number of\ngroups/samples\nfor the IV?']
+                            one_choose [label='Choose a fit']
+                                'Simple Linear\nRegression' [style=rounded]
+                                'Quadratic\nRegression' [style=rounded]
+                            'Multiple Linear\nRegression' [style=rounded]
+                        no_parametric [label='Parametric?']
+                            'Pearson\ncorrelation\ncoefficient' [style=rounded]
+                            'Spearmans rank\ncorrelation\ncoefficient' [style=rounded, label=<Spearman&rsquo;s rank<BR/>correlation<BR/>coefficient>]
+                    none_parametric [label='Parametric?']
+                        'One-sample t-test' [style=rounded, label=<One-sample <I>t</I>-test>]
+                    cd_number [label='Number of\ngroups/samples\nfor the IV?', fillcolor='#c9daf8']
+                        two_parametric [label='Parametric?', fillcolor='#c9daf8']
+                            true_independent [label='Independent\ngroups/sample?']
+                                'Unpaired\ntwo-sample\nt-test' [style=rounded, label=<Unpaired<BR/>two-sample<BR/><I>t</I>-test>]
+                                'Paired\ntwo-sample\nt-test' [style=rounded, label=<Paired<BR/>two-sample<BR/><I>t</I>-test>]
+                            false_independent [label='Independent\ngroups/sample?', fillcolor='#c9daf8']
+                                'Mann-Whitney\nU test' [style=rounded, label=<Mann-Whitney<BR/> <I>U </I>test>]
+                                'Wilcoxon\nsigned-rank test' [fillcolor='#d9ead3']
+                        more_parametric [label='Parametric?']
+                            'ANOVA' [style=rounded]
+                            false_independent2 [label='Independent\ngroups/sample?']
+                                'Kruskal-Wallis\none-way ANOVA' [style=rounded]
+                                'Friedman\ntwo-way ANOVA' [style=rounded]
+                cd_datatype [label='Type of\ncategorical\ndata?']
+                    binary_datatype [label='Data type of\nthe IV?']
+                        'Sample Size?'
+                            'Binomial Test' [style=rounded]
+                            'One-sample Z-test' [style=rounded, label=<One-sample <I>Z</I>-test>]
+                        'Two-sample Z-test' [style=rounded, label=<Two-sample <I>Z</I>-test>]
+                        'χ² test for trend' [style=rounded]
+                    ordinal_datatype [label='Data type of\nthe IV?']
+                        'χ² test for trend' [style=rounded]
+                    nominal_datatype [label='Data type of\nthe IV?']
+                        none_additional [label='Additional DV?']
+                            'χ² goodness-of-fit test' [style=rounded]
+                            'χ² independence test' [style=rounded]
+                        'χ² homogeneity test' [style=rounded]
+
+        {rank=same; start -> dependent}
+        dependent -> sc_datatypes [label='Scale/\nContinuous']
+            sc_datatypes -> sc_true [label='Scale/\nContinuous']
+                sc_true -> yes_number [label='Yes\n(regression \nanalysis)']
+                    yes_number -> one_choose [label='One']
+                        one_choose -> 'Simple Linear\nRegression'
+                        one_choose -> 'Quadratic\nRegression'
+                    yes_number -> 'Multiple Linear\nRegression' [label='More']
+                sc_true -> no_parametric [label='No\n(correlation \nanalysis)']
+                    no_parametric -> 'Pearson\ncorrelation\ncoefficient' [label='Yes']
+                    no_parametric -> 'Spearmans rank\ncorrelation\ncoefficient' [label='No']
+            sc_datatypes -> none_parametric [label='None\n(no IV)']
+                none_parametric -> 'One-sample t-test' [label='Yes']
+            sc_datatypes -> cd_number [label='Categorical/\nDiscrete']
+                cd_number -> two_parametric [label=Two]
+                    two_parametric -> true_independent [label=Yes]
+                        true_independent -> 'Unpaired\ntwo-sample\nt-test' [label=Yes]
+                        true_independent -> 'Paired\ntwo-sample\nt-test' [label=No]
+                    two_parametric -> false_independent [label=No]
+                        false_independent -> 'Mann-Whitney\nU test' [label=Yes]
+                        false_independent -> 'Wilcoxon\nsigned-rank test' [label=No]
+                cd_number -> more_parametric [label=More]
+                    more_parametric -> 'ANOVA' [label=Yes]
+                    more_parametric -> false_independent2 [label=No]
+                        false_independent2 -> 'Kruskal-Wallis\none-way ANOVA' [label=Yes]
+                        false_independent2 -> 'Friedman\ntwo-way ANOVA' [label=No]
+        dependent -> cd_datatype [label='Categorical/\nDiscrete']
+            cd_datatype -> binary_datatype [label='Binary\n(nominal)']
+                binary_datatype -> 'Sample Size?' [label='None\n(no IV)']
+                    'Sample Size?' -> 'Binomial Test' [label='Small']
+                    'Sample Size?' -> 'One-sample Z-test' [label='Large']
+                binary_datatype -> 'Two-sample Z-test' [label='Binary\n(nominal)']
+                binary_datatype -> 'χ² test for trend' [label=Ordinal]
+            cd_datatype -> ordinal_datatype [label='Ordinal']
+                ordinal_datatype -> 'χ² test for trend' [label='Binary\n(nominal)']
+            cd_datatype -> nominal_datatype [label='Nominal\n(incl binary)']
+                nominal_datatype -> none_additional [label='None\n(no IV)']
+                    none_additional -> 'χ² goodness-of-fit test' [label=No]
+                    none_additional -> 'χ² independence test' [label=Yes]
+                nominal_datatype -> 'χ² homogeneity test' [label=Nominal]
+
+    labelloc='t';
+    label='Flowchart for Choosing a Statistical Test';
+    fontsize=30;
+    }",
+    height=650,
+    width=1000
+)
+```
+
+Example 1
+=========
+This example is taken from
+[the SciPy documentation](
+https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.wilcoxon.html
+)
+which in turn took it from the original
+[Wilcoxon (1945)](https://www.jstor.org/stable/3001968) paper from where this
+test originates. The difference in height between 15 cross- and self-fertilised
+corn plants of the same pair are as follows:
+
+```{python}
+# Difference in height between pairs of corn plants
+diffs = [6, 8, 14, 16, 23, 24, 28, 29, 41, -48, 49, 56, 60, -67, 75]
+```
+
+The fact that most of these differences are positive indicates that the
+cross-fertilized plants are generally taller. Let's see if this observation
+is statistically significant:
+
+```{python}
+from scipy import stats
+
+statistic, pvalue = stats.wilcoxon(diffs)
+
+print(f'Test statistic = {statistic}, p = {pvalue:.3f}')
+```
+
+The *p*-value is less than 0.05 so we would reject the null hypothesis at a
+confidence level of 5% and conclude that there is a difference in height
+between the groups of corn plants.
+
+Note that the test statistic is represented by a capital T in the source
+code.
+
+Example 2
+=========
+This example comes from [the Wikipedia page](
+https://en.wikipedia.org/wiki/Wilcoxon_signed-rank_test
+) on the Wilcoxon signed-rank test:
+
+```{python}
+group_1 = [110, 122, 125, 120, 140, 124, 123, 137, 135, 145]
+group_2 = [125, 115, 130, 140, 140, 115, 140, 125, 140, 135]
+
+statistic, pvalue = stats.wilcoxon(group_1, group_2)
+
+print(f'Test statistic = {statistic}, p = {pvalue:.3f}')
+```
+
+It's worth noting that we get the same answer regardless of the order of the
+groups:
+
+```{python}
+# Swapping group 1 and 2
+statistic, pvalue = stats.wilcoxon(group_2, group_1)
+
+print(f'Test statistic = {statistic}, p = {pvalue:.3f}')
+```
+
+We also get the same answer if we just use the differences between the values
+instead of the values themselves:
+
+```{python}
+import numpy as np
+
+diffs = np.array(group_2) - np.array(group_1)
+statistic, pvalue = stats.wilcoxon(diffs)
+
+print(f'Test statistic = {statistic}, p = {pvalue:.3f}')
+```
+
+Discrepancies
+-------------
+Confusingly, these answers do not match those given by Wikipedia's worked
+example: that test statistic (referred to as $W$) has a value of 9
+compared to SciPy's test statistic (referred to as $T$) which has a value of
+18. The *p*-values are also different: 0.6113 vs 0.633.
+
+The [DATAtab page](https://datatab.net/tutorial/wilcoxon-test) about the
+Wilcoxon signed-rank test mentions that there are different ways to calculate
+the test statistic using the sums of the positive ranks ($T^+$) and the sums of
+the negative ranks ($T^-$). It appears that SciPy is using the minimum of the
+two whereas Wikipedia is using the (signed) sum of the two:
+
+- SciPy: $T = min(T^+,\ T^-)$
+- Wikipedia: $W = T^+ - T^-$
+- DATAtab: $T = T^+$
+
+In Example 1, the two negative differences that appear in the data (-48 and
+-67) rank 10th and 14th in magnitude out of the 15 differences respectively,
+thus $T^- = 10 + 14 = 24$ which is smaller than $T^+$ and which is thus used
+as the value of the test statistic $T$.
+Similarly, in Example 2, we have $T^- = 3 + 4 + 5 + 6 = 18$ and
+$T^+ = 1.5 + 1.5 + 7 + 8 + 9 = 27$ so SciPy uses $T = T^- = 18$ and Wikipedia
+uses $W = 27 - 18 = 9$ for the test statistic.
+
+This explains the discrepancy in the values of the test statistics but not in
+the *p*-values. Both [this](
+https://stackoverflow.com/questions/16296225/one-sided-wilcoxon-signed-rank-test-using-scipy
+) answer on Stack
+Overflow and
+[this](https://www.socscistatistics.com/tests/signedranks/default2.aspx)
+online calculator suggest that the solution is $p = 0.594$ (note that the
+online calculator uses $W$ as their symbol for the test statistic but still
+with a value of 18 - inconsistent with both SciPy and Wikipedia - and that
+their answer of $z = 0.5331$ needs to be converted to $p = 0.594$ via
+`stats.norm.sf(abs(-0.5331)) * 2`). This result can be replicated with SciPy by
+using the "asymptotic" method for calculating the *p*-value:
+
+```{python}
+statistic, pvalue = stats.wilcoxon(diffs, method='asymptotic')
+
+print(f'Test statistic = {statistic}, p = {pvalue:.3f}')
+```
+
+This `method='asymptotic'` option is one of three provided by SciPy, along with
+`method='exact'` and `method='auto'`. In general, `'asymptotic'` is better for
+large sample sizes while `'exact'` is better for small sample sizes, but this
+is something that is affected by the number of ties (multiple pairs of
+data points with the same numerical difference) and zeros (pairs of data
+points with the same value). Fortunately, the third option -
+`'auto'` - will *auto*matically choose the best method out of the two
+for your data, and this is the default option.
+
+In conclusion, it is sufficient to use SciPy's implementation of the Wilcoxon
+signed-rank test as has been used in the two examples above. It uses a slightly
+different test statistic and thus will have a slightly different *p*-value
+compared to the method used on the Wikipedia page, but the difference is small
+and the method is still valid.
+
+[⇦ Back](../../../python.html)
+
+</font>
