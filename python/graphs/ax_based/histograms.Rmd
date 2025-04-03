@@ -94,7 +94,29 @@ ax.set_xlabel('Smarts')
 ax.set_ylabel('Count')
 ```
 
-Note the Latex formatting being used in the title; the `r` prepending the string causes it to be interpreted as a 'raw string literal' which is needed for this to work.
+Note the LaTeX formatting being used in the title; the `r` prepending the string causes it to be interpreted as a 'raw string literal' which is needed for this to work.
+
+We can change the number of bins to make the histogram more or less precise by adding a second parameter to the `plt.hist()` function call (or by using its keyword: `bins`):
+
+```{python, eval = FALSE}
+# Create a histogram with 50 bins
+ax = plt.axes()
+ax.hist(scores, 50)
+ax.set_title(r'Histogram of IQ Scores: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Count')
+```
+
+```{python, results = 'hide', echo = FALSE}
+# Create a histogram with 50 bins
+ax = plt.axes()
+ax.hist(scores, 50)
+ax.set_title(r'Histogram of IQ Scores: $\mu=100,\ \sigma=15$')
+ax.set_xlabel('Smarts')
+ax.set_ylabel('Count')
+```
+
+Having *more* bins will make each one finer and will *increase* the precision while having *fewer* bins will make each one coarser and will *lower* the precision.
 
 Normalising
 ===========
@@ -142,8 +164,8 @@ The above functions can be customised using generic Matplotlib keyword arguments
 - `loc` sets the **loc**ation of the legend
 
 ```{python, eval = FALSE}
-ax = plt.axes()
 # Normalised histogram
+ax = plt.axes()
 ax.hist(
     scores, 20, density=True,
     histtype='stepfilled',
@@ -168,8 +190,8 @@ ax.legend(loc='upper left')
 ```
 
 ```{python, results = 'hide', echo = FALSE}
-ax = plt.axes()
 # Normalised histogram
+ax = plt.axes()
 ax.hist(
     scores, 20, density=True,
     histtype='stepfilled',
@@ -193,9 +215,9 @@ ax.axis([40, 160, 0, 0.03])
 ax.legend(loc='upper left')
 ```
 
-More Latex formatting
+More LaTeX Formatting
 =====================
-While the headings of the above plots already use Latex's math mode to get the Greek letters mu and sigma, additional Latex functionality (and more control of figures' size and quality) can be unlocked by using the following code:
+While the headings of the above plots already use LaTeX's math mode to get the Greek letters mu and sigma, additional LaTeX functionality (and more control of figures' size and quality) can be unlocked by using the following code:
 
 ```{python}
 # Make figures A5 in size
@@ -203,7 +225,7 @@ A = 5
 plt.rc('figure', figsize=[46.82 * .5**(.5 * A), 33.11 * .5**(.5 * A)])
 # Image quality
 plt.rc('figure', dpi=141)
-# Be able to add Latex
+# Be able to add LaTeX
 plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
@@ -212,8 +234,8 @@ plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 The plot now looks like this:
 
 ```{python, eval = FALSE}
-ax = plt.axes()
 # Normalised histogram
+ax = plt.axes()
 ax.hist(
     scores, 20, density=True,
     histtype='stepfilled',
@@ -241,8 +263,8 @@ ax.legend(loc='upper left')
 ```
 
 ```{python, results = 'hide', echo = FALSE}
-ax = plt.axes()
 # Normalised histogram
+ax = plt.axes()
 ax.hist(
     scores, 20, density=True,
     histtype='stepfilled',
