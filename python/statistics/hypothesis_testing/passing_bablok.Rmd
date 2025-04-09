@@ -4,8 +4,8 @@ output:
     html_document:
         theme: paper
         highlight: textmate
-        # number_sections: true
-        # toc: true
+        number_sections: true
+        toc: true
         includes:
             before_body: ../../../google_analytics.html
 ---
@@ -16,46 +16,51 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+knitr::opts_chunk$set(engine.path = "/usr/bin/python3.12")
 ```
 
-This type of regression analysis was first published in Passing & Bablok (1983)<sup>1</sup>. As the [Wikipedia article](https://en.wikipedia.org/wiki/Passing%E2%80%93Bablok_regression) states:
+**Passing–Bablok regression** is a *non-parametric* way to, for example, compare two methods of measuring something in order to judge if they are equivalent or not. It was first described in Passing & Bablok (1983).[^1]
 
-> Passing–Bablok regression is a statistical method for non-parametric regression analysis suitable for method comparison studies.
+General Overview
+================
+Essentially, when two different methods are being used to take the same measurements the values generated can be plotted on a scatter plot and a line-of-best-fit can fitted. The Passing-Bablok method does this fitting by:
 
-Essentially, when two different methods are being used to take the same measurement a line-of-best-fit can fitted to the points. The Passing-Bablok method does this by:
-
-- Drawing a line between each pair of points in turn
+- Looking at every combination of two points in the scatter plot
+- Drawing a line between the two points in each of these combinations
 - Taking the gradient of each of these lines
 - Extending these lines to the y-axis and taking the y-intercepts
 - Taking the median of the gradients and the median of the y-intercepts of these lines
 
-The median gradient and median y-intercept create the line-of-best-fit. It has an associated confidence interval which can be interpreted as follows:
+The median gradient and median y-intercept create the overall line-of-best-fit. This has an associated confidence interval which can be interpreted as follows:
 
-- If 1 is within the confidence interval of the gradient and 0 within the confidence interval of the y-intercept, then the two methods are comparable within the investigated concentration range
-- If 1 is not in the confidence interval of the gradient then there is a proportional difference between the two methods
-- If 0 is not in the confidence interval of the y-interval then there is a systematic difference
+- If 1 is within the confidence interval of the gradient and 0 is within the confidence interval of the y-intercept, then the two methods are comparable within the investigated concentration range
+- If 1 is not within the confidence interval of the gradient then there is a proportional difference between the two methods
+- If 0 is not within the confidence interval of the y-intercept then there is a systematic difference
 
-Let's use the following hypothetical example dataset which comes from Giavarina (2015)<sup>2</sup>. Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements below:
+See [the Wikipedia article](https://en.wikipedia.org/wiki/Passing%E2%80%93Bablok_regression) on Passing–Bablok regression for a longer overview.
+
+Worked Example: Giavarina (2015)
+================================
+Let's use the following hypothetical example dataset which comes from Giavarina (2015)[^2]. Imagine that a set of objects were each measured twice - once using 'Method A' and once using 'Method B' - giving the two lists of measurements below:
 
 ```{python}
 import pandas as pd
 
-df = pd.DataFrame({
+dct = {
     'Method A': [
-        1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
-        150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
-        650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
+        1, 5, 10, 20, 50, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 350,
+        400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000
     ],
     'Method B': [
-        8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
-        181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
-        738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
+        8, 16, 30, 24, 39, 54, 40, 68, 72, 62, 122, 80, 181, 259, 275, 380,
+        320, 434, 479, 587, 626, 648, 738, 766, 793, 851, 871, 957, 1001, 960
     ]
-})
+}
+df = pd.DataFrame(dct)
+print(df.head())
 ```
 
-First, let's visualise this data:
+First, let's visualise this raw data:
 
 ```{python eval = FALSE}
 import matplotlib.pyplot as plt
@@ -67,6 +72,7 @@ plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
+# Plot
 ax = plt.axes()
 ax.set_title('The Raw Data')
 ax.set_xlabel('Method A')
@@ -100,6 +106,7 @@ plt.rc('text', usetex=True)
 plt.rc('font', family='serif')
 plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
+# Plot
 ax = plt.axes()
 ax.set_title('The Raw Data')
 ax.set_xlabel('Method A')
@@ -123,269 +130,170 @@ ax.legend(frameon=False)
 plt.show()
 ```
 
-Next, take each pair of points on this scatter plot and calculate the gradient of the straight line that connects them:
+Calculate Gradients
+===================
+Next, take each pair of points on this scatter plot and calculate the gradient ('slope', $S$) of the straight line that connects them.
 
-```{python}
-#
-# Calculate the gradients of the lines between each pair of points
-#
-method1 = df['Method A']
-method2 = df['Method B']
-n_points = len(method1)
-# sv is a list of the gradients between of each pair of points
-sv = []
-# k is the number of gradients less than -1
-k = 0
-for i in range(n_points - 1):
-    for j in range(i + 1, n_points):
-        dy = method2[j] - method2[i]
-        dx = method1[j] - method1[i]
-        # Ignore gradients that are vertical (ie the x values of the points
-        # are the same)
-        if dx != 0:
-            gradient = dy / dx
-        elif dy < 0:
-            gradient = -1.e+23
-        elif dy > 0:
-            gradient = 1.e+23
-        else:
-            gradient = None
-        if gradient is not None:
-            sv.append(gradient)
-            k += (gradient < -1)
-# Sort the gradients into ascending order
-sv.sort()
-```
-
-Find the estimated gradient of the line-of-best-fit from the list of all between-point gradients and calculate the confidence interval of this value:
-
-```{python}
-import math
-
-#
-# Find the estimated gradient and confidence limits
-#
-m0 = (len(sv) - 1) / 2
-if m0 == int(m0):
-    # If odd
-    gradient_est = sv[k + int(m0)]
-else:
-    # If even
-    gradient_est = 0.5 * (sv[k + int(m0 - 0.5)] + sv[k + int(m0 + 0.5)])
-# Calculate the index of the upper and lower confidence bounds
-w = 1.96
-ci = w * math.sqrt((n_points * (n_points - 1) * (2 * n_points + 5)) / 18)
-n_gradients = len(sv)
-m1 = int(round((n_gradients - ci) / 2))
-m2 = n_gradients - m1 - 1
-# Calculate the lower and upper bounds of the gradient
-(gradient_lb, gradient_ub) = (sv[k + m1], sv[k + m2])
-```
-
-Finally, get the estimated y-intercept of the line-of-best-fit from the list of all y-intercepts:
+- Exclude pairs of points if:
+    - They are identical (because the idea of calculating the gradient of a line connecting two points that have the same coordinates is meaningless), or if;
+    - The gradient of their connecting line is equal to -1 (for reasons of symmetry that are explained in the Passing & Bablok paper)
+- If two points have the same x-value and thus their connecting line is vertical, define the gradient of this line to be either $+\infty$ or $-\infty$ depending on the sign of the difference of their y-values
 
 ```{python}
 import numpy as np
 
+# Convert data to arrays
+x = df['Method A'].values
+y = df['Method B'].values
 
-def calc_intercept(method1, method2, gradient):
-    """Calculate intercept given points and a gradient."""
-    temp = []
-    for i in range(len(method1)):
-        temp.append(method2[i] - gradient * method1[i])
-    return np.median(temp)
-
-
-# Calculate the intercept as the median of all the intercepts of all the
-# lines connecting each pair of points
-int_est = calc_intercept(method1, method2, gradient_est)
-int_ub = calc_intercept(method1, method2, gradient_lb)
-int_lb = calc_intercept(method1, method2, gradient_ub)
+# Initialise a list of the gradients between each combination of two points
+S = []
+# Iterate over all combinations of two points
+for i in range(len(x) - 1):
+    for j in range(i + 1, len(x)):
+        y_i, y_j, x_i, x_j = y[i], y[j], x[i], x[j]
+        # Ignore identical points
+        if (y_i == y_j) and (x_i == x_j):
+            continue
+        # Avoid division by zero errors
+        if x_i == x_j:
+            if y_i > y_j:
+                # Set the gradient to positive infinity
+                gradient = np.inf
+                S.append(gradient)
+                continue
+            else:
+                # Set the gradient to negative infinity
+                gradient = -np.inf
+                S.append(gradient)
+                continue
+        # Calculate the gradient between this pair of points
+        gradient = (y_i - y_j) / (x_i - x_j)
+        # Ignore any gradient equal to -1
+        if gradient == -1:
+            continue
+        # Add the gradient to the list of gradients
+        S.append(gradient)
 ```
 
-This yields a result:
-
-```{python eval = FALSE}
-print(f'Gradient = {gradient_est:4.2f} ({gradient_ub:4.2f} - {gradient_lb:4.2f})')
-print(f'Y-intercept = {int_est:4.2f} ({int_ub:4.2f} - {int_lb:4.2f})')
-```
-
-```{python echo = FALSE}
-print(f'Gradient = {gradient_est:4.2f} ({gradient_ub:4.2f} - {gradient_lb:4.2f})')
-print(f'y-intercept = {int_est:4.2f} ({int_ub:4.2f} - {int_lb:4.2f})')
-```
-
-We can again visualise this, with the line-of-best-fit and its confidence interval added in:
-
-```{python eval = FALSE}
-#
-# Plot
-#
-ax = plt.axes()
-ax.set_title('Passing-Bablok Regression')
-ax.set_xlabel('Method A')
-ax.set_ylabel('Method B')
-# Scatter plot
-ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
-# Get axis limits
-left, right = plt.xlim()
-bottom, top = plt.ylim()
-# Change axis limits
-ax.set_xlim(0, right)
-ax.set_ylim(0, top)
-# Reference line
-label = 'Reference line'
-ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
-# Passing-Bablok regression line
-x = np.array([left, right])
-y = gradient_est * x + int_est
-ax.plot(x, y, label=f'{gradient_est:4.2f}x + {int_est:4.2f}')
-# Passing-Bablok regression line - confidence intervals
-x = np.array([left, right])
-y_lb = gradient_lb * x + int_lb
-y_ub = gradient_ub * x + int_ub
-label = f'Upper CI: {gradient_ub:4.2f}x + {int_ub:4.2f}'
-ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
-label = f'Lower CI: {gradient_lb:4.2f}x + {int_lb:4.2f}'
-ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
-ax.fill_between(x, y_ub, y_lb, alpha=0.2)
-# Set aspect ratio
-ax.set_aspect('equal')
-# Legend
-ax.legend(frameon=False)
-# Show
-plt.show()
-```
-
-```{python results = "hide", echo = FALSE}
-#
-# Plot
-#
-ax = plt.axes()
-ax.set_title('Passing-Bablok Regression')
-ax.set_xlabel('Method A')
-ax.set_ylabel('Method B')
-# Scatter plot
-ax.scatter(df['Method A'], df['Method B'], c='k', s=20, alpha=0.6, marker='o')
-# Get axis limits
-left, right = plt.xlim()
-bottom, top = plt.ylim()
-# Change axis limits
-ax.set_xlim(0, right)
-ax.set_ylim(0, top)
-# Reference line
-label = 'Reference line'
-ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
-# Passing-Bablok regression line
-x = np.array([left, right])
-y = gradient_est * x + int_est
-ax.plot(x, y, label=f'{gradient_est:4.2f}x + {int_est:4.2f}')
-# Passing-Bablok regression line - confidence intervals
-x = np.array([left, right])
-y_lb = gradient_lb * x + int_lb
-y_ub = gradient_ub * x + int_ub
-label = f'Upper CI: {gradient_ub:4.2f}x + {int_ub:4.2f}'
-ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
-label = f'Lower CI: {gradient_lb:4.2f}x + {int_lb:4.2f}'
-ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
-ax.fill_between(x, y_ub, y_lb, alpha=0.2)
-# Set aspect ratio
-ax.set_aspect('equal')
-# Legend
-ax.legend(frameon=False)
-# Show
-plt.show()
-```
-
-If we are doing multiple Passing-Bablok analyses it will be more convenient in the long run to create a function for it. This looks like this:
+Because we are considering every pair of points in our dataset and our dataset has a sample size of 30, the number of ways to connect two points is $\binom{30}{2} = 435$. However, one of the pairs of points - $\left( 70, 72 \right)$ and $\left( 80, 62 \right)$ - has a connecting line the gradient of which is -1 and Passing & Bablok tell us to exclude such combinations. The number of gradients we have calculated, $N$, is thus 434:
 
 ```{python}
-def passing_bablok(method1, method2):
-    """Perform Passing-Bablok analysis."""
-    #
-    # Calculate the gradients of the lines between each pair of points
-    #
-    n_points = len(method1)
-    # sv is a list of the gradients between of each pair of points
-    sv = []
-    # k is the number of gradients less than -1
-    k = 0
-    for i in range(n_points - 1):
-        for j in range(i + 1, n_points):
-            dy = method2[j] - method2[i]
-            dx = method1[j] - method1[i]
-            # Ignore gradients that are vertical (ie the x values of the points
-            # are the same)
-            if dx != 0:
-                gradient = dy / dx
-            elif dy < 0:
-                gradient = -1.e+23
-            elif dy > 0:
-                gradient = 1.e+23
-            else:
-                gradient = None
-            if gradient is not None:
-                sv.append(gradient)
-                k += (gradient < -1)
-    # Sort the gradients into ascending order
-    sv.sort()
-
-    #
-    # Find the estimated gradient and confidence limits
-    #
-    m0 = (len(sv) - 1) / 2
-    if m0 == int(m0):
-        # If odd
-        gradient_est = sv[k + int(m0)]
-    else:
-        # If even
-        gradient_est = 0.5 * (sv[k + int(m0 - 0.5)] + sv[k + int(m0 + 0.5)])
-    # Calculate the index of the upper and lower confidence bounds
-    w = 1.96
-    ci = w * math.sqrt((n_points * (n_points - 1) * (2 * n_points + 5)) / 18)
-    n_gradients = len(sv)
-    m1 = int(round((n_gradients - ci) / 2))
-    m2 = n_gradients - m1 - 1
-    # Calculate the lower and upper bounds of the gradient
-    (gradient_lb, gradient_ub) = (sv[k + m1], sv[k + m2])
-
-    def calc_intercept(method1, method2, gradient):
-        """Calculate intercept given points and a gradient."""
-        temp = []
-        for i in range(len(method1)):
-            temp.append(method2[i] - gradient * method1[i])
-        return np.median(temp)
-
-    # Calculate the intercept as the median of all the intercepts of all the
-    # lines connecting each pair of points
-    int_est = calc_intercept(method1, method2, gradient_est)
-    int_ub = calc_intercept(method1, method2, gradient_lb)
-    int_lb = calc_intercept(method1, method2, gradient_ub)
-
-    return (gradient_est, gradient_lb, gradient_ub), (int_est, int_lb, int_ub)
+# N is the number of elements in S (which might be fewer than the number of
+# raw data points)
+N = len(S)
+print(N)
 ```
 
-Here it is all put together:
+Calculate the (Shifted) Median
+==============================
+In preparation for taking the median value of the gradients, sort the list of gradients:
+
+```{python}
+# Sort the list of gradients in preparation for taking the median
+S.sort()
+```
+
+However, as Passing & Bablok point out, the values of these gradients are not independent and so their median would be a biased estimator of the gradient of the overall line-of-best-fit. As such, we need to use an offset, $K$, to calculate a shifted median, $b$, which can be used as an estimate for the overall gradient. This offset is defined as the number of gradients that have a value of less than -1:
+
+```{python}
+# K is the number of gradients less than -1
+S = np.array(S)
+K = (S < -1).sum()
+print(K)
+```
+
+...and the estimated overall gradient of the line-of-best-fit is determined by taking a shifted median of all the gradients:
+
+```{python}
+# Calculate the shifted median
+if N % 2 != 0:
+    # If N is odd
+    idx = (N + 1) / 2 + K
+    # Convert to an integer and adjust for the fact that Python is 0-indexed
+    idx = int(idx) - 1
+    b = S[idx]
+else:
+    # If N is even
+    idx = N / 2 + K
+    # Convert to an integer and adjust for the fact that Python is 0-indexed
+    idx = int(idx) - 1
+    b = 0.5 * (S[idx] + S[idx + 1])
+print(b)
+```
+
+Using this estimated gradient of the line-of-best-fit, we can plug in the raw data to get the estimated y-intercept of the line-of-best-fit, $a$, as follows:
+
+```{python}
+a = np.median(y - b * x)
+print(a)
+```
+
+This gives us:
+
+```{python}
+print(f'Line-of-best-fit: y = {a:4.2f} + {b:4.2f} x')
+```
+
+These values match the source we are using (Giavarina (2015)).
+
+Calculate the Confidence Intervals
+==================================
+Usually we are interested in the 95% confidence interval and so could simply use the well-known fact that this interval width corresponds to about 1.96 (or about 2) standard deviations either side of the mean. However, let's calculate this explicitly to make sure we are being accurate:
+
+```{python}
+from scipy import stats as st
+
+# Confidence level
+C = 0.95  # 95%
+# Significance level
+gamma = 1 - C  # 0.05
+# Quantile (the cumulative probability; two-tailed)
+q = 1 - (gamma / 2)  # 0.975
+# Critical z-score, calculated using the percent-point function (aka the
+# quantile function) of the normal distribution
+w = st.norm.ppf(q)  # 1.96
+
+print(w)
+```
+
+Passing & Bablok provide formulas for getting the indexes of the gradients that correspond to the bounds of the confidence intervals:
+
+```{python}
+# Sample size
+n = len(x)
+
+# Intermediate values
+C_gamma = w * np.sqrt((n * (n - 1) * (2 * n + 5)) / 18)
+M_1 = np.round((N - C_gamma) / 2)
+M_2 = N - M_1 + 1
+
+print(C_gamma, M_1, M_2)
+```
+
+```{python}
+# Get the lower and upper bounds of the confidence interval for the gradient
+# (convert floats to ints and subtract 1 to adjust for Python being 0-indexed)
+b_L = S[int(M_1) + K - 1]
+b_U = S[int(M_2) + K - 1]
+# Get the lower and upper bounds of the confidence interval for the y-intercept
+a_L = np.median(y - b_U * x)
+a_U = np.median(y - b_L * x)
+```
+
+We can check that these results indeed still match the source material (Giavarina (2015)):
+
+```{python, results = "hold"}
+print(f'Gradient = {b:4.2f} ({b_L:4.2f} to {b_U:4.2f})')
+print(f'y-intercept = {a:4.2f} ({a_L:4.2f} to {a_U:4.2f})')
+```
+
+Visualise the Regression
+========================
+Re-plotting the raw data with the regression line plus confidence interval added in:
 
 ```{python eval = FALSE}
-df = pd.DataFrame({
-    'Method A': [
-        1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
-        150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
-        650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
-    ],
-    'Method B': [
-        8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
-        181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
-        738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
-    ]
-})
-
-beta, alpha = passing_bablok(df['Method A'], df['Method B'])
-
-#
 # Plot
-#
 ax = plt.axes()
 ax.set_title('Passing-Bablok Regression')
 ax.set_xlabel('Method A')
@@ -403,17 +311,17 @@ label = 'Reference line'
 ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
 # Passing-Bablok regression line
 x = np.array([left, right])
-y = beta[0] * x + alpha[0]
-ax.plot(x, y, label=f'{beta[0]:4.2f}x + {alpha[0]:4.2f}')
+y = a + b * x
+ax.plot(x, y, label=f'{b:4.2f}x + {a:4.2f}')
 # Passing-Bablok regression line - confidence intervals
 x = np.array([left, right])
-y_lb = beta[1] * x + alpha[1]
-y_ub = beta[2] * x + alpha[2]
-label = f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
-ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
-label = f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
-ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
-ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+y_L = a_L + b_L * x
+y_U = a_U + b_U * x
+label = f'Upper CI: {b_U:4.2f}x + {a_U:4.2f}'
+ax.plot(x, y_U, c='tab:blue', alpha=0.2, label=label)
+label = f'Lower CI: {b_L:4.2f}x + {a_L:4.2f}'
+ax.plot(x, y_L, c='tab:blue', alpha=0.2, label=label)
+ax.fill_between(x, y_U, y_L, alpha=0.2)
 # Set aspect ratio
 ax.set_aspect('equal')
 # Legend
@@ -423,24 +331,7 @@ plt.show()
 ```
 
 ```{python results = "hide", echo = FALSE}
-df = pd.DataFrame({
-    'Method A': [
-        1.0, 5.0, 10.0, 20.0, 50.0, 40.0, 50.0, 60.0, 70.0, 80.0, 90.0, 100.0,
-        150.0, 200.0, 250.0, 300.0, 350.0, 400.0, 450.0, 500.0, 550.0, 600.0,
-        650.0, 700.0, 750.0, 800.0, 850.0, 900.0, 950.0, 1000.0
-    ],
-    'Method B': [
-        8.0, 16.0, 30.0, 24.0, 39.0, 54.0, 40.0, 68.0, 72.0, 62.0, 122.0, 80.0,
-        181.0, 259.0, 275.0, 380.0, 320.0, 434.0, 479.0, 587.0, 626.0, 648.0,
-        738.0, 766.0, 793.0, 851.0, 871.0, 957.0, 1001.0, 960.0
-    ]
-})
-
-beta, alpha = passing_bablok(df['Method A'], df['Method B'])
-
-#
 # Plot
-#
 ax = plt.axes()
 ax.set_title('Passing-Bablok Regression')
 ax.set_xlabel('Method A')
@@ -458,17 +349,17 @@ label = 'Reference line'
 ax.plot([left, right], [left, right], c='grey', ls='--', label=label)
 # Passing-Bablok regression line
 x = np.array([left, right])
-y = beta[0] * x + alpha[0]
-ax.plot(x, y, label=f'{beta[0]:4.2f}x + {alpha[0]:4.2f}')
+y = a + b * x
+ax.plot(x, y, label=f'{b:4.2f}x + {a:4.2f}')
 # Passing-Bablok regression line - confidence intervals
 x = np.array([left, right])
-y_lb = beta[1] * x + alpha[1]
-y_ub = beta[2] * x + alpha[2]
-label = f'Upper CI: {beta[2]:4.2f}x + {alpha[2]:4.2f}'
-ax.plot(x, y_ub, c='tab:blue', alpha=0.2, label=label)
-label = f'Lower CI: {beta[1]:4.2f}x + {alpha[1]:4.2f}'
-ax.plot(x, y_lb, c='tab:blue', alpha=0.2, label=label)
-ax.fill_between(x, y_ub, y_lb, alpha=0.2)
+y_L = a_L + b_L * x
+y_U = a_U + b_U * x
+label = f'Upper CI: {b_U:4.2f}x + {a_U:4.2f}'
+ax.plot(x, y_U, c='tab:blue', alpha=0.2, label=label)
+label = f'Lower CI: {b_L:4.2f}x + {a_L:4.2f}'
+ax.plot(x, y_L, c='tab:blue', alpha=0.2, label=label)
+ax.fill_between(x, y_U, y_L, alpha=0.2)
 # Set aspect ratio
 ax.set_aspect('equal')
 # Legend
@@ -476,13 +367,124 @@ ax.legend(frameon=False)
 # Show
 plt.show()
 ```
+
+Worked Example: Zaiontz (2025)
+==============================
+Use the following data from [the Real Statistics page](https://real-statistics.com/regression/passing-bablok-regression/passing-bablok-regression-basic-concepts/):
+
+```{python}
+x = np.array([
+    347, 249, 369, 286, 329, 410, 267, 295, 500, 286, 271, 506, 117, 329, 132,
+    274, 277, 198])
+y = np.array([
+    371, 283, 373, 341, 353, 454, 214, 230, 510, 295, 286, 453, 114, 328, 109,
+    203, 305, 154
+])
+```
+
+We'll do the same process but wrapped into a function:
+
+```{python}
+def passing_bablok(x, y):
+    """Perform Passing-Bablok analysis."""
+    # Initialise a list of the gradients between each combination of two points
+    S = []
+    # Iterate over all combinations of two points
+    for i in range(len(x) - 1):
+        for j in range(i + 1, len(x)):
+            y_i, y_j, x_i, x_j = y[i], y[j], x[i], x[j]
+            # Ignore identical points
+            if (y_i == y_j) and (x_i == x_j):
+                continue
+            # Avoid division by zero errors
+            if x_i == x_j:
+                if y_i > y_j:
+                    # Set the gradient to positive infinity
+                    gradient = np.inf
+                    S.append(gradient)
+                    continue
+                else:
+                    # Set the gradient to negative infinity
+                    gradient = -np.inf
+                    S.append(gradient)
+                    continue
+            # Calculate the gradient between this pair of points
+            gradient = (y_i - y_j) / (x_i - x_j)
+            # Ignore any gradient equal to -1
+            if gradient == -1:
+                continue
+            # Add the gradient to the list of gradients
+            S.append(gradient)
+
+    # N is the number of elements in S (which might be fewer than the number of
+    # raw data points)
+    N = len(S)
+
+    # Sort the list of gradients in preparation for taking the median
+    S.sort()
+
+    # K is the number of gradients less than -1
+    S = np.array(S)
+    K = (S < -1).sum()
+
+    # Calculate the shifted median
+    if N % 2 != 0:
+        # If N is odd
+        idx = (N + 1) / 2 + K
+        # Convert to an integer and adjust for Python being 0-indexed
+        idx = int(idx) - 1
+        b = S[idx]
+    else:
+        # If N is even
+        idx = N / 2 + K
+        # Convert to an integer and adjust for Python being 0-indexed
+        idx = int(idx) - 1
+        b = 0.5 * (S[idx] + S[idx + 1])
+    a = np.median(y - b * x)
+
+    # Confidence level
+    C = 0.95  # 95%
+    # Significance level
+    gamma = 1 - C  # 0.05
+    # Quantile (the cumulative probability; two-tailed)
+    q = 1 - (gamma / 2)  # 0.975
+    # Critical z-score, calculated using the percent-point function (aka the
+    # quantile function) of the normal distribution
+    w = st.norm.ppf(q)  # 1.96
+
+    # Sample size
+    n = len(x)
+
+    # Intermediate values
+    C_gamma = w * np.sqrt((n * (n - 1) * (2 * n + 5)) / 18)
+    M_1 = np.round((N - C_gamma) / 2)
+    M_2 = N - M_1 + 1
+
+    # Get lower and upper bounds of the confidence interval for the gradient
+    # (convert floats to ints and subtract 1 to adjust for 0-indexing)
+    b_L = S[int(M_1) + K - 1]
+    b_U = S[int(M_2) + K - 1]
+    # Get lower and upper bounds of the confidence interval for the y-intercept
+    a_L = np.median(y - b_U * x)
+    a_U = np.median(y - b_L * x)
+
+    return a, a_L, a_U, b, b_L, b_U
+
+
+a, a_L, a_U, b, b_L, b_U = passing_bablok(x, y)
+print(f'Gradient = {b:6.4f} ({b_L:6.4f} to {b_U:6.4f})')
+print(f'y-intercept = {a:6.4f} ({a_L:6.4f} to {a_U:6.4f})')
+```
+
+These values precisely match those from the original page.
 
 References
 ==========
 
-<sup>1</sup>Passing H, Bablok W (1983). "A new biometrical procedure for testing the equality of measurements from two different analytical methods. Application of linear regression procedures for method comparison studies in Clinical Chemistry, Part I". *Journal of Clinical Chemistry and Clinical Biochemistry*. **21** (11): 709–20. doi: [10.1515/cclm.1983.21.11.709](https://doi.org/10.1515%2Fcclm.1983.21.11.709). PMID: [6655447](https://pubmed.ncbi.nlm.nih.gov/6655447/)  
-<sup>2</sup>Giavarina D (2015). "Understanding Bland Altman analysis". *Biochemia Medica*. **25** (2):141-151. doi: [10.11613/BM.2015.015](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf).
+[^1]: Passing H, Bablok W. A new biometrical procedure for testing the equality of measurements from two different analytical methods. Application of linear regression procedures for method comparison studies in Clinical Chemistry, Part I. *Journal of Clinical Chemistry and Clinical Biochemistry*. 1983;21(11):709–20. DOI: [10.1515/cclm.1983.21.11.709](https://doi.org/10.1515/cclm.1983.21.11.709). PMID: [6655447](https://pubmed.ncbi.nlm.nih.gov/6655447). Available [here](https://d-nb.info/1207644072/34). Jump to reference:&nbsp;
 
+[^2]: Giavarina D. Understanding Bland Altman analysis. *Biochemia Medica*. 2015;25(2):141-151. DOI: [10.11613/BM.2015.015](https://doi.org/10.11613/BM.2015.015). PMID: [26110027](https://pubmed.ncbi.nlm.nih.gov/26110027). Available [here](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4470095/pdf/bm-25-141.pdf). Jump to reference:&nbsp;
+[^3]: 
 [⇦ Back](../../../python.html)
 
 </font>

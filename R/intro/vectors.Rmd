@@ -35,22 +35,66 @@ You can also use the `vector()` function, which creates an empty vector of a cer
 x <- vector("integer", 4)
 ```
 
+Information about a Vector
+==========================
+Basic information about a vector that has been created can be retrieved by calling various functions with the vector in question as the input:
+
+- `length()` for the number of elements in the vector
+- `class()` for the type of data of the elements in the vector
+- `min()`, `max()` and `range()` for the minimum, maximum and range of the data
+
+```{r, results = "hold"}
+x <- c(6, 2, 8, 3, 1, 8)
+length(x)
+class(x)
+min(x)
+max(x)
+range(x)
+```
+
 Indexing a Vector
 =================
-To see what is located at a certain point in the vector, use square brackets to index it. For example, to see the second element of `x = c('Alfa', 'Bravo', 'Charlie', 'Delta')`:
-
-```{r echo = FALSE}
-x <- c("Alfa", "Bravo", "Charlie", "Delta")
-```
+To see what value is located at a specific position in a vector, use square brackets and a number to index it:
 
 ```{r}
-print(x[2])
+x <- c("Alfa", "Bravo", "Charlie", "Delta", "Echo")
+# Returns the 2nd element
+x[2]
 ```
 
-To see all elements from the second to the fourth:
+To see multiple specific elements, use a vector of the indexes you are interested in:
 
 ```{r}
-print(x[2:4])
+# Returns the 1st and 3rd elements
+x[c(1, 3)]
+```
+
+To see all elements from one to another, index the vector by using a range of numbers (created by using a colon `:`):
+
+```{r}
+# Returns all elements from the 2nd to the 4th
+x[2:4]
+```
+
+Use `length()` to reference the last value in a vector:
+
+```{r}
+# Returns all elements from the 2nd to the last
+x[2:length(x)]
+```
+
+This is also useful for indexing *from the end* of a vector (although you need to remember to include brackets around statements that you want evaluated, eg `length(x)-2`):
+
+```{r}
+# Returns all elements from the 3rd-last to the end
+x[(length(x)-2):length(x)]
+```
+
+It's usually easier to use the `tail()` function instead:
+
+```{r}
+# Returns all elements from the 3rd-last to the end
+tail(x, n=3)
 ```
 
 Overwriting an Element
@@ -65,6 +109,8 @@ print(x)
 You can also use the `mapvalues()` function from the `plyr` package to specify exactly what values you want to overwrite:
 
 ```{r}
+library(plyr)
+
 x <- plyr::mapvalues(
     x,
     c("Bravo", "Charlie"),
@@ -78,14 +124,14 @@ Appending to a Vector
 To add an element to a vector, simple index one position after the last. For example, if a vector has four elements we need to index position five and set it equal to something:
 
 ```{r}
-x[5] <- "Echo"
+x[6] <- "Foxtrot"
 print(x)
 ```
 
 Be careful though because if you get the element number wrong you will overwrite something instead of appending. A way to guarantee that you will always index the correct position is by using the `length()` function to get the number of elements in the vector. The length also happens to be the position of the last element, so by indexing one more than this value you will always be appending to the vector:
 
 ```{r}
-x[length(x) + 1] <- "Foxtrot"
+x[length(x) + 1] <- "Golf"
 print(x)
 ```
 
