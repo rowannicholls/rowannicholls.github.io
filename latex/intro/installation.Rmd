@@ -42,6 +42,55 @@ Another option is to use LaTeX through an IDE such as Sublime Text. It should wo
 Ubuntu {.tabset}
 ------
 
+### 24.04
+
+**Install LaTeX**
+
+- Option 1: install **TexStudio** (which will install LaTeX as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
+- Option 2: install it from the **terminal** with:
+
+    ```bash
+    sudo apt install texlive-latex-base
+    ```
+
+**Check the Installation**
+
+You can check that it has worked by running the following in the terminal:
+
+```bash
+latex --version
+pdflatex --version
+lualatex --version
+bibtex --version
+```
+
+Each of the above should return a block of text with version, author and license information.
+
+Another way to check that it has worked is to actually create and compile a document:
+
+```bash
+echo '\documentclass{article}\begin{document}Hello, World!\end{document}' > test.tex
+pdflatex test.tex
+```
+
+**Additional Steps**
+
+Next, install some extra things that are missing from the base LaTeX installation:
+
+```bash
+sudo apt install dvipng
+sudo apt install texlive-latex-extra
+sudo apt install texlive-fonts-recommended
+sudo apt install texlive-pictures
+sudo apt install texlive-extra-utils
+sudo apt install texlive-font-utils  # Needed for eps figures to work
+sudo apt install latexmk  # Needed for running LaTeX in Sublime Text
+sudo apt install texlive-lang-greek  # Needed for the textgreek package
+sudo apt install cm-super  # Needed for using LaTeX in Matplotlib plot labels
+```
+
+[⇦ Back](../../latex.html)
+
 ### 20.04 and 22.04
 
 **Install LaTeX**

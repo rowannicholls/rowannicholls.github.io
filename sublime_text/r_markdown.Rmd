@@ -14,23 +14,23 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
-To render R Markdown documents that are open in Sublime Text.
+How to set up Sublime Text to be able to render open R Markdown documents.
 
 Pre-Requisites
 ==============
 - You need to have **R** installed on your computer
-    - On *Ubuntu* you can do this from the terminal with:
+    - On Ubuntu you can do this from the terminal with:
 
         ```bash
-        sudo apt install r-base-core
+        $ sudo apt install r-base-core
         ```
 
-    - On *macOS*, download RStudio from [its website](https://posit.co/downloads/).
+    - On macOS, download RStudio from [its website](https://posit.co/downloads/)
 
     Check that it's worked from the terminal with:
 
     ```bash
-    R --version
+    $ R --version
     ```
 
 - You also need to have the R package **rmarkdown** installed. This can be done by opening R (eg by running `R` in the terminal) and executing:
@@ -39,93 +39,112 @@ Pre-Requisites
     install.packages("rmarkdown")
     ```
 
-- If you will be running Python chunks in your R Markdown files you will need to have the **reticulate** package as well:
+- If you will be running Python chunks in your R Markdown files you will also need to have the **reticulate** package:
 
     ```R
     install.packages("reticulate")
     ```
 
-    It will be useful to have `libpython`, see the "Additional Setup" note below.
+    It might also be useful to have the `libpython` Ubuntu package, see the "Additional Setup" note below.
 
 - **Pandoc** must also be installed
-    - On *Ubuntu* you can get this from the terminal:
+    - On Ubuntu you can get this from the terminal:
 
         ```bash
-        sudo apt-get install pandoc
+        $ sudo apt install pandoc
         ```
 
-    - On *macOS* it can be downloaded from [its website](https://pandoc.org/installing.html).
+    - On macOS it can be downloaded from [its website](https://pandoc.org/installing.html)
 
     Check that you have it from the terminal with:
 
     ```bash
-    pandoc --version
+    $ pandoc --version
     ```
 
-- The **R-IDE** and **LSP** packages need to be installed in Sublime Text:
-    - Command Palette > Package Control: Install Package > R-IDE
-    - Command Palette > Package Control: Install Package > LSP
+Installation
+============
+Install the **R-IDE** and **LSP** packages in Sublime Text:
 
-**Additional Setup for Python Users:**  
-If you run Python code in R Markdown it will use the `python3` command in the background (ie it will use the same version of Python as when you run `python3` in a terminal). This may be exactly what you want, in which case you can skip ahead. If you have multiple versions of Python installed, however, you might want to use a different version to that associated with `python3`, for example you might want to use Python 3.11 which is associated with the command `python3.11`. That can be achieved by adding the following chunk in your R Markdown file:
+- "Preferences" > "Package Control" (Ctrl+Shift+P on Ubuntu and Windows, Cmd+Shift+P on macOS)
+- Search for "Install Package" and hit enter
+- Search for "R-IDE" and hit enter to install it
+- Do the same to install "LSP"
+
+Check that it has worked by opening an R Markdown file (one with `.Rmd` as the extension) in Sublime Text and seeing if the syntax highlighting is working. The current syntax highlighting is displayed in the bottom right-hand corner and can be changed by selecting it and choosing "R-IDE" > "R Markdown".
+
+**Additional Setup for Python Users**  
+If you run Python code in R Markdown it will use the `python3` command in the background (ie it will use the same version of Python as when you run `python3` in a terminal). This may be exactly what you want, in which case you can skip ahead. If you have multiple versions of Python installed, however, you might want to use a different version to that associated with `python3`, for example you might want to use Python 3.13 which is associated with the terminal command `python3.13`. That can be achieved by adding the following chunk in your R Markdown file:
 
 ````{python, eval = FALSE}
 ```{r, echo = FALSE}
 library(knitr)
-opts_chunk$set(engine.path = "/usr/bin/python3.11")
+opts_chunk$set(engine.path = "/usr/bin/python3.13")
 ```
 ````
 
-However, this might result in the following error:
+However, with some versions of Python (eg 3.11) this might result in the following error:
 
 ```
 Error: '/usr/bin/python3.11' was not built with a shared library.
 reticulate can only bind to copies of Python built with '--enable-shared'.
 ```
 
-As mentioned in the error message, your Python does not have a shared library. If you install Python from source (eg if you are on Ubuntu and you download it from the Python website) you should do so with the following step as part of the process in order to create a shared library:
+As mentioned in the error message, your Python does not have a shared library. If you install Python from source (eg if you are on Ubuntu and you downloaded it from the Python website) you should do so with the following step as part of the process in order to create a shared library:
 
 ```bash
-./configure --enable-shared
+$ ./configure --enable-shared
 ```
 
-On Ubuntu, if you install Python a different way (eg by using `apt-get`) then you can download the shared library `libpython` as an [Ubuntu package](https://packages.ubuntu.com/jammy-updates/libpython3.11), eg `libpython3.11` for Python 3.11:
+On Ubuntu, if you install Python a different way (eg by using `apt`) then you can download the shared library `libpython` as an [Ubuntu package](https://packages.ubuntu.com/jammy-updates/libpython3.11), eg `libpython3.11` for Python 3.11:
 
 ```bash
-sudo apt-get install libpython3.11
+$ sudo apt install libpython3.11
 ```
 
 Usage
 =====
-- To start with - just to check that it works - use R-IDE to render an R Markdown file:
-    - Open an R Markdown file (one with `.Rmd` as the extension) in Sublime Text
-    - From the menu bar, click R-IDE > Render R Markdown
-    - This should cause a file to be created. The file type of this output will depend on what option was set with the `output` parameter in the R Markdown file's YAML configuration (eg `output: html_document` will give you an HTMl file)
-- Now check to see if you can do this rendering by invoking a Sublime Text "Build System":
-    + From the menu bar, click Tools > Build. The keyboard shortcut for this is Ctrl+B (*Ubuntu/Windows*) or Cmd+B (*macOS*).
-    + If this doesn't work, you will need to create a Build System manually:
+To start with -- just to check that it works -- use **R-IDE** to render an R Markdown file:
 
-**Creating an R Markdown Build System Manually**
+- Open an R Markdown file (one with `.Rmd` as the extension) in Sublime Text and have it active (click inside it to place your cursor there)
+- Navigate in the menu bar to "R-IDE" > "Render R Markdown". If you don't see this option, skip ahead. If you do see this option, it should cause a file to be created.
+    - The file type of this output will depend on what option was set with the `output` parameter in the R Markdown file's YAML configuration (eg `output: html_document` will give you an HTMl file)
 
-From the menu bar, go to Tools > Build System > New Build System. In the `untitled.sublime-build` file that appears, replace everything with:
+Now check to see if you can do this rendering by invoking a Sublime Text "Build System":
+
+- Navigate in the menu bar to "Tools" > "Build" (Ctrl+B on Ubuntu and Windows, Cmd+B on macOS)
+- If this doesn't work and you see `No Build System` in the lower left-hand corner you will need to create a Build System manually
+
+**Creating an R Markdown Build System Manually**  
+From the menu bar, go to "Tools" > "Build System" > "New Build System". In the `untitled.sublime-build` file that appears, replace everything with:
 
 ```json
 {
     "cmd"       : ["Rscript", "-e", "rmarkdown::render('$file')"],
-    "selector"  : "source.shell, source.Rmd",
+    "selector"  : "text.html.markdown.r"
 }
 ```
 
-Save as `Rmarkdown.sublime-build` in the default location. For the record, these default locations are:
+> Note: the `"selector"` line is needed for this Build System to be associated with files that are within the R Markdown **scope**. To check what scope a file is in, go to "Tools" > "Developer" > "Show Scope Name" (Ctrl+Shift+Alt+P) while the file is active
 
-- *Ubuntu:* `/home/<username>/.config/sublime-text/Packages/User`
-- *macOS:* `/Users/<username>/Library/Application Support/Sublime Text 4/Packages/User`
+Save this file as `R Markdown.sublime-build` in the default location.
 
-To render with the Build System:
+> For the record, these default locations are:
+>
+> - Ubuntu: `/home/<username>/.config/sublime-text/Packages/User`
+> - macOS: `/Users/<username>/Library/Application Support/Sublime Text 4/Packages/User`
+>
+> The parent folder ("Packages") can be opened via "Preferences" > "Browse Packages..."
 
-- Open an R Markdown file with the `.Rmd` extension
-- From the menu bar, go to Tools > Build With...
-- From then on you can just build with Ctrl+B/Cmd+B as the default build system will have been set when you used "Build With..."
+Now you should be able to render your R Markdown file with the Build System:
+
+- Select "Tools" > "Build System" > "R Markdown"
+- Build your R Markdown file with "Tools" > "Build" (Ctrl+B on Ubuntu and Windows, Cmd+B on macOS). You will be able to tell if the Build System is working.
+- Go back to the default behaviour with "Tools" > "Build System" > "Automatic" otherwise Sublime Text will use the R Markdown Build System on *every* file
+
+Now try to build the file again using the "Automatic" Build System. If you get the `No Build System` outcome it means that the R Markdown Build System is working but Sublime Text has simply not associated it with `.Rmd` files: change the `"selector"` line in your `sublime-build` file so that it reflects the top-level **scope** of R Markdown files (go to "Tools" > "Developer" > "Show Scope Name" (Ctrl+Shift+Alt+P) while the file is active to see what this is).
+
+If it works, it means that from now on you can just build R Markdown files with "Tools" > "Build" (Ctrl+B/Cmd+B) every time.
 
 [⇦ Back](../sublime_text.html)
 
