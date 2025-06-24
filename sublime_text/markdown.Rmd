@@ -18,36 +18,46 @@ Packages to Install
 ===================
 Install the following packages one-by-one via Command Palette (Shift+Ctrl+P, or Shift+Cmd+P on macOS) > search for "Package Control: Install Package" > search for each package in turn. Close and re-open Sublime Text after each one finishes installing.
 
-- **MarkdownEditing**
-    - A general Markdown plugin. The main thing it doesn't include is a build system (the MarkdownPreview package has this, though).
-    + *Note:* this package introduces a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) (see below) to fix it.
-    - To change the colour scheme of Markdown text windows:
-        - Have the window with the undesirable colour scheme active
-        - Preferences > Settings - Syntax Specific > add the following into the 'User' settings (left-hand side):
-        ```json
-        {
-            "extensions":
-            [
-                "md"
-            ],
-            "color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
-            "save_on_focus_lost": true,
-            "line_numbers": true,
-            "translate_tabs_to_spaces": false
-        }
-        ```
-    - If it starts to think that .txt files are Markdown file, open a .txt file (ie have that window active) and go: View > Syntax > Open all with current extension as... > your syntax choice
-- **MarkdownPreview**
-    - View rendered Markdown in your browser
-    - Allows you to create an HTML file from a Markdown file by pressing Ctrl+B/Cmd+B
-    - You can create a [user key binding](key_bindings.html) (see below) to immediately open the current Markdown file as a rendered HTML page in your web browser
-- **Markdown Table Formatter**
-    - Easily align columns in Markdown tables
-    - Default key binding: Shift+Ctrl+Alt+T
+### MarkdownEditing
+A general Markdown plugin. This will give you most of what you will need for working with Markdown files, including doing things like collapsing URLs so that they are hidden. The main thing it doesn't include is a build system but the MarkdownPreview package has this, so install that as well!
+
+> *Note:* on macOS this package can introduce a key binding conflict as it overwrites Ctrl+1/2/3. This isn't an issue if you don't use those bindings, but if you do then create a [user key binding](key_bindings.html) (see below) to fix it.
+
+To change the colour scheme of Markdown text windows:
+
+- Have a file with the undesirable colour scheme open and its window active (click to place the cursor inside it)
+- Navigate in the menu to "Preferences" > "Settings - Syntax Specific" and add the following into the 'User' settings (left-hand side):
+
+```json
+{
+    "extensions":
+    [
+        "md"
+    ],
+    "color_scheme": "Packages/Color Scheme - Default/Monokai.tmTheme",
+    "save_on_focus_lost": true,
+    "line_numbers": true,
+    "translate_tabs_to_spaces": false
+}
+```
+
+If Sublime Text starts to think that text files `.txt` are Markdown files `.md`:
+
+- Open a text file and have that window active (click to place the cursor inside it)
+- Either navigate in the menu to "View" > "Syntax" or click the syntax name in the bottom right-hand corner of the window
+- Navigate to "Open all with current extension as..." and choose the correct syntax
+
+### MarkdownPreview
+Allows you to view rendered Markdown in your browser. In other words, it allows you to create an HTML file from a Markdown file.
+
+The correct build system should be selected by default, meaning that you can just press Ctrl+B on Linux/Windows or Cmd+B on macOS and have it work immediately. Optionally, you can create a [user key binding](key_bindings.html) (see below) to immediately open the current Markdown file as a rendered HTML page in your web browser.
+
+### Markdown Table Formatter
+Easily align columns in Markdown tables. The default key binding for this is Shift+Ctrl+Alt+T.
 
 Key Bindings
 ============
-To create custom key bindings, go to Preferences > Key Bindings and edit the right-hand-side, eg by entering the following:
+To create custom key bindings, go to "Preferences" > "Key Bindings" and edit the right-hand side, eg by entering the following:
 
 ```json
 [
@@ -63,29 +73,26 @@ To create custom key bindings, go to Preferences > Key Bindings and edit the rig
 ]
 ```
 
-- The first key binding created above is "Shift-Alt-M" which, when activated while a Markdown file is open and in focus (ie your caret is in the Markdown file, not a different file that is open), will render that file and display it in your browser
+- The first key binding created above -- Shift-Alt-M -- will render the current file (build it into an HTML file) and display it in your browser. Make sure you have a Markdown file open and active (with your cursor inside it) in order to have this work!
 - The other five key bindings created above merely override the conflict created by the MarkdownEditing package
-- Markdown Table Formatter uses "Shift+Ctrl+Alt+T"
+- Markdown Table Formatter uses Shift+Ctrl+Alt+T
 
-Troubleshooting
-===============
-
-'No Build System'
------------------
-If you try to build a Markdown file (if you have an .md file open and either press Ctrl+B/Cmd+B or go Tools > Build) and it doesn't work, take a look at the bottom left corner. If it has the message "No build system" then take a look in the Tools > Build System menu. If that contains "Markdown" then it means that Sublime Text has a problem with the *syntax highlighting* (color scheme), not the build system. You can double check this by looking in the View > Syntax menu (or at the bottom right corner where the detected syntax is shown - clicking on this will being up the same menu) and seeing that "Markdown" does not exist.
+Troubleshooting: No Build System
+================================
+If you try to build a Markdown file (if you have an `.md` file open and either press Ctrl+B/Cmd+B or go "Tools" > "Build") and it doesn't work, take a look at the bottom left corner. If it has the message "No build system" then take a look in the "Tools" > "Build System" menu. If that contains "Markdown" then it means that Sublime Text has a problem with the *syntax highlighting* (color scheme), not the build system itself. You can double check this by looking in the "View" > "Syntax" menu (or at the bottom right corner where the detected syntax is shown - clicking on this will being up the same menu) and seeing that "Markdown" does not exist.
 
 Fix this problem by uninstalling and re-installing the **MarkdownEditing** package:
 
-- Tools > Command Palette... (Ctrl+Shift+P/Cmd+Shift+P) > search for "Package Control: Remove Package" > search for "MarkdownEditing"
-- Once uninstalled, do the reverse (searching the Command Palette for "Package Control: Install Package")
+- "Tools" > "Command Palette..." (Ctrl+Shift+P on Linux/Windows, Cmd+Shift+P on macOS) > search for "Package Control: Remove Package" > search for "MarkdownEditing"
+- Once uninstalled, install it again (search the Command Palette for "Package Control: Install Package" > "MarkdownEditing")
 
 Rendering Maths
 ===============
-How to have Latex equations in your Markdown be rendered by Markdown Preview in Sublime Text:
+How to have LaTeX equations in your Markdown be rendered by Markdown Preview in Sublime Text:
 
 - Open the Markdown Preview Package Settings:
-    - *macOS:* Menu bar > Sublime Text > Preferences > Package Settings > Markdown Preview > Settings
-    - *Linux/Windows:* Preferences > Package Settings > Markdown Preview > Settings
+    - On Linux/Windows, navigate in the menu to "Preferences" > "Package Settings" > "Markdown Preview" > "Settings"
+    - On macOS, in the menu bar navigate to "Sublime Text" > "Preferences" > "Package Settings" > "Markdown Preview" > "Settings"
 - In the User settings (on the right-hand side), you need to add two things:
 	- JavaScript settings to point Sublime Text to information about MathJax:
     ```json
@@ -203,21 +210,21 @@ How to have Latex equations in your Markdown be rendered by Markdown Preview in 
 }
 ```
 
-### More details:
+### More Details
 Markdown Preview uses MathJax to turn LaTeX equations into HTML. The settings for how this works are contained in two files:
 
 - The **MathJax JavaScript configuration file** that gets installed by default when you install the Markdown Preview package. This is hidden on your system so it can't be opened normally (even if you un-hide hidden files or search for it in the terminal) so use the PackageResourceViewer package:
-    - Install it via Command Palette > search for "Package Control: Install Package" > search for "PackageResourceViewer"
-    - Use it via Command Palette > search for "PackageResourceViewer: Open Resource" > MarkdownPreview > js/ > math_config.js
+    - Install it via "Command Palette" > search for "Package Control: Install Package" > search for "PackageResourceViewer"
+    - Use it via "Command Palette" > search for "PackageResourceViewer: Open Resource" > "MarkdownPreview" > "js/"" > "math_config.js"
 - The **Markdown Preview Package User Settings**
-    + This is the file mentioned above under "Rendering Maths"
+    - This is the file mentioned above in the "Rendering Maths" section
     - This file does not exist when Markdown Preview is first installed (and if you are happy with how Markdown Preview works then that is fine)
     - If you *do* want to change how Markdown Preview works, this file can be created (and subsequently edited) from inside Sublime Text:
-        - *Linux:* Preferences > Package Settings > Markdown Preview > Settings
+        - Navigate to "Preferences" > "Package Settings" > "Markdown Preview" > "Settings"
         - The right-hand side file contains the user settings (this file is editable) while the left-hand side one has the default settings (this file is not editable but these settings get overridden by the user settings)
     - For reference, once this user settings file has been created it will be located here:
-        - *macOS:* `/Users/<username>/Library/Application Support/Sublime Text/Packages/User/MarkdownPreview.sublime-settings`
-        - *Linux:* `/home/<username>/.config/sublime-text/Packages/User/MarkdownPreview.sublime-settings`
+        - `/home/<username>/.config/sublime-text/Packages/User/MarkdownPreview.sublime-settings` on Linux
+        - `/Users/<username>/Library/Application Support/Sublime Text/Packages/User/MarkdownPreview.sublime-settings` on macOS
 
 [⇦ Back](../sublime_text.html)
 
