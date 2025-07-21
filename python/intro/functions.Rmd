@@ -10,6 +10,11 @@ output:
             before_body: ../../google_analytics.html
 ---
 
+```{r, echo = FALSE}
+library(knitr)
+opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
 <font size="3">
 
 [⇦ Back](../../python.html)
@@ -24,28 +29,46 @@ Python comes with many *built-in functions* that are already available and which
 print('Hello, World!')
 ```
 
-The `print()` function takes an input (in this example the input is the text 'Hello, World!') and returns an output (namely, the same text it was given). So this isn't a very interesting function because it doesn't make any changes to its input, but it's nonetheless a very useful one. Another built-in function is `round()` which, by default, rounds a number off to the nearest whole number. We then need to use the `print()` function to see the result:
+The `print()` function takes an input (in this example the input is the text "Hello, World!") and returns an output (namely, the same text it was given). So this isn't a very interesting function because it doesn't make any changes to its input, but it's nonetheless a very useful one. Another built-in function is `round()` which, by default, rounds a number off to the nearest whole number.
+
+```{python}
+round(123.456)
+```
+
+The above code rounds off the number 123.456 but then does nothing with it! We need to combine `round()` with `print()` if we want to see the result:
 
 ```{python}
 print(round(123.456))
 ```
 
-Alternatively, we could have *assigned* the output to a *variable* and printed that instead:
+Alternatively, we can *assign* the output to a *variable* and print that variable instead of printing the output directly:
 
 ```{python}
 result = round(123.456)
 print(result)
 ```
 
+> For a list of all of Python's built-in functions as well as explanations about how they work, see the [Built-in Functions](https://docs.python.org/3/library/functions.html) documentation page
+
 With the `round()` function, although the default behaviour is to round-off to a whole number you actually also have the option of rounding-off to a given number of decimal places:
 
 ```{python}
-print(round(123.456, 2))
+result = round(123.456, 2)
+print(result)
 ```
 
-In this example the `round()` function needed to be given two things: the value to round-off and the number of decimal places to round-off to. These 'things' are called *arguments* - the proper name for the inputs of a function.
+In this example the `round()` function was given *two* things: a numerical value and then the number of decimal places to which the value should be rounded-off. These 'things' are called *arguments* - the proper name for the inputs of a function.
 
-> The inputs of a function are called **arguments** (or **parameters**) and the outputs are called **returns**. When you use a function it's known as **calling** it.
+> The inputs of a function are called **arguments** and the outputs are called **returns**. When you use a function it's known as **calling** it.
+
+The second argument of `round()` actually has a name: `ndigits` (the **n**umber of **digits** to which you want to round off). You have the option of explicitly using this name when calling the function:
+
+```{python}
+result = round(123.456, ndigits=2)
+print(result)
+```
+
+This is an example of a **keyword argument** (or a **kwarg** for short) - an argument that can be assigned to a keyword.
 
 Functions from Packages
 =======================
@@ -99,7 +122,7 @@ Here's another example using the Pandas (**pan**el **da**ta) package:
 - Install it from the terminal:
 
 ```{bash, eval = FALSE}
-python3.9 -m pip install pandas
+$ python3.9 -m pip install pandas
 ```
 
 - Import it and use it to convert a list into a series (a column of a spreadsheet):
@@ -126,7 +149,7 @@ You can create your own function by:
 
 - Using the `def` statement to indicate that you are **def**ining something
 - Giving it a name
-- Listing the inputs your function requires inside round brackets
+- Listing the **parameters** (inputs) your function requires inside round brackets
 - Following the closing bracket with a colon
 - Including the code the function must run as an indented block
 
@@ -146,6 +169,22 @@ power(18, 2)
 power(5, 7)
 ```
 
+Arguments vs Parameters
+-----------------------
+**Parameters** are the placeholder names of the inputs to a function while the **arguments** are the actual values that get used when a a function is called. Have a look at the following example:
+
+```{python}
+def double_a_number(number):  # `number` is a parameter
+    print(2 * number)
+
+
+double_a_number(32)  # `32` is an argument
+```
+
+In this example, `number` is a parameter as it is the placeholder name for an input to the function; if appears when the function is *defined*. The value `32` is an argument as it is the actual value that is passed into the function, it appears when the function is *called*.
+
+Returns
+-------
 Optionally, you can finish the function with the `return` statement to indicate what the output will be. This output will then be *returned* and you will have to assign it to a variable in order to use it. The following example takes a number and rounds it to a given number of significant figures (ie reduces the total number of digits to the number indicated) before returning it. After it's returned it needs to be assigned to a variable and printed outside of the function itself:
 
 ```{python}
@@ -282,19 +321,30 @@ def sigfigs(number, num_sig_figs=4):
 # Call the function without specifying num_sig_figs (ie the default value will
 # be used)
 rounded = sigfigs(1.2345)
-
 print(rounded)
 ```
 
-You can also call the function explicitly indicating which of your inputs is the optional keyword argument by using the keyword (ie call it by its 'name'):
+You can also call the function explicitly indicating which of your inputs is the optional keyword argument by using the keyword (ie call it by its `name'):
 
 ```{python}
 # Call the function explicitly indicating num_sig_figs
 rounded = sigfigs(1.2345, num_sig_figs=3)
-
 print(rounded)
 ```
 
+In addition to the entire argument being optional, the keyword on its own is optional:
+
+```{python}
+# Call the function implicitly indicating num_sig_figs
+rounded = sigfigs(1.2345, 3)
+print(rounded)
+```
+
+Note that the phrase "keyword argument" implies that a keyword is being used; in the above example the second argument is not actually a keyword argument, it's an optional positional argument.
+
+> When a function argument is passed using a *keyword* it is referred to as a *keyword argument*
+
+### Multiple Keyword Arguments
 Keyword arguments allow you to have multiple options that customise how a function works. For example, the `print()` function has 4 keyword arguments, two of which are:
 
 - `sep` which determines the character(s) that **sep**arate multiple outputs (default: a blank space)
@@ -334,10 +384,47 @@ print('from', 'Python')
 ## Hello World from Python
 ```
 
+Importantly, when using keyword arguments *the order doesn't matter*! This is what separates them from positional arguments where the order does matter (by definition - that's what "positional" means!).
+
 ```{python}
 # It doesn't matter in what order keyword arguments appear
-print('Hello', 'World', 'from', 'Python', end=' ', sep='\t')
+print('Hello', 'World', 'from', 'Python', end='\n', sep='\t')
 ```
+
+### Gotcha: Mutable Default Arguments
+Watch out for default arguments that are *mutable* (changeable), it's best practice to avoid them entirely! Take the following example of a function that can be used to add the result of a sports team's latest match to a list of their results for the season so far:
+
+```{python}
+def add_result(latest, season=[]):
+    season.append(latest)
+    return season
+```
+
+The default value for `season` is an empty list, which is mutable. If their first game is a win we can use the function as follows:
+
+```{python}
+latest_result = 'W'
+results_this_season = add_result(latest_result)
+print(results_this_season)
+```
+
+So far so good, it's the first match of the season so the fact that the default value for their previous results --- an empty list -- was used is appropriate!
+
+```{python}
+latest_result = 'L'
+results_this_season = add_result(latest_result, results_this_season)
+print(results_this_season)
+```
+
+After their second match things are working as expects, their results are `['W', 'L']`. However, if their season ends their and we try to start a new season of results we get the following:
+
+```{python}
+latest_result = 'W'
+results_this_season = add_result(latest_result)
+print(results_this_season)
+```
+
+That's unexpected! The default value for the previous results is meant to be an empty list but we are still seeing last season's results. The reason for this is that Python only records the default values for parameters once -- when the function is defined -- *not* every time the function is called. This means that if we augment a mutable default value within a function this change will persist once we leave the function scope (ie the changes will be kept).
 
 Variable Length Keyword Arguments
 ---------------------------------
@@ -346,6 +433,8 @@ Similar to variable length positional arguments, multiple inputs can be assigned
 ```{python}
 def my_function(**kwargs):
     """Print keywords and their values."""
+    print(kwargs)
+    print(type(kwargs))
     for key, value in kwargs.items():
         print(f'{key} = {value}')
 

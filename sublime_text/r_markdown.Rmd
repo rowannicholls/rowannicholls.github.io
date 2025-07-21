@@ -83,10 +83,10 @@ opts_chunk$set(engine.path = "/usr/bin/python3.13")
 ```
 ````
 
-However, with some versions of Python (eg 3.11) this might result in the following error:
+However, depending on the method you used to install Python, this might result in the following error:
 
 ```
-Error: '/usr/bin/python3.11' was not built with a shared library.
+Error: '/usr/bin/python3.13' was not built with a shared library.
 reticulate can only bind to copies of Python built with '--enable-shared'.
 ```
 
