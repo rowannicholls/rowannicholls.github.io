@@ -49,6 +49,7 @@ Before you can use LaTeX in Sublime Text you need to have it installed on your c
 
 - Option 1: install TexStudio (which will install LaTeX as well). This can be downloaded from [here](https://www.texstudio.org/) or from within the Ubuntu Software app (aka the Snap Store).
 - Option 2: install it from the terminal with:
+
 ```{bash, eval = FALSE}
 $ sudo apt install texlive-latex-base
 ```
@@ -127,9 +128,34 @@ $ sudo mktexlsr
 
 Check that it has worked by opening a LaTeX file and adding `\usepackage{}` to the preamble with your new package's name between the curly brackets and compiling it.
 
+**Troubleshooting: Cannot find a valid Python interpreter**
+
+If you get the following error message:
+
+```
+Cannot find a valid Python interpreter.
+Please set the python setting in your LaTeXTools settings
+```
+
+The fix is to set the Python path in the LaTeXTools package settings:
+
+- Preferences > Package Settings > LaTeXTools > Settings
+- In the **left-hand side** (usually changes to the settings are made in the right-hand side, but not in this case!) search for `"python": "",` which is nested under the `"linux"` section
+- Add in the path to your Python installation:
+
+```json
+        // Command to invoke Python. Useful if you have Python installed in a
+        // non-standard location or want to use a particular version of python.
+        // Both Python2 and Python3 are supported, but must have the DBus bindings
+        // installed.
+        "python": "/usr/local/bin/python3.13",
+```
+
+The path to your Python installation can be found by running `which python3.13` or `which python3` from the terminal (depending on the version and instance of Python you want Sublime Text to use).
+
 [⇦ Back](../sublime_text.html)
 
-### 20.04 and 22.04
+### 22.04 and 20.04
 
 **1. Install LaTeX**
 
@@ -218,7 +244,7 @@ Check that it has worked by opening a LaTeX file and adding `\usepackage{}` to t
 
 [⇦ Back](../sublime_text.html)
 
-### 16.04 and 18.04
+### 18.04 and 16.04
 
 **Install LaTeX:**
 

@@ -1,0 +1,73 @@
+---
+title: '<font size="5">Sublime Text 4</font><br>Using JavaScript and TypeScript in Sublime Text'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        # toc: true
+        includes:
+            before_body: ../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../sublime_text.html)
+
+{.tabset}
+=========
+
+Ubuntu
+------
+*Tested on Ubuntu 24.04.2 LTS*
+
+### JavaScript
+To run JavaScript (a `.js` file) in Sublime Text, a custom Build System needs to be created:
+
+- In Sublime Text, create and save a `.js` file (eg `test.js` containing `console.log('Hello, world');`)
+- With this file open, navigate to Tools > Build System > New Build System...
+- Replace everything in the new file that opens with the following:
+
+```json
+{
+    "cmd": ["/path/to/node", "$file"],
+    "selector": "source.js",
+    "file_regex": "^(.*\\.js):(\\d+):(\\d+): (.*)$"
+}
+```
+
+Replace `/path/to/node` with the path to your own installation of Node.js. You can see what this is by running `which node` in your terminal.
+
+Save this Sublime Build file in the default location (the one that pops up when you press Ctrl+S) with the name `JavaScript.sublime-build`.
+
+Now, with your JavaScript file open and active, select your new Build System with Tools > Build System > JavaScript and run your code with Ctrl+B. It should run as expected.
+
+Finally, go back to the Automatic Build System (Tools > Build System > Automatic) and run your file with Ctrl+B. This JavaScript file should run as expected while other files written in other languages should *not* be run with JavaScript.
+
+### TypeScript
+To compile TypeScript to JavaScript and then run with Node.js from within Sublime Text, first check that `tsc` is installed:
+
+```bash
+tsc -v
+```
+
+Similar to above, navigate to Tools > Build System > New Build System... and paste the following into the new file that opens:
+
+```json
+{
+    "cmd": ["sh", "-c", "/path/to/bin/tsc \"$file\" && /home/rowan/.nvm/versions/node/v22.17.1/bin/node \"${file_path}/${file_base_name}.js\""],
+    "selector": "source.ts",
+    "file_regex": "^(.*\\.ts):(\\d+):(\\d+): (.*)$",
+    "env": {
+        "PATH": "/path/to/bin:$PATH"
+    }
+}
+```
+
+Where `/path/to/bin/tsc` is the path that is returned in the terminal when you run `which tsc` and `/path/to/bin` is the same path but without the final `/tsc` element. Save this as `TypeScript.sublime-build` in the default location.
+
+Open a `.ts` file, select "TypeScript" from Tools > Build System and hit Ctrl+B to compile. Then select "Automatic" from Tools > Build System and hit Ctrl+B to compile using the correct Build System automatically from now on.
+
+[⇦ Back](../sublime_text.html)
+
+</font>
