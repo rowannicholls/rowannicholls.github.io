@@ -22,6 +22,327 @@ output:
 Ubuntu  {.tabset}
 ------
 
+### Ubuntu 24.04
+
+#### **System Python**
+Ubuntu 24.04 LTS (Noble Numbat) comes with Python 3.12 pre-installed. This is sometimes called the **system Python** because various Ubuntu system tools use it in the background. Check which Python version you have by opening a terminal running the following:
+
+```bash
+$ python3 --version
+```
+
+```
+Python 3.12.3
+```
+
+This tells me that I have version 3.12.3. You can also check where it is located on your computer by running the following:
+
+```bash
+$ which python3
+```
+
+```
+/usr/bin/python3
+```
+
+Note that you can also specify the minor version number:
+
+```bash
+$ python3.12 --version
+```
+
+```
+Python 3.12.3
+```
+
+On a fresh installation of Ubuntu 24.04 it doesn't matter if you specify the minor version number or not because the command will point to the same installation of Python either way. In fact, all *four* of the following options are exactly the same:
+
+```bash
+$ python3
+$ python3.12
+$ /usr/bin/python3
+$ /usr/bin/python3.12
+```
+
+They are all *symlinks* to the same Python program - the *system Python*. However, it is actually **not recommended** to use the system Python when programming as a user! This is because of the Ubuntu tools that rely on it - modifying or updating this instance of Python or its packages might break them! Instead, you should download and install a separate instance and use that one, leaving the pre-installed one untouched.
+
+#### **Installing Python**
+We should pretend that the system Python doesn't exist and that we need to install it from scratch (in reality we will be installing a separate *instance* or copy of Python that will exist in addition to the system instance).
+
+There are a number of ways to do this (`apt`, `venv` or `virtualenv`, `pyenv`, `conda` for Miniconda or Anaconda) but in my personal opinion if you want to install a program the most correct way to do so is to go to its website and download it from there:
+
+- Go to [python.org](https://www.python.org/)
+- Hover over "Downloads"
+- Click the grey button under "Python Source" on the right
+
+This will download a `.tar.xz` file with the latest version of Python. Open a terminal and continue in there:
+
+- **Change directory into your Downloads folder:**
+
+    ```bash
+    $ cd Downloads/
+    ```
+
+- **Extract the folder containing the program:**  
+    *At the time of writing the latest version is 3.13.5 - replace this version number with the one you have downloaded.*
+
+    ```bash
+    $ tar -xf Python-3.13.5.tar.xz
+    ```
+
+- **Change directory into this new folder:**
+
+    ```bash
+    $ cd Python-3.13.5/
+    ```
+
+- **Run the following to complete the installation:**
+
+    ```bash
+    $ ./configure --enable-shared
+    $ make
+    $ sudo make install
+    ```
+
+    Note that the `--enable-shared` flag is not necessary for the installation to work but it *is* necessary in order to be able to run Python in R Markdown using R's `reticulate` package (which is how these webpages you are reading get made!).
+
+- **Check that it's worked:**  
+    *This should return the relevant version number - 3.13.5 in my case.*
+
+    ```bash
+    $ python3.13 --version
+    ```
+
+    Running it without the minor version number should give the same result:
+
+    ```bash
+    $ python3 --version
+    ```
+
+You can now delete the `.tar.xz` file and the corresponding folder it unzipped to from your Downloads folder
+
+This new instance of Python will be located in the `/usr/local/bin` directory (the system Python is located in the `/usr/bin` directory - check this by running `which python3.12`):
+
+```bash
+$ which python3.13
+```
+
+```
+/usr/local/bin/python3.13
+```
+
+```bash
+$ which python3
+```
+
+```
+/usr/local/bin/python3
+```
+
+Again, these two commands are *exactly* the same because the one is *symlinked* to the other - this can be confirmed by checking that the following two commands give the same output:
+
+```bash
+readlink -f /usr/local/bin/python3.13
+readlink -f /usr/local/bin/python3
+```
+
+So at this point it makes no difference if you include the minor version number or not, but note that in the future you might have multiple versions of Python installed (i.e. if you download and install Python 3.14 and/or 3.15 when they get released). If and when that happens it will become important that you know which one you are using so my preference is to always use include the minor version.
+
+#### **Running Python**
+Python can be used in a number of ways:
+
+- Open Python in the terminal in **interactive mode**:  
+    *As noted above, the minor version number can be included or omitted but my preference is to always include it.*
+
+    ```bash
+    $ python3.13
+    ```
+
+    ```
+    Python 3.13.5 (main, Jul 21 2025, 12:43:40) [GCC 13.3.0] on linux
+    Type "help", "copyright", "credits" or "license" for more information.
+    >>> 
+    ```
+
+    In interactive mode you can write individual Python commands directly in at the `>>>` prompt and then run them immediately by pressing Enter. This is clearly not a user-friendly way to program because it doesn't save the commands you are using to a **script file** that you can review and edit later, but it's useful for quickly checking something small.
+
+    To exit Python interactive mode and return to the normal terminal:
+
+    ```python
+    exit()
+    ```
+
+- Run a Python **script file**:
+    If you have a Python script save to a file called `filename.py` in the same directory as the one your terminal is currently pointing at, you can run it with the following:
+
+    ```bash
+    $ python3.13 filename.py
+    ```
+
+    Obviously, if no `filename.py` file exists in that directory then it won't work (you'll get a `No such file or directory` message). Less obviously, your terminal might not be pointing at the same directory as the one your script is in, in which case you can...
+
+- ...run a Python script **in a different directory**:
+
+    ```bash
+    $ python3.13 path/to/directory/filename.py
+    ```
+
+    Two dots (`..`) means 'one directory up', for example:
+
+    ```bash
+    $ python3.13 ../path/to/directory/filename.py
+    ```
+
+    Alternatively, you can change into the directory where the file is located using the `cd` command (**c**hange **d**irectory) in your terminal:
+
+    ```bash
+    $ cd path/to/directory/
+    $ python3.13 filename.py
+    ```
+
+If there is a space in a file or directory name you can either use quotation marks or back slashes to **escape** the space characters:
+
+```bash
+$ python3.13 "Python File.py"
+$ python3.13 Python\ File.py
+$ python3.13 "../Path To/Python File.py"
+$ python3.13 ../Path\ To/Python\ File.py
+```
+
+Note that the `.py` extension (which tells you that it's a Python file) *must* be included in the command you use - running the following will give you an error:
+
+```bash
+# Oops...
+$ python3.13 filename
+```
+
+Also note that running `python2` or `python` will not work on a fresh install of Ubuntu 24.04. Previously, both of these commands referred to Python 2 but this version is no longer supported and it doesn't come pre-installed anymore. You can, if you want, install Python 2 yourself and/or make the `python` command refer to Python 3 (or Python 2) by *aliasing* it, but that's up to you.
+
+#### **Updating Python**
+When a new version of Python gets released, my recommendation is to go back to [python.org](https://www.python.org/) and download it from there, following the steps detailed in **Installing Python** above.
+
+#### **Installing Packages**
+The standard Python package manager is called `pip` - a recursive acronym that stands for "Pip Installs Packages". It is not included with Python by default so you have to download it:
+
+```bash
+$ curl -sS https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+$ python3.13 get-pip.py
+```
+
+Check that it's worked from the terminal by running:
+
+```bash
+$ python3.13 -m pip --version
+```
+
+This should return the version number and install location. Note that the `-m` flag in the above command indicates that we are running a Python **m**odule directly (in this case it is the `pip` module).
+
+Also note that running `pip` on its own will probably not work (`pip --version`) and that you should *not* install `pip` in the way that it recommends (`sudo apt install python3-pip`). Doing so would install `pip` for the *system* Python, which is best left alone and not modified or updated.
+
+Once `pip` is installed (correctly!) packages can be installed as follows:
+
+```bash
+$ python3.13 -m pip install <package_name>
+```
+
+Do not use `pip install <package_name>` as this will, as above, install to the *system* Python.
+
+Note that you install Python packages from the *terminal*, not from within Python itself (this is different from some other languages, eg R).
+
+To get you started, here's a bunch of useful packages to install:
+
+- **NumPy** - the fundamental package for scientific computing with Python:
+
+    ```bash
+    $ python3.13 -m pip install numpy
+    ```
+
+- **SciPy** ("Sigh Pie") - software for mathematics, science and engineering:
+
+    ```bash
+    $ python3.13 -m pip install scipy
+    ```
+
+- **Statsmodels** - provides a complement to SciPy for statistical computations:
+
+    ```bash
+    $ python3.13 -m pip install statsmodels
+    ```
+
+- **scikit-learn** - a module for machine learning built on top of SciPy:
+
+    ```bash
+    $ python3.13 -m pip install scikit-learn
+    ```
+
+- **Pandas** - a powerful data analysis toolkit:
+
+    ```bash
+    $ python3.13 -m pip install pandas
+    ```
+
+- **Matplotlib** - for creating static, animated and interactive visualisations:
+
+    ```bash
+    $ python3.13 -m pip install matplotlib
+    ```
+
+- **Seaborn** - allows for statistical data visualisation based on Matplotlib:
+
+    ```bash
+    $ python3.13 -m pip install seaborn
+    ```
+
+Check that these package installations have worked by opening Python (either a new script or in the terminal) and running:
+
+```python
+import numpy
+import scipy
+import statsmodels
+import sklearn
+import pandas
+import matplotlib
+import seaborn
+```
+
+There should be no errors.
+
+#### **Upgrading Packages**
+To upgrade (update) a package, simply run:
+
+```bash
+$ python3.13 -m pip install <package_name> --upgrade
+```
+
+To upgrade pip itself:
+
+```bash
+$ python3.13 -m pip install pip --upgrade
+```
+
+Remember that using `pip` directly (`pip install <package_name> --upgrade`) would use the *system* Python's version of `pip` (if it existed) which should be avoided.
+
+#### **See What Version of Each Package You Have**
+Run the following:
+
+```bash
+$ python3.13 -m pip freeze
+```
+
+The below variation will check what version of a specific package you have (the `grep` command searches through the results of the command on the left-hand side of the vertical bar character `|`):
+
+```bash
+$ python3.13 -m pip freeze | grep <package_name>
+```
+
+If we want to save the package version numbers to a file we can 'pipe' the output into a text document. By convention, this kind of file gets called `requirements.txt` because it contains the packages and versions that are *required* to run your project:
+
+```bash
+$ python3.13 -m pip freeze >> requirements.txt
+```
+
+[⇦ Back](../../python.html)
+
 ### Ubuntu 22.04
 
 #### **Running Python**
@@ -528,11 +849,11 @@ $ /usr/local/lib/python3.12/dist-packages/pipreqs/python_pipreqs.py '.' --force
 
 [⇦ Back](../../python.html)
 
-### Ubuntu 16.04 to 18.04
+### Ubuntu 18.04
 
-**Installing and Setting Up**
+#### **Installing and Setting Up**
 
-- There is no need to install Python on Ubuntu 16.04 to 18.04: it comes already installed. In fact, multiple versions of Python come pre-installed (these multiple installations can be found in the `/usr/bin/` folder)
+- There is no need to install Python on Ubuntu 18.04: it comes already installed. In fact, multiple versions of Python come pre-installed (these multiple installations can be found in the `/usr/bin/` folder)
 - However, the version of Python that Ubuntu uses by default is version 2 (usually 2.7) even though it has Python 3 installed. This is not good; Python 2 is no longer supported so everyone should be using Python 3. Check which version you are using from the terminal with:
 
     ```{bash, eval=FALSE}
@@ -571,7 +892,7 @@ echo "alias python=python3" >> ~/.bashrc
     - In order for this change to take effect you need to close your terminal and open it again (or you can run `source ~/.bashrc` to force a refresh)
     - Check your Python version again (`python --version`). Is should be one of the Python 3 versions -->
 
-**Using Python from the Terminal**
+#### **Using Python from the Terminal**
 
 If you open a terminal and run `python3` you will open Python in that terminal.
 
@@ -588,7 +909,7 @@ If you have a script file (one with the ".py" extension) you can run it from the
 
 In fact, you don't actually need to change directory into the one where the script is located, you can just run `python3 <path_to_folder>/<filename>` (with the ".py" extension included in the filename) and it will work.
 
-**Updating Python**
+#### **Updating Python**
 
 Although it's possible to update Python entirely from within the terminal my personal preference is to do it manually. Every time there's a new version I go to [the Python website](https://www.python.org/) and download it directly as a `tar.xz` file (you can use [this shortcut](https://www.python.org/ftp/python/3.11.0/Python-3.11.0.tar.xz) to download Python 3.11.0 immediately). It can then be installed alongside any existing versions via the following steps:
 
@@ -606,7 +927,7 @@ make test
 sudo make install
     ```
 
-+ Personally, I use the `--enable-shared` option instead:
+- Personally, I use the `--enable-shared` option instead:
 
     ```bash
     ./configure --enable-shared
@@ -646,7 +967,7 @@ sudo update-alternatives --config python3
 ```
 -->
 
-**Installing Packages**
+#### **Installing Packages**
 
 The best option is to use the standard Python package manager, "pip" (aka pip3 for Python 3):
 
@@ -724,7 +1045,7 @@ import termcolor
 
 There should be no errors.
 
-**Upgrading Packages**
+#### **Upgrading Packages**
 
 To upgrade (update) a package called "\<package_name\>" simply run:
 

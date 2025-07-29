@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Introduction to Python:</font><br>A Script to Check Your Installation and Packages'
+title: '<font size="5">Introduction to Python:</font><br>Check Your Python Installation'
 output:
     html_document:
         theme: paper
@@ -14,17 +14,29 @@ output:
 
 [⇦ Back](../../python.html)
 
-The following script can be run to check that you have Python installed correctly, that you are using the right version and that you are running it from the correct location. The packages that this script requires are imported at the top of the script, so make sure you have those installed or else it won't work.
+This page provides a script that can be run to check details about a machine and its Python installation. The `distro` package is required, so install it from the terminal as follows:
 
-```{python, eval = FALSE}
-import distro
-import os
+```bash
+$ python3.13 -m pip install distro
+```
+
+This script can be use to check that:
+
+- Python is installed correctly
+- The expected version is being used
+- It is being run from the expected location
+
+```python
+# Standard library module
+from datetime import date
 from pip._internal.operations.freeze import freeze
+import os
 import platform
+import pwd
 import subprocess
 import sys
-from datetime import date
-import pwd
+# Installed package
+import distro
 
 today = date.today()
 print(f'This script was run on {today}')
@@ -89,11 +101,21 @@ user = pwd.getpwuid(os.getuid())[0]
 print(f'The user is {user}')
 
 # Information about the Git repo
-process = subprocess.Popen(
-    ['git', 'rev-parse', 'HEAD'], shell=False, stdout=subprocess.PIPE
-)
-git_hash = process.communicate()[0].strip()
-print(f'The git hash is {git_hash}')
+try:
+    result = subprocess.run(
+        ['git', 'rev-parse', 'HEAD'],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        # Raise CalledProcessError if command fails
+        check=True
+    )
+    result = result.stdout.strip()
+    print('This script is inside a git repo')
+    print(f'The git hash is {result}')
+except subprocess.CalledProcessError:
+    # Not a git repo or other error
+    print('This script is not inside a git repo')
 
 # Information about the Python installation
 py = platform.python_version()
@@ -107,16 +129,16 @@ for requirement in freeze(local_only=True):
 
 Formatted output:
 
-```{python, eval = FALSE}
+```python
 # Formatted output
 print('\n\n')
 if platform.system() == 'Linux':
     print(f'Running with Python {py} on {name}, an {OS} {version} machine, ' +
           f'by user {user}')
     print('\nWorks on:')
-    print('┌────────────┬────────────────┬───────────────┬──' + '─' * 22 + '┐')
+    print('┌────────────┬────────────────┬───────────────┬──' + '─' * 25 + '┐')
     print(f'│ {today} │ {OS} {version}   │ Python {py:6} │ {path:16} │')
-    print('└────────────┴────────────────┴───────────────┴──' + '─' * 22 + '┘')
+    print('└────────────┴────────────────┴───────────────┴──' + '─' * 25 + '┘')
 elif platform.system() == 'Darwin':
     print(f'Running with Python {py} on {name}, a macOS {OS} machine, ' +
           f'by user {user}')

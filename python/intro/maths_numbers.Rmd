@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+library(knitr)
+opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
 Arithmetic
 ==========
 All the usual mathematical operations can be done in Python:
@@ -47,7 +52,14 @@ print(13 % 5)
 
 Functions
 =========
-For more complicated operations there are functions to do it for you. Many of these can be found in the `Numpy` package:
+For more complicated operations there are functions to do it for you. Many of these can be found in the `numpy` package which is installed from the terminal with the following:
+
+```bash
+# Replace "python3.13" with the version of Python you are using
+$ python3.13 -m pip install numpy
+```
+
+Back in Python, `numpy` can be imported into your script and used as follows:
 
 ```{python}
 import numpy as np
