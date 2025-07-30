@@ -14,8 +14,10 @@ output:
 
 [⇦ Back](../../python.html)
 
-<!-- Started:
-| 2019-04-24 | Python 3.6.6  | macOS Sierra | Atom Script | -->
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
 
 As introduced in [the data types page](data_types.html#strings), 'strings' are characters that have been 'strung' together to form words.
 
@@ -105,7 +107,7 @@ string. In Python 3 all strings are unicode by default, so this is largely
 redundant although it still exists. Don't worry about it unless you need to
 change how the text is encoded or how the text data us being stored as bytes -->
 
-F-Strings
+f-Strings
 ---------
 These strings are used for **formatting** and are created by prepending the letter "f" or "F". An f-string can display the value of a variable directly in it, and it uses curly brackets to indicate the position of the variable:
 
@@ -116,7 +118,7 @@ print(f'My string is: {st}')
 
 More information about these can be found on [the f-string page](f_strings.html).
 
-Raw F-Strings
+Raw f-Strings
 -------------
 As the name suggests, these **combine** raw strings and f-strings, ie they are f-strings where backslashes are not treated as escape characters. As you would expect, they are created by prepending "fr" or "FR":
 

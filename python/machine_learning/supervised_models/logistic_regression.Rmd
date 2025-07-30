@@ -15,13 +15,9 @@ output:
 [⇦ Back](../../../python.html)
 
 ```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "80%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 ```
-
-<!-- Created: 2023-09-26 -->
-<!-- Created: 2023-09-28 -->
-<!-- Created: 2023-09-29 -->
 
 **Logistic regression** can be used with a single feature of *continuous numeric* data with a *binary* target. It predicts the probability (between 0 and 1) that a data point belongs to a particular class or category. This probability can then be used to *classify* that observation: assigning it to its probable group.
 
@@ -30,12 +26,12 @@ Python Packages
 The code on this page uses the Statsmodels, scikit-learn, NumPy, Matplotlib and Pandas packages. These can be installed from the terminal with the following commands:
 
 ```{bash, eval = FALSE}
-# "python3.11" corresponds to the version of Python you have installed and are using
-$ python3.11 -m pip install statsmodels
-$ python3.11 -m pip install sklearn
-$ python3.11 -m pip install numpy
-$ python3.11 -m pip install matplotlib
-$ python3.11 -m pip install pandas
+# "python3.13" corresponds to the version of Python you have installed and are using
+$ python3.13 -m pip install statsmodels
+$ python3.13 -m pip install scikit-learn
+$ python3.13 -m pip install numpy
+$ python3.13 -m pip install matplotlib
+$ python3.13 -m pip install pandas
 ```
 
 Once finished, import these packages into your Python script as follows:
