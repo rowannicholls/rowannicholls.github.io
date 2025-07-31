@@ -14,14 +14,19 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
 Synopsis
 ========
 - You can add notes about your code in **comments**
 - There are a number of different types of data in Python:
-    + **Floats** and **ints** (integers), aka numbers
-    + **Strings**, aka text
-    + **Booleans**, aka true/false
-    + **Nulls**, aka missing data
+    - **Floats** and **ints** (integers), aka numbers
+    - **Strings**, aka text
+    - **Booleans**, aka true/false
+    - **Nulls**, aka missing data
 - Data can be assigned to **variables** for easier use
 - Data points can be collected together into **lists**
 - Actions can be performed using **functions**
@@ -212,13 +217,13 @@ Nulls are, as the name suggests, equal to nothing. While it may seem weird that 
 In Python, you have two different null characters:
 
 - `None` is the most basic: something has been defined but no value has been assigned to it
-- `NaN` or `nan` ('not-a-number') means that something has been defined as a number but no value has been given to it. If you are using something called Pandas to import data, it will use `NaN` for all missing data. Note that `NaN` does not exist in Python's standard library, you need to import it from a library called "Numpy":
+- `nan` ('not-a-number') means that something has been defined as a number but no value has been given to it. If you are using something called Pandas to import data, it will use `nan` for all missing data. Note that `nan` does not exist in Python's standard library, you need to import it from a library called "Numpy":
 
 ```{python}
-from numpy import NaN
+from numpy import nan
 
 nothing = None
-not_a_number = NaN
+not_a_number = nan
 ```
 
 Lists
@@ -258,28 +263,47 @@ ls[0]
 ls[1]
 ```
 
-For Loops
----------
-A **loop** is a piece of code that runs multiple times (ie it runs in a loop) and a **for loop** is a loop that runs once *for* each element in a list:
+Dictionaries
+============
+A dictionary is a data structure that contains "key-value pairs": a *key* is a string that acts like a name for a piece of data which is the *value*. This is just like a dictionary in real-life (which is why they are called "dictionaries" in Python!): you look up a word (the *key*) and find its definition (the *value*) next to it:
 
 ```{python}
-ls = ['how', 'now', 'brown', 'cow']
-# Execute a 'print' command once for each element in the above list
-for element in ls:
-    print(element)
+# Create a dictionary of strings
+dct = {
+    'Python': 'An interpreted, object-oriented, high-level programming language',
+    'programmer': 'A person who writes computer programs',
+    'string': 'A sequence of characters',
+    'hash table': 'A data structure that implements an associative array, which maps keys to values'
+}
 ```
 
-The above code printed each element of the list in turn, as opposed to the following code which prints all the elements in one go:
+Notice that dictionaries are created using curly brackets "{" and "}" and the entries (the key-value pairs) are separated by commas. The keys and values themselves are separated by colons ":". To look up a value in a dictionary (to 'index' it) the key is used inside square brackets (similar to how numeric indexes were used to index lists):
 
 ```{python}
-ls = ['how', 'now', 'brown', 'cow']
-# Execute a 'print' command once on the whole list
-print(ls)
+# Look up a value in a dictionary
+dct['Python']
 ```
+
+Dictionaries do not only have to contain strings, they can contain any data type (including lists or other dictionaries!):
+
+```{python}
+# Create a dictionary of various data types
+dct = {
+    'a string': 'This is a string',
+    'a number': 17,
+    'a Boolean': True,
+    'a list': ['how', 'now', 'brown', 'cow'],
+    'a dictionary': {'First': 0, 'Second': 1, 'Third': 2}
+}
+```
+
+Functions and Methods
+=====================
+Functions and methods have inputs and outputs: when given input(s) they perform some operation or calculation on them and return output(s). The difference is that a *method* is performed on an object and will be specific to that object's data type whereas a *function* is not tied to a data type in this way.
 
 Built-In Functions
-==================
-Functions are bits of code that can be used again and again just by *calling* the function's name. You can tell that a function is being used because it will have round brackets - ().
+------------------
+Functions are bits of code that can be re-used again and again just by *calling* the function's name. You can tell that a function is being used because it will have round brackets: "(" and ")". Python comes with a number of **built-in** functions that can be used immediately, although it is possible to write your own.
 
 The first function you should know about is the `print()` function. This function takes a string and outputs it (**prints** it) to the console:
 
@@ -313,7 +337,7 @@ print(type(True))
 
 ```{python}
 # A numeric null is stored as a number
-print(type(NaN))
+print(type(nan))
 ```
 
 ```{python}
@@ -326,9 +350,41 @@ print(type(None))
 print(type([1, 2, 3]))
 ```
 
+```{python}
+# A dictionary is a group of key-value pairs
+print(type({'First': 0, 'Second': 1, 'Third': 2}))
+```
+
+Built-In Methods
+----------------
+Methods are essentially functions that are specific to a data type and get performed on an object of that data type. They are called using *dot notation* where a full stop "." joins the object and the method's name, followed by round brackets. If the method takes input(s) (not all do) then these get placed inside the round brackets.
+
+As an example, numbers (both integers and floating point numbers) have the `.is_integer()` method which returns a Boolean that tells us if the object in question is an integer or not:
+
+```{python}
+# Check if an integer is an integer
+x = 1
+print(x.is_integer())
+```
+
+```{python}
+# Check if a floating point number is an integer
+x = 6.283185
+print(x.is_integer())
+```
+
+Strings have their own methods. For example, `.capitalize()` will return the same string as that on which it is called but with the first letter uppercase and the rest lowercase:
+
+```{python}
+# Have the first letter uppercase and the rest lowercase
+print('HELLO WORLD!'.capitalize())
+```
+
 Type Conversion
 ===============
 Often, objects of one data type can be converted into a different data type:
+
+A number (integer or float) can be converted into a string using the `str()` function:
 
 ```{python}
 # Start with a number
@@ -338,6 +394,8 @@ x = str(x)
 # Check that it is indeed now a string
 print(type(x))
 ```
+
+A string that happens to be the text representation of an integer can be converted into a number using the `int()` function:
 
 ```{python}
 # Now take a string that is the text version of a number

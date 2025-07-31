@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
 What is a Dictionary in Python?
 ===============================
 It's an **object that stores information in the same way that a dictionary stores words and their definitions**. Here's an example of an *English dictionary* created using a *dictionary object* in Python:
@@ -47,6 +52,11 @@ You **index** a dictionary (look up a value) by using square brackets and the re
 ```{python}
 # Look up the definition of 'apple'
 print(my_dictionary['Apple'])
+```
+
+```{python, eval = FALSE, echo = FALSE}
+# Does not work:
+print(my_dictionary[0])
 ```
 
 You can add items into a dictionary by *indexing it* with a new key and *assigning* a value to it:
@@ -156,17 +166,6 @@ dct['Tuple'] = dct['Tuple'][1:]
 print(dct)
 ```
 
-This can get as complex as you want:
-
-```{python}
-# Use list comprehension, list indexing and a variable as the key
-key = 'List'
-idx = 4
-dct[key] = dct[key][:idx] + [x + 4 for x in dct[key][:idx]]
-
-print(dct['List'])
-```
-
 Information About a Dictionary
 ==============================
 The **len**gth of a dictionary is the number of items inside it:
@@ -205,12 +204,7 @@ all_values = list(all_values)
 print(all_values)
 ```
 
-Notice that the `list()` function converted the dictionary items into a list of tuples. This means that all the key-value pairs can be iterated over, in order, using a 'for' loop:
-
-```{python}
-for key, value in dct.items():
-    print(key, value)
-```
+Notice that the `list()` function converted the dictionary items into a list of tuples.
 
 Initialising a Dictionary
 =========================
@@ -218,16 +212,6 @@ Of course, a dictionary can be empty! Create an empty dictionary by simply not p
 
 ```{python}
 dct = {}
-```
-
-An empty dictionary can be useful for when you need the object to be *initialised* for something that happens downstream. Maybe there's a loop that populates a dictionary and thus requires one to exist before it starts:
-
-```{python}
-dct = {}
-for day in ['Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur', 'Sun']:
-    dct[day] = day + 'day'
-
-print(dct)
 ```
 
 Another way to create an empty dictionary is by using the `dict()` function with no arguments:

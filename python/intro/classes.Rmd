@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
 When you code in Python, you create and use *objects* which are each an *instance* of an object *type*. Consider the following code:
 
 ```{python}

@@ -16,7 +16,7 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
-# knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 ```
 
 Using an **array** is an efficient way to handle multiple elements. It is a better choice than a list (or a list-of-lists) if you are doing calculations with a set of numbers, but not as good if you are working with strings or doing general data handling and cleaning as opposed to mathematics.
@@ -349,12 +349,12 @@ Cross Multiplication
 
 ```{python}
 ar1 = np.array([
-    [1, 2],
-    [3, 4]
+    [1, 2, 0],
+    [3, 4, 0]
 ])
 ar2 = np.array([
-    [5, 6],
-    [7, 8]
+    [5, 6, 0],
+    [7, 8, 0]
 ])
 # Perform cross multiplication
 ar = np.cross(ar1, ar2)

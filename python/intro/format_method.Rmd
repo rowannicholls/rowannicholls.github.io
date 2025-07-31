@@ -1,0 +1,258 @@
+---
+title: '<font size="5">Introduction to Python:</font><br>The `.format()` Method'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+Strings have a built-in formatting *method* which allows you to substitute
+values into them using *replacement fields*.
+
+"Methods" are functions that can be performed on a particular object type using
+'dot notation'. In this case, *string objects* have the *format method* which
+can be called like this:
+
+```python
+<str>.format(<arguments>)
+```
+
+Arguments
+=========
+**Replacement fields** are defined with curly brackets placed inside of a
+string. These get replaced by the **arguments** provided to the `.format()`
+method in the same order as they appear in the method call:
+
+```{python}
+print('First argument: {}, second argument: {}'.format('one', 'two'))
+```
+
+If the arguments are not strings, they get converted into strings when they get
+substituted in for the replacement fields:
+
+```{python}
+print('First number: {}, second number: {}'.format(1, 2))
+```
+
+Which argument gets substituted into which replacement field can be controlled
+by providing the positional indexes of the arguments:
+
+```{python}
+print('Argument at index 0: {0}, argument at index 1: {1}'.format(111, 222))
+```
+
+```{python}
+print('Argument at index 1: {1}, argument at index 0: {0}'.format(111, 222))
+```
+
+The arguments can be **keyword arguments** in which case their keywords are
+used instead of their indexes:
+
+```{python}
+print('I\'m a {profession} and I\'m {status}'.format(profession='lumberjack', status='okay'))
+```
+
+Strings
+=======
+A string argument can be explicitly designated as such by using the "s" format,
+with a colon separating the index and this format specifier:
+
+```{python}
+print('Strings: {0:s} & {1:s}'.format('green eggs', 'ham'))
+```
+
+If the indexes are omitted the colons need to stay:
+
+```{python}
+print('Strings: {:s} & {:s}'.format('green eggs', 'ham'))
+```
+
+An integer can be placed before the `s` to specify the width of the output (the
+number of characters worth of space taken up by the output):
+
+```{python}
+print('Strings with padding: |{:20s}|{:20s}|'.format('green eggs', 'blue eggs'))
+```
+
+A second integer can be used before the `s` (separated from the width specifier
+by a decimal point) to specify the maximum width of the string before it will
+be truncated. This can be used to ensure there is always white space at the end
+of a string, even if it's long:
+
+```{python}
+print('Strings with padding: | {:9.8s}| {:9.8s}|'.format('green eggs', 'blue eggs'))
+```
+
+Numbers can't be used together with the `s` format, but the `str()` function
+can be called on a numeric argument to convert it into a string . The `!s`
+specifier does this in the background:
+
+```{python}
+print('Call str() on the argument: |{!s}|'.format(1))
+```
+
+```{python}
+print('Call str() on the argument, with padding: |{!s:6}|'.format(1))
+```
+
+```{python}
+print('This works for Booleans too: |{!s:8}|{!s:8}|'.format(True, False))
+```
+
+Number Types
+============
+Different types of numbers can be formatted differently. The formatting
+instruction goes after a colon while the index or keyword - if one is used -
+goes before the colon.
+
+**Decimal integers** are formatted using a minimum width (number of characters
+of space that is taken up by the number) and the letter "d" after the colon:
+
+```{python}
+print('d = decimal: |{:3d}|{:5d}|{:4d}|'.format(123456, 23, 123))
+```
+
+**Fixed-point notation** ("f") is used for decimal non-integers. The width of
+the output and the number of decimal places shown (precision) can both be
+specified using `width.precision` as follows:
+
+- `8.2f` indicates that the output (including decimal point) will be 8
+  characters wide and that there will be 2 digits after the decimal point
+- `.1f` omits the width specification and just indicates that one decimal place
+  will be shown
+- `16f` omits a number of decimal places and just specifies a width (including
+  decimal point) of 16 characters
+- `f` on its own does not specify a width or decimal place requirement
+
+```{python}
+print('f = fixed-point: |{:f}|{:.1f}|{:8.2f}|'.format(123.123, 123.12, 123.12))
+```
+
+**Scientific notation** is when exactly one digit appears before the decimal
+point, the rest of the digits appear after it and a power of ten is included.
+These numbers also have their format specified using `width.precision` and the
+**exponent** ("e") of the power of ten is included in the width:
+
+```{python}
+print('e = exponent: |{:e}|{:.1e}|{:8.2e}|'.format(123.123, 123.12, 123.12))
+```
+
+Using the **general format** ("g") allows Python to choose either the `f` or
+`e` format, whichever it thinks is better:
+
+```{python}
+print('g = general: |{:g}|{:.1g}|{:8.2g}|'.format(123.123, 123.12, 123.12))
+```
+
+Numbers that represent **percentages** are multiplied by 100 and have a percent
+sign (%) appended:
+
+```{python}
+print('% = percentage: |{:%}|{:.1%}|{:8.2%}|'.format(0.123, 0.234, 0.345))
+```
+
+Additional Number Formatting
+============================
+White space around numbers that is being used to pad out a width specification
+can be filled with zeroes:
+
+```{python}
+print('Padded zeroes: |{:05d}|{:07.3f}|'.format(11, 47.42))
+```
+
+When displaying a negative number, any white space around the number that is
+being used to pad out the width specification can be put after the minus sign:
+
+```{python}
+print('Padding after minus sign: |{:=6d}|{:=6d}|'.format(4, -4))
+```
+
+A sign can be shown for both positive and negative numbers:
+
+```{python}
+print('Force sign: positive: {:+d}. negative: {:+d}'.format(4, -4))
+```
+
+Combining the above two examples, the white space can be put after the signs:
+
+```{python}
+print('Padding after forced sign: |{:=+6d}|{:=+6d}|'.format(4, -4))
+```
+
+A thousands separator can be used:
+
+```{python}
+print('Thousands separator: {:,.2f}'.format(123456789.123))
+```
+
+Alignment
+=========
+By default, strings get displayed on the *left* of the space that is specified
+by the width:
+
+```{python}
+print('|{:20s}|{:20s}|'.format('Left', 'Left'))
+```
+
+By default, numbers get displayed on the *right* of the space that is specified
+by the width:
+
+```{python}
+print('|{:20.2f}|{:20.2}|'.format(8.125, 7.773))
+```
+
+Alignment within a specified width can be forced to be left, right or centered
+with the `<`, `>` and `^` characters:
+
+```{python}
+print('|{:<20s}|{:<20.2f}|'.format('Left', 5.99))
+print('|{:>20s}|{:>20.2f}|'.format('Right', 5.99))
+print('|{:^20s}|{:^20.2f}|'.format('Centred', 5.99))
+```
+
+Long Lines
+==========
+There are various ways to handle long lines (that include line breaks) and
+which are being formatted.
+
+Backslashes 'escape' the line breaks in your code so Python will treat it as if
+everything was on one line:
+
+```{python}
+message = "Verdict: '{stars}' \
+Review: '{review}' \
+Reviewer: {name}".format(stars='★★★☆☆', review='Pretty good', name='Jack')
+print(message)
+```
+
+The newline character `\n` can be used to create a line break:
+
+```{python}
+print('First comment here: {}\nSecond comment here: {}'.format('One', 'Two'))
+```
+
+Line breaks in strings created with pairs of three quotation marks (`"""` or
+`'''`) will be treated as line breaks by Python:
+
+```{python}
+msg = """Lorem ipsum {} sit amet, consectetur adipiscing elit. Etiam in sem
+dictum, lacinia nisi ac, {} lectus."""
+print(msg.format('dolor', 'interdum'))
+```
+
+[⇦ Back](../../python.html)
+
+</font>

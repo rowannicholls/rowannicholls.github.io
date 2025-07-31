@@ -14,73 +14,14 @@ output:
 
 [⇦ Back](../../python.html)
 
-Why Use Loops?
-==============
-As an example, let's look at the "MPG" test dataset. This is one of the sample datasets that comes pre-installed with the Seaborn package; it contains a whole bunch of information related to the performance of motor cars (eg their "MPG" - miles per gallon - ie their fuel economy). You can either:
-
-- Download the Seaborn package from the terminal with `pip install seaborn` then run the following Python code:
-
-```{python, eval = FALSE}
-import seaborn as sns
-
-df = sns.load_dataset('mpg')
-print(df.head().to_latex())
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 ```
-
-| index |   mpg |  cylinders |  displacement |  horsepower |  weight |  acceleration |  model\_year | origin |                       name |
-|-------|-------|------------|---------------|-------------|---------|---------------|--------------|--------|----------------------------|
-0 |  18.0 |          8 |         307.0 |       130.0 |    3504 |          12.0 |          70 |    usa |  chevrolet chevelle malibu |
-1 |  15.0 |          8 |         350.0 |       165.0 |    3693 |          11.5 |          70 |    usa |          buick skylark 320 |
-2 |  18.0 |          8 |         318.0 |       150.0 |    3436 |          11.0 |          70 |    usa |         plymouth satellite |
-3 |  16.0 |          8 |         304.0 |       150.0 |    3433 |          12.0 |          70 |    usa |              amc rebel sst |
-4 |  17.0 |          8 |         302.0 |       140.0 |    3449 |          10.5 |          70 |    usa |                ford torino |
-
-- ...or you can read the data straight from the internet with Pandas (which can be installed with `pip install pandas`):
-
-```{python, eval = FALSE}
-import pandas as pd
-
-df = pd.read_csv('https://raw.githubusercontent.com/mwaskom/seaborn-data/master/mpg.csv')
-```
-
-- Thirdly, you could copy the data yourself off the internet (simply go to the URL in the above code snippet), save it onto your local machine as a .csv file and read it into Python with Pandas as you would any other CSV:
-
-```{python, eval = FALSE}
-import pandas as pd
-
-df = pd.read_csv('mpg.csv')
-```
-
-You now have the data in **data frame** format. If you ever have data in this format (or in the **series** format, which is essentially a column of a data frame) you have the ability to perform operations on an entire column in one go. For example, we can convert the weight of the cars in the above dataset (the information stored in the "weight" column) from pounds into kilograms by dividing by 2.205 like this:
-
-```{python, echo = FALSE}
-import seaborn as sns
-import pandas as pd
-
-df = sns.load_dataset('mpg')
-```
-
-```{python}
-# Convert pounds to kilograms
-df['weight'] = df['weight'] / 2.205
-```
-
-The data frame now looks like this:
-
-```{python}
-# Change the number of columns shown
-pd.set_option('display.max_columns', 10)
-# Change the width of the displayed information
-pd.set_option('display.width', 150)
-
-print(df.head())
-```
-
-Notice that we could perform this operation on **all** of the rows in this column in one go. This is useful for simple tasks which can be written in one line - dividing by 2.205, for example - but it gets much more complicated if you want to do multiple things at once (or if you want to do different things depending on the value in question). Thankfully, it is possible to *iterate* through the rows; look at the data row-by-row and decide what to do with each. In other words, **for** each row in the data frame you can perform a set of operations. This is where we need to start looking at '**for-loops**':
 
 For-Loops
 =========
-A 'for-loop' will repeat the same operations a given number of times. You can tell the programme to perform the same action FOR a certain number of repetitions. The syntax is as follows:
+A **for-loop** will repeat the same operations a given number of times. You can tell the program to perform the same action *for* a certain number of repetitions. The syntax is as follows:
 
 ```{python}
 for number in range(3, 6):
@@ -112,31 +53,32 @@ for number in range(4, -10, -3):
 
 Notice that, in the third example above, the step size was negative and the end of the range was a smaller number that the start, hence it counted *down* rather than *up.*
 
-Here's a example of a for-loop in action: a function that calculates the factorial of a number:
+Here's an example of a for-loop in action: calculating the factorial of a number:
 
 ```{python}
-def factorial(x):
-    """Return the factorial (x!) of a given number."""
-    # Initialise the answer
-    answer = 1
-    for x in range(1, x + 1):
-        # Multiply the running total by the next number
-        answer = answer * x
-    return answer
-
-
 x = 5
-print(f'{x}! = {factorial(x)}')
+
+# Initialise the answer
+answer = 1
+# Iterate over the natural numbers below and including x
+for num in range(1, x + 1):
+    # Multiply the running total by the next number
+    answer = answer * num
+
+print(f'{x}! = {answer}')
 ```
+
+As expected, the factorial of 5 is 120.
 
 Lists
 -----
-For-loops work using lists as well. With this object type they iterate over the *values:*
+For-loops work using lists as well. With this object type they iterate over the values: for each value in the list something can be done with that value:
 
 ```{python, eval=FALSE}
 print('MENU:')
 # Loop through the values in a list
 for meal in ['Pizza', 'Pasta', 'Salad']:
+    # Execute the print() function once for each element in the list
     print(meal)
 ```
 
@@ -145,6 +87,14 @@ for meal in ['Pizza', 'Pasta', 'Salad']:
 ## Pizza
 ## Pasta
 ## Salad
+```
+
+The above code printed each element of the list in turn, as opposed to the following code which prints all the elements in one go:
+
+```{python}
+meals = ['Pizza', 'Pasta', 'Salad']
+# Execute the print() function once on the whole list
+print(meals)
 ```
 
 If you instead want to iterate over the *indexes* of a list, you can create a range from the length of the list:
@@ -183,6 +133,21 @@ for idx, value in enumerate(ls):
 ## 2 Salad
 ```
 
+A for-loop can also be run on one line:
+
+```{python}
+# Create a list
+ls = [
+    6.28318,
+    0.57721,
+    9.81,
+]
+# The formatter ".1f" will round to one decimal place
+print('\n'.join(f'{v:.1f}' for v in ls))
+```
+
+The above example shows how to format an entire list of numbers by using a combination of an f-string, a for-loop and the `.join()` method.
+
 ### Conditionals (If-Statements)
 A for-loop can be combined with an if-statement to only execute on certain values from the list:
 
@@ -216,19 +181,18 @@ numbers = [5, 3, 8, 1, 3, 5, 9, 4]
 ## 9
 ```
 
-Here's another example of a for-loop with a conditional: a function that censors certain words:
+Here's another example of a for-loop with a conditional, in this case being used to censor certain words:
 
 ```{python}
-def censor(text, to_censor):
-    """Censor a word."""
-    words = text.split()
-    for i in range(len(words)):
-        if words[i] == to_censor:
-            words[i] = '*' * len(to_censor)
-    return ' '.join(words)
+text = "Frankly, my dear, I don't give a damn"
+to_censor = 'damn'
 
+words = text.split()
+for i in range(len(words)):
+    if words[i] == to_censor:
+        words[i] = '*' * len(to_censor)
 
-print(censor("Frankly, my dear, I don't give a damn", 'damn'))
+print(' '.join(words))
 ```
 
 ### Two Lists
@@ -256,6 +220,39 @@ combinations = [(x, y) for x in list1 for y in list2]
 for combination in combinations:
     print(combination[0], combination[1])
 ```
+
+### Getting the Next Element
+The `next()` function can be used as a more powerful alternative to indexing/finding/searching a list. This function looks at each element in a list in turn, starting at the beginning, and for each one determines if it matches a given criterion. The first element it finds that does so will be returned in the manner of your asking. For example, you can ask the function to return the "next value, out of all the values in the list, where the value is equal to 'B'". This looks as follows:
+
+```{python}
+ls = ['A', 'B', 'C', 'D', 'E']
+print(next(value for value in ls if value == 'B'))
+```
+
+Alternatively, if your list is made up of numbers, you can ask the function to return the "next value, out of all the values in the list, if the value is greater than 5":
+
+```{python}
+ls = [2, 4, 6, 8, 10]
+print(next(value for value in ls if value > 5))
+```
+
+In this case, the first value that matched was "6", which is what was returned. You also have the option to ask the function to return the element to you in an augmented manner, eg as a string:
+
+```{python}
+ls = [2, 4, 6, 8, 10]
+print(next(f'The next number >5 is: {value}' for value in ls if value > 5))
+```
+
+It is also possible to get the *index* of the element that first matches your criterion as opposed to the *value*. This requires the `enumerate()` function, which splits each element in a list up into its index and its value. As such, you need to ask for the "next index, given each index and value in the list, if the value is greater than 5":
+
+```{python}
+ls = [2, 4, 6, 8, 10]
+print(next(index for index, value in enumerate(ls) if value > 5))
+```
+
+The element at index position 2 (which has the value "6") was the first to match the criterion of being greater than 5.
+
+As the name suggests, the `next()` function only finds the *next* element that meets the given criterion and, as such, can only ever return one element (or zero elements if there are none that meet the criterion). If you are instead interested in finding **all** the elements in the list you will need to use a [list comprehension](../advanced/lists.html#list-comprehension).
 
 Strings
 -------
@@ -287,39 +284,21 @@ for key in dct:
     print(key, dct[key])
 ```
 
-Data Frames
------------
-
-### Columns
-When using a data frame (such as the "MPG" data frame from section 1 above), a for-loop will iterate over the *column names:*
+Alternatively, the loop can iterate over the key-value *pairs* - use the `.items()` method to access the *items* inside of the dictionary for this purpose:
 
 ```{python}
-# Iterate over the column names
-for col_name in df:
-    print(col_name)
+for key, value in dct.items():
+    print(key, value)
 ```
 
-Unlike a list (where `for x in ls` and `for i in range(len(ls))` will cause the code to loop the same number of times), iterating over `range(len(df))` will cause the loop to run once for each *row* in the data frame. To loop once for each column, use `for i in range(len(list(df)))` - this will work because converting a data frame to a list keeps only the column names.
-
-### Rows
-As mentioned above, we can iterate over a range the same length as there are rows in a data frame (we will only use the head of the data frame - ie the first 5 rows - for this example to save space):
+If an empty dictionary has been *initialised*, it can be populated within a for-loop:
 
 ```{python}
-# To save space, we're only going to use the head of the data frame (ie the
-# first 5 rows)
-df = df.head()
+dct = {}
+for day in ['Mon', 'Tues', 'Wednes', 'Thurs', 'Fri', 'Satur', 'Sun']:
+    dct[day[:3]] = day + 'day'
 
-# Iterate over a range the same length as the number of rows
-for i in range(len(df)):
-    print(i)
-```
-
-Iterating over the rows themselves can be achieved using the `.iterrows()` method which works like the `enumerate()` function did for lists in that it returns both the index and the value:
-
-```{python}
-# Iterate over the rows of a data frame
-for i, row in df.iterrows():
-    print(i, row.tolist())
+print(dct)
 ```
 
 Statements
@@ -402,24 +381,20 @@ When the code tried to divide 'four' by 2 it created an error (because a string 
 
 > The `try` and `except <error_type>` statements can be used together to deal with known or suspected bugs. This is called **error handling** in programming. Note that the `except` statement needs to be given a specific error type in order to work. In the above example, the `except` statement was made to catch errors of the `TypeError` variety (ie when a variable is of the wrong type) which is what gets raised when you try to divide a string instead of a number by 2. An error of a different type would not have been caught.
 
-Alternatively, the `pass` statement can be used to avoid using negative conditions (eg `not in`) which can be confusing. Here's an example of a function that loops over a string and removes any vowels it encounters by using an if-statement to find them:
+Alternatively, the `pass` statement can be used to avoid using negative conditions (eg `not in`) which can be confusing. Here's an example that loops over a string and removes any vowels it encounters by using an if-statement to find them:
 
 ```{python}
-def remove_vowels(word):
-    """Remove vowels from a given word."""
-    new_word = ''
-    # Iterate through the letters in the word
-    for character in word:
-        if character in 'aeiouAEIOU':
-            # If a vowel is encountered, do nothing
-            pass
-        else:
-            # If not a vowel, add the letter to the word that will be outputted
-            new_word = new_word + character
-    return new_word
-
-
-print(remove_vowels('Hello, World'))
+word = 'Hello, World'
+new_word = ''
+# Iterate through the letters in the word
+for character in word:
+    if character in 'aeiouAEIOU':
+        # If a vowel is encountered, do nothing
+        pass
+    else:
+        # If not a vowel, add the letter to the word that will be outputted
+        new_word = new_word + character
+print(new_word)
 ```
 
 It would have been possible to write this function with just one conditional (ie `if character not in`) but the programme would have lost readability. From a stylistic point of view, it's best to avoid negative conditionals.

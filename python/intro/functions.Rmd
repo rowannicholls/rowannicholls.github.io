@@ -10,14 +10,14 @@ output:
             before_body: ../../google_analytics.html
 ---
 
-```{r, echo = FALSE}
-library(knitr)
-opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
-```
-
 <font size="3">
 
 [⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
 
 A **function** is a piece of code that can be used (and re-used) whenever and as many times as you like. It has *inputs* and *outputs*. To use a function, you need to type its name immediately followed by round brackets containing the input(s) you are giving it. If you are giving it more than one input, you need to separate them with commas.
 
@@ -77,7 +77,7 @@ The built-in functions that automatically come with Python form what is known as
 - Download and install Numpy from your computer's terminal with `pythonx.y -m pip install numpy` where `x.y` is the version of Python you have installed
     - If you don't know what version of Python you have installed, run `python --version` on your terminal. If this returns a version number that starts with a 2, it means that Python version 2 is your default version. However, chances are that you also have version 3 installed, so run `python3 --version` to see if that works and use that version number instead.
         - In general, you should always use Python 3 because Python 2 is significantly different and is no longer supported
-        - For example, if `python --version` returns `Python 2.7.18` then you should run `python3 --version`. If this returns `Python 3.9.5` then it means you have Python 3.9 installed and should use `python3.9 -m pip install numpy` to install Numpy.
+        - For example, if `python --version` returns `Python 2.7.18` then you should run `python3 --version`. If this returns `Python 3.13.5` then it means you have Python 3.13 installed and should use `python3.13 -m pip install numpy` to install Numpy.
     - `pip` is the name of the **p**ackage **i**nstaller for **P**ython. It's the main programme for downloading and installing Python packages.
     - The `-m` flag tells Python to run the pip **m**odule
     - The `install numpy` instruction then tells pip what to do
@@ -121,8 +121,8 @@ Here's another example using the Pandas (**pan**el **da**ta) package:
 
 - Install it from the terminal:
 
-```{bash, eval = FALSE}
-$ python3.9 -m pip install pandas
+```bash
+$ python3.13 -m pip install pandas
 ```
 
 - Import it and use it to convert a list into a series (a column of a spreadsheet):

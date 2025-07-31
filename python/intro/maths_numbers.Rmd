@@ -15,8 +15,8 @@ output:
 [⇦ Back](../../python.html)
 
 ```{r, echo = FALSE}
-library(knitr)
-opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 ```
 
 Arithmetic
@@ -93,7 +93,7 @@ print(round(-6283.18531, -2))
 print(abs(-6.28318531))
 ```
 
-In order to do more aesthetic changes such as removing trailing zeros or rounding to significant digits, see the page on formatted strings.
+In order to do more aesthetic changes such as removing trailing zeros or rounding to significant digits, see [the page on formatted strings](f_strings.html).
 
 Constants
 =========

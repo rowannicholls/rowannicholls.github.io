@@ -19,7 +19,7 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 ```
 
 > This page is the first part of a series on data frames:
@@ -627,43 +627,54 @@ Iterating over a Data Frame
 
 Row-by-row
 ----------
-Iterating over a data frame's rows using `.iterrows()`
+The length of a data frame as given by `len(df)` is equal to the number of rows. This can be used to iterate over the rows in a for-loop:
+
+```{python}
+for i in range(len(df)):
+    print(i, df.loc[i, 'Athlete'])
+```
+
+A data frame's rows can also be iterated over using `.iterrows()` which returns the rows' indexes as integers and the rows' contents as series:
 
 ```{python}
 for i, row in df.iterrows():
-    row_num = i
-    person = row['Athlete']
-    age = row['Age']
-    print(i, person, age)
+    print(i, row.tolist())
 ```
 
-Iterating over a data frame's rows using `.itertuples()`
+Alternatively, the rows' contents can be returned as tuples using the `.itertuples()` method:
 
 ```{python}
 for row in df.itertuples():
-    row_num = row.Index
-    person = row.Athlete
-    age = row.Age
-    print(row_num, person, age)
+    row_number = row.Index
+    athlete_name = row.Athlete
+    athlete_age = row.Age
+    print(row_number, athlete_name, athlete_age)
 ```
 
 Column-by-column
 ----------------
-Iterate over a data frame's columns using `.items()`
+When using a for-loop to iterate over a data frame, it will iterate over the *column names:*
+
+```{python}
+# Iterate over the column names
+for colname in df:
+    print(colname)
+```
+
+Using the `list()` function on a data frame will return its column names. This can then be used in a near-identical way to the previous example to iterate over the columns via a for-loop:
+
+```{python}
+for colname in list(df):
+    print(colname, df[colname][1])
+```
+
+Iterate over a data frame's column names *and* column contents using the `.items()` method:
 
 ```{python}
 for colname, col in df.items():
     Gatlin = col[1]
     Simbine = col[4]
     print(colname, Gatlin, Simbine)
-```
-
-Iterate over a data frame's columns using the column names
-
-```{python}
-for colname in list(df):
-    Bolt = df[colname][1]
-    print(Bolt)
 ```
 
 Cell-by-cell

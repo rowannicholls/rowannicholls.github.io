@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
 Introduction to Lists
 =====================
 As introduced in [the data types page](data_types.html#lists), 'lists' are collections of objects:
@@ -150,40 +155,6 @@ print('B' in ls)
 ```{python}
 print('F' in ls)
 ```
-
-More Advanced Finding
-=====================
-The `next()` function can be used as a more powerful alternative to indexing/finding/searching a list. This function looks at each element in a list in turn, starting at the beginning, and for each one determines if it matches a given criterion. The first element it finds that does so will be returned in the manner of your asking. For example, you can ask the function to return the "next value, out of all the values in the list, where the value is equal to 'B'". This looks as follows:
-
-```{python}
-ls = ['A', 'B', 'C', 'D', 'E']
-print(next(value for value in ls if value == 'B'))
-```
-
-Alternatively, if your list is made up of numbers, you can ask the function to return the "next value, out of all the values in the list, if the value is greater than 5":
-
-```{python}
-ls = [2, 4, 6, 8, 10]
-print(next(value for value in ls if value > 5))
-```
-
-In this case, the first value that matched was "6", which is what was returned. You also have the option to ask the function to return the element to you in an augmented manner, eg as a string:
-
-```{python}
-ls = [2, 4, 6, 8, 10]
-print(next(f'The next number >5 is: {value}' for value in ls if value > 5))
-```
-
-It is also possible to get the *index* of the element that first matches your criterion as opposed to the *value*. This requires the `enumerate()` function, which splits each element in a list up into its index and its value. As such, you need to ask for the "next index, given each index and value in the list, if the value is greater than 5":
-
-```{python}
-ls = [2, 4, 6, 8, 10]
-print(next(index for index, value in enumerate(ls) if value > 5))
-```
-
-The element at index position 2 (which has the value "6") was the first to match the criterion of being greater than 5.
-
-As the name suggests, the `next()` function only finds the *next* element that meets the given criterion and, as such, can only ever return one element (or zero elements if there are none that meet the criterion). If you are instead interested in finding **all** the elements in the list you will need to use a [list comprehension](../advanced/lists.html#list-comprehension) .
 
 Concatenating Lists
 ===================
@@ -385,21 +356,6 @@ print(ls)
 
 Notice that this **does _not_ preserve order**: we would have expected the result to be `['First', 'Second', 'Third']` but instead it was `['Second', 'First', 'Third']`. The easiest way to get the unique values in a list *in the same order* that they appear is to use a Pandas Series object, see [here](../advanced/data_frames_searching.html#bonus-removing-duplicates-from-a-list-whilst-preserving-the-order).
 
-Finding the Duplicated Values in Two Lists
-------------------------------------------
-Considering that a set *removes* duplicates, it seems weird that they can be used to *find* duplicates. However, if you have two lists, here's how you can find the values that exist in both of them using a set and a [list comprehension](../advanced/lists.html):
-
-```{python}
-ls1 = ['First', 'Second', 'Third']
-ls2 = ['Third', 'Fourth', 'Fifth']
-
-# Get duplicates in two lists
-combo = ls1 + ls2
-duplicates = set([x for x in combo if combo.count(x) == 2])
-
-print(duplicates)
-```
-
 Removing Multiple Values from Lists
 -----------------------------------
 Another useful property of sets is that they can be subtracted from each other, which is not true of lists. Here's an example:
@@ -478,18 +434,7 @@ ls = [1, 2, 3]
 print(sub in ls)
 ```
 
-We got a result of `False` because Python was searching for a *list* inside the list `ls` instead of searching for two separate values (and it didn't find that list). We could have used a list comprehension instead:
-
-```{python}
-sub = [1, 2]
-ls = [1, 2, 3]
-# Are the values in sub in ls as well?
-booleans = [x in ls for x in sub]
-result = all(booleans)
-print(result)
-```
-
-However, if we convert to sets we can use the `issubset()` method which does the job in one line:
+We got a result of `False` because Python was searching for a *list* inside the list `ls` instead of searching for two separate values (and it didn't find that list). However, if we convert to sets we can use the `issubset()` method which does the job in one line:
 
 ```{python}
 sub = [1, 2]

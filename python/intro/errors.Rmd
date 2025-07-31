@@ -14,6 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
 When you run Python code that contains a mistake it will tell you where and what it is! Here's an example:
 
 Zero Division Error
@@ -100,9 +105,82 @@ print(dct[['Key 1']])
 
 Instead of looking up a value in the dictionary using a *string* to specify the key, a *list containing a string* has been used. The code `dct['Key 1']` (with only one pair of square brackets) would have worked.
 
-There are hundreds of other errors in Python, both [built-in errors](https://docs.python.org/3/library/exceptions.html) and errors defined in add-on packages. Additionally, you can create your own custom error types! While it might seem strange to want to create MORE errors, it can actually be useful to create types that give you more detail about specific code you've written.
+All the Errors
+==============
+There are hundreds of other errors in Python, both built-in errors and errors defined in add-on packages. Additionally, you can create your own custom error types! While it might seem strange to want to create MORE errors, it can actually be useful to create types that give you more detail about specific code you've written.
 
-> Have a look at [this page](../advanced/error_handling.html) for ideas about how to *handle* errors, and how to write code to use them to your advantage.
+Have a look at [this page](../advanced/error_handling.html) for ideas about how to *handle* errors, and how to write code to use them to your advantage. In the meantime, have a look down this list of *all* the built-in errors that exist in Python, which comes from the [documentation](https://docs.python.org/3/library/exceptions.html):
+
+```
+BaseException
+ ├── BaseExceptionGroup
+ ├── GeneratorExit
+ ├── KeyboardInterrupt
+ ├── SystemExit
+ └── Exception
+      ├── ArithmeticError
+      │    ├── FloatingPointError
+      │    ├── OverflowError
+      │    └── ZeroDivisionError
+      ├── AssertionError
+      ├── AttributeError
+      ├── BufferError
+      ├── EOFError
+      ├── ExceptionGroup [BaseExceptionGroup]
+      ├── ImportError
+      │    └── ModuleNotFoundError
+      ├── LookupError
+      │    ├── IndexError
+      │    └── KeyError
+      ├── MemoryError
+      ├── NameError
+      │    └── UnboundLocalError
+      ├── OSError
+      │    ├── BlockingIOError
+      │    ├── ChildProcessError
+      │    ├── ConnectionError
+      │    │    ├── BrokenPipeError
+      │    │    ├── ConnectionAbortedError
+      │    │    ├── ConnectionRefusedError
+      │    │    └── ConnectionResetError
+      │    ├── FileExistsError
+      │    ├── FileNotFoundError
+      │    ├── InterruptedError
+      │    ├── IsADirectoryError
+      │    ├── NotADirectoryError
+      │    ├── PermissionError
+      │    ├── ProcessLookupError
+      │    └── TimeoutError
+      ├── ReferenceError
+      ├── RuntimeError
+      │    ├── NotImplementedError
+      │    ├── PythonFinalizationError
+      │    └── RecursionError
+      ├── StopAsyncIteration
+      ├── StopIteration
+      ├── SyntaxError
+      │    └── IndentationError
+      │         └── TabError
+      ├── SystemError
+      ├── TypeError
+      ├── ValueError
+      │    └── UnicodeError
+      │         ├── UnicodeDecodeError
+      │         ├── UnicodeEncodeError
+      │         └── UnicodeTranslateError
+      └── Warning
+           ├── BytesWarning
+           ├── DeprecationWarning
+           ├── EncodingWarning
+           ├── FutureWarning
+           ├── ImportWarning
+           ├── PendingDeprecationWarning
+           ├── ResourceWarning
+           ├── RuntimeWarning
+           ├── SyntaxWarning
+           ├── UnicodeWarning
+           └── UserWarning
+```
 
 [⇦ Back](../../python.html)
 
