@@ -1,0 +1,683 @@
+---
+title: '<font size="5">SQLite:</font><br>Cheat Sheet'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../sql.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+*This is Part 3 in a series on SQLite:*
+
+1. *[Introduction](introduction.html)*
+2. *[Worked Example](worked_example.html)*
+3. *Cheat Sheet*
+
+**Open SQLite in the terminal:**  
+```bash
+$ sqlite3
+```
+
+**Exit out of SQLite:**  
+```bash
+.quit
+# or
+.exit
+```
+*You can also use `Ctrl+D`*
+
+_Remember, you can press the up arrow in the terminal to recall a previous command_
+
+Databases
+=========
+- **Open a database, creating it if it doesn't exist:**  
+    *- If a different database is already open, this command closes it and opens the new one*  
+    *- Use `.open :memory:` to create an in-memory database*  
+    ```{sql, eval=FALSE}
+    .open database.db
+    ```
+- **Attach another database:**  
+    *Allows access using a prefix, e.g. `SELECT * FROM other.table_name;`*  
+    ```{sql, eval=FALSE}
+    ATTACH DATABASE 'database2.db' AS other;
+    ```
+- **Detach an attached database:**  
+    ```{sql, eval=FALSE}
+    DETACH DATABASE other;
+    ```
+- **List open/attached databases:**  
+    ```{sql, eval=FALSE}
+    .databases
+    ```
+- **Export current database to a file:**  
+    *Also used to save an in-memory database to disk*  
+    ```{sql, eval=FALSE}
+    .save database.db
+    ```
+- **Check schema of all tables:**
+    ```{sql, eval=FALSE}
+    .schema
+    ```
+    _...or for a specific attached database:_  
+    ```{sql, eval=FALSE}
+    .schema other.table_name
+    ```
+
+Tables
+======
+- **Create a new table (with no column constraints):**
+    - **With one column:**
+        ```{sql, eval=FALSE}
+        CREATE TABLE table_name (column_1 data_type);
+        ```
+    - **With multiple columns:**  
+        ```{sql, eval=FALSE}
+        CREATE TABLE table_name (
+          column_1 data_type,
+          column_2 data_type,
+          column_3 data_type
+        );
+        ```
+    _Common SQLite data types:_  
+    `INTEGER`: whole number  
+    `REAL`: decimal number  
+    `TEXT`: string (use single or double quotes)  
+    `DATE`: date in `'YYYY-MM-DD'` format  
+    `BLOB`: binary large object (e.g. images, files)
+- **List all tables in all open databases**:  
+    ```{sql, eval=FALSE}
+    .tables
+    ```
+- **Show the `CREATE TABLE` statement that was used:**  
+    ```{sql, eval=FALSE}
+    .schema table_name
+    ```
+- **Show table structure (column names and types):**  
+    ```{sql, eval=FALSE}
+    PRAGMA table_info(table_name);
+    ```
+- **Rename a table:**  
+    ```{sql, eval=FALSE}
+    ALTER TABLE old_name RENAME TO new_name;
+    ```
+- **Delete (drop) a table**:  
+    ```{sql, eval=FALSE}
+    DROP TABLE table_name;
+    ```
+- **Columns:**  
+    - **Add a column:**  
+        ```{sql, eval=FALSE}
+        ALTER TABLE table_name ADD COLUMN new_column data_type;
+        ```
+    - **Rename a column:**  
+        ```{sql, eval=FALSE}
+        ALTER TABLE table_name RENAME COLUMN old_name TO new_name;
+        ```
+    - **Delete (drop) a column:**  
+        *You cannot delete the last column in a table*
+        ```{sql, eval=FALSE}
+        ALTER TABLE table_name DROP COLUMN column_name;
+        ```
+- **Create a new table (with column constraints):**
+    - **Prevent `NULL` values from being added in a particular column**:  
+        ```{sql, eval=FALSE}
+        CREATE TABLE table_name (
+          column_1 data_type NOT NULL
+        );
+        ```
+    - **Define a default value to be added if no explicit value is given**:  
+        ```{sql, eval=FALSE}
+        CREATE TABLE table_name (
+          column_1 data_type DEFAULT 'default_value'
+        );
+        ```
+    - **Prevent duplicate values from being added in a particular column**:  
+        ```{sql, eval=FALSE}
+        CREATE TABLE table_name (
+          column_1 data_type UNIQUE
+        );
+        ```
+    - **Have the column's values be able to uniquely identify the rows**:  
+        ```{sql, eval=FALSE}
+        CREATE TABLE table_name (
+          column_1 data_type PRIMARY KEY
+        );
+        ```
+    *- There can be multiple `UNIQUE` columns in a table but no more than one `PRIMARY KEY` column*  
+    *- More info on the `PRIMARY KEY` constraint below:*
+
+Keys
+====
+- **Types of keys**:
+    - **Primary key**: A column (or columns) that uniquely identifies each row in a table
+        - *Only one primary key per table*
+        - *Cannot contain `NULL` values*
+    - **Composite key**: A primary key made from two or more columns that together form a unique identifier
+    - **Foreign key**: A column that refers to the primary key in another table, creating a relationship between the two
+    - **Candidate key**: Any column or set of columns that could serve as a primary key
+        - *A table can have multiple candidate keys*
+        - *One is chosen as the primary key; the others are called __alternate keys__*
+    - **Super key**: Any combination of columns that uniquely identifies a row, possibly including extra columns
+        - *Candidate keys are minimal super keys (i.e. no redundant columns)*
+    - **Secondary key**: A less common term, typically referring to non-unique columns used for filtering or indexing
+        - _Note: In relational databases, this term is rarely formalized_
+
+<p></p>
+
+- **Create a table with a primary key:**  
+    ```{sql, eval=FALSE}
+    CREATE TABLE table_name (
+      id INTEGER PRIMARY KEY
+    );
+    ```
+- **Create a table with a composite primary key:**  
+    ```{sql, eval=FALSE}
+    CREATE TABLE table_name (
+      col1 INTEGER,
+      col2 TEXT,
+      PRIMARY KEY (col1, col2)
+    );
+    ```
+- **Create a table with a foreign key:**  
+    ```{sql, eval=FALSE}
+    CREATE TABLE table_name (
+      othertable_id INTEGER,
+      FOREIGN KEY (othertable_id) REFERENCES othertable(id)
+    );
+    ```
+- **Enforce a one-to-one relationship (foreign key must be unique):**  
+    ```{sql, eval=FALSE}
+    CREATE TABLE table_name (
+      othertable_id INTEGER UNIQUE,
+      FOREIGN KEY (othertable_id) REFERENCES othertable(id)
+    );
+    ```
+
+_Notes:_
+
+- **Foreign keys must be explicitly enabled in SQLite**:  
+    ```{sql, eval=FALSE}
+    PRAGMA foreign_keys = ON;
+    ```  
+    *To check if foreign keys are enabled:*  
+    ```{sql, eval=FALSE}
+    PRAGMA foreign_keys;
+    ```
+- **To view foreign key constraints on a table:**  
+    ```{sql, eval=FALSE}
+    PRAGMA foreign_key_list(table_name);
+    ```
+
+SQLite doesn't enforce strict data types for keys, but it is best practice to use matching types between referenced keys.
+
+Adding, Editing and Removing Data
+=================================
+- **Insert a new row:**
+    - Insert a value into one column (other columns will be set to `NULL`):  
+        ```{sql, eval=FALSE}
+        INSERT INTO table_name (column_name)
+        VALUES (value);
+        ```
+        - Change the value used for nulls instead of `NULL` with:  
+            ```{sql, eval=FALSE}
+            .nullvalue value
+            ```
+    - Insert values into multiple columns:  
+        ```{sql, eval=FALSE}
+        INSERT INTO table_name (column_1, column_2, column_3)
+        VALUES (value_1, value_2, value_3);
+        ```
+    - Insert multiple rows in a single statement (SQLite 3.7.11+):  
+        ```{sql, eval=FALSE}
+        INSERT INTO table_name (column_1, column_2)
+        VALUES (value_1a, value_2a),
+               (value_1b, value_2b),
+               (value_1c, value_2c);
+        ```
+    - Insert all values in order (omit column names):  
+        *Only safe if you know the column order — not recommended for production code*  
+        ```{sql, eval=FALSE}
+        INSERT INTO table_name
+        VALUES (value_1, value_2, value_3);
+        ```
+- **Replace a row (insert or update):**
+    - Inserts a row or overwrites the existing one if the primary key already exists:  
+    _Note: This deletes the existing row first, which may trigger `ON DELETE` constraints._  
+        ```{sql, eval=FALSE}
+        REPLACE INTO table_name (id, column_1, column_2)
+        VALUES (1, value_1, value_2);
+        ```
+- **Insert a row only if it doesn't conflict with existing data (ignore conflict):**  
+    ```{sql, eval=FALSE}
+    INSERT OR IGNORE INTO table_name (column_1, column_2)
+    VALUES (value_1, value_2);
+    ```
+- **Insert a row and update if a conflict occurs (UPSERT):**  
+    *Requires SQLite 3.24.0+*  
+    ```{sql, eval=FALSE}
+    INSERT INTO table_name (id, column_1)
+    VALUES (1, 'value')
+    ON CONFLICT(id) DO UPDATE SET column_1 = 'new_value';
+    ```
+- **Update existing data:**
+    - Change the value of a column for rows matching a condition:  
+        ```{sql, eval=FALSE}
+        UPDATE table_name
+        SET column_1 = new_value
+        WHERE column_2 = value;
+        ```
+    - Update multiple columns at once:  
+        ```{sql, eval=FALSE}
+        UPDATE table_name
+        SET column_1 = value_1,
+            column_2 = value_2
+        WHERE id = some_id;
+        ```
+- **Cases:**  
+    *Use `CASE` to return different values based on conditions in a column.*
+    ```{sql, eval=FALSE}
+    SELECT column_1,
+      CASE
+        WHEN column_2 = 5 THEN 'Great'
+        WHEN column_2 >= 4 THEN 'Good'
+        WHEN column_2 >= 3 THEN 'Average'
+        WHEN column_2 >= 2 THEN 'Ok'
+        ELSE 'Poor'
+      END AS 'new_column_name'
+    FROM table_name;
+    ```
+- **Delete rows:**
+    - Delete rows matching a condition:  
+        ```{sql, eval=FALSE}
+        DELETE FROM table_name
+        WHERE column_name = value;
+        ```
+    - Delete **all** rows from a table (the table remains):  
+        ```{sql, eval=FALSE}
+        DELETE FROM table_name;
+        ```
+
+Outputting a Table
+==================
+- **Display a table in the terminal:**
+    - Use the `SELECT` query to *select* everything from a table as your output:  
+        ```{sql, eval=FALSE}
+        SELECT * FROM table_name;
+        ```
+    - By default, output (in this case, everything from a table) is printed to the terminal using the current display mode.  
+    - You can change the display format using the `.mode` command which sets the format for query results:
+        - **Column (default)** – neat columns for terminal output:  
+            ```{sql, eval=FALSE}
+            .mode column
+            ```
+            - Adjust column width (only affects `.mode column`):  
+                *Specify the width for each column (in order).*
+                ```{sql, eval=FALSE}
+                .width 20 30 15
+                ```
+        - **List** – each row printed vertically (one column per line):  
+            ```{sql, eval=FALSE}
+            .mode list
+            ```
+        - **Line** – similar to list, but formatted for readability:  
+            ```{sql, eval=FALSE}
+            .mode line
+            ```
+        - **CSV** – comma-separated values:  
+            ```{sql, eval=FALSE}
+            .mode csv
+            ```
+        - **Tabs** – tab-separated values (TSV):  
+            ```{sql, eval=FALSE}
+            .mode tabs
+            ```
+        - **HTML** – results wrapped in `<table>` tags:  
+            ```{sql, eval=FALSE}
+            .mode html
+            ```
+        - **JSON** – each row as a JSON object (SQLite 3.38.0+):  
+            ```{sql, eval=FALSE}
+            .mode json
+            ```
+        - **Insert** – generates `INSERT` statements:  
+            ```{sql, eval=FALSE}
+            .mode insert table_name
+            ```
+        - **Quote** – quoted CSV (useful for importing safely):  
+            ```{sql, eval=FALSE}
+            .mode quote
+            ```
+    - Show column headers in output (on by default):   
+        ```{sql, eval=FALSE}
+        .headers on
+        ```
+    - Turn off column headers:  
+        ```{sql, eval=FALSE}
+        .headers off
+        ```
+- **Control where output is sent:**
+    - **Send output to terminal (default):**  
+    _With this setting on, query results get displayed in the terminal_
+        ```{sql, eval=FALSE}
+        .output stdout
+        ```
+    - **Send output to a file:**  
+        *Don't forget to reset `.output` back to `stdout` to see results in the terminal again.*
+        ```{sql, eval=FALSE}
+        .output filename.csv
+        SELECT * FROM table_name;
+        .output stdout
+        ```
+- **Outputting a table to a file:**
+    - **Export as CSV:**  
+        ```{sql, eval=FALSE}
+        -- Include the column headers
+        .headers on
+        -- Change the display mode
+        .mode csv
+        -- Redirect the output
+        .output table.csv
+        -- Select all rows and columns
+        SELECT * FROM table_name;
+        -- Redirect the output back to what it was
+        .output stdout
+        -- Change the display mode back to what it was
+        .mode column
+        ```
+    - **Export as HTML:**  
+        ```{sql, eval=FALSE}
+        .mode html
+        .output table.html
+        SELECT * FROM table_name;
+        .output stdout
+        ```
+    - **Export as SQL insert statements:**  
+        ```{sql, eval=FALSE}
+        .mode insert table_name
+        .output table.sql
+        SELECT * FROM table_name;
+        .output stdout
+        ```
+        _Alternatively, using `.dump`:_
+        ```{sql, eval=FALSE}
+        .mode insert table_name
+        .output table.sql
+        .dump
+        .output stdout
+        ```
+
+_Notes:_
+
+- _All `.mode` and `.output` commands must be run **before** the `SELECT` statement to take effect._
+- _You can see the current settings with `.show`_
+
+Inputting a Table
+=================
+- **Import a table:**
+    - **From an SQL file:**  
+        *Runs SQL commands from a `.sql` file, typically containing `CREATE TABLE` and `INSERT` statements:*
+        ```{sql, eval=FALSE}
+        .read path_to_file.sql
+        ```
+    - **From a CSV file:**  
+        *Creates and populates a table from a CSV file:*  
+        *- The file must be plain CSV (no Excel formatting)*  
+        *- The first line is assumed to be column headers unless you specify otherwise*  
+        *- If the table doesn't exist yet, it will be created automatically using the CSV header row*  
+        ```{sql, eval=FALSE}
+        .mode csv
+        .import path_to_file.csv table_name
+        ```
+
+Basic Querying
+==============
+- **Display one column:**  
+    ```{sql, eval=FALSE}
+    SELECT column_name FROM table_name;
+    ```
+- **Display multiple columns:**  
+    ```{sql, eval=FALSE}
+    SELECT column_1, column_2, column_3 FROM table_name;
+    ```
+- **Display all columns, but only some rows:**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    LIMIT 10;
+    ```
+- **Select a column and assign it an alias:**  
+    ```{sql, eval=FALSE}
+    SELECT column_name AS 'alias' FROM table_name;
+    ```
+- **Remove duplicate values:**  
+    ```{sql, eval=FALSE}
+    SELECT DISTINCT column_name FROM table_name;
+    ```
+- **Round values in a column (e.g. to 2 decimal places):**  
+    ```{sql, eval=FALSE}
+    SELECT column_1, ROUND(column_2, 2) FROM table_name;
+    ```
+- **Sort a table:**
+    - Sort ascending (default):  
+        ```{sql, eval=FALSE}
+        SELECT * FROM table_name ORDER BY column_name;
+        ```
+    - Sort descending:  
+        ```{sql, eval=FALSE}
+        SELECT * FROM table_name ORDER BY column_name DESC;
+        ```
+
+Filtering
+=========
+- **Filter out `NULL` values:**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    WHERE column_name IS NOT NULL;
+    ```
+- **Filter using comparison operators:**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    WHERE column_name > value;
+    ```
+    _Comparison operators:_  
+    `=`: equal to  
+    `!=`: not equal to  
+    `>`: greater than  
+    `<`: less than  
+    `>=`: greater than or equal to  
+    `<=`: less than or equal to  
+- **Filter within a range using `BETWEEN`:**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    WHERE column_name BETWEEN value_1 AND value_2;
+    ```
+- **Filter using multiple conditions:**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    WHERE column_1 > value AND column_2 < value;
+
+    SELECT * FROM table_name
+    WHERE column_1 BETWEEN value_1 AND value_2
+      AND column_2 > value_3;
+
+    SELECT * FROM table_name
+    WHERE column_1 BETWEEN value_1 AND value_2
+       OR column_2 > value_3;
+    ```
+    _Logical operators:_  
+    `AND`: both conditions must be true  
+    `OR`: at least one condition must be true  
+- **Filter using pattern matching (`LIKE`):**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    WHERE column_name LIKE 'te_t';    -- Matches 'test', 'text', etc.
+
+    SELECT * FROM table_name
+    WHERE column_name LIKE '%substring%';    -- Matches any text containing 'substring'
+    ```
+- **Filter and sort together:**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    WHERE column_1 > value
+    ORDER BY column_2 DESC;
+    ```
+
+Aggregating
+===========
+- **Count rows:**  
+    ```{sql, eval=FALSE}
+    SELECT COUNT(*) FROM table_name;
+
+    SELECT COUNT(*) FROM table_name
+    WHERE column_name = value;
+    ```
+- **Sum values:**  
+    ```{sql, eval=FALSE}
+    SELECT SUM(column_name) FROM table_name;
+
+    SELECT SUM(column_1) FROM table_name
+    WHERE column_2 = value;
+    ```
+- **Get the maximum value:**  
+    ```{sql, eval=FALSE}
+    SELECT MAX(column_name) FROM table_name;
+
+    SELECT MAX(column_1) FROM table_name
+    WHERE column_2 = value;
+    ```
+- **Get the minimum value:**  
+    ```{sql, eval=FALSE}
+    SELECT MIN(column_name) FROM table_name;
+
+    SELECT MIN(column_1) FROM table_name
+    WHERE column_2 = value;
+    ```
+- **Get the average value:**  
+    ```{sql, eval=FALSE}
+    SELECT AVG(column_name) FROM table_name;
+
+    SELECT AVG(column_1) FROM table_name
+    WHERE column_2 = value;
+    ```
+
+Grouping and Pivoting
+=====================
+- **Group and show all columns:**  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_name
+    GROUP BY column_name;
+    ```
+- **Show average per group and sort by group:**  
+    ```{sql, eval=FALSE}
+    SELECT column_1, AVG(column_2) FROM table_name
+    GROUP BY column_1
+    ORDER BY column_1;
+    ```
+- **Use positional references in `GROUP BY` or `ORDER BY`:**  
+    _Here, `1` refers to the first column in the `SELECT` clause, `2` to the second, etc._
+    ```{sql, eval=FALSE}
+    SELECT column_1, AVG(column_2) FROM table_name
+    GROUP BY 1
+    ORDER BY 1;
+    ```
+- **Filter *before* grouping using `WHERE`:**  
+    ```{sql, eval=FALSE}
+    SELECT column_1, AVG(column_2) FROM table_name
+    WHERE column_3 > value
+    GROUP BY column_1
+    ORDER BY column_1;
+    ```
+- **Filter *after* grouping using `HAVING`:**  
+    ```{sql, eval=FALSE}
+    SELECT column_1, COUNT(column_2) FROM table_name
+    GROUP BY column_1
+    HAVING COUNT(column_2) > value;
+    ```
+
+_Note: `HAVING` is used **after** aggregation (e.g. to filter groups), while `WHERE` is used **before** aggregation (to filter rows)._
+
+Join Tables
+===========
+- **Join via an inner join:**
+    - Join two tables and select all columns:  
+        ```{sql, eval=FALSE}
+        SELECT * FROM table_1
+        JOIN table_2 ON table_1.column_1 = table_2.column_1;
+        ```
+    - Join two tables and select one column from each:  
+        ```{sql, eval=FALSE}
+        SELECT table_1.column_2, table_2.column_3 FROM table_1
+        JOIN table_2 ON table_1.column_1 = table_2.column_1;
+        ```
+    - Join two tables and filter results:  
+        ```{sql, eval=FALSE}
+        SELECT * FROM table_1
+        JOIN table_2 ON table_1.column_1 = table_2.column_1
+        WHERE table_1.column_2 = value;
+        ```
+- **Join via a left join:**  
+    *Returns all rows from the left table and matching rows from the right (or `NULL` if no match)*  
+    ```{sql, eval=FALSE}
+    SELECT * FROM table_1
+    LEFT JOIN table_2 ON table_1.column_1 = table_2.column_1;
+    ```
+- **Join via a cross join (Cartesian product):**  
+    *Every row in `table_1` is paired with every row in `table_2`*  
+    - Select all columns:  
+        ```{sql, eval=FALSE}
+        SELECT * FROM table_1
+        CROSS JOIN table_2;
+        ```
+    - Select specific columns from both tables:  
+        ```{sql, eval=FALSE}
+        SELECT table_1.column_1, table_2.column_2 FROM table_1
+        CROSS JOIN table_2;
+        ```
+- **Append rows from one table to another (UNION):**
+    - Combine two tables with the same structure into one:  
+        ```{sql, eval=FALSE}
+        SELECT * FROM table_1
+        UNION
+        SELECT * FROM table_2;
+        ```
+    _Note: `UNION` removes duplicates. Use `UNION ALL` to include all rows, even if duplicated._
+
+Statements Inside Statements
+============================
+- **Use `WITH` to define a subquery that can be reused later in the main query:**
+    _This is also known as a Common Table Expression (CTE), useful for breaking complex queries into logical steps._
+    ```{sql, eval=FALSE}
+    WITH previous_results AS (
+       SELECT column_1 AS 'alias' FROM table_1
+       UNION
+       SELECT * FROM table_2
+    )
+    SELECT * FROM previous_results
+    JOIN table_3 ON table_3.column_2 = previous_query.alias;
+    ```
+- **You can also nest subqueries directly inside `SELECT`, `FROM`, or `WHERE` clauses:**
+    ```{sql, eval=FALSE}
+    SELECT *
+    FROM table_1
+    WHERE column_1 IN (
+      SELECT column_1 FROM table_2
+      WHERE column_2 > value
+    );
+    ```
+
+_Use subqueries for filtering, aggregating, or creating reusable logic within queries._
+
+[⇦ Back](../sql.html)
+
+</font>

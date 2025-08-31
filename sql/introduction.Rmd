@@ -1,0 +1,112 @@
+---
+title: '<font size="5">SQLite:</font><br>Introduction'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../sql.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+*This is Part 1 in a series on SQLite:*
+
+1. *Introduction*
+2. *[Worked Example](worked_example.html)*
+3. *[Cheat Sheet](cheat_sheet.html)*
+
+SQLite is a database *engine* (it allows users to change the data in a database) that uses the SQL language (or rather its particular dialect of the language). It is not itself a program but rather a *library* -- software that is embedded into a fully-fledged program. The database being interacted with gets stored in a single file on your local machine and SQLite can be run, offline, from your terminal. This makes it very simple for small projects and for beginners.
+
+Installation
+============
+Install SQLite from the terminal with:
+
+```bash
+# macOS
+$ brew install sqlite
+# Ubuntu
+$ sudo apt install sqlite3
+```
+
+Check that it has worked with:
+
+```bash
+$ sqlite3 --version
+```
+
+Usage
+=====
+To open SQLite in the terminal:
+
+```bash
+$ sqlite3
+```
+
+You will see some text that includes the following:
+
+```
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database.
+```
+
+This means that you are working in a new, empty, temporary database that will disappear once you close SQLite. To open an existing database file (one with the `.db` extension) that exists in the same folder as the one your terminal is pointing to, you can run the suggested SQLite command:
+
+```sql
+.open FILENAME
+```
+
+If you run the above and the database file called `FILENAME` does not exist (specifically, if it does not exist in the current working directory) it will be initialised as an empty database, opened in SQLite and an empty `.db` file will be created in your folder to store it. The same can be achieved in one step instead of two by opening SQLite and the database at the same time in the terminal:
+
+```bash
+$ sqlite3 FILENAME
+```
+
+Once in SQLite, running `.exit` or `.quit` will close back out to the terminal.
+
+Another useful thing to note is that the `.dump` command will output the entire database as SQL commands that can be used to recreate the database:
+
+```bash
+$ sqlite3 database.db .dump > database.sql  # Convert .db to .sql
+```
+
+This is useful for:
+
+- Backing up a database
+- Converting it into a human-readable (albeit obtuse) format
+- Adding it to version control
+
+The reverse -- constructing a database file from a file of SQL commands -- can also be done:
+
+```bash
+$ sqlite3 output.db < intermediate.sql  # Convert .sql to .db
+```
+
+You can also run a query from a file and save the result to a file using this shell redirection:
+
+```bash
+$ sqlite3 database.db < query.sql > output.txt
+```
+
+This runs all SQL commands in `query.sql` against `database.db`, and saves the output to `output.txt`. You can combine this with `.mode` and `.headers` inside the SQL file to control the format:
+
+```sql
+.headers on
+.mode csv
+SELECT * FROM table_name;
+```
+
+The above will result in `output.txt` containing the table as a CSV.
+
+[⇦ Back](../sql.html)
+
+</font>

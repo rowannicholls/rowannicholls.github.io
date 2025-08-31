@@ -4,8 +4,8 @@ output:
     html_document:
         theme: paper
         highlight: textmate
-        number_sections: true
-        toc: true
+        # number_sections: true
+        # toc: true
         includes:
             before_body: google_analytics.html
 ---
@@ -14,14 +14,14 @@ output:
 
 ```{r, echo = FALSE}
 knitr::opts_chunk$set(out.width = "100%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 ```
 
 [⇦ Back](index.html)
 
 **Structured Query Language** (SQL - pronounced either "*es cue el*" or "*sequel*") is a programming language used to manage data that is stored in a database. It is not a program itself but it is used in many programs, especially *relational database management systems* (RDBMSs).
 
-While the syntax and semantics of the SQL language is defined in an official standard (maintained by ISO/IEC) it is common for RDBMSs to have their own dialects. These dialects are extensions to the standard, meaning that the core elements of the language will always be there but with some additions and quirks that depend on the exact RDBMS you are using. This page will use commands tested in **SQLite**, one of the most accessible and easy-to-use of the RDBMSs that uses SQL.
+While the syntax and semantics of the SQL language is defined in an official standard (maintained by ISO/IEC) it is common for RDBMSs to have their own dialects. These dialects are extensions to the standard, meaning that the core elements of the language will always be there but with some additions and quirks that depend on the exact RDBMS you are using. The pages on this site use commands written in **SQLite**, one of the most accessible and easy-to-use of the RDBMSs that uses SQL.
 
 SQL is most useful when:
 
@@ -40,311 +40,23 @@ SQL is less useful when:
 In these cases, working with the data directly in Microsoft Excel, LibreOffice Calc or Google Sheets might be a better option if the project is small. For in-between sized projects, importing into Python and using pandas for analysis is usually best.
 
 Relational Database Management Systems
---------------------------------------
+======================================
 An RDBMS is a program that allows you to create, update and administer a *relational database* -- one that stores data in a structured format using rows and columns. Examples of RDBMSs are:
 
-- SQLite (open source)
-- MySQL (open source, developed by Oracle)
-- Oracle DB (closed source, developed by Oracle)
-- PostgreSQL (open source)
-- SQL Server (closed source, developed by Microsoft)
-    - Express is a free, entry-level version
+- **SQLite** (open source)
+- **MySQL** (open source, developed by Oracle)
+- **Oracle DB** (closed source, developed by Oracle)
+- **PostgreSQL** (open source)
+- **SQL Server** (closed source, developed by Microsoft)
+    - **Express** is a free, entry-level version
 
-As mentioned above, this page uses commands tested in SQLite.
+As mentioned above, pages on this site use commands tested in SQLite:
 
 SQLite
 ======
-SQLite is a database *engine* (it allows users to change the data in a database) that uses the SQL language (or rather its particular dialect of the language). It is not itself a program but rather a *library* -- software that is embedded into a fully-fledged program. The database being interacted with gets stored in a single file on your local machine and SQLite can be run, offline, from your terminal. This makes it very simple for small projects and for beginners.
-
-Install SQLite from the terminal with:
-
-```{bash, eval = FALSE}
-$ sudo apt install sqlite3
-```
-
-You can then open it with the following (but beware that you will be working in 'memory' as opposed to having what you do be saved to a file):
-
-```{bash, eval = FALSE}
-$ sqlite3
-```
-
-Usually you will want to have your work be saved to a file. To launch SQLite and create a new database file (or open an existing database file if you specify the name of one that already exists) the command is as follows:
-
-```{bash, eval = FALSE}
-$ sqlite3 database_name.db
-```
-
-Usage
-=====
-Here is a cheat sheet that covers most of the common functionality of SQL:
-
-Databases
----------
-- Create a database:  
-`CREATE DATABASE database_name;`
-- Delete a database:  
-`DROP DATABASE database_name;`
-- Select a database:  
-`USE database_name;`
-- Export database to file
-`.save database_name.db`
-
-Tables
-------
-- Create a new table:  
-    - With multiple columns:  
-    `CREATE TABLE table_name(column_1 data_type, column_2 data_type, column_3 data_type);`  
-    Possible data types that can be used in SQLite:
-        - `INTEGER`: a whole number
-        - `REAL`: a decimal number
-        - `TEXT`: a string of text characters. Quotation marks are needed.
-        - `DATE`: a date (in YYYY-MM-DD format). Quotation marks are needed.
-    - Prevent nulls for being added:  
-    `CREATE TABLE table_name(column_1 data_type NOT NULL);`
-    - Prevent duplicates from being added:  
-    `CREATE TABLE table_name(column_1 data_type UNIQUE);`
-    - Define a default value which gets used if nothing else is specified:  
-    `CREATE TABLE table_name(column_1 data_type DEFAULT 'default_value');`
-- Show all tables in the database:  
-    - MySQL:  
-    `SHOW TABLES;`
-    - SQLite:  
-    `.tables`
-- Delete a table:  
-`DROP TABLE table_name;`
-
-### Keys
-- **Primary key**: a column that uniquely identifies each row in a table (max one per table and values in the column must be unique and not NULL)
-- **Composite key**: a primary key made from two or more columns that together are unique
-- **Foreign key**: a column that refers to the primary key in another table, creating a relationship between these tables
-- **Candidate key**: any column (or set of columns) that can uniquely identify a row -- a table can have multiple candidate keys with one being chosen as the primary key and the others being the *alternate keys*
-- **Super key**: any column (or set of columns) that can uniquely identify a row plus extra column(s) -- candidate keys are minimal super keys (no extra columns)
-- **Secondary key**: a less common term for a non-unique column, often used for searching and filtering
-
-Create a table with keys:
-
-- A primary key column uniquely identifies each row:  
-`CREATE TABLE table_name(column_1 data_type PRIMARY KEY);`
-- A composite primary key is when 2+ columns uniquely identify each row:  
-`CREATE TABLE table_name(column_1 data_type, column_2 data_type PRIMARY KEY (column_1, column_1));`
-- A foreign key is a reference to a primary key column in another table:  
-`CREATE TABLE table_name (othertable_id data_type, FOREIGN KEY (othertable_id) REFERENCES othertable(id));`
-- Requiring the foreign key to be unique establishes a strict one-to-one relationship between the tables:  
-`CREATE TABLE table_name (othertable_id data_type, FOREIGN KEY (othertable_id) REFERENCES othertable(id) UNIQUE);`
-
-Rows
-----
-- Create and populate a new row:  
-    - Create a new row with a value in one column (other columns will be filled with NULL):  
-    `INSERT INTO table_name(column_name) VALUES(value);`
-    - Create a new row with values in three columns:  
-    `INSERT INTO table_name(column_1, column_2, column_3) VALUES(value_1, value_2, value_3);`
-- Edit a row:  
-`UPDATE table_name SET column_1 = new_value WHERE column_2 = value;`
-- Delete a row:  
-`DELETE FROM table_name WHERE column_name = value;`
-
-Columns
--------
-- Create a new column:  
-`ALTER TABLE table_name ADD COLUMN new_column data_type;`
-- Rename a column:  
-`ALTER TABLE table_name RENAME COLUMN old_name TO new_name;`
-
-Display a Table
----------------
-- Change the display mode:  
-`.mode mode_type`  
-Examples:
-    - `.mode column`
-    - `.mode line`
-    - `.mode html`
-    - `.mode insert`
-    - `.mode tabs`
-    - `.mode csv`
-    - `.mode tcl`
-- Include the column headers:  
-`.headers on`
-- Display all rows and columns:  
-`SELECT * FROM table_name;`
-- Display one column:  
-`SELECT column_name FROM table_name;`
-- Display some columns:  
-`SELECT column_1, column_2, column_3 FROM table_name;`
-- Display all columns, some rows:  
-`SELECT * FROM table_name LIMIT 10;`
-- Select and assign an alias to the selection:  
-`SELECT column_name AS 'alias' FROM table_name;`
-- Filter a table:
-    - Filter out duplicates:  
-    `SELECT DISTINCT column_name FROM table_name;`
-    - Filter out NULLs from one column:  
-    `SELECT * FROM table_name WHERE column_name IS NOT NULL;`
-    - Filter using one column and comparisons operators:  
-    `SELECT * FROM table_name WHERE column_name > value;`  
-    The comparisons operators are:
-        - `=`: equal to
-        - `!=`: not equal to
-        - `>`: greater than
-        - `<`: less than
-        - `>=`: greater than or equal to
-        - `<=`: less than or equal to
-    - Filter using one column to get a range:  
-    `SELECT * FROM table_name WHERE column_name BETWEEN value_1 AND value_2;`
-    - Filter using two columns and conditionals:  
-    `SELECT * FROM table_name WHERE column_1 > value AND column_2 < value;`  
-    `SELECT * FROM table_name WHERE column_1 BETWEEN value_1 AND value_2 AND column_2 > value_3;`  
-    `SELECT * FROM table_name WHERE column_1 BETWEEN value_1 AND value_2 OR column_2 > value_3;`  
-    The possible conditionals are:
-        - `AND`
-        - `OR`
-    - Filter using matching:  
-    `SELECT * FROM table_name WHERE column_name LIKE 'te_t';`  
-    `SELECT * FROM table_name WHERE column_name LIKE '%substring%';`
-- Sort a table:  
-    - Sort ascending/alphabetically:  
-    `SELECT * FROM table_name ORDER BY column_name;`
-    - Sort descending/reverse alphabetically:  
-    `SELECT * FROM table_name ORDER BY column_name DESC;`
-- Filter and sort a table:  
-`SELECT * FROM table_name WHERE column_1 > value ORDER BY column_2 DESC;`
-- Round the values in a column:  
-`SELECT column_1, ROUND(column_2, num_decimal_places) FROM table_name;`
-- Aggregates (return one value):  
-    - Count rows:  
-    `SELECT COUNT(*) FROM table_name;`  
-    `SELECT COUNT(*) FROM table_name WHERE column_name = value;`
-    - Add up values:  
-    `SELECT SUM(column_name) FROM table_name;`  
-    `SELECT SUM(column_1) FROM table_name WHERE column_2 = value;`
-    - Find the maximum value:  
-    `SELECT MAX(column_name) FROM table_name;`  
-    `SELECT MAX(column_1) FROM table_name WHERE column_2 = value;`
-    - Find the minimum value:  
-    `SELECT MIN(column_name) FROM table_name;`  
-    `SELECT MIN(column_1) FROM table_name WHERE column_2 = value;`
-    - Find the average value:  
-    `SELECT AVG(column_name) FROM table_name;`  
-    `SELECT AVG(column_1) FROM table_name WHERE column_2 = value;`
-- Group by (pivot table):  
-    - Show all columns:  
-    `SELECT * FROM table_name GROUP BY column_name;`
-    - Show average for each group and sort them:  
-    `SELECT column_1, AVG(column_2) FROM table_name GROUP BY column_1 ORDER BY column_1;`  
-    - When multiple columns are selected, you can refer to them by name:  
-    `SELECT column_1, AVG(column_2) FROM table_name GROUP BY column_1 ORDER BY column_1;`
-    - ...or, you can just refer to them by number (`1` is the first column selected, `2` is the second, etc):  
-    `SELECT column_1, AVG(column_2) FROM table_name GROUP BY 1 ORDER BY 1;`
-    - Filter values, then get the average for each group:  
-    `SELECT column_1, AVG(column_2) FROM table_name WHERE column_3 > value GROUP BY column_1 ORDER BY column_1;`
-    - Get the average for each group, then filter by these average:  
-    `SELECT column_1, COUNT(column_2) FROM table_name GROUP BY column_1 HAVING COUNT(column_2) > value;`
-
-Join Tables
------------
-- Join via an inner join:  
-    - Join two tables and select all columns:  
-    `SELECT * FROM table_1 JOIN table_2 ON table_1.column_1 = table_2.column_1;`
-    - Join two tables and select one column from each:  
-    `SELECT table_1.column_2, table_2.column_3 FROM table_1 JOIN table_2 ON table_1.column_1 = table_2.column_1;`
-    - Join two tables and filter:  
-    `SELECT * FROM table_1 JOIN table_2 ON table_1.column_1 = table_2.column_1 WHERE column_2 = value;`
-- Join via a left join:  
-    - Join two tables and select all columns:  
-    `SELECT * FROM table_1 LEFT JOIN table_2 ON table_1.column_1 = table_2.column_1;`
-- Join via an outer join (cross join; no `ON` statement is required):  
-    - Join two tables and select all columns:  
-    `SELECT * FROM table_1 CROSS JOIN table_2;`
-    - Join two tables and select one column from each:  
-    `SELECT table_1.column_1, table_2.column_2 FROM table_1 CROSS JOIN table_2;`
-- Append a table to the bottom of another:  
-    - Append a table to another and select all columns from both:  
-    `SELECT * FROM table_1 UNION SELECT * FROM table_2;`
-
-Cases
------
-```{sql, eval = FALSE}
-SELECT column_1
- CASE
-  WHEN column_2 = 5 THEN 'Great'
-  WHEN column_2 >= 4 THEN 'Good'
-  WHEN column_2 >= 3 THEN 'Average'
-  WHEN column_2 >= 2 THEN 'Ok'
-  ELSE 'Poor'
- END AS 'new_column_name'
-FROM table_name;
-```
-
-Statements inside Statements
-----------------------------
-```{sql, eval = FALSE}
-WITH previous_results AS (
-   SELECT column_1 AS 'alias' FROM table_1 UNION SELECT * FROM table_2
-)
-SELECT * FROM previous_results JOIN table_3 ON table_3.column_2 = previous_query.alias;
-```
-
-Other
------
-- Press the up arrow to repeat a previous statement
-- Open (or re-open) a persistent database:  
-`.open dabase.db`
-- Show the statements used to create all tables:  
-`.schema`
-- Show the statements used to create a specific table:  
-`.schema table_name`
-- Show the current settings:  
-`.show`
-- Change the null value to "NULL":  
-`.nullvalue 'NULL'`
-- Set column width:  
-`.width 15 20`
-- Display everything used to create a table:  
-`.dump`
-- Exit:  
-`.exit`
-
-Import and Export
------------------
-Export to text file (can then open with a text editor):
-
-```{sql, eval = FALSE}
-.output path.sql
-.dump --or `select * from table_name;`
-.output stdout
-```
-
-Export table to CSV:
-
-```{sql, eval = FALSE}
-.mode csv
-.headers on
-.output path.csv
-select * from table_name;
-.output stdout
-```
-
-Export to HTML:
-
-```{sql, eval = FALSE}
-.mode html
-.output path.html
-select * from table_name;
-.output stdout
-```
-
-Import table:
-
-```{sql, eval = FALSE}
-.read path.sql
-```
-
-Import from CSV:
-
-```{sql, eval = FALSE}
-.mode csv
-.import path.csv
-```
+1. [Introduction](sql/introduction.html)
+2. [Worked Example](sql/worked_example.html)
+3. [Cheat Sheet](sql/cheat_sheet.html)
 
 [⇦ Back](index.html)
 

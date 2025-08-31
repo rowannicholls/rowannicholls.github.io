@@ -1,0 +1,487 @@
+---
+title: '<font size="5">SQLite:</font><br>Worked Example'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../sql.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+*This is Part 2 in a series on SQLite:*
+
+1. *[Introduction](introduction.html)*
+2. *Worked Example*
+3. *[Cheat Sheet](cheat_sheet.html)*
+
+```{r setup, include=FALSE}
+# install.packages("DBI")
+# install.packages("RSQLite")
+
+library(DBI)
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+```
+
+Open SQLite
+===========
+Open a terminal and run:
+
+```bash
+$ sqlite3
+```
+
+```
+SQLite version 3.45.1 2024-01-30 16:01:20
+Enter ".help" for usage hints.
+Connected to a transient in-memory database.
+Use ".open FILENAME" to reopen on a persistent database.
+sqlite>
+```
+
+As mentioned in the text, a "transient in-memory database" has been created for us to work in. This means that everything we do will be deleted when we close out of SQLite. We can make it *persistent* so that it can be saved to file with the following:
+
+```sql
+.open cricketers.db
+```
+
+We've used the name `cricketers.db` as we will be storing information about cricketers.
+
+Create Tables
+=============
+Create a `teams` table to store cricket team names:
+
+```{sql connection=con}
+-- Create a new table
+CREATE TABLE teams (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    tournament TEXT
+);
+```
+
+The `PRIMARY KEY` constraint ensures that each row's `id` value is unique and can be used to identify that row - no two rows will have the same `id` number. Each time a new row is added, if no `id` is explicitly specified then SQL will provide the next highest number to be that row's primary key. The `AUTOINCREMENT` command does the same thing but is more strict: if a row is ever deleted its `id` *cannot be reused* when a new row is added.
+
+Populate the Table
+------------------
+We're going to add in some cricket teams to our `teams` table:
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO teams(name, tournament) VALUES ('Hampshire Hawks', 'T20 Blast');
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO teams(name, tournament) VALUES ('Sydney Sixers', 'Big Bash');
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO teams(name, tournament) VALUES ('Yorkshire Vikings', 'T20 Blast');
+```
+
+```sql
+-- Create and populate new rows
+INSERT INTO teams(name, tournament) VALUES ('Hampshire Hawks', 'T20 Blast');
+INSERT INTO teams(name, tournament) VALUES ('Sydney Sixers', 'Big Bash');
+INSERT INTO teams(name, tournament) VALUES ('Yorkshire Vikings', 'T20 Blast');
+```
+
+Let's have a look to double check that the table has been populated as expected:
+
+```{sql connection=con}
+-- Display all rows and columns
+SELECT * FROM teams;
+```
+
+A Second Table
+--------------
+Create and populate a `players` table to store information about individual players:
+
+```{sql connection=con}
+-- Create a new table
+CREATE TABLE players (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    runs INTEGER,
+    average REAL,
+    dob DATE
+);
+```
+
+Insert data about players:
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO players(name, runs, average, dob) VALUES ('Ellyse Perry', 2173, 31.04, '1990-11-03');
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO players(name, runs, average, dob) VALUES ('James Vince', 12564, 31.96, '1991-03-14');
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO players(name, runs, average, dob) VALUES ('Hollie Armitage', 604, 17.20, '1997-06-14');
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO players(name, runs, average, dob) VALUES ('Hilton Cartwright', 2550, 28.02, '1992-02-14');
+```
+
+```sql
+-- Create and populate new rows
+INSERT INTO players(name, runs, average, dob) VALUES ('Ellyse Perry', 2173, 31.04, '1990-11-03');
+INSERT INTO players(name, runs, average, dob) VALUES ('James Vince', 12564, 31.96, '1991-03-14');
+INSERT INTO players(name, runs, average, dob) VALUES ('Hollie Armitage', 604, 17.20, '1997-06-14');
+INSERT INTO players(name, runs, average, dob) VALUES ('Hilton Cartwright', 2550, 28.02, '1992-02-14');
+```
+
+Check:
+
+```{sql connection=con}
+-- Display all rows and columns
+SELECT * FROM players;
+```
+
+A Cross-Reference Table
+-----------------------
+Now that we have a table of cricket teams and a table of cricket players we can create a relationship between these two sets of data and create team *rosters* that detail who plays for whom. Of course, each cricket team will have multiple players playing for it and one player can play for multiple teams, so the specific relationship will be **many-to-many** (many players are associated with each team and many teams are associated with each player).
+
+A many-to-many relationship needs a third table - a *cross-reference* or *join* table - to store the associations between pairs of data points. This table should have the following two constraints:
+
+- **Foreign keys** referencing the primary keys of the two member tables (the teams and the players)
+- A **composite** primary key made up of the two foreign keys (each player can only appear on a team's roster once)
+
+With this in mind, here's how to create the `rosters` table representing which player plays for which team, linking `teams` and `players` together via foreign keys:
+
+```{sql connection=con}
+-- Create a new table
+CREATE TABLE rosters (
+    team_id INTEGER,
+    player_id INTEGER,
+    PRIMARY KEY (team_id, player_id)
+    FOREIGN KEY (team_id) REFERENCES teams(id),
+    FOREIGN KEY (player_id) REFERENCES players(id)
+);
+```
+
+Populate the rows:
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO rosters VALUES (1, 1);
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO rosters VALUES (1, 2);
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO rosters VALUES (1, 4);
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO rosters VALUES (2, 1);
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO rosters VALUES (2, 2);
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO rosters VALUES (2, 3);
+```
+
+```{sql connection=con, echo=FALSE}
+INSERT INTO rosters VALUES (3, 3);
+```
+
+```sql
+-- Create and populate new rows
+INSERT INTO rosters VALUES (1, 1);
+INSERT INTO rosters VALUES (1, 2);
+INSERT INTO rosters VALUES (1, 4);
+INSERT INTO rosters VALUES (2, 1);
+INSERT INTO rosters VALUES (2, 2);
+INSERT INTO rosters VALUES (2, 3);
+INSERT INTO rosters VALUES (3, 3);
+```
+
+Check:
+
+```{sql connection=con}
+-- Display all rows and columns
+SELECT * FROM rosters;
+```
+
+Now that we have three tables we can more easily change and add data:
+
+- If information related to a player changes we can update the `players` table
+- If a new team forms we can add them to the `teams` table
+- If a player joins a new team we can update the `rosters` table
+
+Our data is organised, manageable and clearly separated from one another with no repetition of information. Each record (row in a table) carries one additional data point.
+
+Merging
+=======
+Of course, we want to be able to see who plays for which team! This is done by *merging* the data tables with the cross-reference table:
+
+```{sql connection=con}
+-- Merge the tables
+SELECT
+    t.name AS team_name,
+    p.name AS player_name
+FROM rosters r
+JOIN teams t ON r.team_id = t.id
+JOIN players p ON r.player_id = p.id;
+```
+
+Filtering
+---------
+It takes just one more step to *filter* the amalgamated table by one of the columns and get - for example - just the Hampshire Hawks players:
+
+```{sql connection=con}
+-- Filter the tables
+SELECT
+    t.name AS team_name,
+    p.name AS player_name
+FROM rosters r
+JOIN teams t ON r.team_id = t.id
+JOIN players p ON r.player_id = p.id
+WHERE t.name = 'Hampshire Hawks';
+```
+
+Using Transactions
+==================
+Let's now imagine that the Hampshire Hawks men's team plays a match wherein James Vince scores a hundred and Hilton Cartwright scores a fifty. We want to update the `players` table to reflect these additional runs but need to be careful that BOTH players have their stats updated. If something goes wrong during the execution of the code and only one player has their run total updated it will mean that our table is inaccurate. In this example where only two records are being updated it might not be such a big problem, but if tens or hundred or thousands of records were being updated it would be a nightmare to figure out what has been updated and what has not. In other words:
+
+- The table is accurate before the update (it lists how many runs the players have scored before this latest match)
+- The table is accurate after the update (it lists how many runs the players have scored after this latest match)
+- The table is not accurate during the update (some players get their run totals updated before other players)
+
+This is a good use case for a **transaction** in SQL. Just like with a financial transaction, it is important that all aspects of the update are successful before was can consider it complete. If one part of the update fails we should *roll back* to the most recent state where we knew that all the data was accurate.
+
+Here's how to do it:
+
+```{sql connection=con, echo=FALSE}
+BEGIN TRANSACTION;
+```
+
+```{sql connection=con, echo=FALSE}
+UPDATE players SET runs = runs + 100 WHERE name = 'James Vince';
+```
+
+```{sql connection=con, echo=FALSE}
+UPDATE players SET runs = runs + 50 WHERE name = 'Hilton Cartwright';
+```
+
+```sql
+-- Create a temporary state whereafter all operations will be executed together
+BEGIN TRANSACTION;
+-- Operations which must *all* succeed
+-- (eg subtracting from one bank account and adding to another)
+UPDATE players SET runs = runs + 100 WHERE name = 'James Vince';
+UPDATE players SET runs = runs + 50 WHERE name = 'Hilton Cartwright';
+```
+
+Check that it has worked:
+
+```{sql connection=con}
+-- Display all columns and filter the rows
+SELECT * FROM players WHERE name = 'James Vince' OR name = 'Hilton Cartwright';
+```
+
+Jame Vince's career runs tally has increased by 100 and Hilton Cartwright's by 50, which is what we expected. We can now commit to these changes:
+
+```{sql connection=con}
+-- Save all changes
+COMMIT;
+```
+
+If it had not worked as expected, we could have rolled the database back to its original state:
+
+```sql
+-- Undo everything that has happened so far during the transaction
+ROLLBACK;
+```
+
+Using Aggregate Functions
+=========================
+Before we aggregate our data let's go back to when we merged the three tables and save the output of that to a new table (this is done simply by adding `CREATE TABLE merged_tables AS` before the code we used to do the merging above):
+
+```{sql connection=con}
+-- Merge the tables and save the output as a new table
+CREATE TABLE merged_tables AS
+SELECT
+    t.name AS team_name,
+    p.name AS player_name,
+    p.runs AS runs
+FROM rosters r
+JOIN teams t ON r.team_id = t.id
+JOIN players p ON r.player_id = p.id;
+```
+
+This is identical to the code we ran in the "Merging" section above except we've now added `CREATE TABLE...` at the start and also kept the `runs` column. Let's take a look:
+
+```{sql connection=con}
+-- Display all rows and columns
+SELECT * FROM merged_tables;
+```
+
+Now we can have some fun calculating the total number of runs and counting the total number of players for each team:
+
+```{sql connection=con}
+-- Aggregates for each team
+SELECT
+    team_name,
+    SUM(runs) AS total_runs,
+    COUNT(player_name) AS num_players
+FROM merged_tables
+GROUP BY team_name
+ORDER BY team_name;
+```
+
+Using Window Functions
+======================
+Window functions preserve the values in the original table while displaying grouped or summative information. For this example we are going to use the runs that James Vince has scored in his 17 T20Is:
+
+```{sql connection=con, echo=FALSE}
+CREATE TABLE scores (
+    innings INTEGER,
+    runs INTEGER,
+    year INTEGER,
+    month INTEGER
+);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (1, 41, 2015, 11);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (2, 38, 2015, 11);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (3, 46, 2015, 11);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (4, 22, 2016, 3);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (5, 16, 2016, 7);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (6, 21, 2018, 2);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (7, 10, 2018, 2);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (8, 36, 2019, 5);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (9, 59, 2019, 11);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (10, 1, 2019, 11);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (11, 49, 2019, 11);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (12, 1, 2019, 11);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (13, 14, 2022, 1);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (14, 4, 2022, 1);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (15, 16, 2022, 1);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (16, 34, 2022, 1);
+```
+```{sql connection=con, echo=FALSE}
+INSERT INTO scores VALUES (17, 55, 2022, 1);
+```
+
+```sql
+-- Create and populate a new table
+CREATE TABLE scores (
+    innings INTEGER,
+    runs INTEGER,
+    year INTEGER,
+    month INTEGER
+);
+INSERT INTO scores VALUES (1, 41, 2015, 11);
+INSERT INTO scores VALUES (2, 38, 2015, 11);
+INSERT INTO scores VALUES (3, 46, 2015, 11);
+INSERT INTO scores VALUES (4, 22, 2016, 3);
+INSERT INTO scores VALUES (5, 16, 2016, 7);
+INSERT INTO scores VALUES (6, 21, 2018, 2);
+INSERT INTO scores VALUES (7, 10, 2018, 2);
+INSERT INTO scores VALUES (8, 36, 2019, 5);
+INSERT INTO scores VALUES (9, 59, 2019, 11);
+INSERT INTO scores VALUES (10, 1, 2019, 11);
+INSERT INTO scores VALUES (11, 49, 2019, 11);
+INSERT INTO scores VALUES (12, 1, 2019, 11);
+INSERT INTO scores VALUES (13, 14, 2022, 1);
+INSERT INTO scores VALUES (14, 4, 2022, 1);
+INSERT INTO scores VALUES (15, 16, 2022, 1);
+INSERT INTO scores VALUES (16, 34, 2022, 1);
+INSERT INTO scores VALUES (17, 55, 2022, 1);
+```
+
+```{sql connection=con}
+-- Display the first 10 rows and all columns
+SELECT * FROM scores;
+```
+
+To calculate the total number of runs *per year* along with the *cumulative* number of runs together with the running average, we need to use aggregate functions inside of aggregate functions - once to do the aggregation for each year and once to do the aggregation for all years:
+
+```{sql connection=con}
+-- Total for each year with running total, average and count
+SELECT
+    year,
+    SUM(runs) AS total_runs,
+    SUM(SUM(runs)) OVER (ORDER BY year) AS running_total,
+    SUM(COUNT(*)) OVER (ORDER BY year) AS running_innings,
+    1.0 * SUM(SUM(runs)) OVER (ORDER BY year)
+        / SUM(COUNT(*)) OVER (ORDER BY year) AS running_avg
+FROM scores
+GROUP BY year
+ORDER BY year;
+```
+
+We can sanity check the overall accuracy of this table by comparing it to Vince's CricInfo profile: 463 runs across 17 innings at an average of 27.23 is indeed what we expect to see.
+
+Because we have his scores broken down into years AND months, we can do a similar grouping for each *month* in which he played T20 matches for England. This is a bit more tricky to understand because the running total of runs resets at the end of each year:
+
+```{sql connection=con}
+-- Running total for each month, resetting when a new year starts
+SELECT
+    year,
+    month,
+    runs,
+    SUM(runs) OVER (PARTITION BY year ORDER BY month) AS running_annual_total
+FROM scores
+WHERE year < 2020
+GROUP BY year, month
+ORDER BY year;
+```
+
+We've also demonstrated the `WHERE year < 2020` filter, which has given us an analysis of Vince's pre-COVID career.
+
+```{r cleanup, echo=FALSE}
+dbDisconnect(con)
+```
+
+[⇦ Back](../sql.html)
+
+</font>
