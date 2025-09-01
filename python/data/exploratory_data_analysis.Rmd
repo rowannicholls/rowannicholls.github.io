@@ -1,0 +1,319 @@
+---
+title: '<font size="5">Data Handling in Python:</font><br>Clinical Study Design'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+When given a new dataset, the first step should always be to perform **Exploratory Data Analysis (EDA)** - taking a broad, high-level look at what the dataset contains. This is done in order to get to grips with the data and its format and will include data visualisation to give a quick overview of various aspects of the data at a glance.
+
+Load the Libraries
+==================
+The code on the page will uses the kagglehub, Matplotlib, statsmodels, missingno, pandas and seaborn libraries:
+
+```{python}
+from kagglehub import KaggleDatasetAdapter
+from matplotlib import pyplot as plt
+from statsmodels.graphics.mosaicplot import mosaic
+import kagglehub
+import missingno as msno
+import pandas as pd
+import seaborn as sns
+```
+
+If you do not have one or more of these libraries installed you can do so from the terminal:
+
+```bash
+$ python3.13 -m pip install missingno
+$ python3.13 -m pip install kagglehub
+$ python3.13 -m pip install statsmodels
+$ python3.13 -m pip install matplotlib
+$ python3.13 -m pip install pandas
+$ python3.13 -m pip install seaborn
+```
+
+Load the Data
+=============
+This page will use `laptops.csv` from [Kaggle](https://www.kaggle.com/):
+
+```{python}
+# Load the data from
+# https://www.kaggle.com/datasets/juanmerinobermejo/laptops-price-dataset
+df = kagglehub.dataset_load(
+    KaggleDatasetAdapter.PANDAS,
+    'juanmerinobermejo/laptops-price-dataset',
+    'laptops.csv',
+)
+df = df.reset_index()
+df = df.drop('Laptop', axis=1)
+```
+
+This dataset contains information about laptops: their features and their
+prices. Don't worry if you've never seen this dataset before or don't know
+anything about laptops, the entire point of this exercise is to take an
+unknown dataset and explore it!
+
+Data Profiling
+==============
+This step aims to understand the structure of the data:
+
+- Number of rows and columns
+- Data types and ranges
+    - Categorical vs numerical vs datetime variables
+- Summary statistics (mean, median, min, max, percentiles, standard deviation)
+- Unique values and counts
+
+Initial Look
+------------
+Start by having a look at the first 5 rows (this might require you to change
+the pandas display options so that it doesn't get truncated):
+
+```{python}
+# Increase the maximum number of columns that get printed
+pd.set_option('display.max_columns', 20)
+# Increase the width of the printed output
+pd.set_option('display.width', 200)
+# Display the first 5 rows
+print(df.head())
+```
+
+Clearly the `index` column is just an incrementing ID number, so we can delete
+that:
+
+```{python}
+df = df.drop('index', axis=1)
+```
+
+Check the number of rows and columns:
+
+```{python}
+print(df.shape)
+```
+
+Check the column names and data types:
+
+```{python}
+print(df.info())
+```
+
+Missing Data
+------------
+The above table tells use that most columns - but not all - have 2160 non-null
+values. Let's take a closer look at the data that is missing:
+
+```{python}
+# Count the missing values
+print(df.isnull().sum())
+```
+
+```{python}
+# Visualise the missing data
+msno.matrix(df)
+plt.show()
+```
+
+Hmm, this tells us that a lot of the GPU data is missing. We might have to
+exclude this column when doing an analysis, or maybe a null value in this
+column is just a clumsy way to indicate that that laptop does not have a GPU?
+We will have to take a closer look at a later stage.
+
+Data Types
+----------
+Check the data types:
+
+```{python}
+print(df.dtypes)
+```
+
+Identify the categorical and numerical variables:
+
+```{python}
+numerical = df.select_dtypes(include=['int64', 'float64']).columns
+categorical = df.select_dtypes(include=['object']).columns
+print('Numerical:', list(numerical))
+print('Categorical:', list(categorical))
+```
+
+Summary Statistics
+------------------
+Summary statistics of the numerical variables:
+
+```{python}
+print(df.describe())
+```
+
+Summary statistics of the categorical variables:
+
+```{python}
+print(df.describe(include=['O']))
+```
+
+Univariate Analysis
+===================
+Take a look at each variable individually.
+
+Numerical Variables
+-------------------
+
+```{python}
+fig, axs = plt.subplots(len(numerical), 2, figsize=(12.8, 16))
+
+for i, var in enumerate(numerical):
+    ax = axs[i, 0]
+    ax.set_xlabel(var)
+    ax.set_ylabel('Frequency')
+    df[var].hist(bins=20, ax=ax)
+
+    ax = axs[i, 1]
+    df.boxplot(column=var, ax=ax)
+
+fig.tight_layout()
+plt.show()
+```
+
+Categorical Variables
+---------------------
+Print the counts of each value that appears in the categorical columns:
+
+```{python}
+for i, var in enumerate(categorical):
+    freq = df[var].value_counts()
+    print(freq.head())
+    print()
+```
+
+Plot these counts:
+
+```{python}
+fig, axs = plt.subplots(len(categorical), 2, figsize=(12.8, 32))
+
+for i, var in enumerate(categorical):
+    freq = df[var].value_counts()
+
+    ax = axs[i, 0]
+    freq.plot(kind='bar', ax=ax)
+
+    ax = axs[i, 1]
+    mosaic(freq.to_dict(), ax=ax)
+
+fig.tight_layout()
+plt.show()
+```
+
+Bivariate Analysis
+==================
+Take a look at two variables at a time.
+
+Numerical vs Numerical
+----------------------
+
+```{python}
+fig, axs = plt.subplots(3, 2, figsize=(12.8, 12))
+ax = axs[0, 0]
+df.plot.scatter(x='RAM', y='Storage', ax=ax)
+ax = axs[0, 1]
+df.plot.scatter(x='RAM', y='Screen', ax=ax)
+ax = axs[1, 0]
+df.plot.scatter(x='RAM', y='Final Price', ax=ax)
+ax = axs[1, 1]
+df.plot.scatter(x='Storage', y='Screen', ax=ax)
+ax = axs[2, 0]
+df.plot.scatter(x='Storage', y='Final Price', ax=ax)
+ax = axs[2, 1]
+df.plot.scatter(x='Screen', y='Final Price', ax=ax)
+fig.tight_layout()
+plt.show()
+```
+
+Correlation heatmap:
+
+```{python}
+corr = df.corr(numeric_only=True)
+sns.heatmap(corr, annot=True, cmap='coolwarm')
+plt.show()
+```
+
+Categorical vs Numerical
+------------------------
+
+```{python}
+df.boxplot(column='Final Price', by='Brand', rot=90)
+plt.show()
+```
+
+Categorical vs Categorical
+--------------------------
+
+```{python}
+pd.crosstab(df['Status'], df['Touch'])
+
+mosaic(df, ['Status', 'Touch'])
+plt.show()
+```
+
+Outlier Detection
+=================
+Outliers may or may not be relevant in an analysis and so the way in which they
+get handled depends on a number of factors that are usually specific to the
+analysis method being used. Regardless, identifying unusual values that might
+affect the analysis down the line is a useful step in the initial data
+exploration phase.
+
+```{python}
+bp = plt.boxplot(df['Final Price'])
+plt.show()
+```
+
+```{python}
+q1 = df['Final Price'].quantile(0.25)
+q3 = df['Final Price'].quantile(0.75)
+iqr = q3 - q1
+outliers = df[(df['Final Price'] < q1 - 1.5*iqr) | (df['Final Price'] > q3 + 1.5*iqr)]
+print(outliers.head())
+```
+
+Handle Duplicates
+=================
+Similar to outliers, the way in which duplicates get handled depends on the
+exact analysis method being used. The code below simply removes them:
+
+```{python}
+print(df.duplicated().sum())
+df = df.drop_duplicates()
+```
+
+Summary
+=======
+Exploratory Data Analysis (EDA) is a crucial first step in any data science
+workflow:
+
+- It helps in understanding the structure, quality and patterns that exist in
+the data before moving on to modelling
+- EDA includes data profiling, visualisation and statistical exploration
+- The above help to uncover missing values, outliers, relationships and
+distributions that can significantly impact results
+- The exploratory process can help to validate model assumptions,
+highlight potential biases and/or reveal new insights or features
+
+Doing EDA at the start of a process makes it easier to have faith in the
+reliability of the downstream analysis. It also helps in focussing on the
+research and statistical questions that need to be answered as, ultimately,
+these are what need to be answered by the data.
+
+[⇦ Back](../../python.html)
+
+</font>
