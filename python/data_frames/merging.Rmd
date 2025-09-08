@@ -7,12 +7,12 @@ output:
         number_sections: true
         toc: true
         includes:
-            before_body: ../../../google_analytics.html
+            before_body: ../../google_analytics.html
 ---
 
 <font size="3">
 
-[⇦ Back](../../../python.html)
+[⇦ Back](../../python.html)
 
 <!-- Based off of code first written on 2019-08-28 -->
 <!-- Updated 2025-09-08 -->
@@ -24,14 +24,14 @@ knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 
 > This page is the sixth in a series on data frames:
 > 
-> 1. [Introduction](../introduction.html)
-> 2. [Searching, Finding, Filtering](../searching.html)
-> 3. [Calculations](../calculations.html)
-> 4. [Multiple Levels](../multiple_levels.html)
-> 5. [Dropping Empty Columns](../dropping.html)
+> 1. [Introduction](introduction.html)
+> 2. [Searching, Finding, Filtering](searching.html)
+> 3. [Calculations](calculations.html)
+> 4. [Multiple Levels](multiple_levels.html)
+> 5. [Dropping Empty Columns](dropping.html)
 > 6. Merging
-> 7. [Grouping and Aggregating](../grouping_aggregating.html)
-> 8. [Pivot Tables](../pivot_tables.html)
+> 7. [Grouping and Aggregating](grouping_aggregating.html)
+> 8. [Pivot Tables](pivot_tables.html)
 
 Example Data
 ============
@@ -139,8 +139,8 @@ There are four types of merging:
 - Inner: only keep the teams that are common to both data frames
 
 <center>
-![](outer.png) ![](left.png) <br>
-![](right.png) ![](inner.png)
+![](merging/outer.png) ![](merging/left.png) <br>
+![](merging/right.png) ![](merging/inner.png)
 
 *(1) Keep all rows in both data frames, (2) keep all rows in the left data frame but only those in the right that are also in the left, (3) keep all rows in the right data frame but only those in the left that are also in the right, (4) keep only the rows that appear in both data frames*
 </center>
@@ -280,6 +280,6 @@ print(df)
 
 Now we can see that Arsenal have 52 points (so far) in the 2020-21 season.
 
-[⇦ Back](../../../python.html)
+[⇦ Back](../../python.html)
 
 </font>

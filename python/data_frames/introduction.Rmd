@@ -30,7 +30,7 @@ knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 > 3. [Calculations](calculations.html)
 > 4. [Multiple Levels](multiple_levels.html)
 > 5. [Dropping Empty Columns](dropping.html)
-> 6. [Merging](merging/index.html)
+> 6. [Merging](merging.html)
 > 7. [Grouping and Aggregating](grouping_aggregating.html)
 > 8. [Pivot Tables](pivot_tables.html)
 
@@ -125,7 +125,7 @@ See [the page on file IO](../data/create_export_import_convert.html) for more in
 
 ```{python}
 # Import comma-separated values (.csv file) as a data frame
-df = pd.read_csv('data frame.csv')
+df = pd.read_csv('introduction/data frame.csv')
 ```
 
 **Import from URL:**  
@@ -133,7 +133,7 @@ Any data object on the internet that could be interpreted as a data frame can be
 
 ```{python}
 # Import comma-separated values (.csv file) as a data frame
-data_url = 'https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/data_frames/data%20frame.csv'
+data_url = 'https://raw.githubusercontent.com/rowannicholls/rowannicholls.github.io/master/python/data_frames/introduction/data%20frame.csv'
 df = pd.read_csv(data_url)
 ```
 
@@ -1117,7 +1117,7 @@ For more ways to export data frames, see [the page on file IO](../data/create_ex
 
 ```{python}
 # Export data frame to comma-separated values (.csv)
-df.to_csv('data frame.csv', index=False)
+df.to_csv('introduction/data frame.csv', index=False)
 ```
 
 [⇦ Back](../../python.html)
