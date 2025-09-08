@@ -12,7 +12,8 @@ output:
 
 <font size="3">
 
-## Introduction to Python
+Introduction to Python
+----------------------
 1. [Getting Started](python/intro/getting_started.html)
     - [Check Your Python Installation](python/intro/installation_check.html)
 2. [Comments, Variables and Data Types](python/intro/data_types.html)
@@ -29,201 +30,217 @@ output:
 11. [Functions](python/intro/functions.html)
 12. [Classes](python/intro/classes.html)
 
-## Advanced Python
-1. [Nested Lists and List Comprehensions](python/advanced/lists.html)
-2. [Nested Dictionaries and Dictionary Comprehensions](python/advanced/dictionaries.html)
-3. Data Frames:
-    - [Introduction](python/advanced/data_frames_intro.html)
-    - [Searching, Finding, Filtering](python/advanced/data_frames_searching.html)
-    - [Calculations](python/advanced/data_frames_calculations.html)
-    - [Multiple Levels](python/advanced/data_frames_multi_level.html)
+Intermediate Python
+-------------------
+1. [Nested Lists and List Comprehensions](python/intermediate/lists.html)
+2. [Nested Dictionaries and Dictionary Comprehensions](python/intermediate/dictionaries.html)
 4. Date and Time:
-    - [The `time` Module](python/advanced/time.html)
-    - [The `datetime` Module](python/advanced/datetime.html)
+    - [The `time` Module](python/intermediate/time.html)
+    - [The `datetime` Module](python/intermediate/datetime.html)
     <!-- - [Timezones] -->
     <!-- - [Calendars] -->
-5. [Args and Kwargs](python/advanced/args_kwargs.html)
+5. [Args and Kwargs](python/intermediate/args_kwargs.html)
 <!-- 6. Python and the Terminal -->
 <!--     - Parsing Command-Line Arguments -->
 <!--     - Run Terminal Commands in Python -->
 <!--     - Prompt for User Input -->
-7. [Parsing Command-Line Arguments](python/advanced/argument_parsing.html)
+7. [Parsing Command-Line Arguments](python/intermediate/argument_parsing.html)
 <!-- 8. [Webscraping] -->
 <!-- 9. [Bitwise Operators] -->
-10. [Error Handling](python/advanced/error_handling.html)
+10. [Error Handling](python/intermediate/error_handling.html)
 <!-- 11. [Linting] -->
 <!-- 12. [Variable Scope] -->
-13. [Package Management and Virtual Environments](python/advanced/packages_and_venvs.html)
+13. [Package Management and Virtual Environments](python/intermediate/packages_and_venvs.html)
 
-## Working with Data
-1. Example Datasets
+Data Frames with `Pandas`
+-------------------------
+- [Introduction](python/data_frames/introduction.html)
+- [Searching, Finding, Filtering](python/data_frames/searching.html)
+- [Calculations](python/data_frames/calculations.html)
+- [Multiple Levels](python/data_frames/multiple_levels.html)
+- [Dropping Empty Columns](python/data_frames/dropping.html)
+- [Merging](python/data_frames/merging/index.html)
+- [Grouping and Aggregating](python/data_frames/grouping_aggregating.html)
+- [Pivot Tables](python/data_frames/pivot_tables.html)
+
+Working with Data
+-----------------
+- Example Datasets
     - [From scikit-learn](python/data/sklearn_datasets.html)
     - [From Statsmodels](python/data/statsmodels_datasets.html)
-2. [File IO: Create, Export, Import and Convert Data](python/data/create_export_import_convert.html)
+- [File IO: Create, Export, Import and Convert Data](python/data/create_export_import_convert.html)
     - [Export Tables to Word](python/data/export_to_word.html)
-3. Data Frames:
-<!--     - [Cleaning] -->
-    - [Merging](python/data/merging.html)
-    - [Grouping and Aggregating](python/data/grouping_aggregating.html)
-    - [Pivot Tables](python/data/pivot_tables.html)
-4. [Drop Empty Columns from Pandas Data Frames](python/data/drop_columns_false.html)
-5. [Rounding Off](python/data/rounding_off.html)
-6. [Using VLOOKUP for Unblinding](python/data/vlookup_unblinding.html)
-7. [Clinical Study Design](python/data/clinical_study_design.html)
-8. [Exploratory Data Analysis (EDA)](python/data/exploratory_data_analysis.html)
+- [Rounding Off](python/data/rounding_off.html)
+- [Using VLOOKUP for Unblinding](python/data/vlookup_unblinding.html)
+- [Clinical Study Design](python/data/clinical_study_design.html)
+- [Exploratory Data Analysis (EDA)](python/data/exploratory_data_analysis.html)
 
-## Graphs (using Matplotlib)
-1. [Image Size](python/graphs/image_size.html)
-2. [Symbols, Line Styles and Colours](python/graphs/symbols_linestyles_colours.html)
+Graphs with `Matplotlib`
+------------------------
+
+#### Graphing using the 'state machine interface' (aka the pyplot style)
+_This is quicker than the object-orientated style for simple plots but it gives you less control:_
+
+- [Line Plots](python/graphs/plt_based/lineplots.html)
+    - [Receiver Operating Characteristic (ROC) Curves](python/graphs/plt_based/roc_curves.html)
+- [Scatter Plots](python/graphs/plt_based/scatterplots.html)
+    - [Bland-Altman Plots](python/graphs/plt_based/bland_altman.html)
+    - [Q-Q Plots](python/graphs/plt_based/q_q_plots.html)
+- Box Plots (aka box-and-whisker plots):
+    - [One Group of Data](python/graphs/plt_based/boxplots_single_group.html)
+    - [Multiple Groups of Data](python/graphs/plt_based/boxplots_multiple_groups.html)
+- Bar Plots:
+    - [One Group of Data](python/graphs/plt_based/barplots_single_group.html)
+    - [Multiple Groups of Data](python/graphs/plt_based/barplots_multiple_groups.html)
+- [Histograms](python/graphs/plt_based/histograms.html)
+- [Pie Charts](python/graphs/plt_based/pie_charts.html)
+
+#### Graphing using axes objects (aka the object-orientated style)
+_This is more complicated than the pyplot style but it gives you more control:_
+
+- [Line Plots](python/graphs/ax_based/lineplots.html)
+    - [Receiver Operating Characteristic (ROC) Curves](python/graphs/ax_based/roc_curves.html)
+- [Scatter Plots](python/graphs/ax_based/scatterplots.html)
+    - [Bland-Altman Plots](python/graphs/ax_based/bland_altman.html)
+    - [Q-Q Plots](python/graphs/ax_based/q_q_plots.html)
+- Box Plots (aka box-and-whisker plots):
+    - [One Group of Data](python/graphs/ax_based/boxplots_single_group.html)
+        - [Significance Bars](python/graphs/ax_based/boxplots_significance.html)
+    - [Multiple Groups of Data](python/graphs/ax_based/boxplots_multiple_groups.html)
+- Bar Plots:
+    - [One Group of Data](python/graphs/ax_based/barplots_single_group.html)
+    - [Multiple Groups of Data](python/graphs/ax_based/barplots_multiple_groups.html)
+- [Histograms](python/graphs/ax_based/histograms.html)
+- [Pie Charts](python/graphs/ax_based/pie_charts.html)
+- [Time-Based Data](python/graphs/time_data.html)
+
+#### Graphing directly from `Pandas` data frames:
+_This is essentially the same as the above methods because `Pandas` uses `Matplotlib` in the background:_
+
+- [Line, Scatter & Box Plots, Histograms, Pie Charts and Sub-Plots](python/graphs/pandas/line_scatter_box_histograms_pie_subplots.html)
+- [Bar Plots](python/graphs/pandas/bar_plots.html)
+
+#### Customisation:
+- [LaTeX in Labels](python/graphs/axes_and_labels/latex_in_labels.html)
+- [Changing the Font](python/graphs/axes_and_labels/changing_the_font.html)
+- [Image Size](python/graphs/image_size.html)
+- [Symbols, Line Styles and Colours](python/graphs/symbols_linestyles_colours.html)
     - [Colours that Look Good in Figures](python/graphs/colours_good_figures.html)
-3. [Working with Time-Based Data](python/graphs/time_data.html)
-4. Graphing using the 'state machine interface' (aka the pyplot style) _- This is quicker than the object-orientated style for simple plots but it gives you less control:_
-    - [Line Plots](python/graphs/plt_based/lineplots.html)
-        - [Receiver Operating Characteristic (ROC) Curves](python/graphs/plt_based/roc_curves.html)
-    - [Scatter Plots](python/graphs/plt_based/scatterplots.html)
-        - [Bland-Altman Plots](python/graphs/plt_based/bland_altman.html)
-        - [Q-Q Plots](python/graphs/plt_based/q_q_plots.html)
-    - Box Plots (aka box-and-whisker plots):
-        + [One Group of Data](python/graphs/plt_based/boxplots_single_group.html)
-        + [Multiple Groups of Data](python/graphs/plt_based/boxplots_multiple_groups.html)
-    + Bar Plots:
-        + [One Group of Data](python/graphs/plt_based/barplots_single_group.html)
-        + [Multiple Groups of Data](python/graphs/plt_based/barplots_multiple_groups.html)
-    + [Histograms](python/graphs/plt_based/histograms.html)
-    + [Pie Charts](python/graphs/plt_based/pie_charts.html)
-5. Graphing using axes objects (aka the object-orientated style) _- This is more complicated than the pyplot style but it gives you more control:_
-    - [Line Plots](python/graphs/ax_based/lineplots.html)
-        + [Receiver Operating Characteristic (ROC) Curves](python/graphs/ax_based/roc_curves.html)
-    - [Scatter Plots](python/graphs/ax_based/scatterplots.html)
-        - [Bland-Altman Plots](python/graphs/ax_based/bland_altman.html)
-        - [Q-Q Plots](python/graphs/ax_based/q_q_plots.html)
-    - Box Plots (aka box-and-whisker plots):
-        + [One Group of Data](python/graphs/ax_based/boxplots_single_group.html)
-            * [Significance Bars](python/graphs/ax_based/boxplots_significance.html)
-        + [Multiple Groups of Data](python/graphs/ax_based/boxplots_multiple_groups.html)
-    + Bar Plots:
-        + [One Group of Data](python/graphs/ax_based/barplots_single_group.html)
-        + [Multiple Groups of Data](python/graphs/ax_based/barplots_multiple_groups.html)
-    - [Histograms](python/graphs/ax_based/histograms.html)
-    - [Pie Charts](python/graphs/ax_based/pie_charts.html)
-6. Graphing directly from Pandas data frames _- This is essentially the same as the above methods because Pandas uses Matplotlib in the background:_
-    - [Line, Scatter & Box Plots, Histograms, Pie Charts and Sub-Plots](python/graphs/pandas/line_scatter_box_histograms_pie_subplots.html)
-    - [Bar Plots](python/graphs/pandas/bar_plots.html)
-7. Axes and Labels:
-    - [LaTeX in Labels](python/graphs/axes_and_labels/latex_in_labels.html)
-    - [Changing the Font](python/graphs/axes_and_labels/changing_the_font.html)
 
-## Mathematics
-<!-- 1. Probability -->
-<!-- 2. Linear Algebra -->
-<!-- 3. Derivatives -->
-<!-- 4. Differential Equations -->
-1. Curve Fitting:
+Mathematics
+-----------
+- [Combinations and Permutations](python/mathematics/combinations_permutations.html)
+- Curve Fitting:
     - Linear Functions:
         - [Comparison of Methods](python/mathematics/curve_fitting/linear_comparison.html)
         - [Linear Regression](python/mathematics/curve_fitting/linear_regression.html)
     - [Exponential Functions](python/mathematics/curve_fitting/exponential.html)
     - [Logarithmic Functions](python/mathematics/curve_fitting/logarithmic.html)
-2. [Combinations and Permutations](python/mathematics/combinations_permutations.html)
 
-## Statistics
-1. [Descriptive Statistics](python/statistics/descriptive_statistics.html)
-2. [Confidence Intervals](python/statistics/confidence_intervals.html)
-3. [Effect Size](python/statistics/effect_size.html)
-4. [Sample Size Estimation](python/statistics/sample_size.html)
-5. [Outlier Rejection](python/statistics/outlier_rejection.html)
-6. Distributions:
-    - [Uniform Distributions](python/statistics/distributions/uniform.html)
-    - [Binomial Distributions](python/statistics/distributions/binomial.html)
-    - [Normal Distributions](python/statistics/distributions/normal.html)
-        + [Tests for Normality](python/statistics/distributions/tests_for_normality.html)
-    - [Student's *t*-Distributions](python/statistics/distributions/students_t.html)
-7. Hypothesis Testing:
-    - Regression:
-        + [Constant Regression](python/statistics/hypothesis_testing/constant_regression.html)
-        + [Simple Linear Regression](python/statistics/hypothesis_testing/simple_linear_regression.html)
-        + [Multiple Linear Regression](python/statistics/hypothesis_testing/multiple_linear_regression.html)
-        + [Quadratic Regression](python/statistics/hypothesis_testing/quadratic_regression.html)
-        - [Passing–Bablok Regression](python/statistics/hypothesis_testing/passing_bablok.html)
-    - *t*-Tests:
-        - [One-Sample *t*-Test](python/statistics/hypothesis_testing/one_sample_t_test.html)
-        - [Unpaired Two-Sample *t*-Test](python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html)
-        - Two One-Sided *t*-Tests (TOST):
-            + [Unpaired](python/statistics/hypothesis_testing/tost_unpaired.html)
-            + [Paired](python/statistics/hypothesis_testing/tost_paired.html)
-    - [Mann-Whitney *U* Test](python/statistics/hypothesis_testing/mann_whitney_u_test.html)
-        + [Comparison of Mann-Whitney Methods](python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html)
-    - [Wilcoxon Signed-Rank Test](python/statistics/hypothesis_testing/wilcoxon_signed_rank_test.html)
-    - [ANOVA](python/statistics/hypothesis_testing/anova.html)
-        + [Tukey's Range Test](python/statistics/hypothesis_testing/tukeys_range_test.html)
-    - [Binomial Test](python/statistics/hypothesis_testing/binomial_test.html)
-    - *Z*-Tests:
-        + [One-Sample *Z*-Test for a Proportion](python/statistics/hypothesis_testing/one_sample_z_test_proportion.html)
-        + [Two-Sample *Z*-Test for a Proportion](python/statistics/hypothesis_testing/two_sample_z_test_proportion.html)
-    - [Chi-Squared Tests](python/statistics/hypothesis_testing/chi_squared.html)
-8. Agreement _- Including accuracy, precision (repeatability and reproducibility), variability and equivalence:_
-    - [Cohen's Kappa](python/statistics/agreement/cohens_kappa.html)
-    - [Repeatability Coefficient](python/statistics/agreement/repeatability_coefficient.html)
-    - [Coefficient of Variation](python/statistics/agreement/coefficient_of_variation.html)
-    - Correlation Coefficients:
-        - [Pearson Correlation Coefficient](python/statistics/agreement/pearson_correlation_coefficient.html)
-        - [Spearman's Rank Correlation Coefficient](python/statistics/agreement/spearmans_rank_correlation_coefficient.html)
-        - [Concordance Correlation Coefficient (CCC)](python/statistics/agreement/concordance_correlation_coefficient.html)
-        - [Intraclass Correlation Coefficient (ICC)](python/statistics/agreement/intraclass_correlation.html)
-    - Bland-Altman Analysis:
-        - [Traditional Bland-Altman Analysis](python/statistics/agreement/bland_altman.html) (native space)
-            + [Sample Size Calculations](python/statistics/agreement/bland_altman_sample_size.html)
-        - [Giavarina Analysis](python/statistics/agreement/giavarina.html) (percentage space)
-        - [Euser Analysis](python/statistics/agreement/euser.html) (log 10 space)
-9. Risk:
-    - [Odds Ratio](python/statistics/risk/odds_ratio.html)
-    - [Hazard Ratio](python/statistics/risk/hazard_ratio.html)
+Statistics
+----------
+- [Descriptive Statistics](python/statistics/descriptive_statistics.html)
+- [Confidence Intervals](python/statistics/confidence_intervals.html)
+- [Effect Size](python/statistics/effect_size.html)
+- [Sample Size Estimation](python/statistics/sample_size.html)
+- [Outlier Rejection](python/statistics/outlier_rejection.html)
 
-## Machine Learning
-1. Supervised Machine Learning Models:
-    - Regression:
-        - [Simple Linear Regression](python/machine_learning/supervised_models/simple_linear_regression.html)
-        - [Multiple Linear Regression](python/machine_learning/supervised_models/multiple_linear_regression.html)
-        - [Logistic Regression](python/machine_learning/supervised_models/logistic_regression.html)
-        - [*k*-Nearest Neighbours Regression](python/machine_learning/supervised_models/k_nearest_neighbours_regression.html)
-    - Classification:
-        - [*k*-Nearest Neighbours Classifier](python/machine_learning/supervised_models/k_nearest_neighbours_classifier.html)
-        - [Decision Trees](python/machine_learning/supervised_models/decision_trees.html)
-        - [Support Vector Machines](python/machine_learning/supervised_models/support_vector_machines.html)
-<!-- 2. Unsupervised Machine Learning Models: -->
-<!-- 3. Evaluation Metrics: -->
-<!-- 4. Feature Engineering: -->
-<!-- 5. Ensemble Methods: -->
-<!-- 6. Deep Learning: -->
+#### Distributions:
+- [Uniform Distributions](python/statistics/distributions/uniform.html)
+- [Binomial Distributions](python/statistics/distributions/binomial.html)
+- [Normal Distributions](python/statistics/distributions/normal.html)
+    - [Tests for Normality](python/statistics/distributions/tests_for_normality.html)
+- [Student's *t*-Distributions](python/statistics/distributions/students_t.html)
 
-## Utilities
-1. [Convert PDFs to Images](python/utilities/pdfs_to_pngs.html)
-2. [Extract Text From PDFs](python/utilities/extract_text_from_pdfs.html)
-3. [Sunrise and Sunset Times](python/utilities/sunrise_sunset.html)
-4. [Password Management](python/utilities/passwords.html)
-5. [Time a Script](python/utilities/time_a_script.html)
-6. [Creating a Package](python/utilities/creating_a_package.html)
-7. [Testing Your Code](python/utilities/testing_your_code.html)
-8. [Coordinate Precision](python/utilities/coordinate_precision/index.html)
-9. Files and Folders
-    - [The `os` and `pathlib` Modules](python/utilities/files_and_folders/os_pathlib_modules.html)
-    - [Path Nomenclature](python/utilities/files_and_folders/path_nomenclature.html)
-    - [Move and Rename Files](python/utilities/files_and_folders/move_and_rename.html)
-    - [Cut and Copy Files](python/utilities/files_and_folders/cut_copy_files.html)
-    - [Cleaning Names and Paths](python/utilities/files_and_folders/cleaning_names_paths.html)
-    - [Pretty-Printing Folder Structures](python/utilities/files_and_folders/pretty_printing.html)
+#### Hypothesis Testing:
+- Regression:
+    - [Constant Regression](python/statistics/hypothesis_testing/constant_regression.html)
+    - [Simple Linear Regression](python/statistics/hypothesis_testing/simple_linear_regression.html)
+    - [Multiple Linear Regression](python/statistics/hypothesis_testing/multiple_linear_regression.html)
+    - [Quadratic Regression](python/statistics/hypothesis_testing/quadratic_regression.html)
+    - [Passing–Bablok Regression](python/statistics/hypothesis_testing/passing_bablok.html)
+- *t*-Tests:
+    - [One-Sample *t*-Test](python/statistics/hypothesis_testing/one_sample_t_test.html)
+    - [Unpaired Two-Sample *t*-Test](python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html)
+    - Two One-Sided *t*-Tests (TOST):
+        + [Unpaired](python/statistics/hypothesis_testing/tost_unpaired.html)
+        + [Paired](python/statistics/hypothesis_testing/tost_paired.html)
+- [Mann-Whitney *U* Test](python/statistics/hypothesis_testing/mann_whitney_u_test.html)
+    + [Comparison of Mann-Whitney Methods](python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html)
+- [Wilcoxon Signed-Rank Test](python/statistics/hypothesis_testing/wilcoxon_signed_rank_test.html)
+- [ANOVA](python/statistics/hypothesis_testing/anova.html)
+    + [Tukey's Range Test](python/statistics/hypothesis_testing/tukeys_range_test.html)
+- [Binomial Test](python/statistics/hypothesis_testing/binomial_test.html)
+- *Z*-Tests:
+    + [One-Sample *Z*-Test for a Proportion](python/statistics/hypothesis_testing/one_sample_z_test_proportion.html)
+    + [Two-Sample *Z*-Test for a Proportion](python/statistics/hypothesis_testing/two_sample_z_test_proportion.html)
+- [Chi-Squared Tests](python/statistics/hypothesis_testing/chi_squared.html)
+
+#### Agreement:
+_Including accuracy, precision (repeatability and reproducibility), variability and equivalence:_
+
+- [Cohen's Kappa](python/statistics/agreement/cohens_kappa.html)
+- [Repeatability Coefficient](python/statistics/agreement/repeatability_coefficient.html)
+- [Coefficient of Variation](python/statistics/agreement/coefficient_of_variation.html)
+- Correlation Coefficients:
+    - [Pearson Correlation Coefficient](python/statistics/agreement/pearson_correlation_coefficient.html)
+    - [Spearman's Rank Correlation Coefficient](python/statistics/agreement/spearmans_rank_correlation_coefficient.html)
+    - [Concordance Correlation Coefficient (CCC)](python/statistics/agreement/concordance_correlation_coefficient.html)
+    - [Intraclass Correlation Coefficient (ICC)](python/statistics/agreement/intraclass_correlation.html)
+- Bland-Altman Analysis:
+    - [Traditional Bland-Altman Analysis](python/statistics/agreement/bland_altman.html) (native space)
+        + [Sample Size Calculations](python/statistics/agreement/bland_altman_sample_size.html)
+    - [Giavarina Analysis](python/statistics/agreement/giavarina.html) (percentage space)
+    - [Euser Analysis](python/statistics/agreement/euser.html) (log 10 space)
+
+#### Risk:
+- [Odds Ratio](python/statistics/risk/odds_ratio.html)
+- [Hazard Ratio](python/statistics/risk/hazard_ratio.html)
+
+Machine Learning
+----------------
+
+#### Supervised Models:
+- Regression:
+    - [Simple Linear Regression](python/machine_learning/supervised_models/simple_linear_regression.html)
+    - [Multiple Linear Regression](python/machine_learning/supervised_models/multiple_linear_regression.html)
+    - [Logistic Regression](python/machine_learning/supervised_models/logistic_regression.html)
+    - [*k*-Nearest Neighbours Regression](python/machine_learning/supervised_models/k_nearest_neighbours_regression.html)
+- Classification:
+    - [*k*-Nearest Neighbours Classifier](python/machine_learning/supervised_models/k_nearest_neighbours_classifier.html)
+    - [Decision Trees](python/machine_learning/supervised_models/decision_trees.html)
+    - [Support Vector Machines](python/machine_learning/supervised_models/support_vector_machines.html)
+
+Utilities
+---------
+- [Convert PDFs to Images](python/utilities/pdfs_to_pngs.html)
+- [Extract Text From PDFs](python/utilities/extract_text_from_pdfs.html)
+- [Sunrise and Sunset Times](python/utilities/sunrise_sunset.html)
+- [Password Management](python/utilities/passwords.html)
+- [Time a Script](python/utilities/time_a_script.html)
+- [Creating a Package](python/utilities/creating_a_package.html)
+- [Testing Your Code](python/utilities/testing_your_code.html)
+- [Coordinate Precision](python/utilities/coordinate_precision/index.html)
+
+#### Files and Folders:
+- [The `os` and `pathlib` Modules](python/utilities/files_and_folders/os_pathlib_modules.html)
+- [Path Nomenclature](python/utilities/files_and_folders/path_nomenclature.html)
+- [Move and Rename Files](python/utilities/files_and_folders/move_and_rename.html)
+- [Cut and Copy Files](python/utilities/files_and_folders/cut_copy_files.html)
+- [Cleaning Names and Paths](python/utilities/files_and_folders/cleaning_names_paths.html)
+- [Pretty-Printing Folder Structures](python/utilities/files_and_folders/pretty_printing.html)
 
 ## Image Analysis
-1. [Working With Images](python/image_analysis/working_with_images.html)
+- [Working With Images](python/image_analysis/working_with_images.html)
     - [Working With DICOMs](python/image_analysis/working_with_dicoms.html)
-2. [Filtering](python/image_analysis/filtering.html)
-3. [Posterise](python/image_analysis/posterise.html)
-4. [Segmentation via Selecting by Colour](python/image_analysis/segmentation.html)
-5. [Calculating Overlap and the Dice Coefficient](python/image_analysis/dice_coefficient.html)
-6. [Compare Two Images](python/image_analysis/comparing_two_images.html)
-7. [Taking Screenshots](python/image_analysis/screenshots.html)
-8. [Click to Interact with an Image](python/image_analysis/click_to_interact.html)
-9. [Analysis of Pixel Values](python/image_analysis/pixel_analysis.html)
-10. [Computer Vision](python/image_analysis/computer_vision.html)
+- [Filtering](python/image_analysis/filtering.html)
+- [Posterise](python/image_analysis/posterise.html)
+- [Segmentation via Selecting by Colour](python/image_analysis/segmentation.html)
+- [Calculating Overlap and the Dice Coefficient](python/image_analysis/dice_coefficient.html)
+- [Compare Two Images](python/image_analysis/comparing_two_images.html)
+- [Taking Screenshots](python/image_analysis/screenshots.html)
+- [Click to Interact with an Image](python/image_analysis/click_to_interact.html)
+- [Analysis of Pixel Values](python/image_analysis/pixel_analysis.html)
+- [Computer Vision](python/image_analysis/computer_vision.html)
 
 </font>

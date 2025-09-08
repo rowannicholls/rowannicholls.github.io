@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Data Handling in Python:</font><br>Pivot Tables'
+title: '<font size="5">Data Frames with `Pandas`</font><br>Pivot Tables'
 output:
     html_document:
         theme: paper
@@ -14,14 +14,26 @@ output:
 
 [⇦ Back](../../python.html)
 
-```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "100%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
-```
-
 <!-- Created 2020-09-24 -->
 <!-- Updated 2023-08-25 -->
 <!-- Updated 2023-08-28 -->
+<!-- Updated 2025-09-08 -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+> This page is the eighth in a series on data frames:
+> 
+> 1. [Introduction](introduction.html)
+> 2. [Searching, Finding, Filtering](searching.html)
+> 3. [Calculations](calculations.html)
+> 4. [Multiple Levels](multiple_levels.html)
+> 5. [Dropping Empty Columns](dropping.html)
+> 6. [Merging](merging/index.html)
+> 7. [Grouping and Aggregating](grouping_aggregating.html)
+> 8. Pivot Tables
 
 Packages
 ========

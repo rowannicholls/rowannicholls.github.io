@@ -11,7 +11,7 @@
 
 
 
-<title>Python</title>
+<title>Data Frames with Pandas Data Frames Searching, Finding, Filtering</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -391,7 +391,7 @@ var data = {
 
 
 }
-,"blob":{"1":"1","10":"UA-156468188-1","14":"5940","15":"0","16":"ChEI8P35xQYQvZielrzB8OafARInAKChkIJ+3ClXv0DXGghNRcO3+ZR1G4juRcwUHH9NKov58vsWs5QVGgJDRg==","17":"","19":"dataLayer","20":"","21":"www.googletagmanager.com","22":"eyIwIjoiR0IiLCIxIjoiR0ItRU5HIiwiMiI6ZmFsc2UsIjMiOiJnb29nbGUuY28udWsiLCI0IjoicmVnaW9uMSIsIjUiOmZhbHNlLCI2IjpmYWxzZSwiNyI6ImFkX3N0b3JhZ2V8YW5hbHl0aWNzX3N0b3JhZ2V8YWRfdXNlcl9kYXRhfGFkX3BlcnNvbmFsaXphdGlvbiJ9","23":"google.tagmanager.debugui2.queue","24":"tagassistant.google.com","27":0.005,"3":"www.googletagmanager.com","30":"GB","31":"GB-ENG","32":false,"33":"region1","34":"UA-156468188-1","35":"UA","36":"https://adservice.google.com/pagead/regclk","37":"__TAGGY_INSTALLED","38":"cct.google","39":"googTaggyReferrer","40":"https://cct.google/taggy/agent.js","41":"google.tagmanager.ta.prodqueue","42":0.01,"43":"{\"keys\":[{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BJlFZo1PLIDIEBtsGEdfkWR4ZCcviP2y+dqfwvtWFNjNYttgOKelwTaMUwDjc4u1vbVnCQhKBR3Ud3oXWze2eV4=\",\"version\":0},\"id\":\"e79a77ad-43af-44a5-bcca-e57a1f93b790\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BDw7DFfOeZAAWAqNIyQfysi0/JA10sR+FPZhR6dMiRh4sDLkXZ+q5KoIer8OYTaPCHAZDjlF4UCz/ecoB262OG0=\",\"version\":0},\"id\":\"90bb4489-4e6e-41bc-9502-3e9d807aa4dd\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BC//NaSUVUe7TL7gUUpav1au+A9txHuJj5FmEkTOnsN0kBHmVr42c4PoznnLpQHkIK6mHi4tfTzCe888FbA2mCE=\",\"version\":0},\"id\":\"63d5d28f-3fce-4587-986e-285cc423dfa1\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BB0vQ526NMz7UA93caIqPgXdDxDAVWQZndpQCFqrbGC9e/6V4njP+/9b14wWL2ZgZ65/wfrndtBmKkenASmKl/0=\",\"version\":0},\"id\":\"4aadf648-f1fb-4a07-bbd3-09468280293c\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BLZSd5uiWWgL76/7QnIswmgZarlkx5CYp0WjRYlmOlij9R1fcj5aGKOXVUsG1faHH5wRBRoWbgbG2ma6T3kkNP0=\",\"version\":0},\"id\":\"468470fe-89e8-44ed-821a-c25902de0bd0\"}]}","44":"101509157~103116026~103200004~103233427~104684208~104684211","46":{"1":"1000","10":"5940","11":"5840","12":"0.01","14":"1000","16":"US-CO~US-CT~US-MT~US-NE~US-NH~US-TX~US-MN~US-NJ~US-MD","17":"US-CO~US-CT~US-MT~US-NE~US-NH~US-TX~US-MN~US-NJ~US-MD","2":"9","20":"5000","21":"5000","22":"3.2.0","23":"0.0.0","25":"1","26":"4000","27":"100","3":"5","4":"ad_storage|analytics_storage|ad_user_data|ad_personalization","44":"15000","48":"30000","5":"ad_storage|analytics_storage|ad_user_data","6":"1","60":"0","7":"10","8":"20","9":"https://publickeyservice.keys.adm-services.goog/v1alpha/publicKeys:raw"},"5":"UA-156468188-1","8":"res_ts:1653917065452472,srv_cl:802928595,ds:live,cv:1","9":"UA-156468188-1"}
+,"blob":{"1":"1","10":"UA-156468188-1","14":"5940","15":"0","16":"ChEI8P35xQYQvZielrzB8OafARInAKChkIL24+ldp8UOfYjhyM2YVFJUo/Be38Ki5tGdKCYGne7Jk09YGgKNyg==","17":"","19":"dataLayer","20":"","21":"www.googletagmanager.com","22":"eyIwIjoiR0IiLCIxIjoiR0ItRU5HIiwiMiI6ZmFsc2UsIjMiOiJnb29nbGUuY28udWsiLCI0IjoicmVnaW9uMSIsIjUiOmZhbHNlLCI2IjpmYWxzZSwiNyI6ImFkX3N0b3JhZ2V8YW5hbHl0aWNzX3N0b3JhZ2V8YWRfdXNlcl9kYXRhfGFkX3BlcnNvbmFsaXphdGlvbiJ9","23":"google.tagmanager.debugui2.queue","24":"tagassistant.google.com","27":0.005,"3":"www.googletagmanager.com","30":"GB","31":"GB-ENG","32":false,"33":"region1","34":"UA-156468188-1","35":"UA","36":"https://adservice.google.com/pagead/regclk","37":"__TAGGY_INSTALLED","38":"cct.google","39":"googTaggyReferrer","40":"https://cct.google/taggy/agent.js","41":"google.tagmanager.ta.prodqueue","42":0.01,"43":"{\"keys\":[{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BJlFZo1PLIDIEBtsGEdfkWR4ZCcviP2y+dqfwvtWFNjNYttgOKelwTaMUwDjc4u1vbVnCQhKBR3Ud3oXWze2eV4=\",\"version\":0},\"id\":\"e79a77ad-43af-44a5-bcca-e57a1f93b790\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BDw7DFfOeZAAWAqNIyQfysi0/JA10sR+FPZhR6dMiRh4sDLkXZ+q5KoIer8OYTaPCHAZDjlF4UCz/ecoB262OG0=\",\"version\":0},\"id\":\"90bb4489-4e6e-41bc-9502-3e9d807aa4dd\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BC//NaSUVUe7TL7gUUpav1au+A9txHuJj5FmEkTOnsN0kBHmVr42c4PoznnLpQHkIK6mHi4tfTzCe888FbA2mCE=\",\"version\":0},\"id\":\"63d5d28f-3fce-4587-986e-285cc423dfa1\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BB0vQ526NMz7UA93caIqPgXdDxDAVWQZndpQCFqrbGC9e/6V4njP+/9b14wWL2ZgZ65/wfrndtBmKkenASmKl/0=\",\"version\":0},\"id\":\"4aadf648-f1fb-4a07-bbd3-09468280293c\"},{\"hpkePublicKey\":{\"params\":{\"aead\":\"AES_128_GCM\",\"kdf\":\"HKDF_SHA256\",\"kem\":\"DHKEM_P256_HKDF_SHA256\"},\"publicKey\":\"BLZSd5uiWWgL76/7QnIswmgZarlkx5CYp0WjRYlmOlij9R1fcj5aGKOXVUsG1faHH5wRBRoWbgbG2ma6T3kkNP0=\",\"version\":0},\"id\":\"468470fe-89e8-44ed-821a-c25902de0bd0\"}]}","44":"101509157~103116026~103200004~103233427~104684208~104684211","46":{"1":"1000","10":"5940","11":"5840","12":"0.01","14":"1000","16":"US-CO~US-CT~US-MT~US-NE~US-NH~US-TX~US-MN~US-NJ~US-MD","17":"US-CO~US-CT~US-MT~US-NE~US-NH~US-TX~US-MN~US-NJ~US-MD","2":"9","20":"5000","21":"5000","22":"3.2.0","23":"0.0.0","25":"1","26":"4000","27":"100","3":"5","4":"ad_storage|analytics_storage|ad_user_data|ad_personalization","44":"15000","48":"30000","5":"ad_storage|analytics_storage|ad_user_data","6":"1","60":"0","7":"10","8":"20","9":"https://publickeyservice.keys.adm-services.goog/v1alpha/publicKeys:raw"},"5":"UA-156468188-1","8":"res_ts:1653917065452472,srv_cl:802928595,ds:live,cv:1","9":"UA-156468188-1"}
 ,"permissions":{
 "__c":{}
 ,
@@ -1051,460 +1051,580 @@ nj(q,"host")===Ei(24)&&(m=h.Xl)}if(!m){var r=ir("__TAG_ASSISTANT");r.length&&r[0
 
 
 
-<h1 class="title toc-ignore">Python</h1>
+<h1 class="title toc-ignore"><font size="5">Data Frames with
+<code>Pandas</code></font><br>Data
+Frames<br><font size="5"><em>Searching, Finding,
+Filtering</em></font></h1>
 
 </div>
 
+<div id="TOC">
+<ul>
+<li><a href="#intro" id="toc-intro"><span class="toc-section-number">1</span> Intro</a>
+<ul>
+<li><a href="#example-data" id="toc-example-data"><span class="toc-section-number">1.1</span> Example Data</a></li>
+</ul></li>
+<li><a href="#searching" id="toc-searching"><span class="toc-section-number">2</span> Searching</a>
+<ul>
+<li><a href="#search-a-column" id="toc-search-a-column"><span class="toc-section-number">2.1</span> Search a Column</a></li>
+<li><a href="#search-the-values-in-a-column-individually" id="toc-search-the-values-in-a-column-individually"><span class="toc-section-number">2.2</span> Search the Values in a Column
+Individually</a></li>
+<li><a href="#search-for-substrings" id="toc-search-for-substrings"><span class="toc-section-number">2.3</span> Search for Substrings</a></li>
+<li><a href="#append-the-results-of-a-search-as-a-column" id="toc-append-the-results-of-a-search-as-a-column"><span class="toc-section-number">2.4</span> Append the Results of a Search as
+a Column</a></li>
+<li><a href="#search-through-multiple-columns" id="toc-search-through-multiple-columns"><span class="toc-section-number">2.5</span> Search Through Multiple
+Columns</a></li>
+<li><a href="#search-using-inequalities" id="toc-search-using-inequalities"><span class="toc-section-number">2.6</span> Search Using Inequalities</a></li>
+<li><a href="#search-using-inequalities-across-multiple-columns" id="toc-search-using-inequalities-across-multiple-columns"><span class="toc-section-number">2.7</span> Search Using Inequalities Across
+Multiple Columns</a></li>
+<li><a href="#search-through-column-names" id="toc-search-through-column-names"><span class="toc-section-number">2.8</span> Search Through Column
+Names</a></li>
+<li><a href="#search-through-a-subset-of-the-data-frame" id="toc-search-through-a-subset-of-the-data-frame"><span class="toc-section-number">2.9</span> Search Through a Subset of the
+Data Frame</a></li>
+</ul></li>
+<li><a href="#finding" id="toc-finding"><span class="toc-section-number">3</span> Finding</a>
+<ul>
+<li><a href="#vlookup-using-index" id="toc-vlookup-using-index"><span class="toc-section-number">3.1</span> VLOOKUP Using Index</a></li>
+<li><a href="#vlookup-using-booleans" id="toc-vlookup-using-booleans"><span class="toc-section-number">3.2</span> VLOOKUP Using Booleans</a></li>
+<li><a href="#find-anywhere" id="toc-find-anywhere"><span class="toc-section-number">3.3</span> Find Anywhere</a></li>
+</ul></li>
+<li><a href="#filtering" id="toc-filtering"><span class="toc-section-number">4</span> Filtering</a>
+<ul>
+<li><a href="#filter-using-a-single-criterion" id="toc-filter-using-a-single-criterion"><span class="toc-section-number">4.1</span> Filter Using a Single
+Criterion</a></li>
+<li><a href="#filter-using-a-list-of-criteria" id="toc-filter-using-a-list-of-criteria"><span class="toc-section-number">4.2</span> Filter Using a List of
+Criteria</a></li>
+<li><a href="#filter-using-multiple-lists-of-criteriamultiple-columns" id="toc-filter-using-multiple-lists-of-criteriamultiple-columns"><span class="toc-section-number">4.3</span> Filter Using Multiple lists of
+Criteria/Multiple Columns</a></li>
+<li><a href="#filter-using-a-column-of-booleans" id="toc-filter-using-a-column-of-booleans"><span class="toc-section-number">4.4</span> Filter Using a Column of
+Booleans</a></li>
+<li><a href="#filter-to-get-values-between-two-numbers" id="toc-filter-to-get-values-between-two-numbers"><span class="toc-section-number">4.5</span> Filter To Get Values Between Two
+Numbers</a></li>
+<li><a href="#filter-out-nulls" id="toc-filter-out-nulls"><span class="toc-section-number">4.6</span> Filter Out Nulls</a></li>
+<li><a href="#removing-duplicates" id="toc-removing-duplicates"><span class="toc-section-number">4.7</span> Removing Duplicates</a>
+<ul>
+<li><a href="#bonus-removing-duplicates-from-a-list-whilst-preserving-the-order" id="toc-bonus-removing-duplicates-from-a-list-whilst-preserving-the-order"><span class="toc-section-number">4.7.1</span> BONUS: Removing Duplicates From
+a List Whilst Preserving the Order</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
 
 <p><font size="3"></p>
-<div id="introduction-to-python" class="section level2">
-<h2>Introduction to Python</h2>
+<p><a href="../../python.html">⇦ Back</a></p>
+<!-- Updated 2025-09-08 -->
+<blockquote>
+<p>This page is the second part of a series on data frames:</p>
 <ol style="list-style-type: decimal">
-<li><a href="python/intro/getting_started.html">Getting Started</a>
-<ul>
-<li><a href="python/intro/installation_check.html">Check Your Python
-Installation</a></li>
-</ul></li>
-<li><a href="python/intro/data_types.html">Comments, Variables and Data
-Types</a></li>
-<li><a href="python/intro/errors.html">Errors</a></li>
-<li><a href="python/intro/maths_numbers.html">Maths and Numbers</a></li>
-<li><a href="python/intro/strings.html">Strings</a>
-<ul>
-<li><a href="python/intro/f_strings.html">f-Strings</a></li>
-<li><a href="python/intro/format_method.html">The <code>.format()</code>
-Method</a></li>
-</ul></li>
-<li><a href="python/intro/booleans.html">Booleans and If
-Statements</a></li>
-<li><a href="python/intro/lists.html">Lists, Sets and Tuples</a></li>
-<li><a href="python/intro/dictionaries.html">Dictionaries</a></li>
-<li><a href="python/intro/arrays.html">Arrays</a></li>
-<li><a href="python/intro/loops.html">Loops</a></li>
-<li><a href="python/intro/functions.html">Functions</a></li>
-<li><a href="python/intro/classes.html">Classes</a></li>
-</ol>
-</div>
-<div id="intermediate-python" class="section level2">
-<h2>Intermediate Python</h2>
-<ol style="list-style-type: decimal">
-<li><a href="python/intermediate/lists.html">Nested Lists and List
-Comprehensions</a></li>
-<li><a href="python/intermediate/dictionaries.html">Nested Dictionaries
-and Dictionary Comprehensions</a></li>
-<li>Date and Time:
-<ul>
-<li><a href="python/intermediate/time.html">The <code>time</code>
-Module</a></li>
-<li><a href="python/intermediate/datetime.html">The
-<code>datetime</code> Module</a> <!-- - [Timezones] -->
-<!-- - [Calendars] --></li>
-</ul></li>
-<li><a href="python/intermediate/args_kwargs.html">Args and Kwargs</a>
-<!-- 6. Python and the Terminal -->
-<!--     - Parsing Command-Line Arguments -->
-<!--     - Run Terminal Commands in Python -->
-<!--     - Prompt for User Input --></li>
-<li><a href="python/intermediate/argument_parsing.html">Parsing
-Command-Line Arguments</a> <!-- 8. [Webscraping] -->
-<!-- 9. [Bitwise Operators] --></li>
-<li><a href="python/intermediate/error_handling.html">Error Handling</a>
-<!-- 11. [Linting] --> <!-- 12. [Variable Scope] --></li>
-<li><a href="python/intermediate/packages_and_venvs.html">Package
-Management and Virtual Environments</a></li>
-</ol>
-</div>
-<div id="data-frames-with-pandas" class="section level2">
-<h2>Data Frames with <code>Pandas</code></h2>
-<ul>
-<li><a href="python/data_frames/introduction.html">Introduction</a></li>
-<li><a href="python/data_frames/searching.html">Searching, Finding,
-Filtering</a></li>
-<li><a href="python/data_frames/calculations.html">Calculations</a></li>
-<li><a href="python/data_frames/multiple_levels.html">Multiple
-Levels</a></li>
-<li><a href="python/data_frames/dropping.html">Dropping Empty
-Columns</a></li>
-<li><a href="python/data_frames/merging/index.html">Merging</a></li>
-<li><a href="python/data_frames/grouping_aggregating.html">Grouping and
+<li><a href="introduction.html">Introduction</a></li>
+<li>Searching, Finding, Filtering</li>
+<li><a href="calculations.html">Calculations</a></li>
+<li><a href="multiple_levels.html">Multiple Levels</a></li>
+<li><a href="dropping.html">Dropping Empty Columns</a></li>
+<li><a href="merging/index.html">Merging</a></li>
+<li><a href="grouping_aggregating.html">Grouping and
 Aggregating</a></li>
-<li><a href="python/data_frames/pivot_tables.html">Pivot Tables</a></li>
-</ul>
-</div>
-<div id="working-with-data" class="section level2">
-<h2>Working with Data</h2>
+<li><a href="pivot_tables.html">Pivot Tables</a></li>
+</ol>
+</blockquote>
+<div id="intro" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Intro</h1>
+<p>While ‘indexing’ is something you do when you know exactly which
+row(s) and column(s) you want, sometimes you do NOT know exact what you
+want. Instead, you first need to search through the data frame to find
+the information you are looking for. Then you can subset the data frame
+to filter out any information you don’t want:</p>
 <ul>
-<li>Example Datasets
+<li>‘Search’ the data frame to see if the data you are looking for
+exists
 <ul>
-<li><a href="python/data/sklearn_datasets.html">From
-scikit-learn</a></li>
-<li><a href="python/data/statsmodels_datasets.html">From
-Statsmodels</a></li>
+<li>The result will be a <strong>boolean</strong> (ie True/False): the
+data was either found or it wasn’t</li>
 </ul></li>
-<li><a href="python/data/create_export_import_convert.html">File IO:
-Create, Export, Import and Convert Data</a>
+<li>‘Find’ the data if it does exist
 <ul>
-<li><a href="python/data/export_to_word.html">Export Tables to
-Word</a></li>
+<li>The result will be the <strong>location</strong> of the data</li>
 </ul></li>
-<li><a href="python/data/rounding_off.html">Rounding Off</a></li>
-<li><a href="python/data/vlookup_unblinding.html">Using VLOOKUP for
-Unblinding</a></li>
-<li><a href="python/data/clinical_study_design.html">Clinical Study
-Design</a></li>
-<li><a href="python/data/exploratory_data_analysis.html">Exploratory
-Data Analysis (EDA)</a></li>
-</ul>
-</div>
-<div id="graphs-with-matplotlib" class="section level2">
-<h2>Graphs with <code>Matplotlib</code></h2>
-<div id="graphing-using-the-state-machine-interface-aka-the-pyplot-style" class="section level4">
-<h4>Graphing using the ‘state machine interface’ (aka the pyplot
-style)</h4>
-<p><em>This is quicker than the object-orientated style for simple plots
-but it gives you less control:</em></p>
+<li>‘Filter’ the data frame so that it only contains what you want
 <ul>
-<li><a href="python/graphs/plt_based/lineplots.html">Line Plots</a>
-<ul>
-<li><a href="python/graphs/plt_based/roc_curves.html">Receiver Operating
-Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/scatterplots.html">Scatter
-Plots</a>
-<ul>
-<li><a href="python/graphs/plt_based/bland_altman.html">Bland-Altman
-Plots</a></li>
-<li><a href="python/graphs/plt_based/q_q_plots.html">Q-Q Plots</a></li>
-</ul></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/plt_based/boxplots_single_group.html">One
-Group of Data</a></li>
-<li><a href="python/graphs/plt_based/boxplots_multiple_groups.html">Multiple
-Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/plt_based/barplots_single_group.html">One
-Group of Data</a></li>
-<li><a href="python/graphs/plt_based/barplots_multiple_groups.html">Multiple
-Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/plt_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/plt_based/pie_charts.html">Pie
-Charts</a></li>
-</ul>
-</div>
-<div id="graphing-using-axes-objects-aka-the-object-orientated-style" class="section level4">
-<h4>Graphing using axes objects (aka the object-orientated style)</h4>
-<p><em>This is more complicated than the pyplot style but it gives you
-more control:</em></p>
-<ul>
-<li><a href="python/graphs/ax_based/lineplots.html">Line Plots</a>
-<ul>
-<li><a href="python/graphs/ax_based/roc_curves.html">Receiver Operating
-Characteristic (ROC) Curves</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/scatterplots.html">Scatter Plots</a>
-<ul>
-<li><a href="python/graphs/ax_based/bland_altman.html">Bland-Altman
-Plots</a></li>
-<li><a href="python/graphs/ax_based/q_q_plots.html">Q-Q Plots</a></li>
-</ul></li>
-<li>Box Plots (aka box-and-whisker plots):
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_single_group.html">One
-Group of Data</a>
-<ul>
-<li><a href="python/graphs/ax_based/boxplots_significance.html">Significance
-Bars</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/boxplots_multiple_groups.html">Multiple
-Groups of Data</a></li>
-</ul></li>
-<li>Bar Plots:
-<ul>
-<li><a href="python/graphs/ax_based/barplots_single_group.html">One
-Group of Data</a></li>
-<li><a href="python/graphs/ax_based/barplots_multiple_groups.html">Multiple
-Groups of Data</a></li>
-</ul></li>
-<li><a href="python/graphs/ax_based/histograms.html">Histograms</a></li>
-<li><a href="python/graphs/ax_based/pie_charts.html">Pie Charts</a></li>
-<li><a href="python/graphs/time_data.html">Time-Based Data</a></li>
-</ul>
-</div>
-<div id="graphing-directly-from-pandas-data-frames" class="section level4">
-<h4>Graphing directly from <code>Pandas</code> data frames:</h4>
-<p><em>This is essentially the same as the above methods because
-<code>Pandas</code> uses <code>Matplotlib</code> in the
-background:</em></p>
-<ul>
-<li><a href="python/graphs/pandas/line_scatter_box_histograms_pie_subplots.html">Line,
-Scatter &amp; Box Plots, Histograms, Pie Charts and Sub-Plots</a></li>
-<li><a href="python/graphs/pandas/bar_plots.html">Bar Plots</a></li>
-</ul>
-</div>
-<div id="customisation" class="section level4">
-<h4>Customisation:</h4>
-<ul>
-<li><a href="python/graphs/axes_and_labels/latex_in_labels.html">LaTeX
-in Labels</a></li>
-<li><a href="python/graphs/axes_and_labels/changing_the_font.html">Changing the
-Font</a></li>
-<li><a href="python/graphs/image_size.html">Image Size</a></li>
-<li><a href="python/graphs/symbols_linestyles_colours.html">Symbols,
-Line Styles and Colours</a>
-<ul>
-<li><a href="python/graphs/colours_good_figures.html">Colours that Look
-Good in Figures</a></li>
+<li>The result will be a <strong>new data frame</strong>, smaller than
+the original one, containing only the data you want</li>
 </ul></li>
 </ul>
+<div id="example-data" class="section level2" number="1.1">
+<h2><span class="header-section-number">1.1</span> Example Data</h2>
+<p>We will again use the results from the Rio 2016 Olympics men’s 100m
+finals as our example data:</p>
+<pre class="python"><code>import pandas as pd
+
+rio_100m_men = {
+    &#39;Athlete&#39;: [
+        &#39;Usain Bolt&#39;, &#39;Justin Gatlin&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;,
+        &#39;Jimmy Vicaut&#39;, &#39;Trayvon Bromell&#39;
+    ],
+    &#39;Country&#39;: [
+        &#39;Jamaica&#39;, &#39;United States&#39;, &#39;Canada&#39;, &#39;Jamaica&#39;, &#39;South Africa&#39;, &#39;Ivory Coast&#39;, &#39;France&#39;, &#39;United States&#39;
+    ],
+    &#39;Age&#39;: [29, 34, 21, 26, 22, 29, 24, 21],
+    &#39;Heat&#39;: [10.07, 10.01, 10.04, 10.11, 10.14, 10.03, 10.19, 10.13],
+    &#39;Semi-Final&#39;: [9.86, 9.94, 9.92, 10.01, 9.98, 9.97, 9.95, 10.01],
+    &#39;Final&#39;: [9.81, 9.89, 9.91, 9.93, 9.94, 9.96, 10.04, 10.06],
+}
+df = pd.DataFrame(rio_100m_men)
+print(df)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04
+## 7    Trayvon Bromell  United States   21  10.13       10.01  10.06</code></pre>
 </div>
 </div>
-<div id="mathematics" class="section level2">
-<h2>Mathematics</h2>
+<div id="searching" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Searching</h1>
+<div id="search-a-column" class="section level2" number="2.1">
+<h2><span class="header-section-number">2.1</span> Search a Column</h2>
+<p>Does a column contain a certain value? For example, was Yohan Blake
+in the final?</p>
+<pre class="python"><code># Search for a value
+result = &#39;Yohan Blake&#39; in df[&#39;Athlete&#39;].values
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<p>Alternatively, this type of search can be done using the
+<code>.any()</code> and <code>.all()</code> methods:</p>
+<pre class="python"><code># Search for any occurrence of a value
+result = (df[&#39;Athlete&#39;] == &#39;Yohan Blake&#39;).any()
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+<pre class="python"><code># Check if all values in a column meet a criteria
+result = (df[&#39;Age&#39;] &lt;= 34).all()
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+</div>
+<div id="search-the-values-in-a-column-individually" class="section level2" number="2.2">
+<h2><span class="header-section-number">2.2</span> Search the Values in
+a Column Individually</h2>
+<p>You can also get the results of the search for each row: for each
+athlete, do they come from Jamaica?</p>
+<pre class="python"><code># Search each row for a value
+result = df[&#39;Country&#39;] == &#39;Jamaica&#39;
+print(list(result))</code></pre>
+<pre><code>## [True, False, False, True, False, False, False, False]</code></pre>
+<p>The same thing can be done with a function: the <code>where()</code>
+function from Numpy:</p>
+<pre class="python"><code>import numpy as np
+
+result = np.where(df[&#39;Country&#39;] == &#39;Jamaica&#39;, True, False)
+print(list(result))</code></pre>
+<pre><code>## [np.True_, np.False_, np.False_, np.True_, np.False_, np.False_, np.False_, np.False_]</code></pre>
+</div>
+<div id="search-for-substrings" class="section level2" number="2.3">
+<h2><span class="header-section-number">2.3</span> Search for
+Substrings</h2>
+<p>Instead of just searching for athletes with certain names, we can
+search <em>within</em> the names for athletes who have the letter “e” in
+their name, for example:</p>
+<pre class="python"><code># Search for a substring
+result = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
+print(result)</code></pre>
+<pre><code>## [False, False, True, True, True, True, False, True]</code></pre>
+<p>Note that the specific task of searching for a letter within a column
+of strings can also be performed using the <code>.contains()</code>
+method:</p>
+<pre class="python"><code># Search for a substring
+result = df[&#39;Athlete&#39;].str.contains(&#39;e&#39;)
+print(list(result))</code></pre>
+<pre><code>## [False, False, True, True, True, True, False, True]</code></pre>
+</div>
+<div id="append-the-results-of-a-search-as-a-column" class="section level2" number="2.4">
+<h2><span class="header-section-number">2.4</span> Append the Results of
+a Search as a Column</h2>
+<p>It’s a small extra step to add the results of a search to the data
+frame itself:</p>
+<pre class="python"><code># Search for a substring
+df[&#39;e in name?&#39;] = [&#39;e&#39; in i for i in df[&#39;Athlete&#39;]]
+print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
+<pre><code>##              Athlete  e in name?
+## 0         Usain Bolt       False
+## 1      Justin Gatlin       False
+## 2    Andre De Grasse        True
+## 3        Yohan Blake        True
+## 4      Akani Simbine        True
+## 5  Ben Youssef Meïté        True
+## 6       Jimmy Vicaut       False
+## 7    Trayvon Bromell        True</code></pre>
+<p>Do the same thing but using a loop:</p>
+<pre class="python"><code># Search for a substring
+df[&#39;e in name?&#39;] = False
+for i, row in df.iterrows():
+    if &#39;e&#39; in df.at[i, &#39;Athlete&#39;]:
+        df.at[i, &#39;e in name?&#39;] = True
+    else:
+        df.at[i, &#39;e in name?&#39;] = False
+print(df[[&#39;Athlete&#39;, &#39;e in name?&#39;]])</code></pre>
+<pre><code>##              Athlete  e in name?
+## 0         Usain Bolt       False
+## 1      Justin Gatlin       False
+## 2    Andre De Grasse        True
+## 3        Yohan Blake        True
+## 4      Akani Simbine        True
+## 5  Ben Youssef Meïté        True
+## 6       Jimmy Vicaut       False
+## 7    Trayvon Bromell        True</code></pre>
+</div>
+<div id="search-through-multiple-columns" class="section level2" number="2.5">
+<h2><span class="header-section-number">2.5</span> Search Through
+Multiple Columns</h2>
+<p>The logical operators ‘and’ (<code>&amp;</code>) and ‘or’
+(<code>|</code>) can be used to find rows that match very specific
+criteria. Notice the round brackets that are being used to group the
+logical evaluations together:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Semi-Final&#39;] == 10.01) | ((df[&#39;Final&#39;] == 9.89) &amp; (df[&#39;Country&#39;] == &#39;United States&#39;))
+print(list(results))</code></pre>
+<pre><code>## [False, True, False, True, False, False, False, True]</code></pre>
+</div>
+<div id="search-using-inequalities" class="section level2" number="2.6">
+<h2><span class="header-section-number">2.6</span> Search Using
+Inequalities</h2>
+<p>In addition to the logical operators, the following inequality
+symbols can be mixed and matched:</p>
 <ul>
-<li><a href="python/mathematics/combinations_permutations.html">Combinations
-and Permutations</a></li>
-<li>Curve Fitting:
-<ul>
-<li>Linear Functions:
-<ul>
-<li><a href="python/mathematics/curve_fitting/linear_comparison.html">Comparison
-of Methods</a></li>
-<li><a href="python/mathematics/curve_fitting/linear_regression.html">Linear
-Regression</a></li>
-</ul></li>
-<li><a href="python/mathematics/curve_fitting/exponential.html">Exponential
-Functions</a></li>
-<li><a href="python/mathematics/curve_fitting/logarithmic.html">Logarithmic
-Functions</a></li>
-</ul></li>
+<li>Greater than: <code>&gt;</code></li>
+<li>Less than: <code>&lt;</code></li>
+<li>Greater than or equal to: <code>&gt;=</code></li>
+<li>Less than or equal to: <code>&lt;=</code></li>
+<li>not equal to: <code>!=</code></li>
 </ul>
+<pre class="python"><code>df[&#39;Sub-10&#39;] = df[&#39;Final&#39;] &lt; 10.00
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Sub-10&#39;]])</code></pre>
+<pre><code>##              Athlete  Final  Sub-10
+## 0         Usain Bolt   9.81    True
+## 1      Justin Gatlin   9.89    True
+## 2    Andre De Grasse   9.91    True
+## 3        Yohan Blake   9.93    True
+## 4      Akani Simbine   9.94    True
+## 5  Ben Youssef Meïté   9.96    True
+## 6       Jimmy Vicaut  10.04   False
+## 7    Trayvon Bromell  10.06   False</code></pre>
+<p>Similar to a previous example, the same thing can be done with the
+<code>where()</code> function from Numpy:</p>
+<pre class="python"><code>import numpy as np
+
+df[&#39;Sub-10&#39;] = np.where(df[&#39;Final&#39;] &lt; 10.00, True, False)
+print(df[[&#39;Athlete&#39;, &#39;Final&#39;, &#39;Sub-10&#39;]])</code></pre>
+<pre><code>##              Athlete  Final  Sub-10
+## 0         Usain Bolt   9.81    True
+## 1      Justin Gatlin   9.89    True
+## 2    Andre De Grasse   9.91    True
+## 3        Yohan Blake   9.93    True
+## 4      Akani Simbine   9.94    True
+## 5  Ben Youssef Meïté   9.96    True
+## 6       Jimmy Vicaut  10.04   False
+## 7    Trayvon Bromell  10.06   False</code></pre>
 </div>
-<div id="statistics" class="section level2">
-<h2>Statistics</h2>
+<div id="search-using-inequalities-across-multiple-columns" class="section level2" number="2.7">
+<h2><span class="header-section-number">2.7</span> Search Using
+Inequalities Across Multiple Columns</h2>
+<p>For example, which non-American athletes ran sub-10 in the final?</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
+print(list(results))</code></pre>
+<pre><code>## [True, False, True, True, True, True, False, False]</code></pre>
+<p>…or:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = np.where((df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00), True, False)
+print(list(results))</code></pre>
+<pre><code>## [np.True_, np.False_, np.True_, np.True_, np.True_, np.True_, np.False_, np.False_]</code></pre>
+</div>
+<div id="search-through-column-names" class="section level2" number="2.8">
+<h2><span class="header-section-number">2.8</span> Search Through Column
+Names</h2>
+<p>Instead of searching through the <em>data in a column</em> you can
+also search through the <em>names of the columns</em> to see if the one
+you are looking for has been created yet. For example, has a column been
+created that contains the time the athletes ran in the final?</p>
+<pre class="python"><code># Search for a column name
+result = &#39;Final&#39; in list(df)
+print(result)</code></pre>
+<pre><code>## True</code></pre>
+</div>
+<div id="search-through-a-subset-of-the-data-frame" class="section level2" number="2.9">
+<h2><span class="header-section-number">2.9</span> Search Through a
+Subset of the Data Frame</h2>
+<p>Let’s create a subset of the original data frame by asking:</p>
 <ul>
-<li><a href="python/statistics/descriptive_statistics.html">Descriptive
-Statistics</a></li>
-<li><a href="python/statistics/confidence_intervals.html">Confidence
-Intervals</a></li>
-<li><a href="python/statistics/effect_size.html">Effect Size</a></li>
-<li><a href="python/statistics/sample_size.html">Sample Size
-Estimation</a></li>
-<li><a href="python/statistics/outlier_rejection.html">Outlier
-Rejection</a></li>
+<li>Which <strong>rows</strong> contain athletes from Jamaica or the
+United States?</li>
+<li>Which <strong>columns</strong> contain data from a final (a
+semi-final or the final)?</li>
 </ul>
-<div id="distributions" class="section level4">
-<h4>Distributions:</h4>
+<p>then using the <code>.loc[]</code> method to create a subset:</p>
+<pre class="python"><code>rows = (df[&#39;Country&#39;] == &#39;Jamaica&#39;) | (df[&#39;Country&#39;] == &#39;United States&#39;)
+cols = [col.endswith(&#39;Final&#39;) for col in list(df)]
+subset = df.loc[rows, cols]
+print(subset)</code></pre>
+<pre><code>##    Semi-Final  Final
+## 0        9.86   9.81
+## 1        9.94   9.89
+## 3       10.01   9.93
+## 7       10.01  10.06</code></pre>
+<p>Now we can search this subset for rows that contain any sub-10
+performance and return the result as a series:</p>
+<pre class="python"><code>ser = subset[subset &lt; 10].any(axis=&#39;columns&#39;)
+print(ser)</code></pre>
+<pre><code>## 0     True
+## 1     True
+## 3     True
+## 7    False
+## dtype: bool</code></pre>
+</div>
+</div>
+<div id="finding" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Finding</h1>
+<p>‘Finding’ is similar to ‘searching’ except you get the
+<em>indices</em> of the matches, not just whether they exist or not. For
+example, what row in the data frame is occupied by Andre De Grasse?</p>
+<pre class="python"><code># Find
+idx = df[df[&#39;Athlete&#39;] == &#39;Andre De Grasse&#39;].index
+print(f&#39;As an index object: {idx}\nAs a list: {list(idx)}&#39;)</code></pre>
+<pre><code>## As an index object: Index([2], dtype=&#39;int64&#39;)
+## As a list: [2]</code></pre>
+<p>Now that we can find indices, let’s use them to look up data in the
+table:</p>
+<div id="vlookup-using-index" class="section level2" number="3.1">
+<h2><span class="header-section-number">3.1</span> VLOOKUP Using
+Index</h2>
+<p>Find a value in a column corresponding to a value in a different
+column. For example, what was Akani Simbine’s time in his heat?</p>
+<pre class="python"><code># Look up
+idx = df[df[&#39;Athlete&#39;] == &#39;Akani Simbine&#39;].index
+value = df.loc[idx, &#39;Heat&#39;]
+print(f&quot;Akani Simbine&#39;s time in his heat: {list(value)[0]}s&quot;)</code></pre>
+<pre><code>## Akani Simbine&#39;s time in his heat: 10.14s</code></pre>
+</div>
+<div id="vlookup-using-booleans" class="section level2" number="3.2">
+<h2><span class="header-section-number">3.2</span> VLOOKUP Using
+Booleans</h2>
+<p>Instead of using indices, can search a data frame or column using any
+of the methods described above to generate Booleans. Those can then be
+used to index the data frame or column to leave only those that were
+‘found in the search’. As an example, here’s how to find the
+non-American athletes who ran sub-10 <strong>and</strong> get their
+names:</p>
+<pre class="python"><code># Search for values across multiple columns
+results = (df[&#39;Country&#39;] != &#39;United States&#39;) &amp; (df[&#39;Final&#39;] &lt;= 10.00)
+# Index a column with the results of the search
+non_american_sub_10 = df[&#39;Athlete&#39;][results]
+print(list(non_american_sub_10))</code></pre>
+<pre><code>## [&#39;Usain Bolt&#39;, &#39;Andre De Grasse&#39;, &#39;Yohan Blake&#39;, &#39;Akani Simbine&#39;, &#39;Ben Youssef Meïté&#39;]</code></pre>
+</div>
+<div id="find-anywhere" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> Find Anywhere</h2>
+<p>The previous methods can be used to find values in a single column,
+but what about looking in the entire data frame? The
+<code>.stack()</code> method can be useful for this:</p>
+<pre class="python"><code>search_result = df[df.isin([&#39;Akani Simbine&#39;])].stack()
+row = search_result.index[0][0]
+col = search_result.index[0][1]
+print(f&#39;&quot;Akani Simbine&quot; is at index &quot;{row}&quot;&quot; in column &quot;{col}&quot;&#39;)</code></pre>
+<pre><code>## &quot;Akani Simbine&quot; is at index &quot;4&quot;&quot; in column &quot;Athlete&quot;</code></pre>
+<p>This method is discussed more fully on <a href="data_frames_multi_level.html#searching-for-values">the page about
+multi-level data frames</a>.</p>
+</div>
+</div>
+<div id="filtering" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Filtering</h1>
+<p>Filtering removes all rows whose values do not meet certain
+criteria.</p>
+<div id="filter-using-a-single-criterion" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Filter Using a Single
+Criterion</h2>
+<p>As an example, here is the data of the United States athletes
+only:</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;] == &#39;United States&#39;]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 1    Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06   False</code></pre>
+<p>…and of the non-United States athletes only:</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;] != &#39;United States&#39;]
+print(subset)</code></pre>
+<pre><code>##              Athlete       Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt       Jamaica   29  10.07        9.86   9.81    True
+## 2    Andre De Grasse        Canada   21  10.04        9.92   9.91    True
+## 3        Yohan Blake       Jamaica   26  10.11       10.01   9.93    True
+## 4      Akani Simbine  South Africa   22  10.14        9.98   9.94    True
+## 5  Ben Youssef Meïté   Ivory Coast   29  10.03        9.97   9.96    True
+## 6       Jimmy Vicaut        France   24  10.19        9.95  10.04   False</code></pre>
+<p>Let’s take another look at the above code. It starts off as a search:
+<code>df[&#39;Country&#39;] == &#39;United States&#39;</code> will search for all rows
+in the “Country” column that are equal to “United States” and return a
+<strong>series of Booleans</strong> (True, False, etc, corresponding to
+the rows in which the “United States” text was found). That series of
+Booleans is then used to <strong>index</strong> the data frame, and only
+the rows corresponding to the “Trues” in the Boolean series ‘survive’
+the indexing.</p>
+</div>
+<div id="filter-using-a-list-of-criteria" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Filter Using a List
+of Criteria</h2>
+<p>Instead of matching only one criteria, here is how to filter out all
+rows that do not match either of two criteria: what is the data for
+athletes who came from either the United States or South Africa?</p>
+<pre class="python"><code># Filter
+subset = df[df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;])]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 1    Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94    True
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06   False</code></pre>
+<p>…and all athletes who came from <em>neither</em> the US or SA:</p>
+<pre class="python"><code># Filter
+subset = df[~df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;])]
+print(subset)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt      Jamaica   29  10.07        9.86   9.81    True
+## 2    Andre De Grasse       Canada   21  10.04        9.92   9.91    True
+## 3        Yohan Blake      Jamaica   26  10.11       10.01   9.93    True
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97   9.96    True
+## 6       Jimmy Vicaut       France   24  10.19        9.95  10.04   False</code></pre>
+</div>
+<div id="filter-using-multiple-lists-of-criteriamultiple-columns" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Filter Using Multiple
+lists of Criteria/Multiple Columns</h2>
+<p>Using ‘and not’ logic:</p>
+<pre class="python"><code>subset = df[
+    df[&#39;Country&#39;].isin([&#39;United States&#39;, &#39;South Africa&#39;, &#39;Jamaica&#39;]) &amp; ~
+    df[&#39;Age&#39;].isin([26, 34])
+]
+print(subset)</code></pre>
+<pre><code>##            Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0       Usain Bolt        Jamaica   29  10.07        9.86   9.81    True
+## 4    Akani Simbine   South Africa   22  10.14        9.98   9.94    True
+## 7  Trayvon Bromell  United States   21  10.13       10.01  10.06   False</code></pre>
+<p>Using ‘or’ logic:</p>
+<pre class="python"><code>subset = df[
+    df[&#39;Country&#39;].isin([&#39;South Africa&#39;]) |
+    df[&#39;Age&#39;].isin([26, 34])
+]
+print(subset)</code></pre>
+<pre><code>##          Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 1  Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 3    Yohan Blake        Jamaica   26  10.11       10.01   9.93    True
+## 4  Akani Simbine   South Africa   22  10.14        9.98   9.94    True</code></pre>
+<p>Of course, <em>all</em> the above filtering examples work with both
+strings and numbers as the criteria.</p>
+</div>
+<div id="filter-using-a-column-of-booleans" class="section level2" number="4.4">
+<h2><span class="header-section-number">4.4</span> Filter Using a Column
+of Booleans</h2>
+<p>If one of the columns consists of Booleans you can filter by it. In
+other words, all the rows with ‘False’ get removed and all the ones with
+‘True’ remain:</p>
+<pre class="python"><code># Filter by who ran sub-10 seconds
+subset = df[df[&#39;Sub-10&#39;]]
+print(subset)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81    True
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91    True
+## 3        Yohan Blake        Jamaica   26  10.11       10.01   9.93    True
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94    True
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96    True</code></pre>
+</div>
+<div id="filter-to-get-values-between-two-numbers" class="section level2" number="4.5">
+<h2><span class="header-section-number">4.5</span> Filter To Get Values
+Between Two Numbers</h2>
+<p>Use the <code>.between()</code> method to find the values that are
+between two numbers, eg to find the athletes who are between 25 and 30
+years of age. Use the <code>inclusive</code> keyword argument to specify
+if you want to include the athletes who are exactly 25 or 30 or not:</p>
 <ul>
-<li><a href="python/statistics/distributions/uniform.html">Uniform
-Distributions</a></li>
-<li><a href="python/statistics/distributions/binomial.html">Binomial
-Distributions</a></li>
-<li><a href="python/statistics/distributions/normal.html">Normal
-Distributions</a>
-<ul>
-<li><a href="python/statistics/distributions/tests_for_normality.html">Tests
-for Normality</a></li>
-</ul></li>
-<li><a href="python/statistics/distributions/students_t.html">Student’s
-<em>t</em>-Distributions</a></li>
+<li><code>left</code> will include the athletes who are 25 - but not
+those who are 30 - and all ages in-between</li>
+<li><code>right</code> will include the athletes who are 30 - but not
+those who are 25 - and all ages in-between</li>
+<li><code>both</code> will include the athletes who are 25, 30 and
+in-between</li>
+<li><code>neither</code> will exclude the athletes aged 25 or 30</li>
 </ul>
+<pre class="python"><code># Get the athletes aged between 25 and 30 inclusive
+subset = df[df[&#39;Age&#39;].between(25, 30, inclusive=&#39;both&#39;)]
+print(subset)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt      Jamaica   29  10.07        9.86   9.81    True
+## 3        Yohan Blake      Jamaica   26  10.11       10.01   9.93    True
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97   9.96    True</code></pre>
+<p>As mentioned above, you can use multiple criteria when filtering. So
+you can get the athletes who are aged between 25 and 30 <em>and</em> who
+ran between 9.90 and 10.00 seconds in the final:</p>
+<pre class="python"><code># Get the athletes aged between 25 and 30 inclusive who ran between 9.90 and 10.00 in the final
+subset = df[
+    df[&#39;Age&#39;].between(25, 30, inclusive=&#39;both&#39;) &amp;
+    df[&#39;Final&#39;].between(9.90, 10.00, inclusive=&#39;both&#39;) 
+]
+print(subset)</code></pre>
+<pre><code>##              Athlete      Country  Age   Heat  Semi-Final  Final  Sub-10
+## 3        Yohan Blake      Jamaica   26  10.11       10.01   9.93    True
+## 5  Ben Youssef Meïté  Ivory Coast   29  10.03        9.97   9.96    True</code></pre>
 </div>
-<div id="hypothesis-testing" class="section level4">
-<h4>Hypothesis Testing:</h4>
-<ul>
-<li>Regression:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/constant_regression.html">Constant
-Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/simple_linear_regression.html">Simple
-Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/multiple_linear_regression.html">Multiple
-Linear Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/quadratic_regression.html">Quadratic
-Regression</a></li>
-<li><a href="python/statistics/hypothesis_testing/passing_bablok.html">Passing–Bablok
-Regression</a></li>
-</ul></li>
-<li><em>t</em>-Tests:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_t_test.html">One-Sample
-<em>t</em>-Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/unpaired_two_sample_t_test.html">Unpaired
-Two-Sample <em>t</em>-Test</a></li>
-<li>Two One-Sided <em>t</em>-Tests (TOST):
-<ul>
-<li><a href="python/statistics/hypothesis_testing/tost_unpaired.html">Unpaired</a></li>
-<li><a href="python/statistics/hypothesis_testing/tost_paired.html">Paired</a></li>
-</ul></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test.html">Mann-Whitney
-<em>U</em> Test</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/mann_whitney_u_test/comparison_of_methods.html">Comparison
-of Mann-Whitney Methods</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/wilcoxon_signed_rank_test.html">Wilcoxon
-Signed-Rank Test</a></li>
-<li><a href="python/statistics/hypothesis_testing/anova.html">ANOVA</a>
-<ul>
-<li><a href="python/statistics/hypothesis_testing/tukeys_range_test.html">Tukey’s
-Range Test</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/binomial_test.html">Binomial
-Test</a></li>
-<li><em>Z</em>-Tests:
-<ul>
-<li><a href="python/statistics/hypothesis_testing/one_sample_z_test_proportion.html">One-Sample
-<em>Z</em>-Test for a Proportion</a></li>
-<li><a href="python/statistics/hypothesis_testing/two_sample_z_test_proportion.html">Two-Sample
-<em>Z</em>-Test for a Proportion</a></li>
-</ul></li>
-<li><a href="python/statistics/hypothesis_testing/chi_squared.html">Chi-Squared
-Tests</a></li>
-</ul>
+<div id="filter-out-nulls" class="section level2" number="4.6">
+<h2><span class="header-section-number">4.6</span> Filter Out Nulls</h2>
+<p>Filter out all rows that have a null value in a particular
+column:</p>
+<pre class="python"><code>subset = df[df[&#39;Age&#39;].notnull()]</code></pre>
+<p>Filter out all rows that contain any null values in any columns:</p>
+<pre class="python"><code>subset = df.dropna()</code></pre>
+<p>Filter out all rows that have only null values in particular
+columns:</p>
+<pre class="python"><code>subset = df.dropna(how=&#39;all&#39;, subset=[&#39;Country&#39;, &#39;Age&#39;])</code></pre>
 </div>
-<div id="agreement" class="section level4">
-<h4>Agreement:</h4>
-<p><em>Including accuracy, precision (repeatability and
-reproducibility), variability and equivalence:</em></p>
-<ul>
-<li><a href="python/statistics/agreement/cohens_kappa.html">Cohen’s
-Kappa</a></li>
-<li><a href="python/statistics/agreement/repeatability_coefficient.html">Repeatability
-Coefficient</a></li>
-<li><a href="python/statistics/agreement/coefficient_of_variation.html">Coefficient
-of Variation</a></li>
-<li>Correlation Coefficients:
-<ul>
-<li><a href="python/statistics/agreement/pearson_correlation_coefficient.html">Pearson
-Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/spearmans_rank_correlation_coefficient.html">Spearman’s
-Rank Correlation Coefficient</a></li>
-<li><a href="python/statistics/agreement/concordance_correlation_coefficient.html">Concordance
-Correlation Coefficient (CCC)</a></li>
-<li><a href="python/statistics/agreement/intraclass_correlation.html">Intraclass
-Correlation Coefficient (ICC)</a></li>
-</ul></li>
-<li>Bland-Altman Analysis:
-<ul>
-<li><a href="python/statistics/agreement/bland_altman.html">Traditional
-Bland-Altman Analysis</a> (native space)
-<ul>
-<li><a href="python/statistics/agreement/bland_altman_sample_size.html">Sample
-Size Calculations</a></li>
-</ul></li>
-<li><a href="python/statistics/agreement/giavarina.html">Giavarina
-Analysis</a> (percentage space)</li>
-<li><a href="python/statistics/agreement/euser.html">Euser Analysis</a>
-(log 10 space)</li>
-</ul></li>
-</ul>
-</div>
-<div id="risk" class="section level4">
-<h4>Risk:</h4>
-<ul>
-<li><a href="python/statistics/risk/odds_ratio.html">Odds Ratio</a></li>
-<li><a href="python/statistics/risk/hazard_ratio.html">Hazard
-Ratio</a></li>
-</ul>
-</div>
-</div>
-<div id="machine-learning" class="section level2">
-<h2>Machine Learning</h2>
-<div id="supervised-models" class="section level4">
-<h4>Supervised Models:</h4>
-<ul>
-<li>Regression:
-<ul>
-<li><a href="python/machine_learning/supervised_models/simple_linear_regression.html">Simple
-Linear Regression</a></li>
-<li><a href="python/machine_learning/supervised_models/multiple_linear_regression.html">Multiple
-Linear Regression</a></li>
-<li><a href="python/machine_learning/supervised_models/logistic_regression.html">Logistic
-Regression</a></li>
-<li><a href="python/machine_learning/supervised_models/k_nearest_neighbours_regression.html"><em>k</em>-Nearest
-Neighbours Regression</a></li>
-</ul></li>
-<li>Classification:
-<ul>
-<li><a href="python/machine_learning/supervised_models/k_nearest_neighbours_classifier.html"><em>k</em>-Nearest
-Neighbours Classifier</a></li>
-<li><a href="python/machine_learning/supervised_models/decision_trees.html">Decision
-Trees</a></li>
-<li><a href="python/machine_learning/supervised_models/support_vector_machines.html">Support
-Vector Machines</a></li>
-</ul></li>
-</ul>
-</div>
-</div>
-<div id="utilities" class="section level2">
-<h2>Utilities</h2>
-<ul>
-<li><a href="python/utilities/pdfs_to_pngs.html">Convert PDFs to
-Images</a></li>
-<li><a href="python/utilities/extract_text_from_pdfs.html">Extract Text
-From PDFs</a></li>
-<li><a href="python/utilities/sunrise_sunset.html">Sunrise and Sunset
-Times</a></li>
-<li><a href="python/utilities/passwords.html">Password
-Management</a></li>
-<li><a href="python/utilities/time_a_script.html">Time a Script</a></li>
-<li><a href="python/utilities/creating_a_package.html">Creating a
-Package</a></li>
-<li><a href="python/utilities/testing_your_code.html">Testing Your
-Code</a></li>
-<li><a href="python/utilities/coordinate_precision/index.html">Coordinate
-Precision</a></li>
-</ul>
-<div id="files-and-folders" class="section level4">
-<h4>Files and Folders:</h4>
-<ul>
-<li><a href="python/utilities/files_and_folders/os_pathlib_modules.html">The
-<code>os</code> and <code>pathlib</code> Modules</a></li>
-<li><a href="python/utilities/files_and_folders/path_nomenclature.html">Path
-Nomenclature</a></li>
-<li><a href="python/utilities/files_and_folders/move_and_rename.html">Move and
-Rename Files</a></li>
-<li><a href="python/utilities/files_and_folders/cut_copy_files.html">Cut
-and Copy Files</a></li>
-<li><a href="python/utilities/files_and_folders/cleaning_names_paths.html">Cleaning
-Names and Paths</a></li>
-<li><a href="python/utilities/files_and_folders/pretty_printing.html">Pretty-Printing
-Folder Structures</a></li>
-</ul>
-</div>
-</div>
-<div id="image-analysis" class="section level2">
-<h2>Image Analysis</h2>
-<ul>
-<li><a href="python/image_analysis/working_with_images.html">Working
-With Images</a>
-<ul>
-<li><a href="python/image_analysis/working_with_dicoms.html">Working
-With DICOMs</a></li>
-</ul></li>
-<li><a href="python/image_analysis/filtering.html">Filtering</a></li>
-<li><a href="python/image_analysis/posterise.html">Posterise</a></li>
-<li><a href="python/image_analysis/segmentation.html">Segmentation via
-Selecting by Colour</a></li>
-<li><a href="python/image_analysis/dice_coefficient.html">Calculating
-Overlap and the Dice Coefficient</a></li>
-<li><a href="python/image_analysis/comparing_two_images.html">Compare
-Two Images</a></li>
-<li><a href="python/image_analysis/screenshots.html">Taking
-Screenshots</a></li>
-<li><a href="python/image_analysis/click_to_interact.html">Click to
-Interact with an Image</a></li>
-<li><a href="python/image_analysis/pixel_analysis.html">Analysis of
-Pixel Values</a></li>
-<li><a href="python/image_analysis/computer_vision.html">Computer
-Vision</a></li>
-</ul>
+<div id="removing-duplicates" class="section level2" number="4.7">
+<h2><span class="header-section-number">4.7</span> Removing
+Duplicates</h2>
+<p>Remove all rows that appear more than once:</p>
+<pre class="python"><code>subset = df.drop_duplicates()</code></pre>
+<p>Remove rows where a value appears twice in a particular column,
+keeping the row where that value first appears:</p>
+<pre class="python"><code># Remove all repeat instances of athletes from the same country
+subset = df.drop_duplicates(&#39;Country&#39;, keep=&#39;first&#39;)
+
+# This removes Yohan Blake and Trayvon Bromell
+print(subset)</code></pre>
+<pre><code>##              Athlete        Country  Age   Heat  Semi-Final  Final  Sub-10
+## 0         Usain Bolt        Jamaica   29  10.07        9.86   9.81    True
+## 1      Justin Gatlin  United States   34  10.01        9.94   9.89    True
+## 2    Andre De Grasse         Canada   21  10.04        9.92   9.91    True
+## 4      Akani Simbine   South Africa   22  10.14        9.98   9.94    True
+## 5  Ben Youssef Meïté    Ivory Coast   29  10.03        9.97   9.96    True
+## 6       Jimmy Vicaut         France   24  10.19        9.95  10.04   False</code></pre>
+<div id="bonus-removing-duplicates-from-a-list-whilst-preserving-the-order" class="section level3" number="4.7.1">
+<h3><span class="header-section-number">4.7.1</span> BONUS: Removing
+Duplicates From a List Whilst Preserving the Order</h3>
+<p>As discussed on <a href="../intro/lists.html#finding-the-unique-values-in-lists">the page
+about lists and sets</a>, a set will remove duplicate values from a list
+but not preserve their order:</p>
+<pre class="python"><code>values = [&#39;One&#39;, &#39;Two&#39;, &#39;Three&#39;, &#39;Three&#39;]
+unique_values = list(set(values))
+print(unique_values)</code></pre>
+<pre><code>## [&#39;Two&#39;, &#39;One&#39;, &#39;Three&#39;]</code></pre>
+<p>We would want the result to be <code>[&#39;One&#39;, &#39;Two&#39;, &#39;Three&#39;]</code>,
+not <code>[&#39;Two&#39;, &#39;One&#39;, &#39;Three&#39;]</code>. By using a Pandas Series
+object, however, we <em>can</em> get this:</p>
+<pre class="python"><code>values = [&#39;One&#39;, &#39;Two&#39;, &#39;Three&#39;, &#39;Three&#39;]
+unique_values = pd.Series(values).drop_duplicates().tolist()
+print(unique_values)</code></pre>
+<pre><code>## [&#39;One&#39;, &#39;Two&#39;, &#39;Three&#39;]</code></pre>
+<p><a href="../../python.html">⇦ Back</a></p>
 <p></font></p>
+</div>
+</div>
 </div>
 
 

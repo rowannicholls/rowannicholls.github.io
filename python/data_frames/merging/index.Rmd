@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Data Handling in Python:</font><br>Merging'
+title: '<font size="5">Data Frames with `Pandas`</font><br>Merging'
 output:
     html_document:
         theme: paper
@@ -7,19 +7,31 @@ output:
         number_sections: true
         toc: true
         includes:
-            before_body: ../../google_analytics.html
+            before_body: ../../../google_analytics.html
 ---
 
 <font size="3">
 
-[⇦ Back](../../python.html)
-
-```{r, echo = FALSE}
-knitr::opts_chunk$set(out.width = "75%")
-knitr::opts_chunk$set(engine.path = "/usr/bin/python3.11")
-```
+[⇦ Back](../../../python.html)
 
 <!-- Based off of code first written on 2019-08-28 -->
+<!-- Updated 2025-09-08 -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+> This page is the sixth in a series on data frames:
+> 
+> 1. [Introduction](../introduction.html)
+> 2. [Searching, Finding, Filtering](../searching.html)
+> 3. [Calculations](../calculations.html)
+> 4. [Multiple Levels](../multiple_levels.html)
+> 5. [Dropping Empty Columns](../dropping.html)
+> 6. Merging
+> 7. [Grouping and Aggregating](../grouping_aggregating.html)
+> 8. [Pivot Tables](../pivot_tables.html)
 
 Example Data
 ============
@@ -268,6 +280,6 @@ print(df)
 
 Now we can see that Arsenal have 52 points (so far) in the 2020-21 season.
 
-[⇦ Back](../../python.html)
+[⇦ Back](../../../python.html)
 
 </font>

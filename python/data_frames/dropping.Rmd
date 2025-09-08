@@ -1,5 +1,5 @@
 ---
-title: '<font size="5">Data Handling in Python:</font><br>Drop Empty Columns from Pandas Data Frames'
+title: '<font size="5">Data Frames with `Pandas`</font><br>Dropping Empty Columns'
 output:
     html_document:
         theme: paper
@@ -14,10 +14,11 @@ output:
 
 [⇦ Back](../../python.html)
 
+<!-- Updated 2025-09-08 -->
+
 ```{r, echo = FALSE}
-options(width = 120)
-library(knitr)
-opts_chunk$set(engine.path = "/usr/bin/python3.11")
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
 ```
 
 ```{python, echo = FALSE}
@@ -25,7 +26,18 @@ import warnings
 warnings.simplefilter(action='ignore', category=FutureWarning)
 ```
 
-Sometimes, you'll come across datasets where certain columns contain only the values "False", "None", "NaN" or "0" and you'll want to remove them. This isn't entirely straightforward to do, so this page explores a few options at your disposal.
+> This page is the fifth in a series on data frames:
+> 
+> 1. [Introduction](introduction.html)
+> 2. [Searching, Finding, Filtering](searching.html)
+> 3. [Calculations](calculations.html)
+> 4. [Multiple Levels](multiple_levels.html)
+> 5. Dropping Empty Columns
+> 6. [Merging](merging/index.html)
+> 7. [Grouping and Aggregating](grouping_aggregating.html)
+> 8. [Pivot Tables](pivot_tables.html)
+
+Sometimes, you'll come across datasets where certain columns contain only the values "False", "None", "nan" or "0" and you'll want to remove them. This isn't entirely straightforward to do, so this page explores a few options at your disposal.
 
 Just to be clear, this page is about removing **entire columns** that contain **only** data that isn't useful. For removing columns or rows that *partially* contain missing data, check out the `.dropna()` method over [here](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.dropna.html).
 
@@ -49,14 +61,14 @@ raw = pd.DataFrame({
     'text_and_nones': ['Value 1', 'Value 2', None, None],
     'only_falses': [False, False, False, False],
     'only_nones': [None, None, None, None],
-    'only_nans': [np.NaN, np.NaN, np.NaN, np.NaN],
+    'only_nans': [np.nan, np.nan, np.nan, np.nan],
     'only_zeroes': [0, 0, 0, 0],
     'falses_and_nones': [False, False, None, None],
-    'falses_and_nans': [False, False, np.NaN, np.NaN],
+    'falses_and_nans': [False, False, np.nan, np.nan],
     'falses_and_zeroes': [False, False, 0, 0],
-    'nones_and_nans': [None, None, np.NaN, np.NaN],
+    'nones_and_nans': [None, None, np.nan, np.nan],
     'nones_and_zeroes': [None, None, 0, 0],
-    'nans_and_zeroes': [np.NaN, np.NaN, 0, 0],
+    'nans_and_zeroes': [np.nan, np.nan, 0, 0],
 }, dtype='object')
 
 print(raw)
@@ -64,10 +76,10 @@ print(raw)
 
 The above code uses the Pandas and Numpy packages. Install these from the terminal with:
 
-- `python3.11 -m pip install pandas`
-- `python3.11 -m pip install numpy`
+- `python3.13 -m pip install pandas`
+- `python3.13 -m pip install numpy`
 
-Where `python3.11` is the version of Python you are using (in my case it's 3.11 but replace this with what you have).
+Where `python3.13` is the version of Python you are using (in my case it's 3.13 but replace this with what you have).
 
 As you can see, the example data frame includes columns that have all the different combinations of data that you might want to remove - Falses, Nones, NaNs and zeroes - as well as a few columns at the start that *don't* only contain data to remove.
 
