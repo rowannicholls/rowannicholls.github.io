@@ -4,8 +4,8 @@ output:
     html_document:
         theme: paper
         highlight: textmate
-        number_sections: true
-        toc: true
+        # number_sections: true
+        # toc: true
         includes:
             before_body: ../../../google_analytics.html
 ---
@@ -13,6 +13,11 @@ output:
 <font size="3">
 
 [⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
 
 **Quantile–quantile plots** compare two probability distributions - one theoretical and one real-world - by comparing their quantiles.
 
