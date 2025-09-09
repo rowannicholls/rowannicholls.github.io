@@ -1,0 +1,731 @@
+---
+title: '<font size="5">Example Datasets:</font><br>From PyDataset'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        # number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<!-- <font size="3"> -->
+
+[⇦ Back](../../../python.html)
+
+<!-- 2025-08-19: Created -->
+<!-- 2025-09-09: Updated -->
+
+```{r, echo = FALSE}
+# knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+### AirPassengers
+_PyDataset Documentation (adopted from R Documentation):_
+
+Monthly Airline Passenger Numbers 1949-1960
+
+The classic Box & Jenkins airline data. Monthly totals of international
+airline passengers, 1949 to 1960.
+
+A monthly time series, in thousands.
+
+Source:
+
+- Box, G. E. P., Jenkins, G. M. and Reinsel, G. C. (1976) _Time Series Analysis, Forecasting and Control._ Third Edition. Holden-Day. Series G.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/AirPassengers.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### BJsales
+_PyDataset Documentation (adopted from R Documentation):_
+
+Sales Data with Leading Indicator
+
+The sales time series `BJsales` and leading indicator `BJsales.lead` each
+contain 150 observations. The objects are of class `"ts"`.
+
+Source:
+
+- The data are given in Box & Jenkins (1976). Obtained from the Time Series Data Library at http://www-personal.buseco.monash.edu.au/~hyndman/TSDL/
+
+References:
+
+- G. E. P. Box and G. M. Jenkins (1976): _Time Series Analysis, Forecasting and Control_, Holden-Day, San Francisco, p. 537.
+- P. J. Brockwell and R. A. Davis (1991): _Time Series: Theory and Methods_, Second edition, Springer Verlag, NY, pp. 414.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/BJsales.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### BOD
+_PyDataset Documentation (adopted from R Documentation):_
+
+Biochemical Oxygen Demand
+
+The `BOD` data frame has 6 rows and 2 columns giving the biochemical oxygen
+demand versus time in an evaluation of water quality.
+
+This data frame contains the following columns:
+
+- `Time`: A numeric vector giving the time of the measurement (days).
+- `demand`: A numeric vector giving the biochemical oxygen demand (mg/l).
+
+Source:
+
+- Bates, D.M. and Watts, D.G. (1988), _Nonlinear Regression Analysis and Its Applications_, Wiley, Appendix A1.4.
+
+Originally from:
+
+- Marske (1967), _Biochemical Oxygen Demand Data Interpretation Using Sum of Squares Surface_ M.Sc. Thesis, University of Wisconsin – Madison.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/BOD.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### Formaldehyde
+_PyDataset Documentation (adopted from R Documentation):_
+
+Determination of Formaldehyde
+
+These data are from a chemical experiment to prepare a standard curve for the
+determination of formaldehyde by the addition of chromatropic acid and
+concentrated sulphuric acid and the reading of the resulting purple color on a
+spectrophotometer.
+
+A data frame with 6 observations on 2 variables.
+
+- `[,1] carb`: numeric, Carbohydrate (ml)
+- `[,2] optden`: numeric, Optical Density
+
+Source:
+
+- Bennett, N. A. and N. L. Franklin (1954) _Statistical Analysis in Chemistry
+and the Chemical Industry_. New York: Wiley.
+
+References:
+
+- McNeil, D. R. (1977) _Interactive Data Analysis._ New York: Wiley.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/Formaldehyde.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### HairEyeColor
+_PyDataset Documentation (adopted from R Documentation):_
+
+Hair and Eye Color of Statistics Students
+
+Distribution of hair and eye color and sex in 592 statistics students.
+
+A 3-dimensional array resulting from cross-tabulating 592 observations on 3
+variables. The variables and their levels are as follows:
+
+- `Hair`: Black, Brown, Red, Blond
+- `Eye`: Brown, Blue, Hazel, Green
+- `Sex`: Male, Female
+
+The Hair _x_ Eye table comes rom a survey of students at the University of
+Delaware reported by Snee (1974). The split by `Sex` was added by Friendly
+(1992a) for didactic purposes.
+
+This data set is useful for illustrating various techniques for the analysis
+of contingency tables, such as the standard chi-squared test or, more
+generally, log-linear modelling, and graphical methods such as mosaic plots,
+sieve diagrams or association plots.
+
+Source:
+
+- http://euclid.psych.yorku.ca/ftp/sas/vcd/catdata/haireye.sas
+
+Snee (1974) gives the two-way table aggregated over `Sex`. The `Sex` split of
+the ‘Brown hair, Brown eye’ cell was changed to agree with that used by
+Friendly (2000).
+
+References:
+
+- Snee, R. D. (1974) Graphical display of two-way contingency tables. _The American Statistician_, **28**, 9–12.
+- Friendly, M. (1992a) Graphical methods for categorical data. _SAS User Group International Conference Proceedings_, **17**, 190–200. http://www.math.yorku.ca/SCS/sugi/sugi17-paper.html
+- Friendly, M. (1992b) Mosaic displays for loglinear models. _Proceedings of the Statistical Graphics Section_, American Statistical Association, pp. 61–68. http://www.math.yorku.ca/SCS/Papers/asa92.html
+- Friendly, M. (2000) _Visualizing Categorical Data._ SAS Institute, ISBN 1-58025-660-0.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/HairEyeColor.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### InsectSprays
+_PyDataset Documentation (adopted from R Documentation):_
+
+Effectiveness of Insect Sprays
+
+The counts of insects in agricultural experimental units treated with
+different insecticides.
+
+A data frame with 72 observations on 2 variables.
+
+- `[,1] count`: numeric, Insect count
+- `[,2] spray`: factor, The type of spray
+
+Source:
+
+- Beall, G., (1942) The Transformation of data from entomological field experiments, _Biometrika_, **29**, 243–262.
+
+Reference:
+
+- McNeil, D. (1977) _Interactive Data Analysis_. New York: Wiley.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/InsectSprays.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### JohnsonJohnson
+_PyDataset Documentation (adopted from R Documentation):_
+
+Quarterly Earnings per Johnson & Johnson Share
+
+Quarterly earnings (dollars) per Johnson & Johnson share 1960–80.
+
+A quarterly time series
+
+- `[,1] time`: numeric, The time index (in fractional years)
+- `[,2] value`: numeric, Quarterly earnings per share
+
+Source:
+
+- Shumway, R. H. and Stoffer, D. S. (2000) _Time Series Analysis and its
+Applications_. Second Edition. Springer. Example 1.1.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/JohnsonJohnson.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### LakeHuron
+_PyDataset Documentation (adopted from R Documentation):_
+
+Level of Lake Huron 1875–1972
+
+Annual measurements of the level, in feet, of Lake Huron 1875–1972.
+
+A time series of length 98.
+
+- `[,1] time`: numeric, The time index (years)
+- `[,2] value`: numeric, Level of Lake Huron (feet)
+
+Sources:
+
+- Brockwell, P. J. and Davis, R. A. (1991). _Time Series and Forecasting
+Methods_. Second edition. Springer, New York. Series A, page 555.
+- Brockwell, P. J. and Davis, R. A. (1996). _Introduction to Time Series and
+Forecasting_. Springer, New York. Sections 5.1 and 7.6.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/LakeHuron.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### LifeCycleSavings
+_PyDataset Documentation (adopted from R Documentation):_
+
+Intercountry Life-Cycle Savings Data
+
+Data on the savings ratio 1960–1970.
+
+A data frame with 50 observations on 5 variables:
+
+- `[,1] sr`: numeric, Aggregate personal savings ratio
+- `[,2] pop15`: numeric, % of population under 15
+- `[,3] pop75`: numeric, % of population over 75
+- `[,4] dpi`: numeric, Real per-capita disposable income
+- `[,5] ddpi`: numeric, Growth rate of dpi
+
+Under the life-cycle savings hypothesis as developed by Franco Modigliani, the
+savings ratio (aggregate personal saving divided by disposable income) is
+explained by per-capita disposable income, the percentage rate of change in
+per-capita disposable income, and two demographic variables: the percentage of
+population less than 15 years old and the percentage of the population over 75
+years old. The data are averaged over the decade 1960–1970 to remove the
+business cycle or other short-term fluctuations.
+
+Source:
+
+The data were obtained from Belsley, Kuh and Welsch (1980). They in turn
+obtained the data from Sterling (1977).
+
+References:
+
+- Sterling, Arnie (1977) Unpublished BS Thesis. Massachusetts Institute of
+Technology.
+- Belsley, D. A., Kuh. E. and Welsch, R. E. (1980) _Regression Diagnostics_. New
+York: Wiley.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/LifeCycleSavings.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### Nile
+_PyDataset Documentation (adopted from R Documentation):_
+
+Flow of the River Nile
+
+Measurements of the annual flow of the river Nile at Ashwan 1871–1970.
+
+A time series of length 100.
+
+- `[,1] time`: numeric, The time index (years)
+- `[,2] value`: numeric, Annual flow of the Nile (10^8 m^3)
+
+Source:
+
+- Durbin, J. and Koopman, S. J. (2001) _Time Series Analysis by State Space
+Methods._ Oxford University Press. http://www.ssfpack.com/DKbook.html
+
+References:
+
+- Balke, N. S. (1993) Detecting level shifts in time series. _Journal of
+Business and Economic Statistics_ **11**, 81–92.
+- Cobb, G. W. (1978) The problem of the Nile: conditional solution to a change-
+point problem. _Biometrika_ **65**, 243–51.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/Nile.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### OrchardSprays
+_PyDataset Documentation (adopted from R Documentation):_
+
+Potency of Orchard Sprays
+
+An experiment was conducted to assess the potency of various constituents of
+orchard sprays in repelling honeybees, using a Latin square design.
+
+A data frame with 64 observations on 4 variables.
+
+- `[,1] decrease`: numeric, The response (decrease in bee visits)
+- `[,2] rowpos`: numeric, Row position in the orchard
+- `[,3] colpos`: numeric, Column position in the orchard
+- `[,4] treatment`: factor, Type of spray treatment
+
+Individual cells of dry comb were filled with measured amounts of lime sulphur
+emulsion in sucrose solution. Seven different concentrations of lime sulphur
+ranging from a concentration of 1/100 to 1/1,562,500 in successive factors of
+1/5 were used as well as a solution containing no lime sulphur.
+
+The responses for the different solutions were obtained by releasing 100 bees
+into the chamber for two hours, and then measuring the decrease in volume of
+the solutions in the various cells.
+
+An _8 x 8_ Latin square design was used and the treatments were coded as
+follows:
+
+- `A`: highest level of lime sulphur
+- `B`: next highest level of lime sulphur
+
+...
+
+- `G`: lowest level of lime sulphur
+- `H`: no lime sulphur
+
+Source:
+
+- Finney, D. J. (1947) _Probit Analysis_. Cambridge.
+
+Reference:
+
+- McNeil, D. R. (1977) _Interactive Data Analysis_. New York: Wiley.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/OrchardSprays.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### PlantGrowth
+_PyDataset Documentation (adopted from R Documentation):_
+
+Results from an Experiment on Plant Growth
+
+Results from an experiment to compare yields (as measured by dried weight of
+plants) obtained under a control and two different treatment conditions.
+
+A data frame of 30 cases on 2 variables:
+
+- `[,1] weight`: numeric, Dry weight of the plants
+- `[,2] group`: factor, Treatment group (`ctrl`, `trt1`, `trt2`)
+
+Source:
+
+- Dobson, A. J. (1983) _An Introduction to Statistical Modelling_. London:
+Chapman and Hall.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/PlantGrowth.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### Puromycin
+_PyDataset Documentation (adopted from R Documentation):_
+
+Reaction Velocity of an Enzymatic Reaction
+
+The `Puromycin` data frame has 23 rows and 3 columns of the reaction velocity
+versus substrate concentration in an enzymatic reaction involving untreated
+cells or cells treated with Puromycin.
+
+This data frame contains the following columns:
+
+- `conc`: a numeric vector of substrate concentrations (ppm)
+- `rate`: a numeric vector of instantaneous reaction rates (counts/min/min)
+- `state`: a factor with levels `treated` `untreated`
+
+Data on the velocity of an enzymatic reaction were obtained by Treloar (1974).
+The number of counts per minute of radioactive product from the reaction was
+measured as a function of substrate concentration in parts per million (ppm)
+and from these counts the initial rate (or velocity) of the reaction was
+calculated (counts/min/min). The experiment was conducted once with the enzyme
+treated with Puromycin, and once with the enzyme untreated.
+
+Source:
+
+- Bates, D.M. and Watts, D.G. (1988), _Nonlinear Regression Analysis and Its
+Applications_, Wiley, Appendix A1.3.
+- Treloar, M. A. (1974), _Effects of Puromycin on Galactosyltransferase in Golgi
+Membranes_, M.Sc. Thesis, U. of Toronto.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/Puromycin.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### Titanic
+_PyDataset Documentation (adopted from R Documentation):_
+
+Survival of passengers on the Titanic
+
+This data set provides information on the fate of passengers on the fatal
+maiden voyage of the ocean liner ‘Titanic’, summarized according to economic
+status (class), sex, age and survival.
+
+A 4-dimensional array resulting from cross-tabulating 2201 observations on 4
+variables. The variables and their levels are as follows:
+
+1. `Class`: 1st, 2nd, 3rd, Crew
+2. `Sex`: Male, Female
+3. `Age`: Child, Adult
+4. `Survived`: No, Yes
+
+The sinking of the Titanic is a famous event, and new books are still being
+published about it. Many well-known facts—from the proportions of first-class
+passengers to the ‘women and children first’ policy, and the fact that that
+policy was not entirely successful in saving the women and children in the
+third class—are reflected in the survival rates for various classes of
+passenger.
+
+These data were originally collected by the British Board of Trade in their
+investigation of the sinking. Note that there is not complete agreement among
+primary sources as to the exact numbers on board, rescued, or lost.
+
+Due in particular to the very successful film ‘Titanic’, the last years saw a
+rise in public interest in the Titanic. Very detailed data about the
+passengers is now available on the Internet, at sites such as _Encyclopedia
+Titanica_ (http://www.rmplc.co.uk/eduweb/sites/phind).
+
+Source:
+
+- Dawson, Robert J. MacG. (1995), The ‘Unusual Episode’ Data Revisited. _Journal
+of Statistics Education_, **3**.
+http://www.amstat.org/publications/jse/v3n3/datasets.dawson.html
+
+The source provides a data set recording class, sex, age, and survival status
+for each person on board of the Titanic, and is based on data originally
+collected by the British Board of Trade and reprinted in:
+
+- British Board of Trade (1990), _Report on the Loss of the ‘Titanic’ (S.S.)_.
+British Board of Trade Inquiry Report (reprint). Gloucester, UK: Allan Sutton
+Publishing.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/Titanic.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### ToothGrowth
+_PyDataset Documentation (adopted from R Documentation):_
+
+The Effect of Vitamin C on Tooth Growth in Guinea Pigs
+
+The response is the length of odontoblasts (teeth) in each of 10 guinea pigs
+at each of three dose levels of Vitamin C (0.5, 1, and 2 mg) with each of two
+delivery methods (orange juice or ascorbic acid).
+
+A data frame with 60 observations on 3 variables.
+
+- `[,1] len`, numeric: Tooth length
+- `[,2] supp`, factor: Supplement type (VC or OJ).
+- `[,3] dose`, numeric: Dose in milligrams.
+
+Source:
+
+- C. I. Bliss (1952) _The Statistics of Bioassay_. Academic Press.
+
+References:
+
+- McNeil, D. R. (1977) _Interactive Data Analysis_. New York: Wiley.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/ToothGrowth.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### UCBAdmissions
+_PyDataset Documentation (adopted from R Documentation):_
+
+Student Admissions at UC Berkeley
+
+Aggregate data on applicants to graduate school at Berkeley for the six
+largest departments in 1973 classified by admission and sex.
+
+A 3-dimensional array resulting from cross-tabulating 4526 observations on 3
+variables. The variables and their levels are as follows:
+
+1. `Admit`, factor: Admission status (Admitted or Rejected)
+2. `Gender`, factor: Male or Female
+3. `Dept`, factor: Department (A, B, C, D, E, F)
+4. `Freq`, numeric: Number of applicants with this combination of factors
+
+This data set is frequently used for illustrating Simpson's paradox, see
+Bickel _et al_ (1975). At issue is whether the data show evidence of sex bias
+in admission practices. There were 2691 male applicants, of whom 1198 (44.5%)
+were admitted, compared with 1835 female applicants of whom 557 (30.4%) were
+admitted. This gives a sample odds ratio of 1.83, indicating that males were
+almost twice as likely to be admitted. In fact, graphical methods (as in the
+example below) or log-linear modelling show that the apparent association
+between admission and sex stems from differences in the tendency of males and
+females to apply to the individual departments (females used to apply _more_
+to departments with higher rejection rates).
+
+This data set can also be used for illustrating methods for graphical display
+of categorical data, such as the general-purpose mosaic plot or the fourfold
+display for 2-by-2-by-_k_ tables. See the home page of Michael Friendly
+(http://www.math.yorku.ca/SCS/friendly.html) for further information.
+
+References:
+
+- Bickel, P. J., Hammel, E. A., and O'Connell, J. W. (1975) Sex bias in graduate
+admissions: Data from Berkeley. _Science_, **187**, 398–403.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/UCBAdmissions.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### UKDriverDeaths
+_PyDataset Documentation (adopted from R Documentation):_
+
+Road Casualties in Great Britain 1969–84
+
+`UKDriverDeaths` is a time series giving the monthly totals of car drivers in
+Great Britain killed or seriously injured Jan 1969 to Dec 1984. Compulsory
+wearing of seat belts was introduced on 31 Jan 1983.
+
+`Seatbelts` is more information on the same problem.
+
+`Seatbelts` is a multiple time series, with columns
+
+- `DriversKilled`: car drivers killed.
+- `drivers`: same as `UKDriverDeaths`.
+- `front`: front-seat passengers killed or seriously injured.
+- `rear`: rear-seat passengers killed or seriously injured.
+- `kms`: distance driven.
+- `PetrolPrice`: petrol price.
+- `VanKilled`: number of van (‘light goods vehicle’) drivers.
+- `law`: 0/1: was the law in effect that month?
+
+Sources:
+
+- Harvey, A.C. (1989) _Forecasting, Structural Time Series Models and the Kalman
+Filter._ Cambridge University Press, pp. 519–523.
+- Durbin, J. and Koopman, S. J. (2001) _Time Series Analysis by State Space
+Methods._ Oxford University Press. http://www.ssfpack.com/dkbook/
+
+Reference:
+
+- Harvey, A. C. and Durbin, J. (1986) The effects of seat belt legislation on
+British road casualties: A case study in structural time series modelling.
+_Journal of the Royal Statistical Society_ series B, **149**, 187–227.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/UKDriverDeaths.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### UKgas
+_PyDataset Documentation (adopted from R Documentation):_
+
+UK Quarterly Gas Consumption
+
+Quarterly UK gas consumption from 1960Q1 to 1986Q4, in millions of therms.
+
+A quarterly time series of length 108.
+
+Source:
+
+- Durbin, J. and Koopman, S. J. (2001) _Time Series Analysis by State Space
+Methods._ Oxford University Press. http://www.ssfpack.com/dkbook/
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/UKgas.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### USAccDeaths
+_PyDataset Documentation (adopted from R Documentation):_
+
+Accidental Deaths in the US 1973–1978
+
+A time series giving the monthly totals of accidental deaths in the USA. The
+values for the first six months of 1979 are 7798 7406 8363 8460 9217 9316.
+
+- P. J. Brockwell and R. A. Davis (1991) _Time Series: Theory and Methods._
+Springer, New York.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/USAccDeaths.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+### USArrests
+_PyDataset Documentation (adopted from R Documentation):_
+
+Violent Crime Rates by US State
+
+This data set contains statistics, in arrests per 100,000 residents for
+assault, murder, and rape in each of the 50 US states in 1973. Also given is
+the percent of the population living in urban areas.
+
+A data frame with 50 observations on 4 variables:
+
+- `[,1] Murder`, numeric: Murder arrests (per 100,000)
+- `[,2] Assault`, numeric: Assault arrests (per 100,000)
+- `[,3] UrbanPop`, numeric: Percent urban population
+- `[,4] `Rape`, numeric: Rape arrests (per 100,000)
+
+Sources:
+
+- World Almanac and Book of facts 1975. (Crime rates).
+- Statistical Abstracts of the United States 1975. (Urban rates).
+
+Reference:
+
+- McNeil, D. R. (1977) _Interactive Data Analysis_. New York: Wiley.
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/USArrests.py').read())
+```
+
+### tips
+
+_PyDataset Documentation (adopted from R Documentation):_
+
+Tipping data
+
+One waiter recorded information about each tip he received over a period of a
+few months working in one restaurant.
+
+A data frame with 244 rows and 7 variables:
+
+- tip in dollars
+- bill in dollars
+- sex of the bill payer
+- whether there were smokers in the party
+- day of the week
+- time of day
+- size of the party
+
+In all he recorded 244 tips. The data was reported in a collection of case
+studies for business statistics (Bryant & Smith 1995).
+
+Reference:
+
+- Bryant, P. G. and Smith, M (1995) _Practical Data Analysis: Case Studies in Business Statistics_. Homewood, IL: Richard D. Irwin Publishing
+
+First 5 rows of the dataset:
+
+```{python, echo = FALSE}
+exec(open('pydataset/tips.py').read())
+```
+
+<a href="#top">⇧ Back to top</a>
+
+[⇦ Back](../../../python.html)
+
+<!-- </font> -->
