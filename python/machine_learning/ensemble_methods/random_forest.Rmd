@@ -1,0 +1,479 @@
+---
+title: '<font size="5">Machine Learning in Python:</font><br>Random Forest'
+output:
+    html_document:
+        theme: paper
+        highlight: textmate
+        number_sections: true
+        toc: true
+        includes:
+            before_body: ../../../google_analytics.html
+---
+
+<font size="3">
+
+[⇦ Back](../../../python.html)
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
+
+<!-- Created: 2025-09-10 -->
+
+Ensemble Learning Methods
+=========================
+On its own, a single predictive model such as a decision tree is a *weak learner*. However, if we bundle many decision trees together and aggregate their decisions (take the average decision if they are regression trees and take the majority vote if they are classification trees) then we get an improved, *strong learner*. This method of assembling many individual models into a super-model is known as an **ensemble method** and the individual models are known as *base estimators* (base models). **Random forest** is an ensemble method consisting of many decision trees as the base estimators.
+
+> Many heads are better than one and a whole forest is better than a single tree
+
+Bagging (Bootstrap AGGregatING)
+-------------------------------
+Random forest is a **bagging** algorithm, something which combines the concepts of *bootstrapping* and *aggregation*:
+
+- The base models (decision trees) are weak learners that are complex and which suffer from high variance. This is due to the fact that they are built with only a subset of the available features and on a subset of the training data due to **bootstrapping**. Some of the trees might be underfit and some might be overfit.
+- Random forest tries to average out these weaknesses by **aggregating** a lot of trees together to get a better overall result
+
+Each tree in the forest is trained using a different random subset of data points from the training set. Each tree also uses a different random subset of features as candidates for the best splitting feature -- if a dataset has $n$ features then it is common practice to randomly select $\sqrt{n}$ features.
+
+Worked Examples
+===============
+Start by importing the libraries that will be needed:
+
+```{python}
+from matplotlib import pyplot as plt
+from pydataset import data
+from sklearn import ensemble, linear_model, metrics, model_selection, tree
+import numpy as np
+import pandas as pd
+```
+
+For these examples we will use the `tips` dataset from `PyDataset`. If you don't already have this package, install it from the terminal with the following command (replace `python3.13` with the version of Python you are using):
+
+```bash
+$ python3.13 -m pip install pydataset
+```
+
+Now you can import the data:
+
+```{python}
+# Load the data
+df = data('tips')
+
+print(df.head())
+```
+
+This dataset consists of information about each tip a waiter received over a period of a few months working in a restaurant:
+
+- `total_bill` value in dollars
+- `tip` amount in dollars
+- `sex` of the bill payer
+- whether there was a `smoker` in the party
+- `day` of the week
+- `time` of day
+- `size` of the party
+
+Obviously, we would expect the value of the tip to increase with the size of the bill, and so if we build a machine learning model that comes to that conclusion it won't be very useful. Instead, let's convert the tip value to a percentage of the total bill so we can see if the other variables in the dataset can predict that:
+
+```{python}
+# Convert the nominal tip value into a percentage of the total bill
+df['tip_percent'] = df['tip'] / df['total_bill'] * 100
+```
+
+Check the sample size:
+
+```{python}
+# Sample size
+N = df.shape[0]
+
+print(f'Sample size: {N}')
+```
+
+This is the number of tips the waiter received and recorded.
+
+Next, separate out the *feature* and *target* variables:
+
+```{python}
+# Separate out the feature and target variables
+X = df[['total_bill', 'sex', 'smoker', 'day', 'time', 'size']].copy()
+y = df['tip_percent']
+```
+
+In machine learning, we try to predict the target using the features. Note that in other fields the nomenclature is slightly different: in economics the *endogenous* variable(s) are predicted from the *exogenous* variables while in science the *dependent* variable(s) are predicted from the *independent* variables. You might encounter these descriptions in other examples.
+
+We will start with training *classifiers* and these require categorical data. We can turn numerical values into categorical ones by binning them:
+
+```{python}
+# Bin values into discrete intervals and label them
+labels = ['low', 'medium', 'high']
+X['total_bill'] = pd.qcut(X['total_bill'], 3, labels=labels)
+labels = ['low_tip', 'medium_tip', 'high_tip']
+y = pd.qcut(y, 3, labels=labels)
+
+print(y.head())
+```
+
+Using `pd.qcut()` cuts our data up into quantiles which are roughly equal in size:
+
+```{python}
+print(y.value_counts())
+```
+
+Next, in order to train decision trees (or a random forest) we need to encode our categorical data as Booleans. This is because *decision* trees make *decisions* at each split and Booleans are 'yes/no' values -- they are the outcomes of decisions. At each split the decision tree will make a Boolean decision and a Boolean decision can be made using data of the Boolean type.
+
+```{python}
+# One-hot encode categorical intervals into Booleans
+X = pd.get_dummies(X, drop_first=True)
+
+pd.set_option('display.max_columns', 9)
+pd.set_option('display.width', 200)
+print(X.head())
+```
+
+Finally, our dataset is ready to be split into training and testing subsets:
+
+```{python}
+# Train/test split
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=20230821, test_size=0.25
+)
+```
+
+Check the sample size of the training subset:
+
+```{python}
+# Training set size
+n = X_train.shape[0]
+
+print(f'Training set size: {n}')
+```
+
+The Base Model: A Decision Tree
+===============================
+A single classification decision tree can be made using `DecisionTreeClassifier()` from the `scikit-learn` library:
+
+```{python}
+# Decision tree classifier
+model = tree.DecisionTreeClassifier(max_depth=3, random_state=20250909)
+model.fit(X_train, y_train)
+```
+
+Let's assess the accuracy of this model at making predictions using the testing set:
+
+```{python}
+# Check the accuracy
+accuracy = model.score(X_test, y_test)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+Hmm, that accuracy isn't very good. Maybe it will improve in later examples.
+
+It's more helpful if we visualise this decision tree as a flowchart:
+
+```{python}
+# Visualise
+plt.figure(figsize=[10, 6])
+tree.plot_tree(
+    model,
+    feature_names=X.columns,
+    class_names=['Low tip %', 'Medium tip %', 'High tip %'],
+    impurity=False,
+    rounded=True,
+    fontsize=6
+)
+plt.show()
+```
+
+You might need to open the image in a new tab to see it better, but this gives a good idea of what the tree is doing.
+
+Bootstrapping
+=============
+Bootstrapping involves training the model just on a random subset of the training data, the subset being chosen with replacement (so a data point from the training data might be used multiple times when training the model). If we just do one round of bootstrapping we shouldn't expect much of an improvement:
+
+```{python}
+# Create a bootstrapped sample
+boot_sample = X_train.sample(n, replace=True, random_state=20230821)
+idx = boot_sample.index
+
+# Decision tree classifier trained on bootstrapped sample
+boot_model = tree.DecisionTreeClassifier(max_depth=3, random_state=20230821)
+boot_model.fit(X_train.loc[idx], y_train[idx])
+
+# Check the accuracy
+accuracy = boot_model.score(X_test, y_test)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+The accuracy has indeed gone down.
+
+Bootstrapping ×10 (Bagging)
+===========================
+But what happens if we repeat this process of training the model on a random subset of the training data? Each time we do so we can use the newly re-trained model to get a new set of predictions, and once we've finished we can use *majority voting* to democratically choose a final set of predictions:
+
+```{python}
+y_preds = []
+for i in range(10):
+    # Create a bootstrapped sample
+    boot_sample = X_train.sample(n, replace=True, random_state=20250909+i)
+    idx = boot_sample.index
+    # Decision tree classifier trained on bootstrapped sample
+    boot_model.fit(X_train.loc[idx], y_train.loc[idx])
+    # Make predictions using the test set
+    y_pred = boot_model.predict(X_test)
+    # Add to master list
+    y_preds.append(y_pred)
+
+# Convert to array (n_estimators × n_samples)
+y_preds = np.array(y_preds, dtype=object)
+
+# Majority vote for string labels
+ba_pred = []
+for col in y_preds.T:
+    vals, counts = np.unique(col, return_counts=True)
+    ba_pred.append(vals[np.argmax(counts)])
+ba_pred = np.array(ba_pred)
+
+# Accuracy of the bagging results
+accuracy = metrics.accuracy_score(y_test, ba_pred)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+We have *bootstrapped* multiple times and *aggregated* the results - this is known as *bagging* (although our accuracy has gone down!).
+
+Random Feature Selection
+========================
+Our one-hot-encoded dataset has a total of 9 columns:
+
+```{python}
+print(list(X))
+```
+
+Instead of using all 9 of these features, let's use a random subset of 3 (this being the square-root of the total number of features):
+
+```{python}
+# Randomly choose 3 features
+np.random.seed(20250909)
+cols = np.random.choice(X_train.columns, 3, replace=False)
+
+# Decision tree classifier trained on a random selection of features
+rf_model = tree.DecisionTreeClassifier(max_depth=3, random_state=20250909)
+rf_model.fit(X_train[cols], y_train)
+
+# Check the accuracy
+accuracy = rf_model.score(X_test[cols], y_test)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+Random Feature Selection ×10
+============================
+Much like we did with bootstrapping, let's see if repeating the process 10 times and taking a majority vote of the predictions will improve the model:
+
+```{python}
+y_preds = []
+for i in range(10):
+    # Randomly choose 3 features
+    cols = np.random.choice(X_train.columns, 3, replace=False)
+    # Decision tree classifier trained on a random selection of features
+    rf_model.fit(X_train[cols], y_train)
+    # Make predictions using the test set
+    y_pred = rf_model.predict(X_test[cols])
+    # Add to master list
+    y_preds.append(y_pred)
+
+# Convert to array (n_estimators × n_samples)
+y_preds = np.array(y_preds, dtype=object)
+
+# Majority vote for string labels
+rf_pred = []
+for col in y_preds.T:
+    vals, counts = np.unique(col, return_counts=True)
+    rf_pred.append(vals[np.argmax(counts)])
+rf_pred = np.array(rf_pred)
+
+# Check the accuracy
+accuracy = metrics.accuracy_score(y_test, rf_pred)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+This has indeed improved the accuracy, but it's still pretty low.
+
+Bagging using `scikit-learn`
+============================
+Instead of the 'manual' process we used above whereby we bootstrapped 10 times in a loop, we can simply use the `BaggingClassifier()` function from `scikit-learn` to do it in a few lines:
+
+```{python}
+# Create and train a bagging classifier
+model = ensemble.BaggingClassifier(
+    tree.DecisionTreeClassifier(max_depth=3),
+    n_estimators=10,  # The number of base estimators in the ensemble
+    max_features=3  # The number of features used to train each base estimator
+)
+model.fit(X_train, y_train)
+
+# Check the accuracy
+accuracy = model.score(X_test, y_test)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+That was much easier!
+
+Logistic Regression
+-------------------
+Here's an example using a logistic regression model instead of a decision to demonstrate how similar the code is:
+
+```{python}
+# Create and train a bagging classifier
+model = ensemble.BaggingClassifier(
+    linear_model.LogisticRegression(max_iter=1000),
+    n_estimators=10,  # The number of base estimators in the ensemble
+    max_features=6  # The number of features used to train each base estimator
+)
+model.fit(X_train, y_train)
+
+# Check the accuracy
+accuracy = model.score(X_test, y_test)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+Random Forest Classifier
+========================
+Finally, the topic of this page: random forest models! The underlying process involves the same bagging algorithms we used above -- using the most common predictions as the final predictions, aka using majority voting for aggregating -- but we can easily code it up using the `RandomForestClassifier()` function:
+
+```{python}
+# Create and train a random forest classifier
+model = ensemble.RandomForestClassifier(
+    n_estimators=100,  # Number of trees in the forest
+    max_depth=3,  # Maximum depth of the tree
+    max_features='sqrt',  # Number of features to consider for best split
+    bootstrap=True,  # Whether bootstrap samples are used when building trees
+    random_state=20250909
+)
+model.fit(X_train, y_train)
+
+# Make predictions using the test set
+y_pred = model.predict(X_test)
+
+# Check the accuracy
+accuracy = metrics.accuracy_score(y_test, y_pred)
+
+print(f'{accuracy:.2%} of predictions correctly matched the test set')
+```
+
+As mentioned above, the rule-of-thumb regarding the number of features to consider when looking for the best split is to take the square root of the total number of features. In fact, this is the default value for the `max_features` keyword argument and it has been explicitly shown in the calling of the `RandomForestClassifier()` function above.
+
+Other Scores
+------------
+In addition to accuracy, we can check the precision and recall of the model, and also see the full confusion matrix:
+
+```{python}
+# Check the precision
+precision = metrics.precision_score(y_test, y_pred, average='weighted')
+
+print(
+    f'{precision:.3f} out of 1 represents the ability of the classifier not ' +
+    'to label as positive a sample that is negative'
+)
+```
+
+```{python}
+# Check the recall
+recall = metrics.recall_score(y_test, y_pred, average='weighted')
+
+print(
+    f'{recall:.3f} out of 1 represents the ability of the classifier to ' +
+    'find all the positive samples'
+)
+```
+
+```{python}
+# Check the confusion_matrix
+confusion_matrix = metrics.confusion_matrix(y_test, y_pred)
+
+print(f'Confusion matrix:\n{confusion_matrix}')
+```
+
+The confusion matrix represents the outcomes of the predictions the model made using the testing set. The numbers add up to the sample size of the testing set (61) and the numbers in the top-left to bottom-right diagonal are the correct predictions (17 in total). This means that 17 out of 61 predictions were correct which is 27.87% -- the value of the accuracy score.
+
+Feature Importance
+------------------
+We can check which of the 9 features were the most important when making decisions that led to classifying the data points:
+
+```{python}
+importances = pd.Series(model.feature_importances_, index=X.columns)
+
+print('Feature importances:\n', importances.sort_values(ascending=False))
+```
+
+Random Forest Regressor
+=======================
+Instead of classifying tips as low, medium or high we could use random forest to predict their actual percent values. This is known as *regression* and is similar to the classification model with two major differences:
+
+- We need the target variable to be numeric, not categorical. So we need to remove the binning step we used when pre-processing the dataset.
+- The aggregation of the sets of predictions from the multiple bootstrapped models is done by taking their average (mean), not by majority voting
+
+Let's start by re-processing the raw data:
+
+```{python}
+# Load the data
+df = data('tips')
+# Convert the nominal tip value into a percentage of the total bill
+df['tip_percent'] = df['tip'] / df['total_bill'] * 100
+# Separate out the feature and target variables
+# (aka the exogenous and endogenous or independent and dependent variables)
+X = df[['total_bill', 'sex', 'smoker', 'day', 'time', 'size']].copy()
+y = df['tip_percent']
+# One-hot encode the categorical variables
+X = pd.get_dummies(X, drop_first=True)
+# Train/test split
+X_train, X_test, y_train, y_test = model_selection.train_test_split(
+    X, y, random_state=20250909, test_size=0.25
+)
+```
+
+Now we can use the `RandomForestRegressor()` function:
+
+```{python}
+# Create a random forest regressor
+model = ensemble.RandomForestRegressor(
+    n_estimators=100,  # Number of trees in the forest
+    max_depth=3,  # Maximum depth of the tree
+    max_features='sqrt',  # Number of features to consider for best split
+    bootstrap=True,  # Whether bootstrap samples are used when building trees
+    random_state=20250909
+)
+model.fit(X_train, y_train)
+```
+
+Finally, we can check the performance of the model:
+
+```{python}
+# Coefficient of determination
+r_squared = model.score(X_test, y_test)
+
+print(f'Coefficient of determination, R²: {r_squared:.3f}')
+```
+
+```{python}
+# Mean
+print(f'Mean tip as a % of the total bill: {y.mean():.1f}')
+```
+
+```{python}
+# Predictions
+y_pred = model.predict(X_test)
+# Mean absolute error
+mae_test = metrics.mean_absolute_error(y_test, y_pred)
+
+print(f'Mean absolute error: {mae_test:.2f}')
+```
+
+[⇦ Back](../../../python.html)
+
+</font>
