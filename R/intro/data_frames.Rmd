@@ -166,6 +166,27 @@ Check out the new names:
 print(colnames(df))
 ```
 
+Sum All Values in a Column
+--------------------------
+Given the pre-installed `iris` data frame:
+
+```{r}
+head(iris)
+```
+
+Sum all the values in the columns *without grouping* by selecting the numeric columns and using `colSums()` to add up all the values in each:
+
+```{r}
+cols = c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")
+colSums(iris[, cols])
+```
+
+Sum all the values in the columns *with grouping* by selecting the numeric columns, specifying the groups in the data and using `rowsum()` to add up all the values in each numeric column for each group. In this example, the groups are the `Species` names:
+
+```{r}
+rowsum(iris[, cols], iris$Species)
+```
+
 Rows in a Data Frame
 ====================
 
@@ -215,6 +236,20 @@ Rename Rows
 # Change the row names to be sequential numbers
 rownames(df) <- NULL
 rownames(df) <- seq_len(nrow(df))
+```
+
+Sum All Values in a Row
+-----------------------
+Given the pre-installed `randu` data frame:
+
+```{r}
+head(randu)
+```
+
+Sum all the values in each row using the `rowSums()` function:
+
+```{r}
+rowSums(head(randu))
 ```
 
 Indexing (aka Selecting)
