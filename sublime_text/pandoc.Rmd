@@ -52,6 +52,17 @@ Build Systems tell Sublime Text what code to run when building a program or docu
 
 Save the Build System into the default folder that is suggested by Sublime Text when you select "Save". Give it a meaningful name such as `Markdown to PDF.sublime-build` when you do so.
 
+Note that this Build System will use LaTeX to create the PDF and so you will need to have that installed. To instead use HTML as an intermediate format (convert Markdown to HTML to PDF) and avoid using LaTeX you can add the `-t html` flag:
+
+```json
+{
+    "shell_cmd": "pandoc -o \"$file.pdf\" -t html \"$file\" && open \"$file.pdf\"",
+    "selector": "text.html.markdown",
+}
+```
+
+Note that this will require a tool called "wkhtmltopdf" which can be downloaded from [here](https://wkhtmltopdf.org/).
+
 Usage
 =====
 With a Markdown file (one with the `.md` extension) open and active in Sublime Text, navigate to `Tools > Build With...` (shortcut: Shift+Ctrl+B) and select "Markdown to PDF" (or whatever it was you called your `.sublime-build` file). This should create the PDF file and open it.
