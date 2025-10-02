@@ -4,7 +4,7 @@ output:
     html_document:
         theme: paper
         highlight: textmate
-        # number_sections: true
+        number_sections: true
         # toc: true
         includes:
             before_body: ../google_analytics.html
@@ -14,29 +14,55 @@ output:
 
 [⇦ Back](../sublime_text.html)
 
-> Tested on Windows 7 and Ubuntu 20.04
+> Tested on Windows 7 and Ubuntu 20.04 & 24.04
+
+In order to **convert Markdown to PDF** from within Sublime Text:
+
+1. Install [Pandoc](https://pandoc.org/) - a document conversion program - then,
+2. Create a Pandoc Build System in Sublime Text
+
+This will allow you to build a `.pdf` file from an `.md` file that is open in Sublime Text.
 
 Install Pandoc
 ==============
-- See [here](https://pandoc.org/installing.html)
-- Ubuntu: `sudo apt-get install pandoc`
+On **Windows** and **macOS**, go to the [installation guide](https://pandoc.org/installing.html).
+
+On **Ubuntu**, Pandoc can be installed from the package manager:
+
+```bash
+$ sudo apt-get install pandoc
+```
+
+Check that it has worked with:
+
+```bash
+$ pandoc --version
+```
 
 Create a Pandoc Build System in Sublime Text
 ============================================
-- Create a new Sublime-Build file:
-    - Sublime-Build files tell Sublime Text how you want to build a document when you hit Ctrl+B
-    - Tools > Build System > New Build System...
-    - In the "untitled.sublime-build" that appears, replace everything with
-    ```json
-    {
-        "shell_cmd": "pandoc -o \"$file.pdf\" \"$file\" && start SumatraPDF \"$file.pdf\"",
-        "selector": "text.html.markdown",
-    }
-    ```
-- Save as `Markdown to PDF.sublime-build`
-- Tools > Build System > select "Automatic" to ensure Sublime picks your new Markdown build system
-- With a .md file open, hit Ctrl+B
-- You must have Sumatra PDF installed for this to work (https://www.sumatrapdfreader.org/free-pdf-reader.html)
+Build Systems tell Sublime Text what code to run when building a program or document and are stored in files with the `.sublime-build` extension. To create a new one, navigate to `Tools > Build System > New Build System...` and, in the `untitled.sublime-build` file that appears, replace everything with
+
+```json
+{
+    "shell_cmd": "pandoc -o \"$file.pdf\" \"$file\" && open \"$file.pdf\"",
+    "selector": "text.html.markdown",
+}
+```
+
+Save the Build System into the default folder that is suggested by Sublime Text when you select "Save". Give it a meaningful name such as `Markdown to PDF.sublime-build` when you do so.
+
+Usage
+=====
+With a Markdown file (one with the `.md` extension) open and active in Sublime Text, navigate to `Tools > Build With...` (shortcut: Shift+Ctrl+B) and select "Markdown to PDF" (or whatever it was you called your `.sublime-build` file). This should create the PDF file and open it.
+
+**Note:**  
+From now on, Sublime Text will associate Markdown files with this Build System and automatically run it when `Tools > Build` (shortcut: Ctrl+B) is selected while a Markdown file is open and active. Two ways to change this behaviour and run a different Build System (eg the "Markdown" Build System from the MarkdownPreview package) are:
+
+- Re-running `Tools > Build With...` (shortcut: Shift+Ctrl+B). Whichever Build System you choose will become the one that is associated with the file type of the active file.
+- Navigating to `Tools > Build System` and manually selecting a different option. The first option - "Automatic" - will use the Build System currently associated with the file type of the active file.
+
+In most cases, the two Build Systems "Markdown to PDF" (the topic of this page) and "Markdown" (which converts `.md` files to HTML and is the topic of the [Using Markdown](markdown.html) page) will provide all the functionality needed for building Markdown files. Just be aware that you may need to switch from one to the other depending on whether you want to build to PDF or to HTML.
 
 [⇦ Back](../sublime_text.html)
 
