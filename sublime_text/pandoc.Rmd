@@ -68,12 +68,12 @@ Usage
 With a Markdown file (one with the `.md` extension) open and active in Sublime Text, navigate to `Tools > Build With...` (shortcut: Shift+Ctrl+B) and select "Markdown to PDF" (or whatever it was you called your `.sublime-build` file). This should create the PDF file and open it.
 
 **Note:**  
-From now on, Sublime Text will associate Markdown files with this Build System and automatically run it when `Tools > Build` (shortcut: Ctrl+B) is selected while a Markdown file is open and active. Two ways to change this behaviour and run a different Build System (eg the "Markdown" Build System from the MarkdownPreview package) are:
+From now on, Sublime Text will associate Markdown files with this Build System and automatically run it when `Tools > Build` (shortcut: Ctrl+B) is selected while a Markdown file is open and active. Two ways to change this behaviour and run a different Build System (eg the "Markdown" Build System from the MarkdownPreview package which converts `.md` files to HTML) are:
 
 - Re-running `Tools > Build With...` (shortcut: Shift+Ctrl+B). Whichever Build System you choose will become the one that is associated with the file type of the active file.
 - Navigating to `Tools > Build System` and manually selecting a different option. The first option - "Automatic" - will use the Build System currently associated with the file type of the active file.
 
-In most cases, the two Build Systems "Markdown to PDF" (the topic of this page) and "Markdown" (which converts `.md` files to HTML and is the topic of the [Using Markdown](markdown.html) page) will provide all the functionality needed for building Markdown files. Just be aware that you may need to switch from one to the other depending on whether you want to build to PDF or to HTML.
+In most cases, the two Build Systems "Markdown to PDF" (the topic of this page) and "Markdown" (the topic of the [Using Markdown](markdown.html) page) will provide all the functionality needed for building Markdown files. Just be aware that you may need to switch from one to the other depending on whether you want to build to PDF or to HTML.
 
 [⇦ Back](../sublime_text.html)
 
