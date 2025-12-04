@@ -6,16 +6,16 @@ from datetime import datetime, timezone, timedelta
 import platform
 import argparse
 
-if platform.system() == 'Linux':
-    # Set the Matplotlib backend to one that is compatible with Wayland
-    plt.switch_backend('Agg')
+# if platform.system() == 'Linux':
+#     # Set the Matplotlib backend to one that is compatible with Wayland
+#     plt.switch_backend('Agg')
 
 # Use LaTeX for graphs' text
 plt.rc('text', usetex=True)
 # Use the serif font
 plt.rc('font', family='serif')
-# Be able to use Greek symbols in text mode
-plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+# # Be able to use Greek symbols in text mode
+# plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
 
 
 def cardinal_to_ordinal(cardinal):
@@ -66,7 +66,9 @@ terms = [
     # ('2024', 'Hilary', '2024-01-07T00:00:00Z', '2024-03-02T23:00:00Z'),
     # ('2024', 'Trinity', '2024-04-14T00:00:00Z', '2024-05-25T23:00:00Z'),
     # ('2024', 'Michaelmas', '2024-10-06T00:00:00Z', '2024-11-30T23:00:00Z'),
-    ('2025', 'Hilary', '2025-01-12T00:00:00Z', '2025-03-01T23:00:00Z'),
+    # ('2025', 'Hilary', '2025-01-12T00:00:00Z', '2025-03-01T23:00:00Z'),
+    # ('2025', 'Trinity', '2025-04-20T00:00:00Z', '2025-05-31T23:00:00Z'),
+    ('2025', 'Michaelmas', '2025-10-05T00:00:00Z', '2025-11-29T23:00:00Z'),
 ]
 
 # Forward fill to either today or the next 9th week
@@ -217,9 +219,6 @@ for term in terms_to_analyse:
             # Add the month name as text in the relevant rectangles
             if (row['datetime'].day == 1 or month_in_first_block):
                 if row['datetime'].hour == 1:
-                    # first_day = (index == week_data.index[0] + 12) and \
-                    #     (week_number == 0)
-                    # print(row['datetime'], row['datetime'].strftime('%H'))
                     month_text = row['datetime'].strftime('%B')
                     ax.text(
                         # Align text horizontally in the rectangle
@@ -236,6 +235,28 @@ for term in terms_to_analyse:
                         color='w',
                     )
                     month_in_first_block = False
+
+            # Add "Peak Term Starts" text"
+            if row['datetime'] == peak_term_start + timedelta(hours=1):
+                ax.text(
+                    x + width / 2, y + height * 0.60, r'\textit{Peak Term}',
+                    fontsize=5, color='w',
+                )
+                ax.text(
+                    x + width / 2, y + height * 0.85, r'\textit{Starts}',
+                    fontsize=5, color='w',
+                )
+
+            # Add "Peak Term Ends" text"
+            if row['datetime'] == peak_term_end + timedelta(hours=2):
+                ax.text(
+                    x + width / 2, y + height * 0.60, r'\textit{Peak Term}',
+                    fontsize=5, color='w',
+                )
+                ax.text(
+                    x + width / 2, y + height * 0.85, r'\textit{Ends}',
+                    fontsize=5, color='w',
+                )
 
     # Construct the x-axis so as to represent days of the week
     ax.set_xticks(range(7))
