@@ -66,69 +66,35 @@ jobs:
       run: |
         python rowing/isis_flag_history/get_flag_status.py
         python rowing/isis_flag_history/analyse_flag_status.py -l -p "rowing/isis_flag_history/master.csv"
-        
-    - name: Run R Markdown Script
-      run: |
-        Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd')"
 
-    - name: Show generated files (before commit)
-      run: |
-        echo "Working dir:"
-        pwd
-        echo "List repo files:"
-        ls -R .
-        echo "Check CSS and fonts"
-        if [ -f style.css ]; then echo "style.css exists"; else echo "style.css MISSING"; fi
-        if [ -d fonts ]; then echo "fonts/ exists:"; ls -l fonts || true; else echo "fonts/ MISSING"; fi
-        echo "List plots folder"
-        ls -l rowing/isis_flag_history || true
-
-    - name: Commit updated data and plots
-      if: github.ref == 'refs/heads/master'
+    - name: Commit Python-generated files
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        set -euo pipefail
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
 
-        # Configure git
-        git config --global user.email "actions@github.com"
-        git config --global user.name "GitHub Actions"
+        git add rowing/isis_flag_history/*.png
+        git add rowing/isis_flag_history/*.txt
+        git add rowing/isis_flag_history/master.csv
 
-        # Ensure branch
-        git checkout "${GITHUB_REF#refs/heads/}" || git checkout -b master
+        # Avoid committing Rmd cache folders
+        git restore --staged rowing/isis_flag_history/*_files || true
 
-        # Stage likely changed files
-        git add rowing/isis_flag_history/*.png || true
-        git add rowing/isis_flag_history/master.csv || true
-        git add style.css || true
-        git add fonts/* || true
-
-        # Only commit if there are changes
-        if git diff --staged --quiet; then
-          echo "No changes to commit"
+        if git diff --cached --quiet; then
+          echo "No Python-generated changes to commit"
         else
-          git commit -m "Update plots and master.csv via workflow"
-          # Use token in remote URL to guarantee push works
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git
-          git push origin HEAD
+          git commit -m "Update flag status plots and master.csv"
+          git push
         fi
 
-    - name: Show repo state after commit
-      run: |
-        echo "Remote HEAD:"
-        git rev-parse --short HEAD
-        echo "Files in repo root:"
-        ls -l
-        echo "Check style.css and fonts again"
-        if [ -f style.css ]; then echo "style.css exists"; else echo "style.css MISSING"; fi
-        if [ -d fonts ]; then ls -l fonts || true; else echo "fonts/ MISSING"; fi
-        echo "List plots folder"
-        ls -l rowing/isis_flag_history || true
+    - name: Render R Markdown page
+      run: Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd')"
 
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
-        path: '.'  # Uploads entire repository
+        path: '.'  # Deploy the entire repository root
 
   deploy:
     runs-on: ubuntu-latest
@@ -138,10 +104,10 @@ jobs:
     permissions:
       pages: write
       id-token: write
+
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v4
