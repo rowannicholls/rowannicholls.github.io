@@ -67,6 +67,21 @@ jobs:
       run: |
         Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd')"
 
+    - name: Commit updated data and plots
+      if: github.ref == 'refs/heads/master'
+      run: |
+        git config --global user.email "actions@github.com"
+        git config --global user.name "GitHub Actions"
+
+        # Stage files that may have changed
+        git add rowing/isis_flag_history/*.png
+        git add rowing/isis_flag_history/master.csv
+
+        # Commit only if there are changes
+        git commit -m "Update plots and master.csv via workflow" || echo "No changes to commit"
+
+        git push
+
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v3
       with:
