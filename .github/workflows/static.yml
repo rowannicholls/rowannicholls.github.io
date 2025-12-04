@@ -64,11 +64,8 @@ jobs:
 
     - name: Run Python Scripts
       run: |
-        cd rowing/isis_flag_history
-        python get_flag_status.py
-        python analyse_flag_status.py -l -p "master.csv"
-        cd ..
-        cd ..
+        python rowing/isis_flag_history/get_flag_status.py
+        python rowing/isis_flag_history/analyse_flag_status.py -l -p "rowing/isis_flag_history/master.csv"
 
     - name: Commit Python-generated files
       env:

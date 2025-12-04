@@ -5,6 +5,10 @@ import matplotlib.dates as mdates
 from datetime import datetime, timezone, timedelta
 import platform
 import argparse
+import os
+
+# Change working directory to the folder containing the script
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # if platform.system() == 'Linux':
 #     # Set the Matplotlib backend to one that is compatible with Wayland

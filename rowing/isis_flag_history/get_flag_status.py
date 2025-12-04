@@ -2,6 +2,10 @@
 import requests
 from pathlib import Path
 import pandas as pd
+import os
+
+# Change working directory to the folder containing the script
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 # Import the master data frame, or initialise it if it does not exist
 path = Path('master.csv')
