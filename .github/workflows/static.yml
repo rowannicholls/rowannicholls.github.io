@@ -15,6 +15,7 @@ jobs:
     permissions:
       id-token: write
       pages: write
+      contents: write
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
