@@ -1,33 +1,11 @@
-@font-face {
-    font-family: 'CMU Serif';
-    font-style: normal;
-    font-weight: 500;
-    src: local('CMU Serif'), url('fonts/cmunrm.woff') format('woff'),
-}
-@font-face {
-    font-family: 'CMU Serif';
-    font-style: italic;
-    font-weight: 500;
-    src: local('CMU Serif'), url('fonts/cmunti.woff') format('woff'),
-}
-@font-face {
-    font-family: 'CMU Serif';
-    font-style: normal;
-    font-weight: 700;
-    src: local('CMU Serif'), url('fonts/cmunbx.woff') format('woff'),
-}
-@font-face {
-    font-family: 'CMU Serif';
-    font-style: italic;
-    font-weight: 700;
-    src: local('CMU Serif'), url('fonts/cmunbi.woff') format('woff'),
-}
+<style>
+    @import url('https://fonts.cdnfonts.com/css/cmu-serif');
 
-body {
-    font-family: 'CMU Serif', serif;
-    font-size: 15px;
-}
+    body {
+        font-family: 'CMU Serif', sans-serif;
+        font-size: 15px;
+    }
 
-.table {
-    width: 35%;
-}
+    .table {width: 35%;}
+
+</style>

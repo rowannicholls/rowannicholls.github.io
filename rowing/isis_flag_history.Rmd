@@ -1,12 +1,34 @@
 ---
 title: "Isis Flag History"
 output:
-  html_document:
-    css: "../style.css"
+    html_document:
+        css: "../style.css"
+        # includes:
+            # before_body: ../../google_analytics.html
 ---
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(out.width = "100%")
+knitr::opts_chunk$set(engine.path = "/usr/local/bin/python3.13")
+```
 
 {.tabset}
 ---------
+
+### 2026 {.tabset}
+
+#### Hilary {.tabset}
+
+![](isis_flag_history/2026_hilary_term.png)
+
+```{python, echo = FALSE, results = 'asis'}
+f = open('isis_flag_history/2026_hilary_term.txt', 'r')
+content = f.read()
+print(content)
+f.close()
+```
+
+<br>
 
 ### 2025 {.tabset}
 
