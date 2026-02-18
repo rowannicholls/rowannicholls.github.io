@@ -1,10 +1,12 @@
 name: Update Isis Flag History
 
 on:
+  schedule:
+    # Run every hour
+    - cron: '0 * * * *'
   push:
     branches:
       - master
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
