@@ -9,7 +9,13 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -22,7 +28,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.11'
 
       - name: Install Python dependencies
         run: |
@@ -53,10 +59,19 @@ jobs:
         run: |
           Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd', output_file = 'isis_flag_history.html', output_dir = 'rowing')"
 
-      - name: Commit and push changes
+      - name: Prepare static site
         run: |
-          git config --global user.name 'github-actions'
-          git config --global user.email 'github-actions@github.com'
-          git add .
-          git diff --cached --quiet || git commit -m 'Automated update of Isis flag data and site'
-          git push
+          mkdir site
+          cp -r index.html rowing.html style.css fonts google_analytics.html textgreek.sty site/
+          cp -r rowing site/
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
