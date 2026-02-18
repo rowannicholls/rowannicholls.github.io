@@ -1,25 +1,28 @@
 """Plot the Isis flag status."""
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 from datetime import datetime, timezone, timedelta
-import platform
+from pathlib import Path
 import argparse
 import os
+
+import matplotlib.dates as mdates
+import matplotlib.font_manager as fm
+import matplotlib.pyplot as plt
+import pandas as pd
 
 # Change working directory to the folder containing the script
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-# if platform.system() == 'Linux':
-#     # Set the Matplotlib backend to one that is compatible with Wayland
-#     plt.switch_backend('Agg')
+# Register Computer Modern fonts
+font_dir = Path('../../fonts/cm-unicode-0.7.0')
+for font in font_dir.glob('*.ttf'):
+    fm.fontManager.addfont(str(font))
 
-# Use LaTeX for graphs' text
-plt.rc('text', usetex=True)
-# Use the serif font
-plt.rc('font', family='serif')
-# # Be able to use Greek symbols in text mode
-# plt.rc('text.latex', preamble=r'\usepackage{textgreek}')
+# Matplotlib font parameters
+plt.rcParams.update({
+    'font.family': 'serif',
+    'font.serif': ['CMU Serif'],
+    'mathtext.fontset': 'cm',
+})
 
 
 def cardinal_to_ordinal(cardinal):
@@ -244,23 +247,23 @@ for term in terms_to_analyse:
             # Add "Peak Term Starts" text"
             if row['datetime'] == peak_term_start + timedelta(hours=1):
                 ax.text(
-                    x + width / 2, y + height * 0.60, r'\textit{Peak Term}',
-                    fontsize=5, color='w',
+                    x + width / 2, y + height * 0.60, 'Peak Term',
+                    fontsize=5, color='w', fontstyle='italic',
                 )
                 ax.text(
-                    x + width / 2, y + height * 0.85, r'\textit{Starts}',
-                    fontsize=5, color='w',
+                    x + width / 2, y + height * 0.85, 'Starts',
+                    fontsize=5, color='w', fontstyle='italic',
                 )
 
             # Add "Peak Term Ends" text"
             if row['datetime'] == peak_term_end + timedelta(hours=2):
                 ax.text(
-                    x + width / 2, y + height * 0.60, r'\textit{Peak Term}',
-                    fontsize=5, color='w',
+                    x + width / 2, y + height * 0.60, 'Peak Term',
+                    fontsize=5, color='w', fontstyle='italic'
                 )
                 ax.text(
-                    x + width / 2, y + height * 0.85, r'\textit{Ends}',
-                    fontsize=5, color='w',
+                    x + width / 2, y + height * 0.85, 'Ends',
+                    fontsize=5, color='w', fontstyle='italic'
                 )
 
     # Construct the x-axis so as to represent days of the week
@@ -292,7 +295,6 @@ for term in terms_to_analyse:
     ax.grid(axis='y', which='minor', linestyle='-')
 
     # Set title and labels
-    st = f"""OURCs Isis Flag
-    {term_name} Term {year}"""
+    st = f'OURCs Isis Flag\n{term_name} Term {year}'
     plt.title(st, fontsize=12)
     plt.savefig(f'{year}_{term_name.lower()}_term.png')
