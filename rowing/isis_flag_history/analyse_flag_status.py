@@ -167,7 +167,7 @@ for term in terms_to_analyse:
         file.write('\n')
         start = peak_term_start.date()
         end = peak_term_end.date()
-        file.write(f'*{start} to {end} inclusive')
+        file.write(f'*{start} to {end} inclusive\n')
 
     # Get the number of weeks since the start of 0th week
     ser = (full_term.loc[:, 'datetime'] - noughth_start).dt.days

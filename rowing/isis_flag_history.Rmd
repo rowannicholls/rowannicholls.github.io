@@ -3,9 +3,13 @@ title: "Isis Flag History"
 output:
     html_document:
         css: "../style.css"
-        # includes:
-            # before_body: ../../google_analytics.html
+        includes:
+            before_body: ../google_analytics.html
 ---
+
+```{r setup, echo=FALSE}
+library(knitr)
+```
 
 {.tabset}
 ---------
@@ -14,139 +18,89 @@ output:
 
 #### Hilary {.tabset}
 
-![](isis_flag_history/2026_hilary_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2026_hilary_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2026_hilary_term.png')
+cat(readLines('isis_flag_history/2026_hilary_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 ### 2025 {.tabset}
 
 #### Michaelmas {.tabset}
 
-![](isis_flag_history/2025_michaelmas_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2025_michaelmas_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2025_michaelmas_term.png')
+cat(readLines('isis_flag_history/2025_michaelmas_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 #### Trinity {.tabset}
 
-![](isis_flag_history/2025_trinity_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2025_trinity_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2025_trinity_term.png')
+cat(readLines('isis_flag_history/2025_trinity_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 #### Hilary {.tabset}
 
-![](isis_flag_history/2025_hilary_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2025_hilary_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2025_hilary_term.png')
+cat(readLines('isis_flag_history/2025_hilary_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 ### 2024 {.tabset}
 
 #### Michaelmas {.tabset}
 
-![](isis_flag_history/2024_michaelmas_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2024_michaelmas_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2024_michaelmas_term.png')
+cat(readLines('isis_flag_history/2024_michaelmas_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 #### Trinity {.tabset}
 
-![](isis_flag_history/2024_trinity_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2024_trinity_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2024_trinity_term.png')
+cat(readLines('isis_flag_history/2024_trinity_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 #### Hilary {.tabset}
 
-![](isis_flag_history/2024_hilary_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2024_hilary_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2024_hilary_term.png')
+cat(readLines('isis_flag_history/2024_hilary_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 ### 2023 {.tabset}
 
 #### Michaelmas {.tabset}
 
-![](isis_flag_history/2023_michaelmas_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2023_michaelmas_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2023_michaelmas_term.png')
+cat(readLines('isis_flag_history/2023_michaelmas_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 #### Trinity {.tabset}
 
-![](isis_flag_history/2023_trinity_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2023_trinity_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2023_trinity_term.png')
+cat(readLines('isis_flag_history/2023_trinity_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 #### Hilary {.tabset}
 
-![](isis_flag_history/2023_hilary_term.png)
-
-```{python, echo = FALSE, results = 'asis'}
-f = open('isis_flag_history/2023_hilary_term.txt', 'r')
-content = f.read()
-print(content)
-f.close()
+```{r, echo=FALSE, results='asis', out.width='100%'}
+include_graphics('isis_flag_history/2023_hilary_term.png')
+cat(readLines('isis_flag_history/2023_hilary_term.txt'), sep = '\n')
+cat('\n<br>\n')
 ```
-
-<br>
 
 Links
 -----
@@ -157,10 +111,6 @@ Links
 
 <br>
 
-```{python, echo = FALSE, results = 'asis'}
-from datetime import datetime
-
-current_datetime = datetime.today()
-current_datetime = current_datetime.strftime('%Y-%m-%d %H:%M')
-print(f'*Last updated: {current_datetime}*')
+```{r, echo=FALSE, results='asis'}
+cat(sprintf("*Last updated: %s*", format(Sys.time(), "%Y-%m-%d %H:%M")))
 ```

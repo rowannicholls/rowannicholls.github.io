@@ -25,10 +25,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.13'
+          python-version: '3.11'
 
       - name: Install Python dependencies
         run: |
@@ -37,12 +38,13 @@ jobs:
 
       - name: Run get_flag_status.py
         run: |
-          python rowing/isis_flag_history/get_flag_status.py
+          python rowing/isis_flag_history/get_flag_status.py || true
 
       - name: Run analyse_flag_status.py
         run: |
           python rowing/isis_flag_history/analyse_flag_status.py
 
+      # R
       - name: Set up R
         uses: r-lib/actions/setup-r@v2
 
@@ -51,22 +53,20 @@ jobs:
 
       - name: Install R dependencies
         run: |
-          Rscript -e "install.packages(c('rmarkdown', 'reticulate'), repos='https://cloud.r-project.org')"
-
-      - name: Tell reticulate to use system Python
-        run: |
-          echo "RETICULATE_PYTHON=$(which python)" >> $GITHUB_ENV
+          Rscript -e "install.packages('rmarkdown', repos='https://cloud.r-project.org')"
 
       - name: Render isis_flag_history.Rmd
         run: |
-          Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd', output_file = 'isis_flag_history.html', output_dir = 'rowing')"
+          Rscript -e "rmarkdown::render('rowing/isis_flag_history.Rmd', output_file='isis_flag_history.html', output_dir='rowing')"
 
+      # Prepare site
       - name: Prepare static site
         run: |
           mkdir site
           cp -r index.html rowing.html style.css fonts google_analytics.html textgreek.sty site/
           cp -r rowing site/
 
+      # Deploy
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
