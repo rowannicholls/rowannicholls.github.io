@@ -151,11 +151,14 @@ for term in terms_to_analyse:
     ]
     # Export to external file
     with open(f'{year}_{term_name.lower()}_term.txt', 'w') as file:
+        start = peak_term_start.date()
+        end = peak_term_end.date()
         if now > peak_term_end:
-            file.write('Percentage of Peak Term* under each flag:\n')
+            file.write(f'Percentage of Peak Term ({start} to {end} ')
+            file.write('inclusive) under each flag:\n')
         else:
-            file.write('Percentage of Peak Term* - so far - under each flag:')
-            file.write('\n')
+            file.write(f'Percentage of Peak Term ({start} to today) ')
+            file.write('under each flag:\n')
         file.write('\n')
         file.write('| | % |\n')
         file.write('|---|:---:|\n')
@@ -165,9 +168,6 @@ for term in terms_to_analyse:
             else:
                 file.write(f'| {colour} | 0 |\n')
         file.write('\n')
-        start = peak_term_start.date()
-        end = peak_term_end.date()
-        file.write(f'*{start} to {end} inclusive\n')
 
     # Get the number of weeks since the start of 0th week
     ser = (full_term.loc[:, 'datetime'] - noughth_start).dt.days
